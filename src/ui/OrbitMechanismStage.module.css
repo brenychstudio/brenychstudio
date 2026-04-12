@@ -1,0 +1,161 @@
+.stageWrap {
+  position: sticky;
+}
+
+.embeddedRoot {
+  position: absolute;
+  inset: 0;
+}
+
+.stagePanel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.panelSoft {
+  background: linear-gradient(180deg, #f8f8f6 0%, #f1f1ef 100%);
+}
+
+.panelWhite {
+  background: #ffffff;
+}
+
+.panelEmbedded {
+  border: none;
+  border-radius: inherit;
+  background: #ffffff;
+}
+
+.panelBg {
+  position: absolute;
+  inset: 0;
+}
+
+.panelBgSoft {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(0, 0, 0, 0.024), transparent 34%),
+    radial-gradient(circle at 14% 18%, rgba(0, 0, 0, 0.012), transparent 24%),
+    radial-gradient(circle at 86% 82%, rgba(0, 0, 0, 0.012), transparent 22%);
+}
+
+.panelBgWhite {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(0, 0, 0, 0.014), transparent 34%),
+    radial-gradient(circle at 14% 18%, rgba(0, 0, 0, 0.008), transparent 24%),
+    radial-gradient(circle at 86% 82%, rgba(0, 0, 0, 0.008), transparent 22%);
+}
+
+.glow {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 56%;
+  height: 56%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0.014),
+    rgba(0, 0, 0, 0.004) 46%,
+    rgba(0, 0, 0, 0) 76%
+  );
+  filter: blur(24px);
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.metaBar {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(2px);
+  padding: 20px 24px;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
+  gap: 16px;
+}
+
+.metaLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: rgba(0, 0, 0, 0.42);
+}
+
+.metaValue {
+  margin-top: 8px;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: rgba(0, 0, 0, 0.84);
+}
+
+.metaSub {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.46);
+}
+
+.metaPlain {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.ringIdle,
+.ringActive {
+  animation-name: stagePulse;
+  animation-duration: 3.1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.ringActive {
+  animation-duration: 2.1s;
+}
+
+@keyframes stagePulse {
+  0% {
+    opacity: 0.84;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+  100% {
+    opacity: 0.84;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .metaGrid {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ringIdle,
+  .ringActive {
+    animation: none;
+  }
+}

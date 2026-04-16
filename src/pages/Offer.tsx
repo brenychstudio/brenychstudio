@@ -325,7 +325,12 @@ export default function Offer({
     text.length > 110 ? `${text.slice(0, 110).trim()}...` : text;
 
   return (
-    <div className="min-h-screen overflow-x-clip bg-white text-neutral-900">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.42, ease: "easeOut" }}
+      className="min-h-screen overflow-x-hidden bg-white text-neutral-900"
+    >
       <Header
         drawerOpen={drawerOpen}
         onOpenProject={onOpenProject}
@@ -378,9 +383,19 @@ export default function Offer({
 
               <div className="md:pl-1">
                 {isCompactOfferDevice ? (
-                  <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[28px] border border-black/6 bg-[radial-gradient(120%_100%_at_72%_24%,rgba(130,160,255,0.22)_0%,rgba(130,160,255,0.08)_26%,rgba(255,255,255,0.92)_58%,rgba(255,255,255,0.98)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.44, delay: 0.06, ease: "easeOut" }}
+                    className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[28px] border border-black/6 bg-[radial-gradient(120%_100%_at_72%_24%,rgba(130,160,255,0.22)_0%,rgba(130,160,255,0.08)_26%,rgba(255,255,255,0.92)_58%,rgba(255,255,255,0.98)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
+                  >
                     <div className="relative overflow-hidden rounded-[22px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(250,250,250,0.92)_100%)] px-5 py-6 sm:px-6 sm:py-7">
-                      <div className="pointer-events-none absolute inset-y-0 right-[-10%] w-[58%] bg-[radial-gradient(circle_at_40%_35%,rgba(88,128,255,0.16),rgba(88,128,255,0.06)_34%,rgba(88,128,255,0)_72%)]" />
+                      <motion.div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-y-0 right-[-10%] w-[58%] bg-[radial-gradient(circle_at_40%_35%,rgba(88,128,255,0.16),rgba(88,128,255,0.06)_34%,rgba(88,128,255,0)_72%)]"
+                        animate={{ x: [0, 6, 0], y: [0, -3, 0], opacity: [0.9, 1, 0.9] }}
+                        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                      />
                       <div className="pointer-events-none absolute inset-x-[22%] top-[26%] h-px bg-[linear-gradient(90deg,rgba(17,17,17,0)_0%,rgba(17,17,17,0.10)_36%,rgba(17,17,17,0)_100%)]" />
                       <div className="relative">
                         <div className="text-[10px] tracking-[0.18em] uppercase text-neutral-500">
@@ -401,7 +416,7 @@ export default function Offer({
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ) : (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
@@ -930,6 +945,6 @@ export default function Offer({
           </Container>
         </PageSurface>
       </main>
-    </div>
+    </motion.div>
   );
 }

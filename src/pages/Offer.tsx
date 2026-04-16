@@ -322,13 +322,7 @@ export default function Offer({
         <PageSurface>
           <Container>
           {/* HERO */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="border-b border-neutral-100 pb-16 md:pb-20"
-          >
+          <section className="border-b border-neutral-100 pb-16 md:pb-20">
             <div
               className={[
                 "grid items-start gap-8 md:gap-10 lg:gap-12",
@@ -392,7 +386,7 @@ export default function Offer({
                 </motion.div>
               </div>
             </div>
-          </motion.section>
+          </section>
 
           <section className="border-b border-neutral-100 py-4 md:py-5">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -421,13 +415,7 @@ export default function Offer({
           </section>
 
           {/* CAPABILITIES */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="border-t border-neutral-100 py-10 md:py-12 xl:py-14"
-          >
+          <section className="border-t border-neutral-100 py-10 md:py-12 xl:py-14">
             <div className="grid gap-5 xl:grid-cols-[150px_minmax(0,1fr)] xl:items-start">
               <div className="pt-4 md:pt-5">
                 <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500 whitespace-nowrap">
@@ -565,16 +553,10 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
 
           {/* PACKAGES */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="border-t border-neutral-100 py-10 md:py-12 xl:py-14"
-          >
+          <section className="border-t border-neutral-100 py-10 md:py-12 xl:py-14">
             <div className="grid gap-5 xl:grid-cols-[150px_minmax(0,1fr)] xl:items-start">
               <div className="pt-4 md:pt-5">
                 <div className={`${sectionLabel} whitespace-nowrap`}>
@@ -747,15 +729,9 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
           {/* WEBSITE MANAGEMENT */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="border-t border-neutral-100 py-10 md:py-12 xl:py-14"
-          >
+          <section className="border-t border-neutral-100 py-10 md:py-12 xl:py-14">
             <div className="grid gap-6 xl:grid-cols-[132px_1fr]">
               <div className="xl:-mt-2">
                 <div className={`${sectionLabel} whitespace-nowrap`}>{t.offer.websiteManagement.label}</div>
@@ -864,15 +840,9 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
           {/* FINAL STRIP */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="py-14 md:py-16"
-          >
+          <section className="py-14 md:py-16">
             <div className="grid gap-8 xl:grid-cols-[220px_1fr] xl:items-end xl:gap-10">
               <div>
                 <div className={sectionLabel}>{t.offer.finalCta.label}</div>
@@ -915,7 +885,7 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
           </Container>
         </PageSurface>
       </main>

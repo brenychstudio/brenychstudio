@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import Header from "../ui/Header";
@@ -272,12 +272,6 @@ export default function CasePage({
   const { slug } = useParams();
   const navigate = useNavigate();
   const [notesOpen, setNotesOpen] = useState(false);
-  
-  const desktopRailRef = useRef<HTMLDivElement | null>(null);
-  const [desktopRailIndex, setDesktopRailIndex] = useState(0);
-
-  const mobileRailRef = useRef<HTMLDivElement | null>(null);
-  const [mobileRailIndex, setMobileRailIndex] = useState(0);
 
   const data = useMemo(() => cases.find((c) => c.slug === slug) ?? null, [slug]);
 
@@ -434,62 +428,6 @@ export default function CasePage({
   const currentLightboxFrame =
     lightboxIndex !== null ? lightboxFrames[lightboxIndex] : null;
 
-  const updateDesktopRailIndex = useCallback(() => {
-    const rail = desktopRailRef.current;
-    if (!rail) return;
-
-    const slides = Array.from(
-      rail.querySelectorAll<HTMLElement>("[data-desktop-slide]")
-    );
-
-    if (!slides.length) return;
-
-    const railCenter = rail.scrollLeft + rail.clientWidth / 2;
-
-    let closestIndex = 0;
-    let closestDistance = Number.POSITIVE_INFINITY;
-
-    slides.forEach((slide, index) => {
-      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-      const distance = Math.abs(slideCenter - railCenter);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    setDesktopRailIndex(closestIndex);
-  }, []);
-
-  const updateMobileRailIndex = useCallback(() => {
-    const rail = mobileRailRef.current;
-    if (!rail) return;
-
-    const slides = Array.from(
-      rail.querySelectorAll<HTMLElement>("[data-mobile-slide]")
-    );
-
-    if (!slides.length) return;
-
-    const railCenter = rail.scrollLeft + rail.clientWidth / 2;
-
-    let closestIndex = 0;
-    let closestDistance = Number.POSITIVE_INFINITY;
-
-    slides.forEach((slide, index) => {
-      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-      const distance = Math.abs(slideCenter - railCenter);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    setMobileRailIndex(closestIndex);
-  }, []);
-
   useEffect(() => {
     if (lightboxIndex === null) return;
 
@@ -522,38 +460,6 @@ export default function CasePage({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [notesOpen, hasNotes]);
-
-  useEffect(() => {
-    if (desktopFrames.length <= 1) return;
-
-    const frameId = window.requestAnimationFrame(() => {
-      updateDesktopRailIndex();
-    });
-
-    const onResize = () => updateDesktopRailIndex();
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [desktopFrames.length, updateDesktopRailIndex]);
-
-  useEffect(() => {
-    if (mobileFrames.length <= 1) return;
-
-    const frameId = window.requestAnimationFrame(() => {
-      updateMobileRailIndex();
-    });
-
-    const onResize = () => updateMobileRailIndex();
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [mobileFrames.length, updateMobileRailIndex]);
 
 
   if (!data) {
@@ -699,7 +605,7 @@ export default function CasePage({
                 <div className="grid gap-10">
                   {desktopRows.length ? (
                     <>
-                      <section className="grid gap-8 xl:hidden">
+                      <section className="grid gap-8 lg:hidden">
                         <div className="max-w-[760px]">
                           <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-400">
                             Desktop showcase
@@ -709,46 +615,19 @@ export default function CasePage({
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-                            {String(desktopRailIndex + 1).padStart(2, "0")} / {String(desktopFrames.length).padStart(2, "0")}
-                          </div>
-
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-                            Swipe / drag
-                          </div>
-                        </div>
-
-                        <div className="relative">
-                          <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-6 bg-gradient-to-r from-white via-white/88 to-transparent" />
-                          <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-6 bg-gradient-to-l from-white via-white/88 to-transparent" />
-
-                          <div
-                            ref={desktopRailRef}
-                            onScroll={updateDesktopRailIndex}
-                            className="-mx-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                          >
-                            <div className="flex w-max gap-4 snap-x snap-mandatory">
-                              {desktopFrames.map((frame, index) => (
-                                <div
-                                  key={`${frame.src}-${index}`}
-                                  data-desktop-slide
-                                  className="w-[min(92vw,760px)] shrink-0 snap-start"
-                                >
-                                  <MobileFrameCard
-                                    frame={frame}
-                                    label={`Frame ${String(index + 1).padStart(2, "0")}`}
-                                    onOpen={openLightbox}
-                                    maxWidthClass="max-w-none"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                        <div className="grid gap-8">
+                          {desktopFrames.map((frame, index) => (
+                            <MobileFrameCard
+                              key={`${frame.src}-${index}`}
+                              frame={frame}
+                              label={`Frame ${String(index + 1).padStart(2, "0")}`}
+                              onOpen={openLightbox}
+                            />
+                          ))}
                         </div>
                       </section>
 
-                      <section className="hidden gap-12 md:gap-16 xl:grid">
+                      <section className="hidden gap-12 md:gap-16 lg:grid">
                         <div className="max-w-[760px]">
                           <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-400">
                             Desktop showcase
@@ -859,7 +738,7 @@ export default function CasePage({
 
                   {videoFrames.length ? (
                     <>
-                      <section className="grid gap-8 xl:hidden">
+                      <section className="grid gap-8 lg:hidden">
                         <div className="max-w-[760px]">
                           <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">
                             Motion proof
@@ -874,24 +753,26 @@ export default function CasePage({
 
                         <div className="grid gap-8">
                           {videoFrames.map((f, i) => (
-                            <div
-                              key={`${f.src}-${i}`}
-                              className="mx-auto w-full max-w-[min(100%,760px)]"
-                            >
-                              <CaseMotionProof
-                                src={f.src}
-                                poster={f.poster}
-                                alt={f.alt ?? ""}
-                                label="Motion proof"
-                                caption={isBarcelonaCase ? undefined : f.caption}
-                                autoplayInView
-                              />
-                            </div>
+                            <figure key={`${f.src}-${i}`} className="w-full">
+                              <div className="overflow-hidden rounded-[20px] border border-neutral-100 bg-neutral-50 sm:rounded-[24px]">
+                                <CaseMedia frame={f} />
+                              </div>
+
+                              {f.caption && !isBarcelonaCase ? (
+                                <figcaption className="mt-3 grid gap-2.5 text-neutral-500">
+                                  <div className="h-px w-12 bg-neutral-200" />
+                                  <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+                                    Motion proof
+                                  </div>
+                                  <div className="text-[14px] leading-[1.75] text-neutral-700 md:text-[15px]">{f.caption}</div>
+                                </figcaption>
+                              ) : null}
+                            </figure>
                           ))}
                         </div>
                       </section>
 
-                      <section className="hidden gap-12 md:gap-16 xl:grid">
+                      <section className="hidden gap-12 md:gap-16 lg:grid">
                         <div className="max-w-[760px]">
                           <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">
                             Motion proof
@@ -923,7 +804,7 @@ export default function CasePage({
 
                   {mobileFrames.length > 1 ? (
                     <>
-                      <section className="grid gap-8 xl:hidden">
+                      <section className="grid gap-8 lg:hidden">
                         <div className="max-w-[760px]">
                           <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">
                             Mobile showcase
@@ -933,46 +814,20 @@ export default function CasePage({
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-                            {String(mobileRailIndex + 1).padStart(2, "0")} / {String(mobileFrames.length).padStart(2, "0")}
-                          </div>
-
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-                            Swipe / drag
-                          </div>
-                        </div>
-
-                        <div className="relative">
-                          <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-6 bg-gradient-to-r from-white via-white/88 to-transparent" />
-                          <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-6 bg-gradient-to-l from-white via-white/88 to-transparent" />
-
-                          <div
-                            ref={mobileRailRef}
-                            onScroll={updateMobileRailIndex}
-                            className="-mx-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                          >
-                            <div className="flex w-max gap-4 snap-x snap-mandatory">
-                              {mobileFrames.map((frame, index) => (
-                                <div
-                                  key={`${frame.src}-${index}`}
-                                  data-mobile-slide
-                                  className="w-[min(76vw,300px)] shrink-0 snap-start sm:w-[320px]"
-                                >
-                                  <MobileFrameCard
-                                    frame={frame}
-                                    label={`Mobile frame ${String(index + 1).padStart(2, "0")}`}
-                                    onOpen={openLightbox}
-                                    maxWidthClass="max-w-none"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                        <div className="grid justify-items-center gap-8">
+                          {mobileFrames.map((frame, index) => (
+                            <MobileFrameCard
+                              key={`${frame.src}-${index}`}
+                              frame={frame}
+                              label={`Mobile frame ${String(index + 1).padStart(2, "0")}`}
+                              onOpen={openLightbox}
+                              maxWidthClass="max-w-[280px] sm:max-w-[320px]"
+                            />
+                          ))}
                         </div>
                       </section>
 
-                      <div className="hidden xl:block">
+                      <div className="hidden lg:block">
                         <CaseMobileShowcase frames={mobileFrames} onOpenFrame={openLightbox} />
                       </div>
                     </>

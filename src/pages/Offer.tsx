@@ -311,7 +311,7 @@ export default function Offer({
     text.length > 110 ? `${text.slice(0, 110).trim()}...` : text;
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900">
+    <div className="min-h-screen overflow-x-clip bg-white text-neutral-900">
       <Header
         drawerOpen={drawerOpen}
         onOpenProject={onOpenProject}
@@ -382,9 +382,9 @@ export default function Offer({
 <DeferredMount
   eager
   minHeight={220}
-  className="relative mx-auto w-[calc(100%+28px)] -mx-[14px] overflow-visible"
+  className="relative mx-auto w-full overflow-hidden"
 >
-  <div className="mx-auto w-[min(100%,434px)] sm:w-[min(100%,470px)] md:w-[min(100%,520px)] xl:w-full">
+  <div className="mx-auto w-full max-w-[434px] sm:max-w-[470px] md:max-w-[520px] xl:w-full xl:max-w-none">
     <OfferArtifact className="mx-auto block h-auto w-full max-w-none md:scale-[0.98] xl:translate-x-8 xl:scale-[1.08] 2xl:translate-x-10 2xl:scale-[1.14]" />
   </div>
 </DeferredMount>

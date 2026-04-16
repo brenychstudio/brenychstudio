@@ -20,10 +20,10 @@ export default function PageSurface({ children, className = "" }: Props) {
   return (
     <motion.div
       key={location.pathname}
-      className={["transform-gpu will-change-transform", className].filter(Boolean).join(" ")}
-      initial={{ opacity: 0, y: 10, scale: 0.998, filter: "blur(3px)" }}
-      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 0.5, ease }}
+      className={className}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease }}
     >
       {children}
     </motion.div>

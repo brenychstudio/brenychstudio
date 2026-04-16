@@ -227,6 +227,20 @@ export default function Offer({
   const [activePracticeId, setActivePracticeId] = useState<PracticeId>("brandCommercial");
   const [activeEngagementId, setActiveEngagementId] = useState<PlanId>("pro");
   const [activeManagement, setActiveManagement] = useState<ManagementId>("editable");
+  const [isCompactOfferDevice, setIsCompactOfferDevice] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const media = window.matchMedia("(max-width: 1279px), (hover: none) and (pointer: coarse)");
+
+    const update = () => setIsCompactOfferDevice(media.matches);
+
+    update();
+    media.addEventListener?.("change", update);
+
+    return () => media.removeEventListener?.("change", update);
+  }, []);
 
   const practiceSpectrum: PracticeSpectrumItem[] = [
     {
@@ -362,28 +376,55 @@ export default function Offer({
                 </p>
               </div>
 
-              <div className="overflow-visible md:pl-1">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
-                >
+              <div className="md:pl-1">
+                {isCompactOfferDevice ? (
+                  <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[28px] border border-black/6 bg-[radial-gradient(120%_100%_at_72%_24%,rgba(130,160,255,0.22)_0%,rgba(130,160,255,0.08)_26%,rgba(255,255,255,0.92)_58%,rgba(255,255,255,0.98)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                    <div className="relative overflow-hidden rounded-[22px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(250,250,250,0.92)_100%)] px-5 py-6 sm:px-6 sm:py-7">
+                      <div className="pointer-events-none absolute inset-y-0 right-[-10%] w-[58%] bg-[radial-gradient(circle_at_40%_35%,rgba(88,128,255,0.16),rgba(88,128,255,0.06)_34%,rgba(88,128,255,0)_72%)]" />
+                      <div className="pointer-events-none absolute inset-x-[22%] top-[26%] h-px bg-[linear-gradient(90deg,rgba(17,17,17,0)_0%,rgba(17,17,17,0.10)_36%,rgba(17,17,17,0)_100%)]" />
+                      <div className="relative">
+                        <div className="text-[10px] tracking-[0.18em] uppercase text-neutral-500">
+                          Signal / Surface
+                        </div>
+                        <div className="mt-3 max-w-[18ch] text-[24px] leading-[0.96] tracking-[-0.05em] text-neutral-950 sm:text-[28px]">
+                          Premium visual systems with stable mobile delivery.
+                        </div>
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {["Premium UI", "Product framing", "Interactive delivery"].map((item) => (
+                            <span
+                              key={item}
+                              className="inline-flex items-center rounded-full border border-neutral-200 bg-white/84 px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
                   <motion.div
-                    animate={{ y: [0, -6, 0] }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
                   >
-<DeferredMount
-  eager
-  minHeight={220}
-  className="relative mx-auto w-full overflow-hidden"
->
-  <div className="mx-auto w-full max-w-[434px] sm:max-w-[470px] md:max-w-[520px] xl:w-full xl:max-w-none">
-    <OfferArtifact className="mx-auto block h-auto w-full max-w-none md:scale-[0.98] xl:translate-x-8 xl:scale-[1.08] 2xl:translate-x-10 2xl:scale-[1.14]" />
-  </div>
-</DeferredMount>
+                    <motion.div
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <DeferredMount
+                        eager
+                        minHeight={220}
+                        className="relative mx-auto w-full overflow-hidden"
+                      >
+                        <div className="mx-auto w-full max-w-[434px] sm:max-w-[470px] md:max-w-[520px] xl:w-full xl:max-w-none">
+                          <OfferArtifact className="mx-auto block h-auto w-full max-w-none md:scale-[0.98] xl:translate-x-8 xl:scale-[1.08] 2xl:translate-x-10 2xl:scale-[1.14]" />
+                        </div>
+                      </DeferredMount>
+                    </motion.div>
                   </motion.div>
-                </motion.div>
+                )}
               </div>
             </div>
           </section>

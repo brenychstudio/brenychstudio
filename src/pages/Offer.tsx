@@ -227,19 +227,28 @@ export default function Offer({
   const [activePracticeId, setActivePracticeId] = useState<PracticeId>("brandCommercial");
   const [activeEngagementId, setActiveEngagementId] = useState<PlanId>("pro");
   const [activeManagement, setActiveManagement] = useState<ManagementId>("editable");
-  const [isCompactOfferDevice, setIsCompactOfferDevice] = useState(false);
+  const [isPhoneOfferDevice, setIsPhoneOfferDevice] = useState(false);
+  const [isTabletOfferDevice, setIsTabletOfferDevice] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const media = window.matchMedia("(max-width: 1279px), (hover: none) and (pointer: coarse)");
+    const phoneMedia = window.matchMedia("(max-width: 767px)");
+    const tabletMedia = window.matchMedia("(min-width: 768px) and (max-width: 1279px)");
 
-    const update = () => setIsCompactOfferDevice(media.matches);
+    const update = () => {
+      setIsPhoneOfferDevice(phoneMedia.matches);
+      setIsTabletOfferDevice(tabletMedia.matches);
+    };
 
     update();
-    media.addEventListener?.("change", update);
+    phoneMedia.addEventListener?.("change", update);
+    tabletMedia.addEventListener?.("change", update);
 
-    return () => media.removeEventListener?.("change", update);
+    return () => {
+      phoneMedia.removeEventListener?.("change", update);
+      tabletMedia.removeEventListener?.("change", update);
+    };
   }, []);
 
   const practiceSpectrum: PracticeSpectrumItem[] = [
@@ -382,7 +391,7 @@ export default function Offer({
               </div>
 
               <div className="md:pl-1">
-                {isCompactOfferDevice ? (
+                {isPhoneOfferDevice ? (
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: [0, -4, 0] }}
@@ -430,6 +439,26 @@ export default function Offer({
                         </div>
                       </div>
                     </div>
+                  </motion.div>
+                ) : isTabletOfferDevice ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: [0, -4, 0] }}
+                    transition={{
+                      opacity: { duration: 0.44, delay: 0.06, ease: "easeOut" },
+                      y: { duration: 8.5, repeat: Infinity, ease: "easeInOut" },
+                    }}
+                    className="mx-auto w-full max-w-[560px]"
+                  >
+                    <DeferredMount
+                      eager
+                      minHeight={260}
+                      className="relative mx-auto w-full overflow-hidden rounded-[28px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,248,248,0.94)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
+                    >
+                      <div className="mx-auto w-full max-w-[520px]">
+                        <OfferArtifact className="mx-auto block h-auto w-full max-w-none scale-[0.94]" />
+                      </div>
+                    </DeferredMount>
                   </motion.div>
                 ) : (
                   <motion.div

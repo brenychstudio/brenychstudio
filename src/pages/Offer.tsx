@@ -384,17 +384,20 @@ export default function Offer({
               <div className="md:pl-1">
                 {isCompactOfferDevice ? (
                   <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.44, delay: 0.06, ease: "easeOut" }}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: [0, -4, 0] }}
+                    transition={{
+                      opacity: { duration: 0.44, delay: 0.06, ease: "easeOut" },
+                      y: { duration: 8.5, repeat: Infinity, ease: "easeInOut" },
+                    }}
                     className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[28px] border border-black/6 bg-[radial-gradient(120%_100%_at_72%_24%,rgba(130,160,255,0.22)_0%,rgba(130,160,255,0.08)_26%,rgba(255,255,255,0.92)_58%,rgba(255,255,255,0.98)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
                   >
                     <div className="relative overflow-hidden rounded-[22px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(250,250,250,0.92)_100%)] px-5 py-6 sm:px-6 sm:py-7">
                       <motion.div
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-y-0 right-[-10%] w-[58%] bg-[radial-gradient(circle_at_40%_35%,rgba(88,128,255,0.16),rgba(88,128,255,0.06)_34%,rgba(88,128,255,0)_72%)]"
-                        animate={{ x: [0, 6, 0], y: [0, -3, 0], opacity: [0.9, 1, 0.9] }}
-                        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                        animate={{ x: [0, 12, 0], y: [0, -6, 0], opacity: [0.82, 1, 0.82] }}
+                        transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
                       />
                       <div className="pointer-events-none absolute inset-x-[22%] top-[26%] h-px bg-[linear-gradient(90deg,rgba(17,17,17,0)_0%,rgba(17,17,17,0.10)_36%,rgba(17,17,17,0)_100%)]" />
                       <div className="relative">
@@ -405,14 +408,25 @@ export default function Offer({
                           Premium visual systems with stable mobile delivery.
                         </div>
                         <div className="mt-5 flex flex-wrap gap-2">
-                          {["Premium UI", "Product framing", "Interactive delivery"].map((item) => (
-                            <span
-                              key={item}
-                              className="inline-flex items-center rounded-full border border-neutral-200 bg-white/84 px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
-                            >
-                              {item}
-                            </span>
-                          ))}
+                          {["Premium UI", "Product framing", "Interactive delivery"].map((item, index) =>
+                            index === 0 ? (
+                              <motion.span
+                                key={item}
+                                animate={{ opacity: [0.88, 1, 0.88] }}
+                                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                                className="inline-flex items-center rounded-full border border-neutral-200 bg-white/84 px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
+                              >
+                                {item}
+                              </motion.span>
+                            ) : (
+                              <span
+                                key={item}
+                                className="inline-flex items-center rounded-full border border-neutral-200 bg-white/84 px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
+                              >
+                                {item}
+                              </span>
+                            )
+                          )}
                         </div>
                       </div>
                     </div>
@@ -444,7 +458,12 @@ export default function Offer({
             </div>
           </section>
 
-          <section className="border-b border-neutral-100 py-4 md:py-5">
+          <motion.section
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, delay: 0.08, ease: "easeOut" }}
+            className="border-b border-neutral-100 py-4 md:py-5"
+          >
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">
                 {t.offer.materials.label}
@@ -468,10 +487,15 @@ export default function Offer({
                 </a>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* CAPABILITIES */}
-          <section className="border-t border-neutral-100 py-10 md:py-12 xl:py-14">
+          <motion.section
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, delay: 0.12, ease: "easeOut" }}
+            className="border-t border-neutral-100 py-10 md:py-12 xl:py-14"
+          >
             <div className="grid gap-5 xl:grid-cols-[150px_minmax(0,1fr)] xl:items-start">
               <div className="pt-4 md:pt-5">
                 <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500 whitespace-nowrap">
@@ -609,10 +633,15 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* PACKAGES */}
-          <section className="border-t border-neutral-100 py-10 md:py-12 xl:py-14">
+          <motion.section
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, delay: 0.16, ease: "easeOut" }}
+            className="border-t border-neutral-100 py-10 md:py-12 xl:py-14"
+          >
             <div className="grid gap-5 xl:grid-cols-[150px_minmax(0,1fr)] xl:items-start">
               <div className="pt-4 md:pt-5">
                 <div className={`${sectionLabel} whitespace-nowrap`}>
@@ -785,9 +814,14 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
           {/* WEBSITE MANAGEMENT */}
-          <section className="border-t border-neutral-100 py-10 md:py-12 xl:py-14">
+          <motion.section
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, delay: 0.20, ease: "easeOut" }}
+            className="border-t border-neutral-100 py-10 md:py-12 xl:py-14"
+          >
             <div className="grid gap-6 xl:grid-cols-[132px_1fr]">
               <div className="xl:-mt-2">
                 <div className={`${sectionLabel} whitespace-nowrap`}>{t.offer.websiteManagement.label}</div>
@@ -896,9 +930,14 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
           {/* FINAL STRIP */}
-          <section className="py-14 md:py-16">
+          <motion.section
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, delay: 0.24, ease: "easeOut" }}
+            className="py-14 md:py-16"
+          >
             <div className="grid gap-8 xl:grid-cols-[220px_1fr] xl:items-end xl:gap-10">
               <div>
                 <div className={sectionLabel}>{t.offer.finalCta.label}</div>
@@ -941,7 +980,7 @@ export default function Offer({
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
           </Container>
         </PageSurface>
       </main>

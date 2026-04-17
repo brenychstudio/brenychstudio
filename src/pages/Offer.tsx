@@ -391,7 +391,7 @@ export default function Offer({
               </div>
 
               <div className="md:pl-1">
-                {isPhoneOfferDevice ? (
+                {isPhoneOfferDevice || isTabletOfferDevice ? (
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: [0, -4, 0] }}
@@ -439,26 +439,6 @@ export default function Offer({
                         </div>
                       </div>
                     </div>
-                  </motion.div>
-                ) : isTabletOfferDevice ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: [0, -4, 0] }}
-                    transition={{
-                      opacity: { duration: 0.44, delay: 0.06, ease: "easeOut" },
-                      y: { duration: 8.5, repeat: Infinity, ease: "easeInOut" },
-                    }}
-                    className="mx-auto w-full max-w-[560px]"
-                  >
-                    <DeferredMount
-                      eager
-                      minHeight={260}
-                      className="relative mx-auto w-full overflow-hidden rounded-[28px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,248,248,0.94)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
-                    >
-                      <div className="mx-auto w-full max-w-[520px]">
-                        <OfferArtifact className="mx-auto block h-auto w-full max-w-none scale-[0.94]" />
-                      </div>
-                    </DeferredMount>
                   </motion.div>
                 ) : (
                   <motion.div

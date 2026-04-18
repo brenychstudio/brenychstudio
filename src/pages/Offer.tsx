@@ -393,52 +393,23 @@ export default function Offer({
               <div className="md:pl-1">
                 {isPhoneOfferDevice ? (
                   <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: [0, -4, 0] }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: [0, -3, 0] }}
                     transition={{
-                      opacity: { duration: 0.44, delay: 0.06, ease: "easeOut" },
-                      y: { duration: 8.5, repeat: Infinity, ease: "easeInOut" },
+                      opacity: { duration: 0.42, delay: 0.06, ease: "easeOut" },
+                      y: { duration: 8, repeat: Infinity, ease: "easeInOut" },
                     }}
-                    className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[28px] border border-black/6 bg-[radial-gradient(120%_100%_at_72%_24%,rgba(130,160,255,0.22)_0%,rgba(130,160,255,0.08)_26%,rgba(255,255,255,0.92)_58%,rgba(255,255,255,0.98)_100%)] p-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
+                    className="mx-auto w-full max-w-[400px]"
                   >
-                    <div className="relative overflow-hidden rounded-[22px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(250,250,250,0.92)_100%)] px-5 py-6 sm:px-6 sm:py-7">
-                      <motion.div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-y-0 right-[-10%] w-[58%] bg-[radial-gradient(circle_at_40%_35%,rgba(88,128,255,0.16),rgba(88,128,255,0.06)_34%,rgba(88,128,255,0)_72%)]"
-                        animate={{ x: [0, 12, 0], y: [0, -6, 0], opacity: [0.82, 1, 0.82] }}
-                        transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
-                      />
-                      <div className="pointer-events-none absolute inset-x-[22%] top-[26%] h-px bg-[linear-gradient(90deg,rgba(17,17,17,0)_0%,rgba(17,17,17,0.10)_36%,rgba(17,17,17,0)_100%)]" />
-                      <div className="relative">
-                        <div className="text-[10px] tracking-[0.18em] uppercase text-neutral-500">
-                          Signal / Surface
-                        </div>
-                        <div className="mt-3 max-w-[18ch] text-[24px] leading-[0.96] tracking-[-0.05em] text-neutral-950 sm:text-[28px]">
-                          Premium visual systems with stable mobile delivery.
-                        </div>
-                        <div className="mt-5 flex flex-wrap gap-2">
-                          {["Premium UI", "Product framing", "Interactive delivery"].map((item, index) =>
-                            index === 0 ? (
-                              <motion.span
-                                key={item}
-                                animate={{ opacity: [0.88, 1, 0.88] }}
-                                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-                                className="inline-flex items-center rounded-full border border-neutral-200 bg-white/84 px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
-                              >
-                                {item}
-                              </motion.span>
-                            ) : (
-                              <span
-                                key={item}
-                                className="inline-flex items-center rounded-full border border-neutral-200 bg-white/84 px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
-                              >
-                                {item}
-                              </span>
-                            )
-                          )}
-                        </div>
+                    <DeferredMount
+                      eager
+                      minHeight={220}
+                      className="relative mx-auto w-full overflow-visible"
+                    >
+                      <div className="mx-auto w-full max-w-[360px]">
+                        <OfferArtifact className="mx-auto block h-auto w-full max-w-none scale-[0.84]" />
                       </div>
-                    </div>
+                    </DeferredMount>
                   </motion.div>
                 ) : isTabletOfferDevice ? (
                   <motion.div

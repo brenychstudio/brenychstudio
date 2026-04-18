@@ -660,19 +660,37 @@ export default function Offer({
 
               <div className="grid gap-4 pt-4 md:pt-5">
                 <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px] xl:items-start">
-                  <div className="xl:hidden mb-4 overflow-hidden rounded-[28px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(251,251,251,0.94)_100%)] p-3 shadow-[0_14px_32px_rgba(15,23,42,0.04)]">
-                    <div className="relative h-[220px] overflow-hidden rounded-[22px] border border-black/6 bg-white/80 sm:h-[260px] md:h-[320px]">
-                      <DeferredMount eager minHeight={220} className="h-full w-full">
-                        <StickySignalStage
-                          sticky={false}
-                          height={360}
-                          zoom={0.98}
-                          shiftX={0}
-                          shiftY={6}
-                          className="w-full"
-                          stageClassName="overflow-hidden"
-                        />
-                      </DeferredMount>
+                  <div className="mb-4 xl:hidden">
+                    <div className="overflow-hidden rounded-[28px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(251,251,251,0.94)_100%)] p-3 shadow-[0_14px_32px_rgba(15,23,42,0.04)] sm:hidden">
+                      <div className="relative h-[220px] overflow-hidden rounded-[22px] border border-black/6 bg-white/80">
+                        <DeferredMount eager minHeight={220} className="h-full w-full">
+                          <StickySignalStage
+                            sticky={false}
+                            height={320}
+                            zoom={0.88}
+                            shiftX={0}
+                            shiftY={-30}
+                            className="h-full w-full"
+                            stageClassName="overflow-hidden"
+                          />
+                        </DeferredMount>
+                      </div>
+                    </div>
+
+                    <div className="hidden overflow-hidden rounded-[28px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(251,251,251,0.94)_100%)] p-3 shadow-[0_14px_32px_rgba(15,23,42,0.04)] sm:block xl:hidden">
+                      <div className="relative h-[250px] overflow-hidden rounded-[22px] border border-black/6 bg-white/80 md:h-[300px]">
+                        <DeferredMount eager minHeight={250} className="h-full w-full">
+                          <StickySignalStage
+                            sticky={false}
+                            height={340}
+                            zoom={0.94}
+                            shiftX={0}
+                            shiftY={-12}
+                            className="h-full w-full"
+                            stageClassName="overflow-hidden"
+                          />
+                        </DeferredMount>
+                      </div>
                     </div>
                   </div>
 

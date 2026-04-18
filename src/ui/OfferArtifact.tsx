@@ -36,24 +36,28 @@ export default function OfferArtifact({ className = "" }: Props) {
     const mount = mountRef.current;
     if (!mount) return;
 
-    const compactMedia = window.matchMedia(
-      "(max-width: 1279px), (hover: none) and (pointer: coarse)"
+    const phoneMedia = window.matchMedia("(max-width: 767px)");
+    const tabletMedia = window.matchMedia(
+      "(min-width: 768px) and (max-width: 1279px)"
     );
-    const isCompact = compactMedia.matches;
+
+    const isPhone = phoneMedia.matches;
+    const isTablet = tabletMedia.matches;
+    const isCompact = isPhone || isTablet;
 
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-    camera.position.set(0, 0, isCompact ? 7.55 : 7.05);
+    camera.position.set(0, 0, isPhone ? 7.55 : isTablet ? 7.0 : 7.05);
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: !isCompact,
+      antialias: !isPhone,
       alpha: true,
       powerPreference: isCompact ? "default" : "high-performance",
     });
 
     renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio || 1, isCompact ? 1 : 1.5)
+      Math.min(window.devicePixelRatio || 1, isPhone ? 1 : isTablet ? 1.35 : 1.5)
     );
     renderer.setClearColor(0xffffff, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -64,7 +68,7 @@ export default function OfferArtifact({ className = "" }: Props) {
     mount.appendChild(renderer.domElement);
 
     const root = new THREE.Group();
-    root.scale.setScalar(isCompact ? 0.9 : 1.02);
+    root.scale.setScalar(isPhone ? 0.9 : isTablet ? 1.0 : 1.02);
     scene.add(root);
 
     const shellGroup = new THREE.Group();
@@ -106,7 +110,7 @@ export default function OfferArtifact({ className = "" }: Props) {
     };
 
     const geometries: THREE.BufferGeometry[] = [];
-    const loopSegments = isCompact ? 72 : 120;
+    const loopSegments = isPhone ? 72 : isTablet ? 96 : 120;
 
     const addLoop = (
       parent: THREE.Object3D,
@@ -236,7 +240,7 @@ export default function OfferArtifact({ className = "" }: Props) {
       root.rotation.z += (targetRootZ - root.rotation.z) * (isCompact ? 0.03 : 0.045);
 
       if (!reducedMotion) {
-        if (isCompact) {
+        if (isPhone) {
           shellGroup.rotation.y += 0.0018;
           shellGroup.rotation.z += 0.00022;
 
@@ -248,6 +252,18 @@ export default function OfferArtifact({ className = "" }: Props) {
 
           coreGroup.rotation.x -= 0.0008;
           coreGroup.rotation.y += 0.0018;
+        } else if (isTablet) {
+          shellGroup.rotation.y += 0.0026;
+          shellGroup.rotation.z += 0.00032;
+
+          cagePrimaryGroup.rotation.y += 0.0038;
+          cagePrimaryGroup.rotation.x += 0.00055;
+
+          cageSecondaryGroup.rotation.y -= 0.0021;
+          cageSecondaryGroup.rotation.z += 0.00115;
+
+          coreGroup.rotation.x -= 0.00115;
+          coreGroup.rotation.y += 0.0026;
         } else {
           shellGroup.rotation.y += 0.0036;
           shellGroup.rotation.z += 0.00045;

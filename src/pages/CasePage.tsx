@@ -8,6 +8,7 @@ import { cases, type CaseContent, type CaseFrame } from "../data/cases";
 import type { CaseCoverTone } from "../ui/work/caseCover.types";
 import { AnimatePresence, motion } from "framer-motion";
 import ActionPill from "../ui/ActionPill";
+import CaseStatusPill from "../ui/status/CaseStatusPill";
 import CaseMotionProof from "../ui/work/CaseMotionProof";
 import CaseMobileShowcase from "../ui/work/CaseMobileShowcase";
 import { useLocale } from "../store/useLocale";
@@ -390,6 +391,7 @@ export default function CasePage({
   }, [data]);
 
   const summary = cleanText(content.summary);
+  const statusNote = data?.statusNote?.trim() ?? "";
   const notesText = content.notes?.trim() ?? "";
   const hasNotes = hasMeaningfulText(notesText);
   const isBarcelonaCase = data?.slug === "bcn-advisory";
@@ -433,7 +435,6 @@ export default function CasePage({
   const defaultCoverMarkers = [
     data ? safeLabel(data.roleLabel) : "",
     data ? safeLabel(data.stackLabel) : "",
-    data ? safeLabel(data.statusLabel) : "",
   ].filter((marker) => hasMeaningfulText(marker));
   const barcelonaCoverMarkers = ["EN / ES", "Advisory product", "Shortlist-first"];
   const coverMarkers = isBarcelonaCase ? barcelonaCoverMarkers : defaultCoverMarkers;
@@ -564,9 +565,12 @@ export default function CasePage({
             <div className="overflow-hidden rounded-[22px] border border-neutral-100 bg-white md:rounded-[28px]">
               <div className="p-4 sm:p-5 md:p-7 xl:p-9">
                 <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-                  <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">
-                    {data.code} / {data.year}
-                    {completenessLabel ? ` / ${completenessLabel}` : ""}
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">
+                      {data.code} / {data.year}
+                      {completenessLabel ? ` / ${completenessLabel}` : ""}
+                    </div>
+                    <CaseStatusPill kind={data.statusKind} label={data.statusLabel} />
                   </div>
 
                   <button
@@ -605,6 +609,12 @@ export default function CasePage({
                       </span>
                     ))}
                   </div>
+                ) : null}
+
+                {statusNote ? (
+                  <p className="mt-4 max-w-[72ch] text-[13px] leading-[1.8] text-neutral-500 md:text-[14px]">
+                    {statusNote}
+                  </p>
                 ) : null}
 
                 <div className="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2.5">

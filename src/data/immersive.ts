@@ -1,3 +1,5 @@
+import type { CaseStatusKind } from "../ui/status/status.types";
+
 export type ImmersiveTone = "horizon" | "signal" | "nocturne";
 
 export type ImmersiveCaseKey =
@@ -23,6 +25,8 @@ export type ImmersiveItem = {
   stack: string;
   description: string;
   status: ImmersiveStatus;
+  statusKind: CaseStatusKind;
+  statusNote?: string;
   tone: ImmersiveTone;
   previewVideo?: string;
   previewPoster?: string;
@@ -44,6 +48,8 @@ export const immersiveItems: ImmersiveItem[] = [
     description:
       "A directed immersive journey where editorial storytelling and spatial depth work as one authored sales surface.",
     status: "Flagship concept",
+    statusKind: "rnd",
+    statusNote: "Flagship immersive direction in active concept development.",
     tone: "horizon",
     previewVideo: "/immersive/four-walls.mp4",
     featured: true,
@@ -62,6 +68,9 @@ export const immersiveItems: ImmersiveItem[] = [
     description:
       "Designed for premium product launches where atmosphere, context, and interaction reveal are core to perceived value.",
     status: "Direction build",
+    statusKind: "in_progress",
+    statusNote:
+      "AR direction build with working interaction framing and further production refinement in progress.",
     tone: "signal",
     previewVideo: "/immersive/friends-im-not-see.mp4",
     supportLabel: "Support study",
@@ -79,6 +88,9 @@ export const immersiveItems: ImmersiveItem[] = [
     description:
       "A modular immersive interface study focused on clear navigation grammar, cinematic rhythm, and launch-aware execution.",
     status: "Production-ready prototype",
+    statusKind: "preview",
+    statusNote:
+      "Stable prototype-level surface ready for presentation, with further expansion still possible.",
     tone: "nocturne",
     previewVideo: "/immersive/fluid.mp4",
     supportLabel: "Support study",
@@ -96,6 +108,9 @@ export const immersiveItems: ImmersiveItem[] = [
     description:
       "A concept study for premium immersive briefs where motion grammar, transitions, and spatial staging need to feel authored rather than generic.",
     status: "Direction build",
+    statusKind: "in_progress",
+    statusNote:
+      "XR scene logic and pacing direction are established; broader system build is ongoing.",
     tone: "signal",
     previewVideo: "/immersive/four-walls.mp4",
     supportLabel: "Support study",
@@ -113,6 +128,9 @@ export const immersiveItems: ImmersiveItem[] = [
     description:
       "A premium study around transition logic, layered media surfaces, and immersive interface framing for future-facing storytelling work.",
     status: "Production-ready prototype",
+    statusKind: "preview",
+    statusNote:
+      "Prototype surface is stable and presentable, with future expansion planned.",
     tone: "nocturne",
     previewVideo: "/immersive/fluid.mp4",
     supportLabel: "Support study",

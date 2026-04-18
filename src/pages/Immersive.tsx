@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "../ui/Container";
 import Header from "../ui/Header";
 import PageSurface from "../ui/PageSurface";
+import CaseStatusPill from "../ui/status/CaseStatusPill";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveTone } from "../data/immersive";
 import { useLocale } from "../store/useLocale";
@@ -149,7 +150,18 @@ export default function Immersive({
                           {featuredItem.copy.supportLabel}
                         </div>
 
-                        <div className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
+                        <div className="flex items-center gap-2">
+                          <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
+                            {featuredItem.year}
+                          </div>
+                          <CaseStatusPill
+                            kind={featuredItem.statusKind}
+                            label={featuredItem.copy.status}
+                            tone="dark"
+                          />
+                        </div>
+
+                        <div className="hidden">
                           <span>{featuredItem.year}</span>
                           <span className="text-white/30">•</span>
                           <span>{featuredItem.copy.status}</span>
@@ -263,8 +275,11 @@ export default function Immersive({
                       <p className="mt-2 text-[14px] leading-6 text-neutral-650">
                         {item.copy.description}
                       </p>
-                      <div className="mt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-                        {item.copy.stack}
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <CaseStatusPill kind={item.statusKind} label={item.copy.status} />
+                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+                          {item.copy.stack}
+                        </div>
                       </div>
                     </div>
                   </article>

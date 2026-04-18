@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Header from "../ui/Header";
 import Container from "../ui/Container";
 import PageSurface from "../ui/PageSurface";
+import CaseStatusPill from "../ui/status/CaseStatusPill";
 import CaseCover from "../ui/work/CaseCover";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
@@ -127,7 +128,9 @@ function ArchiveBottomMeta({
 
       <div className="sm:col-auto">
         <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">{labels.status}</div>
-        <div className="mt-1 text-[14px] leading-[1.5] text-neutral-800">{item.statusLabel}</div>
+        <div className="mt-1">
+          <CaseStatusPill kind={item.statusKind} label={item.statusLabel} />
+        </div>
       </div>
     </div>
   );

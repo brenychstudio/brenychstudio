@@ -1,4 +1,5 @@
 import type { CaseCoverFocus, CaseCoverTone } from "../ui/work/caseCover.types";
+import type { CaseStatusKind } from "../ui/status/status.types";
 
 export type CaseFrameKind = "image" | "video";
 export type CaseFrameDevice = "desktop" | "mobile";
@@ -61,6 +62,8 @@ export type Case = {
   roleLabel: string;
   stackLabel: string;
   statusLabel: string;
+  statusKind: CaseStatusKind;
+  statusNote?: string;
   completeness?: CaseCompleteness;
   archiveCategory: ArchiveCategoryKey;
   poster: { src: string; alt: string };
@@ -80,6 +83,9 @@ export const cases: Case[] = [
     roleLabel: "Design / Dev / Motion",
     stackLabel: "React / Framer / Tailwind",
     statusLabel: "Preview",
+    statusKind: "preview",
+    statusNote:
+      "Strong visual direction is locked; fuller narrative and production metrics are still being finalized.",
     completeness: "preview",
     archiveCategory: "software-product",
     poster: { src: "/cases/whisper/poster.jpg", alt: "Whisper poster" },
@@ -139,6 +145,9 @@ export const cases: Case[] = [
     roleLabel: "Design / Dev",
     stackLabel: "React / Motion",
     statusLabel: "Preview",
+    statusKind: "preview",
+    statusNote:
+      "Visual system and selected frames are stable; full case narrative is still being completed.",
     completeness: "preview",
     archiveCategory: "creators-culture",
     poster: { src: "/cases/gallery/poster.jpg", alt: "Gallery poster" },
@@ -198,6 +207,9 @@ export const cases: Case[] = [
     roleLabel: "Design / Dev",
     stackLabel: "React / Audio",
     statusLabel: "In progress",
+    statusKind: "in_progress",
+    statusNote:
+      "Core direction and media logic are established; final modules and polish are still in active production.",
     completeness: "in-progress",
     archiveCategory: "creators-culture",
     poster: { src: "/cases/musician/poster.jpg", alt: "Musician poster" },
@@ -252,6 +264,7 @@ export const cases: Case[] = [
     roleLabel: "UX / UI / Front-end",
     stackLabel: "React / TypeScript / Motion",
     statusLabel: "Shipped",
+    statusKind: "shipped",
     completeness: "full",
     archiveCategory: "advisory-property",
     poster: {

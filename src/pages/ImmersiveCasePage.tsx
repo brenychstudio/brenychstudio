@@ -4,6 +4,7 @@ import Header from "../ui/Header";
 import Container from "../ui/Container";
 import ActionPill from "../ui/ActionPill";
 import PageSurface from "../ui/PageSurface";
+import CaseStatusPill from "../ui/status/CaseStatusPill";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveTone } from "../data/immersive";
 import { useLocale } from "../store/useLocale";
@@ -308,7 +309,14 @@ export default function ImmersiveCasePage({
                 <span className="text-neutral-400">←</span> Back to immersive
               </button>
 
-              <div className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
+                  {data.year}
+                </div>
+                <CaseStatusPill kind={data.statusKind} label={data.status} />
+              </div>
+
+              <div className="hidden">
                 <span>{data.year}</span>
                 <span className="text-neutral-300">•</span>
                 <span>{data.status}</span>
@@ -379,6 +387,12 @@ export default function ImmersiveCasePage({
                     <p className="mt-5 max-w-[34ch] text-sm leading-7 text-white/82 md:text-[16px]">
                       {data.tagline}
                     </p>
+
+                    {data.statusNote ? (
+                      <p className="mt-3 max-w-[38ch] text-[13px] leading-7 text-white/62 md:text-[14px]">
+                        {data.statusNote}
+                      </p>
+                    ) : null}
 
                     <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.14em] text-white/70">
                       {detail.principles.map((item) => (

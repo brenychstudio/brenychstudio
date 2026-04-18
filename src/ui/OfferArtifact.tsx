@@ -36,25 +36,35 @@ export default function OfferArtifact({ className = "" }: Props) {
     const mount = mountRef.current;
     if (!mount) return;
 
+    const compactMedia = window.matchMedia(
+      "(max-width: 1279px), (hover: none) and (pointer: coarse)"
+    );
+    const isCompact = compactMedia.matches;
+
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-    camera.position.set(0, 0, 7.05);
+    camera.position.set(0, 0, isCompact ? 7.55 : 7.05);
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: !isCompact,
       alpha: true,
-      powerPreference: "high-performance",
+      powerPreference: isCompact ? "default" : "high-performance",
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, isCompact ? 1 : 1.5)
+    );
     renderer.setClearColor(0xffffff, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
+    renderer.domElement.style.display = "block";
 
     mount.appendChild(renderer.domElement);
 
     const root = new THREE.Group();
-    root.scale.setScalar(1.02);
+    root.scale.setScalar(isCompact ? 0.9 : 1.02);
     scene.add(root);
 
     const shellGroup = new THREE.Group();
@@ -96,6 +106,7 @@ export default function OfferArtifact({ className = "" }: Props) {
     };
 
     const geometries: THREE.BufferGeometry[] = [];
+    const loopSegments = isCompact ? 72 : 120;
 
     const addLoop = (
       parent: THREE.Object3D,
@@ -112,10 +123,9 @@ export default function OfferArtifact({ className = "" }: Props) {
 
     const R = 1.94;
 
-    // Latitudes
     [-1.42, -1.0, -0.55, 0, 0.55, 1.0, 1.42].forEach((y, i) => {
       const r = Math.sqrt(Math.max(R * R - y * y, 0.001));
-      const points = makeCirclePoints(r, 120, "xz").map(
+      const points = makeCirclePoints(r, loopSegments, "xz").map(
         (p) => new THREE.Vector3(p.x, y, p.z)
       );
 
@@ -126,11 +136,10 @@ export default function OfferArtifact({ className = "" }: Props) {
       );
     });
 
-    // Meridians / great circles
     [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5].forEach((deg, i) => {
       addLoop(
         shellGroup,
-        makeCirclePoints(R, 120, "yz"),
+        makeCirclePoints(R, loopSegments, "yz"),
         i % 2 === 0 ? materials.shellStrong : materials.shellSoft,
         (line) => {
           line.rotation.y = THREE.MathUtils.degToRad(deg);
@@ -138,7 +147,6 @@ export default function OfferArtifact({ className = "" }: Props) {
       );
     });
 
-    // Main outer polyhedral cage
     const icoOuterEdges = new THREE.EdgesGeometry(
       new THREE.IcosahedronGeometry(1.52, 0),
       1
@@ -147,7 +155,6 @@ export default function OfferArtifact({ className = "" }: Props) {
     const icoOuter = new THREE.LineSegments(icoOuterEdges, materials.cagePrimary);
     cagePrimaryGroup.add(icoOuter);
 
-    // Secondary calmer cage
     const dodecaInnerEdges = new THREE.EdgesGeometry(
       new THREE.DodecahedronGeometry(1.1, 0),
       1
@@ -159,7 +166,6 @@ export default function OfferArtifact({ className = "" }: Props) {
     );
     cageSecondaryGroup.add(dodecaInner);
 
-    // Minimal inner core
     const octaCoreEdges = new THREE.EdgesGeometry(
       new THREE.OctahedronGeometry(0.64, 0),
       1
@@ -184,8 +190,10 @@ export default function OfferArtifact({ className = "" }: Props) {
       targetY = 0;
     };
 
-    mount.addEventListener("pointermove", onPointerMove);
-    mount.addEventListener("pointerleave", onPointerLeave);
+    if (!isCompact) {
+      mount.addEventListener("pointermove", onPointerMove);
+      mount.addEventListener("pointerleave", onPointerLeave);
+    }
 
     const resize = () => {
       const width = mount.clientWidth || 1;
@@ -201,52 +209,101 @@ export default function OfferArtifact({ className = "" }: Props) {
 
     const clock = new THREE.Clock();
     let raf = 0;
+    let running = false;
+    let disposed = false;
 
-    const animate = () => {
-      raf = window.requestAnimationFrame(animate);
+    const renderFrame = () => {
+      if (!running || disposed) return;
+
+      raf = window.requestAnimationFrame(renderFrame);
 
       const t = clock.getElapsedTime();
 
-      pointerX += (targetX - pointerX) * 0.04;
-      pointerY += (targetY - pointerY) * 0.04;
+      if (!isCompact) {
+        pointerX += (targetX - pointerX) * 0.04;
+        pointerY += (targetY - pointerY) * 0.04;
+      } else {
+        pointerX += (0 - pointerX) * 0.08;
+        pointerY += (0 - pointerY) * 0.08;
+      }
 
       const targetRootX =
-        0.34 + Math.sin(t * 0.33) * 0.06 - pointerY * 0.16;
+        0.34 + Math.sin(t * (isCompact ? 0.24 : 0.33)) * (isCompact ? 0.04 : 0.06) - pointerY * (isCompact ? 0.08 : 0.16);
       const targetRootZ =
-        -0.18 + Math.cos(t * 0.24) * 0.05 + pointerX * 0.12;
+        -0.18 + Math.cos(t * (isCompact ? 0.18 : 0.24)) * (isCompact ? 0.03 : 0.05) + pointerX * (isCompact ? 0.06 : 0.12);
 
-      root.rotation.x += (targetRootX - root.rotation.x) * 0.045;
-      root.rotation.z += (targetRootZ - root.rotation.z) * 0.045;
+      root.rotation.x += (targetRootX - root.rotation.x) * (isCompact ? 0.03 : 0.045);
+      root.rotation.z += (targetRootZ - root.rotation.z) * (isCompact ? 0.03 : 0.045);
 
       if (!reducedMotion) {
-        // Shell reads as the calm planetary envelope
-        shellGroup.rotation.y += 0.0036;
-        shellGroup.rotation.z += 0.00045;
+        if (isCompact) {
+          shellGroup.rotation.y += 0.0018;
+          shellGroup.rotation.z += 0.00022;
 
-        // Main cage: main readable structure
-        cagePrimaryGroup.rotation.y += 0.0054;
-        cagePrimaryGroup.rotation.x += 0.0008;
+          cagePrimaryGroup.rotation.y += 0.0026;
+          cagePrimaryGroup.rotation.x += 0.00035;
 
-        // Secondary cage: softer counter motion
-        cageSecondaryGroup.rotation.y -= 0.0029;
-        cageSecondaryGroup.rotation.z += 0.0017;
+          cageSecondaryGroup.rotation.y -= 0.0014;
+          cageSecondaryGroup.rotation.z += 0.0008;
 
-        // Inner core: very quiet
-        coreGroup.rotation.x -= 0.0018;
-        coreGroup.rotation.y += 0.0038;
+          coreGroup.rotation.x -= 0.0008;
+          coreGroup.rotation.y += 0.0018;
+        } else {
+          shellGroup.rotation.y += 0.0036;
+          shellGroup.rotation.z += 0.00045;
+
+          cagePrimaryGroup.rotation.y += 0.0054;
+          cagePrimaryGroup.rotation.x += 0.0008;
+
+          cageSecondaryGroup.rotation.y -= 0.0029;
+          cageSecondaryGroup.rotation.z += 0.0017;
+
+          coreGroup.rotation.x -= 0.0018;
+          coreGroup.rotation.y += 0.0038;
+        }
       }
 
       renderer.render(scene, camera);
     };
 
-    animate();
+    const start = () => {
+      if (disposed || running) return;
+      running = true;
+      clock.getDelta();
+      renderFrame();
+    };
+
+    const stop = () => {
+      running = false;
+      window.cancelAnimationFrame(raf);
+    };
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    if (reducedMotion) {
+      renderer.render(scene, camera);
+    } else {
+      start();
+    }
 
     return () => {
-      window.cancelAnimationFrame(raf);
+      disposed = true;
+      stop();
       ro.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
 
-      mount.removeEventListener("pointermove", onPointerMove);
-      mount.removeEventListener("pointerleave", onPointerLeave);
+      if (!isCompact) {
+        mount.removeEventListener("pointermove", onPointerMove);
+        mount.removeEventListener("pointerleave", onPointerLeave);
+      }
 
       geometries.forEach((g) => g.dispose());
       Object.values(materials).forEach((m) => m.dispose());

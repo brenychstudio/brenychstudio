@@ -391,7 +391,7 @@ export default function Offer({
               </div>
 
               <div className="md:pl-1">
-                {isPhoneOfferDevice || isTabletOfferDevice ? (
+                {isPhoneOfferDevice ? (
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: [0, -4, 0] }}
@@ -440,6 +440,22 @@ export default function Offer({
                       </div>
                     </div>
                   </motion.div>
+                ) : isTabletOfferDevice ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: [0, -3, 0] }}
+                    transition={{
+                      opacity: { duration: 0.44, delay: 0.06, ease: "easeOut" },
+                      y: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+                    }}
+                    className="mx-auto w-full max-w-[560px]"
+                  >
+                    <DeferredMount eager minHeight={260} className="relative mx-auto w-full overflow-visible">
+                      <div className="mx-auto w-full max-w-[520px]">
+                        <OfferArtifact className="mx-auto block h-auto w-full max-w-none scale-[0.9]" />
+                      </div>
+                    </DeferredMount>
+                  </motion.div>
                 ) : (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
@@ -454,10 +470,10 @@ export default function Offer({
                       <DeferredMount
                         eager
                         minHeight={220}
-                        className="relative mx-auto w-full overflow-hidden"
+                        className="relative mx-auto w-full overflow-visible"
                       >
-                        <div className="mx-auto w-full max-w-[434px] sm:max-w-[470px] md:max-w-[520px] xl:w-full xl:max-w-none">
-                          <OfferArtifact className="mx-auto block h-auto w-full max-w-none md:scale-[0.98] xl:translate-x-8 xl:scale-[1.08] 2xl:translate-x-10 2xl:scale-[1.14]" />
+                        <div className="mx-auto w-full max-w-[500px] xl:max-w-[560px] 2xl:max-w-[620px]">
+                          <OfferArtifact className="mx-auto block h-auto w-full max-w-none xl:translate-x-0 xl:scale-[0.96] 2xl:scale-[1]" />
                         </div>
                       </DeferredMount>
                     </motion.div>

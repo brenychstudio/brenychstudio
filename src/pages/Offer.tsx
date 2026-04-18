@@ -661,28 +661,18 @@ export default function Offer({
               <div className="grid gap-4 pt-4 md:pt-5">
                 <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px] xl:items-start">
                   <div className="xl:hidden mb-4 overflow-hidden rounded-[28px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(251,251,251,0.94)_100%)] p-3 shadow-[0_14px_32px_rgba(15,23,42,0.04)]">
-                    <div className="relative overflow-hidden rounded-[22px] border border-black/6 bg-white/80 px-5 py-6 sm:px-6 sm:py-7">
-                      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.055),rgba(0,0,0,0.012)_42%,rgba(0,0,0,0)_78%)] blur-[22px]" />
-                      <div className="pointer-events-none absolute inset-x-[16%] top-[32%] h-px bg-[linear-gradient(90deg,rgba(17,17,17,0)_0%,rgba(17,17,17,0.12)_24%,rgba(17,17,17,0.12)_76%,rgba(17,17,17,0)_100%)]" />
-                      <div className="pointer-events-none absolute inset-x-[20%] top-[48%] h-px bg-[linear-gradient(90deg,rgba(17,17,17,0)_0%,rgba(17,17,17,0.08)_26%,rgba(17,17,17,0.08)_74%,rgba(17,17,17,0)_100%)]" />
-                      <div className="relative">
-                        <div className="text-[10px] tracking-[0.18em] uppercase text-neutral-500">
-                          Delivery logic
-                        </div>
-                        <div className="mt-3 max-w-[18ch] text-[24px] leading-[0.96] tracking-[-0.05em] text-neutral-950 sm:text-[28px]">
-                          Structured delivery, stronger clarity, stable mobile presentation.
-                        </div>
-                        <div className="mt-5 flex flex-wrap gap-2">
-                          {["Base", "Pro", "Studio", "Signature"].map((item) => (
-                            <span
-                              key={item}
-                              className="inline-flex items-center rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-[10px] tracking-[0.14em] uppercase text-neutral-700"
-                            >
-                              {item}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="relative h-[220px] overflow-hidden rounded-[22px] border border-black/6 bg-white/80 sm:h-[260px] md:h-[320px]">
+                      <DeferredMount eager minHeight={220} className="h-full w-full">
+                        <StickySignalStage
+                          sticky={false}
+                          height={360}
+                          zoom={0.98}
+                          shiftX={0}
+                          shiftY={6}
+                          className="w-full"
+                          stageClassName="overflow-hidden"
+                        />
+                      </DeferredMount>
                     </div>
                   </div>
 

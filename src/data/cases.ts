@@ -1,3 +1,5 @@
+import type { CaseCoverFocus, CaseCoverTone } from "../ui/work/caseCover.types";
+
 export type CaseFrameKind = "image" | "video";
 export type CaseFrameDevice = "desktop" | "mobile";
 export type CaseFrameAspect = "landscape" | "portrait" | "phone";
@@ -62,6 +64,8 @@ export type Case = {
   completeness?: CaseCompleteness;
   archiveCategory: ArchiveCategoryKey;
   poster: { src: string; alt: string };
+  coverTone: CaseCoverTone;
+  coverFocus?: CaseCoverFocus;
   content?: CaseContent;
 };
 
@@ -79,6 +83,7 @@ export const cases: Case[] = [
     completeness: "preview",
     archiveCategory: "software-product",
     poster: { src: "/cases/whisper/poster.jpg", alt: "Whisper poster" },
+    coverTone: "dark",
     content: {
       summary:
         "Exploration of calm motion and editorial pacing for a minimalist product surface.",
@@ -137,6 +142,7 @@ export const cases: Case[] = [
     completeness: "preview",
     archiveCategory: "creators-culture",
     poster: { src: "/cases/gallery/poster.jpg", alt: "Gallery poster" },
+    coverTone: "mixed",
     content: {
       summary:
         "Preview of a gallery-style visual system with quiet chrome and museum-like pacing.",
@@ -195,6 +201,7 @@ export const cases: Case[] = [
     completeness: "in-progress",
     archiveCategory: "creators-culture",
     poster: { src: "/cases/musician/poster.jpg", alt: "Musician poster" },
+    coverTone: "dark",
     content: {
       summary:
         "In-progress artist platform focused on native listening flows and cinematic presentation.",
@@ -251,6 +258,8 @@ export const cases: Case[] = [
       src: "/cases/bcn-advisory/desktop/bcn-advisory-1.jpg",
       alt: "Barcelona Private Advisory poster",
     },
+    coverTone: "light",
+    coverFocus: "center",
     content: {
       summary:
         "Client-facing premium advisory demo for Spain Costas, combining editorial presentation with shortlist logic, district-led browsing, comparison, lightbox viewing, and private intake.",

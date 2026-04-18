@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Header from "../ui/Header";
 import Container from "../ui/Container";
 import PageSurface from "../ui/PageSurface";
+import CaseCover from "../ui/work/CaseCover";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
 import { cases, type ArchiveCategoryKey, type Case } from "../data/cases";
@@ -16,7 +17,6 @@ type PageProps = {
 
 type FilterKey = "all" | ArchiveCategoryKey;
 type SortKey = "new" | "old";
-type PosterVariant = "cards" | "list";
 
 function getCompletenessLabel(
   value: Case["completeness"],
@@ -38,47 +38,6 @@ function getTitleClass(title: string) {
   }
 
   return "text-[22px] leading-[0.98] tracking-[-0.035em] text-neutral-900 sm:text-[24px] md:text-[29px] xl:text-[32px]";
-}
-
-function ArchivePoster({
-  src,
-  alt,
-  priority = false,
-  variant = "cards",
-}: {
-  src?: string;
-  alt?: string;
-  priority?: boolean;
-  variant?: PosterVariant;
-}) {
-  const [loaded, setLoaded] = useState(false);
-  const posterScale = variant === "cards" ? "scale-[1.024]" : "scale-[1.036]";
-
-  return (
-    <div className="relative h-full w-full overflow-hidden bg-[linear-gradient(180deg,#fafafa_0%,#f2f2f2_100%)]">
-      <div
-        className={[
-          "absolute inset-0 bg-neutral-100 transition-opacity duration-500",
-          loaded ? "opacity-0" : "opacity-100",
-        ].join(" ")}
-      />
-
-      {src ? (
-        <img
-          src={src}
-          alt={alt ?? ""}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          onLoad={() => setLoaded(true)}
-          className={[
-            "absolute inset-0 h-full w-full object-cover object-center transition duration-700",
-            posterScale,
-            loaded ? "opacity-100 blur-0" : "opacity-0 blur-[8px]",
-          ].join(" ")}
-        />
-      ) : null}
-    </div>
-  );
 }
 
 const archiveEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -382,10 +341,12 @@ export default function WorkArchive({
                           transition={{ duration: 0.32, ease: archiveEase }}
                           className="overflow-hidden rounded-[20px] border border-neutral-200/90 bg-[linear-gradient(180deg,#fbfbfb_0%,#f5f5f4_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                         >
-                          <div className="aspect-[1.5/1] sm:aspect-[16/10]">
-                            <ArchivePoster
-                              src={item.poster?.src}
-                              alt={item.poster?.alt ?? item.title}
+                          <div className="aspect-[16/10]">
+                            <CaseCover
+                              src={item.poster.src}
+                              alt={item.poster.alt ?? item.title}
+                              tone={item.coverTone}
+                              focus={item.coverFocus}
                               priority={index < 2}
                               variant="cards"
                             />
@@ -494,10 +455,12 @@ export default function WorkArchive({
                       >
                         <div className="grid gap-4 xl:grid-cols-[minmax(0,320px)_minmax(0,1fr)] xl:items-center">
                           <div className="w-full xl:max-w-[320px]">
-                            <div className="aspect-[16/10] overflow-hidden rounded-[18px] border border-neutral-100 bg-neutral-50">
-                              <ArchivePoster
-                                src={item.poster?.src}
-                                alt={item.poster?.alt ?? item.title}
+                            <div className="aspect-[16/10]">
+                              <CaseCover
+                                src={item.poster.src}
+                                alt={item.poster.alt ?? item.title}
+                                tone={item.coverTone}
+                                focus={item.coverFocus}
                                 priority={index === 0}
                                 variant="list"
                               />

@@ -5,6 +5,7 @@ import Header from "../ui/Header";
 import Container from "../ui/Container";
 import PageSurface from "../ui/PageSurface";
 import { cases, type CaseContent, type CaseFrame } from "../data/cases";
+import type { CaseCoverTone } from "../ui/work/caseCover.types";
 import { AnimatePresence, motion } from "framer-motion";
 import ActionPill from "../ui/ActionPill";
 import CaseMotionProof from "../ui/work/CaseMotionProof";
@@ -154,9 +155,11 @@ function CaseVideo({
 function CaseMedia({
   frame,
   priority = false,
+  tone,
 }: {
   frame: CaseFrame;
   priority?: boolean;
+  tone?: CaseCoverTone;
 }) {
   const kind = frame.kind ?? "image";
 
@@ -173,7 +176,61 @@ function CaseMedia({
     );
   }
 
-  return <CaseImage src={frame.src} alt={frame.alt ?? ""} priority={priority} />;
+  const image = <CaseImage src={frame.src} alt={frame.alt ?? ""} priority={priority} />;
+
+  if (!tone) return image;
+
+  return <CaseMediaShell tone={tone}>{image}</CaseMediaShell>;
+}
+
+const caseToneShellMap: Record<
+  CaseCoverTone,
+  {
+    shell: string;
+    frame: string;
+    halo?: string;
+  }
+> = {
+  light: {
+    shell:
+      "rounded-[20px] border border-black/[0.045] bg-[#f6f6f7] p-1.5 shadow-[0_10px_22px_rgba(15,23,42,0.028)] sm:rounded-[24px] sm:p-2",
+    frame: "overflow-hidden rounded-[16px] border border-black/[0.045] bg-[#ffffff] sm:rounded-[20px]",
+    halo: "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.52)]",
+  },
+  dark: {
+    shell:
+      "rounded-[20px] border border-black/[0.04] bg-white p-1.5 shadow-[0_12px_28px_rgba(15,23,42,0.03)] sm:rounded-[24px] sm:p-2",
+    frame: "overflow-hidden rounded-[16px] border border-black/[0.04] bg-neutral-50 sm:rounded-[20px]",
+  },
+  mixed: {
+    shell:
+      "rounded-[20px] border border-black/[0.045] bg-[#f5f5f6] p-1.5 shadow-[0_10px_22px_rgba(15,23,42,0.026)] sm:rounded-[24px] sm:p-2",
+    frame: "overflow-hidden rounded-[16px] border border-black/[0.045] bg-white/96 sm:rounded-[20px]",
+    halo: "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.36)]",
+  },
+};
+
+function CaseMediaShell({
+  tone,
+  children,
+}: {
+  tone: CaseCoverTone;
+  children: React.ReactNode;
+}) {
+  const shell = caseToneShellMap[tone];
+
+  return (
+    <div className={`relative ${shell.shell}`}>
+      {shell.halo ? (
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 rounded-[20px] sm:rounded-[24px] ${shell.halo}`}
+        />
+      ) : null}
+
+      <div className={`relative ${shell.frame}`}>{children}</div>
+    </div>
+  );
 }
 
 function buildDesktopRows(frames: CaseFrame[]) {
@@ -213,11 +270,13 @@ function MobileFrameCard({
   label,
   onOpen,
   maxWidthClass = "max-w-none",
+  tone,
 }: {
   frame: CaseFrame;
   label: string;
   onOpen: (src: string) => void;
   maxWidthClass?: string;
+  tone?: CaseCoverTone;
 }) {
   return (
     <figure className={`w-full ${maxWidthClass}`}>
@@ -226,8 +285,8 @@ function MobileFrameCard({
         onClick={() => onOpen(frame.src)}
         className="block w-full text-left"
       >
-        <div className="overflow-hidden rounded-[20px] border border-neutral-100 bg-neutral-50 transition hover:border-neutral-200 sm:rounded-[24px]">
-          <CaseMedia frame={frame} />
+        <div className="transition">
+          <CaseMedia frame={frame} tone={tone} />
         </div>
       </button>
 
@@ -278,6 +337,7 @@ export default function CasePage({
   const idx = data ? cases.findIndex((c) => c.slug === data.slug) : -1;
   const prev = idx > 0 ? cases[idx - 1] : null;
   const next = idx >= 0 && idx < cases.length - 1 ? cases[idx + 1] : null;
+  const caseTone: CaseCoverTone = data?.coverTone ?? "mixed";
 
   const content = useMemo<CaseContent>(() => {
     if (!data) return {};
@@ -583,9 +643,7 @@ export default function CasePage({
 
               {content.hero ? (
                 <figure className="px-2 pb-2 sm:px-3 sm:pb-3 md:px-4 md:pb-4">
-                  <div className="rounded-[20px] border border-neutral-100 overflow-hidden bg-white sm:rounded-[24px]">
-                    <CaseMedia frame={content.hero} priority />
-                  </div>
+                  <CaseMedia frame={content.hero} priority tone={caseTone} />
 
                   {content.hero.caption ? (
                     <figcaption className="mt-4 px-3 pb-2 max-w-[820px] grid gap-3 text-neutral-500">
@@ -622,6 +680,7 @@ export default function CasePage({
                               frame={frame}
                               label={`Frame ${String(index + 1).padStart(2, "0")}`}
                               onOpen={openLightbox}
+                              tone={caseTone}
                             />
                           ))}
                         </div>
@@ -654,8 +713,8 @@ export default function CasePage({
                                     onClick={() => openLightbox(f.src)}
                                     className="block w-full text-left"
                                   >
-                                    <div className="rounded-[24px] border border-neutral-100 overflow-hidden bg-neutral-50 transition hover:border-neutral-200">
-                                      <CaseMedia frame={f} />
+                                    <div className="transition">
+                                      <CaseMedia frame={f} tone={caseTone} />
                                     </div>
                                   </button>
 
@@ -682,8 +741,8 @@ export default function CasePage({
                                         onClick={() => openLightbox(f.src)}
                                         className="block w-full text-left"
                                       >
-                                        <div className="rounded-[24px] border border-neutral-100 overflow-hidden bg-neutral-50 transition hover:border-neutral-200">
-                                          <CaseMedia frame={f} />
+                                        <div className="transition">
+                                          <CaseMedia frame={f} tone={caseTone} />
                                         </div>
                                       </button>
 
@@ -714,8 +773,8 @@ export default function CasePage({
                                   onClick={() => openLightbox(f.src)}
                                   className="block w-full text-left"
                                 >
-                                  <div className="rounded-[24px] border border-neutral-100 overflow-hidden bg-neutral-50 transition hover:border-neutral-200">
-                                    <CaseMedia frame={f} />
+                                  <div className="transition">
+                                    <CaseMedia frame={f} tone={caseTone} />
                                   </div>
                                 </button>
 

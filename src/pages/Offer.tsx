@@ -399,15 +399,15 @@ export default function Offer({
                       opacity: { duration: 0.42, delay: 0.06, ease: "easeOut" },
                       y: { duration: 8, repeat: Infinity, ease: "easeInOut" },
                     }}
-                    className="mx-auto w-full max-w-[440px]"
+                    className="mx-auto w-full max-w-[452px]"
                   >
                     <DeferredMount
                       eager
                       minHeight={240}
                       className="relative mx-auto w-full overflow-visible"
                     >
-                      <div className="mx-auto w-full max-w-[392px]">
-                        <OfferArtifact className="mx-auto block h-auto w-full max-w-none scale-[0.94]" />
+                      <div className="mx-auto w-full max-w-[404px]">
+                        <OfferArtifact className="mx-auto block h-auto w-full max-w-none scale-[0.98]" />
                       </div>
                     </DeferredMount>
                   </motion.div>

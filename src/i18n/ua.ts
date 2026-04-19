@@ -83,6 +83,7 @@ export const ua: TranslationDictionary = {
       text: "Надішліть бриф — запропоную найкращий підхід.",
       email: "Email",
       copy: "Скопіювати",
+      linksLabel: "Профілі",
     },
   },
   work: {
@@ -222,6 +223,12 @@ export const ua: TranslationDictionary = {
         "Motion-led behavior",
         "Selected immersive direction",
       ],
+    },
+    links: {
+      label: "Профіль / Посилання",
+      title: "Зовнішні профілі, студійний хаб і технічний архів.",
+      description:
+        "Тиха системна зона для студійного хаба, професійного профілю, коду та візуального каналу.",
     },
     cta: {
       label: "Наступний крок",

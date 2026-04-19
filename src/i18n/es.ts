@@ -92,6 +92,7 @@ export const es: TranslationDictionary = {
         "Sitio de marca, caso interactivo o sistema guiado por concepto: envía el brief.",
       email: "Email",
       copy: "Copiar email",
+      linksLabel: "Perfiles",
     },
   },
   work: {
@@ -231,6 +232,12 @@ export const es: TranslationDictionary = {
         "Comportamiento guiado por motion",
         "Dirección inmersiva selecta",
       ],
+    },
+    links: {
+      label: "Perfil / Enlaces",
+      title: "Perfiles externos, hub del estudio y archivo tГ©cnico.",
+      description:
+        "Una capa discreta para el hub del estudio, el perfil profesional, el archivo de cГіdigo y el canal visual.",
     },
     cta: {
       label: "Siguiente paso",

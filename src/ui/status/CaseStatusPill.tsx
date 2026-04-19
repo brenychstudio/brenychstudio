@@ -18,24 +18,24 @@ const defaultLabelMap: Record<CaseStatusKind, string> = {
 
 const lightToneMap: Record<CaseStatusKind, string> = {
   shipped:
-    "border border-black/[0.055] bg-[#f6f6f7] text-neutral-700",
+    "border border-black/[0.05] bg-white/88 text-neutral-600",
   preview:
-    "border border-black/[0.055] bg-[#f5f5f6] text-neutral-700",
-  in_progress:
-    "border border-black/[0.06] bg-[#f3f4f6] text-neutral-800",
-  rnd:
     "border border-black/[0.05] bg-[#f7f7f8] text-neutral-600",
+  in_progress:
+    "border border-black/[0.055] bg-[#f4f5f7] text-neutral-700",
+  rnd:
+    "border border-black/[0.045] bg-[#fafafb] text-neutral-500",
 };
 
 const darkToneMap: Record<CaseStatusKind, string> = {
   shipped:
-    "border border-white/16 bg-white/8 text-white/82",
+    "border border-white/14 bg-white/[0.07] text-white/78",
   preview:
-    "border border-white/16 bg-white/8 text-white/82",
+    "border border-white/14 bg-white/[0.07] text-white/78",
   in_progress:
-    "border border-white/18 bg-white/10 text-white/90",
+    "border border-white/16 bg-white/[0.09] text-white/86",
   rnd:
-    "border border-white/14 bg-white/6 text-white/70",
+    "border border-white/12 bg-white/[0.05] text-white/66",
 };
 
 export default function CaseStatusPill({
@@ -49,7 +49,7 @@ export default function CaseStatusPill({
   return (
     <span
       className={[
-        "inline-flex items-center whitespace-nowrap rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.14em]",
+        "inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-[5px] text-[10px] uppercase tracking-[0.12em]",
         styles,
         className,
       ].join(" ")}

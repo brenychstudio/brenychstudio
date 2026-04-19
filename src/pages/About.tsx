@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Container from "../ui/Container";
 import Header from "../ui/Header";
 import PageSurface from "../ui/PageSurface";
+import ExternalProfileLinks from "../ui/profile/ExternalProfileLinks";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
 
@@ -263,6 +264,17 @@ export default function About({
                 </div>
               </div>
             </div>
+          </motion.section>
+
+          <motion.section
+            {...fadeUp}
+            className="border-t border-neutral-100 py-10 md:py-16"
+          >
+            <ExternalProfileLinks
+              label={t.about.links.label}
+              title={t.about.links.title}
+              description={t.about.links.description}
+            />
           </motion.section>
 
           <motion.section

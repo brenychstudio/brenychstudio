@@ -135,6 +135,7 @@ export type TranslationDictionary = {
       text: string;
       email: string;
       copy: string;
+      linksLabel: string;
     };
   };
   work: {
@@ -219,6 +220,11 @@ export type TranslationDictionary = {
       coreSurfaces: string[];
       extendedPracticeLabel: string;
       extendedPractice: string[];
+    };
+    links: {
+      label: string;
+      title: string;
+      description: string;
     };
     cta: {
       label: string;
@@ -472,6 +478,7 @@ export const en: TranslationDictionary = {
         "Brand site, interactive case, or concept-driven system — send the brief.",
       email: "Email",
       copy: "Copy email",
+      linksLabel: "Elsewhere",
     },
   },
 
@@ -622,6 +629,12 @@ export const en: TranslationDictionary = {
         "Motion-led behavior",
         "Selected immersive direction",
       ],
+    },
+    links: {
+      label: "Profile / Links",
+      title: "External profiles, studio hub, and technical archive.",
+      description:
+        "A quiet layer for the studio hub, professional profile, code archive, and visual channel.",
     },
 
     cta: {

@@ -11,6 +11,7 @@ import MetamorphStageGL from "../ui/MetamorphStageGL";
 import { useSectionProgressMap } from "../ui/useSectionProgress";
 import { useActiveSection } from "../ui/useActiveSection";
 import ActionPill from "../ui/ActionPill";
+import ExternalProfileLinks from "../ui/profile/ExternalProfileLinks";
 import { startHardPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
 
@@ -161,7 +162,7 @@ export default function Home({ drawerOpen = false, onOpenProject, onCloseProject
 
                       <div className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
                         <span>{activeImmersive.year}</span>
-                        <span className="text-white/30">•</span>
+                        <span className="text-white/30">вЂў</span>
                         <span>{activeImmersive.status}</span>
                       </div>
                     </div>
@@ -298,7 +299,7 @@ export default function Home({ drawerOpen = false, onOpenProject, onCloseProject
 
                         <div className="px-5 pb-5 pt-4">
                           <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                            {String(activeIndex + 1).padStart(2, "0")} / {String(homeCases.length).padStart(2, "0")} � {activeCase.code}
+                            {String(activeIndex + 1).padStart(2, "0")} / {String(homeCases.length).padStart(2, "0")} · {activeCase.code}
                           </div>
 
                           <div className="mt-2 text-[32px] leading-none tracking-tight text-neutral-900">
@@ -680,6 +681,13 @@ export default function Home({ drawerOpen = false, onOpenProject, onCloseProject
                   <div className="mt-1 text-xs text-neutral-500">Remote worldwide.</div>
                 </div>
               </motion.div>
+            </div>
+
+            <div className="mt-8 border-t border-neutral-100 pt-5">
+              <ExternalProfileLinks
+                label={t.home.contact.linksLabel}
+                variant="compact"
+              />
             </div>
           </motion.section>
         </Container>

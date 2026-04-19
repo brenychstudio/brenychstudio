@@ -256,9 +256,16 @@ export default function Home({ drawerOpen = false, onOpenProject, onCloseProject
                 </button>
               </div>
 
-              <div className="xl:hidden sticky top-[28svh] z-10 mt-6 mb-3">
+              <div
+                className={[
+                  "xl:hidden sticky top-[28svh] z-10 mt-6 mb-3",
+                  showMobileCasePreview ? "pointer-events-auto" : "pointer-events-none",
+                ].join(" ")}
+              >
                 <motion.div
                   initial={false}
+                  aria-hidden={!showMobileCasePreview}
+                  style={{ visibility: showMobileCasePreview ? "visible" : "hidden" }}
                   animate={{
                     opacity: showMobileCasePreview ? 1 : 0,
                     y: showMobileCasePreview ? 0 : -24,

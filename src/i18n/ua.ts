@@ -442,12 +442,12 @@ export const ua: TranslationDictionary = {
       tabs: {
         managed: "Сайт на супроводі",
         editable: "Редагований сайт",
-        custom: "Custom CMS / Admin",
+        custom: "Custom CMS",
       },
       managed: {
         title: "Сайт на супроводі",
         subtitle: "Studio-managed",
-        price: "from €1,200",
+        price: "€1,290",
         description:
           "Studio-managed updates, без client editing panel, чистіший workflow, нижчий overhead і кращий quality control після запуску.",
         tags: ["Оновлення через студію", "Без client editing panel", "Нижчий операційний overhead"],
@@ -464,7 +464,7 @@ export const ua: TranslationDictionary = {
       editable: {
         title: "Редагований сайт",
         subtitle: "Selective editing",
-        price: "from €1,500",
+        price: "from €1,600",
         description:
           "Легкий editor для selected fields: тексти, зображення, контакти, базового SEO, FAQ, services, testimonials і простих entries.",
         tags: ["Selected editable fields", "Protected core structure", "Lighter client-side autonomy"],
@@ -479,9 +479,9 @@ export const ua: TranslationDictionary = {
         cta: "ВІДКРИТИ MANAGEMENT PDF",
       },
       custom: {
-        title: "Custom CMS / Admin",
+        title: "Custom CMS",
         subtitle: "Deeper operational control",
-        price: "from €3,200",
+        price: "Custom quote",
         description:
           "Custom CMS / admin layer для проєктів, де потрібен ширший operational control, складніші content flows або внутрішня editorial autonomy.",
         tags: ["Глибший операційний контроль", "Custom content model", "Ширша editorial autonomy"],

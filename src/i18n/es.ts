@@ -451,12 +451,12 @@ export const es: TranslationDictionary = {
       tabs: {
         managed: "Sitio gestionado",
         editable: "Sitio editable",
-        custom: "CMS / Admin personalizado",
+        custom: "CMS personalizado",
       },
       managed: {
         title: "Sitio gestionado",
         subtitle: "Gestionado por estudio",
-        price: "desde €1,200",
+        price: "€1,290",
         description:
           "Actualizaciones gestionadas por el estudio, sin panel de edición para cliente, workflow más limpio, menos overhead y control de calidad más estricto tras el lanzamiento.",
         tags: ["Actualizaciones gestionadas por estudio", "Sin panel de edición", "Menor overhead operativo"],
@@ -473,7 +473,7 @@ export const es: TranslationDictionary = {
       editable: {
         title: "Sitio editable",
         subtitle: "Edición selectiva",
-        price: "desde €1,500",
+        price: "desde €1,600",
         description:
           "Un editor ligero para campos seleccionados: textos, imágenes, datos de contacto, SEO básico, FAQ, servicios, testimonios y entradas simples.",
         tags: ["Campos editables seleccionados", "Estructura core protegida", "Autonomía cliente más ligera"],
@@ -488,9 +488,9 @@ export const es: TranslationDictionary = {
         cta: "Abrir PDF de gestión",
       },
       custom: {
-        title: "CMS / Admin personalizado",
+        title: "CMS personalizado",
         subtitle: "Control más profundo",
-        price: "desde €3,500",
+        price: "Presupuesto personalizado",
         description:
           "Una capa de contenido o admin custom diseñada alrededor de necesidades operativas, permisos, workflows, relaciones de contenido y lógica interna de publicación.",
         tags: ["Operaciones más profundas", "Workflows custom", "Arquitectura de contenido"],

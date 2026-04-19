@@ -147,7 +147,7 @@ const packageItems: PackageItem[] = [
     id: "base",
     name: "Base",
     strap: "Focused entry",
-    price: "\u20AC1,290-\u20AC1,600",
+    price: "\u20AC1,290",
     description:
       "Lean brochure-style websites for smaller businesses, service-led sites, or early premium positioning where speed and clarity matter more than complexity.",
     bestForLabel: "Best for",
@@ -810,7 +810,7 @@ export default function Offer({
 
                       <div className="mt-5 border-t border-neutral-100 pt-4">
                         <a href="/docs/price-pack-2026.pdf" download className={pillClass}>
-                          {currentPackage.cta} <span className="text-neutral-400">&nearr;</span>
+                          {currentPackage.cta} <span className="text-neutral-400">↗</span>
                         </a>
                       </div>
                     </div>
@@ -917,7 +917,7 @@ export default function Offer({
 
                       <div>
                         <a href="/docs/website-management-2026.pdf" download className={pillClass}>
-                          {currentManagement.cta} <span className="text-neutral-400">&nearr;</span>
+                          {currentManagement.cta} <span className="text-neutral-400">↗</span>
                         </a>
                       </div>
                     </div>
@@ -967,7 +967,7 @@ export default function Offer({
                         className="group inline-flex h-[42px] items-center justify-between gap-3 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 text-[11px] tracking-[0.14em] uppercase text-neutral-700 transition hover:border-neutral-400 hover:text-neutral-900 sm:h-[44px] sm:px-5"
                       >
                         <span>{t.offer.finalCta.profile}</span>
-                        <span className="text-neutral-400 transition group-hover:text-neutral-700">&nearr;</span>
+                        <span className="text-neutral-400 transition group-hover:text-neutral-700">↗</span>
                       </a>
 
                       <motion.button

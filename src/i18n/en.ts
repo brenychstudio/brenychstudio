@@ -881,12 +881,12 @@ export const en: TranslationDictionary = {
       tabs: {
         managed: "Managed site",
         editable: "Editable site",
-        custom: "Custom CMS / Admin",
+        custom: "Custom CMS",
       },
       managed: {
         title: "Managed site",
         subtitle: "Studio-managed",
-        price: "from €1,200",
+        price: "€1,290",
         description:
           "Studio-managed updates, no client editing panel, cleaner workflow, lower overhead, and tighter quality control after launch.",
         tags: ["Studio-managed updates", "No client editing panel", "Lower operational overhead"],
@@ -903,7 +903,7 @@ export const en: TranslationDictionary = {
       editable: {
         title: "Editable site",
         subtitle: "Selective editing",
-        price: "from €1,500",
+        price: "from €1,600",
         description:
           "A lightweight editor for selected fields: text, images, contact details, SEO basics, FAQ, services, testimonials, and simple entries.",
         tags: ["Selected editable fields", "Protected core structure", "Lighter client-side autonomy"],
@@ -918,9 +918,9 @@ export const en: TranslationDictionary = {
         cta: "Open management PDF",
       },
       custom: {
-        title: "Custom CMS / Admin",
+        title: "Custom CMS",
         subtitle: "Deeper control",
-        price: "from €3,500",
+        price: "Custom quote",
         description:
           "A custom content or admin layer designed around operational needs, permissions, workflows, content relationships, and internal publishing logic.",
         tags: ["Deeper operations", "Custom workflows", "Content architecture"],

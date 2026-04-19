@@ -295,13 +295,12 @@ export default function WorkArchive({
 
             {view === "cards" ? (
               <section className="mt-2 border-t border-neutral-100 pt-6">
-                <motion.div
-                  className="grid gap-4 xl:grid-cols-2"
-                  initial={prefersReducedMotion ? undefined : "hidden"}
-                  whileInView={prefersReducedMotion ? undefined : "visible"}
-                  viewport={prefersReducedMotion ? undefined : { once: true, amount: 0.2 }}
-                  variants={prefersReducedMotion ? undefined : archiveListVariants}
-                >
+<motion.div
+  className="grid gap-4 lg:grid-cols-2"
+  initial={prefersReducedMotion ? undefined : "hidden"}
+  animate={prefersReducedMotion ? undefined : "visible"}
+  variants={prefersReducedMotion ? undefined : archiveListVariants}
+>
                   {filteredCases.map((item, index) => (
                     <motion.button
                       key={item.slug}
@@ -419,13 +418,12 @@ export default function WorkArchive({
               </section>
             ) : (
               <section className="mt-2 border-t border-neutral-100 pt-6">
-                <motion.div
-                  className="space-y-4"
-                  initial={prefersReducedMotion ? undefined : "hidden"}
-                  whileInView={prefersReducedMotion ? undefined : "visible"}
-                  viewport={prefersReducedMotion ? undefined : { once: true, amount: 0.2 }}
-                  variants={prefersReducedMotion ? undefined : archiveListVariants}
-                >
+<motion.div
+  className="space-y-4"
+  initial={prefersReducedMotion ? undefined : "hidden"}
+  animate={prefersReducedMotion ? undefined : "visible"}
+  variants={prefersReducedMotion ? undefined : archiveListVariants}
+>
                   {filteredCases.map((item, index) => (
                     <motion.button
                       key={item.slug}
@@ -456,8 +454,8 @@ export default function WorkArchive({
                         transition={{ duration: 0.3, ease: archiveEase }}
                         className="overflow-hidden rounded-[24px] border border-neutral-100 bg-white p-3.5 transition-[border-color,box-shadow,transform] duration-300 group-hover:border-neutral-200 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.035)] md:p-4"
                       >
-                        <div className="grid gap-4 xl:grid-cols-[minmax(0,320px)_minmax(0,1fr)] xl:items-center">
-                          <div className="w-full xl:max-w-[320px]">
+<div className="grid gap-4 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:items-center">
+<div className="w-full lg:max-w-[320px]">
                             <div className="aspect-[16/10]">
                               <CaseCover
                                 src={item.poster.src}
@@ -470,7 +468,7 @@ export default function WorkArchive({
                             </div>
                           </div>
 
-                          <div className="min-w-0 xl:pl-2">
+<div className="min-w-0 lg:pl-2">
                             <ArchiveMetaRow
                               item={item}
                               order={index + 1}

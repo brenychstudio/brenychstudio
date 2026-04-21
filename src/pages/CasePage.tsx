@@ -4,7 +4,8 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import Header from "../ui/Header";
 import Container from "../ui/Container";
 import PageSurface from "../ui/PageSurface";
-import { cases, type CaseContent, type CaseFrame } from "../data/cases";
+import { cases, type Case, type CaseContent, type CaseFrame } from "../data/cases";
+import { fluidCaseI18n } from "../data/fluidCaseI18n";
 import type { CaseCoverTone } from "../ui/work/caseCover.types";
 import { AnimatePresence, motion } from "framer-motion";
 import ActionPill from "../ui/ActionPill";
@@ -323,19 +324,119 @@ const lightboxImageTransition = {
   ease: lightboxEase,
 };
 
+const FLUID_SLUG = "fluid-exhibition" as const;
+
+const fluidStatusLabels = {
+  en: "Shipped",
+  es: "Publicado",
+  ua: "Запущено",
+  ru: "Запущено",
+} as const;
+
+const fluidCreditLabels = {
+  en: { role: "Role", stack: "Stack", status: "Status" },
+  es: { role: "Rol", stack: "Stack", status: "Estado" },
+  ua: { role: "Роль", stack: "Стек", status: "Статус" },
+  ru: { role: "Роль", stack: "Стек", status: "Статус" },
+} as const;
+
+const fluidLinkLabels = {
+  en: "Live site",
+  es: "Sitio online",
+  ua: "Сайт",
+  ru: "Сайт",
+} as const;
+
+function getLocalizedCase(data: Case, locale: keyof typeof fluidCaseI18n): Case {
+  if (data.slug !== FLUID_SLUG) return data;
+
+  const copy = fluidCaseI18n[locale] ?? fluidCaseI18n.en;
+  const creditLabels = fluidCreditLabels[locale] ?? fluidCreditLabels.en;
+  const statusLabel = fluidStatusLabels[locale] ?? fluidStatusLabels.en;
+  const liveSiteLabel = fluidLinkLabels[locale] ?? fluidLinkLabels.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...data,
+    statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...data.poster,
+      alt: copy.posterAlt,
+    },
+    content: data.content
+      ? {
+          ...data.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: data.content.hero
+            ? {
+                ...data.content.hero,
+                alt:
+                  (data.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : data.content.hero,
+          frames: (data.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: creditLabels.role, value: data.roleLabel },
+            { label: creditLabels.stack, value: data.stackLabel },
+            { label: creditLabels.status, value: statusLabel },
+          ],
+          links: (data.content.links ?? []).map((link, index) =>
+            index === 0 ? { ...link, label: liveSiteLabel } : link
+          ),
+        }
+      : data.content,
+  };
+}
+
 export default function CasePage({
   drawerOpen = false,
   onOpenProject,
   onCloseProject,
 }: PageProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { slug } = useParams();
   const navigate = useNavigate();
   const [notesOpen, setNotesOpen] = useState(false);
 
-  const data = useMemo(() => cases.find((c) => c.slug === slug) ?? null, [slug]);
+  const baseData = useMemo(() => cases.find((c) => c.slug === slug) ?? null, [slug]);
+  const data = useMemo(
+    () => (baseData ? getLocalizedCase(baseData, locale) : null),
+    [baseData, locale]
+  );
 
-  const idx = data ? cases.findIndex((c) => c.slug === data.slug) : -1;
+  const idx = baseData ? cases.findIndex((c) => c.slug === baseData.slug) : -1;
   const prev = idx > 0 ? cases[idx - 1] : null;
   const next = idx >= 0 && idx < cases.length - 1 ? cases[idx + 1] : null;
   const caseTone: CaseCoverTone = data?.coverTone ?? "mixed";

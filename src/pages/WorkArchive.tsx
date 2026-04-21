@@ -9,6 +9,7 @@ import CaseCover from "../ui/work/CaseCover";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
 import { cases, type ArchiveCategoryKey, type Case } from "../data/cases";
+import { fluidCaseI18n } from "../data/fluidCaseI18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -70,6 +71,102 @@ const filterOrder: ArchiveCategoryKey[] = [
   "brands",
   "hospitality",
 ];
+
+const FLUID_SLUG = "fluid-exhibition" as const;
+
+const fluidStatusLabels = {
+  en: "Shipped",
+  es: "Publicado",
+  ua: "Запущено",
+  ru: "Запущено",
+} as const;
+
+const fluidCreditLabels = {
+  en: { role: "Role", stack: "Stack", status: "Status" },
+  es: { role: "Rol", stack: "Stack", status: "Estado" },
+  ua: { role: "Роль", stack: "Стек", status: "Статус" },
+  ru: { role: "Роль", stack: "Стек", status: "Статус" },
+} as const;
+
+const fluidLinkLabels = {
+  en: "Live site",
+  es: "Sitio online",
+  ua: "Сайт",
+  ru: "Сайт",
+} as const;
+
+function getLocalizedCase(item: Case, locale: keyof typeof fluidCaseI18n): Case {
+  if (item.slug !== FLUID_SLUG) return item;
+
+  const copy = fluidCaseI18n[locale] ?? fluidCaseI18n.en;
+  const creditLabels = fluidCreditLabels[locale] ?? fluidCreditLabels.en;
+  const statusLabel = fluidStatusLabels[locale] ?? fluidStatusLabels.en;
+  const liveSiteLabel = fluidLinkLabels[locale] ?? fluidLinkLabels.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...item,
+    statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...item.poster,
+      alt: copy.posterAlt,
+    },
+    content: item.content
+      ? {
+          ...item.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: item.content.hero
+            ? {
+                ...item.content.hero,
+                alt:
+                  (item.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : item.content.hero,
+          frames: (item.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: creditLabels.role, value: item.roleLabel },
+            { label: creditLabels.stack, value: item.stackLabel },
+            { label: creditLabels.status, value: statusLabel },
+          ],
+          links: (item.content.links ?? []).map((link, index) =>
+            index === 0 ? { ...link, label: liveSiteLabel } : link
+          ),
+        }
+      : item.content,
+  };
+}
 
 function ArchiveMetaRow({
   item,
@@ -143,7 +240,7 @@ export default function WorkArchive({
 }: PageProps) {
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   const [view, setView] = useState<"cards" | "list">("cards");
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -177,6 +274,11 @@ export default function WorkArchive({
         : Number(b.index) - Number(a.index);
     });
   }, [filter, sort]);
+
+  const localizedFilteredCases = useMemo(
+    () => filteredCases.map((item) => getLocalizedCase(item, locale)),
+    [filteredCases, locale]
+  );
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -301,7 +403,7 @@ export default function WorkArchive({
   animate={prefersReducedMotion ? undefined : "visible"}
   variants={prefersReducedMotion ? undefined : archiveListVariants}
 >
-                  {filteredCases.map((item, index) => (
+                  {localizedFilteredCases.map((item, index) => (
                     <motion.button
                       key={item.slug}
                       type="button"
@@ -424,7 +526,7 @@ export default function WorkArchive({
   animate={prefersReducedMotion ? undefined : "visible"}
   variants={prefersReducedMotion ? undefined : archiveListVariants}
 >
-                  {filteredCases.map((item, index) => (
+                  {localizedFilteredCases.map((item, index) => (
                     <motion.button
                       key={item.slug}
                       type="button"

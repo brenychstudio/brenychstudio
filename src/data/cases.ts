@@ -414,4 +414,150 @@ export const cases: Case[] = [
       ],
     },
   },
+  {
+    slug: "fluid-exhibition",
+    code: "F-05",
+    index: "05",
+    title: "FLUID",
+    year: "2025",
+    tagline:
+      "Premium multilingual exhibition microsite with QR-driven artist pages and a unified digital identity for a real art event.",
+    roleLabel: "Creative Dev / Front-end",
+    stackLabel: "Astro / React / TypeScript",
+    statusLabel: "Shipped",
+    statusKind: "shipped",
+    statusNote:
+      "Public exhibition-ready microsite built for a real collaborative art show, with QR-driven artist access and multilingual structure.",
+    completeness: "full",
+    archiveCategory: "creators-culture",
+    poster: {
+      src: "/cases/fluid-exhibition/desktop/fluid-hero.jpg",
+      alt: "FLUID exhibition microsite poster",
+    },
+    coverTone: "dark",
+    coverFocus: "center",
+    content: {
+      summary:
+        "Premium multilingual exhibition microsite for a real collaborative art show. Built around QR-driven artist pages, the project combines custom fluid motion, typography-first UI, and a structured digital layer for exhibition navigation and artist storytelling.",
+      hero: {
+        kind: "video",
+        device: "desktop",
+        aspect: "landscape",
+        src: "/cases/fluid-exhibition/video/fluid-video.mp4",
+        poster: "/cases/fluid-exhibition/desktop/fluid-hero.jpg",
+        alt: "FLUID - exhibition walkthrough video",
+        caption:
+          "Walkthrough of the exhibition layer, artist pages, and fluid motion atmosphere.",
+        width: "full",
+        controls: true,
+      },
+      frames: [
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/fluid-exhibition/desktop/fluid-hero.jpg",
+          alt: "FLUID - desktop hero frame",
+          caption:
+            "Exhibition landing page with fluid visual identity and QR-oriented entry framing.",
+          width: "full",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/fluid-exhibition/desktop/fluid-1.jpg",
+          alt: "FLUID - desktop frame 01",
+          caption:
+            "Artist system laid out as a structured exhibition layer instead of a generic event page.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/fluid-exhibition/desktop/fluid-2.jpg",
+          alt: "FLUID - desktop frame 02",
+          caption:
+            "Artist profile surface connected to the wider exhibition context.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/fluid-exhibition/desktop/fluid-3.jpg",
+          alt: "FLUID - desktop frame 03",
+          caption:
+            "Content-driven information blocks balancing artwork context, artist data, and navigation clarity.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-1.jpg",
+          alt: "FLUID - mobile frame 01",
+          caption:
+            "Mobile exhibition entry designed as a calm QR-access landing surface.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-2.jpg",
+          alt: "FLUID - mobile frame 02",
+          caption:
+            "Mobile exhibition page carrying the same fluid identity in a compact format.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-3.jpg",
+          alt: "FLUID - mobile frame 03",
+          caption:
+            "Artist listing and profile access optimized for quick scan-to-context behavior.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-4.jpg",
+          alt: "FLUID - mobile frame 04",
+          caption:
+            "Individual artist page preserving exhibition identity while exposing artist-specific data.",
+          width: "window",
+        },
+      ],
+      problem:
+        "The exhibition needed a digital system that could give each artist a direct QR entry point, preserve the context of the event, work across multiple languages, and still feel premium rather than template-like.",
+      approach:
+        "Built the microsite around artist pages as the main entry surface, then kept the exhibition layer visible through navigation, event framing, venue context, and a shared fluid motion language.",
+      outcome:
+        "Shipped a public exhibition-ready microsite that connects physical QR access, multilingual artist information, and a unified digital identity for a real cultural event.",
+      clarity:
+        "The system reduces friction by letting visitors scan directly to the relevant artist while still retaining the larger exhibition context.",
+      motion:
+        "Custom fluid atmosphere and controlled transitions create a reflective exhibition layer without overwhelming content readability.",
+      build:
+        "Astro, React islands, TypeScript, Tailwind CSS, locale-based content structure, and Cloudflare Pages deployment.",
+      notes:
+        "Project framing\n- Premium QR exhibition microsite for a real collaborative art event.\n\nCore logic\n- QR-driven artist-page architecture where each artist gets a direct entry surface.\n\nStructure\n- Exhibition landing page, multilingual CA / ES / EN setup, artist pages, venue/map context, and reusable content blocks.\n\nVisual direction\n- Dark reflective environment, fluid luminous substance, glass-like panels, and typography-first hierarchy.\n\nConstraint set\n- Built under exhibition timing pressure, uneven source materials, multilingual needs, and the requirement to stay light but still atmospherically strong.\n\nWhat this case demonstrates\n- Premium cultural web system thinking, QR-based user flow design, multilingual content structure, motion atmosphere, and deploy-ready front-end implementation.",
+      credits: [
+        { label: "Role", value: "Creative Developer / Front-end Systems Builder" },
+        { label: "Stack", value: "Astro / React / TypeScript / Tailwind" },
+        { label: "Status", value: "Shipped" },
+      ],
+      links: [
+        {
+          label: "Live site",
+          href: "https://fluidqr.pages.dev",
+        },
+      ],
+    },
+  },
 ];

@@ -10,6 +10,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
 import { cases, type ArchiveCategoryKey, type Case } from "../data/cases";
 import { fluidCaseI18n } from "../data/fluidCaseI18n";
+import { formIndexCaseI18n } from "../data/formIndexCaseI18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -71,6 +72,87 @@ const filterOrder: ArchiveCategoryKey[] = [
   "brands",
   "hospitality",
 ];
+
+const FORM_INDEX_SLUG = "form-index" as const;
+
+function getLocalizedFormIndexCase(
+  item: Case,
+  locale: keyof typeof formIndexCaseI18n
+): Case {
+  if (item.slug === FLUID_SLUG) {
+    return getLocalizedCase(item, locale);
+  }
+
+  if (item.slug !== FORM_INDEX_SLUG) return item;
+
+  const copy = formIndexCaseI18n[locale] ?? formIndexCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...item,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...item.poster,
+      alt: copy.posterAlt,
+    },
+    content: item.content
+      ? {
+          ...item.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: item.content.hero
+            ? {
+                ...item.content.hero,
+                alt:
+                  (item.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : item.content.hero,
+          frames: (item.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: item.roleLabel },
+            { label: copy.creditLabels.stack, value: item.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+          ],
+          links: (item.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : item.content,
+  };
+}
 
 const FLUID_SLUG = "fluid-exhibition" as const;
 
@@ -276,7 +358,7 @@ export default function WorkArchive({
   }, [filter, sort]);
 
   const localizedFilteredCases = useMemo(
-    () => filteredCases.map((item) => getLocalizedCase(item, locale)),
+    () => filteredCases.map((item) => getLocalizedFormIndexCase(item, locale)),
     [filteredCases, locale]
   );
 

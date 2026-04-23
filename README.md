@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# Rostyslav Brenych
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Creative Developer focused on premium front-end systems, multilingual websites, product prototypes, interactive storytelling, and selected WebGL/XR experiences.
 
-Currently, two official plugins are available:
+I build digital products and premium web systems across hospitality, real estate, clinics, cultural platforms, internal tools, and founder-led concepts — combining visual restraint, product thinking, and production-minded implementation.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What I build
 
-## React Compiler
+- Premium multilingual websites
+- Reusable vertical web systems
+- Product demos and internal tools
+- Editorial / storytelling interfaces
+- Selected WebGL / XR / interactive experiences
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Core stack
 
-## Expanding the ESLint configuration
+- React
+- TypeScript
+- Astro
+- Next.js
+- Vite
+- Tailwind CSS
+- React Router
+- Motion
+- Three.js / React Three Fiber
+- Cloudflare Pages
+- Google Sheets / CSV CMS patterns
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Selected work
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### SprintCRM
+Internal outreach CRM with import/dedup, Today workflow, pipeline, and KPI reporting.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Barcelona Private Advisory
+Premium bilingual advisory demo for Barcelona property discovery with shortlist-first decision support.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### CreatorOps
+Export-first content planning prototype with Smart Mix, planner flow, captions, and ZIP export.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### FLUID
+Multilingual exhibition microsite with QR-driven artist pages and a unified digital identity for a real art event.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### FORM INDEX
+Interactive fashion concept with scroll-driven stage logic, synchronized progress, and motion-heavy interface design.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### WHISPER
+Premium web + XR exhibition prototype combining digital storytelling, collector flow, and immersive runtime logic.
+
+## Working style
+
+I use an AI-augmented workflow built around Codex and GPT to accelerate prototyping, implementation, documentation, and polish — while keeping architecture, art direction, product logic, and final validation under direct manual control.
+
+## Focus
+
+Currently focused on:
+- premium vertical systems
+- product prototype development
+- portfolio-grade digital experiences
+- reusable front-end foundations

@@ -11,6 +11,7 @@ import { useLocale } from "../store/useLocale";
 import { cases, type ArchiveCategoryKey, type Case } from "../data/cases";
 import { fluidCaseI18n } from "../data/fluidCaseI18n";
 import { formIndexCaseI18n } from "../data/formIndexCaseI18n";
+import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -152,6 +153,98 @@ function getLocalizedFormIndexCase(
         }
       : item.content,
   };
+}
+
+const ARCWAVE_SLUG = "arcwave-integrations" as const;
+
+function getLocalizedArcwaveCase(
+  item: Case,
+  locale: keyof typeof arcwaveCaseI18n
+): Case {
+  if (item.slug !== ARCWAVE_SLUG) return item;
+
+  const copy = arcwaveCaseI18n[locale] ?? arcwaveCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...item,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...item.poster,
+      alt: copy.posterAlt,
+    },
+    content: item.content
+      ? {
+          ...item.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: item.content.hero
+            ? {
+                ...item.content.hero,
+                alt:
+                  (item.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : item.content.hero,
+          frames: (item.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: item.roleLabel },
+            { label: copy.creditLabels.stack, value: item.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+          ],
+          links: (item.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : item.content,
+  };
+}
+
+function applyLocalizedSpecialCases(
+  item: Case,
+  locale: keyof typeof arcwaveCaseI18n
+): Case {
+  const withFluid = getLocalizedCase(item, locale as keyof typeof fluidCaseI18n);
+  const withFormIndex = getLocalizedFormIndexCase(
+    withFluid,
+    locale as keyof typeof formIndexCaseI18n
+  );
+  return getLocalizedArcwaveCase(
+    withFormIndex,
+    locale as keyof typeof arcwaveCaseI18n
+  );
 }
 
 const FLUID_SLUG = "fluid-exhibition" as const;
@@ -358,7 +451,10 @@ export default function WorkArchive({
   }, [filter, sort]);
 
   const localizedFilteredCases = useMemo(
-    () => filteredCases.map((item) => getLocalizedFormIndexCase(item, locale)),
+    () =>
+      filteredCases.map((item) =>
+        applyLocalizedSpecialCases(item, locale as keyof typeof arcwaveCaseI18n)
+      ),
     [filteredCases, locale]
   );
 

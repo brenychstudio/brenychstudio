@@ -7,6 +7,7 @@ import PageSurface from "../ui/PageSurface";
 import { cases, type Case, type CaseContent, type CaseFrame } from "../data/cases";
 import { fluidCaseI18n } from "../data/fluidCaseI18n";
 import { formIndexCaseI18n } from "../data/formIndexCaseI18n";
+import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
 import type { CaseCoverTone } from "../ui/work/caseCover.types";
 import { AnimatePresence, motion } from "framer-motion";
 import ActionPill from "../ui/ActionPill";
@@ -406,6 +407,101 @@ function getLocalizedFormIndexCase(
   };
 }
 
+const ARCWAVE_SLUG = "arcwave-integrations" as const;
+
+function getLocalizedArcwaveCase(
+  data: Case,
+  locale: keyof typeof arcwaveCaseI18n
+): Case {
+  if (data.slug !== ARCWAVE_SLUG) return data;
+
+  const copy = arcwaveCaseI18n[locale] ?? arcwaveCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...data,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...data.poster,
+      alt: copy.posterAlt,
+    },
+    content: data.content
+      ? {
+          ...data.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: data.content.hero
+            ? {
+                ...data.content.hero,
+                alt:
+                  (data.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : data.content.hero,
+          frames: (data.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: data.roleLabel },
+            { label: copy.creditLabels.stack, value: data.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+          ],
+          links: (data.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : data.content,
+  };
+}
+
+function applyLocalizedSpecialCases(
+  data: Case,
+  locale: keyof typeof arcwaveCaseI18n
+): Case {
+  const withFluid = getLocalizedCase(
+    data,
+    locale as keyof typeof fluidCaseI18n
+  );
+  const withFormIndex = getLocalizedFormIndexCase(
+    withFluid,
+    locale as keyof typeof formIndexCaseI18n
+  );
+  return getLocalizedArcwaveCase(
+    withFormIndex,
+    locale as keyof typeof arcwaveCaseI18n
+  );
+}
+
 const FLUID_SLUG = "fluid-exhibition" as const;
 
 const fluidStatusLabels = {
@@ -514,7 +610,13 @@ export default function CasePage({
 
   const baseData = useMemo(() => cases.find((c) => c.slug === slug) ?? null, [slug]);
   const data = useMemo(
-    () => (baseData ? getLocalizedFormIndexCase(baseData, locale) : null),
+    () =>
+      baseData
+        ? applyLocalizedSpecialCases(
+            baseData,
+            locale as keyof typeof arcwaveCaseI18n
+          )
+        : null,
     [baseData, locale]
   );
 

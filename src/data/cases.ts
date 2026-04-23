@@ -786,4 +786,180 @@ export const cases: Case[] = [
       ],
     },
   },
+  {
+    slug: "arcwave-integrations",
+    code: "AW-07",
+    index: "07",
+    title: "ARCWAVE",
+    year: "2026",
+    tagline:
+      "Premium bilingual website concept for engineering installations.",
+    roleLabel: "Creative Developer / Front-end Systems",
+    stackLabel: "Astro / TypeScript / React",
+    statusLabel: "Shipped",
+    statusKind: "shipped",
+    statusNote:
+      "Deployed concept demo built as a reusable premium vertical for engineering integrators.",
+    completeness: "full",
+    archiveCategory: "brands",
+    poster: {
+      src: "/cases/arcwave-integrations/desktop/arc-hero.jpg",
+      alt: "ARCWAVE Integrations poster cover",
+    },
+    coverTone: "light",
+    coverFocus: "center",
+    content: {
+      summary:
+        "ARCWAVE is a production-ready concept study for a premium engineering installations website. Built as a service-led bilingual system, it combines typed content architecture, detail pages, quote flow, SEO foundation, and reusable vertical thinking.",
+      hero: {
+        kind: "video",
+        device: "desktop",
+        aspect: "landscape",
+        src: "/cases/arcwave-integrations/video/arc-video.mp4",
+        poster: "/cases/arcwave-integrations/desktop/arc-hero.jpg",
+        alt: "ARCWAVE walkthrough video",
+        caption:
+          "Premium service-site concept focused on clean architecture, bilingual clarity, and deployment-ready polish.",
+        width: "full",
+        controls: true,
+      },
+      frames: [
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/arcwave-integrations/desktop/arc-hero.jpg",
+          alt: "ARCWAVE - desktop hero frame",
+          caption:
+            "Homepage framing built around service clarity, premium restraint, and a technically credible surface.",
+          width: "full",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/arcwave-integrations/desktop/arc-1.jpg",
+          alt: "ARCWAVE - desktop frame 01",
+          caption:
+            "Service-led homepage architecture presenting engineering offers without corporate clutter.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/arcwave-integrations/desktop/arc-2.jpg",
+          alt: "ARCWAVE - desktop frame 02",
+          caption:
+            "Clean workflow section designed to support trust, process clarity, and conversion readiness.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/arcwave-integrations/desktop/arc-3.jpg",
+          alt: "ARCWAVE - desktop frame 03",
+          caption:
+            "Service detail view combining technical precision, readable structure, and premium spacing.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/arcwave-integrations/desktop/arc-4.jpg",
+          alt: "ARCWAVE - desktop frame 04",
+          caption:
+            "Documentation and handover surface showing how support and delivery are framed as part of the product.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/arcwave-integrations/desktop/arc-5.jpg",
+          alt: "ARCWAVE - desktop frame 05",
+          caption:
+            "Quote flow with clean field hierarchy, service specificity, and production-ready form behavior.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-1.jpg",
+          alt: "ARCWAVE - mobile frame 01",
+          caption:
+            "Mobile landing surface preserving premium clarity and service-first structure.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-2.jpg",
+          alt: "ARCWAVE - mobile frame 02",
+          caption:
+            "Mobile service catalog adapted into a clear card system with strong hierarchy.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-3.jpg",
+          alt: "ARCWAVE - mobile frame 03",
+          caption:
+            "Documentation and handover information translated into a calm, readable mobile layout.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-4.jpg",
+          alt: "ARCWAVE - mobile frame 04",
+          caption:
+            "Mobile quote form with service-led structure, clean spacing, and practical conversion flow.",
+          width: "window",
+        },
+      ],
+      problem:
+        "The challenge was to create a premium website for an engineering service business without falling into generic corporate patterns, visual clutter, or inflated claims. The site had to stay bilingual, service-led, technically clean, and deploy-ready.",
+      approach:
+        "ARCWAVE was built around a typed services architecture, separate EN/ES content layers, reusable page components, redirect-safe restructuring, and a quote form that stays stable across transitions. The design direction focused on restraint, readability, and production discipline.",
+      outcome:
+        "The final result is a deployed concept demo that works both as a strong portfolio case and as a reusable premium website template for similar engineering integrators.",
+      clarity:
+        "The project demonstrates how a complex service vertical can be presented through a clean, service-first information architecture instead of a noisy business-site pattern.",
+      motion:
+        "Interaction stays controlled and subtle, with transitions polished to avoid flash and preserve a premium, technically credible feel.",
+      build:
+        "Astro, TypeScript, React islands, Astro View Transitions, typed content architecture, bilingual route system, Cloudflare Pages deployment, and GitHub-based delivery.",
+      notes:
+        "Project framing\n- Premium bilingual concept website for engineering installations.\n- Built as a reusable vertical system and deployed as a portfolio/demo asset.\n\nCore logic\n- Service-led information architecture instead of a generic 'about company' site.\n- Full EN/ES route parity and localized content structure.\n- Quote/contact flow with preselect logic and anti-spam protection.\n- Redirect-safe restructuring after service model changes.\n\nWhy this case matters\n- Shows production-grade service-site delivery, bilingual architecture, quote flow discipline, and reusable vertical thinking.\n- Demonstrates the ability to convert abandoned client work into a polished portfolio/business asset without losing deployment quality.\n\nImportant framing\n- Deployed concept demo.\n- Not presented as a live client success story.\n- No business metrics claimed.",
+      credits: [
+        {
+          label: "Role",
+          value: "Creative Developer / Front-end Architect / UI Systems Builder",
+        },
+        {
+          label: "Stack",
+          value: "Astro / TypeScript / React / Cloudflare Pages",
+        },
+        { label: "Status", value: "Shipped" },
+      ],
+      links: [
+        {
+          label: "Live site",
+          href: "https://arcwave-integrations.pages.dev/",
+        },
+        {
+          label: "Repository",
+          href: "https://github.com/brenychstudio/arcwave-integrations",
+        },
+      ],
+    },
+  },
 ];

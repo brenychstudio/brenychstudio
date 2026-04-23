@@ -560,4 +560,230 @@ export const cases: Case[] = [
       ],
     },
   },
+    {
+      slug: "form-index",
+    code: "FI-06",
+    index: "06",
+    title: "FORM INDEX",
+    year: "2026",
+    tagline:
+      "Awards-style editorial web experience with signature scroll choreography.",
+    roleLabel: "Creative Developer / Motion UI",
+    stackLabel: "Vite / React / TypeScript",
+    statusLabel: "Shipped",
+    statusKind: "shipped",
+    statusNote:
+      "Public live front-end case focused on editorial restraint, sticky-stage composition, and signature smoothness.",
+    completeness: "full",
+    archiveCategory: "creators-culture",
+    poster: {
+      src: "/cases/form-index/desktop/fr-hero.jpg",
+      alt: "FORM INDEX poster cover",
+    },
+    coverTone: "light",
+    coverFocus: "center",
+    content: {
+      summary:
+        "FORM INDEX is a premium interactive web case built around quiet futurism, editorial composition, and ultra-smooth scroll-driven transitions. It treats motion, typography, and layout as one directed front-end system.",
+      hero: {
+        kind: "video",
+        device: "desktop",
+        aspect: "landscape",
+        src: "/cases/form-index/video/fr-video.mp4",
+        poster: "/cases/form-index/desktop/fr-hero.jpg",
+        alt: "FORM INDEX walkthrough video",
+        caption:
+          "Awards-style editorial entry built around quiet futurism, spacing precision, and controlled scroll choreography.",
+        width: "full",
+        controls: true,
+      },
+      frames: [
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-hero.jpg",
+          alt: "FORM INDEX - desktop hero frame",
+          caption:
+            "Hero surface that frames the system through editorial restraint, calm hierarchy, and controlled image rhythm.",
+          width: "full",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-1.jpg",
+          alt: "FORM INDEX - desktop frame 01",
+          caption:
+            "Sticky-stage layout with controlled reveal timing and quiet visual hierarchy.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-2.jpg",
+          alt: "FORM INDEX - desktop frame 02",
+          caption:
+            "Campaign-system surface balancing photography, editorial spacing, and premium pacing.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-3.jpg",
+          alt: "FORM INDEX - desktop frame 03",
+          caption:
+            "Scroll-driven transition state expressed through spacing, sequence, and visual calm.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-4.jpg",
+          alt: "FORM INDEX - desktop frame 04",
+          caption:
+            "Surface studies presented as part of the editorial rhythm rather than decorative filler.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-5.jpg",
+          alt: "FORM INDEX - desktop frame 05",
+          caption:
+            "Premium editorial spacing and quiet visual hierarchy across grouped image content.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-6.jpg",
+          alt: "FORM INDEX - desktop frame 06",
+          caption:
+            "Product surface built around object focus, clean spacing, and understated presentation.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-7.jpg",
+          alt: "FORM INDEX - desktop frame 07",
+          caption:
+            "Section progress translated into structured product flow and controlled emphasis.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-8.jpg",
+          alt: "FORM INDEX - desktop frame 08",
+          caption:
+            "Lookbook volumes treated as a premium content surface with calm typographic support.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/form-index/desktop/fr-9.jpg",
+          alt: "FORM INDEX - desktop frame 09",
+          caption:
+            "Selected pieces view showing catalog rhythm, controlled reveal, and clean visual grouping.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/form-index/mobile/fr-mob-1.jpg",
+          alt: "FORM INDEX - mobile frame 01",
+          caption:
+            "Mobile landing surface preserving the same calm editorial hierarchy in a compact format.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/form-index/mobile/fr-mob-2.jpg",
+          alt: "FORM INDEX - mobile frame 02",
+          caption:
+            "Surface studies adapted to mobile without losing clarity, spacing, or pacing.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/form-index/mobile/fr-mob-3.jpg",
+          alt: "FORM INDEX - mobile frame 03",
+          caption:
+            "Lookbook volume presentation translated into a compact phone-first composition.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/form-index/mobile/fr-mob-4.jpg",
+          alt: "FORM INDEX - mobile frame 04",
+          caption:
+            "Selection drawer and product flow showing clean UI behavior on smaller screens.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/form-index/mobile/fr-mob-5.jpg",
+          alt: "FORM INDEX - mobile frame 05",
+          caption:
+            "Image-led mobile sequencing that keeps the system quiet, readable, and premium.",
+          width: "window",
+        },
+      ],
+      problem:
+        "The main challenge was to create a digital experience that feels alive and cinematic, but still restrained. Scrolling had to do more than move content: it needed to gradually reveal structure, emphasis, and progression without turning the interface noisy or effect-driven.",
+      approach:
+        "FORM INDEX was structured as a scroll-driven stage system with sticky composition, section-aware progress logic, active-state transitions, and carefully tuned motion behavior. Instead of abrupt jumps, opacity, blur, scale, and progression cues work together as one authored rhythm.",
+      outcome:
+        "The result is a public live front-end case that demonstrates advanced control over motion, pacing, visual hierarchy, and interaction architecture. It functions as a proof-piece for premium digital systems where design direction and engineering are inseparable.",
+      clarity:
+        "The interface feels expensive through pacing, spacing, typography, and controlled reveal behavior rather than through visual noise.",
+      motion:
+        "Signature smoothness is achieved through section-based progress logic, sticky-stage behavior, active-state transitions, and requestAnimationFrame-based smoothing that lets motion settle naturally.",
+      build:
+        "Built with Vite, React, TypeScript, Tailwind CSS v4, and Motion, using section progress logic, sticky stage architecture, and premium motion polish.",
+      notes:
+        "Project framing\n- Premium interactive editorial web case with awards-style restraint, quiet futurism, and motion precision.\n\nCore logic\n- Scroll-driven stage experience where motion, typography, and layout behave as one directed system.\n\nThe challenge\n- Build a site that feels curated and high-end without becoming noisy, overloaded, or effect-driven.\n- Solve the deeper interaction problem: how sections become active, how progress is communicated, and how transitions stay smooth even when scrolling stops.\n\nTechnical decisions\n- Sticky stage as the core layout engine.\n- Section progress as a real interaction layer.\n- requestAnimationFrame smoothing for signature smoothness.\n- Active-section hysteresis for transition stability.\n- Motion treated as dramaturgy, not decoration.\n\nWhy this case matters\n- It demonstrates a level of creative front-end work where layout, motion, and interaction are treated as one authored system.\n- It shows not only visual taste, but also the engineering discipline required to make premium digital experiences feel stable, smooth, and intentional.\n\nProject links\n- Live site available.\n- Repository available.\n- Business metrics not specified.",
+      credits: [
+        {
+          label: "Role",
+          value: "Creative Developer / Front-end System Designer / Motion UI Direction",
+        },
+        {
+          label: "Stack",
+          value: "Vite / React / TypeScript / Tailwind CSS v4 / Motion",
+        },
+        { label: "Status", value: "Shipped" },
+      ],
+      links: [
+        {
+          label: "Live site",
+          href: "https://form-index.pages.dev/",
+        },
+        {
+          label: "Repository",
+          href: "https://github.com/brenychstudio/FORM-INDEX",
+        },
+      ],
+    },
+  },
 ];

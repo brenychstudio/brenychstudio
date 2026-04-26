@@ -962,4 +962,191 @@ export const cases: Case[] = [
       ],
     },
   },
+  {
+    slug: "casa-nube",
+    code: "CN-08",
+    index: "08",
+    title: "Casa Nube",
+    year: "2026",
+    tagline: "Premium multilingual café website concept for Barcelona.",
+    roleLabel: "Concept / UX / Front-end",
+    stackLabel: "Next.js / next-intl / Tailwind",
+    statusLabel: "Shipped",
+    statusKind: "shipped",
+    statusNote:
+      "Public live hospitality website demo built as a reusable premium café vertical.",
+    completeness: "full",
+    archiveCategory: "hospitality",
+    poster: {
+      src: "/cases/casa-nube/desktop/casa-hero.png",
+      alt: "Casa Nube poster cover",
+    },
+    coverTone: "light",
+    coverFocus: "center",
+    content: {
+      summary:
+        "Casa Nube is a premium multilingual café website concept for Barcelona. Built as a hospitality vertical demo, it combines editorial atmosphere, web-native menu structure, visit utility, subtle motion, responsive polish, and Cloudflare deployment.",
+      hero: {
+        kind: "video",
+        device: "desktop",
+        aspect: "landscape",
+        src: "/cases/casa-nube/video/casa-video.mp4",
+        poster: "/cases/casa-nube/desktop/casa-hero.png",
+        alt: "Casa Nube walkthrough video",
+        caption:
+          "Premium hospitality website demo combining atmosphere, menu clarity, visit utility, and multilingual structure.",
+        width: "full",
+        controls: true,
+      },
+      frames: [
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/casa-nube/desktop/casa-hero.png",
+          alt: "Casa Nube - desktop hero frame",
+          caption:
+            "Homepage hero presenting the café as a warm digital façade with clear visitor actions.",
+          width: "full",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/casa-nube/desktop/casa-1.png",
+          alt: "Casa Nube - desktop frame 01",
+          caption:
+            "Menu preview and space section designed as an editorial hospitality surface rather than a generic café template.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/casa-nube/desktop/casa-2.png",
+          alt: "Casa Nube - desktop frame 02",
+          caption:
+            "Space and light section using café photography, warm rhythm, and soft editorial grouping.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/casa-nube/desktop/casa-3.png",
+          alt: "Casa Nube - desktop frame 03",
+          caption:
+            "Web-native menu page replacing PDF-first restaurant UX with readable structured content.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/casa-nube/desktop/casa-4.png",
+          alt: "Casa Nube - desktop frame 04",
+          caption:
+            "Visit page focused on opening rhythm, reservation logic, and practical visitor decisions.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/casa-nube/desktop/casa-5.png",
+          alt: "Casa Nube - desktop frame 05",
+          caption:
+            "Location and planning surface with clear contact paths, directions, and practical notes.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/casa-nube/mobile/casa-mob-1.jpg",
+          alt: "Casa Nube - mobile frame 01",
+          caption:
+            "Mobile homepage preserving editorial warmth while keeping key café actions close.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/casa-nube/mobile/casa-mob-2.jpg",
+          alt: "Casa Nube - mobile frame 02",
+          caption:
+            "Mobile menu and hospitality content adapted into a calm, compact flow.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/casa-nube/mobile/casa-mob-3.jpg",
+          alt: "Casa Nube - mobile frame 03",
+          caption:
+            "Mobile menu page designed as structured web content with clear category rhythm.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/casa-nube/mobile/casa-mob-4.jpg",
+          alt: "Casa Nube - mobile frame 04",
+          caption:
+            "Mobile visit page giving users quick access to hours, location, and practical planning details.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "mobile",
+          aspect: "phone",
+          src: "/cases/casa-nube/mobile/casa-mob-5.jpg",
+          alt: "Casa Nube - mobile frame 05",
+          caption:
+            "Sticky mobile action flow for menu, reservation, and maps-oriented visitor behavior.",
+          width: "window",
+        },
+      ],
+      problem:
+        "Most café websites are either visually generic or operationally weak. They often rely on PDF menus, unclear opening hours, overloaded food photography, weak mobile navigation, or disconnected booking and contact flows.",
+      approach:
+        "Casa Nube was designed as an editorial one-page and light multi-page hybrid. The homepage builds atmosphere, while dedicated menu and visit pages provide practical utility without overloading the main experience.",
+      outcome:
+        "The result is a deployed premium hospitality website demo that works as a polished portfolio case and a reusable vertical framework for cafés, brunch places, boutique bakeries, and small restaurant concepts.",
+      clarity:
+        "The site gives visitors fast access to menu, reservation, maps, opening rhythm, and location details while preserving a refined hospitality identity.",
+      motion:
+        "Motion is intentionally soft and practical: route transitions, scroll reveal, hover lift, and footer reveal are tuned to feel premium without becoming decorative noise.",
+      build:
+        "Next.js App Router, TypeScript, Tailwind CSS, next-intl, static export, Cloudflare Pages deployment, multilingual routing, responsive QA, and custom Open Graph integration.",
+      notes:
+        "Project framing\n- Premium multilingual café website concept for Barcelona.\n- Built as a reusable hospitality vertical demo for cafés, brunch places, boutique bakeries, and small restaurant concepts.\n\nCore logic\n- Editorial homepage for atmosphere.\n- Web-native menu page instead of PDF-first UX.\n- Dedicated visit page for opening hours, reservation logic, location, maps, WhatsApp, Instagram, and practical visitor notes.\n- Multilingual ES / EN / CA structure from the foundation.\n\nThe challenge\n- Create a café website that feels premium and atmospheric while staying useful, fast, multilingual, and commercially practical.\n- Avoid generic restaurant-template behavior, overloaded food photography, unclear hours, and disconnected contact flows.\n\nUX decisions\n- Mobile-first utility for visitors arriving from Google Maps, Instagram, search, local recommendation, or QR.\n- Sticky mobile action bar for Menu / Reserve / Maps.\n- Menu structured as readable web content rather than a downloadable PDF.\n- Visit page treated as the conversion layer, not just a contact section.\n\nVisual direction\n- Off-white and limestone backgrounds.\n- Warm gray and taupe UI surfaces.\n- Muted espresso and warm charcoal accents.\n- Editorial café photography.\n- Rounded cards, soft shadows, calm page rhythm, and restrained typography.\n\nWhy this case matters\n- It proves the ability to design and implement a complete premium hospitality website from concept to deployment.\n- It demonstrates multilingual architecture, mobile-first conversion UX, responsive QA, visual polish, and productization of a local business vertical.\n\nProject links\n- Live site available.\n- Repository available.\n- No real client metrics, booking integration, or CMS claimed.",
+      credits: [
+        {
+          label: "Role",
+          value:
+            "Concept / UX Direction / Visual System / Front-end Implementation / Responsive QA / Deployment",
+        },
+        {
+          label: "Stack",
+          value:
+            "Next.js / TypeScript / Tailwind CSS / next-intl / Cloudflare Pages",
+        },
+        { label: "Status", value: "Shipped" },
+      ],
+      links: [
+        {
+          label: "Live site",
+          href: "https://casa-nube.pages.dev/es/",
+        },
+        {
+          label: "Repository",
+          href: "https://github.com/brenychstudio/casa-nube",
+        },
+      ],
+    },
+  },
 ];

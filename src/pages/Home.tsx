@@ -10,6 +10,7 @@ import { useSectionProgressMap } from "../ui/useSectionProgress";
 import { useActiveSection } from "../ui/useActiveSection";
 import ActionPill from "../ui/ActionPill";
 import ExternalProfileLinks from "../ui/profile/ExternalProfileLinks";
+import LegalFooterLinks from "../ui/LegalFooterLinks";
 import { startHardPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
 type PageProps = {
@@ -814,6 +815,7 @@ export default function Home({
                 label={t.home.contact.linksLabel}
                 variant="compact"
               />{" "}
+              <LegalFooterLinks className="mt-5" onNavigate={navigateFromHome} />{" "}
             </div>{" "}
           </motion.section>{" "}
         </Container>{" "}

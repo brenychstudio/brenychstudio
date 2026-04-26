@@ -8,6 +8,8 @@ import WorkArchive from "./pages/WorkArchive";
 import Immersive from "./pages/Immersive";
 import ImmersiveCasePage from "./pages/ImmersiveCasePage";
 import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Legal from "./pages/Legal";
 
 import ProjectDrawer from "./ui/ProjectDrawer";
 import ScrollToTop from "./ui/ScrollToTop";
@@ -33,6 +35,8 @@ export default function App() {
           <Route path="/about" element={<About drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />} />
           <Route path="/work" element={<WorkArchive drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />} />
           <Route path="/work/:slug" element={<CasePage drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />} />
+          <Route path="/privacy" element={<Privacy drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />} />
+          <Route path="/legal" element={<Legal drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 

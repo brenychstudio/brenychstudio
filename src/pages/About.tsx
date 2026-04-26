@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Container from "../ui/Container";
 import Header from "../ui/Header";
+import LegalFooterLinks from "../ui/LegalFooterLinks";
 import PageSurface from "../ui/PageSurface";
 import ExternalProfileLinks from "../ui/profile/ExternalProfileLinks";
 import { startSpaPageTransition } from "../ui/pageTransition";
@@ -270,11 +271,14 @@ export default function About({
             {...fadeUp}
             className="border-t border-neutral-100 py-10 md:py-16"
           >
-            <ExternalProfileLinks
-              label={t.about.links.label}
-              title={t.about.links.title}
-              description={t.about.links.description}
-            />
+            <div>
+              <ExternalProfileLinks
+                label={t.about.links.label}
+                title={t.about.links.title}
+                description={t.about.links.description}
+              />
+              <LegalFooterLinks className="mt-5" />
+            </div>
           </motion.section>
 
           <motion.section

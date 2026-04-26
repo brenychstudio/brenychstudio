@@ -1149,4 +1149,151 @@ export const cases: Case[] = [
       ],
     },
   },
+  {
+    slug: "print-border-studio",
+    code: "PB-09",
+    index: "09",
+    title: "Print Border Studio",
+    year: "2026",
+    tagline:
+      "Desktop-first fine-art print preparation tool with museum-style border control.",
+    roleLabel: "Product UX / Front-end / Tooling",
+    stackLabel: "React / TypeScript / Canvas",
+    statusLabel: "Shipped",
+    statusKind: "shipped",
+    statusNote:
+      "Public live product tool focused on print preparation, border control, preview accuracy, and export workflow.",
+    completeness: "full",
+    archiveCategory: "software-product",
+    poster: {
+      src: "/cases/print-border-studio/desktop/psb-hero.png",
+      alt: "Print Border Studio poster cover",
+    },
+    coverTone: "dark",
+    coverFocus: "center",
+    content: {
+      summary:
+        "Print Border Studio is a desktop-first web tool for preparing fine-art prints with controlled museum-style borders, precise visual preview, saved presets, artwork queue logic, and export-oriented workflow.",
+      hero: {
+        kind: "video",
+        device: "desktop",
+        aspect: "landscape",
+        src: "/cases/print-border-studio/video/psb-video.mp4",
+        poster: "/cases/print-border-studio/desktop/psb-hero.png",
+        alt: "Print Border Studio walkthrough video",
+        caption:
+          "Desktop-first print preparation interface built around border precision, preview clarity, and export-ready workflow.",
+        width: "full",
+        controls: true,
+      },
+      frames: [
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb-hero.png",
+          alt: "Print Border Studio - desktop hero frame",
+          caption:
+            "Main product surface combining artwork preview, border controls, queue logic, and export-ready interface structure.",
+          width: "full",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb-1.png",
+          alt: "Print Border Studio - desktop frame 01",
+          caption:
+            "Light interface state showing precise artwork placement, margin controls, and print preparation settings.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb-2.png",
+          alt: "Print Border Studio - desktop frame 02",
+          caption:
+            "Dark workspace mode designed for focused print review and controlled visual judgment.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb-3.png",
+          alt: "Print Border Studio - desktop frame 03",
+          caption:
+            "Artwork preparation flow with border settings, visual balance, and export-oriented controls.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb-4.png",
+          alt: "Print Border Studio - desktop frame 04",
+          caption:
+            "Preview and inspection state supporting careful evaluation before final export.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb-5.png",
+          alt: "Print Border Studio - desktop frame 05",
+          caption:
+            "Museum-style print framing surface focused on proportion, border rhythm, and presentation control.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/print-border-studio/desktop/psb6.png",
+          alt: "Print Border Studio - desktop frame 06",
+          caption:
+            "Light-mode production surface showing the same tool logic in a clean, gallery-oriented interface.",
+          width: "window",
+        },
+      ],
+      problem:
+        "Preparing fine-art prints often requires jumping between design tools, manual margin calculations, inconsistent previews, and export settings that are not designed for artists or photographers. The workflow becomes slow, fragile, and difficult to repeat across multiple artworks.",
+      approach:
+        "Print Border Studio was designed as a focused desktop-first production tool. The interface centers on artwork preview, museum-style border control, saved preparation logic, queue-based workflow, and export clarity instead of generic image editing.",
+      outcome:
+        "The result is a live web product that turns print preparation into a dedicated workflow surface: precise, repeatable, visually calm, and easier to use for fine-art print presentation.",
+      clarity:
+        "The product reduces the print-preparation process to the decisions that matter most: artwork, format, border, preview, queue, and export.",
+      motion:
+        "Motion is restrained and functional, supporting workspace focus, modal inspection, state changes, and tool feedback without distracting from print judgment.",
+      build:
+        "Built with React, TypeScript, canvas-oriented preview logic, local workflow state, export preparation, and a desktop-first interface optimized for careful visual work.",
+      notes:
+        "Project framing\n- Desktop-first web product for fine-art print preparation.\n- Built for artists, photographers, and print-focused workflows where border precision and presentation control matter.\n\nCore logic\n- Museum-style border preparation.\n- Artwork preview and inspection.\n- Queue-based workflow for multiple images.\n- Export-oriented interface structure.\n- Light and dark workspace surfaces.\n\nThe challenge\n- Replace a fragmented manual workflow with a focused tool that feels precise, calm, and repeatable.\n- Keep the interface useful and technical without making it feel like generic production software.\n\nUX decisions\n- Desktop-first layout because print preparation requires space, precision, and visual judgment.\n- Controls stay close to the artwork preview.\n- The interface prioritizes proportions, margin logic, export preparation, and repeatable workflow over decorative UI.\n- No mobile screenshots are shown at this stage because the current product is intentionally desktop-first.\n\nWhy this case matters\n- It demonstrates product thinking beyond marketing websites.\n- It shows the ability to design and build a practical creative tool with real workflow logic, visual precision, and export-focused interaction.\n- It expands the portfolio toward creator tools, production systems, and commercially useful web applications.\n\nProject links\n- Live site available.\n- Repository available.\n- Mobile version not claimed in this case.",
+      credits: [
+        {
+          label: "Role",
+          value:
+            "Product UX / Front-end Implementation / Interface System / Tool Workflow Design",
+        },
+        {
+          label: "Stack",
+          value: "React / TypeScript / Canvas / Cloudflare Pages",
+        },
+        { label: "Status", value: "Shipped" },
+      ],
+      links: [
+        {
+          label: "Live site",
+          href: "https://print-border-studio.pages.dev/",
+        },
+        {
+          label: "Repository",
+          href: "https://github.com/brenychstudio/print-border-studio",
+        },
+      ],
+    },
+  },
 ];

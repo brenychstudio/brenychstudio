@@ -14,6 +14,7 @@ import { formIndexCaseI18n } from "../data/formIndexCaseI18n";
 import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
 import { casaNubeCaseI18n } from "../data/casaNubeCaseI18n";
 import { printBorderStudioCaseI18n } from "../data/printBorderStudioCaseI18n";
+import { houseOfLuneCaseI18n } from "../data/houseOfLuneCaseI18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -388,9 +389,86 @@ function getLocalizedPrintBorderStudioCase(
   };
 }
 
+const HOUSE_OF_LUNE_SLUG = "house-of-lune" as const;
+
+function getLocalizedHouseOfLuneCase(
+  item: Case,
+  locale: keyof typeof houseOfLuneCaseI18n
+): Case {
+  if (item.slug !== HOUSE_OF_LUNE_SLUG) return item;
+
+  const copy = houseOfLuneCaseI18n[locale] ?? houseOfLuneCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...item,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...item.poster,
+      alt: copy.posterAlt,
+    },
+    content: item.content
+      ? {
+          ...item.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: item.content.hero
+            ? {
+                ...item.content.hero,
+                alt:
+                  (item.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : item.content.hero,
+          frames: (item.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: item.roleLabel },
+            { label: copy.creditLabels.stack, value: item.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+          ],
+          links: (item.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : item.content,
+  };
+}
+
 function applyLocalizedSpecialCases(
   item: Case,
-  locale: keyof typeof printBorderStudioCaseI18n
+  locale: keyof typeof houseOfLuneCaseI18n
 ): Case {
   const withFluid = getLocalizedCase(
     item,
@@ -408,10 +486,14 @@ function applyLocalizedSpecialCases(
     withArcwave,
     locale as keyof typeof casaNubeCaseI18n
   );
-
-  return getLocalizedPrintBorderStudioCase(
+  const withPrintBorderStudio = getLocalizedPrintBorderStudioCase(
     withCasaNube,
     locale as keyof typeof printBorderStudioCaseI18n
+  );
+
+  return getLocalizedHouseOfLuneCase(
+    withPrintBorderStudio,
+    locale as keyof typeof houseOfLuneCaseI18n
   );
 }
 
@@ -623,7 +705,7 @@ export default function WorkArchive({
       filteredCases.map((item) =>
         applyLocalizedSpecialCases(
           item,
-          locale as keyof typeof printBorderStudioCaseI18n
+          locale as keyof typeof houseOfLuneCaseI18n
         )
       ),
     [filteredCases, locale]

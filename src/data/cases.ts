@@ -1296,4 +1296,211 @@ export const cases: Case[] = [
       ],
     },
   },
+    {
+      slug: "house-of-lune",
+      code: "HL-10",
+      index: "10",
+      title: "House of Lune",
+      year: "2026",
+      tagline: "A cinematic digital maison for high jewelry.",
+      roleLabel: "Creative Developer / Front-end System Builder",
+      stackLabel: "Next.js / TypeScript / Motion",
+      statusLabel: "Shipped",
+      statusKind: "shipped",
+      statusNote:
+        "Production-oriented luxury jewelry vertical demo with multilingual routing, dynamic product pages, private inquiry UX, and Cloudflare Workers deployment.",
+      completeness: "full",
+      archiveCategory: "brands",
+      poster: {
+        src: "/cases/house-of-lune/desktop/house-of-lune-hero.png",
+        alt: "House of Lune poster cover",
+      },
+      coverTone: "dark",
+      coverFocus: "center",
+      content: {
+        summary:
+          "House of Lune is a production-oriented premium jewelry website concept built as a cinematic digital maison rather than a conventional e-commerce storefront. The project combines dark luxury art direction, restrained motion, multilingual routing, dynamic product pages, private inquiry UX, and Cloudflare Workers deployment.",
+        hero: {
+          kind: "video",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/house-of-lune/video/house-of-lune-video.mp4",
+          poster: "/cases/house-of-lune/desktop/house-of-lune-hero.png",
+          alt: "House of Lune walkthrough video",
+          caption:
+            "Cinematic digital maison built around dark luxury, object-led presentation, editorial motion, and private-client conversion.",
+          width: "full",
+          controls: true,
+        },
+        frames: [
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-hero.png",
+            alt: "House of Lune - desktop hero frame",
+            caption:
+              "Homepage hero presenting the maison through dark cinematic staging, controlled light, and private luxury atmosphere.",
+            width: "full",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-1.png",
+            alt: "House of Lune - desktop frame 01",
+            caption:
+              "Selected signatures section presenting jewelry pieces as rare objects rather than catalog inventory.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-2.png",
+            alt: "House of Lune - desktop frame 02",
+            caption:
+              "Maison storytelling surface using dark restraint, object imagery, and editorial hierarchy.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-3.png",
+            alt: "House of Lune - desktop frame 03",
+            caption:
+              "Collection presentation designed as a private salon system rather than a dense product grid.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-4.png",
+            alt: "House of Lune - desktop frame 04",
+            caption:
+              "Craftsmanship page framing atelier process, material culture, and premium editorial rhythm.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-5.png",
+            alt: "House of Lune - desktop frame 05",
+            caption:
+              "Private inquiry moment built around appointment language and restrained conversion cues.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-6.png",
+            alt: "House of Lune - desktop frame 06",
+            caption:
+              "Journal-style editorial layer positioning the maison as a living brand world rather than a static store.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/house-of-lune/desktop/house-of-lune-7.png",
+            alt: "House of Lune - desktop frame 07",
+            caption:
+              "Contact and private inquiry flow with calm form structure, material notes, and salon-like framing.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-1.jpg",
+            alt: "House of Lune - mobile frame 01",
+            caption:
+              "Mobile collection surface preserving dark luxury, object focus, and restrained interface rhythm.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-2.jpg",
+            alt: "House of Lune - mobile frame 02",
+            caption:
+              "Mobile navigation translated into a compact private-maison menu structure.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-3.jpg",
+            alt: "House of Lune - mobile frame 03",
+            caption:
+              "Mobile journal surface extending the brand through campaigns, notes, and editorial storytelling.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-4.jpg",
+            alt: "House of Lune - mobile frame 04",
+            caption:
+              "Mobile maison page presenting brand philosophy, intimacy, and material atmosphere.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-5.jpg",
+            alt: "House of Lune - mobile frame 05",
+            caption:
+              "Mobile private inquiry form focused on appointment-based luxury conversion instead of checkout-first UX.",
+            width: "window",
+          },
+        ],
+        problem:
+          "Luxury jewelry websites often fall into two weak patterns: generic e-commerce catalogs or decorative premium templates that feel visually loud but commercially shallow. The challenge was to create a private, cinematic, high-end experience that communicates rarity, materiality, trust, and desire before asking users to convert.",
+        approach:
+          "House of Lune was built as a digital maison: a multi-page premium system with a cinematic homepage, curated collection structure, object-led product pages, atelier-inspired craftsmanship storytelling, maison philosophy, journal content, and a private inquiry pathway. Motion, typography, light, and object presentation were treated as one restrained luxury language.",
+        outcome:
+          "The result is a deployed premium vertical demo that demonstrates both creative direction and production engineering: a multilingual Next.js website with dynamic product pages, editorial components, metadata/OG integration, and Cloudflare Workers deployment via OpenNext.",
+        clarity:
+          "The project moves the experience away from product-grid logic and toward a private maison system where each piece is presented as an object of desire, not a stock item.",
+        motion:
+          "Motion is slow, restrained, and dramaturgical: controlled reveals, soft page transitions, image drift, hover tension, and sticky editorial rhythm support the luxury atmosphere without becoming decorative noise.",
+        build:
+          "Built with Next.js App Router, TypeScript, Tailwind CSS, Motion, multilingual routing, dynamic product pages, Open Graph metadata, OpenNext, and Cloudflare Workers deployment.",
+        notes:
+          "Project framing\n- Premium vertical demo for a fictional high-jewelry maison.\n- Built as a production-oriented website system, not a simple landing page or ecommerce template.\n\nCore logic\n- Cinematic homepage.\n- Curated collection page.\n- Dynamic product detail pages.\n- Craftsmanship narrative.\n- Maison philosophy.\n- Journal-style editorial layer.\n- Private inquiry conversion pathway.\n\nCreative direction\n- Moonlit Object Theatre: a quiet digital stage where jewelry is revealed through darkness, contour, reflection, and deliberate silence.\n- Near-black surfaces, warm ivory typography, subtle platinum accents, thin borders, spacious layout, and controlled light.\n\nThe challenge\n- Create a luxury jewelry website that does not feel like a Shopify catalog, marketplace, or generic premium template.\n- Communicate rarity, silence, materiality, and private-client intimacy through interface, motion, and visual pacing.\n\nUX decisions\n- Products are treated as artifacts, not inventory.\n- CTAs are private and conversational, not aggressive.\n- Product pages support availability requests, private viewing, and appointment-based conversion instead of buy-now logic.\n- The contact page is built around private inquiry pathways rather than a standard form-first layout.\n\nTechnical decisions\n- Next.js App Router architecture.\n- Multilingual routes: /en, /fr, /es.\n- Dynamic product pages via /[lang]/piece/[slug].\n- Content-driven product and page data.\n- Reusable editorial components.\n- Motion primitives and page transition layer.\n- Private inquiry API route foundation.\n- Open Graph image and metadata integration.\n- Cloudflare Workers deployment via OpenNext.\n\nProduction note\n- The original WebGL jewelry hero direction was refined into an image-led cinematic object chamber because the available proxy geometry did not reach the required luxury standard.\n- Premium perception was prioritized over technical demonstration.\n- Cloudflare/OpenNext runtime issues were stabilized by switching the deployment build to Webpack while keeping the Next.js architecture intact.\n\nWhy this case matters\n- It demonstrates premium art direction for luxury web, editorial front-end composition, full multi-page brand architecture, controlled motion, multilingual Next.js routing, dynamic product pages, metadata preparation, and real Cloudflare Workers deployment.\n\nProject links\n- Live site available.\n- Repository available.\n- Fictional luxury maison demo; no real client metrics claimed.",
+        credits: [
+          {
+            label: "Role",
+            value:
+              "Creative Developer / Front-end System Builder / Motion System / Deployment Debugging",
+          },
+          {
+            label: "Stack",
+            value:
+              "Next.js / TypeScript / Tailwind CSS / Motion / OpenNext / Cloudflare Workers",
+          },
+          { label: "Status", value: "Shipped" },
+        ],
+        links: [
+          {
+            label: "Live site",
+            href: "https://house-of-lune.brenychinfo.workers.dev/en",
+          },
+          {
+            label: "Repository",
+            href: "https://github.com/brenychstudio/House-of-Lune",
+          },
+        ],
+      },
+    },
 ];

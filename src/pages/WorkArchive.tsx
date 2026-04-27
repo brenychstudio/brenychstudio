@@ -15,6 +15,8 @@ import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
 import { casaNubeCaseI18n } from "../data/casaNubeCaseI18n";
 import { printBorderStudioCaseI18n } from "../data/printBorderStudioCaseI18n";
 import { houseOfLuneCaseI18n } from "../data/houseOfLuneCaseI18n";
+import { creatorOpsCaseI18n } from "../data/creatorOpsCaseI18n";
+import { barcelonaAdvisoryCaseI18n } from "../data/barcelonaAdvisoryCaseI18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -466,9 +468,165 @@ function getLocalizedHouseOfLuneCase(
   };
 }
 
+const CREATOROPS_SLUG = "creatorops" as const;
+
+function getLocalizedCreatorOpsCase(
+  item: Case,
+  locale: keyof typeof creatorOpsCaseI18n
+): Case {
+  if (item.slug !== CREATOROPS_SLUG) return item;
+
+  const copy = creatorOpsCaseI18n[locale] ?? creatorOpsCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...item,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...item.poster,
+      alt: copy.posterAlt,
+    },
+    content: item.content
+      ? {
+          ...item.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: item.content.hero
+            ? {
+                ...item.content.hero,
+                alt:
+                  (item.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : item.content.hero,
+          frames: (item.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: item.roleLabel },
+            { label: copy.creditLabels.stack, value: item.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+          ],
+          links: (item.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : item.content,
+  };
+}
+
+const BARCELONA_ADVISORY_SLUG = "bcn-advisory" as const;
+
+function getLocalizedBarcelonaAdvisoryCase(
+  item: Case,
+  locale: keyof typeof barcelonaAdvisoryCaseI18n
+): Case {
+  if (item.slug !== BARCELONA_ADVISORY_SLUG) return item;
+
+  const copy =
+    barcelonaAdvisoryCaseI18n[locale] ?? barcelonaAdvisoryCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...item,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...item.poster,
+      alt: copy.posterAlt,
+    },
+    content: item.content
+      ? {
+          ...item.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: item.content.hero
+            ? {
+                ...item.content.hero,
+                alt:
+                  (item.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : item.content.hero,
+          frames: (item.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: item.roleLabel },
+            { label: copy.creditLabels.stack, value: item.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+            { label: copy.creditLabels.languages, value: "EN / ES" },
+          ],
+          links: (item.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : item.content,
+  };
+}
+
 function applyLocalizedSpecialCases(
   item: Case,
-  locale: keyof typeof houseOfLuneCaseI18n
+  locale: keyof typeof barcelonaAdvisoryCaseI18n
 ): Case {
   const withFluid = getLocalizedCase(
     item,
@@ -491,9 +649,19 @@ function applyLocalizedSpecialCases(
     locale as keyof typeof printBorderStudioCaseI18n
   );
 
-  return getLocalizedHouseOfLuneCase(
+  const withHouseOfLune = getLocalizedHouseOfLuneCase(
     withPrintBorderStudio,
     locale as keyof typeof houseOfLuneCaseI18n
+  );
+
+  const withCreatorOps = getLocalizedCreatorOpsCase(
+    withHouseOfLune,
+    locale as keyof typeof creatorOpsCaseI18n
+  );
+
+  return getLocalizedBarcelonaAdvisoryCase(
+    withCreatorOps,
+    locale as keyof typeof barcelonaAdvisoryCaseI18n
   );
 }
 
@@ -705,7 +873,7 @@ export default function WorkArchive({
       filteredCases.map((item) =>
         applyLocalizedSpecialCases(
           item,
-          locale as keyof typeof houseOfLuneCaseI18n
+          locale as keyof typeof barcelonaAdvisoryCaseI18n
         )
       ),
     [filteredCases, locale]

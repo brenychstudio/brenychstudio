@@ -11,6 +11,8 @@ import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
 import { casaNubeCaseI18n } from "../data/casaNubeCaseI18n";
 import { printBorderStudioCaseI18n } from "../data/printBorderStudioCaseI18n";
 import { houseOfLuneCaseI18n } from "../data/houseOfLuneCaseI18n";
+import { creatorOpsCaseI18n } from "../data/creatorOpsCaseI18n";
+import { barcelonaAdvisoryCaseI18n } from "../data/barcelonaAdvisoryCaseI18n";
 import type { CaseCoverTone } from "../ui/work/caseCover.types";
 import { AnimatePresence, motion } from "framer-motion";
 import ActionPill from "../ui/ActionPill";
@@ -718,9 +720,165 @@ function getLocalizedHouseOfLuneCase(
   };
 }
 
+const CREATOROPS_SLUG = "creatorops" as const;
+
+function getLocalizedCreatorOpsCase(
+  data: Case,
+  locale: keyof typeof creatorOpsCaseI18n
+): Case {
+  if (data.slug !== CREATOROPS_SLUG) return data;
+
+  const copy = creatorOpsCaseI18n[locale] ?? creatorOpsCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...data,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...data.poster,
+      alt: copy.posterAlt,
+    },
+    content: data.content
+      ? {
+          ...data.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: data.content.hero
+            ? {
+                ...data.content.hero,
+                alt:
+                  (data.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : data.content.hero,
+          frames: (data.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: data.roleLabel },
+            { label: copy.creditLabels.stack, value: data.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+          ],
+          links: (data.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : data.content,
+  };
+}
+
+const BARCELONA_ADVISORY_SLUG = "bcn-advisory" as const;
+
+function getLocalizedBarcelonaAdvisoryCase(
+  data: Case,
+  locale: keyof typeof barcelonaAdvisoryCaseI18n
+): Case {
+  if (data.slug !== BARCELONA_ADVISORY_SLUG) return data;
+
+  const copy =
+    barcelonaAdvisoryCaseI18n[locale] ?? barcelonaAdvisoryCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...data,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    statusNote: copy.statusNote,
+    poster: {
+      ...data.poster,
+      alt: copy.posterAlt,
+    },
+    content: data.content
+      ? {
+          ...data.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: data.content.hero
+            ? {
+                ...data.content.hero,
+                alt:
+                  (data.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : data.content.hero,
+          frames: (data.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: data.roleLabel },
+            { label: copy.creditLabels.stack, value: data.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+            { label: copy.creditLabels.languages, value: "EN / ES" },
+          ],
+          links: (data.content.links ?? []).map((link, index) => {
+            if (index === 0) return { ...link, label: copy.linkLabels.live };
+            if (index === 1) return { ...link, label: copy.linkLabels.repo };
+            return link;
+          }),
+        }
+      : data.content,
+  };
+}
+
 function applyLocalizedSpecialCases(
   data: Case,
-  locale: keyof typeof houseOfLuneCaseI18n
+  locale: keyof typeof barcelonaAdvisoryCaseI18n
 ): Case {
   const withFluid = getLocalizedCase(
     data,
@@ -744,9 +902,19 @@ function applyLocalizedSpecialCases(
     locale as keyof typeof printBorderStudioCaseI18n
   );
 
-  return getLocalizedHouseOfLuneCase(
+  const withHouseOfLune = getLocalizedHouseOfLuneCase(
     withPrintBorderStudio,
     locale as keyof typeof houseOfLuneCaseI18n
+  );
+
+  const withCreatorOps = getLocalizedCreatorOpsCase(
+    withHouseOfLune,
+    locale as keyof typeof creatorOpsCaseI18n
+  );
+
+  return getLocalizedBarcelonaAdvisoryCase(
+    withCreatorOps,
+    locale as keyof typeof barcelonaAdvisoryCaseI18n
   );
 }
 
@@ -862,7 +1030,7 @@ export default function CasePage({
       baseData
         ? applyLocalizedSpecialCases(
             baseData,
-            locale as keyof typeof houseOfLuneCaseI18n
+            locale as keyof typeof barcelonaAdvisoryCaseI18n
           )
         : null,
     [baseData, locale]
@@ -927,8 +1095,6 @@ export default function CasePage({
   const statusNote = data?.statusNote?.trim() ?? "";
   const notesText = content.notes?.trim() ?? "";
   const hasNotes = hasMeaningfulText(notesText);
-  const isBarcelonaCase = data?.slug === "bcn-advisory";
-
   const desktopFrames = (content.frames ?? []).filter(
     (f) => (f.kind ?? "image") !== "video" && (f.device ?? "desktop") !== "mobile"
   );
@@ -943,7 +1109,6 @@ export default function CasePage({
   const barcelonaMotionCaption =
     cleanText(videoFrames[0]?.caption) ||
     "Motion walkthrough of shortlist, lightbox, and intake navigation flow.";
-
   const desktopRows = buildDesktopRows(desktopFrames);
 
   const lightboxFrames = (content.frames ?? []).filter(
@@ -965,31 +1130,14 @@ export default function CasePage({
   const hasProofSurface = hasMeaningfulText(summary) || proofItems.length > 0;
   const hasLinks = (content.links?.length ?? 0) > 0;
   const completenessLabel = getCompletenessLabel(data?.completeness);
-  const defaultCoverMarkers = [
+  const coverMarkers = [
     data ? safeLabel(data.roleLabel) : "",
     data ? safeLabel(data.stackLabel) : "",
   ].filter((marker) => hasMeaningfulText(marker));
-  const barcelonaCoverMarkers = ["EN / ES", "Advisory product", "Shortlist-first"];
-  const coverMarkers = isBarcelonaCase ? barcelonaCoverMarkers : defaultCoverMarkers;
-  const barcelonaClosingThesis =
-    "A premium advisory surface built to reduce noise and support better property decisions.";
-  const barcelonaClosingPoints = [
-    "Advisory instead of catalog: curated shortlist logic over volume-heavy browsing.",
-    "Shortlist-first decision support with district-aware discovery and comparison flow.",
-    "Bilingual EN/ES product structure ready to scale toward CMS, CRM, and live inventory.",
-  ];
-  const barcelonaProductionFacts = [
-    { label: "Role", value: data ? safeLabel(data.roleLabel) : "" },
-    { label: "Stack", value: data ? safeLabel(data.stackLabel) : "" },
-    { label: "Status", value: data ? safeLabel(data.statusLabel) : "" },
-    { label: "Languages", value: "EN / ES" },
-  ].filter((item) => hasMeaningfulText(item.value));
-  const productionFacts = isBarcelonaCase
-    ? barcelonaProductionFacts
-    : (content.credits ?? []).filter(
-        (item) => hasMeaningfulText(item.label) && hasMeaningfulText(item.value)
-      );
-  const hasClosingNarrative = isBarcelonaCase || hasProofSurface || hasLinks;
+  const productionFacts = (content.credits ?? []).filter(
+    (item) => hasMeaningfulText(item.label) && hasMeaningfulText(item.value)
+  );
+  const hasClosingNarrative = hasProofSurface || hasLinks;
   const primaryExternalLink = hasLinks ? (content.links ?? [])[0] ?? null : null;
   const extraLinks = primaryExternalLink ? (content.links ?? []).slice(1) : [];
 
@@ -1125,7 +1273,7 @@ export default function CasePage({
                   {data.tagline}
                 </p>
 
-                {!isBarcelonaCase && hasMeaningfulText(summary) ? (
+                {hasMeaningfulText(summary) ? (
                   <p className="mt-3 max-w-[72ch] text-[14px] leading-[1.75] text-neutral-600 md:text-[15px] md:leading-8">
                     {summary}
                   </p>
@@ -1167,7 +1315,7 @@ export default function CasePage({
                       className="inline-flex min-h-[38px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-neutral-200/90 bg-white/70 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] text-neutral-600 transition duration-300 hover:border-neutral-300 hover:bg-white hover:text-neutral-900 sm:min-h-[40px] sm:w-auto sm:px-3.5"
                     >
                       <span>{primaryExternalLink.label}</span>
-                      <span aria-hidden="true" className="text-neutral-400">↗</span>
+                      <span aria-hidden="true" className="text-neutral-400">{"\u2197"}</span>
                     </a>
                   ) : null}
 
@@ -1341,17 +1489,14 @@ export default function CasePage({
                   {videoFrames.length ? (
                     <>
                       <section className="grid gap-8 lg:hidden">
-                        <div className="max-w-[760px]">
-                          <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">
-                            Motion proof
+                          <div className="max-w-[760px]">
+                            <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">
+                              Motion proof
+                            </div>
+                            <div className="mt-2 text-[14px] leading-[1.75] text-neutral-700">
+                              {barcelonaMotionCaption}
+                            </div>
                           </div>
-                          <div className="mt-2 text-[14px] leading-[1.75] text-neutral-700">
-                            {isBarcelonaCase
-                              ? barcelonaMotionCaption
-                              : cleanText(videoFrames[0]?.caption) ||
-                                "Calm motion walkthrough of core interaction flow."}
-                          </div>
-                        </div>
 
                         <div className="grid gap-8">
                           {videoFrames.map((f, i) => (
@@ -1360,7 +1505,7 @@ export default function CasePage({
                                 <CaseMedia frame={f} />
                               </div>
 
-                              {f.caption && !isBarcelonaCase ? (
+                              {f.caption ? (
                                 <figcaption className="mt-3 grid gap-2.5 text-neutral-500">
                                   <div className="h-px w-12 bg-neutral-200" />
                                   <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
@@ -1380,10 +1525,7 @@ export default function CasePage({
                             Motion proof
                           </div>
                           <div className="mt-2.5 text-[15px] leading-[1.75] text-neutral-700">
-                            {isBarcelonaCase
-                              ? barcelonaMotionCaption
-                              : cleanText(videoFrames[0]?.caption) ||
-                                "Calm motion walkthrough of core interaction flow."}
+                            {barcelonaMotionCaption}
                           </div>
                         </div>
 
@@ -1395,7 +1537,7 @@ export default function CasePage({
                               poster={f.poster}
                               alt={f.alt ?? ""}
                               label="Motion proof"
-                              caption={isBarcelonaCase ? undefined : f.caption}
+                              caption={f.caption}
                               autoplayInView
                             />
                           ))}
@@ -1481,70 +1623,53 @@ export default function CasePage({
                           Closing proof
                         </div>
 
-                        {isBarcelonaCase ? (
-                          <>
-                            <h2 className="mt-3 max-w-[18ch] text-[28px] leading-[0.98] tracking-[-0.03em] text-neutral-950 sm:text-[32px] md:text-[36px]">
-                              {barcelonaClosingThesis}
-                            </h2>
+                        <>
+                          {hasMeaningfulText(summary) ? (
+                            <p className="mt-3 max-w-[76ch] break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">
+                              {summary}
+                            </p>
+                          ) : (
+                            <p className="mt-3 max-w-[76ch] break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">
+                              {data.tagline}
+                            </p>
+                          )}
 
+                          {proofItems.length ? (
                             <div className="mt-5 grid gap-3">
-                              {barcelonaClosingPoints.map((point, index) => (
-                                <div key={point}>
+                              {proofItems.map((item, index) => (
+                                <div key={item.label}>
                                   {index > 0 ? <div className="my-5 h-px bg-neutral-100" /> : null}
-                                  <p className="break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">{point}</p>
+                                  <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">
+                                    {item.label}
+                                  </div>
+                                  <p className="mt-2 break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">
+                                    {item.value}
+                                  </p>
                                 </div>
                               ))}
                             </div>
+                          ) : null}
 
-                            <p className="mt-5 max-w-[76ch] break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">
-                              Near-production delivery across home, search, property, district, and intake surfaces with deployment-ready front-end structure.
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            {hasMeaningfulText(summary) ? (
-                              <p className="mt-3 max-w-[76ch] break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">{summary}</p>
-                            ) : (
-                              <p className="mt-3 max-w-[76ch] break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">
-                                {data.tagline}
-                              </p>
-                            )}
-
-                            {proofItems.length ? (
-                              <div className="mt-5 grid gap-3">
-                                {proofItems.map((item, index) => (
-                                  <div key={item.label}>
-                                    {index > 0 ? <div className="my-5 h-px bg-neutral-100" /> : null}
-                                    <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">
-                                      {item.label}
-                                    </div>
-                                    <p className="mt-2 break-words text-[14px] leading-7 text-neutral-700 md:text-[15px]">{item.value}</p>
+                          {extraLinks.length ? (
+                            <div className="mt-5 grid gap-2.5">
+                              {extraLinks.map((l) => (
+                                <a
+                                  key={`${l.label}-${l.href}`}
+                                  href={l.href}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex items-center justify-between gap-6 rounded-xl border border-neutral-100 px-4 py-3 transition hover:border-neutral-200"
+                                >
+                                  <div>
+                                    <div className="text-sm text-neutral-800">{l.label}</div>
+                                    <div className="mt-1 break-all text-xs text-neutral-500">{l.href}</div>
                                   </div>
-                                ))}
-                              </div>
-                            ) : null}
-
-                            {extraLinks.length ? (
-                              <div className="mt-5 grid gap-2.5">
-                                {extraLinks.map((l) => (
-                                  <a
-                                    key={`${l.label}-${l.href}`}
-                                    href={l.href}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="flex items-center justify-between gap-6 rounded-xl border border-neutral-100 px-4 py-3 transition hover:border-neutral-200"
-                                  >
-                                    <div>
-                                      <div className="text-sm text-neutral-800">{l.label}</div>
-                                      <div className="mt-1 text-xs text-neutral-500 break-all">{l.href}</div>
-                                    </div>
-                                    <div className="text-sm text-neutral-400">&rarr;</div>
-                                  </a>
-                                ))}
-                              </div>
-                            ) : null}
-                          </>
-                        )}
+                                  <div className="text-sm text-neutral-400">&rarr;</div>
+                                </a>
+                              ))}
+                            </div>
+                          ) : null}
+                        </>
                       </article>
                     ) : null}
 
@@ -1568,17 +1693,20 @@ export default function CasePage({
                           ))}
                         </div>
 
-                        {primaryExternalLink ? (
-                          <div className="mt-6 border-t border-neutral-100 pt-5">
-                            <a
-                              href={primaryExternalLink.href}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-800 transition duration-300 hover:border-neutral-400 hover:bg-neutral-50"
-                            >
-                              <span>Visit live site</span>
-                              <span aria-hidden="true" className="text-neutral-400">↗</span>
-                            </a>
+                        {hasLinks ? (
+                          <div className="mt-6 grid gap-2.5 border-t border-neutral-100 pt-5">
+                            {(content.links ?? []).map((link) => (
+                              <a
+                                key={`${link.label}-${link.href}`}
+                                href={link.href}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-800 transition duration-300 hover:border-neutral-400 hover:bg-neutral-50 sm:justify-start"
+                              >
+                                <span>{link.label}</span>
+                                <span aria-hidden="true" className="text-neutral-400">{"\u2197"}</span>
+                              </a>
+                            ))}
                           </div>
                         ) : null}
                       </aside>
@@ -1639,7 +1767,7 @@ export default function CasePage({
                       className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-800 transition duration-300 hover:border-neutral-400 hover:bg-neutral-50"
                     >
                       <span>Open live site</span>
-                      <span aria-hidden="true" className="text-neutral-400">↗</span>
+                      <span aria-hidden="true" className="text-neutral-400">{"\u2197"}</span>
                     </a>
                   ) : (
                     <button
@@ -1822,3 +1950,4 @@ export default function CasePage({
     </div>
   );
 }
+

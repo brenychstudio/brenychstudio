@@ -255,79 +255,99 @@ export const cases: Case[] = [
   },
   {
     slug: "bcn-advisory",
-    code: "B-04",
-    index: "04",
+    code: "BA-01",
+    index: "01",
     title: "Barcelona Private Advisory",
     year: "2026",
-    tagline:
-      "Premium bilingual advisory demo for Barcelona property discovery with shortlist-first decision support.",
-    roleLabel: "UX / UI / Front-end",
-    stackLabel: "React / TypeScript / Motion",
-    statusLabel: "Shipped",
+    tagline: "From listing portal to premium advisory product.",
+    roleLabel: "Product Direction / UX / Front-end",
+    stackLabel: "Astro / TypeScript / React Islands",
+    statusLabel: "Sales-ready demo",
     statusKind: "shipped",
+    statusNote:
+      "Client-facing premium real-estate advisory prototype with bilingual routing, curated shortlist logic, district lens, private intake, and Cloudflare deployment.",
     completeness: "full",
     archiveCategory: "advisory-property",
     poster: {
-      src: "/cases/bcn-advisory/desktop/bcn-advisory-1.jpg",
-      alt: "Barcelona Private Advisory poster",
+      src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.png",
+      alt: "Barcelona Private Advisory poster cover",
     },
     coverTone: "light",
     coverFocus: "center",
     content: {
       summary:
-        "Client-facing premium advisory demo for Spain Costas, combining editorial presentation with shortlist logic, district-led browsing, comparison, lightbox viewing, and private intake.",
+        "Barcelona Private Advisory is a premium bilingual real-estate advisory demo built for Spain Costas. Instead of another template-style listing portal, the project reframes the experience around curated shortlist logic, district fit, private intake, property showpieces, and calm editorial presentation.",
       hero: {
-        kind: "image",
+        kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-1.jpg",
-        alt: "Barcelona Private Advisory - hero frame",
-        caption: "Premium bilingual advisory surface for curated Barcelona property discovery.",
+        src: "/cases/bcn-advisory/video/bcn-advisory-video.mp4",
+        poster: "/cases/bcn-advisory/desktop/bcn-advisory-hero.png",
+        alt: "Barcelona Private Advisory walkthrough video",
+        caption:
+          "Premium advisory demo reframing real-estate browsing into a curated, Barcelona-first buyer journey.",
+        width: "full",
+        controls: true,
       },
       frames: [
         {
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-2.jpg",
-          alt: "Barcelona Private Advisory - desktop frame 01",
-          caption: "District-led search tuned for fit over listing volume.",
-          width: "window",
-        },
-        {
-          kind: "image",
-          device: "desktop",
-          aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-3.jpg",
-          alt: "Barcelona Private Advisory - desktop frame 02",
-          caption: "Shortlist-first browse state for faster advisory decisions.",
-          width: "window",
-        },
-        {
-          kind: "image",
-          device: "desktop",
-          aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-4.jpg",
-          alt: "Barcelona Private Advisory - desktop frame 03",
-          caption: "Search composition balancing calm editorial rhythm with practical filtering.",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.png",
+          alt: "Barcelona Private Advisory - desktop hero frame",
+          caption:
+            "Homepage hero positioning Spain Costas through a calmer, more selective advisory-first property experience.",
           width: "full",
         },
         {
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-5.jpg",
-          alt: "Barcelona Private Advisory - desktop frame 04",
-          caption: "Property detail with narrative context, gallery entry, and next-step cues.",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-1.png",
+          alt: "Barcelona Private Advisory - desktop frame 01",
+          caption:
+            "Search surface built around curated property discovery instead of a noisy mass-listing portal pattern.",
           width: "window",
         },
         {
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-7.jpg",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-2.png",
+          alt: "Barcelona Private Advisory - desktop frame 02",
+          caption:
+            "District lens section connecting property decisions with neighborhood rhythm, lifestyle fit, and Barcelona context.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-3.png",
+          alt: "Barcelona Private Advisory - desktop frame 03",
+          caption:
+            "Curated listing grid using warm editorial pacing and restrained UI density to preserve premium perception.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-4.png",
+          alt: "Barcelona Private Advisory - desktop frame 04",
+          caption:
+            "Shortlist drawer transforming saved properties into a more structured advisory selection flow.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-5.jpg",
           alt: "Barcelona Private Advisory - desktop frame 05",
-          caption: "Shortlist and comparison rhythm across curated selections.",
+          caption:
+            "Property showpiece page with gallery, descriptions, highlights, and product-style information hierarchy.",
           width: "window",
         },
         {
@@ -336,16 +356,18 @@ export const cases: Case[] = [
           aspect: "landscape",
           src: "/cases/bcn-advisory/desktop/bcn-advisory-6.jpg",
           alt: "Barcelona Private Advisory - desktop frame 06",
-          caption: "Private intake flow linking selected homes to advisor follow-up.",
-          width: "full",
+          caption:
+            "Lightbox experience designed to make property review feel calmer, more focused, and more premium.",
+          width: "window",
         },
         {
           kind: "image",
           device: "mobile",
           aspect: "phone",
           src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-1.jpg",
-          alt: "Barcelona Private Advisory - mobile screen 01",
-          caption: "Mobile bilingual entry with advisory framing.",
+          alt: "Barcelona Private Advisory - mobile frame 01",
+          caption:
+            "Mobile homepage preserving the advisory-first message, curated shortlist promise, and premium property framing.",
           width: "window",
         },
         {
@@ -353,8 +375,9 @@ export const cases: Case[] = [
           device: "mobile",
           aspect: "phone",
           src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-2.jpg",
-          alt: "Barcelona Private Advisory - mobile screen 02",
-          caption: "District-aware mobile discovery with calm filtering.",
+          alt: "Barcelona Private Advisory - mobile frame 02",
+          caption:
+            "Mobile property card flow focused on saved selections, calm browsing, and shortlist-first decision support.",
           width: "window",
         },
         {
@@ -362,8 +385,9 @@ export const cases: Case[] = [
           device: "mobile",
           aspect: "phone",
           src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-3.jpg",
-          alt: "Barcelona Private Advisory - mobile screen 03",
-          caption: "Saved shortlist actions on mobile: compare, remove, clear, and share.",
+          alt: "Barcelona Private Advisory - mobile frame 03",
+          caption:
+            "Mobile shortlist drawer turning saved apartments into a more structured advisory selection.",
           width: "window",
         },
         {
@@ -371,45 +395,48 @@ export const cases: Case[] = [
           device: "mobile",
           aspect: "phone",
           src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-4.jpg",
-          alt: "Barcelona Private Advisory - mobile screen 04",
-          caption: "Mobile gallery and lightbox for quick visual comparison.",
+          alt: "Barcelona Private Advisory - mobile frame 04",
+          caption:
+            "Mobile property lightbox designed for focused review, visual confidence, and premium buyer pacing.",
           width: "window",
-        },
-        {
-          kind: "video",
-          device: "desktop",
-          aspect: "landscape",
-          src: "/cases/bcn-advisory/video/bcn-advisory-video.mp4",
-          poster: "/cases/bcn-advisory/desktop/bcn-advisory-6.jpg",
-          alt: "Barcelona Private Advisory - walkthrough video",
-          caption: "Motion walkthrough of shortlist, lightbox, and intake navigation flow.",
-          width: "full",
-          controls: true,
         },
       ],
       problem:
-        "Most real-estate websites default to volume, making discovery feel transactional instead of guided.",
+        "Traditional real-estate websites often look and behave like listing portals: many cards, many filters, heavy visual noise, and little sense of advisory value. This weakens premium perception and makes even a strong service feel like a template catalog.",
       approach:
-        "Reframed as an advisory product surface: shortlist-first, district-aware, bilingual EN/ES, and centered on considered private intake.",
+        "The project was reframed as a Barcelona-first advisory product. Instead of pushing endless browsing, the experience centers on curated shortlist logic, district fit, property showpieces, private intake, bilingual UX, and a calmer decision journey.",
       outcome:
-        "Near-production bilingual demo spanning home, search, property, district, about, and intake surfaces with shortlist state and deploy-ready front-end structure.",
+        "The result is a deployed sales-ready premium demo that can work as a client-facing product prototype for Spain Costas: visually elevated, commercially understandable, bilingual, and built on a production-shaped Astro foundation.",
       clarity:
-        "Fewer, better decisions through calmer browsing rhythm and district context.",
+        "The strongest product decision was to move the experience from quantity to fit. The user is guided toward curated selection, neighborhood logic, and private advisory contact rather than generic property browsing.",
       motion:
-        "Subtle transitions guide attention without turning the advisory flow into spectacle.",
+        "Motion is controlled and minimal, supporting editorial pacing, shortlist interactions, gallery review, and a calmer premium real-estate rhythm without adding unnecessary interface noise.",
       build:
-        "Astro, TypeScript, Tailwind, React islands, Motion, and Cloudflare Pages, structured to scale toward CMS, CRM, and live inventory.",
+        "Built with Astro, TypeScript, Tailwind CSS, React islands, Motion, bilingual EN / ES routing, shortlist state, lightbox interaction, SEO foundations, GitHub, and Cloudflare Pages deployment.",
       notes:
-        "Project framing\n- Premium bilingual real-estate advisory demo for Spain Costas.\n\nWhy advisory instead of catalog\n- Positioned as private advisory product, not a mass listings portal.\n\nCore systems\n- Shortlist-first browsing, district/neighborhood lens, comparison flow, gallery/lightbox, and private intake.\n\nLanguages\n- Bilingual EN/ES structure across navigation and key client surfaces.\n\nExtension path\n- Prepared to scale toward CMS, CRM, and live inventory integration.",
+        "Project framing\n- Premium bilingual real-estate advisory demo for Spain Costas.\n- Built as a sales-ready prototype / client-facing demo, not as a fully launched inventory-backed production platform.\n\nCore logic\n- Reframes real estate from listing portal to premium advisory product.\n- Uses curated shortlist logic instead of mass browsing.\n- Adds district lens / neighborhood fit as part of the decision model.\n- Turns contact into private intake rather than a generic form.\n- Presents property pages as showpieces with gallery, descriptions, highlights, and lightbox review.\n\nWhat was implemented\n- Homepage with premium editorial framing.\n- Search page with advisory-oriented filtering.\n- Property pages with gallery, lightbox, descriptions, and product-style hierarchy.\n- District pages with Barcelona Lens logic.\n- About page rewritten as premium editorial explanation.\n- Contact page transformed into private buyer intake.\n- Shortlist logic and shareable selection flow.\n- Bilingual EN / ES routing.\n- WhatsApp, email, and copy brief actions.\n- SEO and deployment pack.\n- GitHub and Cloudflare Pages deployment.\n\nVisual direction\n- Quiet premium / editorial real-estate language.\n- Light warm palette, restrained typography, calm composition, controlled motion, and low interface noise.\n- The goal is a more expensive feeling of selection, not a heavier catalog experience.\n\nUX / product value\n- User receives a more selective buyer journey instead of an endless listing stream.\n- District logic becomes part of the property decision.\n- Shortlist becomes a real product element, not just a decorative saved button.\n- Private intake helps turn casual interest into a more structured advisory request.\n\nTechnical architecture\n- Astro static foundation for speed and SEO stability.\n- React islands only where interaction is required: shortlist state, search intake, lightbox, private intake actions, and selected mobile interaction logic.\n- This keeps the site lighter while preserving product-level interaction.\n\nCurrent honest status\n- Strong near-final demo / sales-ready advisory prototype.\n- Not positioned as a fully launched client production system with live inventory backend.\n- Some production/client details such as final contact data or inventory backend would need to be connected in a real client release.\n\nWhy this case matters\n- Demonstrates commercial product thinking, bilingual capability, premium real-estate UX, editorial visual polish, Astro architecture, interactive React islands, shortlist logic, SEO readiness, and deploy-ready execution.\n- It shows the ability to reposition a business category from template website to premium advisory experience.\n\nProject links\n- Live site available.\n- Repository available.\n- Sales-ready prototype; no real inventory backend or production business metrics claimed.",
       credits: [
-        { label: "Role", value: "UX / UI / Front-end" },
-        { label: "Stack", value: "React / TypeScript / Motion" },
-        { label: "Status", value: "Shipped" },
+        {
+          label: "Role",
+          value:
+            "Product Direction / UX Architecture / Visual Polish / Front-end Implementation / Advisory Flow Design",
+        },
+        {
+          label: "Stack",
+          value:
+            "Astro / TypeScript / Tailwind CSS / React Islands / Motion / Cloudflare Pages",
+        },
+        { label: "Status", value: "Sales-ready demo" },
+        { label: "Languages", value: "EN / ES" },
       ],
       links: [
         {
           label: "Live site",
           href: "https://barcelona-private-advisory.pages.dev/",
+        },
+        {
+          label: "Repository",
+          href: "https://github.com/brenychstudio/Barcelona-Private-Advisory",
         },
       ],
     },
@@ -1499,6 +1526,303 @@ export const cases: Case[] = [
           {
             label: "Repository",
             href: "https://github.com/brenychstudio/House-of-Lune",
+          },
+        ],
+      },
+    },
+    {
+      slug: "creatorops",
+      code: "CO-11",
+      index: "11",
+      title: "CreatorOps",
+      year: "2026",
+      tagline: "A beta-ready content workflow system for creators.",
+      roleLabel: "Product Strategy / UX / Front-end",
+      stackLabel: "Vite / React / TypeScript",
+      statusLabel: "Live beta",
+      statusKind: "in_progress",
+      statusNote:
+        "Usable MVP prototype with end-to-end creator workflow, Smart Mix logic, ZIP export, Bio Builder, live deploy, and active product development.",
+      completeness: "full",
+      archiveCategory: "software-product",
+      poster: {
+        src: "/cases/creatorops/desktop/creatorops-hero.png",
+        alt: "CreatorOps poster cover",
+      },
+      coverTone: "dark",
+      coverFocus: "center",
+      content: {
+        summary:
+          "CreatorOps is a premium creator workflow prototype that turns scattered visual assets into a calm publishing pipeline. The product guides users through Library, Smart Mix, Sequence, Planner, Captions, Export, and Bio Builder, producing a real downloadable content pack rather than a static dashboard preview.",
+        hero: {
+          kind: "video",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/creatorops/video/creatorops-video.mp4",
+          poster: "/cases/creatorops/desktop/creatorops-hero.png",
+          alt: "CreatorOps walkthrough video",
+          caption:
+            "Beta-ready creator workflow prototype with Smart Mix logic, export pipeline, and an extensible Tools layer.",
+          width: "full",
+          controls: true,
+        },
+        frames: [
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-hero.png",
+            alt: "CreatorOps - desktop hero frame",
+            caption:
+              "Product positioning surface framing CreatorOps as a calm operating system for creators and small content teams.",
+            width: "full",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-1.png",
+            alt: "CreatorOps - desktop frame 01",
+            caption:
+              "Marketing landing surface presenting the product promise, creator outcome, and premium SaaS direction.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-2.png",
+            alt: "CreatorOps - desktop frame 02",
+            caption:
+              "System logic section explaining the calm guardrails behind content planning and publishing decisions.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-3.png",
+            alt: "CreatorOps - desktop frame 03",
+            caption:
+              "Creator-facing product promise translated into a clear mobile-output and publishing-pack narrative.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-4.png",
+            alt: "CreatorOps - desktop frame 04",
+            caption:
+              "Premium landing chapter using dark product staging and restrained visual rhythm.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-5.png",
+            alt: "CreatorOps - desktop frame 05",
+            caption:
+              "Roadmap and monetization surface showing how the prototype can expand into a larger creator workflow product.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-6.png",
+            alt: "CreatorOps - desktop frame 06",
+            caption:
+              "Library and Smart Mix workspace where visual assets become structured content candidates.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-7.png",
+            alt: "CreatorOps - desktop frame 07",
+            caption:
+              "Dark prototype interface showing asset selection, state-driven layout, and product-like workspace density.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-8.png",
+            alt: "CreatorOps - desktop frame 08",
+            caption:
+              "Light workspace variation demonstrating the product system across visual modes and review contexts.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-9.png",
+            alt: "CreatorOps - desktop frame 09",
+            caption:
+              "Smart Mix output surface turning selected assets into ranked 3x3 content directions.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-10.png",
+            alt: "CreatorOps - desktop frame 10",
+            caption:
+              "Captions and planning workspace connecting content selection with publishing rhythm and output structure.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-11.png",
+            alt: "CreatorOps - desktop frame 11",
+            caption:
+              "Export and tools-oriented state showing how the workflow continues beyond visual selection.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-12.png",
+            alt: "CreatorOps - desktop frame 12",
+            caption:
+              "Bio Builder workspace combining profile fields, content grid context, generated variants, and live preview.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "desktop",
+            aspect: "landscape",
+            src: "/cases/creatorops/desktop/creatorops-13.png",
+            alt: "CreatorOps - desktop frame 13",
+            caption:
+              "Connected profile-building flow that extends the content pack into an Instagram-style bio and identity layer.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-1.jpg",
+            alt: "CreatorOps - mobile frame 01",
+            caption:
+              "Mobile content grid preserving the visual logic of the publishing pack.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-2.jpg",
+            alt: "CreatorOps - mobile frame 02",
+            caption:
+              "Mobile Smart Mix step focused on selected assets, generated candidates, and continuation flow.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-3.jpg",
+            alt: "CreatorOps - mobile frame 03",
+            caption:
+              "Mobile sequence state showing how the selected mix becomes an ordered publishing direction.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-4.jpg",
+            alt: "CreatorOps - mobile frame 04",
+            caption:
+              "Mobile planner state linking pack selection, rhythm, and next-step product flow.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-5.jpg",
+            alt: "CreatorOps - mobile frame 05",
+            caption:
+              "Mobile export state with downloadable pack logic and practical output framing.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-6.jpg",
+            alt: "CreatorOps - mobile frame 06",
+            caption:
+              "Mobile Bio Builder form for shaping handle, audience, offer, CTA, and profile direction.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-7.jpg",
+            alt: "CreatorOps - mobile frame 07",
+            caption:
+              "Instagram-style profile preview adapting the content pack into a creator-facing public identity.",
+            width: "window",
+          },
+          {
+            kind: "image",
+            device: "mobile",
+            aspect: "phone",
+            src: "/cases/creatorops/mobile/creatorops-mb-8.jpg",
+            alt: "CreatorOps - mobile frame 08",
+            caption:
+              "Mobile profile and pack handoff showing how CreatorOps can expand into standalone creator tools.",
+            width: "window",
+          },
+        ],
+        problem:
+          "Creators often have enough content, but not enough structure. Their media, captions, publishing rhythm, and profile positioning live in separate places, which makes the decision process messy, repetitive, and difficult to turn into a clear publishing outcome.",
+        approach:
+          "CreatorOps was built as a guided content pipeline where every step narrows the decision field: Library, Smart Mix, Sequence, Planner, Captions, Export, and Bio Builder. The product avoids dashboard clutter and focuses on calm decision support, structured output, and an extensible Tools layer.",
+        outcome:
+          "The result is a live beta-ready prototype with a functional end-to-end loop: users can select assets, generate Smart Mix candidates, organize a sequence, prepare captions, export a real ZIP publishing pack, then continue into Bio Builder to shape an Instagram-style profile and download a profile brief.",
+        clarity:
+          "The project turns content chaos into a structured workflow: assets become a mix, the mix becomes a plan, the plan becomes captions and export files, and the final pack becomes profile context.",
+        motion:
+          "Motion supports product calm rather than visual noise: restrained transitions, card rhythm, workspace feedback, and smooth route flow help the prototype feel premium without obscuring the workflow.",
+        build:
+          "Built with Vite, React, TypeScript, Tailwind CSS, React Router, Motion, JSZip, browser-side file handling, local/session state, Cloudflare Pages deployment, and GitHub-based delivery.",
+        notes:
+          "Project framing\n- Beta-ready content workflow prototype for creators and small content teams.\n- Built as a product system, not a landing-page-only concept.\n- Current status: usable MVP demo, live deploy, active product development.\n\nCore workflow\n- Library → Smart Mix → Sequence → Planner → Captions → Export → Bio Builder.\n- The core loop helps users move from scattered visual assets to a clean publishing pack.\n- Export produces a real downloadable ZIP pack with images, captions, hashtags, CSV, manifest, README, and structured text outputs.\n\nSmart Mix\n- Smart Mix acts as the decision layer of the product.\n- It generates 3x3 candidate mixes, ranks options, avoids repetition, supports variety guardrails, and explains why a mix works.\n- This makes the prototype more than a visual dashboard: it includes actual content decision logic.\n\nExport\n- Export is one of the strongest proof points.\n- The workflow ends in a real downloadable outcome instead of a static preview.\n- This gives the product practical value and demonstrates product-engineering thinking.\n\nBio Builder\n- Bio Builder is the first Tools module inside CreatorOps.\n- It works as both a standalone Instagram-style profile simulator and an extension of the Export flow.\n- It supports avatar upload, uploaded grid mode, connected export-pack mode, local generated variants, copy actions, and .txt profile pack download.\n- The current generation layer is local and deterministic, but the data structure is prepared for future OpenAI integration.\n\nTechnical architecture\n- SPA prototype with route-driven architecture.\n- Major steps live as separate routes.\n- Prototype shell manages navigation, tools, and layout.\n- State carries the user across the workflow.\n- Tools are separate from the main flow but can connect to Export.\n- The project is deployed on Cloudflare Pages and versioned through GitHub.\n\nCurrent limitations\n- Not a full production SaaS yet.\n- No backend, user accounts, cloud storage, real OpenAI API integration, Instagram Graph API publishing, scheduling, analytics, billing, production database, or final accessibility pass.\n- Bio Builder is an MVP layer with local/session logic rather than cloud persistence.\n\nWhy this case matters\n- CreatorOps demonstrates product thinking, UX flow design, frontend architecture, state-driven interfaces, upload handling, Smart Mix logic, ZIP export, responsive QA, premium SaaS UI, and live deployment.\n- It is one of the strongest portfolio cases because it proves the ability to build a real multi-step product system with practical output, not just an attractive interface.\n\nProject links\n- Live site available.\n- Repository available.\n- Beta-ready MVP prototype; no commercial SaaS metrics claimed.",
+        credits: [
+          {
+            label: "Role",
+            value:
+              "Product Strategy / UX Architecture / Visual System / React + TypeScript Implementation / Export Logic / Bio Builder System",
+          },
+          {
+            label: "Stack",
+            value:
+              "Vite / React / TypeScript / Tailwind CSS / React Router / Motion / JSZip / Cloudflare Pages",
+          },
+          { label: "Status", value: "Live beta" },
+        ],
+        links: [
+          {
+            label: "Live site",
+            href: "https://creatorops.pages.dev/",
+          },
+          {
+            label: "Repository",
+            href: "https://github.com/brenychstudio/CreatorOps",
           },
         ],
       },

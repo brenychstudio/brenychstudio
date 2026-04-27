@@ -5,6 +5,8 @@ import type { CaseFrame } from "../../data/cases";
 type CaseMobileShowcaseProps = {
   frames: CaseFrame[];
   onOpenFrame?: (src: string) => void;
+  eyebrow?: string;
+  description?: string;
 };
 
 function formatIndex(value: number) {
@@ -20,12 +22,13 @@ const showcaseTransition = {
 export default function CaseMobileShowcase({
   frames,
   onOpenFrame,
+  eyebrow = "Mobile showcase",
+  description = "Guided handheld sequence across bilingual entry, district-aware discovery, and shortlist actions.",
 }: CaseMobileShowcaseProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [inView, setInView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
-
 
   useEffect(() => {
     const node = rootRef.current;
@@ -79,10 +82,10 @@ export default function CaseMobileShowcase({
     >
       <div className="max-w-[760px]">
         <div className="text-[10px] tracking-[0.22em] uppercase text-neutral-400">
-          Mobile showcase
+          {eyebrow}
         </div>
         <div className="mt-2.5 text-[15px] leading-[1.75] text-neutral-700">
-          Guided handheld sequence across bilingual entry, district-aware discovery, and shortlist actions.
+          {description}
         </div>
       </div>
 

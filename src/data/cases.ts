@@ -74,68 +74,6 @@ export type Case = {
 
 export const cases: Case[] = [
   {
-    slug: "whisper",
-    code: "W-01",
-    index: "01",
-    title: "Whisper",
-    year: "2026",
-    tagline: "Minimalist experience design with controlled motion.",
-    roleLabel: "Design / Dev / Motion",
-    stackLabel: "React / Framer / Tailwind",
-    statusLabel: "Preview",
-    statusKind: "preview",
-    statusNote:
-      "Strong visual direction is locked; fuller narrative and production metrics are still being finalized.",
-    completeness: "preview",
-    archiveCategory: "software-product",
-    poster: { src: "/cases/whisper/poster.jpg", alt: "Whisper poster" },
-    coverTone: "dark",
-    content: {
-      summary:
-        "Exploration of calm motion and editorial pacing for a minimalist product surface.",
-      problem:
-        "Minimal product concepts often lose clarity when motion becomes decoration instead of structure.",
-      approach:
-        "Built around restrained pacing, quiet chrome, and a deliberately reduced interaction set that keeps hierarchy doing the work.",
-      outcome:
-        "Preview direction establishes a calm premium surface with enough system logic to guide future product expansion.",
-      clarity:
-        "The interface stays readable by using spacing, typography, and timing before adding extra interface noise.",
-      motion:
-        "Motion is treated as emphasis and sequencing, not spectacle.",
-      build:
-        "React, Tailwind, and Framer-based front-end study for reusable premium UI patterns.",
-      hero: {
-        src: "/cases/whisper/poster.jpg",
-        alt: "Whisper - hero",
-        caption: "Hero surface with restrained motion and strict spacing.",
-        width: "full",
-      },
-      frames: [
-        {
-          src: "/cases/whisper/frame-01.jpg",
-          alt: "Whisper - frame 01",
-          caption: "Editorial frame with generous breathing space and hierarchy.",
-          width: "window",
-        },
-        {
-          src: "/cases/whisper/frame-02.jpg",
-          alt: "Whisper - frame 02",
-          caption: "Full-width composition with image-first emphasis.",
-          width: "full",
-        },
-        {
-          src: "/cases/whisper/frame-03.jpg",
-          alt: "Whisper - frame 03",
-          caption: "Interaction pass focused on subtle but readable motion.",
-          width: "window",
-        },
-      ],
-      notes:
-        "Preview case: selected frames only while narrative and production metrics are being finalized.",
-    },
-  },
-  {
     slug: "gallery",
     code: "G-02",
     index: "02",

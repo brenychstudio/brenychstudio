@@ -271,6 +271,19 @@ export const ua: TranslationDictionary = {
       secondary: "Переглянути вибрані роботи",
     },
     cases: {
+      whisper: {
+        title: "WHISPER",
+        tagline:
+          "Кінематографічна Web / XR виставка, де фотографія стає імерсивним collector experience.",
+        medium: "Interactive Web / XR Exhibition",
+        mode: "Advanced working V1",
+        stack: "React, Vite, Three.js, WebXR, Quest VR, AR preview, Cloudflare Pages",
+        description:
+          "Flagship in-progress виставка, що поєднує conceptual photography, editorial web presentation, Quest VR hand-navigation, print catalog, AR preview і reusable XRCore foundation.",
+        supportLabel: "Flagship immersive case",
+        ctaLabel: "Відкрити WHISPER case",
+        status: "Advanced V1 / In progress",
+      },
       atlasArc: {
         title: "Atlas Arc",
         tagline: "Кінематографічний WebXR-наратив для property з керованими просторовими переходами.",

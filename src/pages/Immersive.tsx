@@ -215,77 +215,79 @@ export default function Immersive({
               </section>
             ) : null}
 
-            <section className="border-b border-neutral-100 py-12 md:py-14">
-              <div className="mb-6 text-[10px] tracking-[0.14em] uppercase text-neutral-500">
-                {t.immersive.secondary.label}
-              </div>
-              <div className="grid gap-5 xl:grid-cols-2">
-                {secondaryItems.map((item) => (
-                  <article
-                    key={item.slug}
-                    role="link"
-                    tabIndex={0}
-                    onClick={() => openImmersiveCase(item.slug)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        openImmersiveCase(item.slug);
-                      }
-                    }}
-                    className="group cursor-pointer flex h-full flex-col rounded-[18px] border border-neutral-100 bg-white/90 p-4 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-2px] hover:shadow-[0_12px_28px_rgba(0,0,0,0.045)] hover:border-neutral-200"
-                  >
-                    <div
-                      className={[
-                        "relative overflow-hidden rounded-[18px] border border-white/10 text-white",
-                        "aspect-[16/10] min-h-[264px]",
-                      ].join(" ")}
+            {secondaryItems.length ? (
+              <section className="border-b border-neutral-100 py-12 md:py-14">
+                <div className="mb-6 text-[10px] tracking-[0.14em] uppercase text-neutral-500">
+                  {t.immersive.secondary.label}
+                </div>
+                <div className="grid gap-5 xl:grid-cols-2">
+                  {secondaryItems.map((item) => (
+                    <article
+                      key={item.slug}
+                      role="link"
+                      tabIndex={0}
+                      onClick={() => openImmersiveCase(item.slug)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          openImmersiveCase(item.slug);
+                        }
+                      }}
+                      className="group cursor-pointer flex h-full flex-col rounded-[18px] border border-neutral-100 bg-white/90 p-4 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-2px] hover:shadow-[0_12px_28px_rgba(0,0,0,0.045)] hover:border-neutral-200"
                     >
-                      {item.previewVideo ? (
-                        <video
-                          key={item.previewVideo}
-                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                        >
-                          <source src={item.previewVideo} type="video/mp4" />
-                        </video>
-                      ) : item.previewPoster ? (
-                        <img
-                          src={item.previewPoster}
-                          alt={item.copy.title}
-                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ) : null}
+                      <div
+                        className={[
+                          "relative overflow-hidden rounded-[18px] border border-white/10 text-white",
+                          "aspect-[16/10] min-h-[264px]",
+                        ].join(" ")}
+                      >
+                        {item.previewVideo ? (
+                          <video
+                            key={item.previewVideo}
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                          >
+                            <source src={item.previewVideo} type="video/mp4" />
+                          </video>
+                        ) : item.previewPoster ? (
+                          <img
+                            src={item.previewPoster}
+                            alt={item.copy.title}
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : null}
 
-                      <div className="absolute inset-0 bg-black/12" />
-                      <div className="pointer-events-none absolute left-4 top-4 z-10 text-[10px] tracking-[0.14em] uppercase text-white/72">
-                        {item.copy.supportLabel}
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <h3 className="text-[20px] leading-[1.2] tracking-[-0.01em] text-neutral-950">
-                        {item.copy.title}
-                      </h3>
-                      <p className="mt-2 text-[14px] leading-6 text-neutral-650">
-                        {item.copy.description}
-                      </p>
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <CaseStatusPill kind={item.statusKind} label={item.copy.status} />
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-                          {item.copy.stack}
+                        <div className="absolute inset-0 bg-black/12" />
+                        <div className="pointer-events-none absolute left-4 top-4 z-10 text-[10px] tracking-[0.14em] uppercase text-white/72">
+                          {item.copy.supportLabel}
                         </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
+
+                      <div className="mt-4">
+                        <h3 className="text-[20px] leading-[1.2] tracking-[-0.01em] text-neutral-950">
+                          {item.copy.title}
+                        </h3>
+                        <p className="mt-2 text-[14px] leading-6 text-neutral-650">
+                          {item.copy.description}
+                        </p>
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          <CaseStatusPill kind={item.statusKind} label={item.copy.status} />
+                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+                            {item.copy.stack}
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
 
             <section className="grid gap-6 border-t border-neutral-100/80 pt-12 pb-12 xl:grid-cols-[0.56fr_0.44fr] md:pb-14">
               <div className="rounded-2xl border border-neutral-100 p-6 md:p-7">

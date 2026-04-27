@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "../ui/Header";
@@ -6,10 +5,8 @@ import Container from "../ui/Container";
 import ActionPill from "../ui/ActionPill";
 import PageSurface from "../ui/PageSurface";
 import CaseStatusPill from "../ui/status/CaseStatusPill";
-import CaseImageLightbox from "../ui/work/CaseImageLightbox";
-import CaseMobileShowcase from "../ui/work/CaseMobileShowcase";
+import WhisperCaseLayout from "../ui/immersive/WhisperCaseLayout";
 import { startSpaPageTransition } from "../ui/pageTransition";
-import type { CaseFrame } from "../data/cases";
 import { immersiveItems, type ImmersiveTone } from "../data/immersive";
 import { useLocale } from "../store/useLocale";
 
@@ -323,103 +320,6 @@ export default function ImmersiveCasePage({
   const next = index >= 0 && index < immersiveItems.length - 1 ? immersiveItems[index + 1] : null;
   const isWhisperCase = data.slug === "whisper";
   const externalLinks = data.links ?? [];
-  const immersiveVideos = data.videos ?? [];
-  const immersiveFrames = data.frames ?? [];
-  const desktopWalkthrough = immersiveVideos.find(
-    (video) => video.device === "desktop"
-  );
-  const questCapture = immersiveVideos.find(
-    (video) => video.device === "vr"
-  );
-  const webFrames = immersiveFrames.filter(
-    (frame) => frame.device === "desktop"
-  );
-  const vrFrames = immersiveFrames.filter(
-    (frame) => frame.device === "vr"
-  );
-  const mobileFrames = immersiveFrames.filter(
-    (frame) => frame.device === "mobile"
-  );
-  const webGalleryItems = webFrames.map((frame) => ({
-    src: frame.src,
-    alt: frame.alt,
-    caption: frame.caption,
-    label: frame.label,
-  }));
-
-  const vrGalleryItems = vrFrames.map((frame) => ({
-    src: frame.src,
-    alt: frame.alt,
-    caption: frame.caption,
-    label: frame.label,
-  }));
-
-  const mobileGalleryItems = mobileFrames.map((frame) => ({
-    src: frame.src,
-    alt: frame.alt,
-    caption: frame.caption,
-    label: frame.label,
-  }));
-
-  const mobileShowcaseFrames: CaseFrame[] = mobileFrames.map((frame) => ({
-    kind: "image",
-    device: "mobile",
-    aspect: "phone",
-    src: frame.src,
-    alt: frame.alt,
-    caption: frame.caption,
-  }));
-
-  const [activeVrIndex, setActiveVrIndex] = useState(0);
-
-  const [whisperLightbox, setWhisperLightbox] = useState<{
-    items: Array<{
-      src: string;
-      alt: string;
-      caption?: string;
-      label?: string;
-    }>;
-    index: number;
-  } | null>(null);
-
-  const openWhisperLightbox = (
-    items: Array<{
-      src: string;
-      alt: string;
-      caption?: string;
-      label?: string;
-    }>,
-    index: number
-  ) => {
-    setWhisperLightbox({ items, index });
-  };
-
-  const closeWhisperLightbox = () => {
-    setWhisperLightbox(null);
-  };
-
-  const goPrev = () => {
-    setWhisperLightbox((current) => {
-      if (!current || !current.items.length) return current;
-
-      const nextIndex =
-        current.index <= 0 ? current.items.length - 1 : current.index - 1;
-
-      return { ...current, index: nextIndex };
-    });
-  };
-
-  const goNext = () => {
-    setWhisperLightbox((current) => {
-      if (!current || !current.items.length) return current;
-
-      const nextIndex = (current.index + 1) % current.items.length;
-
-      return { ...current, index: nextIndex };
-    });
-  };
-
-  const currentVrFrame = vrFrames[activeVrIndex] ?? vrFrames[0] ?? null;
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -457,763 +357,167 @@ export default function ImmersiveCasePage({
             </div>
           </section>
 
-          <section className="border-b border-neutral-100 py-12 md:py-14 xl:py-16">
-            <article className="rounded-[30px] border border-neutral-100 bg-white p-3 shadow-[0_24px_64px_rgba(17,17,17,0.06)] md:p-4">
-              <motion.div
-                className={[
-                  "relative overflow-hidden rounded-[24px] border border-white/10",
-                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
-                  toneSurface[data.tone],
-                ].join(" ")}
-                initial={{ scale: 1.02, y: 8 }}
-                animate={{ scale: 1, y: 0 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {data.previewVideo ? (
-                  <video
-                    key={data.previewVideo}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                  >
-                    <source src={data.previewVideo} type="video/mp4" />
-                  </video>
-                ) : data.previewPoster ? (
-                  <img
-                    src={data.previewPoster}
-                    alt={data.title}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : null}
-
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,22,0.16)_0%,rgba(8,12,22,0.12)_24%,rgba(8,12,22,0.42)_62%,rgba(8,12,22,0.72)_100%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,rgba(255,255,255,0.12),transparent_52%)]" />
-                {variantUi.heroGhostClass ? <div className={variantUi.heroGhostClass} /> : null}
-
-                <div
-                  className={`relative flex min-h-[360px] flex-col justify-between p-5 text-white sm:min-h-[420px] sm:p-6 ${variantUi.heroMinClass} md:p-8 xl:p-10`}
+          {!isWhisperCase ? (
+            <section className="border-b border-neutral-100 py-12 md:py-14 xl:py-16">
+              <article className="rounded-[30px] border border-neutral-100 bg-white p-3 shadow-[0_24px_64px_rgba(17,17,17,0.06)] md:p-4">
+                <motion.div
+                  className={[
+                    "relative overflow-hidden rounded-[24px] border border-white/10",
+                    "shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
+                    toneSurface[data.tone],
+                  ].join(" ")}
+                  initial={{ scale: 1.02, y: 8 }}
+                  animate={{ scale: 1, y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="flex items-start justify-between gap-4 md:gap-6">
-                    <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
-                      {data.supportLabel ?? "Immersive study"}
-                    </div>
-
-                    <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
-                      {data.medium}
-                    </div>
-                  </div>
-
-                  <div className="max-w-[60ch]">
-                    <div className="text-[10px] uppercase tracking-[0.14em] text-white/68">{data.mode}</div>
-
-                    <h1
-                      className={`mt-5 ${variantUi.titleMaxClass} text-[36px] leading-[0.94] tracking-[-0.04em] sm:text-[48px] md:text-[66px] ${variantUi.titleSizeClass}`}
+                  {data.previewVideo ? (
+                    <video
+                      key={data.previewVideo}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
                     >
-                      {data.title}
-                    </h1>
-
-                    <p className="mt-5 max-w-[34ch] text-sm leading-7 text-white/82 md:text-[16px]">
-                      {data.tagline}
-                    </p>
-
-                    {data.statusNote ? (
-                      <p className="mt-3 max-w-[38ch] text-[13px] leading-7 text-white/62 md:text-[14px]">
-                        {data.statusNote}
-                      </p>
-                    ) : null}
-
-                    <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.14em] text-white/70">
-                      {detail.principles.map((item) => (
-                        <span key={item} className="inline-flex items-center whitespace-nowrap rounded-full border border-white/16 px-3 py-1">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
-                    <div>
-                      <p className="max-w-[56ch] text-sm leading-7 text-white/82 md:text-[15px]">
-                        {detail.intro}
-                      </p>
-                      <div className="mt-3 text-[11px] uppercase tracking-[0.14em] text-white/62">{data.stack}</div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                      {externalLinks.map((link) => (
-                        <a
-                          key={`${link.label}-${link.href}`}
-                          href={link.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center whitespace-nowrap rounded-full border border-white/18 bg-white/10 px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:bg-white/20"
-                        >
-                          {link.label} <span className="ml-2 text-white/55">{"\u2197"}</span>
-                        </a>
-                      ))}
-
-                      <ActionPill
-                        onClick={() => onOpenProject?.()}
-                        aria-haspopup="dialog"
-                        className="hover:shadow-[0_10px_24px_rgba(17,17,17,0.10)]"
-                      >
-                        {t.nav.start}
-                      </ActionPill>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </article>
-          </section>
-
-          <motion.section
-            className="grid gap-10 border-b border-neutral-100 py-12 md:grid-cols-[0.64fr_0.36fr] md:gap-12 md:py-14 xl:grid-cols-[0.62fr_0.38fr]"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.18 }}
-            transition={{ duration: 0.8, delay: 0.02, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.28 }}
-              transition={{ duration: 0.78, delay: 0.02, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Direction</div>
-              <h2
-                className="mt-3 max-w-[11ch] text-[52px] leading-[0.96] tracking-[-0.04em] md:text-[56px] xl:max-w-[12ch] xl:text-[62px]"
-              >
-                {detail.directionHeading}
-              </h2>
-              <p className="mt-5 max-w-[46ch] text-[15px] leading-7 text-neutral-600">{detail.direction}</p>
-            </motion.div>
-
-            <motion.div
-              className="grid gap-3.5 self-start"
-              initial={{ opacity: 0, x: 12 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.28 }}
-              transition={{ duration: 0.78, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] md:p-[18px]">
-                <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Interaction grammar</div>
-                <p className="mt-3 text-sm leading-7 text-neutral-600">{detail.interaction}</p>
-              </div>
-
-              <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] md:p-[18px]">
-                <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Build path</div>
-                <p className="mt-3 text-sm leading-7 text-neutral-600">{detail.build}</p>
-              </div>
-            </motion.div>
-          </motion.section>
-
-          {isWhisperCase ? (
-            <>
-              <motion.section
-                className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.14 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="grid gap-8">
-                  <div className="grid gap-6 xl:grid-cols-[0.66fr_0.34fr] xl:items-end">
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                        Flagship walkthrough
-                      </div>
-                      <h2 className="mt-3 max-w-[12ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
-                        A guided walkthrough of the real website experience.
-                      </h2>
-                      <p className="mt-5 max-w-[64ch] text-[15px] leading-8 text-neutral-600">
-                        WHISPER is not just a visual moodboard. It is a layered immersive system: cinematic
-                        website, collector flow, print logic, XR continuation, and Quest-tested navigation.
-                      </p>
-                    </div>
-
-                    <div className="rounded-[30px] border border-neutral-100 bg-neutral-50 p-6">
-                      <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                        Current build
-                      </div>
-                      <div className="mt-4 space-y-3 text-sm leading-7 text-neutral-650">
-                        <p>Public website with cinematic editorial structure.</p>
-                        <p>Quest hand-navigation prototype and XR space proof.</p>
-                        <p>Print / AR collector flow connected to the same project logic.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {desktopWalkthrough ? (
-                    <article className="overflow-hidden rounded-[34px] border border-neutral-100 bg-neutral-950 p-3 shadow-[0_26px_80px_rgba(17,17,17,0.10)]">
-                      <div className="relative overflow-hidden rounded-[26px] bg-black">
-                        <div className="pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
-                          Desktop walkthrough
-                        </div>
-
-                        <video
-                          className="aspect-video w-full object-cover"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          poster={desktopWalkthrough.poster}
-                        >
-                          <source src={desktopWalkthrough.src} type="video/mp4" />
-                        </video>
-                      </div>
-
-                      <div className="px-2 pb-2 pt-5 text-white">
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-white/42">
-                          Website navigation
-                        </div>
-                        <p className="mt-2 max-w-[70ch] text-sm leading-7 text-white/72">
-                          {desktopWalkthrough.caption}
-                        </p>
-                      </div>
-                    </article>
-                  ) : null}
-                </div>
-              </motion.section>
-
-              <motion.section
-                className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.14 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="grid gap-10">
-                  <div className="grid gap-6 xl:grid-cols-[0.64fr_0.36fr] xl:items-end">
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                        Web exhibition
-                      </div>
-                      <h2 className="mt-3 max-w-[13ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
-                        Editorial surfaces for a cinematic art system.
-                      </h2>
-                    </div>
-
-                    <p className="max-w-[36ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
-                      Selected website frames arranged as presentation proof, not as a raw screenshot dump.
-                      Every frame is clickable and opens in the same premium case-view logic as the rest of the
-                      site.
-                    </p>
-                  </div>
-
-                  {webFrames[0] ? (
-                    <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)]">
-                      <button
-                        type="button"
-                        onClick={() => openWhisperLightbox(webGalleryItems, 0)}
-                        className="block w-full text-left"
-                      >
-                        <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                          <img
-                            src={webFrames[0].src}
-                            alt={webFrames[0].alt}
-                            className="aspect-[16/9] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </div>
-                      </button>
-
-                      <div className="px-1 pb-1 pt-5">
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                          {webFrames[0].label ?? "Hero"}
-                        </div>
-                        <p className="mt-2 max-w-[72ch] text-sm leading-7 text-neutral-650">
-                          {webFrames[0].caption}
-                        </p>
-                      </div>
-                    </article>
+                      <source src={data.previewVideo} type="video/mp4" />
+                    </video>
+                  ) : data.previewPoster ? (
+                    <img
+                      src={data.previewPoster}
+                      alt={data.title}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   ) : null}
 
-                  <div className="grid gap-6 lg:grid-cols-12">
-                    {webFrames[1] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-7">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 1)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[1].src}
-                              alt={webFrames[1].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[1].label ?? "Frame 02"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[1].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,22,0.16)_0%,rgba(8,12,22,0.12)_24%,rgba(8,12,22,0.42)_62%,rgba(8,12,22,0.72)_100%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,rgba(255,255,255,0.12),transparent_52%)]" />
+                  {variantUi.heroGhostClass ? <div className={variantUi.heroGhostClass} /> : null}
 
-                    <div className="grid gap-6 lg:col-span-5">
-                      {webFrames[2] ? (
-                        <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)]">
-                          <button
-                            type="button"
-                            onClick={() => openWhisperLightbox(webGalleryItems, 2)}
-                            className="block w-full text-left"
-                          >
-                            <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                              <img
-                                src={webFrames[2].src}
-                                alt={webFrames[2].alt}
-                                className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                          </button>
-                          <div className="px-1 pb-1 pt-5">
-                            <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                              {webFrames[2].label ?? "Frame 03"}
-                            </div>
-                            <p className="mt-2 text-sm leading-7 text-neutral-650">
-                              {webFrames[2].caption}
-                            </p>
-                          </div>
-                        </article>
-                      ) : null}
+                  <div
+                    className={`relative flex min-h-[360px] flex-col justify-between p-5 text-white sm:min-h-[420px] sm:p-6 ${variantUi.heroMinClass} md:p-8 xl:p-10`}
+                  >
+                    <div className="flex items-start justify-between gap-4 md:gap-6">
+                      <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
+                        {data.supportLabel ?? "Immersive study"}
+                      </div>
 
-                      <div className="rounded-[30px] border border-neutral-100 bg-neutral-50 p-6">
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                          Presentation logic
-                        </div>
-                        <p className="mt-4 text-sm leading-7 text-neutral-650">
-                          The point here is not to show all screenshots. The point is to demonstrate visual
-                          pacing: hero, series system, gallery rhythm, print layer, notes layer, and collector
-                          continuation.
-                        </p>
+                      <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
+                        {data.medium}
                       </div>
                     </div>
 
-                    {webFrames[3] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-5">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 3)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[3].src}
-                              alt={webFrames[3].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[3].label ?? "Frame 04"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[3].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
+                    <div className="max-w-[60ch]">
+                      <div className="text-[10px] uppercase tracking-[0.14em] text-white/68">{data.mode}</div>
 
-                    {webFrames[4] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-7">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 4)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[4].src}
-                              alt={webFrames[4].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[4].label ?? "Frame 05"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[4].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
+                      <h1
+                        className={`mt-5 ${variantUi.titleMaxClass} text-[36px] leading-[0.94] tracking-[-0.04em] sm:text-[48px] md:text-[66px] ${variantUi.titleSizeClass}`}
+                      >
+                        {data.title}
+                      </h1>
 
-                    {webFrames[5] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-7">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 5)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[5].src}
-                              alt={webFrames[5].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[5].label ?? "Frame 06"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[5].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
-
-                    {webFrames[6] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-5">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 6)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[6].src}
-                              alt={webFrames[6].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[6].label ?? "Frame 07"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[6].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
-
-                    {webFrames[7] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-5">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 7)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[7].src}
-                              alt={webFrames[7].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[7].label ?? "Frame 08"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[7].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
-
-                    {webFrames[8] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-7">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 8)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[8].src}
-                              alt={webFrames[8].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[8].label ?? "Frame 09"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[8].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
-
-                    {webFrames[9] ? (
-                      <article className="rounded-[30px] border border-neutral-100 bg-white p-4 shadow-[0_18px_46px_rgba(17,17,17,0.045)] lg:col-span-7">
-                        <button
-                          type="button"
-                          onClick={() => openWhisperLightbox(webGalleryItems, 9)}
-                          className="block w-full text-left"
-                        >
-                          <div className="overflow-hidden rounded-[24px] border border-neutral-100 bg-neutral-950">
-                            <img
-                              src={webFrames[9].src}
-                              alt={webFrames[9].alt}
-                              className="aspect-[16/10] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-                        </button>
-                        <div className="px-1 pb-1 pt-5">
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                            {webFrames[9].label ?? "Frame 10"}
-                          </div>
-                          <p className="mt-2 text-sm leading-7 text-neutral-650">
-                            {webFrames[9].caption}
-                          </p>
-                        </div>
-                      </article>
-                    ) : null}
-                  </div>
-                </div>
-              </motion.section>
-
-              <motion.section
-                className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.14 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="rounded-[36px] border border-neutral-100 bg-[#05070a] p-5 text-white shadow-[0_28px_76px_rgba(17,17,17,0.12)] md:p-8">
-                  <div className="grid gap-8 xl:grid-cols-[0.44fr_0.56fr] xl:items-start">
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-white/42">
-                        XR spatial proof
-                      </div>
-                      <h2 className="mt-3 max-w-[11ch] text-[40px] leading-[0.98] tracking-[-0.045em] md:text-[62px]">
-                        Quest-tested exhibition space.
-                      </h2>
-                      <p className="mt-5 max-w-[44ch] text-[15px] leading-8 text-white/64">
-                        One large spatial proof frame with controlled switching instead of three small dark
-                        cards. This lets the XR material breathe.
+                      <p className="mt-5 max-w-[34ch] text-sm leading-7 text-white/82 md:text-[16px]">
+                        {data.tagline}
                       </p>
 
-                      {questCapture ? (
-                        <div className="mt-7 rounded-[28px] border border-white/10 bg-black p-3">
-                          <div className="overflow-hidden rounded-[20px]">
-                            <video
-                              className="aspect-video w-full object-cover"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              preload="metadata"
-                              poster={questCapture.poster}
-                            >
-                              <source src={questCapture.src} type="video/mp4" />
-                            </video>
-                          </div>
-
-                          <div className="px-2 pb-1 pt-4">
-                            <div className="text-[10px] uppercase tracking-[0.14em] text-white/42">
-                              Quest capture
-                            </div>
-                            <p className="mt-2 text-sm leading-7 text-white/66">
-                              {questCapture.caption}
-                            </p>
-                          </div>
-                        </div>
-                      ) : null}
-                    </div>
-
-                    <div className="grid gap-5">
-                      {currentVrFrame ? (
-                        <article className="rounded-[30px] border border-white/10 bg-black p-3">
-                          <button
-                            type="button"
-                            onClick={() => openWhisperLightbox(vrGalleryItems, activeVrIndex)}
-                            className="block w-full text-left"
-                          >
-                            <div className="overflow-hidden rounded-[22px] border border-white/8 bg-black">
-                              <img
-                                src={currentVrFrame.src}
-                                alt={currentVrFrame.alt}
-                                className="aspect-[16/9] w-full object-cover transition duration-500 hover:scale-[1.01]"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                          </button>
-
-                          <div className="px-2 pb-1 pt-4">
-                            <div className="text-[10px] uppercase tracking-[0.14em] text-white/42">
-                              {currentVrFrame.label ?? `Quest frame ${activeVrIndex + 1}`}
-                            </div>
-                            <p className="mt-2 max-w-[58ch] text-sm leading-7 text-white/66">
-                              {currentVrFrame.caption}
-                            </p>
-                          </div>
-                        </article>
+                      {data.statusNote ? (
+                        <p className="mt-3 max-w-[38ch] text-[13px] leading-7 text-white/62 md:text-[14px]">
+                          {data.statusNote}
+                        </p>
                       ) : null}
 
-                      <div className="grid gap-3 md:grid-cols-3">
-                        {vrFrames.map((frame, index) => (
-                          <button
-                            key={frame.src}
-                            type="button"
-                            onClick={() => setActiveVrIndex(index)}
-                            className={[
-                              "rounded-[22px] border p-3 text-left transition",
-                              activeVrIndex === index
-                                ? "border-white/28 bg-white/8"
-                                : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]",
-                            ].join(" ")}
-                          >
-                            <div className="overflow-hidden rounded-[16px] border border-white/10 bg-black">
-                              <img
-                                src={frame.src}
-                                alt={frame.alt}
-                                className="aspect-[16/10] w-full object-cover"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-
-                            <div className="pt-3">
-                              <div className="text-[10px] uppercase tracking-[0.14em] text-white/42">
-                                {frame.label ?? `VR ${index + 1}`}
-                              </div>
-                              <p className="mt-2 text-sm leading-6 text-white/66 line-clamp-3">
-                                {frame.caption}
-                              </p>
-                            </div>
-                          </button>
+                      <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.14em] text-white/70">
+                        {detail.principles.map((item) => (
+                          <span key={item} className="inline-flex items-center whitespace-nowrap rounded-full border border-white/16 px-3 py-1">
+                            {item}
+                          </span>
                         ))}
                       </div>
                     </div>
-                  </div>
-                </div>
-              </motion.section>
 
-              <motion.section
-                className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.14 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <CaseMobileShowcase
-                  frames={mobileShowcaseFrames}
-                  onOpenFrame={(src) => {
-                    const index = mobileGalleryItems.findIndex((item) => item.src === src);
-                    openWhisperLightbox(mobileGalleryItems, index >= 0 ? index : 0);
-                  }}
-                  eyebrow="Mobile showcase"
-                  description="Guided handheld sequence across exhibition entry, series navigation, mobile drawer, work detail, and print / AR continuation."
-                />
-              </motion.section>
-
-              <motion.section
-                className="py-14 md:py-18 xl:py-20"
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.14 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="grid gap-8 xl:grid-cols-[0.64fr_0.36fr]">
-                  <div className="rounded-[34px] border border-neutral-100 bg-white p-8 shadow-[0_18px_46px_rgba(17,17,17,0.045)]">
-                    <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                      Next step
-                    </div>
-                    <h3 className="mt-4 max-w-[13ch] text-[34px] leading-[1.02] tracking-[-0.04em] text-neutral-950 md:text-[48px]">
-                      If this direction aligns, the next step is defining scope, motion grammar, and production
-                      depth.
-                    </h3>
-                    <p className="mt-5 max-w-[56ch] text-[15px] leading-8 text-neutral-600">
-                      WHISPER already proves the core direction. The next layer is production refinement: XR
-                      pacing, additional AR assets, mobile / tablet polish, and deeper collector continuation.
-                    </p>
-
-                    <div className="mt-8 flex flex-wrap gap-3">
-                      <a
-                        href="/offer"
-                        className="inline-flex items-center rounded-full border border-neutral-200 px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-neutral-800 transition hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
-                      >
-                        Start a project
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[34px] border border-neutral-100 bg-neutral-50 p-8">
-                    <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                      Production focus
-                    </div>
-
-                    <div className="mt-6 space-y-6 text-sm leading-7 text-neutral-650">
+                    <div className="grid gap-4 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
                       <div>
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                          Current milestone
-                        </div>
-                        <p className="mt-2">
-                          Advanced working immersive case with live public website, Quest proof, and connected
-                          print / AR direction.
+                        <p className="max-w-[56ch] text-sm leading-7 text-white/82 md:text-[15px]">
+                          {detail.intro}
                         </p>
+                        <div className="mt-3 text-[11px] uppercase tracking-[0.14em] text-white/62">{data.stack}</div>
                       </div>
 
-                      <div>
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                          What continues now
-                        </div>
-                        <p className="mt-2">
-                          XR polish, scene pacing, additional assets, mobile refinement, and production
-                          hardening.
-                        </p>
-                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {externalLinks.map((link) => (
+                          <a
+                            key={`${link.label}-${link.href}`}
+                            href={link.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center whitespace-nowrap rounded-full border border-white/18 bg-white/10 px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:bg-white/20"
+                          >
+                            {link.label} <span className="ml-2 text-white/55">{"\u2197"}</span>
+                          </a>
+                        ))}
 
-                      <div>
-                        <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                          Why it matters
-                        </div>
-                        <p className="mt-2">
-                          This is the first immersive flagship in the portfolio, so it should feel authored and
-                          premium rather than generic or purely technical.
-                        </p>
+                        <ActionPill
+                          onClick={() => onOpenProject?.()}
+                          aria-haspopup="dialog"
+                          className="hover:shadow-[0_10px_24px_rgba(17,17,17,0.10)]"
+                        >
+                          {t.nav.start}
+                        </ActionPill>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.section>
-            </>
+                </motion.div>
+              </article>
+            </section>
           ) : null}
 
-          {/* ========================= */}
+          {!isWhisperCase ? (
+            <motion.section
+              className="grid gap-10 border-b border-neutral-100 py-12 md:grid-cols-[0.64fr_0.36fr] md:gap-12 md:py-14 xl:grid-cols-[0.62fr_0.38fr]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: 0.8, delay: 0.02, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.28 }}
+                transition={{ duration: 0.78, delay: 0.02, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Direction</div>
+                <h2
+                  className="mt-3 max-w-[11ch] text-[52px] leading-[0.96] tracking-[-0.04em] md:text-[56px] xl:max-w-[12ch] xl:text-[62px]"
+                >
+                  {detail.directionHeading}
+                </h2>
+                <p className="mt-5 max-w-[46ch] text-[15px] leading-7 text-neutral-600">{detail.direction}</p>
+              </motion.div>
+
+              <motion.div
+                className="grid gap-3.5 self-start"
+                initial={{ opacity: 0, x: 12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.28 }}
+                transition={{ duration: 0.78, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] md:p-[18px]">
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Interaction grammar</div>
+                  <p className="mt-3 text-sm leading-7 text-neutral-600">{detail.interaction}</p>
+                </div>
+
+                <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] md:p-[18px]">
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Build path</div>
+                  <p className="mt-3 text-sm leading-7 text-neutral-600">{detail.build}</p>
+                </div>
+              </motion.div>
+            </motion.section>
+          ) : null}
+
+          {isWhisperCase ? <WhisperCaseLayout item={data} /> : null}
+
           {/* SEQUENCE PROOF SECTION */}
           {/* ========================= */}
           {!isWhisperCase ? (
@@ -1498,13 +802,6 @@ export default function ImmersiveCasePage({
           </motion.section>
           ) : null}
 
-          <CaseImageLightbox
-            frames={whisperLightbox?.items ?? []}
-            index={whisperLightbox?.index ?? null}
-            onClose={closeWhisperLightbox}
-            onPrev={goPrev}
-            onNext={goNext}
-          />
           </Container>
         </PageSurface>
       </main>

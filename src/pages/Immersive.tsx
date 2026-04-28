@@ -141,13 +141,13 @@ export default function Immersive({
                       />
                     ) : null}
 
-                    <div className="relative flex min-h-[420px] flex-col justify-between p-5 text-white md:min-h-[540px] md:p-8">
+                    <div className="relative flex min-h-[560px] flex-col p-4 text-white sm:min-h-[600px] sm:p-5 md:min-h-[540px] md:justify-between md:p-8">
                       <div className="flex items-start justify-between gap-4">
                         <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
                           {featuredItem.copy.supportLabel}
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="hidden items-center gap-2 md:flex">
                           <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
                             {featuredItem.year}
                           </div>
@@ -165,18 +165,18 @@ export default function Immersive({
                         </div>
                       </div>
 
-                      <div className="max-w-[56ch] md:translate-y-32 xl:translate-y-36">
+                      <div className="hidden max-w-[56ch] md:block md:translate-y-32 xl:translate-y-36">
                         <div className="text-[10px] uppercase tracking-[0.14em] text-white/85">
                           {featuredItem.copy.medium}
                         </div>
                       </div>
 
-                      <div className="grid gap-4 border-t border-white/10 pt-5 md:grid-cols-[1fr_auto] md:items-end">
+                      <div className="mt-auto grid gap-4 rounded-[24px] border border-white/10 bg-black/28 p-4 backdrop-blur-[2px] md:mt-0 md:rounded-none md:border-t md:border-x-0 md:border-b-0 md:border-white/10 md:bg-transparent md:p-0 md:backdrop-blur-0 md:grid-cols-[1fr_auto] md:items-end">
                         <div>
-                          <p className="max-w-[60ch] text-sm leading-7 text-white/90 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)]">
+                          <p className="max-w-[60ch] text-[14px] leading-6 text-white/90 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] md:text-sm md:leading-7">
                             {featuredItem.copy.description}
                           </p>
-                          <div className="mt-3 max-w-[68ch] text-[10px] uppercase tracking-[0.16em] text-white/68 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+                          <div className="mt-3 hidden max-w-[68ch] text-[10px] uppercase tracking-[0.16em] text-white/68 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:block">
                             {featuredItem.copy.stack}
                           </div>
                         </div>
@@ -184,7 +184,7 @@ export default function Immersive({
                         <button
                           type="button"
                           onClick={() => openImmersiveCase(featuredItem.slug)}
-                          className="inline-flex items-center whitespace-nowrap rounded-full border border-white/20 bg-white/12 px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:bg-white/24"
+                          className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-full border border-white/20 bg-white/12 px-4 py-3 text-[11px] uppercase tracking-[0.14em] text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:bg-white/24 md:w-auto"
                         >
                           {featuredItem.copy.ctaLabel} <span className="text-white/60">→</span>
                         </button>

@@ -155,7 +155,7 @@ export default function Home({
                       ].join(" ")}
                     />
                   )}{" "}
-                  <div className="relative flex min-h-[340px] flex-col justify-between p-4 text-white sm:min-h-[400px] sm:p-5 md:min-h-[480px] md:p-7 xl:min-h-[520px] xl:p-8">
+                  <div className="relative flex min-h-[520px] flex-col p-4 text-white sm:min-h-[560px] sm:p-5 md:min-h-[480px] md:justify-between md:p-7 xl:min-h-[520px] xl:p-8">
                     {" "}
                     <div className="flex items-start justify-between gap-4">
                       {" "}
@@ -163,28 +163,28 @@ export default function Home({
                         {" "}
                         {t.home.immersive.label}{" "}
                       </div>{" "}
-                      <div className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
+                      <div className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72 md:inline-flex">
                         {" "}
                         <span>{activeImmersive.year}</span>{" "}
                         <span className="text-white/30">•</span>{" "}
                         <span>{activeImmersive.status}</span>{" "}
                       </div>{" "}
                     </div>{" "}
-                    <div className="max-w-[56ch] translate-y-20 sm:translate-y-24 md:translate-y-32 xl:translate-y-36">
+                    <div className="hidden max-w-[56ch] md:block md:translate-y-32 xl:translate-y-36">
                       {" "}
                       <div className="text-[10px] uppercase tracking-[0.14em] text-white/68">
                         {" "}
                         {activeImmersive.medium}{" "}
                       </div>{" "}
                     </div>{" "}
-                    <div className="grid gap-4 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
+                    <div className="mt-auto grid gap-4 rounded-[24px] border border-white/10 bg-black/28 p-4 backdrop-blur-[2px] md:mt-0 md:rounded-none md:border-t md:border-x-0 md:border-b-0 md:border-white/10 md:bg-transparent md:p-0 md:backdrop-blur-0 lg:grid-cols-[1fr_auto] lg:items-end">
                       {" "}
                       <div>
-                        <p className="max-w-[46ch] text-[15px] leading-7 text-white/90 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] md:text-[16px]">
+                        <p className="max-w-[46ch] text-[14px] leading-6 text-white/90 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] md:text-[16px] md:leading-7">
                           {activeImmersive.tagline}
                         </p>
 
-                        <div className="mt-3 max-w-[68ch] text-[10px] uppercase tracking-[0.16em] text-white/62 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+                        <div className="mt-3 hidden max-w-[68ch] text-[10px] uppercase tracking-[0.16em] text-white/62 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:block">
                           {activeImmersive.stack}
                         </div>
                       </div>{" "}
@@ -194,13 +194,13 @@ export default function Home({
                           type="button"
                           onClick={goImmersivePrev}
                           disabled={!canCycleImmersive}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/14 bg-white/5 text-white transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/12 hover:translate-y-[-1px] hover:border-white/24 disabled:cursor-default disabled:opacity-35"
+                          className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/14 bg-white/5 text-white transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-white/24 hover:bg-white/12 disabled:cursor-default disabled:opacity-35 sm:inline-flex"
                           aria-label="Previous immersive project"
                         >
                           {" "}
                           &larr;{" "}
                         </button>{" "}
-                        <div className="min-w-[72px] text-center text-[11px] uppercase tracking-[0.14em] text-white/70">
+                        <div className="hidden min-w-[72px] text-center text-[11px] uppercase tracking-[0.14em] text-white/70 sm:block">
                           {" "}
                           {String(activeImmersiveIndex + 1).padStart(
                             2,
@@ -215,7 +215,7 @@ export default function Home({
                           type="button"
                           onClick={goImmersiveNext}
                           disabled={!canCycleImmersive}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/14 bg-white/5 text-white transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/12 hover:translate-y-[-1px] hover:border-white/24 disabled:cursor-default disabled:opacity-35"
+                          className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/14 bg-white/5 text-white transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-white/24 hover:bg-white/12 disabled:cursor-default disabled:opacity-35 sm:inline-flex"
                           aria-label="Next immersive project"
                         >
                           {" "}
@@ -224,7 +224,7 @@ export default function Home({
                         <button
                           type="button"
                           onClick={() => navigateFromHome("/immersive")}
-                          className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/6 px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-white transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/12 hover:translate-y-[-1px] lg:ml-2"
+                          className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-full border border-white/14 bg-white/8 px-4 py-3 text-[11px] uppercase tracking-[0.14em] text-white transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:bg-white/12 sm:w-auto lg:ml-2"
                         >
                           {" "}
                           {t.home.immersive.cta}{" "}

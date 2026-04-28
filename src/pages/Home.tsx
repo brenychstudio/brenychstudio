@@ -175,7 +175,7 @@ export default function Home({
                       <div className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72 md:inline-flex">
                         {" "}
                         <span>{activeImmersive.year}</span>{" "}
-                        <span className="text-white/30">•</span>{" "}
+                        <span className="text-white/30">·</span>{" "}
                         <span>{activeImmersive.status}</span>{" "}
                       </div>{" "}
                     </div>{" "}
@@ -272,8 +272,9 @@ export default function Home({
               {/* mobile/tablet sticky preview removed intentionally for stability */}{" "}
               <div className="mt-6 divide-y divide-neutral-100">
                 {" "}
-                {homeCases.map((c) => {
+                {homeCases.map((c, index) => {
                   const isActive = c.slug === activeSlug;
+                  const displayIndex = String(index + 1).padStart(2, "0");
                   return (
                     <article
                       key={c.slug}
@@ -297,48 +298,34 @@ export default function Home({
                       >
                         {" "}
                         <div className="xl:hidden">
-                          {" "}
-                          <div className="overflow-hidden rounded-[30px] border border-black/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(251,251,251,0.95)_100%)] p-4 shadow-[0_18px_42px_rgba(15,23,42,0.04)]">
-                            {" "}
-                            <div className="overflow-hidden rounded-[24px] border border-black/6 bg-white/82">
-                              {" "}
-                              <div className="overflow-hidden rounded-[20px] border-b border-black/6 bg-white">
-                                {" "}
-                                <div className="relative aspect-[1.12/1]">
-                                  {" "}
-                                  <img
-                                    src={c.poster.src}
-                                    alt={c.poster.alt}
-                                    className="h-full w-full object-contain p-6"
-                                    draggable={false}
-                                  />{" "}
-                                </div>{" "}
-                              </div>{" "}
-                              <div className="px-5 pb-5 pt-4">
-                                {" "}
-                                <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                                  {" "}
-                                  {c.index} /{" "}
-                                  {String(homeCases.length).padStart(2, "0")}{" "}
-                                  Р вЂ™Р’В· {c.code}{" "}
-                                </div>{" "}
-                                <div className="mt-2 text-[32px] leading-none tracking-tight text-neutral-900">
-                                  {" "}
-                                  {c.title}{" "}
-                                </div>{" "}
-                                <p className="mt-3 max-w-[24rem] text-[14px] leading-7 text-neutral-700">
-                                  {" "}
-                                  {c.content?.summary ?? c.tagline}{" "}
-                                </p>{" "}
-                                <div className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-neutral-600">
-                                  {" "}
-                                  <span>{t.home.work.view}</span>{" "}
-                                  <span aria-hidden="true">-&gt;</span>{" "}
-                                </div>{" "}
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
-                        </div>{" "}
+                          <div className="overflow-hidden rounded-[30px] border border-neutral-100 bg-white p-3 shadow-[0_18px_48px_rgba(15,23,42,0.045)]">
+                            <div className="overflow-hidden rounded-[24px] border border-neutral-200/70 bg-neutral-50/70 p-2">
+                              <div className="relative aspect-[16/10] overflow-hidden rounded-[18px] bg-white">
+                                <img
+                                  src={c.poster.src}
+                                  alt={c.poster.alt}
+                                  className="h-full w-full object-contain object-center"
+                                  draggable={false}
+                                />
+                              </div>
+                            </div>
+                            <div className="px-2 pb-2 pt-5">
+                              <div className="text-[10px] uppercase tracking-[0.18em] text-neutral-400">
+                                {displayIndex} / {String(homeCases.length).padStart(2, "0")} · {c.code}
+                              </div>
+                              <div className="mt-2 text-[34px] leading-[0.95] tracking-[-0.035em] text-neutral-950">
+                                {c.title}
+                              </div>
+                              <p className="mt-4 max-w-[28rem] text-[15px] leading-7 text-neutral-650">
+                                {c.tagline}
+                              </p>
+                              <div className="mt-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-neutral-600">
+                                <span>{t.home.work.view}</span>
+                                <span aria-hidden="true">→</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <div className="hidden xl:flex xl:w-full xl:flex-row xl:items-start xl:justify-between xl:gap-6">
                           {" "}
                           <div className="flex gap-4 sm:gap-5">
@@ -348,7 +335,7 @@ export default function Home({
                               <div
                                 className={`text-sm ${isActive ? "text-black" : "text-neutral-500"}`}
                               >
-                                {c.index}
+                                {displayIndex}
                               </div>{" "}
                               <div className="mt-2 min-h-[1em] text-[11px] uppercase tracking-[0.14em] text-neutral-400">
                                 {c.code}

@@ -98,11 +98,11 @@ export default function CaseMobileShowcase({
             aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
           >
             <div className="mx-auto flex h-[456px] w-[220px] items-end">
-              <div className="relative h-[396px] w-full overflow-hidden rounded-[28px] border border-neutral-100 bg-white/70 opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
+              <div className="relative h-[396px] w-full overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
                 <img
                   src={prevFrame.src}
                   alt={prevFrame.alt ?? ""}
-                  className="absolute inset-0 h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
+                  className="block h-full w-full rounded-[20px] object-contain object-center md:rounded-[24px]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -117,7 +117,7 @@ export default function CaseMobileShowcase({
             aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
           >
             <div className="mx-auto h-[456px] w-[270px]">
-              <div className="relative h-full w-full overflow-hidden rounded-[30px] border border-neutral-200 bg-white shadow-[0_20px_48px_rgba(0,0,0,0.08)] transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-neutral-300">
+              <div className="relative h-full w-full overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_20px_48px_rgba(0,0,0,0.08)] transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-neutral-300 md:rounded-[32px]">
                 <AnimatePresence initial={false} mode="sync">
                   <motion.div
                     key={activeFrame.src}
@@ -130,7 +130,7 @@ export default function CaseMobileShowcase({
                     <img
                       src={activeFrame.src}
                       alt={activeFrame.alt ?? ""}
-                      className="absolute inset-0 h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
+                      className="block h-full w-full rounded-[22px] object-contain object-center md:rounded-[26px]"
                       loading="lazy"
                       decoding="async"
                     />
@@ -147,11 +147,11 @@ export default function CaseMobileShowcase({
             aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
           >
             <div className="mx-auto flex h-[456px] w-[220px] items-end">
-              <div className="relative h-[396px] w-full overflow-hidden rounded-[28px] border border-neutral-100 bg-white/70 opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
+              <div className="relative h-[396px] w-full overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
                 <img
                   src={nextFrame.src}
                   alt={nextFrame.alt ?? ""}
-                  className="absolute inset-0 h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
+                  className="block h-full w-full rounded-[20px] object-contain object-center md:rounded-[24px]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -169,13 +169,13 @@ export default function CaseMobileShowcase({
             <button
               type="button"
               onClick={() => onOpenFrame?.(activeFrame.src)}
-              className="relative z-10 flex h-full w-[78vw] max-w-[310px] items-center justify-center rounded-[30px] bg-transparent"
+              className="relative z-10 flex h-full w-[78vw] max-w-[310px] items-center justify-center overflow-hidden rounded-[28px] bg-transparent md:rounded-[32px]"
               aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
             >
               <AnimatePresence initial={false} mode="wait">
                 <motion.div
                   key={activeFrame.src}
-                  className="absolute inset-0 flex items-center justify-center"
+                  className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-[28px] md:rounded-[32px]"
                   initial={{ opacity: 0, scale: 0.985, x: 12 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.99, x: -10 }}
@@ -184,7 +184,7 @@ export default function CaseMobileShowcase({
                   <img
                     src={activeFrame.src}
                     alt={activeFrame.alt ?? ""}
-                    className="max-h-full max-w-full rounded-[28px] object-contain object-center shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
+                    className="block h-full w-full rounded-[22px] object-contain object-center shadow-[0_18px_42px_rgba(0,0,0,0.10)] md:rounded-[26px]"
                     loading="lazy"
                     decoding="async"
                   />

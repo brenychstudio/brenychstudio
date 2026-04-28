@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ImmersiveItem, ImmersiveMedia } from "../../data/immersive";
 import type { CaseFrame } from "../../data/cases";
@@ -133,7 +133,6 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
   const desktopWalkthrough = videos.find((video) => video.device === "desktop");
   const questVideo = videos.find((video) => video.device === "vr");
-  const questCaptureUrl = questVideo?.src ?? WHISPER_LIVE_URL;
 
   const webFrames = rawFrames
     .filter((frame) => frame.device === "desktop")
@@ -222,19 +221,47 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
   return (
     <div className="whisper-case-page overflow-x-hidden">
       <style>{`
+        html,
+        body,
+        .whisper-case-page {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar,
+        .whisper-case-page::-webkit-scrollbar,
+        .whisper-case-page *::-webkit-scrollbar {
+          width: 0 !important;
+          height: 0 !important;
+          display: none !important;
+        }
+
       @media (max-width: 640px) {
         .whisper-case-page .whisper-opening-shell {
-          width: min(100%, 100vw) !important;
+          width: 100% !important;
           max-width: 100% !important;
           margin-inline: auto !important;
         }
 
         .whisper-case-page .whisper-opening-shell video {
-          object-fit: contain !important;
+          object-fit: cover !important;
         }
 
         .whisper-case-page .whisper-xr-video-badge {
           display: none !important;
+        }
+
+        .whisper-case-page .whisper-xr-video-action {
+          left: auto !important;
+          right: 0.75rem !important;
+          top: auto !important;
+          bottom: 0.75rem !important;
+          transform: none !important;
+          max-width: calc(100% - 1.5rem) !important;
+          padding: 0.5rem 0.82rem !important;
+          font-size: 0.58rem !important;
+          letter-spacing: 0.12em !important;
         }
 
         .whisper-case-page .whisper-xr-proof {
@@ -356,103 +383,145 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
       }
     `}</style>
       <motion.section
-        className="overflow-hidden border-b border-neutral-100 py-8 md:py-14 xl:py-20"
+        className="border-b border-neutral-100 py-8 md:py-14 xl:py-20"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="whisper-opening-shell w-full md:relative md:left-1/2 md:w-[calc(100vw-120px)] md:max-w-[1240px] md:-translate-x-1/2 xl:max-w-[1100px]">
+        <div className="whisper-opening-shell mx-auto w-full max-w-[1120px]">
           <div className="overflow-hidden rounded-[24px] border border-neutral-200/80 bg-[#050608] p-2 shadow-[0_20px_56px_rgba(17,17,17,0.10)] md:rounded-[34px] md:p-3 md:shadow-[0_26px_80px_rgba(17,17,17,0.10)]">
-            <div className="relative overflow-hidden rounded-[18px] bg-black md:rounded-[26px]">
-              <video
-                className="block h-auto w-full"
-                src={desktopWalkthrough?.src ?? WHISPER_DESKTOP_VIDEO}
-                poster={desktopWalkthrough?.poster ?? WHISPER_DESKTOP_POSTER}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
+            <div className="overflow-hidden rounded-[18px] bg-black md:rounded-[26px]">
+              <div className="relative aspect-video w-full overflow-hidden bg-black">
+                <video
+                  className="block h-full w-full object-cover object-center"
+                  src={desktopWalkthrough?.src ?? WHISPER_DESKTOP_VIDEO}
+                  poster={desktopWalkthrough?.poster ?? WHISPER_DESKTOP_POSTER}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-black/78 via-black/38 to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[16%] bg-gradient-to-b from-black/34 via-black/8 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-[44%] bg-gradient-to-t from-black/82 via-black/42 to-transparent md:block" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-black/42 via-black/12 to-transparent" />
 
-              <div className="absolute left-3 top-3 z-10 flex max-w-[calc(100%-24px)] flex-wrap gap-1.5 md:left-5 md:top-5 md:max-w-none md:gap-2">
-                <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
-                  {copy.opening.badges.whisper}
-                </span>
-                <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
-                  {copy.opening.badges.desktop}
-                </span>
-              </div>
+                <div className="absolute left-3 top-3 z-10 flex max-w-[calc(100%-24px)] flex-wrap gap-1.5 md:left-5 md:top-5 md:max-w-none md:gap-2">
+                  <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/34 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
+                    {copy.opening.badges.whisper}
+                  </span>
+                  <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/34 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
+                    {copy.opening.badges.desktop}
+                  </span>
+                </div>
 
-              <div className="absolute right-4 top-4 z-10 hidden max-w-[58%] flex-nowrap justify-end gap-2 md:right-5 md:top-5 md:flex">
-                <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/74 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
-                  {copy.opening.badges.interactive}
-                </span>
-                <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/74 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
-                  {copy.opening.badges.xr}
-                </span>
-              </div>
+                <div className="absolute right-4 top-4 z-10 hidden max-w-[58%] flex-nowrap justify-end gap-2 md:right-5 md:top-5 md:flex">
+                  <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
+                    {copy.opening.badges.interactive}
+                  </span>
+                  <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
+                    {copy.opening.badges.xr}
+                  </span>
+                </div>
 
-              <div className="whisper-opening-desktop-overlay absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
-                <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-                  <div>
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-white/54">
-                      {copy.opening.kicker}
+                <div className="absolute inset-x-0 bottom-0 z-10 hidden p-5 md:block">
+                  <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-white/54">
+                        {copy.opening.kicker}
+                      </div>
+
+                      <p className="mt-4 max-w-[43ch] text-[15px] leading-6 text-white/82">
+                        {copy.opening.description}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {copy.opening.stackTop.map((label) => (
+                          <span
+                            key={label}
+                            className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58"
+                          >
+                            {label}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {copy.opening.stackBottom.map((label) => (
+                          <span
+                            key={label}
+                            className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58"
+                          >
+                            {label}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    <p className="mt-4 max-w-[43ch] text-sm leading-6 text-white/82 md:text-[15px]">
-                      {copy.opening.description}
-                    </p>
+                    <div className="flex flex-wrap items-center justify-end gap-2">
+                      <a
+                        href={WHISPER_LIVE_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
+                      >
+                        {copy.links.live} ?
+                      </a>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {copy.opening.stackTop.map((label) => (
-                        <span
-                          key={label}
-                          className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58"
-                        >
-                          {label}
-                        </span>
-                      ))}
+                      <a
+                        href={WHISPER_REPO_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
+                      >
+                        {copy.links.repo} ?
+                      </a>
                     </div>
-
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {copy.opening.stackBottom.map((label) => (
-                        <span
-                          key={label}
-                          className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58"
-                        >
-                          {label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="hidden flex-wrap items-center justify-start gap-2 md:flex md:justify-end">
-                    <a
-                      href={WHISPER_LIVE_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
-                    >
-                      {copy.links.live} ↗
-                    </a>
-
-                    <a
-                      href={WHISPER_REPO_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
-                    >
-                      {copy.links.repo} ↗
-                    </a>
                   </div>
                 </div>
               </div>
 
+              <div className="border-t border-white/8 bg-black px-4 py-5 md:hidden">
+                <div className="text-[10px] uppercase tracking-[0.18em] text-white/48">
+                  {copy.opening.kicker}
+                </div>
+
+                <p className="mt-3 text-[14px] leading-6 text-white/78">
+                  {copy.opening.description}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {[...copy.opening.stackTop, ...copy.opening.stackBottom].map((label) => (
+                    <span
+                      key={label}
+                      className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/58"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <a
+                    href={WHISPER_LIVE_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-white/88"
+                  >
+                    {copy.links.live} ?
+                  </a>
+
+                  <a
+                    href={WHISPER_REPO_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-white/88"
+                  >
+                    {copy.links.repo} ?
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -517,70 +586,13 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             <div className="grid gap-8 lg:grid-cols-12">
               {webSequenceFrames[0] ? (
                 <div className="lg:col-span-7">
-                  <article className="overflow-hidden rounded-[30px] border border-white/10 bg-[#05070c]">
-                    <div className="relative aspect-[1.5/1] w-full overflow-hidden bg-black sm:aspect-[1.58/1]">
-                      <img
-                        src={webSequenceFrames[0].src}
-                        alt={webSequenceFrames[0].alt}
-                        className="h-full w-full object-cover object-center"
-                        loading="lazy"
-                        decoding="async"
-                      />
-
-                      <div className="pointer-events-none absolute inset-x-4 top-4 z-20 flex flex-wrap gap-2 sm:inset-x-5 sm:top-5">
-                        <span className="rounded-full border border-white/16 bg-[rgba(76,61,45,0.72)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white backdrop-blur-md">
-                          {copy.opening.badges.whisper}
-                        </span>
-                        <span className="rounded-full border border-white/16 bg-[rgba(76,61,45,0.72)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white backdrop-blur-md">
-                          {copy.opening.badges.desktop}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-white/8 bg-black px-5 py-5 sm:px-6 sm:py-6">
-                      <p className="mb-3 text-[11px] uppercase tracking-[0.24em] text-white/48">
-                        {copy.opening.kicker}
-                      </p>
-
-                      <p className="max-w-[32ch] text-[16px] leading-[1.6] text-white/82 sm:text-[17px]">
-                        {copy.opening.description}
-                      </p>
-
-                      <div className="mt-5 flex flex-wrap gap-2.5">
-                        {[
-                          ...copy.opening.stackTop,
-                          ...copy.opening.stackBottom,
-                        ].map((label) => (
-                          <span
-                            key={label}
-                            className="rounded-full border border-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white/58"
-                          >
-                            {label}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="mt-5 flex flex-wrap gap-3">
-                        <a
-                          href={WHISPER_LIVE_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/12 px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-white/88 transition hover:border-white/22 hover:bg-white/6"
-                        >
-                          LIVE SITE ↗
-                        </a>
-
-                        <a
-                          href={WHISPER_REPO_URL}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/12 px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-white/88 transition hover:border-white/22 hover:bg-white/6"
-                        >
-                          REPOSITORY ↗
-                        </a>
-                      </div>
-                    </div>
-                  </article>
+                  <WhisperFrameCard
+                    src={webSequenceFrames[0].src}
+                    alt={webSequenceFrames[0].alt}
+                    label={webSequenceFrames[0].label ?? "Frame 02"}
+                    description={webSequenceFrames[0].caption ?? ""}
+                    onClick={() => openLightbox(webFrames, 1)}
+                  />
                 </div>
               ) : null}
 
@@ -656,23 +668,22 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
             {questVideo ? (
               <article className="whisper-xr-main-card rounded-[30px] border border-white/10 bg-black p-3">
-                  <div className="relative overflow-hidden rounded-[22px] bg-black">
-                    <div className="whisper-xr-video-badge pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
-                      {copy.xr.videoBadge}
-                    </div>
+                <div className="relative overflow-hidden rounded-[22px] bg-black">
+                  <div className="whisper-xr-video-badge pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
+                    {copy.xr.videoBadge}
+                  </div>
 
-                    <a
-                      href={questCaptureUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="absolute bottom-4 right-4 z-20 inline-flex min-h-[40px] items-center justify-center rounded-full border border-white/16 bg-[rgba(84,88,102,0.58)] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-white backdrop-blur-md transition hover:border-white/28 hover:bg-[rgba(84,88,102,0.72)] sm:bottom-auto sm:right-auto sm:top-5 sm:left-5 sm:min-h-[42px] sm:px-5 sm:text-[11px]"
-                    >
-                      <span className="sm:hidden">VIEW QUEST ↗</span>
-                      <span className="hidden sm:inline">VIEW QUEST CAPTURE ↗</span>
-                    </a>
+                  <button
+                    type="button"
+                    onClick={() => setActiveVideo(questVideo)}
+                    className="whisper-xr-video-action absolute right-4 top-4 z-10 whitespace-nowrap rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/86 backdrop-blur-md transition hover:bg-white/16"
+                  >
+                    <span className="sm:hidden">VIEW QUEST</span>
+                    <span className="hidden sm:inline">{copy.links.viewQuestCapture}</span>
+                  </button>
 
-                    <video
-                      className="block h-auto w-full object-contain"
+                  <video
+                    className="block h-auto w-full object-contain"
                     autoPlay
                     muted
                     loop
@@ -929,5 +940,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     </div>
   );
 }
+
+
 
 

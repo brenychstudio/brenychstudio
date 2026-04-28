@@ -121,8 +121,8 @@ function CaseImage({
         decoding="async"
         onLoad={() => setLoaded(true)}
         className={[
-          "block h-auto w-full transition duration-700",
-          loaded ? "opacity-100 scale-100" : "opacity-0 scale-[1.01]",
+          "block h-auto w-full transition-opacity duration-500",
+          loaded ? "opacity-100" : "opacity-0",
         ].join(" ")}
       />
     </div>

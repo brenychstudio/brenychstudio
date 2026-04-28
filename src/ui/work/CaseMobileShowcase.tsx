@@ -165,36 +165,31 @@ export default function CaseMobileShowcase({
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <div className="relative mx-auto h-[118vw] min-h-[410px] max-h-[535px] w-full overflow-hidden">
-
+          <div className="relative mx-auto flex h-[118vw] min-h-[410px] max-h-[535px] w-full items-center justify-center overflow-hidden">
             <button
               type="button"
               onClick={() => onOpenFrame?.(activeFrame.src)}
-              className="absolute left-1/2 top-0 z-10 h-full w-[78vw] max-w-[310px] -translate-x-1/2 overflow-hidden rounded-[30px] border border-neutral-200 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
+              className="relative z-10 flex h-full w-[78vw] max-w-[310px] items-center justify-center rounded-[30px] bg-transparent"
               aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
             >
-              <div className="relative h-full w-full bg-white p-[10px]">
-                <div className="relative h-full w-full overflow-hidden rounded-[24px] bg-neutral-100">
-                  <AnimatePresence initial={false} mode="wait">
-                    <motion.div
-                      key={activeFrame.src}
-                      className="absolute inset-[10px] overflow-hidden rounded-[24px] bg-white"
-                      initial={{ opacity: 0, scale: 0.985, x: 12 }}
-                      animate={{ opacity: 1, scale: 1, x: 0 }}
-                      exit={{ opacity: 0, scale: 0.99, x: -10 }}
-                      transition={showcaseTransition}
-                    >
-                      <img
-                        src={activeFrame.src}
-                        alt={activeFrame.alt ?? ""}
-                        className="h-full w-full rounded-[24px] object-contain object-center"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={activeFrame.src}
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ opacity: 0, scale: 0.985, x: 12 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.99, x: -10 }}
+                  transition={showcaseTransition}
+                >
+                  <img
+                    src={activeFrame.src}
+                    alt={activeFrame.alt ?? ""}
+                    className="max-h-full max-w-full rounded-[28px] object-contain object-center shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </motion.div>
+              </AnimatePresence>
             </button>
           </div>
 

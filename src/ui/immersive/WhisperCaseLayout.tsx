@@ -466,7 +466,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                         rel="noreferrer"
                         className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                       >
-                        {copy.links.live} ?
+                        {copy.links.live} <span aria-hidden="true">↗</span>
                       </a>
 
                       <a
@@ -475,7 +475,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                         rel="noreferrer"
                         className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                       >
-                        {copy.links.repo} ?
+                        {copy.links.repo} <span aria-hidden="true">↗</span>
                       </a>
                     </div>
                   </div>
@@ -509,7 +509,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     rel="noreferrer"
                     className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-white/88"
                   >
-                    {copy.links.live} ?
+                    {copy.links.live} <span aria-hidden="true">↗</span>
                   </a>
 
                   <a
@@ -518,7 +518,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     rel="noreferrer"
                     className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-white/88"
                   >
-                    {copy.links.repo} ?
+                    {copy.links.repo} <span aria-hidden="true">↗</span>
                   </a>
                 </div>
               </div>

@@ -181,15 +181,13 @@ export default function CaseMobileShowcase({
                   exit={{ opacity: 0, scale: 0.99, x: -10 }}
                   transition={showcaseTransition}
                 >
-                  <div className="overflow-hidden rounded-[22px] border border-neutral-200 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.05)] sm:rounded-[24px]">
-                    <img
-                      src={activeFrame.src}
-                      alt={activeFrame.alt ?? ""}
-                      className="block max-h-full max-w-full object-contain object-center"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
+                  <img
+                    src={activeFrame.src}
+                    alt={activeFrame.alt ?? ""}
+                    className="block max-h-full max-w-full rounded-[24px] border border-neutral-200 bg-white object-contain object-center shadow-[0_24px_80px_rgba(0,0,0,0.05)] sm:rounded-[28px]"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </motion.div>
               </AnimatePresence>
             </button>

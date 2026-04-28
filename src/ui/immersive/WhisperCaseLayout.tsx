@@ -411,7 +411,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                   <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/34 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
                     {copy.opening.badges.whisper}
                   </span>
-                  <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/34 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
+                  <span className="hidden whitespace-nowrap rounded-full border border-white/16 bg-black/34 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/84 backdrop-blur-md md:inline-flex">
                     {copy.opening.badges.desktop}
                   </span>
                 </div>
@@ -480,6 +480,16 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     </div>
                   </div>
                 </div>
+
+                {desktopWalkthrough ? (
+                  <button
+                    type="button"
+                    onClick={() => setActiveVideo(desktopWalkthrough)}
+                    className="absolute bottom-3 right-3 z-10 inline-flex items-center justify-center whitespace-nowrap rounded-full border border-white/14 bg-black/38 px-3 py-1.5 text-[9px] uppercase tracking-[0.13em] text-white/84 backdrop-blur-md transition hover:bg-black/52 md:hidden"
+                  >
+                    VIEW VIDEO
+                  </button>
+                ) : null}
               </div>
 
               <div className="border-t border-white/8 bg-black px-4 py-5 md:hidden">
@@ -491,11 +501,11 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                   {copy.opening.description}
                 </p>
 
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {[...copy.opening.stackTop, ...copy.opening.stackBottom].map((label) => (
                     <span
                       key={label}
-                      className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/58"
+                      className="rounded-full border border-white/9 bg-white/[0.035] px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] text-white/56"
                     >
                       {label}
                     </span>

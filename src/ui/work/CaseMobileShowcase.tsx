@@ -102,7 +102,7 @@ export default function CaseMobileShowcase({
                 <img
                   src={prevFrame.src}
                   alt={prevFrame.alt ?? ""}
-                  className="absolute inset-0 h-full w-full object-contain object-center"
+                  className="absolute inset-0 h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -130,7 +130,7 @@ export default function CaseMobileShowcase({
                     <img
                       src={activeFrame.src}
                       alt={activeFrame.alt ?? ""}
-                      className="absolute inset-0 h-full w-full object-contain object-center"
+                      className="absolute inset-0 h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
                       loading="lazy"
                       decoding="async"
                     />
@@ -151,7 +151,7 @@ export default function CaseMobileShowcase({
                 <img
                   src={nextFrame.src}
                   alt={nextFrame.alt ?? ""}
-                  className="absolute inset-0 h-full w-full object-contain object-center"
+                  className="absolute inset-0 h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -176,7 +176,7 @@ export default function CaseMobileShowcase({
                 <img
                   src={prevFrame.src}
                   alt={prevFrame.alt ?? ""}
-                  className="h-full w-full object-contain object-center"
+                  className="h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -201,7 +201,7 @@ export default function CaseMobileShowcase({
                   <img
                     src={activeFrame.src}
                     alt={activeFrame.alt ?? ""}
-                    className="h-full w-full object-contain object-center"
+                    className="h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
                     loading="lazy"
                     decoding="async"
                   />
@@ -219,7 +219,7 @@ export default function CaseMobileShowcase({
                 <img
                   src={nextFrame.src}
                   alt={nextFrame.alt ?? ""}
-                  className="h-full w-full object-contain object-center"
+                  className="h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
                   loading="lazy"
                   decoding="async"
                 />

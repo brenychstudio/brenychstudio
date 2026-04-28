@@ -104,7 +104,7 @@ function WhisperFrameCard({
         <div className={`text-[10px] uppercase tracking-[0.14em] ${subTone}`}>
           {label}
         </div>
-        <p className={`mt-2 text-[15px] leading-7 ${textTone}`}>
+        <p className={`whisper-mobile-caption mt-2 text-[15px] leading-7 ${textTone}`}>
           {description}
         </p>
       </div>
@@ -219,9 +219,99 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
   }, [activeVideo]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="whisper-case-page overflow-x-hidden">
+      <style>{`
+      @media (max-width: 640px) {
+        .whisper-case-page .whisper-mobile-section {
+          padding-top: 3rem !important;
+          padding-bottom: 3rem !important;
+        }
+
+        .whisper-case-page .whisper-mobile-section-tight {
+          padding-top: 2.5rem !important;
+          padding-bottom: 2.5rem !important;
+        }
+
+        .whisper-case-page .whisper-mobile-title {
+          font-size: clamp(3.05rem, 14.5vw, 4.65rem) !important;
+          line-height: 0.92 !important;
+          letter-spacing: -0.065em !important;
+        }
+
+        .whisper-case-page .whisper-mobile-title-sm {
+          font-size: clamp(2.45rem, 12vw, 3.65rem) !important;
+          line-height: 0.94 !important;
+          letter-spacing: -0.058em !important;
+        }
+
+        .whisper-case-page .whisper-mobile-body {
+          font-size: 0.95rem !important;
+          line-height: 1.78 !important;
+        }
+
+        .whisper-case-page .whisper-mobile-caption {
+          font-size: 0.875rem !important;
+          line-height: 1.72 !important;
+        }
+
+        .whisper-case-page .whisper-mobile-card {
+          border-radius: 1.45rem !important;
+          padding: 1.25rem !important;
+        }
+
+        .whisper-case-page .whisper-mobile-dark {
+          border-radius: 2rem !important;
+          padding: 1.65rem !important;
+        }
+
+        .whisper-case-page .whisper-mobile-dark-title {
+          font-size: clamp(3rem, 14vw, 4.45rem) !important;
+          line-height: 0.92 !important;
+          letter-spacing: -0.065em !important;
+        }
+
+        .whisper-case-page .whisper-mobile-dark-copy {
+          font-size: 0.95rem !important;
+          line-height: 1.78 !important;
+        }
+
+        .whisper-case-page .whisper-mobile-proof-title {
+          font-size: clamp(2.55rem, 12.5vw, 3.85rem) !important;
+          line-height: 0.94 !important;
+          letter-spacing: -0.06em !important;
+        }
+
+        .whisper-case-page .whisper-mobile-proof-copy {
+          font-size: 0.98rem !important;
+          line-height: 1.82 !important;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .whisper-case-page .whisper-mobile-title {
+          font-size: clamp(2.85rem, 13.8vw, 4.15rem) !important;
+        }
+
+        .whisper-case-page .whisper-mobile-title-sm {
+          font-size: clamp(2.25rem, 11.5vw, 3.25rem) !important;
+        }
+
+        .whisper-case-page .whisper-mobile-dark-title {
+          font-size: clamp(2.75rem, 13.4vw, 4.05rem) !important;
+        }
+
+        .whisper-case-page .whisper-mobile-proof-title {
+          font-size: clamp(2.25rem, 11.8vw, 3.35rem) !important;
+        }
+
+        .whisper-case-page .whisper-mobile-dark {
+          padding: 1.35rem !important;
+          border-radius: 1.75rem !important;
+        }
+      }
+    `}</style>
       <motion.section
-        className="overflow-hidden border-b border-neutral-100 py-10 md:py-14 xl:py-20"
+        className="overflow-hidden border-b border-neutral-100 py-8 md:py-14 xl:py-20"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
@@ -377,7 +467,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
       </motion.section>
 
       <motion.section
-        className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
+        className="whisper-mobile-section border-b border-neutral-100 py-14 md:py-18 xl:py-20"
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.14 }}
@@ -388,10 +478,10 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
               {copy.direction.eyebrow}
             </div>
-            <h2 className="mt-3 max-w-[11ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
+            <h2 className="whisper-mobile-title mt-3 max-w-[11ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
               {copy.direction.title}
             </h2>
-            <p className="mt-5 max-w-[58ch] text-[15px] leading-8 text-neutral-600">
+            <p className="whisper-mobile-body mt-5 max-w-[58ch] text-[15px] leading-8 text-neutral-600">
               {copy.direction.body}
             </p>
           </div>
@@ -409,7 +499,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
       </motion.section>
 
       <motion.section
-        className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
+        className="whisper-mobile-section-tight border-b border-neutral-100 py-14 md:py-18 xl:py-20"
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.14 }}
@@ -421,12 +511,12 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
               <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
                 {copy.web.eyebrow}
               </div>
-              <h2 className="mt-3 max-w-[13ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
+              <h2 className="whisper-mobile-title-sm mt-3 max-w-[13ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
                 {copy.web.title}
               </h2>
             </div>
 
-            <p className="max-w-[40ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
+            <p className="whisper-mobile-body max-w-[40ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
               {copy.web.description}
             </p>
           </div>
@@ -495,22 +585,22 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
       </motion.section>
 
       <motion.section
-        className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
+        className="whisper-mobile-section-tight border-b border-neutral-100 py-14 md:py-18 xl:py-20"
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.14 }}
         transition={{ duration: 0.85, ease: sectionEase }}
       >
-        <div className="overflow-hidden rounded-[36px] border border-neutral-100 bg-[#05070a] p-5 text-white shadow-[0_28px_76px_rgba(17,17,17,0.12)] md:p-8">
+        <div className="whisper-mobile-dark overflow-hidden rounded-[36px] border border-neutral-100 bg-[#05070a] p-5 text-white shadow-[0_28px_76px_rgba(17,17,17,0.12)] md:p-8">
           <div className="grid gap-8 xl:grid-cols-[0.38fr_0.62fr] xl:items-start">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-white/42">
                 {copy.xr.eyebrow}
               </div>
-              <h2 className="mt-3 max-w-[10ch] text-[40px] leading-[0.98] tracking-[-0.045em] md:text-[62px]">
+              <h2 className="whisper-mobile-dark-title mt-3 max-w-[10ch] text-[40px] leading-[0.98] tracking-[-0.045em] md:text-[62px]">
                 {copy.xr.title}
               </h2>
-              <p className="mt-5 max-w-[42ch] text-[15px] leading-8 text-white/64">
+              <p className="whisper-mobile-dark-copy mt-5 max-w-[42ch] text-[15px] leading-8 text-white/64">
                 {copy.xr.body}
               </p>
             </div>
@@ -547,7 +637,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                   <div className="text-[10px] uppercase tracking-[0.14em] text-white/42">
                     {copy.xr.videoLabel}
                   </div>
-                  <p className="mt-2 max-w-[70ch] text-sm leading-7 text-white/66">
+                  <p className="whisper-mobile-caption mt-2 max-w-[70ch] text-sm leading-7 text-white/66">
                     {questVideo.caption}
                   </p>
                 </div>
@@ -574,7 +664,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
       </motion.section>
 
       <motion.section
-        className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
+        className="whisper-mobile-section-tight border-b border-neutral-100 py-14 md:py-18 xl:py-20"
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.14 }}
@@ -586,12 +676,12 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
               <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
                 {copy.collector.eyebrow}
               </div>
-              <h2 className="mt-3 max-w-[12ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
+              <h2 className="whisper-mobile-title-sm mt-3 max-w-[12ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
                 {copy.collector.title}
               </h2>
             </div>
 
-            <p className="max-w-[40ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
+            <p className="whisper-mobile-body max-w-[40ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
               {copy.collector.description}
             </p>
           </div>
@@ -679,33 +769,38 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
       </motion.section>
 
       <motion.section
-        className="py-14 md:py-18 xl:py-20"
+        className="whisper-mobile-section-tight py-14 md:py-18 xl:py-20"
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.14 }}
         transition={{ duration: 0.85, ease: sectionEase }}
       >
         <div className="grid gap-8 xl:grid-cols-[0.62fr_0.38fr]">
-          <div className="rounded-[34px] border border-neutral-100 bg-white p-8 shadow-[0_18px_46px_rgba(17,17,17,0.045)]">
+          <div className="whisper-mobile-card rounded-[34px] border border-neutral-100 bg-white p-8 shadow-[0_18px_46px_rgba(17,17,17,0.045)]">
             <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
               {copy.closing.eyebrow}
             </div>
-            <h3 className="mt-4 max-w-[13ch] text-[34px] leading-[1.02] tracking-[-0.04em] text-neutral-950 md:text-[48px]">
+            <h3 className="whisper-mobile-proof-title mt-4 max-w-[13ch] text-[34px] leading-[1.02] tracking-[-0.04em] text-neutral-950 md:text-[48px]">
               {copy.closing.title}
             </h3>
-            <p className="mt-5 max-w-[60ch] text-[15px] leading-8 text-neutral-600">
+            <p className="whisper-mobile-proof-copy mt-5 max-w-[60ch] text-[15px] leading-8 text-neutral-600">
               {copy.closing.body}
             </p>
           </div>
 
-          <div className="rounded-[34px] border border-neutral-100 bg-neutral-50 p-8">
+          <div className="whisper-mobile-card rounded-[34px] border border-neutral-100 bg-neutral-50 p-8">
             <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
               {copy.closing.proofEyebrow}
             </div>
 
             <div className="mt-6 space-y-5 text-sm leading-7 text-neutral-650">
               {copy.closing.proof.map((item) => (
-                <p key={item}>{item}</p>
+                <p
+                  key={item}
+                  className="whisper-mobile-proof-copy text-[20px] leading-9 text-neutral-900"
+                >
+                  {item}
+                </p>
               ))}
             </div>
           </div>

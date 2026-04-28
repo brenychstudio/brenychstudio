@@ -222,6 +222,97 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     <div className="whisper-case-page overflow-x-hidden">
       <style>{`
       @media (max-width: 640px) {
+        .whisper-case-page .whisper-opening-shell {
+          width: min(100%, 100vw) !important;
+          max-width: 100% !important;
+          margin-inline: auto !important;
+        }
+
+        .whisper-case-page .whisper-opening-shell video {
+          object-fit: contain !important;
+        }
+
+        .whisper-case-page .whisper-opening-desktop-overlay {
+          display: none !important;
+        }
+
+        .whisper-case-page .whisper-opening-mobile-meta {
+          display: grid !important;
+          gap: 0.7rem !important;
+          margin-top: 0.85rem !important;
+        }
+
+        .whisper-case-page .whisper-opening-mobile-stack {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          gap: 0.45rem !important;
+        }
+
+        .whisper-case-page .whisper-opening-mobile-pill {
+          border-radius: 999px !important;
+          border: 1px solid rgba(15, 23, 42, 0.12) !important;
+          background: rgba(255, 255, 255, 0.72) !important;
+          padding: 0.42rem 0.62rem !important;
+          font-size: 0.58rem !important;
+          line-height: 1 !important;
+          letter-spacing: 0.12em !important;
+          text-transform: uppercase !important;
+          color: rgba(23, 23, 23, 0.72) !important;
+          backdrop-filter: blur(12px) !important;
+        }
+
+        .whisper-case-page .whisper-opening-mobile-actions {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 0.5rem !important;
+        }
+
+        .whisper-case-page .whisper-opening-mobile-link {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          min-height: 2.35rem !important;
+          border-radius: 999px !important;
+          border: 1px solid rgba(15, 23, 42, 0.12) !important;
+          background: rgba(255, 255, 255, 0.82) !important;
+          padding: 0.68rem 0.75rem !important;
+          font-size: 0.62rem !important;
+          letter-spacing: 0.13em !important;
+          text-transform: uppercase !important;
+          color: rgba(23, 23, 23, 0.78) !important;
+          white-space: nowrap !important;
+        }
+
+        .whisper-case-page .whisper-xr-proof {
+          border-radius: 2rem !important;
+          padding: 1.35rem !important;
+        }
+
+        .whisper-case-page .whisper-xr-layout {
+          grid-template-columns: minmax(0, 1fr) !important;
+          gap: 1.4rem !important;
+        }
+
+        .whisper-case-page .whisper-xr-main-card {
+          border-radius: 1.45rem !important;
+          padding: 0.75rem !important;
+        }
+
+        .whisper-case-page .whisper-xr-main-card img,
+        .whisper-case-page .whisper-xr-main-card video {
+          max-height: 15.5rem !important;
+          object-fit: contain !important;
+        }
+
+        .whisper-case-page .whisper-xr-thumbs {
+          grid-template-columns: minmax(0, 1fr) !important;
+          gap: 1rem !important;
+        }
+
+        .whisper-case-page .whisper-xr-thumbs article {
+          border-radius: 1.35rem !important;
+        }
+
         .whisper-case-page .whisper-mobile-section {
           padding-top: 3rem !important;
           padding-bottom: 3rem !important;
@@ -317,7 +408,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="w-full md:relative md:left-1/2 md:w-[calc(100vw-120px)] md:max-w-[1240px] md:-translate-x-1/2 xl:max-w-[1100px]">
+        <div className="whisper-opening-shell w-full md:relative md:left-1/2 md:w-[calc(100vw-120px)] md:max-w-[1240px] md:-translate-x-1/2 xl:max-w-[1100px]">
           <div className="overflow-hidden rounded-[24px] border border-neutral-200/80 bg-[#050608] p-2 shadow-[0_20px_56px_rgba(17,17,17,0.10)] md:rounded-[34px] md:p-3 md:shadow-[0_26px_80px_rgba(17,17,17,0.10)]">
             <div className="relative overflow-hidden rounded-[18px] bg-black md:rounded-[26px]">
               <video
@@ -352,7 +443,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                 </span>
               </div>
 
-              <div className="hidden md:absolute md:inset-x-0 md:bottom-0 md:z-10 md:block md:p-5">
+              <div className="whisper-opening-desktop-overlay hidden md:absolute md:inset-x-0 md:bottom-0 md:z-10 md:block md:p-5">
                 <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
                   <div>
                     <div className="text-[10px] uppercase tracking-[0.18em] text-white/54">
@@ -393,7 +484,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       rel="noreferrer"
                       className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                     >
-                      {copy.links.live} в†—
+                      {copy.links.live} ↗
                     </a>
 
                     <a
@@ -402,51 +493,33 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       rel="noreferrer"
                       className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                     >
-                      {copy.links.repo} в†—
+                      {copy.links.repo} ↗
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="grid gap-4 px-3 pb-3 pt-4 md:hidden">
-                <div>
-                  <div className="text-[9px] uppercase tracking-[0.18em] text-white/46">
-                    {copy.opening.kicker}
-                  </div>
-
-                  <p className="mt-2 max-w-[34ch] text-[13px] leading-6 text-white/74">
-                    {copy.opening.description}
-                  </p>
-
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {copy.opening.stackTop.map((label) => (
-                      <span
-                        key={label}
-                        className="rounded-full border border-white/10 bg-white/[0.045] px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] text-white/56"
-                      >
-                        {label}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {copy.opening.stackBottom.map((label) => (
-                      <span
-                        key={label}
-                        className="rounded-full border border-white/10 bg-white/[0.045] px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] text-white/56"
-                      >
-                        {label}
-                      </span>
-                    ))}
-                  </div>
+              <div className="whisper-opening-mobile-meta hidden gap-4 px-2.5 pb-3 pt-4 md:hidden">
+                <div className="whisper-opening-mobile-stack">
+                  {[
+                    "WHISPER",
+                    "DESKTOP WALKTHROUGH",
+                    "WEBXR",
+                    "QUEST VR",
+                    "AR PREVIEW",
+                  ].map((label) => (
+                    <span key={label} className="whisper-opening-mobile-pill">
+                      {label}
+                    </span>
+                  ))}
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="whisper-opening-mobile-actions">
                   <a
                     href={WHISPER_LIVE_URL}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.13em] text-white/86 transition hover:bg-white/14"
+                    className="whisper-opening-mobile-link"
                   >
                     {copy.links.live} ↗
                   </a>
@@ -455,7 +528,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     href={WHISPER_REPO_URL}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.13em] text-white/86 transition hover:bg-white/14"
+                    className="whisper-opening-mobile-link"
                   >
                     {copy.links.repo} ↗
                   </a>
@@ -591,8 +664,8 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         viewport={{ once: true, amount: 0.14 }}
         transition={{ duration: 0.85, ease: sectionEase }}
       >
-        <div className="whisper-mobile-dark overflow-hidden rounded-[36px] border border-neutral-100 bg-[#05070a] p-5 text-white shadow-[0_28px_76px_rgba(17,17,17,0.12)] md:p-8">
-          <div className="grid gap-8 xl:grid-cols-[0.38fr_0.62fr] xl:items-start">
+        <div className="whisper-xr-proof whisper-mobile-dark overflow-hidden rounded-[36px] border border-neutral-100 bg-[#05070a] p-5 text-white shadow-[0_28px_76px_rgba(17,17,17,0.12)] md:p-8">
+          <div className="whisper-xr-layout grid gap-8 xl:grid-cols-[0.38fr_0.62fr] xl:items-start">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-white/42">
                 {copy.xr.eyebrow}
@@ -606,7 +679,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             </div>
 
             {questVideo ? (
-              <article className="rounded-[30px] border border-white/10 bg-black p-3">
+              <article className="whisper-xr-main-card rounded-[30px] border border-white/10 bg-black p-3">
                 <div className="relative overflow-hidden rounded-[22px] bg-black">
                   <div className="pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
                     {copy.xr.videoBadge}
@@ -646,7 +719,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
           </div>
 
           {vrFrames.length ? (
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <div className="whisper-xr-thumbs mt-8 grid gap-4 md:grid-cols-3">
               {vrFrames.map((frame, index) => (
                 <WhisperFrameCard
                   key={frame.src}
@@ -827,7 +900,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                   onClick={() => setActiveVideo(null)}
                   className="rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/82 backdrop-blur-md transition hover:bg-white/14"
                 >
-                  {copy.links.close} Г—
+                  {copy.links.close} ×
                 </button>
               </div>
 
@@ -878,4 +951,5 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     </div>
   );
 }
+
 

@@ -165,66 +165,37 @@ export default function CaseMobileShowcase({
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <div className="relative mx-auto h-[124vw] min-h-[430px] max-h-[560px] w-full overflow-hidden">
-            {total > 1 ? (
-              <button
-                type="button"
-                onClick={goPrev}
-                className="absolute left-[-18%] top-1/2 z-0 h-[96vw] max-h-[430px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-30"
-                aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
-              >
-                <img
-                  src={prevFrame.src}
-                  alt={prevFrame.alt ?? ""}
-                  className="h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </button>
-            ) : null}
+          <div className="relative mx-auto h-[118vw] min-h-[410px] max-h-[535px] w-full overflow-hidden">
 
             <button
               type="button"
               onClick={() => onOpenFrame?.(activeFrame.src)}
-              className="absolute left-1/2 top-0 z-10 h-full w-[76vw] max-w-[300px] -translate-x-1/2 overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
+              className="absolute left-1/2 top-0 z-10 h-full w-[78vw] max-w-[310px] -translate-x-1/2 overflow-hidden rounded-[30px] border border-neutral-200 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
               aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
             >
-              <AnimatePresence initial={false} mode="wait">
-                <motion.div
-                  key={activeFrame.src}
-                  className="absolute inset-0"
-                  initial={{ opacity: 0, scale: 0.985, x: 12 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.99, x: -10 }}
-                  transition={showcaseTransition}
-                >
-                  <img
-                    src={activeFrame.src}
-                    alt={activeFrame.alt ?? ""}
-                    className="h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <div className="relative h-full w-full bg-white p-[10px]">
+                <div className="relative h-full w-full overflow-hidden rounded-[24px] bg-neutral-100">
+                  <AnimatePresence initial={false} mode="wait">
+                    <motion.div
+                      key={activeFrame.src}
+                      className="absolute inset-[10px] overflow-hidden rounded-[24px] bg-white"
+                      initial={{ opacity: 0, scale: 0.985, x: 12 }}
+                      animate={{ opacity: 1, scale: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.99, x: -10 }}
+                      transition={showcaseTransition}
+                    >
+                      <img
+                        src={activeFrame.src}
+                        alt={activeFrame.alt ?? ""}
+                        className="h-full w-full rounded-[24px] object-contain object-center"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
             </button>
-
-            {total > 1 ? (
-              <button
-                type="button"
-                onClick={goNext}
-                className="absolute right-[-18%] top-1/2 z-0 h-[96vw] max-h-[430px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-30"
-                aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
-              >
-                <img
-                  src={nextFrame.src}
-                  alt={nextFrame.alt ?? ""}
-                  className="h-full w-full rounded-[18px] object-contain object-center md:rounded-[20px]"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </button>
-            ) : null}
           </div>
 
           {total > 1 ? (

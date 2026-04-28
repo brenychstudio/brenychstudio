@@ -39,7 +39,16 @@ export default function Home({
       onCloseProject?.();
     });
   };
-  const homeCases = cases.slice(0, 3);
+  const homeCaseOrder = [
+    "creatorops",
+    "form-index",
+    "house-of-lune",
+    "casa-nube",
+  ];
+
+  const homeCases = homeCaseOrder
+    .map((slug) => cases.find((caseItem) => caseItem.slug === slug))
+    .filter((caseItem): caseItem is (typeof cases)[number] => Boolean(caseItem));
   const caseSlugs = homeCases.map((c) => c.slug);
   const immersivePreview = immersiveItems.slice(0, 3);
   const [activeImmersiveIndex, setActiveImmersiveIndex] = useState(0);

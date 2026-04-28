@@ -782,21 +782,21 @@ export const en: TranslationDictionary = {
           label: "Brand / Commercial",
           title: "Brand / Commercial",
           description:
-            "Multilingual commercial websites and premium service-facing systems where structure, framing, and cleaner decision-making matter as much as visual finish.",
+            "Premium commercial websites for service, hospitality, advisory, and brand-facing projects where positioning, trust, and conversion clarity matter as much as visual finish.",
         },
         {
           index: "02",
           label: "Concept / Interactive",
           title: "Concept / Interactive",
           description:
-            "Interactive presentation systems and premium digital surfaces that go beyond brochure logic and turn interface into atmosphere.",
+            "Interactive case presentations, immersive web surfaces, and motion-led experiences where interface, atmosphere, and narrative pacing become part of the product value.",
         },
         {
           index: "03",
-          label: "Editable / Operational",
-          title: "Editable / Operational",
+          label: "Product / Operational",
+          title: "Product / Operational",
           description:
-            "Schema-driven content models, editable site architecture, admin-ready systems, internal tools, and launch-minded delivery where the site has to work as an operating surface, not just a presentation.",
+            "Workflow tools, product prototypes, structured content systems, and launch-ready interfaces where the website or app has to work as a usable operating surface, not only a presentation.",
         },
       ],
     },
@@ -806,41 +806,41 @@ export const en: TranslationDictionary = {
       brandCommercial: {
         title: "Brand / Commercial",
         description:
-          "Multilingual commercial websites and premium service-facing systems where structure, framing, and cleaner decision-making matter as much as visual finish.",
+          "Premium commercial websites for service, hospitality, advisory, and brand-facing projects where positioning, trust, and conversion clarity matter as much as visual finish.",
         provenInLabel: "Proven in",
-        provenIn: ["Tersat", "Atlas", "Barcelona Private Advisory"],
+        provenIn: ["Barcelona Private Advisory", "Casa Nube", "FLUID"],
         summary:
-          "Delivery logic stays consistent: minimal-diff development, staged polish, production-aware build discipline, and final human review before delivery.",
+          "Best for premium service websites, local business concepts, hospitality, property, and event-facing sites where clarity, credibility, and visual restraint need to work together.",
         focusLabel: "Focus",
         focus: ["Trust-first framing", "Multilingual structure", "Premium service UX"],
         stackLabel: "Stack",
-        stack: ["Astro", "TypeScript", "Tailwind", "Scalable content systems"],
+        stack: ["Astro", "Next.js", "TypeScript", "Tailwind", "SEO + i18n"],
       },
       conceptInteractive: {
         title: "Concept / Interactive",
         description:
-          "Interactive presentation systems and premium digital surfaces that turn interface into atmosphere, pacing, and directed experience rather than static brochure logic.",
+          "Interactive case presentations, immersive web surfaces, and motion-led experiences where interface, atmosphere, and narrative pacing become part of the product value.",
         provenInLabel: "Proven in",
-        provenIn: ["Whisper", "Signal Room AR", "Nocturne Interface"],
+        provenIn: ["WHISPER", "FORM INDEX", "House of Lune"],
         summary:
-          "Best when motion, reveal logic, and narrative hierarchy need to feel authored rather than assembled from generic UI patterns.",
+          "Best when a site has to feel authored, cinematic, and memorable rather than assembled from generic sections or static brochure patterns.",
         focusLabel: "Focus",
-        focus: ["Reveal logic", "Motion grammar", "Directed interface pacing"],
+        focus: ["Motion grammar", "Editorial pacing", "Immersive presentation"],
         stackLabel: "Stack",
-        stack: ["React", "Motion", "Shader layers", "Interaction systems"],
+        stack: ["React", "Vite", "Motion", "Three.js", "WebGL / WebXR"],
       },
       editableOperational: {
-        title: "Editable / Operational",
+        title: "Product / Operational",
         description:
-          "Schema-driven content models, editable site architecture, admin-ready systems, internal tools, and launch-minded delivery where the site has to work as an operating surface, not just a presentation.",
+          "Workflow tools, product prototypes, structured content systems, and launch-ready interfaces where the website or app has to work as a usable operating surface, not only a presentation.",
         provenInLabel: "Proven in",
-        provenIn: ["CreatorOps", "StudioOps", "Editable delivery systems"],
+        provenIn: ["CreatorOps", "Print Border Studio", "Barcelona Private Advisory"],
         summary:
-          "Delivery logic stays consistent: minimal-diff development, staged polish, production-aware build discipline, and final human review before delivery.",
+          "Best for creator tools, internal workflows, productized service surfaces, shortlist systems, export flows, and interfaces that need real user actions beyond browsing.",
         focusLabel: "Focus",
-        focus: ["CMS logic", "Workflow tooling", "Launch readiness"],
+        focus: ["Workflow logic", "Structured content", "Launch-ready interfaces"],
         stackLabel: "Stack",
-        stack: ["React", "Vite", "TypeScript", "Structured content pipelines"],
+        stack: ["React", "Vite", "TypeScript", "Data flows", "Export logic"],
       },
     },
 

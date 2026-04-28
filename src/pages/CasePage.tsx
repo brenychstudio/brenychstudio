@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef, type TouchEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import Header from "../ui/Header";
@@ -1142,6 +1142,8 @@ export default function CasePage({
   const extraLinks = primaryExternalLink ? (content.links ?? []).slice(1) : [];
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const lightboxTouchStartX = useRef<number | null>(null);
+  const lightboxTouchStartY = useRef<number | null>(null);
 
   const openLightbox = useCallback(
     (src: string) => {
@@ -1166,6 +1168,37 @@ export default function CasePage({
       return prevValue === lightboxFrames.length - 1 ? 0 : prevValue + 1;
     });
   }, [lightboxFrames.length]);
+
+  const handleLightboxTouchStart = useCallback((event: TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    lightboxTouchStartX.current = touch.clientX;
+    lightboxTouchStartY.current = touch.clientY;
+  }, []);
+
+  const handleLightboxTouchEnd = useCallback(
+    (event: TouchEvent<HTMLDivElement>) => {
+      if (
+        lightboxTouchStartX.current === null ||
+        lightboxTouchStartY.current === null
+      ) {
+        return;
+      }
+
+      const touch = event.changedTouches[0];
+      const deltaX = touch.clientX - lightboxTouchStartX.current;
+      const deltaY = touch.clientY - lightboxTouchStartY.current;
+
+      lightboxTouchStartX.current = null;
+      lightboxTouchStartY.current = null;
+
+      if (Math.abs(deltaX) < 42) return;
+      if (Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
+
+      if (deltaX < 0) goNext();
+      else goPrev();
+    },
+    [goNext, goPrev]
+  );
 
   const currentLightboxFrame =
     lightboxIndex !== null ? lightboxFrames[lightboxIndex] : null;
@@ -1806,7 +1839,11 @@ export default function CasePage({
                 </motion.button>
               </div>
 
-              <div className="flex flex-1 items-center justify-center px-4 pb-6 sm:px-6 md:px-10">
+              <div
+                className="flex flex-1 items-center justify-center px-4 pb-6 sm:px-6 md:px-10"
+                onTouchStart={handleLightboxTouchStart}
+                onTouchEnd={handleLightboxTouchEnd}
+              >
                 <div
                   className="relative w-full max-w-[1400px]"
                   onClick={(e) => e.stopPropagation()}
@@ -1847,6 +1884,45 @@ export default function CasePage({
                   </motion.button>
                 </div>
               </div>
+
+              {lightboxFrames.length > 1 ? (
+                <div className="mt-5 flex items-center justify-center gap-2 md:hidden">
+                  <button
+                    type="button"
+                    onClick={goPrev}
+                    className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600"
+                    aria-label="Previous image"
+                  >
+                    Prev
+                  </button>
+
+                  <div className="flex items-center gap-2 px-1">
+                    {lightboxFrames.map((frame, frameIndex) => (
+                      <button
+                        key={`${frame.src}-lightbox-dot-${frameIndex}`}
+                        type="button"
+                        onClick={() => setLightboxIndex(frameIndex)}
+                        className={[
+                          "h-1.5 rounded-full transition duration-300",
+                          frameIndex === lightboxIndex
+                            ? "w-5 bg-neutral-500"
+                            : "w-2 bg-neutral-300",
+                        ].join(" ")}
+                        aria-label={`Go to image ${String(frameIndex + 1).padStart(2, "0")}`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600"
+                    aria-label="Next image"
+                  >
+                    Next
+                  </button>
+                </div>
+              ) : null}
 
               <AnimatePresence mode="wait">
                 {currentLightboxFrame.caption ? (

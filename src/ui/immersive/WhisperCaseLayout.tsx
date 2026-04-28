@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ImmersiveItem, ImmersiveMedia } from "../../data/immersive";
 import type { CaseFrame } from "../../data/cases";
@@ -303,7 +303,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       rel="noreferrer"
                       className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                     >
-                      {copy.links.live} ↗
+                      {copy.links.live} в†—
                     </a>
 
                     <a
@@ -312,7 +312,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       rel="noreferrer"
                       className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                     >
-                      {copy.links.repo} ↗
+                      {copy.links.repo} в†—
                     </a>
                   </div>
                 </div>
@@ -358,7 +358,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     rel="noreferrer"
                     className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.13em] text-white/86 transition hover:bg-white/14"
                   >
-                    {copy.links.live} в†—
+                    {copy.links.live} ↗
                   </a>
 
                   <a
@@ -367,7 +367,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     rel="noreferrer"
                     className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.13em] text-white/86 transition hover:bg-white/14"
                   >
-                    {copy.links.repo} в†—
+                    {copy.links.repo} ↗
                   </a>
                 </div>
               </div>
@@ -732,7 +732,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                   onClick={() => setActiveVideo(null)}
                   className="rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/82 backdrop-blur-md transition hover:bg-white/14"
                 >
-                  {copy.links.close} ×
+                  {copy.links.close} Г—
                 </button>
               </div>
 
@@ -783,3 +783,4 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     </div>
   );
 }
+

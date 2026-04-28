@@ -1,3 +1,4 @@
+import { useRef, type TouchEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 type LightboxFrame = {
@@ -31,6 +32,10 @@ const lightboxImageTransition = {
   ease: lightboxEase,
 };
 
+function formatIndex(value: number) {
+  return String(value).padStart(2, "0");
+}
+
 export default function CaseImageLightbox({
   frames,
   index,
@@ -38,7 +43,32 @@ export default function CaseImageLightbox({
   onPrev,
   onNext,
 }: CaseImageLightboxProps) {
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
   const currentFrame = index !== null ? frames[index] ?? null : null;
+
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+  };
+
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX.current;
+    const deltaY = touch.clientY - touchStartY.current;
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    if (Math.abs(deltaX) < 42) return;
+    if (Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
+
+    if (deltaX < 0) onNext();
+    else onPrev();
+  };
 
   return (
     <AnimatePresence>
@@ -66,25 +96,29 @@ export default function CaseImageLightbox({
             exit={{ opacity: 0, y: 10 }}
             transition={lightboxPanelTransition}
           >
-            <div className="flex items-center justify-between px-6 py-5 md:px-10">
-              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                Image viewer / {String(index + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
+            <div className="flex items-center justify-between gap-4 px-5 py-5 md:px-10">
+              <div className="min-w-0 text-[10px] uppercase tracking-[0.14em] text-neutral-500 md:text-[11px]">
+                Image viewer / {formatIndex(index + 1)} / {formatIndex(frames.length)}
               </div>
 
               <motion.button
                 type="button"
                 onClick={onClose}
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:border-neutral-400"
+                className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:border-neutral-400"
                 whileTap={{ scale: 0.98 }}
               >
                 Close <span className="text-neutral-400">&times;</span>
               </motion.button>
             </div>
 
-            <div className="flex flex-1 items-center justify-center px-4 pb-6 sm:px-6 md:px-10">
+            <div
+              className="flex flex-1 items-center justify-center px-4 pb-4 sm:px-6 md:px-10"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               <div
                 className="relative w-full max-w-[1400px]"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
               >
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -98,7 +132,7 @@ export default function CaseImageLightbox({
                     <img
                       src={currentFrame.src}
                       alt={currentFrame.alt ?? ""}
-                      className="mx-auto max-h-[72vh] w-auto max-w-full rounded-[18px] border border-neutral-200 bg-white object-contain shadow-[0_24px_80px_rgba(0,0,0,0.05)] sm:max-h-[78vh] sm:rounded-[24px]"
+                      className="mx-auto max-h-[66vh] w-auto max-w-full rounded-[18px] border border-neutral-200 bg-white object-contain shadow-[0_24px_80px_rgba(0,0,0,0.05)] sm:max-h-[72vh] sm:rounded-[24px] md:max-h-[78vh]"
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -106,8 +140,9 @@ export default function CaseImageLightbox({
                 <motion.button
                   type="button"
                   onClick={onPrev}
-                  className="absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/92 px-4 py-4 text-neutral-700 transition hover:border-neutral-400"
+                  className="absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white/92 px-4 py-4 text-neutral-700 transition hover:border-neutral-400 md:inline-flex"
                   whileTap={{ scale: 0.98 }}
+                  aria-label="Previous image"
                 >
                   &larr;
                 </motion.button>
@@ -115,11 +150,48 @@ export default function CaseImageLightbox({
                 <motion.button
                   type="button"
                   onClick={onNext}
-                  className="absolute right-0 top-1/2 hidden translate-x-1/2 -translate-y-1/2 md:inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/92 px-4 py-4 text-neutral-700 transition hover:border-neutral-400"
+                  className="absolute right-0 top-1/2 hidden translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white/92 px-4 py-4 text-neutral-700 transition hover:border-neutral-400 md:inline-flex"
                   whileTap={{ scale: 0.98 }}
+                  aria-label="Next image"
                 >
                   &rarr;
                 </motion.button>
+
+                {frames.length > 1 ? (
+                  <div className="mt-5 flex items-center justify-center gap-2 md:hidden">
+                    <button
+                      type="button"
+                      onClick={onPrev}
+                      className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600"
+                      aria-label="Previous image"
+                    >
+                      Prev
+                    </button>
+
+                    <div className="flex items-center gap-2 px-1">
+                      {frames.map((frame, frameIndex) => (
+                        <span
+                          key={`${frame.src}-lightbox-dot-${frameIndex}`}
+                          className={[
+                            "h-1.5 rounded-full transition duration-300",
+                            frameIndex === index
+                              ? "w-5 bg-neutral-500"
+                              : "w-2 bg-neutral-300",
+                          ].join(" ")}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={onNext}
+                      className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600"
+                      aria-label="Next image"
+                    >
+                      Next
+                    </button>
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -133,7 +205,7 @@ export default function CaseImageLightbox({
                   exit={{ opacity: 0, y: 4 }}
                   transition={lightboxImageTransition}
                 >
-                  <div className="mx-auto max-w-[960px] grid gap-3 text-neutral-500">
+                  <div className="mx-auto grid max-w-[960px] gap-3 text-neutral-500">
                     <div className="h-px w-12 bg-neutral-200" />
                     <div className="text-sm leading-7 text-neutral-600">
                       {currentFrame.caption}

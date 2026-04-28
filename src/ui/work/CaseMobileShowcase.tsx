@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { CaseFrame } from "../../data/cases";
 
@@ -14,8 +14,9 @@ function formatIndex(value: number) {
 }
 
 const showcaseEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const showcaseTransition = {
-  duration: 0.58,
+  duration: 0.42,
   ease: showcaseEase,
 };
 
@@ -26,37 +27,8 @@ export default function CaseMobileShowcase({
   description = "Guided handheld sequence across bilingual entry, district-aware discovery, and shortlist actions.",
 }: CaseMobileShowcaseProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [inView, setInView] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const rootRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
-
-  useEffect(() => {
-    const node = rootRef.current;
-    if (!node || frames.length < 2) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setInView(entry.isIntersecting && entry.intersectionRatio >= 0.4);
-      },
-      { threshold: [0.2, 0.4, 0.65] }
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [frames.length]);
-
-  useEffect(() => {
-    if (!inView || isHovered || frames.length < 2) return;
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % frames.length);
-    }, 3200);
-
-    return () => window.clearInterval(timer);
-  }, [inView, isHovered, frames.length]);
 
   useEffect(() => {
     frames.forEach((frame) => {
@@ -73,7 +45,7 @@ export default function CaseMobileShowcase({
   if (!frames.length) return null;
 
   const total = frames.length;
-  const safeActiveIndex = total ? activeIndex % total : 0;
+  const safeActiveIndex = activeIndex % total;
   const activeFrame = frames[safeActiveIndex] ?? frames[0];
   const prevIndex = (safeActiveIndex - 1 + total) % total;
   const nextIndex = (safeActiveIndex + 1) % total;
@@ -83,13 +55,13 @@ export default function CaseMobileShowcase({
   const goPrev = () => setActiveIndex(prevIndex);
   const goNext = () => setActiveIndex(nextIndex);
 
-  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     const touch = event.touches[0];
     touchStartX.current = touch.clientX;
     touchStartY.current = touch.clientY;
   };
 
-  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (touchStartX.current === null || touchStartY.current === null) return;
 
     const touch = event.changedTouches[0];
@@ -107,12 +79,7 @@ export default function CaseMobileShowcase({
   };
 
   return (
-    <section
-      ref={rootRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="grid overflow-hidden gap-8 md:gap-16"
-    >
+    <section className="grid gap-8 overflow-hidden md:gap-16">
       <div className="max-w-[760px] px-0">
         <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-400">
           {eyebrow}
@@ -126,7 +93,7 @@ export default function CaseMobileShowcase({
         <div className="hidden gap-6 md:grid md:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)_minmax(0,0.82fr)] md:items-end">
           <button
             type="button"
-            onClick={() => setActiveIndex(prevIndex)}
+            onClick={goPrev}
             className="group block min-w-0"
             aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
           >
@@ -135,7 +102,7 @@ export default function CaseMobileShowcase({
                 <img
                   src={prevFrame.src}
                   alt={prevFrame.alt ?? ""}
-                  className="absolute inset-0 h-full w-full object-cover object-top"
+                  className="absolute inset-0 h-full w-full object-contain object-center"
                   loading="lazy"
                   decoding="async"
                 />
@@ -163,7 +130,7 @@ export default function CaseMobileShowcase({
                     <img
                       src={activeFrame.src}
                       alt={activeFrame.alt ?? ""}
-                      className="absolute inset-0 h-full w-full object-cover object-top"
+                      className="absolute inset-0 h-full w-full object-contain object-center"
                       loading="lazy"
                       decoding="async"
                     />
@@ -175,7 +142,7 @@ export default function CaseMobileShowcase({
 
           <button
             type="button"
-            onClick={() => setActiveIndex(nextIndex)}
+            onClick={goNext}
             className="group block min-w-0"
             aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
           >
@@ -184,7 +151,7 @@ export default function CaseMobileShowcase({
                 <img
                   src={nextFrame.src}
                   alt={nextFrame.alt ?? ""}
-                  className="absolute inset-0 h-full w-full object-cover object-top"
+                  className="absolute inset-0 h-full w-full object-contain object-center"
                   loading="lazy"
                   decoding="async"
                 />
@@ -198,18 +165,18 @@ export default function CaseMobileShowcase({
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <div className="relative mx-auto h-[104vw] max-h-[500px] min-h-[390px] w-full overflow-hidden">
+          <div className="relative mx-auto h-[124vw] min-h-[430px] max-h-[560px] w-full overflow-hidden">
             {total > 1 ? (
               <button
                 type="button"
                 onClick={goPrev}
-                className="absolute left-[-18%] top-1/2 z-0 h-[74vw] max-h-[360px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-35"
+                className="absolute left-[-18%] top-1/2 z-0 h-[96vw] max-h-[430px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-30"
                 aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
               >
                 <img
                   src={prevFrame.src}
                   alt={prevFrame.alt ?? ""}
-                  className="h-full w-full object-cover object-top"
+                  className="h-full w-full object-contain object-center"
                   loading="lazy"
                   decoding="async"
                 />
@@ -219,7 +186,7 @@ export default function CaseMobileShowcase({
             <button
               type="button"
               onClick={() => onOpenFrame?.(activeFrame.src)}
-              className="absolute left-1/2 top-0 z-10 h-full w-[72vw] max-w-[285px] -translate-x-1/2 overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
+              className="absolute left-1/2 top-0 z-10 h-full w-[76vw] max-w-[300px] -translate-x-1/2 overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
               aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
             >
               <AnimatePresence initial={false} mode="wait">
@@ -234,7 +201,7 @@ export default function CaseMobileShowcase({
                   <img
                     src={activeFrame.src}
                     alt={activeFrame.alt ?? ""}
-                    className="h-full w-full object-cover object-top"
+                    className="h-full w-full object-contain object-center"
                     loading="lazy"
                     decoding="async"
                   />
@@ -246,13 +213,13 @@ export default function CaseMobileShowcase({
               <button
                 type="button"
                 onClick={goNext}
-                className="absolute right-[-18%] top-1/2 z-0 h-[74vw] max-h-[360px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-35"
+                className="absolute right-[-18%] top-1/2 z-0 h-[96vw] max-h-[430px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-30"
                 aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
               >
                 <img
                   src={nextFrame.src}
                   alt={nextFrame.alt ?? ""}
-                  className="h-full w-full object-cover object-top"
+                  className="h-full w-full object-contain object-center"
                   loading="lazy"
                   decoding="async"
                 />
@@ -278,7 +245,7 @@ export default function CaseMobileShowcase({
                     type="button"
                     onClick={() => setActiveIndex(index)}
                     className={[
-                      "h-1.5 rounded-full transition duration-[560ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                      "h-1.5 rounded-full transition duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                       index === safeActiveIndex
                         ? "w-5 bg-neutral-500"
                         : "w-2 bg-neutral-300",
@@ -324,7 +291,7 @@ export default function CaseMobileShowcase({
                   type="button"
                   onClick={() => setActiveIndex(index)}
                   className={[
-                    "h-1.5 rounded-full transition duration-[560ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    "h-1.5 rounded-full transition duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                     index === safeActiveIndex
                       ? "w-5 bg-neutral-500"
                       : "w-2 bg-neutral-300 hover:bg-neutral-400",

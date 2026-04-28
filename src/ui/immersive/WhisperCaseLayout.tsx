@@ -133,6 +133,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
   const desktopWalkthrough = videos.find((video) => video.device === "desktop");
   const questVideo = videos.find((video) => video.device === "vr");
+  const questCaptureUrl = questVideo?.src ?? WHISPER_LIVE_URL;
 
   const webFrames = rawFrames
     .filter((frame) => frame.device === "desktop")
@@ -234,17 +235,6 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
         .whisper-case-page .whisper-xr-video-badge {
           display: none !important;
-        }
-
-        .whisper-case-page .whisper-xr-video-action {
-          left: 50% !important;
-          right: auto !important;
-          top: 0.75rem !important;
-          transform: translateX(-50%) !important;
-          max-width: calc(100% - 1.5rem) !important;
-          padding: 0.48rem 0.78rem !important;
-          font-size: 0.58rem !important;
-          letter-spacing: 0.12em !important;
         }
 
         .whisper-case-page .whisper-xr-proof {
@@ -527,13 +517,70 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             <div className="grid gap-8 lg:grid-cols-12">
               {webSequenceFrames[0] ? (
                 <div className="lg:col-span-7">
-                  <WhisperFrameCard
-                    src={webSequenceFrames[0].src}
-                    alt={webSequenceFrames[0].alt}
-                    label={webSequenceFrames[0].label ?? "Frame 02"}
-                    description={webSequenceFrames[0].caption ?? ""}
-                    onClick={() => openLightbox(webFrames, 1)}
-                  />
+                  <article className="overflow-hidden rounded-[30px] border border-white/10 bg-[#05070c]">
+                    <div className="relative aspect-[1.5/1] w-full overflow-hidden bg-black sm:aspect-[1.58/1]">
+                      <img
+                        src={webSequenceFrames[0].src}
+                        alt={webSequenceFrames[0].alt}
+                        className="h-full w-full object-cover object-center"
+                        loading="lazy"
+                        decoding="async"
+                      />
+
+                      <div className="pointer-events-none absolute inset-x-4 top-4 z-20 flex flex-wrap gap-2 sm:inset-x-5 sm:top-5">
+                        <span className="rounded-full border border-white/16 bg-[rgba(76,61,45,0.72)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white backdrop-blur-md">
+                          {copy.opening.badges.whisper}
+                        </span>
+                        <span className="rounded-full border border-white/16 bg-[rgba(76,61,45,0.72)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white backdrop-blur-md">
+                          {copy.opening.badges.desktop}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-white/8 bg-black px-5 py-5 sm:px-6 sm:py-6">
+                      <p className="mb-3 text-[11px] uppercase tracking-[0.24em] text-white/48">
+                        {copy.opening.kicker}
+                      </p>
+
+                      <p className="max-w-[32ch] text-[16px] leading-[1.6] text-white/82 sm:text-[17px]">
+                        {copy.opening.description}
+                      </p>
+
+                      <div className="mt-5 flex flex-wrap gap-2.5">
+                        {[
+                          ...copy.opening.stackTop,
+                          ...copy.opening.stackBottom,
+                        ].map((label) => (
+                          <span
+                            key={label}
+                            className="rounded-full border border-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white/58"
+                          >
+                            {label}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mt-5 flex flex-wrap gap-3">
+                        <a
+                          href={WHISPER_LIVE_URL}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/12 px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-white/88 transition hover:border-white/22 hover:bg-white/6"
+                        >
+                          LIVE SITE ↗
+                        </a>
+
+                        <a
+                          href={WHISPER_REPO_URL}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/12 px-5 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-white/88 transition hover:border-white/22 hover:bg-white/6"
+                        >
+                          REPOSITORY ↗
+                        </a>
+                      </div>
+                    </div>
+                  </article>
                 </div>
               ) : null}
 
@@ -609,21 +656,23 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
             {questVideo ? (
               <article className="whisper-xr-main-card rounded-[30px] border border-white/10 bg-black p-3">
-                <div className="relative overflow-hidden rounded-[22px] bg-black">
-                  <div className="whisper-xr-video-badge pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
-                    {copy.xr.videoBadge}
-                  </div>
+                  <div className="relative overflow-hidden rounded-[22px] bg-black">
+                    <div className="whisper-xr-video-badge pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
+                      {copy.xr.videoBadge}
+                    </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setActiveVideo(questVideo)}
-                    className="whisper-xr-video-action absolute right-4 top-4 z-10 whitespace-nowrap rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/86 backdrop-blur-md transition hover:bg-white/16"
-                  >
-                    {copy.links.viewQuestCapture}
-                  </button>
+                    <a
+                      href={questCaptureUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="absolute bottom-4 right-4 z-20 inline-flex min-h-[40px] items-center justify-center rounded-full border border-white/16 bg-[rgba(84,88,102,0.58)] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-white backdrop-blur-md transition hover:border-white/28 hover:bg-[rgba(84,88,102,0.72)] sm:bottom-auto sm:right-auto sm:top-5 sm:left-5 sm:min-h-[42px] sm:px-5 sm:text-[11px]"
+                    >
+                      <span className="sm:hidden">VIEW QUEST ↗</span>
+                      <span className="hidden sm:inline">VIEW QUEST CAPTURE ↗</span>
+                    </a>
 
-                  <video
-                    className="block h-auto w-full object-contain"
+                    <video
+                      className="block h-auto w-full object-contain"
                     autoPlay
                     muted
                     loop

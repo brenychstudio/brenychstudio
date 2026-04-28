@@ -29,6 +29,8 @@ export default function CaseMobileShowcase({
   const [inView, setInView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   useEffect(() => {
     const node = rootRef.current;
@@ -51,7 +53,7 @@ export default function CaseMobileShowcase({
 
     const timer = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % frames.length);
-    }, 2600);
+    }, 3200);
 
     return () => window.clearInterval(timer);
   }, [inView, isHovered, frames.length]);
@@ -63,6 +65,11 @@ export default function CaseMobileShowcase({
     });
   }, [frames]);
 
+  useEffect(() => {
+    if (!frames.length) return;
+    if (activeIndex > frames.length - 1) setActiveIndex(0);
+  }, [activeIndex, frames.length]);
+
   if (!frames.length) return null;
 
   const total = frames.length;
@@ -73,28 +80,54 @@ export default function CaseMobileShowcase({
   const prevFrame = frames[prevIndex] ?? activeFrame;
   const nextFrame = frames[nextIndex] ?? activeFrame;
 
+  const goPrev = () => setActiveIndex(prevIndex);
+  const goNext = () => setActiveIndex(nextIndex);
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX.current;
+    const deltaY = touch.clientY - touchStartY.current;
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    if (Math.abs(deltaX) < 42) return;
+    if (Math.abs(deltaX) < Math.abs(deltaY) * 1.15) return;
+
+    if (deltaX < 0) goNext();
+    else goPrev();
+  };
+
   return (
     <section
       ref={rootRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="grid gap-12 md:gap-16"
+      className="grid overflow-hidden gap-8 md:gap-16"
     >
-      <div className="max-w-[760px]">
-        <div className="text-[10px] tracking-[0.22em] uppercase text-neutral-400">
+      <div className="max-w-[760px] px-0">
+        <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-400">
           {eyebrow}
         </div>
-        <div className="mt-2.5 text-[15px] leading-[1.75] text-neutral-700">
+        <div className="mt-2.5 text-[14px] leading-[1.75] text-neutral-700 md:text-[15px]">
           {description}
         </div>
       </div>
 
-      <div className="rounded-[28px] border border-neutral-100 bg-neutral-50/40 p-4 md:p-7">
-        <div className="hidden md:grid md:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)_minmax(0,0.82fr)] md:items-end gap-6">
+      <div className="overflow-hidden rounded-[26px] border border-neutral-100 bg-neutral-50/40 p-4 md:rounded-[28px] md:p-7">
+        <div className="hidden gap-6 md:grid md:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)_minmax(0,0.82fr)] md:items-end">
           <button
             type="button"
             onClick={() => setActiveIndex(prevIndex)}
-            className="group block"
+            className="group block min-w-0"
             aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
           >
             <div className="mx-auto flex h-[456px] w-[220px] items-end">
@@ -113,8 +146,8 @@ export default function CaseMobileShowcase({
           <button
             type="button"
             onClick={() => onOpenFrame?.(activeFrame.src)}
-            className="group block"
-            aria-label={`Open active mobile frame ${formatIndex(activeIndex + 1)}`}
+            className="group block min-w-0"
+            aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
           >
             <div className="mx-auto h-[456px] w-[270px]">
               <div className="relative h-full w-full overflow-hidden rounded-[30px] border border-neutral-200 bg-white shadow-[0_20px_48px_rgba(0,0,0,0.08)] transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-neutral-300">
@@ -143,7 +176,7 @@ export default function CaseMobileShowcase({
           <button
             type="button"
             onClick={() => setActiveIndex(nextIndex)}
-            className="group block"
+            className="group block min-w-0"
             aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
           >
             <div className="mx-auto flex h-[456px] w-[220px] items-end">
@@ -160,69 +193,146 @@ export default function CaseMobileShowcase({
           </button>
         </div>
 
-        <div className="md:hidden overflow-x-auto pb-2">
-          <div className="flex gap-4 min-w-max">
-            {frames.map((frame, index) => {
-              const active = index === safeActiveIndex;
-              return (
-                <button
-                  key={`${frame.src}-${index}`}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className="w-[216px] shrink-0"
-                  aria-label={`Set active mobile frame ${formatIndex(index + 1)}`}
-                >
-                  <div
-                    className={[
-                      "rounded-[26px] border overflow-hidden transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-                      active
-                        ? "border-neutral-300 bg-white shadow-[0_12px_28px_rgba(0,0,0,0.08)]"
-                        : "border-neutral-100 bg-white/70",
-                    ].join(" ")}
-                  >
-                    <img src={frame.src} alt={frame.alt ?? ""} className="block h-auto w-full" loading="lazy" decoding="async" />
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-6 max-w-[820px] grid gap-3 text-neutral-500">
-          <div className="h-px w-12 bg-neutral-200" />
-
-          <div className="flex items-center justify-between gap-6 min-h-[22px]">
-            <AnimatePresence mode="sync" initial={false}>
-              <motion.div
-                key={`mobile-label-${activeIndex}`}
-                className="text-[10px] uppercase tracking-[0.22em] text-neutral-400"
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -2 }}
-                transition={showcaseTransition}
+        <div
+          className="md:hidden"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="relative mx-auto h-[104vw] max-h-[500px] min-h-[390px] w-full overflow-hidden">
+            {total > 1 ? (
+              <button
+                type="button"
+                onClick={goPrev}
+                className="absolute left-[-18%] top-1/2 z-0 h-[74vw] max-h-[360px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-35"
+                aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
               >
-                Mobile frame {formatIndex(activeIndex + 1)} / {formatIndex(total)}
-              </motion.div>
-            </AnimatePresence>
+                <img
+                  src={prevFrame.src}
+                  alt={prevFrame.alt ?? ""}
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={() => onOpenFrame?.(activeFrame.src)}
+              className="absolute left-1/2 top-0 z-10 h-full w-[72vw] max-w-[285px] -translate-x-1/2 overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]"
+              aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
+            >
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={activeFrame.src}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0, scale: 0.985, x: 12 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.99, x: -10 }}
+                  transition={showcaseTransition}
+                >
+                  <img
+                    src={activeFrame.src}
+                    alt={activeFrame.alt ?? ""}
+                    className="h-full w-full object-cover object-top"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </button>
 
             {total > 1 ? (
-              <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={goNext}
+                className="absolute right-[-18%] top-1/2 z-0 h-[74vw] max-h-[360px] w-[46vw] max-w-[180px] -translate-y-1/2 overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-35"
+                aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
+              >
+                <img
+                  src={nextFrame.src}
+                  alt={nextFrame.alt ?? ""}
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            ) : null}
+          </div>
+
+          {total > 1 ? (
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={goPrev}
+                className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500"
+                aria-label="Previous mobile frame"
+              >
+                Prev
+              </button>
+
+              <div className="flex items-center gap-2 px-1">
                 {frames.map((frame, index) => (
                   <button
-                    key={`${frame.src}-dot-${index}`}
+                    key={`${frame.src}-mobile-dot-${index}`}
                     type="button"
                     onClick={() => setActiveIndex(index)}
                     className={[
                       "h-1.5 rounded-full transition duration-[560ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                       index === safeActiveIndex
                         ? "w-5 bg-neutral-500"
-                        : "w-2 bg-neutral-300 hover:bg-neutral-400",
+                        : "w-2 bg-neutral-300",
                     ].join(" ")}
                     aria-label={`Go to mobile frame ${formatIndex(index + 1)}`}
                   />
                 ))}
               </div>
-            ) : null}
+
+              <button
+                type="button"
+                onClick={goNext}
+                className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500"
+                aria-label="Next mobile frame"
+              >
+                Next
+              </button>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="mt-6 grid max-w-[820px] gap-3 text-neutral-500">
+          <div className="h-px w-12 bg-neutral-200" />
+
+          <div className="flex min-h-[22px] items-center justify-between gap-6">
+            <AnimatePresence mode="sync" initial={false}>
+              <motion.div
+                key={`mobile-label-${safeActiveIndex}`}
+                className="text-[10px] uppercase tracking-[0.22em] text-neutral-400"
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -2 }}
+                transition={showcaseTransition}
+              >
+                Mobile frame {formatIndex(safeActiveIndex + 1)} / {formatIndex(total)}
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="hidden shrink-0 items-center gap-2 md:flex">
+              {frames.map((frame, index) => (
+                <button
+                  key={`${frame.src}-dot-${index}`}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  className={[
+                    "h-1.5 rounded-full transition duration-[560ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    index === safeActiveIndex
+                      ? "w-5 bg-neutral-500"
+                      : "w-2 bg-neutral-300 hover:bg-neutral-400",
+                  ].join(" ")}
+                  aria-label={`Go to mobile frame ${formatIndex(index + 1)}`}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="min-h-[56px]">
@@ -236,11 +346,11 @@ export default function CaseMobileShowcase({
                 className="grid gap-3"
               >
                 {activeFrame.caption ? (
-                  <div className="text-[15px] leading-[1.75] text-neutral-700">
+                  <div className="text-[14px] leading-[1.75] text-neutral-700 md:text-[15px]">
                     {activeFrame.caption}
                   </div>
                 ) : (
-                  <div className="text-[15px] leading-[1.75] text-neutral-700 opacity-0">
+                  <div className="text-[14px] leading-[1.75] text-neutral-700 opacity-0 md:text-[15px]">
                     Placeholder caption height lock.
                   </div>
                 )}
@@ -252,7 +362,7 @@ export default function CaseMobileShowcase({
             <button
               type="button"
               onClick={() => onOpenFrame?.(activeFrame.src)}
-              className="text-[11px] tracking-[0.2em] uppercase text-neutral-600 hover:text-neutral-900 transition"
+              className="text-[11px] uppercase tracking-[0.2em] text-neutral-600 transition hover:text-neutral-900"
             >
               Open frame <span className="text-neutral-400">&rarr;</span>
             </button>

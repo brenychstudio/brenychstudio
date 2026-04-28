@@ -8,6 +8,7 @@ import CaseStatusPill from "../ui/status/CaseStatusPill";
 import WhisperCaseLayout from "../ui/immersive/WhisperCaseLayout";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveTone } from "../data/immersive";
+import { whisperCaseI18n } from "../data/whisperCaseI18n";
 import { useLocale } from "../store/useLocale";
 
 type PageProps = {
@@ -287,7 +288,7 @@ export default function ImmersiveCasePage({
   onOpenProject,
   onCloseProject,
 }: PageProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -296,6 +297,11 @@ export default function ImmersiveCasePage({
   if (!data) {
     return <Navigate to="/immersive" replace />;
   }
+
+  const isWhisperCase = data.slug === "whisper";
+  const whisperCopy =
+    whisperCaseI18n[locale as keyof typeof whisperCaseI18n] ??
+    whisperCaseI18n.en;
 
   const detail =
     immersiveDetailCopy[data.slug] ??
@@ -318,7 +324,6 @@ export default function ImmersiveCasePage({
   const index = immersiveItems.findIndex((item) => item.slug === data.slug);
   const prev = index > 0 ? immersiveItems[index - 1] : null;
   const next = index >= 0 && index < immersiveItems.length - 1 ? immersiveItems[index + 1] : null;
-  const isWhisperCase = data.slug === "whisper";
   const externalLinks = data.links ?? [];
 
   return (
@@ -339,14 +344,18 @@ export default function ImmersiveCasePage({
                 onClick={() => openPath(navigate, "/immersive", onCloseProject)}
                 className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-400 hover:text-neutral-900"
               >
-                <span className="text-neutral-400">←</span> Back to immersive
+                <span className="text-neutral-400">←</span>{" "}
+                {isWhisperCase ? whisperCopy.top.backToImmersive : "Back to immersive"}
               </button>
 
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
                   {data.year}
                 </div>
-                <CaseStatusPill kind={data.statusKind} label={data.status} />
+                <CaseStatusPill
+                  kind={data.statusKind}
+                  label={isWhisperCase ? whisperCopy.top.status : data.status}
+                />
               </div>
 
               <div className="hidden">

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ImmersiveItem, ImmersiveMedia } from "../../data/immersive";
 import type { CaseFrame } from "../../data/cases";
+import { whisperCaseI18n } from "../../data/whisperCaseI18n";
+import { useLocale } from "../../store/useLocale";
 import CaseMobileShowcase from "../work/CaseMobileShowcase";
 import CaseImageLightbox from "../work/CaseImageLightbox";
 
@@ -11,6 +13,12 @@ type WhisperCaseLayoutProps = {
 
 type LightboxFrame = {
   src: string;
+  alt?: string;
+  caption?: string;
+};
+
+type WhisperMediaCopy = {
+  label?: string;
   alt?: string;
   caption?: string;
 };
@@ -38,6 +46,18 @@ function toMobileShowcaseFrames(frames: ImmersiveMedia[]): CaseFrame[] {
     alt: frame.alt,
     caption: frame.caption,
   }));
+}
+
+function applyMediaCopy(
+  media: ImmersiveMedia,
+  mediaCopy?: WhisperMediaCopy
+): ImmersiveMedia {
+  return {
+    ...media,
+    label: mediaCopy?.label ?? media.label,
+    alt: mediaCopy?.alt ?? media.alt,
+    caption: mediaCopy?.caption ?? media.caption,
+  };
 }
 
 type WhisperFrameCardProps = {
@@ -93,14 +113,38 @@ function WhisperFrameCard({
 }
 
 export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
-  const videos = item.videos ?? [];
-  const frames = item.frames ?? [];
+  const { locale } = useLocale();
+  const copy =
+    whisperCaseI18n[locale as keyof typeof whisperCaseI18n] ??
+    whisperCaseI18n.en;
 
+  const rawVideos = item.videos ?? [];
+  const rawFrames = item.frames ?? [];
+
+  const videos = rawVideos.map((video) => {
+    if (video.device === "desktop") {
+      return applyMediaCopy(video, copy.videos.desktop);
+    }
+    if (video.device === "vr") {
+      return applyMediaCopy(video, copy.videos.quest);
+    }
+    return video;
+  });
+
+  const desktopWalkthrough = videos.find((video) => video.device === "desktop");
   const questVideo = videos.find((video) => video.device === "vr");
 
-  const webFrames = frames.filter((frame) => frame.device === "desktop");
-  const vrFrames = frames.filter((frame) => frame.device === "vr");
-  const mobileFrames = frames.filter((frame) => frame.device === "mobile");
+  const webFrames = rawFrames
+    .filter((frame) => frame.device === "desktop")
+    .map((frame, index) => applyMediaCopy(frame, copy.frames.web[index]));
+
+  const vrFrames = rawFrames
+    .filter((frame) => frame.device === "vr")
+    .map((frame, index) => applyMediaCopy(frame, copy.frames.vr[index]));
+
+  const mobileFrames = rawFrames
+    .filter((frame) => frame.device === "mobile")
+    .map((frame, index) => applyMediaCopy(frame, copy.frames.mobile[index]));
 
   const openingFrame = webFrames[0] ?? null;
   const webSequenceFrames = webFrames.slice(1, 5);
@@ -188,8 +232,8 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             <div className="relative overflow-hidden rounded-[26px] bg-black">
               <video
                 className="block h-auto w-full"
-                src={WHISPER_DESKTOP_VIDEO}
-                poster={WHISPER_DESKTOP_POSTER}
+                src={desktopWalkthrough?.src ?? WHISPER_DESKTOP_VIDEO}
+                poster={desktopWalkthrough?.poster ?? WHISPER_DESKTOP_POSTER}
                 autoPlay
                 muted
                 loop
@@ -202,19 +246,19 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
               <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2 md:left-5 md:top-5">
                 <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/84 backdrop-blur-md">
-                  Whisper
+                  {copy.opening.badges.whisper}
                 </span>
                 <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/84 backdrop-blur-md">
-                  Desktop walkthrough
+                  {copy.opening.badges.desktop}
                 </span>
               </div>
 
               <div className="absolute right-4 top-4 z-10 hidden max-w-[58%] flex-nowrap justify-end gap-2 md:right-5 md:top-5 md:flex">
                 <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
-                  Interactive web
+                  {copy.opening.badges.interactive}
                 </span>
                 <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
-                  XR exhibition
+                  {copy.opening.badges.xr}
                 </span>
               </div>
 
@@ -222,36 +266,33 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                 <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
                   <div>
                     <div className="text-[10px] uppercase tracking-[0.18em] text-white/54">
-                      Website navigation
+                      {copy.opening.kicker}
                     </div>
 
                     <p className="mt-4 max-w-[43ch] text-sm leading-6 text-white/82 md:text-[15px]">
-                      Desktop navigation through the editorial website, series pages,
-                      print catalog, and collector-facing flow.
+                      {copy.opening.description}
                     </p>
 
                     <div className="mt-4 flex flex-wrap gap-2">
-                      <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
-                        React
-                      </span>
-                      <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
-                        Vite
-                      </span>
-                      <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
-                        Three.js
-                      </span>
-                      <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
-                        WebXR
-                      </span>
+                      {copy.opening.stackTop.map((label) => (
+                        <span
+                          key={label}
+                          className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58"
+                        >
+                          {label}
+                        </span>
+                      ))}
                     </div>
 
                     <div className="mt-2 flex flex-wrap gap-2">
-                      <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
-                        Quest VR
-                      </span>
-                      <span className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58">
-                        AR Preview
-                      </span>
+                      {copy.opening.stackBottom.map((label) => (
+                        <span
+                          key={label}
+                          className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/58"
+                        >
+                          {label}
+                        </span>
+                      ))}
                     </div>
                   </div>
 
@@ -262,7 +303,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       rel="noreferrer"
                       className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                     >
-                      Live site ↗
+                      {copy.links.live} ↗
                     </a>
 
                     <a
@@ -271,7 +312,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       rel="noreferrer"
                       className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/88 transition hover:bg-white/14"
                     >
-                      Repository ↗
+                      {copy.links.repo} ↗
                     </a>
                   </div>
                 </div>
@@ -291,15 +332,13 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         <div className="grid gap-10 xl:grid-cols-[0.46fr_0.54fr] xl:items-end">
           <div>
             <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-              Opening direction
+              {copy.direction.eyebrow}
             </div>
             <h2 className="mt-3 max-w-[11ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
-              A quiet immersive system for art, presence, prints, VR, and AR.
+              {copy.direction.title}
             </h2>
             <p className="mt-5 max-w-[58ch] text-[15px] leading-8 text-neutral-600">
-              WHISPER is structured as a layered exhibition product: editorial
-              web, spatial XR, headset-tested navigation, collector print logic,
-              and AR preview working as one authored system.
+              {copy.direction.body}
             </p>
           </div>
 
@@ -326,16 +365,15 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
           <div className="grid gap-6 xl:grid-cols-[0.56fr_0.44fr] xl:items-end">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                Web exhibition
+                {copy.web.eyebrow}
               </div>
               <h2 className="mt-3 max-w-[13ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
-                Editorial surfaces arranged as a cinematic case sequence.
+                {copy.web.title}
               </h2>
             </div>
 
             <p className="max-w-[40ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
-              The web frames are arranged as a directed sequence: one large
-              anchor, then asymmetric image and text moments.
+              {copy.web.description}
             </p>
           </div>
 
@@ -366,12 +404,10 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
                 <div className="rounded-[30px] border border-neutral-100 bg-neutral-50 p-6">
                   <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                    Presentation logic
+                    {copy.web.noteLabel}
                   </div>
                   <p className="mt-4 text-sm leading-7 text-neutral-650">
-                    The goal is not to display every screenshot equally. The
-                    layout should show rhythm: series system, gallery staging,
-                    print layer, notes layer, and collector continuation.
+                    {copy.web.note}
                   </p>
                 </div>
               </div>
@@ -415,15 +451,13 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
           <div className="grid gap-8 xl:grid-cols-[0.38fr_0.62fr] xl:items-start">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-white/42">
-                XR spatial proof
+                {copy.xr.eyebrow}
               </div>
               <h2 className="mt-3 max-w-[10ch] text-[40px] leading-[0.98] tracking-[-0.045em] md:text-[62px]">
-                Quest-tested exhibition space.
+                {copy.xr.title}
               </h2>
               <p className="mt-5 max-w-[42ch] text-[15px] leading-8 text-white/64">
-                The Quest capture is the key proof point. It shows that the
-                project moves beyond web presentation into headset-tested
-                spatial experience.
+                {copy.xr.body}
               </p>
             </div>
 
@@ -431,15 +465,15 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
               <article className="rounded-[30px] border border-white/10 bg-black p-3">
                 <div className="relative overflow-hidden rounded-[22px] bg-black">
                   <div className="pointer-events-none absolute left-5 top-5 z-10 rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/80 backdrop-blur">
-                    Meta Quest 3 capture
+                    {copy.xr.videoBadge}
                   </div>
 
                   <button
                     type="button"
                     onClick={() => setActiveVideo(questVideo)}
-                    className="absolute right-4 top-4 z-10 rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/86 backdrop-blur-md transition hover:bg-white/16"
+                    className="absolute right-4 top-4 z-10 whitespace-nowrap rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/86 backdrop-blur-md transition hover:bg-white/16"
                   >
-                    View Quest capture ↗
+                    {copy.links.viewQuestCapture}
                   </button>
 
                   <video
@@ -457,7 +491,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
                 <div className="px-2 pb-1 pt-5">
                   <div className="text-[10px] uppercase tracking-[0.14em] text-white/42">
-                    VR walkthrough
+                    {copy.xr.videoLabel}
                   </div>
                   <p className="mt-2 max-w-[70ch] text-sm leading-7 text-white/66">
                     {questVideo.caption}
@@ -496,16 +530,15 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
           <div className="grid gap-6 xl:grid-cols-[0.46fr_0.54fr] xl:items-end">
             <div>
               <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                Post-XR sequence
+                {copy.collector.eyebrow}
               </div>
               <h2 className="mt-3 max-w-[12ch] text-[40px] leading-[0.98] tracking-[-0.045em] text-neutral-950 md:text-[62px]">
-                The collector layer brings the experience back to the artwork.
+                {copy.collector.title}
               </h2>
             </div>
 
             <p className="max-w-[40ch] text-[15px] leading-8 text-neutral-600 xl:justify-self-end">
-              After the headset proof, the page returns to prints, details, AR
-              preview, notes, and collector-facing continuation.
+              {copy.collector.description}
             </p>
           </div>
 
@@ -586,8 +619,8 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             const index = mobileFrames.findIndex((frame) => frame.src === src);
             openLightbox(mobileFrames, index >= 0 ? index : 0);
           }}
-          eyebrow="Mobile showcase"
-          description="Guided handheld sequence across exhibition entry, series navigation, mobile drawer, work detail, and print / AR continuation."
+          eyebrow={copy.mobile.eyebrow}
+          description={copy.mobile.description}
         />
       </motion.section>
 
@@ -601,28 +634,25 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         <div className="grid gap-8 xl:grid-cols-[0.62fr_0.38fr]">
           <div className="rounded-[34px] border border-neutral-100 bg-white p-8 shadow-[0_18px_46px_rgba(17,17,17,0.045)]">
             <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-              Current milestone
+              {copy.closing.eyebrow}
             </div>
             <h3 className="mt-4 max-w-[13ch] text-[34px] leading-[1.02] tracking-[-0.04em] text-neutral-950 md:text-[48px]">
-              An advanced working V1, ready for deeper production polish.
+              {copy.closing.title}
             </h3>
             <p className="mt-5 max-w-[60ch] text-[15px] leading-8 text-neutral-600">
-              WHISPER already proves the core direction: public website, XR
-              extension, Quest proof, print logic, AR continuation, and premium
-              cinematic presentation. The next layer is refinement, timing,
-              assets, and production hardening.
+              {copy.closing.body}
             </p>
           </div>
 
           <div className="rounded-[34px] border border-neutral-100 bg-neutral-50 p-8">
             <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-              What this proves
+              {copy.closing.proofEyebrow}
             </div>
 
             <div className="mt-6 space-y-5 text-sm leading-7 text-neutral-650">
-              <p>Premium editorial web can become a spatial art product.</p>
-              <p>Quest hand-navigation can be integrated without turning the experience into a game UI.</p>
-              <p>Print, AR, and XR can live inside one coherent collector-facing system.</p>
+              {copy.closing.proof.map((item) => (
+                <p key={item}>{item}</p>
+              ))}
             </div>
           </div>
         </div>
@@ -640,7 +670,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
             <div className="flex h-full w-full flex-col p-4 md:p-6">
               <div className="flex items-center justify-between">
                 <div className="text-[10px] uppercase tracking-[0.16em] text-white/52">
-                  Quest video viewer / Meta Quest 3 capture
+                  {copy.xr.viewerTitle}
                 </div>
 
                 <button
@@ -648,7 +678,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                   onClick={() => setActiveVideo(null)}
                   className="rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/82 backdrop-blur-md transition hover:bg-white/14"
                 >
-                  Close ×
+                  {copy.links.close} ×
                 </button>
               </div>
 

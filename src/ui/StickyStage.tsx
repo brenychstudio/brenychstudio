@@ -69,22 +69,35 @@ export default function StickyStage({
                   scale: { duration: 0.88, ease: [0.22, 1, 0.36, 1] },
                 }}
               >
-                <img
-                  src={activeCase.poster.src}
-                  alt={activeCase.poster.alt}
-                  className="pointer-events-none block max-h-[88%] max-w-[90%] select-none object-contain"
-                  draggable={false}
+                <div
+                  className={[
+                    "pointer-events-none max-h-[88%] max-w-[90%] select-none",
+                    "rounded-[26px] border border-neutral-200/70 bg-white/88 p-3",
+                    "shadow-[0_22px_70px_rgba(15,23,42,0.07)]",
+                    "backdrop-blur-[1px]",
+                  ].join(" ")}
                   style={{
                     transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
                     transformOrigin: "50% 50%",
                     willChange: "transform",
                     transition: "transform 180ms linear",
                   }}
-                  onError={(e) => {
-                    const el = e.currentTarget as HTMLImageElement;
-                    console.warn("Poster failed to load:", el.src);
-                  }}
-                />
+                >
+                  <img
+                    src={activeCase.poster.src}
+                    alt={activeCase.poster.alt}
+                    className={[
+                      "block max-h-[70vh] max-w-full rounded-[18px]",
+                      "border border-black/6 object-contain",
+                      "shadow-[0_10px_30px_rgba(15,23,42,0.045)]",
+                    ].join(" ")}
+                    draggable={false}
+                    onError={(e) => {
+                      const el = e.currentTarget as HTMLImageElement;
+                      console.warn("Poster failed to load:", el.src);
+                    }}
+                  />
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>

@@ -141,9 +141,6 @@ export default function Immersive({
                       />
                     ) : null}
 
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,22,0.18)_0%,rgba(8,12,22,0.10)_24%,rgba(8,12,22,0.34)_62%,rgba(8,12,22,0.54)_100%)]" />
-                    <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,rgba(255,255,255,0.14),transparent_52%)]" />
-
                     <div className="relative flex min-h-[420px] flex-col justify-between p-5 text-white md:min-h-[540px] md:p-8">
                       <div className="flex items-start justify-between gap-4">
                         <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
@@ -168,35 +165,18 @@ export default function Immersive({
                         </div>
                       </div>
 
-                      <div className="max-w-[56ch]">
+                      <div className="max-w-[56ch] md:translate-y-32 xl:translate-y-36">
                         <div className="text-[10px] uppercase tracking-[0.14em] text-white/85">
                           {featuredItem.copy.medium}
-                        </div>
-
-                        <h2 className="mt-5 max-w-[10ch] text-[44px] leading-[0.94] tracking-tight md:text-[78px]">
-                          {featuredItem.copy.title}
-                        </h2>
-
-                        <p className="mt-5 max-w-[42ch] text-sm leading-7 text-white/90 md:text-[16px]">
-                          {featuredItem.copy.tagline}
-                        </p>
-
-                        <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.14em] text-white/85">
-                          <span className="inline-flex items-center whitespace-nowrap rounded-full border border-white/16 px-3 py-1">
-                            {featuredItem.copy.mode}
-                          </span>
-                          <span className="inline-flex items-center whitespace-nowrap rounded-full border border-white/16 px-3 py-1">
-                            {t.immersive.featured.directionBadge}
-                          </span>
                         </div>
                       </div>
 
                       <div className="grid gap-4 border-t border-white/10 pt-5 md:grid-cols-[1fr_auto] md:items-end">
                         <div>
-                          <p className="max-w-[60ch] text-sm leading-7 text-white/90">
+                          <p className="max-w-[60ch] text-sm leading-7 text-white/90 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)]">
                             {featuredItem.copy.description}
                           </p>
-                          <div className="mt-3 text-[11px] uppercase tracking-[0.14em] text-white/75">
+                          <div className="mt-3 max-w-[68ch] text-[10px] uppercase tracking-[0.16em] text-white/68 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
                             {featuredItem.copy.stack}
                           </div>
                         </div>

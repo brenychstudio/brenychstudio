@@ -155,8 +155,6 @@ export default function Home({
                       ].join(" ")}
                     />
                   )}{" "}
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,22,0.16)_0%,rgba(8,12,22,0.08)_22%,rgba(8,12,22,0.34)_58%,rgba(8,12,22,0.60)_100%)]" />{" "}
-                  <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,rgba(255,255,255,0.08),transparent_52%)]" />{" "}
                   <div className="relative flex min-h-[340px] flex-col justify-between p-4 text-white sm:min-h-[400px] sm:p-5 md:min-h-[480px] md:p-7 xl:min-h-[520px] xl:p-8">
                     {" "}
                     <div className="flex items-start justify-between gap-4">
@@ -172,44 +170,23 @@ export default function Home({
                         <span>{activeImmersive.status}</span>{" "}
                       </div>{" "}
                     </div>{" "}
-                    <div className="max-w-[56ch]">
+                    <div className="max-w-[56ch] translate-y-20 sm:translate-y-24 md:translate-y-32 xl:translate-y-36">
                       {" "}
                       <div className="text-[10px] uppercase tracking-[0.14em] text-white/68">
                         {" "}
                         {activeImmersive.medium}{" "}
                       </div>{" "}
-                      <h2 className="mt-5 max-w-[9ch] text-[32px] leading-[0.95] tracking-tight sm:text-[42px] md:text-[58px] xl:text-[76px]">
-                        {" "}
-                        {activeImmersive.title}{" "}
-                      </h2>{" "}
-                      <p className="mt-4 max-w-[36ch] text-sm leading-6 text-white/82 md:mt-5 md:max-w-[40ch] md:leading-7 md:text-[16px]">
-                        {" "}
-                        {activeImmersive.tagline}{" "}
-                      </p>{" "}
-                      <div className="mt-6 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.14em] text-white/70">
-                        {" "}
-                        <span className="inline-flex items-center whitespace-nowrap rounded-full border border-white/16 px-3 py-1">
-                          {" "}
-                          {activeImmersive.mode}{" "}
-                        </span>{" "}
-                        <span className="inline-flex items-center whitespace-nowrap rounded-full border border-white/16 px-3 py-1">
-                          {" "}
-                          {t.immersive.featured.directionBadge}{" "}
-                        </span>{" "}
-                      </div>{" "}
                     </div>{" "}
                     <div className="grid gap-4 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
                       {" "}
                       <div>
-                        {" "}
-                        <p className="max-w-[58ch] text-sm leading-7 text-white/82">
-                          {" "}
-                          {activeImmersive.description}{" "}
-                        </p>{" "}
-                        <div className="mt-3 text-[11px] uppercase tracking-[0.14em] text-white/62">
-                          {" "}
-                          {activeImmersive.stack}{" "}
-                        </div>{" "}
+                        <p className="max-w-[46ch] text-[15px] leading-7 text-white/90 drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] md:text-[16px]">
+                          {activeImmersive.tagline}
+                        </p>
+
+                        <div className="mt-3 max-w-[68ch] text-[10px] uppercase tracking-[0.16em] text-white/62 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+                          {activeImmersive.stack}
+                        </div>
                       </div>{" "}
                       <div className="flex flex-wrap items-center gap-2 lg:justify-end">
                         {" "}

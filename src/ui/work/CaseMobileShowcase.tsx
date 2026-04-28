@@ -98,14 +98,18 @@ export default function CaseMobileShowcase({
             aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
           >
             <div className="mx-auto flex h-[456px] w-[220px] items-end">
-              <div className="relative h-[396px] w-full overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
-                <img
-                  src={prevFrame.src}
-                  alt={prevFrame.alt ?? ""}
-                  className="block h-full w-full rounded-[20px] object-contain object-center md:rounded-[24px]"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div className="relative h-[396px] w-full opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="inline-flex h-full max-w-full overflow-hidden rounded-[24px] border border-neutral-200 bg-white shadow-[0_18px_52px_rgba(0,0,0,0.05)]">
+                    <img
+                      src={prevFrame.src}
+                      alt={prevFrame.alt ?? ""}
+                      className="block h-full w-auto max-w-full object-contain object-center"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </button>
@@ -117,7 +121,7 @@ export default function CaseMobileShowcase({
             aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
           >
             <div className="mx-auto h-[456px] w-[270px]">
-              <div className="relative h-full w-full overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_20px_48px_rgba(0,0,0,0.08)] transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:border-neutral-300 md:rounded-[32px]">
+              <div className="relative h-full w-full transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)]">
                 <AnimatePresence initial={false} mode="sync">
                   <motion.div
                     key={activeFrame.src}
@@ -127,13 +131,17 @@ export default function CaseMobileShowcase({
                     exit={{ opacity: 0, scale: 0.992, y: -2 }}
                     transition={showcaseTransition}
                   >
-                    <img
-                      src={activeFrame.src}
-                      alt={activeFrame.alt ?? ""}
-                      className="block h-full w-full rounded-[22px] object-contain object-center md:rounded-[26px]"
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="inline-flex h-full max-w-full overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)]">
+                        <img
+                          src={activeFrame.src}
+                          alt={activeFrame.alt ?? ""}
+                          className="block h-full w-auto max-w-full object-contain object-center"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    </div>
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -147,14 +155,18 @@ export default function CaseMobileShowcase({
             aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
           >
             <div className="mx-auto flex h-[456px] w-[220px] items-end">
-              <div className="relative h-[396px] w-full overflow-hidden rounded-[24px] border border-neutral-100 bg-white/70 opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
-                <img
-                  src={nextFrame.src}
-                  alt={nextFrame.alt ?? ""}
-                  className="block h-full w-full rounded-[20px] object-contain object-center md:rounded-[24px]"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div className="relative h-[396px] w-full opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="inline-flex h-full max-w-full overflow-hidden rounded-[24px] border border-neutral-200 bg-white shadow-[0_18px_52px_rgba(0,0,0,0.05)]">
+                    <img
+                      src={nextFrame.src}
+                      alt={nextFrame.alt ?? ""}
+                      className="block h-full w-auto max-w-full object-contain object-center"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </button>

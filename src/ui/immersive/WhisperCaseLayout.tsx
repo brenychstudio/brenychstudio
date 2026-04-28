@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type { ImmersiveItem, ImmersiveMedia } from "../../data/immersive";
 import type { CaseFrame } from "../../data/cases";
 import CaseMobileShowcase from "../work/CaseMobileShowcase";
@@ -113,6 +113,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
 
   const [lightboxFrames, setLightboxFrames] = useState<LightboxFrame[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeVideo, setActiveVideo] = useState<ImmersiveMedia | null>(null);
 
   const openLightbox = (sourceFrames: ImmersiveMedia[], index: number) => {
     setLightboxFrames(toLightboxFrames(sourceFrames));
@@ -155,6 +156,24 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     };
   }, [lightboxIndex, lightboxFrames.length]);
 
+  useEffect(() => {
+    if (!activeVideo) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActiveVideo(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeVideo]);
+
   return (
     <>
       <motion.section
@@ -164,7 +183,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="mx-auto max-w-[1320px] px-4 md:px-8">
+        <div className="relative left-1/2 w-[calc(100vw-32px)] max-w-[1240px] -translate-x-1/2 md:w-[calc(100vw-120px)] xl:max-w-[1100px]">
           <div className="overflow-hidden rounded-[34px] border border-neutral-200/80 bg-[#050608] p-2 shadow-[0_26px_80px_rgba(17,17,17,0.10)] md:p-3">
             <div className="relative overflow-hidden rounded-[26px] bg-black">
               <video
@@ -415,6 +434,14 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                     Meta Quest 3 capture
                   </div>
 
+                  <button
+                    type="button"
+                    onClick={() => setActiveVideo(questVideo)}
+                    className="absolute right-4 top-4 z-10 rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-white/86 backdrop-blur-md transition hover:bg-white/16"
+                  >
+                    View Quest capture ↗
+                  </button>
+
                   <video
                     className="block h-auto w-full object-contain"
                     autoPlay
@@ -600,6 +627,67 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
           </div>
         </div>
       </motion.section>
+
+      <AnimatePresence>
+        {activeVideo ? (
+          <motion.div
+            className="fixed inset-0 z-[90] bg-[#030406]/88 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.28, ease: sectionEase }}
+          >
+            <div className="flex h-full w-full flex-col p-4 md:p-6">
+              <div className="flex items-center justify-between">
+                <div className="text-[10px] uppercase tracking-[0.16em] text-white/52">
+                  Quest video viewer / Meta Quest 3 capture
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveVideo(null)}
+                  className="rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/82 backdrop-blur-md transition hover:bg-white/14"
+                >
+                  Close ×
+                </button>
+              </div>
+
+              <div className="flex flex-1 items-center justify-center py-5 md:py-7">
+                <motion.div
+                  className="w-full max-w-[1480px]"
+                  initial={{ opacity: 0, scale: 0.985, y: 14 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.99, y: 8 }}
+                  transition={{ duration: 0.32, ease: sectionEase }}
+                >
+                  <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black shadow-[0_28px_90px_rgba(0,0,0,0.38)]">
+                    <video
+                      className="aspect-video w-full object-contain"
+                      src={activeVideo.src}
+                      poster={activeVideo.poster}
+                      controls
+                      autoPlay
+                      muted
+                      playsInline
+                      preload="metadata"
+                    />
+                  </div>
+
+                  <div className="mt-5 grid gap-3 md:grid-cols-[0.24fr_0.76fr] md:items-start">
+                    <div className="text-[10px] uppercase tracking-[0.16em] text-white/42">
+                      {activeVideo.label ?? "Quest capture"}
+                    </div>
+
+                    <p className="max-w-[78ch] text-sm leading-7 text-white/68">
+                      {activeVideo.caption}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <CaseImageLightbox
         frames={lightboxFrames}

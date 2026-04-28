@@ -219,17 +219,17 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
   }, [activeVideo]);
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <motion.section
-        className="border-b border-neutral-100 py-14 md:py-18 xl:py-20"
+        className="overflow-hidden border-b border-neutral-100 py-10 md:py-14 xl:py-20"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="relative left-1/2 w-[calc(100vw-32px)] max-w-[1240px] -translate-x-1/2 md:w-[calc(100vw-120px)] xl:max-w-[1100px]">
-          <div className="overflow-hidden rounded-[34px] border border-neutral-200/80 bg-[#050608] p-2 shadow-[0_26px_80px_rgba(17,17,17,0.10)] md:p-3">
-            <div className="relative overflow-hidden rounded-[26px] bg-black">
+        <div className="w-full md:relative md:left-1/2 md:w-[calc(100vw-120px)] md:max-w-[1240px] md:-translate-x-1/2 xl:max-w-[1100px]">
+          <div className="overflow-hidden rounded-[24px] border border-neutral-200/80 bg-[#050608] p-2 shadow-[0_20px_56px_rgba(17,17,17,0.10)] md:rounded-[34px] md:p-3 md:shadow-[0_26px_80px_rgba(17,17,17,0.10)]">
+            <div className="relative overflow-hidden rounded-[18px] bg-black md:rounded-[26px]">
               <video
                 className="block h-auto w-full"
                 src={desktopWalkthrough?.src ?? WHISPER_DESKTOP_VIDEO}
@@ -244,25 +244,25 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-black/78 via-black/38 to-transparent" />
               <div className="pointer-events-none absolute inset-x-0 top-0 h-[16%] bg-gradient-to-b from-black/34 via-black/8 to-transparent" />
 
-              <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2 md:left-5 md:top-5">
-                <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/84 backdrop-blur-md">
+              <div className="absolute left-3 top-3 z-10 flex max-w-[calc(100%-24px)] flex-wrap gap-1.5 md:left-5 md:top-5 md:max-w-none md:gap-2">
+                <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
                   {copy.opening.badges.whisper}
                 </span>
-                <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/84 backdrop-blur-md">
+                <span className="whitespace-nowrap rounded-full border border-white/16 bg-black/32 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/84 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
                   {copy.opening.badges.desktop}
                 </span>
               </div>
 
               <div className="absolute right-4 top-4 z-10 hidden max-w-[58%] flex-nowrap justify-end gap-2 md:right-5 md:top-5 md:flex">
-                <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
+                <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/74 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
                   {copy.opening.badges.interactive}
                 </span>
-                <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
+                <span className="whitespace-nowrap rounded-full border border-white/14 bg-black/30 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-white/74 backdrop-blur-md md:px-3 md:text-[10px] md:tracking-[0.16em]">
                   {copy.opening.badges.xr}
                 </span>
               </div>
 
-              <div className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
+              <div className="hidden md:absolute md:inset-x-0 md:bottom-0 md:z-10 md:block md:p-5">
                 <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
                   <div>
                     <div className="text-[10px] uppercase tracking-[0.18em] text-white/54">
@@ -315,6 +315,60 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                       {copy.links.repo} ↗
                     </a>
                   </div>
+                </div>
+              </div>
+
+              <div className="grid gap-4 px-3 pb-3 pt-4 md:hidden">
+                <div>
+                  <div className="text-[9px] uppercase tracking-[0.18em] text-white/46">
+                    {copy.opening.kicker}
+                  </div>
+
+                  <p className="mt-2 max-w-[34ch] text-[13px] leading-6 text-white/74">
+                    {copy.opening.description}
+                  </p>
+
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {copy.opening.stackTop.map((label) => (
+                      <span
+                        key={label}
+                        className="rounded-full border border-white/10 bg-white/[0.045] px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] text-white/56"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {copy.opening.stackBottom.map((label) => (
+                      <span
+                        key={label}
+                        className="rounded-full border border-white/10 bg-white/[0.045] px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] text-white/56"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={WHISPER_LIVE_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.13em] text-white/86 transition hover:bg-white/14"
+                  >
+                    {copy.links.live} в†—
+                  </a>
+
+                  <a
+                    href={WHISPER_REPO_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/[0.07] px-3 py-2 text-[10px] uppercase tracking-[0.13em] text-white/86 transition hover:bg-white/14"
+                  >
+                    {copy.links.repo} в†—
+                  </a>
                 </div>
               </div>
             </div>
@@ -726,6 +780,6 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         onPrev={goPrev}
         onNext={goNext}
       />
-    </>
+    </div>
   );
 }

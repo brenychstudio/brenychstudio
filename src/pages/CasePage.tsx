@@ -1886,37 +1886,50 @@ export default function CasePage({
               </div>
 
               {lightboxFrames.length > 1 ? (
-                <div className="mt-5 flex items-center justify-center gap-2 md:hidden">
+                <div className="mt-5 flex w-full items-center justify-center gap-3 px-4 md:hidden">
                   <button
                     type="button"
                     onClick={goPrev}
-                    className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600"
+                    className="shrink-0 rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-neutral-600 shadow-[0_10px_24px_rgba(15,23,42,0.045)]"
                     aria-label="Previous image"
                   >
                     Prev
                   </button>
 
-                  <div className="flex items-center gap-2 px-1">
-                    {lightboxFrames.map((frame, frameIndex) => (
-                      <button
-                        key={`${frame.src}-lightbox-dot-${frameIndex}`}
-                        type="button"
-                        onClick={() => setLightboxIndex(frameIndex)}
-                        className={[
-                          "h-1.5 rounded-full transition duration-300",
-                          frameIndex === lightboxIndex
-                            ? "w-5 bg-neutral-500"
-                            : "w-2 bg-neutral-300",
-                        ].join(" ")}
-                        aria-label={`Go to image ${String(frameIndex + 1).padStart(2, "0")}`}
-                      />
-                    ))}
-                  </div>
+                  {lightboxFrames.length > 12 ? (
+                    <div className="flex min-w-0 flex-1 items-center px-1">
+                      <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-neutral-200">
+                        <div
+                          className="absolute left-0 top-0 h-full rounded-full bg-neutral-500 transition-all duration-300"
+                          style={{
+                            width: `${(((lightboxIndex ?? 0) + 1) / lightboxFrames.length) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex min-w-0 flex-1 items-center justify-center gap-1.5 px-1">
+                      {lightboxFrames.map((frame, frameIndex) => (
+                        <button
+                          key={`${frame.src}-lightbox-dot-${frameIndex}`}
+                          type="button"
+                          onClick={() => setLightboxIndex(frameIndex)}
+                          className={[
+                            "h-1.5 shrink-0 rounded-full transition duration-300",
+                            frameIndex === lightboxIndex
+                              ? "w-5 bg-neutral-500"
+                              : "w-2 bg-neutral-300",
+                          ].join(" ")}
+                          aria-label={`Go to image ${String(frameIndex + 1).padStart(2, "0")}`}
+                        />
+                      ))}
+                    </div>
+                  )}
 
                   <button
                     type="button"
                     onClick={goNext}
-                    className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600"
+                    className="shrink-0 rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-neutral-600 shadow-[0_10px_24px_rgba(15,23,42,0.045)]"
                     aria-label="Next image"
                   >
                     Next

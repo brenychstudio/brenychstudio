@@ -337,19 +337,19 @@ export default function ImmersiveCasePage({
       <main className="pb-20 pt-24 md:pb-24 md:pt-28">
         <PageSurface>
           <Container>
-          <section className="border-b border-neutral-100 pb-10 md:pb-12">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+          <section className="border-b border-neutral-100 pb-8 pt-10 md:pb-12 md:pt-0">
+            <div className="grid gap-4 md:flex md:flex-wrap md:items-center md:justify-between">
               <button
                 type="button"
                 onClick={() => openPath(navigate, "/immersive", onCloseProject)}
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-400 hover:text-neutral-900"
+                className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-400 hover:text-neutral-900"
               >
                 <span className="text-neutral-400">←</span>{" "}
                 {isWhisperCase ? whisperCopy.top.backToImmersive : "Back to immersive"}
               </button>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="inline-flex items-center whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
+              <div className="flex flex-wrap items-center gap-2 md:justify-end">
+                <div className="inline-flex w-fit items-center whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
                   {data.year}
                 </div>
                 <CaseStatusPill

@@ -1547,34 +1547,11 @@ export default function CasePage({
                   ) : null}
 
                   {mobileFrames.length > 1 ? (
-                    <>
-                      <section className="grid gap-8 lg:hidden">
-                        <div className="max-w-[760px]">
-                          <div className="text-[10px] tracking-[0.14em] uppercase text-neutral-400">
-                            Mobile showcase
-                          </div>
-                          <div className="mt-2 text-[14px] leading-[1.75] text-neutral-700">
-                            Handheld views and mobile support surfaces documented as part of the shipped case.
-                          </div>
-                        </div>
-
-                        <div className="grid justify-items-center gap-8">
-                          {mobileFrames.map((frame, index) => (
-                            <MobileFrameCard
-                              key={`${frame.src}-${index}`}
-                              frame={frame}
-                              label={`Mobile frame ${String(index + 1).padStart(2, "0")}`}
-                              onOpen={openLightbox}
-                              maxWidthClass="max-w-[280px] sm:max-w-[320px]"
-                            />
-                          ))}
-                        </div>
-                      </section>
-
-                      <div className="hidden lg:block">
-                        <CaseMobileShowcase frames={mobileFrames} onOpenFrame={openLightbox} />
-                      </div>
-                    </>
+                    <CaseMobileShowcase
+                      frames={mobileFrames}
+                      onOpenFrame={openLightbox}
+                      description="Guided mobile sequence across key responsive surfaces, navigation states, detail views, and conversion/support flows."
+                    />
                   ) : null}
 
                   {mobileFrames.length === 1 ? (

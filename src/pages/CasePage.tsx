@@ -12,6 +12,7 @@ import { casaNubeCaseI18n } from "../data/casaNubeCaseI18n";
 import { printBorderStudioCaseI18n } from "../data/printBorderStudioCaseI18n";
 import { houseOfLuneCaseI18n } from "../data/houseOfLuneCaseI18n";
 import { creatorOpsCaseI18n } from "../data/creatorOpsCaseI18n";
+import { sprintCrmCaseI18n } from "../data/sprintCrmCaseI18n";
 import { barcelonaAdvisoryCaseI18n } from "../data/barcelonaAdvisoryCaseI18n";
 import type { CaseCoverTone } from "../ui/work/caseCover.types";
 import { AnimatePresence, motion } from "framer-motion";
@@ -797,6 +798,88 @@ function getLocalizedCreatorOpsCase(
   };
 }
 
+const SPRINTCRM_SLUG = "sprintcrm" as const;
+
+function getLocalizedSprintCrmCase(
+  data: Case,
+  locale: keyof typeof sprintCrmCaseI18n,
+): Case {
+  if (data.slug !== SPRINTCRM_SLUG) return data;
+
+  const copy = sprintCrmCaseI18n[locale] ?? sprintCrmCaseI18n.en;
+
+  let imageFrameIndex = 0;
+
+  return {
+    ...data,
+    statusLabel: copy.statusLabel,
+    tagline: copy.tagline,
+    roleLabel: copy.roleLabel,
+    stackLabel: copy.stackLabel,
+    statusNote: copy.statusNote,
+    poster: {
+      ...data.poster,
+      alt: copy.posterAlt,
+    },
+    content: data.content
+      ? {
+          ...data.content,
+          summary: copy.summary,
+          problem: copy.problem,
+          approach: copy.approach,
+          outcome: copy.outcome,
+          clarity: copy.clarity,
+          motion: copy.motion,
+          build: copy.build,
+          notes: copy.notes,
+          hero: data.content.hero
+            ? {
+                ...data.content.hero,
+                alt:
+                  (data.content.hero.kind ?? "image") === "video"
+                    ? copy.videoAlt
+                    : copy.posterAlt,
+                caption: copy.heroCaption,
+              }
+            : data.content.hero,
+          frames: (data.content.frames ?? []).map((frame) => {
+            if ((frame.kind ?? "image") === "video") {
+              return {
+                ...frame,
+                alt: copy.videoAlt,
+                caption: copy.heroCaption,
+              };
+            }
+
+            const translated = copy.frames[imageFrameIndex];
+            imageFrameIndex += 1;
+
+            return translated
+              ? {
+                  ...frame,
+                  alt: translated.alt,
+                  caption: translated.caption,
+                }
+              : frame;
+          }),
+          credits: [
+            { label: copy.creditLabels.role, value: copy.roleLabel },
+            { label: copy.creditLabels.stack, value: copy.stackLabel },
+            { label: copy.creditLabels.status, value: copy.statusLabel },
+            { label: copy.creditLabels.direction, value: copy.directionValue },
+          ],
+          links: (data.content.links ?? []).map((link) => {
+            if (link.href.includes("github.com")) {
+              return { ...link, label: copy.linkLabels.repo };
+            }
+
+            return { ...link, label: copy.linkLabels.live };
+          }),
+        }
+      : data.content,
+  };
+}
+
 const BARCELONA_ADVISORY_SLUG = "bcn-advisory" as const;
 
 function getLocalizedBarcelonaAdvisoryCase(
@@ -912,8 +995,13 @@ function applyLocalizedSpecialCases(
     locale as keyof typeof creatorOpsCaseI18n
   );
 
-  return getLocalizedBarcelonaAdvisoryCase(
+  const withSprintCrm = getLocalizedSprintCrmCase(
     withCreatorOps,
+    locale as keyof typeof sprintCrmCaseI18n
+  );
+
+  return getLocalizedBarcelonaAdvisoryCase(
+    withSprintCrm,
     locale as keyof typeof barcelonaAdvisoryCaseI18n
   );
 }

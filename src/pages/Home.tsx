@@ -92,7 +92,7 @@ export default function Home({
         onOpenProject={onOpenProject}
         onCloseProject={onCloseProject}
       />{" "}
-      <main className="pb-20 pt-28 sm:pt-32 md:pt-28">
+      <main className="pb-20 pt-40 sm:pt-32 md:pt-28">
         {" "}
         <Container>
           {" "}

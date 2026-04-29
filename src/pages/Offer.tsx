@@ -346,7 +346,7 @@ export default function Offer({
         onCloseProject={onCloseProject}
       />
 
-      <main className="pt-28 md:pt-32 pb-24">
+      <main className="pb-24 pt-40 sm:pt-32 md:pt-32">
         <PageSurface>
           <Container>
           {/* HERO */}

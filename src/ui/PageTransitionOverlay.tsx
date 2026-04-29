@@ -36,6 +36,37 @@ export default function PageTransitionOverlay() {
   }, []);
 
   useEffect(() => {
+    const resetOverlay = () => {
+      hardPendingRef.current = false;
+      spaPendingRef.current = false;
+      setPhase("hidden");
+      releasePageTransitionLock();
+    };
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) resetOverlay();
+
+      const navigationEntry = performance.getEntriesByType?.("navigation")?.[0] as
+        | PerformanceNavigationTiming
+        | undefined;
+
+      if (navigationEntry?.type === "back_forward") {
+        resetOverlay();
+      }
+    };
+
+    window.addEventListener("pageshow", onPageShow);
+    window.addEventListener("pagehide", resetOverlay);
+    window.addEventListener("popstate", resetOverlay);
+
+    return () => {
+      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("pagehide", resetOverlay);
+      window.removeEventListener("popstate", resetOverlay);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!hardPendingRef.current) return;
 
     const revealTimer = window.setTimeout(() => {

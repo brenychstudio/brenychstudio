@@ -397,7 +397,7 @@ export const ua: TranslationDictionary = {
         focusLabel: "Фокус",
         focus: ["Trust-first framing", "Мультимовна структура", "Преміальний service UX"],
         stackLabel: "Stack",
-        stack: ["Astro", "TypeScript", "Tailwind", "Scalable content systems"],
+        stack: ["Astro", "Next.js", "TypeScript", "Tailwind", "SEO + i18n"],
       },
       conceptInteractive: {
         title: "Концепт / Інтерактив",
@@ -410,7 +410,7 @@ export const ua: TranslationDictionary = {
         focusLabel: "Фокус",
         focus: ["Narrative pacing", "Motion hierarchy", "Interactive depth"],
         stackLabel: "Stack",
-        stack: ["React", "TypeScript", "Motion", "Interaction systems"],
+        stack: ["React", "Vite", "Motion", "Three.js", "WebGL / WebXR"],
       },
       editableOperational: {
         title: "Редаговане / Операційне",
@@ -423,7 +423,7 @@ export const ua: TranslationDictionary = {
         focusLabel: "Фокус",
         focus: ["CMS logic", "Workflow tooling", "Launch readiness"],
         stackLabel: "Stack",
-        stack: ["React", "Vite", "TypeScript", "Structured content pipelines"],
+        stack: ["React", "Vite", "TypeScript", "Data flows", "Export logic"],
       },
     },
     engagementModel: {

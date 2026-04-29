@@ -74,6 +74,230 @@ export type Case = {
 
 export const cases: Case[] = [
   {
+    slug: "sprintcrm",
+    code: "SC-12",
+    index: "12",
+    title: "SprintCRM",
+    year: "2026",
+    tagline: "A premium internal CRM for focused outreach workflows.",
+    roleLabel: "Product Direction / UX / Front-end",
+    stackLabel: "React / TypeScript / Vite / Supabase",
+    statusLabel: "Portfolio-ready core",
+    statusKind: "shipped",
+    statusNote:
+      "Personal-use internal CRM core with lead imports, daily outreach actions, pipeline tracking, reports, multilingual UI, light/dark themes, Supabase-backed data, and an AI-ready outreach foundation.",
+    completeness: "full",
+    archiveCategory: "software-product",
+    poster: {
+      src: "/cases/sprintcrm/desktop/sprintcrm-hero.png",
+      alt: "SprintCRM Signal Gate login poster cover",
+    },
+    coverTone: "dark",
+    coverFocus: "center",
+    content: {
+      summary:
+        "SprintCRM is a premium internal CRM designed to manage the full outbound workflow: importing leads, reviewing contacts, planning next actions, tracking pipeline stages, and keeping daily outreach work under control. The product combines practical CRM logic with a calm operator-facing interface, refined light/dark modes, Supabase-backed data, and a foundation for future AI-assisted outreach without auto-send.",
+      hero: {
+        kind: "video",
+        device: "desktop",
+        aspect: "landscape",
+        src: "/cases/sprintcrm/video/sprintcrm-video.mp4",
+        poster: "/cases/sprintcrm/desktop/sprintcrm-hero.png",
+        alt: "SprintCRM walkthrough video",
+        caption:
+          "Premium internal CRM walkthrough showing imports, leads, drawer workflow, pipeline, reports, and operator-facing product logic.",
+        width: "full",
+        controls: true,
+      },
+      frames: [
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-hero.png",
+          alt: "SprintCRM - Signal Gate login",
+          caption:
+            "Signal Gate entry experience positioning SprintCRM as a calm internal CRM for focused outreach workflows.",
+          width: "full",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-1.png",
+          alt: "SprintCRM - import upload surface",
+          caption:
+            "Lead import entry surface for uploading spreadsheet-based outreach data into the CRM.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-2.png",
+          alt: "SprintCRM - import mapping workflow",
+          caption:
+            "Import mapping workflow designed to preview rows, map columns, and reduce mistakes before data enters the CRM.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-3.png",
+          alt: "SprintCRM - dark import workflow",
+          caption:
+            "Dark-mode import workflow showing the same operational logic inside a premium operator-console interface.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-4.png",
+          alt: "SprintCRM - import report",
+          caption:
+            "Import report summary giving the operator feedback before and after lead intake.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-5.png",
+          alt: "SprintCRM - dark leads database",
+          caption:
+            "Dark-mode leads database for reviewing contacts, stages, next actions, dates, niches, and sources.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-6.png",
+          alt: "SprintCRM - light leads database",
+          caption:
+            "Light-mode leads workspace with filters, smart views, selected rows, and open-lead actions.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-7.png",
+          alt: "SprintCRM - lead drawer workflow",
+          caption:
+            "Lead drawer as the main working surface: next action planning, contact context, lead details, and timeline structure.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-8.png",
+          alt: "SprintCRM - dark lead drawer workflow",
+          caption:
+            "Dark-mode lead drawer keeping action planning and CRM context focused without turning into a noisy dashboard.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-9.png",
+          alt: "SprintCRM - pipeline board light mode",
+          caption:
+            "Pipeline board organizing leads by working stage and giving quick access to active opportunities.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-10.png",
+          alt: "SprintCRM - pipeline board dark mode",
+          caption:
+            "Dark-mode pipeline view showing stage-based CRM progress in a compact operator-facing layout.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-11.png",
+          alt: "SprintCRM - today queue",
+          caption:
+            "Today queue turning the CRM into a daily work surface for handling what needs action now.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-12.png",
+          alt: "SprintCRM - lead drawer and action workflow",
+          caption:
+            "Lead drawer workflow with action planning, status handling, and timeline context for focused outreach work.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-13.png",
+          alt: "SprintCRM - active contacts",
+          caption:
+            "Active contacts view separating warm opportunities from cold or unprocessed leads.",
+          width: "window",
+        },
+        {
+          kind: "image",
+          device: "desktop",
+          aspect: "landscape",
+          src: "/cases/sprintcrm/desktop/sprintcrm-14.png",
+          alt: "SprintCRM - reports dashboard",
+          caption:
+            "Reports view summarizing pipeline health, funnel signals, niches, sources, active leads, and overdue work.",
+          width: "window",
+        },
+      ],
+      problem:
+        "Outbound work often becomes fragmented across spreadsheets, notes, manual reminders, and disconnected status tracking. Leads are imported manually, follow-ups are easy to miss, context is scattered, and pipeline progress is difficult to review at a glance.",
+      approach:
+        "SprintCRM was designed as an operator-facing CRM workspace around the core working loop: import leads, review contacts, open the next action, log the result, update the stage, track the pipeline, and review reports. The interface avoids decorative dashboard noise and prioritizes a calm, usable working surface.",
+      outcome:
+        "The project evolved into a portfolio-ready internal product with a complete CRM flow, spreadsheet import logic, lead management, daily queue, pipeline, reports, multilingual UI, light/dark themes, Supabase-backed data, and a foundation for future AI-assisted outreach.",
+      clarity:
+        "The strongest product decision was to treat the CRM as a daily operator tool rather than a generic sales dashboard. The interface focuses on what to do next, what happened last, and how the pipeline is moving.",
+      motion:
+        "Motion is restrained and functional. The premium feeling comes from clear hierarchy, dark/light surfaces, refined cards, drawer rhythm, and controlled interaction states rather than decorative effects.",
+      build:
+        "Built with React, TypeScript, Vite, Supabase, CSS token architecture, XLSX/CSV import flow, multilingual UI, light/dark theme persistence, lead and activity data types, reporting logic, and AI-ready outreach fields.",
+      notes:
+        "Project framing\n- Premium internal CRM for focused outreach workflows.\n- Positioned as Product Engineering + Premium Internal Tool UX, not as a regular website.\n\nCore workflow\n- Import leads from XLSX/CSV.\n- Preview rows, map columns, run sanity checks, detect duplicates, and complete import with a report summary.\n- Review leads in a structured database.\n- Open a focused lead drawer.\n- Plan next actions with date and time.\n- Log work results and activity history.\n- Track active contacts, Today queue, pipeline stages, and reports.\n\nVisual direction\n- Quiet Operator Console.\n- Calm, focused, private-command-center interface instead of a generic sales dashboard.\n- Refined light and dark modes, muted borders, compact cards, status badges, tokenized surfaces, and dark-safe contrast.\n\nTechnical architecture\n- React + TypeScript + Vite app architecture.\n- Supabase authentication and data-backed CRM records.\n- XLSX/CSV parsing and import workflow.\n- Lead and activity data model.\n- Pipeline and reports logic.\n- Multilingual UI.\n- CSS variables and theme token system.\n- Light/dark theme persistence.\n\nAI readiness\n- Prepared for future AI Outreach MVP.\n- AI layer is planned for drafting outreach messages, proposals, and follow-ups.\n- No auto-send: AI assists, but the operator remains responsible for review and action.\n\nCurrent honest status\n- Personal-use internal CRM core completed.\n- Visual upgrade completed.\n- Portfolio-ready milestone reached.\n- AI Outreach layer planned as the next product stage.\n\nWhy this case matters\n- Demonstrates product architecture, CRM workflow thinking, data-backed UI, import logic, stateful lead management, reports, multilingual support, polished interface design, and AI-ready product direction.\n- Expands the portfolio beyond marketing websites and visual experiments into practical product engineering.",
+      credits: [
+        {
+          label: "Role",
+          value:
+            "Product Direction / UX Architecture / Front-end Development / Design System / Workflow Logic / Supabase Integration / Visual Polish",
+        },
+        {
+          label: "Stack",
+          value:
+            "React / TypeScript / Vite / Supabase / CSS Tokens / XLSX + CSV Import / Multilingual UI / Light + Dark Themes",
+        },
+        { label: "Status", value: "Personal-use internal CRM core completed" },
+        { label: "Direction", value: "Product Engineering + Premium Internal Tool UX" },
+      ],
+      links: [
+        {
+          label: "Repository",
+          href: "https://github.com/brenychstudio/SprintCRM",
+        },
+      ],
+    },
+  },
+  {
     slug: "bcn-advisory",
     code: "BA-01",
     index: "01",

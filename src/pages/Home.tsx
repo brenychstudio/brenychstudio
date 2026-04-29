@@ -40,6 +40,7 @@ export default function Home({
     });
   };
   const homeCaseOrder = [
+    "sprintcrm",
     "creatorops",
     "form-index",
     "house-of-lune",

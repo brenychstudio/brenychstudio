@@ -834,13 +834,13 @@ export const en: TranslationDictionary = {
         description:
           "Workflow tools, product prototypes, structured content systems, and launch-ready interfaces where the website or app has to work as a usable operating surface, not only a presentation.",
         provenInLabel: "Proven in",
-        provenIn: ["CreatorOps", "Print Border Studio", "Barcelona Private Advisory"],
+        provenIn: ["SprintCRM", "CreatorOps", "Print Border Studio"],
         summary:
-          "Best for creator tools, internal workflows, productized service surfaces, shortlist systems, export flows, and interfaces that need real user actions beyond browsing.",
+          "Best for internal tools, CRM systems, creator workflows, export flows, productized service surfaces, and interfaces that need real user actions beyond browsing.",
         focusLabel: "Focus",
-        focus: ["Workflow logic", "Structured content", "Launch-ready interfaces"],
+        focus: ["CRM workflow", "Structured content", "Import / export logic"],
         stackLabel: "Stack",
-        stack: ["React", "Vite", "TypeScript", "Data flows", "Export logic"],
+        stack: ["React", "Vite", "TypeScript", "Supabase", "Data flows"],
       },
     },
 

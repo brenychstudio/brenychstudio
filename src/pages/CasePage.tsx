@@ -1245,7 +1245,7 @@ export default function CasePage({
           onOpenProject={onOpenProject}
           onCloseProject={onCloseProject}
         />
-        <main className="pb-20 pt-24 md:pt-28">
+        <main className="pb-20 pt-40 sm:pt-28 md:pt-28">
           <PageSurface>
             <Container>
             <div className="text-sm text-neutral-600">Case not found.</div>
@@ -1272,7 +1272,7 @@ export default function CasePage({
         onCloseProject={onCloseProject}
       />
 
-      <main className="pt-24 md:pt-28 pb-20">
+      <main className="pb-20 pt-40 sm:pt-28 md:pt-28">
         <PageSurface>
           <Container>
           <section className="pb-6 md:pb-10">

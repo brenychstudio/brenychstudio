@@ -96,7 +96,7 @@ export default function Header({
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/6 bg-white/72 backdrop-blur-xl supports-[backdrop-filter]:bg-white/66">
-      <div className="mx-auto w-[min(94vw,1180px)] py-3 sm:flex sm:h-[62px] sm:items-center sm:justify-between sm:py-0">
+      <div className="mx-auto w-[min(94vw,1180px)] 2xl:w-[min(90vw,1320px)] min-[1900px]:w-[min(86vw,1400px)] py-3 sm:flex sm:h-[62px] sm:items-center sm:justify-between sm:py-0">
         <div className="flex flex-col gap-3 sm:contents">
           <button
             type="button"

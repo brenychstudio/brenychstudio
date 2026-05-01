@@ -831,7 +831,7 @@ export default function Offer({
                 <div className={`${sectionLabel} whitespace-nowrap`}>{t.offer.websiteManagement.label}</div>
               </div>
 
-              <div className="grid gap-4 xl:grid-cols-[420px_minmax(0,1fr)] xl:items-start xl:min-h-[640px] 2xl:min-h-[720px] xl:pt-5 2xl:pt-8">
+              <div className="grid gap-4 xl:grid-cols-[420px_minmax(0,1fr)] xl:items-start xl:min-h-[640px] 2xl:min-h-[720px] xl:pt-5 2xl:pt-8 xl:-ml-4 2xl:-ml-6">
                 <div className="relative z-20 min-w-0 xl:w-[420px] xl:-ml-[88px] 2xl:w-[456px] 2xl:-ml-[132px]">
                   <div className="grid gap-2.5 sm:grid-cols-3">
                     {managementItems.map((item) => {

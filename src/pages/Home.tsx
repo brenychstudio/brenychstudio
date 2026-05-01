@@ -109,8 +109,8 @@ export default function Home({
                 className={[
                   "mt-5 font-normal leading-[0.92] tracking-[-0.045em]",
                   isWideCyrillic
-                    ? "max-w-[15ch] text-[46px] sm:text-[58px] lg:text-[72px] xl:text-[82px]"
-                    : "max-w-[14ch] text-[46px] sm:text-[58px] lg:text-[72px] xl:text-[80px]",
+                    ? "max-w-[15ch] md:max-w-[17.5ch] xl:max-w-[20ch] text-[46px] sm:text-[58px] lg:text-[72px] xl:text-[82px]"
+                    : "max-w-[14ch] md:max-w-[17.5ch] xl:max-w-[19.8ch] text-[46px] sm:text-[58px] lg:text-[72px] xl:text-[80px]",
                 ].join(" ")}
               >
                 {" "}
@@ -130,7 +130,7 @@ export default function Home({
               </h1>{" "}
             </div>{" "}
           </section>{" "}
-          <section className="mb-14 border-t border-neutral-100 pt-10 md:mb-[4.5rem] md:pt-12 xl:mb-20 xl:pt-14">
+          <section className="mb-14 border-t border-neutral-100 pt-8 md:mb-[4.5rem] md:pt-10 xl:mb-20 xl:pt-12">
             {" "}
             {activeImmersive ? (
               <article className="rounded-[26px] border border-neutral-100 bg-white p-2.5 shadow-[0_24px_60px_rgba(17,17,17,0.05)] transition duration-300 hover:shadow-[0_28px_70px_rgba(17,17,17,0.06)] sm:p-3 md:rounded-[30px] md:p-4">

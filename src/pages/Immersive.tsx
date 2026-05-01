@@ -122,7 +122,7 @@ export default function Immersive({
                     {featuredItem.previewVideo ? (
                       <video
                         key={featuredItem.previewVideo}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 h-full w-full object-cover object-center"
                         autoPlay
                         muted
                         loop
@@ -135,13 +135,13 @@ export default function Immersive({
                       <img
                         src={featuredItem.previewPoster}
                         alt={featuredItem.copy.title}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 h-full w-full object-cover object-center"
                         loading="lazy"
                         decoding="async"
                       />
                     ) : null}
 
-                    <div className="relative flex min-h-[560px] flex-col p-4 text-white sm:min-h-[600px] sm:p-5 md:min-h-[540px] md:justify-between md:p-8">
+                    <div className="relative flex min-h-[560px] flex-col p-4 text-white sm:min-h-[600px] sm:p-5 md:min-h-[600px] md:justify-between md:p-8 xl:min-h-[640px] 2xl:min-h-[680px]">
                       <div className="flex items-start justify-between gap-4">
                         <div className="inline-flex items-center whitespace-nowrap rounded-full border border-white/14 bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/72">
                           {featuredItem.copy.supportLabel}

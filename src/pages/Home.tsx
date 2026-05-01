@@ -142,7 +142,7 @@ export default function Home({
                       {" "}
                       <video
                         key={activeImmersiveVideo}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover object-center"
                         autoPlay
                         muted
                         playsInline
@@ -165,7 +165,7 @@ export default function Home({
                       ].join(" ")}
                     />
                   )}{" "}
-                  <div className="relative flex min-h-[520px] flex-col p-4 text-white sm:min-h-[560px] sm:p-5 md:min-h-[480px] md:justify-between md:p-7 xl:min-h-[520px] xl:p-8">
+                  <div className="relative flex min-h-[520px] flex-col p-4 text-white sm:min-h-[560px] sm:p-5 md:min-h-[600px] md:justify-between md:p-7 xl:min-h-[640px] xl:p-8 2xl:min-h-[680px]">
                     {" "}
                     <div className="flex items-start justify-between gap-4">
                       {" "}

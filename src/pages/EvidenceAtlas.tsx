@@ -158,23 +158,31 @@ export default function EvidenceAtlas({
     evidenceCases.find((item) => item.slug === activeSlug) ??
     filteredCases[0] ??
     evidenceCases[0];
-  const activeIndex = Math.max(0, evidenceCases.findIndex((item) => item.slug === activeCase.slug));
-  const heroLedgerCases = filteredCases.slice(0, 5);
 
   const filterCount = (filter: EvidenceFilter) =>
     filter === "All" ? evidenceCases.length : evidenceCases.filter((item) => item.evidence.filters.includes(filter)).length;
 
   const chooseFilter = (filter: EvidenceFilter) => {
     setActiveFilter(filter);
-    if (filter === "All") return;
-
-    const firstMatch = evidenceCases.find((item) => item.evidence.filters.includes(filter));
+    const firstMatch =
+      filter === "All" ? evidenceCases[0] : evidenceCases.find((item) => item.evidence.filters.includes(filter));
     if (firstMatch) setActiveSlug(firstMatch.slug);
   };
 
   const openCase = (item: EvidenceCase) => {
     startSpaPageTransition(navigate, `/work/${item.slug}`, onCloseProject);
   };
+
+  const thresholdStats = [
+    { label: "cases", value: evidenceCases.length },
+    { label: "premium websites", value: filterCount("Premium websites") },
+    { label: "product systems", value: filterCount("Product systems") },
+    { label: "multilingual surfaces", value: filterCount("Multilingual") },
+    { label: "workflow tools", value: filterCount("Tools") },
+    { label: "experimental systems", value: filterCount("Experimental") },
+  ];
+
+  const mediaTraces = featuredCases.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-white text-neutral-950">
@@ -187,30 +195,109 @@ export default function EvidenceAtlas({
           <div className="pointer-events-none fixed left-[10vw] top-[15vh] z-0 h-[34rem] w-[34rem] rounded-full border border-neutral-950/[0.05]" />
           <div className="pointer-events-none fixed right-[6vw] top-[44vh] z-0 h-[26rem] w-[26rem] rounded-full border border-neutral-950/[0.045]" />
 
-          <section className="relative z-10 mx-auto w-[min(94vw,1720px)] py-10 lg:py-12">
-            <div className="grid gap-8 border-y border-neutral-950/14 py-8 xl:grid-cols-[0.3fr_0.7fr] xl:items-start">
-              <div className="flex flex-col gap-10 xl:pt-2">
-                <div>
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Evidence Atlas</div>
-                  <h1 className="mt-5 max-w-[9ch] text-[62px] font-normal leading-[0.88] text-neutral-950 sm:text-[88px] xl:text-[104px]">
-                    Evidence Atlas.
-                  </h1>
-                  <p className="mt-7 max-w-[12ch] text-[36px] font-normal leading-[0.94] text-neutral-950 sm:text-[48px] xl:text-[54px]">
-                    Selected work, structured as proof.
-                  </p>
+          <section className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
+            <div className="grid min-h-[calc(100vh-10rem)] gap-10 border-y border-neutral-950/14 py-10 xl:grid-cols-[0.62fr_0.38fr] xl:items-center">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">
+                  Work Archive / Evidence Atlas
+                </div>
+                <h1 className="mt-6 max-w-[8.5ch] text-[52px] font-normal leading-[0.9] text-neutral-950 sm:max-w-[12ch] sm:text-[96px] xl:text-[132px]">
+                  Selected work, structured as proof.
+                </h1>
+                <p className="mt-8 max-w-[21rem] break-words text-[17px] leading-8 text-neutral-600 sm:max-w-[44rem]">
+                  A curated archive of premium websites, product systems, tools, multilingual surfaces, and interface
+                  environments, organized by what each project proves.
+                </p>
+                <div className="mt-10 flex flex-wrap gap-3">
+                  <a
+                    href="#proof-reader"
+                    className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
+                  >
+                    Open proof reader -&gt;
+                  </a>
+                  <a
+                    href="#compact-archive"
+                    className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
+                  >
+                    View archive -&gt;
+                  </a>
+                  <button
+                    type="button"
+                    onClick={onOpenProject}
+                    className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
+                  >
+                    Start a project -&gt;
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="border-y border-neutral-950/14 py-5">
+                  <div className="mb-5 flex items-center justify-between gap-6">
+                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
+                      Evidence Atlas
+                    </div>
+                    <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">Proof index</div>
+                  </div>
+                  <div className="grid border-t border-neutral-950/10">
+                    {thresholdStats.map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="grid grid-cols-[5.5rem_1fr] items-baseline gap-5 border-b border-neutral-950/10 py-4 last:border-b-0"
+                      >
+                        <div className="text-[46px] leading-none text-neutral-950">{String(stat.value).padStart(2, "0")}</div>
+                        <div className="text-[12px] uppercase tracking-[0.16em] text-neutral-500">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-[1fr_1fr] xl:grid-cols-1">
-                  <div className="border-l border-neutral-950/14 pl-5">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Archive thesis</div>
-                    <p className="mt-4 max-w-[29rem] break-words text-[15px] leading-7 text-neutral-600">
-                      Each case is presented by proof claim, capability, system layers, and a path into the full case.
-                    </p>
-                  </div>
+                <div className="mt-6 grid grid-cols-4 gap-2">
+                  {mediaTraces.map((item, index) => (
+                    <button
+                      key={item.slug}
+                      type="button"
+                      onMouseEnter={() => setActiveSlug(item.slug)}
+                      onFocus={() => setActiveSlug(item.slug)}
+                      onClick={() => openCase(item)}
+                      className={`group relative h-24 overflow-hidden bg-neutral-950 text-left transition sm:h-32 ${
+                        item.slug === activeCase.slug ? "opacity-100" : "opacity-[0.42] hover:opacity-[0.82]"
+                      }`}
+                      aria-label={`Open ${item.title}`}
+                    >
+                      <img
+                        src={getPreviewFrame(item)}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+                      />
+                      <div className="absolute inset-0 bg-black/22" />
+                      <div className="absolute bottom-2 left-2 font-mono text-[9px] uppercase tracking-[0.14em] text-white/70">
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
 
-                  <div>
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Proof lens</div>
-                    <div className="mt-4 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
+          <section id="proof-reader" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
+            <div className="border-y border-neutral-950/14 py-7">
+              <div className="grid gap-8 lg:grid-cols-[0.38fr_0.62fr] lg:items-end">
+                <div>
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Proof Reader</div>
+                  <h2 className="mt-5 max-w-[11ch] text-[54px] font-normal leading-[0.9] text-neutral-950 sm:text-[78px]">
+                    Read the proof behind each case.
+                  </h2>
+                </div>
+                <div>
+                  <p className="max-w-[54rem] text-[15px] leading-7 text-neutral-600">
+                    Move through the ledger, compare proof claims, and open the full case when the evidence needs a
+                    deeper read.
+                  </p>
+                  <div className="mt-7">
+                    <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Proof lens</div>
+                    <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
                       {evidenceFilters.map((filter) => (
                         <FilterButton
                           key={filter}
@@ -224,65 +311,100 @@ export default function EvidenceAtlas({
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="overflow-hidden border border-neutral-950/12 bg-white/36 shadow-[0_44px_150px_rgba(0,0,0,0.08)] backdrop-blur-sm">
-                <div className="grid min-h-12 grid-cols-[1fr_auto_auto] items-center gap-4 border-b border-neutral-950/10 px-4">
+            <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_31rem]">
+              <motion.article
+                key={activeCase.slug}
+                className="overflow-hidden border-y border-neutral-950/14 bg-white/30 shadow-[0_34px_120px_rgba(0,0,0,0.065)] backdrop-blur-sm"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.48, ease }}
+              >
+                <div className="grid min-h-12 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/10 px-4">
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                    Active evidence / {String(activeIndex + 1).padStart(2, "0")}
+                    Active evidence sheet
                   </div>
-                  <div className="hidden text-[10px] uppercase tracking-[0.16em] text-neutral-400 sm:block">
-                    {activeCase.evidence.workType}
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                    {getCaseCode(activeCase, Math.max(0, evidenceCases.findIndex((item) => item.slug === activeCase.slug)))}
                   </div>
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-400">{getCaseCode(activeCase, activeIndex)}</div>
                 </div>
 
-                <div className="grid lg:grid-cols-[56%_44%]">
+                <div className="grid xl:grid-cols-[0.58fr_0.42fr]">
                   <button
                     type="button"
                     onClick={() => openCase(activeCase)}
-                    className="group relative min-h-[340px] overflow-hidden bg-neutral-950 text-left sm:min-h-[420px] xl:min-h-[460px]"
+                    className="group relative min-h-[340px] overflow-hidden border-b border-neutral-950/10 bg-white/20 text-left xl:min-h-[620px] xl:border-b-0 xl:border-r"
+                    aria-label={`Open ${activeCase.title}`}
                   >
                     <motion.img
-                      key={activeCase.slug}
+                      key={`${activeCase.slug}-sheet`}
                       src={getPreviewFrame(activeCase)}
                       alt=""
-                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]"
-                      initial={{ opacity: 0, scale: 1.035 }}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      initial={{ opacity: 0, scale: 1.025 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.72, ease }}
+                      transition={{ duration: 0.66, ease }}
                     />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.02)_42%,rgba(0,0,0,0.58))]" />
-                    <div className="absolute inset-0 opacity-[0.11] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
-                    <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-6 text-white">
-                      <div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/58">Visual proof</div>
-                        <div className="mt-2 text-[13px] leading-6 text-white/72">{activeCase.evidence.layers[0]}</div>
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(243,241,236,0.02),rgba(243,241,236,0.08)_48%,rgba(0,0,0,0.42))]" />
+                    <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:74px_74px]" />
+                    <div className="absolute bottom-0 left-0 right-0 border-t border-white/18 bg-neutral-950/38 px-5 py-4 text-white backdrop-blur-sm">
+                      <div className="flex flex-wrap items-end justify-between gap-4">
+                        <div>
+                          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/58">
+                            Visual evidence
+                          </div>
+                          <div className="mt-2 text-[15px] leading-6 text-white/82">{activeCase.evidence.layers[0]}</div>
+                        </div>
+                        <span className="border-y border-white/24 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-white/72">
+                          Open case -&gt;
+                        </span>
                       </div>
-                      <span className="hidden border-y border-white/24 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-white/70 sm:inline-flex">
-                        Open case -&gt;
-                      </span>
                     </div>
                   </button>
 
-                  <div className="flex flex-col justify-between p-5 sm:p-7 xl:p-7">
-                    <div>
-                      <div className="flex items-start justify-between gap-6">
+                  <div className="flex min-h-[520px] flex-col justify-between p-6 sm:p-8">
+                    <motion.div
+                      key={`${activeCase.slug}-claim`}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease }}
+                    >
+                      <div className="flex items-start justify-between gap-5">
                         <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-400">{activeCase.evidence.workType}</div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                          {String(filteredCases.length).padStart(2, "0")} cases
+                        <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                          {String(filteredCases.length).padStart(2, "0")} in lens
                         </div>
                       </div>
-                      <h2 className="mt-7 max-w-[12ch] text-[42px] font-normal leading-[0.94] text-neutral-950 sm:text-[56px] xl:text-[60px]">
+                      <h3 className="mt-7 max-w-[12ch] text-[44px] font-normal leading-[0.94] text-neutral-950 sm:text-[62px]">
                         {activeCase.title}
-                      </h2>
-                      <div className="mt-6 text-[11px] uppercase tracking-[0.14em] text-neutral-500">{activeCase.evidence.proofLabel}</div>
-                      <p className="mt-4 max-w-[36rem] break-words text-[14px] leading-7 text-neutral-600">{activeCase.evidence.proofSummary}</p>
-                    </div>
+                      </h3>
+                      <div className="mt-7 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
+                        What this proves
+                      </div>
+                      <p className="mt-4 max-w-[36rem] text-[22px] leading-8 tracking-[-0.02em] text-neutral-900">
+                        {activeCase.evidence.proofSummary}
+                      </p>
+                    </motion.div>
 
                     <div className="mt-8">
-                      <DossierRow label="Capability" value={activeCase.evidence.capability} />
-                      <DossierRow label="Layers" value={activeCase.evidence.layers.join(" / ")} />
-                      <div className="mt-5 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
+                      <div className="grid gap-0 border-y border-neutral-950/10">
+                        {activeCase.evidence.proofPoints.map((point, index) => (
+                          <div key={point} className="grid gap-4 border-b border-neutral-950/10 py-4 last:border-b-0 sm:grid-cols-[4rem_1fr]">
+                            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                              {String(index + 1).padStart(2, "0")}
+                            </div>
+                            <p className="text-[14px] leading-6 text-neutral-700">{point}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mt-6">
+                        <DossierRow label="Capability" value={activeCase.evidence.capability} />
+                        <DossierRow label="System layers" value={activeCase.evidence.layers.join(" / ")} />
+                      </div>
+
+                      <div className="mt-6 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
                         {activeCase.evidence.systemTags.map((tag) => (
                           <EvidenceTag key={tag}>{tag}</EvidenceTag>
                         ))}
@@ -290,40 +412,48 @@ export default function EvidenceAtlas({
                     </div>
                   </div>
                 </div>
+              </motion.article>
 
-                <div className="border-t border-neutral-950/10">
-                  <div className="grid lg:grid-cols-[9rem_1fr]">
-                    <div className="border-b border-neutral-950/10 px-4 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:border-b-0 lg:border-r">
-                      Proof ledger
-                    </div>
-                    <div className="grid sm:grid-cols-2 xl:grid-cols-4">
-                      {heroLedgerCases.slice(0, 4).map((item) => {
-                        const index = evidenceCases.findIndex((caseItem) => caseItem.slug === item.slug);
-                        const active = item.slug === activeCase.slug;
-
-                        return (
-                          <button
-                            key={item.slug}
-                            type="button"
-                            onMouseEnter={() => setActiveSlug(item.slug)}
-                            onFocus={() => setActiveSlug(item.slug)}
-                            onClick={() => openCase(item)}
-                            className={`border-b border-neutral-950/10 px-4 py-4 text-left transition sm:border-r xl:border-b-0 xl:last:border-r-0 ${
-                              active ? "bg-white/64 text-neutral-950" : "text-neutral-500 hover:bg-white/40 hover:text-neutral-950"
-                            }`}
-                          >
-                            <div className={`font-mono text-[10px] uppercase tracking-[0.16em] ${active ? "text-neutral-950" : "text-neutral-300"}`}>
-                              {String(index + 1).padStart(2, "0")}
-                            </div>
-                            <div className="mt-3 text-[18px] leading-none">{item.title}</div>
-                            <div className="mt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-400">{item.evidence.proofLabel}</div>
-                          </button>
-                        );
-                      })}
-                    </div>
+              <aside className="border-y border-neutral-950/14">
+                <div className="flex min-h-12 items-center justify-between gap-4 border-b border-neutral-950/10 px-4">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Case ledger</div>
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                    {String(filteredCases.length).padStart(2, "0")} matches
                   </div>
                 </div>
-              </div>
+                <div>
+                  {filteredCases.map((item) => {
+                    const index = evidenceCases.findIndex((caseItem) => caseItem.slug === item.slug);
+                    const active = item.slug === activeCase.slug;
+
+                    return (
+                      <button
+                        key={item.slug}
+                        type="button"
+                        onMouseEnter={() => setActiveSlug(item.slug)}
+                        onFocus={() => setActiveSlug(item.slug)}
+                        onClick={() => openCase(item)}
+                        className={`grid w-full grid-cols-[3.25rem_1fr] gap-4 border-b border-neutral-950/10 px-4 py-5 text-left transition last:border-b-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-inset ${
+                          active ? "bg-white/58 text-neutral-950" : "text-neutral-500 hover:bg-white/34 hover:text-neutral-950"
+                        }`}
+                      >
+                        <span className={`font-mono text-[10px] uppercase tracking-[0.16em] ${active ? "text-neutral-950" : "text-neutral-300"}`}>
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span>
+                          <span className="block text-[26px] leading-none tracking-[-0.035em]">{item.title}</span>
+                          <span className={`mt-4 block text-[11px] uppercase tracking-[0.14em] ${active ? "text-neutral-500" : "text-neutral-300"}`}>
+                            {item.evidence.proofLabel}
+                          </span>
+                          <span className={`mt-2 block text-[12px] leading-6 ${active ? "text-neutral-600" : "text-neutral-400"}`}>
+                            {item.evidence.workType}
+                          </span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </aside>
             </div>
           </section>
 
@@ -408,106 +538,6 @@ export default function EvidenceAtlas({
                     </motion.article>
                   );
                 })}
-              </div>
-            </div>
-          </section>
-
-          <section id="proof-reader" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
-            <div className="mb-8 grid gap-8 border-y border-neutral-950/14 py-7 lg:grid-cols-[0.35fr_0.65fr] lg:items-end">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Active Case Evidence Panel</div>
-                <h2 className="mt-5 max-w-[10ch] text-[54px] font-normal leading-[0.9] text-neutral-950 sm:text-[78px]">
-                  Proof reader.
-                </h2>
-              </div>
-              <div>
-                <p className="max-w-[52rem] text-[15px] leading-7 text-neutral-600">
-                  Filter by capability, move through the ledger, then open the full case when the proof claim needs a
-                  deeper read.
-                </p>
-                <div className="mt-6 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
-                  {evidenceFilters.map((filter) => (
-                    <FilterButton
-                      key={filter}
-                      filter={filter}
-                      active={filter === activeFilter}
-                      count={filterCount(filter)}
-                      onClick={() => chooseFilter(filter)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-8 xl:grid-cols-[0.52fr_0.48fr]">
-              <div className="overflow-hidden border-y border-neutral-950/14 bg-white/28 shadow-[0_34px_120px_rgba(0,0,0,0.07)]">
-                <div className="relative aspect-[16/10] min-h-[340px] overflow-hidden bg-neutral-950">
-                  <motion.img
-                    key={`${activeCase.slug}-reader`}
-                    src={getPreviewFrame(activeCase)}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    initial={{ opacity: 0, scale: 1.035 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.72, ease }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/76 via-black/8 to-transparent" />
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/58">{activeCase.evidence.proofLabel}</div>
-                    <div className="mt-3 max-w-[9ch] break-words text-[36px] leading-[0.92] sm:max-w-[12ch] sm:text-[72px]">
-                      {activeCase.title}
-                    </div>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-3">
-                  {activeCase.evidence.proofPoints.map((point, index) => (
-                    <div key={point} className="border-t border-neutral-950/10 p-5 md:border-r md:last:border-r-0">
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">Proof 0{index + 1}</div>
-                      <p className="mt-4 text-[14px] leading-6 text-neutral-700">{point}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="border-y border-neutral-950/14">
-                  {filteredCases.map((item) => {
-                    const index = evidenceCases.findIndex((caseItem) => caseItem.slug === item.slug);
-                    const active = item.slug === activeCase.slug;
-
-                    return (
-                      <button
-                        key={item.slug}
-                        type="button"
-                        onMouseEnter={() => setActiveSlug(item.slug)}
-                        onFocus={() => setActiveSlug(item.slug)}
-                        onClick={() => openCase(item)}
-                        className={`grid w-full gap-4 border-b border-neutral-950/10 py-5 text-left transition last:border-b-0 md:grid-cols-[4rem_0.32fr_1fr] ${
-                          active ? "text-neutral-950" : "text-neutral-500 hover:bg-white/38 hover:text-neutral-950"
-                        }`}
-                      >
-                        <span className={`font-mono text-[10px] uppercase tracking-[0.16em] ${active ? "text-neutral-950" : "text-neutral-300"}`}>
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-[24px] leading-none">{item.title}</span>
-                        <span>
-                          <span className={`block text-[12px] leading-6 transition ${active ? "text-neutral-600" : "text-neutral-400"}`}>
-                            {item.evidence.proofLabel}
-                          </span>
-                          <span className={`mt-2 block text-[11px] uppercase tracking-[0.14em] transition ${active ? "text-neutral-400" : "text-transparent"}`}>
-                            {item.evidence.workType}
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-7 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
-                  {activeCase.evidence.systemTags.map((tag) => (
-                    <EvidenceTag key={tag}>{tag}</EvidenceTag>
-                  ))}
-                </div>
               </div>
             </div>
           </section>

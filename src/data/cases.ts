@@ -89,7 +89,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "software-product",
     poster: {
-      src: "/cases/sprintcrm/desktop/sprintcrm-hero.png",
+      src: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
       alt: "SprintCRM Signal Gate login poster cover",
     },
     coverTone: "dark",
@@ -102,7 +102,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/sprintcrm/video/sprintcrm-video.mp4",
-        poster: "/cases/sprintcrm/desktop/sprintcrm-hero.png",
+        poster: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
         alt: "SprintCRM walkthrough video",
         caption:
           "Premium internal CRM walkthrough showing imports, leads, drawer workflow, pipeline, reports, and operator-facing product logic.",
@@ -114,7 +114,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-hero.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
           alt: "SprintCRM - Signal Gate login",
           caption:
             "Signal Gate entry experience positioning SprintCRM as a calm internal CRM for focused outreach workflows.",
@@ -124,7 +124,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-1.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-1.webp",
           alt: "SprintCRM - import upload surface",
           caption:
             "Lead import entry surface for uploading spreadsheet-based outreach data into the CRM.",
@@ -134,7 +134,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-2.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-2.webp",
           alt: "SprintCRM - import mapping workflow",
           caption:
             "Import mapping workflow designed to preview rows, map columns, and reduce mistakes before data enters the CRM.",
@@ -144,7 +144,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-3.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-3.webp",
           alt: "SprintCRM - dark import workflow",
           caption:
             "Dark-mode import workflow showing the same operational logic inside a premium operator-console interface.",
@@ -154,7 +154,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-4.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-4.webp",
           alt: "SprintCRM - import report",
           caption:
             "Import report summary giving the operator feedback before and after lead intake.",
@@ -164,7 +164,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-5.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-5.webp",
           alt: "SprintCRM - dark leads database",
           caption:
             "Dark-mode leads database for reviewing contacts, stages, next actions, dates, niches, and sources.",
@@ -174,7 +174,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-6.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-6.webp",
           alt: "SprintCRM - light leads database",
           caption:
             "Light-mode leads workspace with filters, smart views, selected rows, and open-lead actions.",
@@ -184,7 +184,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-7.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-7.webp",
           alt: "SprintCRM - lead drawer workflow",
           caption:
             "Lead drawer as the main working surface: next action planning, contact context, lead details, and timeline structure.",
@@ -194,7 +194,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-8.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-8.webp",
           alt: "SprintCRM - dark lead drawer workflow",
           caption:
             "Dark-mode lead drawer keeping action planning and CRM context focused without turning into a noisy dashboard.",
@@ -204,7 +204,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-9.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-9.webp",
           alt: "SprintCRM - pipeline board light mode",
           caption:
             "Pipeline board organizing leads by working stage and giving quick access to active opportunities.",
@@ -214,7 +214,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-10.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-10.webp",
           alt: "SprintCRM - pipeline board dark mode",
           caption:
             "Dark-mode pipeline view showing stage-based CRM progress in a compact operator-facing layout.",
@@ -224,7 +224,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-11.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-11.webp",
           alt: "SprintCRM - today queue",
           caption:
             "Today queue turning the CRM into a daily work surface for handling what needs action now.",
@@ -234,7 +234,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-12.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-12.webp",
           alt: "SprintCRM - lead drawer and action workflow",
           caption:
             "Lead drawer workflow with action planning, status handling, and timeline context for focused outreach work.",
@@ -244,7 +244,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-13.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-13.webp",
           alt: "SprintCRM - active contacts",
           caption:
             "Active contacts view separating warm opportunities from cold or unprocessed leads.",
@@ -254,7 +254,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/sprintcrm/desktop/sprintcrm-14.png",
+          src: "/cases/sprintcrm/desktop/sprintcrm-14.webp",
           alt: "SprintCRM - reports dashboard",
           caption:
             "Reports view summarizing pipeline health, funnel signals, niches, sources, active leads, and overdue work.",
@@ -313,7 +313,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "advisory-property",
     poster: {
-      src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.png",
+      src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.webp",
       alt: "Barcelona Private Advisory poster cover",
     },
     coverTone: "light",
@@ -326,7 +326,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/bcn-advisory/video/bcn-advisory-video.mp4",
-        poster: "/cases/bcn-advisory/desktop/bcn-advisory-hero.png",
+        poster: "/cases/bcn-advisory/desktop/bcn-advisory-hero.webp",
         alt: "Barcelona Private Advisory walkthrough video",
         caption:
           "Premium advisory demo reframing real-estate browsing into a curated, Barcelona-first buyer journey.",
@@ -338,7 +338,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.png",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.webp",
           alt: "Barcelona Private Advisory - desktop hero frame",
           caption:
             "Homepage hero positioning Spain Costas through a calmer, more selective advisory-first property experience.",
@@ -348,7 +348,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-1.png",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-1.webp",
           alt: "Barcelona Private Advisory - desktop frame 01",
           caption:
             "Search surface built around curated property discovery instead of a noisy mass-listing portal pattern.",
@@ -358,7 +358,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-2.png",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-2.webp",
           alt: "Barcelona Private Advisory - desktop frame 02",
           caption:
             "District lens section connecting property decisions with neighborhood rhythm, lifestyle fit, and Barcelona context.",
@@ -368,7 +368,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-3.png",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-3.webp",
           alt: "Barcelona Private Advisory - desktop frame 03",
           caption:
             "Curated listing grid using warm editorial pacing and restrained UI density to preserve premium perception.",
@@ -378,7 +378,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-4.png",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-4.webp",
           alt: "Barcelona Private Advisory - desktop frame 04",
           caption:
             "Shortlist drawer transforming saved properties into a more structured advisory selection flow.",
@@ -388,7 +388,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-5.jpg",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-5.webp",
           alt: "Barcelona Private Advisory - desktop frame 05",
           caption:
             "Property showpiece page with gallery, descriptions, highlights, and product-style information hierarchy.",
@@ -398,7 +398,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/bcn-advisory/desktop/bcn-advisory-6.jpg",
+          src: "/cases/bcn-advisory/desktop/bcn-advisory-6.webp",
           alt: "Barcelona Private Advisory - desktop frame 06",
           caption:
             "Lightbox experience designed to make property review feel calmer, more focused, and more premium.",
@@ -408,7 +408,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-1.jpg",
+          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-1.webp",
           alt: "Barcelona Private Advisory - mobile frame 01",
           caption:
             "Mobile homepage preserving the advisory-first message, curated shortlist promise, and premium property framing.",
@@ -418,7 +418,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-2.jpg",
+          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-2.webp",
           alt: "Barcelona Private Advisory - mobile frame 02",
           caption:
             "Mobile property card flow focused on saved selections, calm browsing, and shortlist-first decision support.",
@@ -428,7 +428,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-3.jpg",
+          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-3.webp",
           alt: "Barcelona Private Advisory - mobile frame 03",
           caption:
             "Mobile shortlist drawer turning saved apartments into a more structured advisory selection.",
@@ -438,7 +438,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-4.jpg",
+          src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-4.webp",
           alt: "Barcelona Private Advisory - mobile frame 04",
           caption:
             "Mobile property lightbox designed for focused review, visual confidence, and premium buyer pacing.",
@@ -502,7 +502,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "creators-culture",
     poster: {
-      src: "/cases/fluid-exhibition/desktop/fluid-hero.jpg",
+      src: "/cases/fluid-exhibition/desktop/fluid-hero.webp",
       alt: "FLUID exhibition microsite poster",
     },
     coverTone: "dark",
@@ -515,7 +515,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/fluid-exhibition/video/fluid-video.mp4",
-        poster: "/cases/fluid-exhibition/desktop/fluid-hero.jpg",
+        poster: "/cases/fluid-exhibition/desktop/fluid-hero.webp",
         alt: "FLUID - exhibition walkthrough video",
         caption:
           "Walkthrough of the exhibition layer, artist pages, and fluid motion atmosphere.",
@@ -527,7 +527,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/fluid-exhibition/desktop/fluid-hero.jpg",
+          src: "/cases/fluid-exhibition/desktop/fluid-hero.webp",
           alt: "FLUID - desktop hero frame",
           caption:
             "Exhibition landing page with fluid visual identity and QR-oriented entry framing.",
@@ -537,7 +537,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/fluid-exhibition/desktop/fluid-1.jpg",
+          src: "/cases/fluid-exhibition/desktop/fluid-1.webp",
           alt: "FLUID - desktop frame 01",
           caption:
             "Artist system laid out as a structured exhibition layer instead of a generic event page.",
@@ -547,7 +547,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/fluid-exhibition/desktop/fluid-2.jpg",
+          src: "/cases/fluid-exhibition/desktop/fluid-2.webp",
           alt: "FLUID - desktop frame 02",
           caption:
             "Artist profile surface connected to the wider exhibition context.",
@@ -557,7 +557,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/fluid-exhibition/desktop/fluid-3.jpg",
+          src: "/cases/fluid-exhibition/desktop/fluid-3.webp",
           alt: "FLUID - desktop frame 03",
           caption:
             "Content-driven information blocks balancing artwork context, artist data, and navigation clarity.",
@@ -567,7 +567,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/fluid-exhibition/mobile/fluid-mb-1.jpg",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-1.webp",
           alt: "FLUID - mobile frame 01",
           caption:
             "Mobile exhibition entry designed as a calm QR-access landing surface.",
@@ -577,7 +577,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/fluid-exhibition/mobile/fluid-mb-2.jpg",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-2.webp",
           alt: "FLUID - mobile frame 02",
           caption:
             "Mobile exhibition page carrying the same fluid identity in a compact format.",
@@ -587,7 +587,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/fluid-exhibition/mobile/fluid-mb-3.jpg",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-3.webp",
           alt: "FLUID - mobile frame 03",
           caption:
             "Artist listing and profile access optimized for quick scan-to-context behavior.",
@@ -597,7 +597,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/fluid-exhibition/mobile/fluid-mb-4.jpg",
+          src: "/cases/fluid-exhibition/mobile/fluid-mb-4.webp",
           alt: "FLUID - mobile frame 04",
           caption:
             "Individual artist page preserving exhibition identity while exposing artist-specific data.",
@@ -648,7 +648,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "creators-culture",
     poster: {
-      src: "/cases/form-index/desktop/fr-hero.jpg",
+      src: "/cases/form-index/desktop/fr-hero.webp",
       alt: "FORM INDEX poster cover",
     },
     coverTone: "light",
@@ -661,7 +661,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/form-index/video/fr-video.mp4",
-        poster: "/cases/form-index/desktop/fr-hero.jpg",
+        poster: "/cases/form-index/desktop/fr-hero.webp",
         alt: "FORM INDEX walkthrough video",
         caption:
           "Awards-style editorial entry built around quiet futurism, spacing precision, and controlled scroll choreography.",
@@ -673,7 +673,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-hero.jpg",
+          src: "/cases/form-index/desktop/fr-hero.webp",
           alt: "FORM INDEX - desktop hero frame",
           caption:
             "Hero surface that frames the system through editorial restraint, calm hierarchy, and controlled image rhythm.",
@@ -683,7 +683,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-1.jpg",
+          src: "/cases/form-index/desktop/fr-1.webp",
           alt: "FORM INDEX - desktop frame 01",
           caption:
             "Sticky-stage layout with controlled reveal timing and quiet visual hierarchy.",
@@ -693,7 +693,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-2.jpg",
+          src: "/cases/form-index/desktop/fr-2.webp",
           alt: "FORM INDEX - desktop frame 02",
           caption:
             "Campaign-system surface balancing photography, editorial spacing, and premium pacing.",
@@ -703,7 +703,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-3.jpg",
+          src: "/cases/form-index/desktop/fr-3.webp",
           alt: "FORM INDEX - desktop frame 03",
           caption:
             "Scroll-driven transition state expressed through spacing, sequence, and visual calm.",
@@ -713,7 +713,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-4.jpg",
+          src: "/cases/form-index/desktop/fr-4.webp",
           alt: "FORM INDEX - desktop frame 04",
           caption:
             "Surface studies presented as part of the editorial rhythm rather than decorative filler.",
@@ -723,7 +723,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-5.jpg",
+          src: "/cases/form-index/desktop/fr-5.webp",
           alt: "FORM INDEX - desktop frame 05",
           caption:
             "Premium editorial spacing and quiet visual hierarchy across grouped image content.",
@@ -733,7 +733,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-6.jpg",
+          src: "/cases/form-index/desktop/fr-6.webp",
           alt: "FORM INDEX - desktop frame 06",
           caption:
             "Product surface built around object focus, clean spacing, and understated presentation.",
@@ -743,7 +743,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-7.jpg",
+          src: "/cases/form-index/desktop/fr-7.webp",
           alt: "FORM INDEX - desktop frame 07",
           caption:
             "Section progress translated into structured product flow and controlled emphasis.",
@@ -753,7 +753,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-8.jpg",
+          src: "/cases/form-index/desktop/fr-8.webp",
           alt: "FORM INDEX - desktop frame 08",
           caption:
             "Lookbook volumes treated as a premium content surface with calm typographic support.",
@@ -763,7 +763,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/form-index/desktop/fr-9.jpg",
+          src: "/cases/form-index/desktop/fr-9.webp",
           alt: "FORM INDEX - desktop frame 09",
           caption:
             "Selected pieces view showing catalog rhythm, controlled reveal, and clean visual grouping.",
@@ -773,7 +773,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/form-index/mobile/fr-mob-1.jpg",
+          src: "/cases/form-index/mobile/fr-mob-1.webp",
           alt: "FORM INDEX - mobile frame 01",
           caption:
             "Mobile landing surface preserving the same calm editorial hierarchy in a compact format.",
@@ -783,7 +783,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/form-index/mobile/fr-mob-2.jpg",
+          src: "/cases/form-index/mobile/fr-mob-2.webp",
           alt: "FORM INDEX - mobile frame 02",
           caption:
             "Surface studies adapted to mobile without losing clarity, spacing, or pacing.",
@@ -793,7 +793,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/form-index/mobile/fr-mob-3.jpg",
+          src: "/cases/form-index/mobile/fr-mob-3.webp",
           alt: "FORM INDEX - mobile frame 03",
           caption:
             "Lookbook volume presentation translated into a compact phone-first composition.",
@@ -803,7 +803,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/form-index/mobile/fr-mob-4.jpg",
+          src: "/cases/form-index/mobile/fr-mob-4.webp",
           alt: "FORM INDEX - mobile frame 04",
           caption:
             "Selection drawer and product flow showing clean UI behavior on smaller screens.",
@@ -813,7 +813,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/form-index/mobile/fr-mob-5.jpg",
+          src: "/cases/form-index/mobile/fr-mob-5.webp",
           alt: "FORM INDEX - mobile frame 05",
           caption:
             "Image-led mobile sequencing that keeps the system quiet, readable, and premium.",
@@ -874,7 +874,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "brands",
     poster: {
-      src: "/cases/arcwave-integrations/desktop/arc-hero.jpg",
+      src: "/cases/arcwave-integrations/desktop/arc-hero.webp",
       alt: "ARCWAVE Integrations poster cover",
     },
     coverTone: "light",
@@ -887,7 +887,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/arcwave-integrations/video/arc-video.mp4",
-        poster: "/cases/arcwave-integrations/desktop/arc-hero.jpg",
+        poster: "/cases/arcwave-integrations/desktop/arc-hero.webp",
         alt: "ARCWAVE walkthrough video",
         caption:
           "Premium service-site concept focused on clean architecture, bilingual clarity, and deployment-ready polish.",
@@ -899,7 +899,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/arcwave-integrations/desktop/arc-hero.jpg",
+          src: "/cases/arcwave-integrations/desktop/arc-hero.webp",
           alt: "ARCWAVE - desktop hero frame",
           caption:
             "Homepage framing built around service clarity, premium restraint, and a technically credible surface.",
@@ -909,7 +909,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/arcwave-integrations/desktop/arc-1.jpg",
+          src: "/cases/arcwave-integrations/desktop/arc-1.webp",
           alt: "ARCWAVE - desktop frame 01",
           caption:
             "Service-led homepage architecture presenting engineering offers without corporate clutter.",
@@ -919,7 +919,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/arcwave-integrations/desktop/arc-2.jpg",
+          src: "/cases/arcwave-integrations/desktop/arc-2.webp",
           alt: "ARCWAVE - desktop frame 02",
           caption:
             "Clean workflow section designed to support trust, process clarity, and conversion readiness.",
@@ -929,7 +929,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/arcwave-integrations/desktop/arc-3.jpg",
+          src: "/cases/arcwave-integrations/desktop/arc-3.webp",
           alt: "ARCWAVE - desktop frame 03",
           caption:
             "Service detail view combining technical precision, readable structure, and premium spacing.",
@@ -939,7 +939,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/arcwave-integrations/desktop/arc-4.jpg",
+          src: "/cases/arcwave-integrations/desktop/arc-4.webp",
           alt: "ARCWAVE - desktop frame 04",
           caption:
             "Documentation and handover surface showing how support and delivery are framed as part of the product.",
@@ -949,7 +949,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/arcwave-integrations/desktop/arc-5.jpg",
+          src: "/cases/arcwave-integrations/desktop/arc-5.webp",
           alt: "ARCWAVE - desktop frame 05",
           caption:
             "Quote flow with clean field hierarchy, service specificity, and production-ready form behavior.",
@@ -959,7 +959,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/arcwave-integrations/mobile/arc-mb-1.jpg",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-1.webp",
           alt: "ARCWAVE - mobile frame 01",
           caption:
             "Mobile landing surface preserving premium clarity and service-first structure.",
@@ -969,7 +969,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/arcwave-integrations/mobile/arc-mb-2.jpg",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-2.webp",
           alt: "ARCWAVE - mobile frame 02",
           caption:
             "Mobile service catalog adapted into a clear card system with strong hierarchy.",
@@ -979,7 +979,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/arcwave-integrations/mobile/arc-mb-3.jpg",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-3.webp",
           alt: "ARCWAVE - mobile frame 03",
           caption:
             "Documentation and handover information translated into a calm, readable mobile layout.",
@@ -989,7 +989,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/arcwave-integrations/mobile/arc-mb-4.jpg",
+          src: "/cases/arcwave-integrations/mobile/arc-mb-4.webp",
           alt: "ARCWAVE - mobile frame 04",
           caption:
             "Mobile quote form with service-led structure, clean spacing, and practical conversion flow.",
@@ -1049,7 +1049,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "hospitality",
     poster: {
-      src: "/cases/casa-nube/desktop/casa-hero.png",
+      src: "/cases/casa-nube/desktop/casa-hero.webp",
       alt: "Casa Nube poster cover",
     },
     coverTone: "light",
@@ -1062,7 +1062,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/casa-nube/video/casa-video.mp4",
-        poster: "/cases/casa-nube/desktop/casa-hero.png",
+        poster: "/cases/casa-nube/desktop/casa-hero.webp",
         alt: "Casa Nube walkthrough video",
         caption:
           "Premium hospitality website demo combining atmosphere, menu clarity, visit utility, and multilingual structure.",
@@ -1074,7 +1074,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/casa-nube/desktop/casa-hero.png",
+          src: "/cases/casa-nube/desktop/casa-hero.webp",
           alt: "Casa Nube - desktop hero frame",
           caption:
             "Homepage hero presenting the café as a warm digital façade with clear visitor actions.",
@@ -1084,7 +1084,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/casa-nube/desktop/casa-1.png",
+          src: "/cases/casa-nube/desktop/casa-1.webp",
           alt: "Casa Nube - desktop frame 01",
           caption:
             "Menu preview and space section designed as an editorial hospitality surface rather than a generic café template.",
@@ -1094,7 +1094,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/casa-nube/desktop/casa-2.png",
+          src: "/cases/casa-nube/desktop/casa-2.webp",
           alt: "Casa Nube - desktop frame 02",
           caption:
             "Space and light section using café photography, warm rhythm, and soft editorial grouping.",
@@ -1104,7 +1104,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/casa-nube/desktop/casa-3.png",
+          src: "/cases/casa-nube/desktop/casa-3.webp",
           alt: "Casa Nube - desktop frame 03",
           caption:
             "Web-native menu page replacing PDF-first restaurant UX with readable structured content.",
@@ -1114,7 +1114,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/casa-nube/desktop/casa-4.png",
+          src: "/cases/casa-nube/desktop/casa-4.webp",
           alt: "Casa Nube - desktop frame 04",
           caption:
             "Visit page focused on opening rhythm, reservation logic, and practical visitor decisions.",
@@ -1124,7 +1124,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/casa-nube/desktop/casa-5.png",
+          src: "/cases/casa-nube/desktop/casa-5.webp",
           alt: "Casa Nube - desktop frame 05",
           caption:
             "Location and planning surface with clear contact paths, directions, and practical notes.",
@@ -1134,7 +1134,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/casa-nube/mobile/casa-mob-1.jpg",
+          src: "/cases/casa-nube/mobile/casa-mob-1.webp",
           alt: "Casa Nube - mobile frame 01",
           caption:
             "Mobile homepage preserving editorial warmth while keeping key café actions close.",
@@ -1144,7 +1144,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/casa-nube/mobile/casa-mob-2.jpg",
+          src: "/cases/casa-nube/mobile/casa-mob-2.webp",
           alt: "Casa Nube - mobile frame 02",
           caption:
             "Mobile menu and hospitality content adapted into a calm, compact flow.",
@@ -1154,7 +1154,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/casa-nube/mobile/casa-mob-3.jpg",
+          src: "/cases/casa-nube/mobile/casa-mob-3.webp",
           alt: "Casa Nube - mobile frame 03",
           caption:
             "Mobile menu page designed as structured web content with clear category rhythm.",
@@ -1164,7 +1164,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/casa-nube/mobile/casa-mob-4.jpg",
+          src: "/cases/casa-nube/mobile/casa-mob-4.webp",
           alt: "Casa Nube - mobile frame 04",
           caption:
             "Mobile visit page giving users quick access to hours, location, and practical planning details.",
@@ -1174,7 +1174,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "mobile",
           aspect: "phone",
-          src: "/cases/casa-nube/mobile/casa-mob-5.jpg",
+          src: "/cases/casa-nube/mobile/casa-mob-5.webp",
           alt: "Casa Nube - mobile frame 05",
           caption:
             "Sticky mobile action flow for menu, reservation, and maps-oriented visitor behavior.",
@@ -1237,7 +1237,7 @@ export const cases: Case[] = [
     completeness: "full",
     archiveCategory: "software-product",
     poster: {
-      src: "/cases/print-border-studio/desktop/psb-hero.png",
+      src: "/cases/print-border-studio/desktop/psb-hero.webp",
       alt: "Print Border Studio poster cover",
     },
     coverTone: "dark",
@@ -1250,7 +1250,7 @@ export const cases: Case[] = [
         device: "desktop",
         aspect: "landscape",
         src: "/cases/print-border-studio/video/psb-video.mp4",
-        poster: "/cases/print-border-studio/desktop/psb-hero.png",
+        poster: "/cases/print-border-studio/desktop/psb-hero.webp",
         alt: "Print Border Studio walkthrough video",
         caption:
           "Desktop-first print preparation interface built around border precision, preview clarity, and export-ready workflow.",
@@ -1262,7 +1262,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb-hero.png",
+          src: "/cases/print-border-studio/desktop/psb-hero.webp",
           alt: "Print Border Studio - desktop hero frame",
           caption:
             "Main product surface combining artwork preview, border controls, queue logic, and export-ready interface structure.",
@@ -1272,7 +1272,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb-1.png",
+          src: "/cases/print-border-studio/desktop/psb-1.webp",
           alt: "Print Border Studio - desktop frame 01",
           caption:
             "Light interface state showing precise artwork placement, margin controls, and print preparation settings.",
@@ -1282,7 +1282,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb-2.png",
+          src: "/cases/print-border-studio/desktop/psb-2.webp",
           alt: "Print Border Studio - desktop frame 02",
           caption:
             "Dark workspace mode designed for focused print review and controlled visual judgment.",
@@ -1292,7 +1292,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb-3.png",
+          src: "/cases/print-border-studio/desktop/psb-3.webp",
           alt: "Print Border Studio - desktop frame 03",
           caption:
             "Artwork preparation flow with border settings, visual balance, and export-oriented controls.",
@@ -1302,7 +1302,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb-4.png",
+          src: "/cases/print-border-studio/desktop/psb-4.webp",
           alt: "Print Border Studio - desktop frame 04",
           caption:
             "Preview and inspection state supporting careful evaluation before final export.",
@@ -1312,7 +1312,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb-5.png",
+          src: "/cases/print-border-studio/desktop/psb-5.webp",
           alt: "Print Border Studio - desktop frame 05",
           caption:
             "Museum-style print framing surface focused on proportion, border rhythm, and presentation control.",
@@ -1322,7 +1322,7 @@ export const cases: Case[] = [
           kind: "image",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/print-border-studio/desktop/psb6.png",
+          src: "/cases/print-border-studio/desktop/psb6.webp",
           alt: "Print Border Studio - desktop frame 06",
           caption:
             "Light-mode production surface showing the same tool logic in a clean, gallery-oriented interface.",
@@ -1383,7 +1383,7 @@ export const cases: Case[] = [
       completeness: "full",
       archiveCategory: "brands",
       poster: {
-        src: "/cases/house-of-lune/desktop/house-of-lune-hero.png",
+        src: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
         alt: "House of Lune poster cover",
       },
       coverTone: "dark",
@@ -1396,7 +1396,7 @@ export const cases: Case[] = [
           device: "desktop",
           aspect: "landscape",
           src: "/cases/house-of-lune/video/house-of-lune-video.mp4",
-          poster: "/cases/house-of-lune/desktop/house-of-lune-hero.png",
+          poster: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
           alt: "House of Lune walkthrough video",
           caption:
             "Cinematic digital maison built around dark luxury, object-led presentation, editorial motion, and private-client conversion.",
@@ -1408,7 +1408,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-hero.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
             alt: "House of Lune - desktop hero frame",
             caption:
               "Homepage hero presenting the maison through dark cinematic staging, controlled light, and private luxury atmosphere.",
@@ -1418,7 +1418,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-1.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-1.webp",
             alt: "House of Lune - desktop frame 01",
             caption:
               "Selected signatures section presenting jewelry pieces as rare objects rather than catalog inventory.",
@@ -1428,7 +1428,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-2.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-2.webp",
             alt: "House of Lune - desktop frame 02",
             caption:
               "Maison storytelling surface using dark restraint, object imagery, and editorial hierarchy.",
@@ -1438,7 +1438,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-3.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
             alt: "House of Lune - desktop frame 03",
             caption:
               "Collection presentation designed as a private salon system rather than a dense product grid.",
@@ -1448,7 +1448,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-4.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-4.webp",
             alt: "House of Lune - desktop frame 04",
             caption:
               "Craftsmanship page framing atelier process, material culture, and premium editorial rhythm.",
@@ -1458,7 +1458,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-5.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-5.webp",
             alt: "House of Lune - desktop frame 05",
             caption:
               "Private inquiry moment built around appointment language and restrained conversion cues.",
@@ -1468,7 +1468,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-6.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-6.webp",
             alt: "House of Lune - desktop frame 06",
             caption:
               "Journal-style editorial layer positioning the maison as a living brand world rather than a static store.",
@@ -1478,7 +1478,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/house-of-lune/desktop/house-of-lune-7.png",
+            src: "/cases/house-of-lune/desktop/house-of-lune-7.webp",
             alt: "House of Lune - desktop frame 07",
             caption:
               "Contact and private inquiry flow with calm form structure, material notes, and salon-like framing.",
@@ -1488,7 +1488,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/house-of-lune/mobile/house-of-lune-mb-1.jpg",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-1.webp",
             alt: "House of Lune - mobile frame 01",
             caption:
               "Mobile collection surface preserving dark luxury, object focus, and restrained interface rhythm.",
@@ -1498,7 +1498,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/house-of-lune/mobile/house-of-lune-mb-2.jpg",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-2.webp",
             alt: "House of Lune - mobile frame 02",
             caption:
               "Mobile navigation translated into a compact private-maison menu structure.",
@@ -1508,7 +1508,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/house-of-lune/mobile/house-of-lune-mb-3.jpg",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-3.webp",
             alt: "House of Lune - mobile frame 03",
             caption:
               "Mobile journal surface extending the brand through campaigns, notes, and editorial storytelling.",
@@ -1518,7 +1518,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/house-of-lune/mobile/house-of-lune-mb-4.jpg",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-4.webp",
             alt: "House of Lune - mobile frame 04",
             caption:
               "Mobile maison page presenting brand philosophy, intimacy, and material atmosphere.",
@@ -1528,7 +1528,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/house-of-lune/mobile/house-of-lune-mb-5.jpg",
+            src: "/cases/house-of-lune/mobile/house-of-lune-mb-5.webp",
             alt: "House of Lune - mobile frame 05",
             caption:
               "Mobile private inquiry form focused on appointment-based luxury conversion instead of checkout-first UX.",
@@ -1590,7 +1590,7 @@ export const cases: Case[] = [
       completeness: "full",
       archiveCategory: "software-product",
       poster: {
-        src: "/cases/creatorops/desktop/creatorops-hero.png",
+        src: "/cases/creatorops/desktop/creatorops-hero.webp",
         alt: "CreatorOps poster cover",
       },
       coverTone: "dark",
@@ -1603,7 +1603,7 @@ export const cases: Case[] = [
           device: "desktop",
           aspect: "landscape",
           src: "/cases/creatorops/video/creatorops-video.mp4",
-          poster: "/cases/creatorops/desktop/creatorops-hero.png",
+          poster: "/cases/creatorops/desktop/creatorops-hero.webp",
           alt: "CreatorOps walkthrough video",
           caption:
             "Beta-ready creator workflow prototype with Smart Mix logic, export pipeline, and an extensible Tools layer.",
@@ -1615,7 +1615,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-hero.png",
+            src: "/cases/creatorops/desktop/creatorops-hero.webp",
             alt: "CreatorOps - desktop hero frame",
             caption:
               "Product positioning surface framing CreatorOps as a calm operating system for creators and small content teams.",
@@ -1625,7 +1625,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-1.png",
+            src: "/cases/creatorops/desktop/creatorops-1.webp",
             alt: "CreatorOps - desktop frame 01",
             caption:
               "Marketing landing surface presenting the product promise, creator outcome, and premium SaaS direction.",
@@ -1635,7 +1635,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-2.png",
+            src: "/cases/creatorops/desktop/creatorops-2.webp",
             alt: "CreatorOps - desktop frame 02",
             caption:
               "System logic section explaining the calm guardrails behind content planning and publishing decisions.",
@@ -1645,7 +1645,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-3.png",
+            src: "/cases/creatorops/desktop/creatorops-3.webp",
             alt: "CreatorOps - desktop frame 03",
             caption:
               "Creator-facing product promise translated into a clear mobile-output and publishing-pack narrative.",
@@ -1655,7 +1655,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-4.png",
+            src: "/cases/creatorops/desktop/creatorops-4.webp",
             alt: "CreatorOps - desktop frame 04",
             caption:
               "Premium landing chapter using dark product staging and restrained visual rhythm.",
@@ -1665,7 +1665,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-5.png",
+            src: "/cases/creatorops/desktop/creatorops-5.webp",
             alt: "CreatorOps - desktop frame 05",
             caption:
               "Roadmap and monetization surface showing how the prototype can expand into a larger creator workflow product.",
@@ -1675,7 +1675,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-6.png",
+            src: "/cases/creatorops/desktop/creatorops-6.webp",
             alt: "CreatorOps - desktop frame 06",
             caption:
               "Library and Smart Mix workspace where visual assets become structured content candidates.",
@@ -1685,7 +1685,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-7.png",
+            src: "/cases/creatorops/desktop/creatorops-7.webp",
             alt: "CreatorOps - desktop frame 07",
             caption:
               "Dark prototype interface showing asset selection, state-driven layout, and product-like workspace density.",
@@ -1695,7 +1695,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-8.png",
+            src: "/cases/creatorops/desktop/creatorops-8.webp",
             alt: "CreatorOps - desktop frame 08",
             caption:
               "Light workspace variation demonstrating the product system across visual modes and review contexts.",
@@ -1705,7 +1705,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-9.png",
+            src: "/cases/creatorops/desktop/creatorops-9.webp",
             alt: "CreatorOps - desktop frame 09",
             caption:
               "Smart Mix output surface turning selected assets into ranked 3x3 content directions.",
@@ -1715,7 +1715,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-10.png",
+            src: "/cases/creatorops/desktop/creatorops-10.webp",
             alt: "CreatorOps - desktop frame 10",
             caption:
               "Captions and planning workspace connecting content selection with publishing rhythm and output structure.",
@@ -1725,7 +1725,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-11.png",
+            src: "/cases/creatorops/desktop/creatorops-11.webp",
             alt: "CreatorOps - desktop frame 11",
             caption:
               "Export and tools-oriented state showing how the workflow continues beyond visual selection.",
@@ -1735,7 +1735,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-12.png",
+            src: "/cases/creatorops/desktop/creatorops-12.webp",
             alt: "CreatorOps - desktop frame 12",
             caption:
               "Bio Builder workspace combining profile fields, content grid context, generated variants, and live preview.",
@@ -1745,7 +1745,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "desktop",
             aspect: "landscape",
-            src: "/cases/creatorops/desktop/creatorops-13.png",
+            src: "/cases/creatorops/desktop/creatorops-13.webp",
             alt: "CreatorOps - desktop frame 13",
             caption:
               "Connected profile-building flow that extends the content pack into an Instagram-style bio and identity layer.",
@@ -1755,7 +1755,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-1.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-1.webp",
             alt: "CreatorOps - mobile frame 01",
             caption:
               "Mobile content grid preserving the visual logic of the publishing pack.",
@@ -1765,7 +1765,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-2.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-2.webp",
             alt: "CreatorOps - mobile frame 02",
             caption:
               "Mobile Smart Mix step focused on selected assets, generated candidates, and continuation flow.",
@@ -1775,7 +1775,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-3.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-3.webp",
             alt: "CreatorOps - mobile frame 03",
             caption:
               "Mobile sequence state showing how the selected mix becomes an ordered publishing direction.",
@@ -1785,7 +1785,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-4.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-4.webp",
             alt: "CreatorOps - mobile frame 04",
             caption:
               "Mobile planner state linking pack selection, rhythm, and next-step product flow.",
@@ -1795,7 +1795,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-5.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-5.webp",
             alt: "CreatorOps - mobile frame 05",
             caption:
               "Mobile export state with downloadable pack logic and practical output framing.",
@@ -1805,7 +1805,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-6.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-6.webp",
             alt: "CreatorOps - mobile frame 06",
             caption:
               "Mobile Bio Builder form for shaping handle, audience, offer, CTA, and profile direction.",
@@ -1815,7 +1815,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-7.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-7.webp",
             alt: "CreatorOps - mobile frame 07",
             caption:
               "Instagram-style profile preview adapting the content pack into a creator-facing public identity.",
@@ -1825,7 +1825,7 @@ export const cases: Case[] = [
             kind: "image",
             device: "mobile",
             aspect: "phone",
-            src: "/cases/creatorops/mobile/creatorops-mb-8.jpg",
+            src: "/cases/creatorops/mobile/creatorops-mb-8.webp",
             alt: "CreatorOps - mobile frame 08",
             caption:
               "Mobile profile and pack handoff showing how CreatorOps can expand into standalone creator tools.",

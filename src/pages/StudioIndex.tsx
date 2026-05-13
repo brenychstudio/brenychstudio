@@ -23,6 +23,7 @@ type PageProps = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
+  noIndex?: boolean;
 };
 
 type SystemItem = {
@@ -1351,6 +1352,7 @@ export default function StudioIndex({
   drawerOpen = false,
   onOpenProject,
   onCloseProject,
+  noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
   const activeId = useActiveStudioSection();
@@ -1379,7 +1381,7 @@ export default function StudioIndex({
 
   return (
     <>
-      <StudioNoIndexMeta />
+      {noIndex ? <StudioNoIndexMeta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
       <PageSurface className="relative min-h-screen overflow-x-hidden bg-[#f2efe8] text-neutral-950">

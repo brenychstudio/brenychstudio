@@ -30,6 +30,7 @@ type PageProps = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
+  noIndex?: boolean;
 };
 
 type SectionId = "threshold" | "map" | "proof" | "engines" | "future" | "applications" | "closing";
@@ -2073,7 +2074,12 @@ function ClosingScene({
   );
 }
 
-export default function ImmersiveV2({ drawerOpen = false, onOpenProject, onCloseProject }: PageProps) {
+export default function ImmersiveV2({
+  drawerOpen = false,
+  onOpenProject,
+  onCloseProject,
+  noIndex = false,
+}: PageProps) {
   const navigate = useNavigate();
   const chamberState = useImmersiveChamberSelection();
   const activeId = useActiveSection();
@@ -2108,7 +2114,7 @@ export default function ImmersiveV2({ drawerOpen = false, onOpenProject, onClose
 
   return (
     <>
-      <ImmersiveV2Meta />
+      {noIndex ? <ImmersiveV2Meta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
       <PageSurface className="relative min-h-screen overflow-x-hidden bg-[#f1eee7] text-neutral-950">

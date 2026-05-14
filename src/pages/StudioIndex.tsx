@@ -13,8 +13,12 @@ import { useNavigate } from "react-router-dom";
 
 import { cases } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
+import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
+import LiveBuildSignal from "../ui/studio-index/LiveBuildSignal";
 import PageSurface from "../ui/PageSurface";
+import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
+import SiteFooterV2 from "../ui/SiteFooterV2";
 import StudioHeroField from "../ui/StudioHeroField";
 import FormulaSignalStrand from "../ui/StudioSystemStrand";
 import { startSpaPageTransition } from "../ui/pageTransition";
@@ -123,6 +127,15 @@ const systems: SystemItem[] = [
     proof: "The site gains presence while content stays readable and calm.",
     src: media.fluid,
   },
+];
+
+const studioRailItems: SectionRailItem[] = [
+  { index: "01", label: "Opening", id: "opening" },
+  { index: "02", label: "Systems", id: "systems" },
+  { index: "03", label: "WHISPER", id: "whisper" },
+  { index: "04", label: "Atlas", id: "atlas" },
+  { index: "05", label: "Grammar", id: "grammar" },
+  { index: "06", label: "Practice", id: "practice" },
 ];
 
 const storyFrames: StoryFrame[] = [
@@ -306,61 +319,22 @@ function StudioNoIndexMeta() {
   return null;
 }
 
-function StudioMechanismBackdrop() {
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 70, damping: 25, mass: 0.45 });
-
-  const ringY = useTransform(progress, [0, 1], ["0vh", "-22vh"]);
-  const ringRotate = useTransform(progress, [0, 1], ["0deg", "36deg"]);
-  const signalA = useTransform(progress, [0, 1], ["-10vw", "18vw"]);
-  const signalB = useTransform(progress, [0, 1], ["8vh", "30vh"]);
-  const progressScale = useTransform(progress, [0, 1], [0.05, 1]);
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#f2efe8]" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(0,0,0,0.065),transparent_28%),radial-gradient(circle_at_82%_8%,rgba(0,0,0,0.045),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.88),rgba(242,239,232,0.96)_46%,rgba(255,255,255,0.98))]" />
-      <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:92px_92px]" />
-
-      <motion.div
-        className="absolute left-1/2 top-[18vh] h-[78rem] w-[78rem] -translate-x-1/2 rounded-full border border-neutral-950/[0.055]"
-        style={{ y: ringY, rotate: ringRotate }}
-      />
-      <motion.div
-        className="absolute left-[6vw] top-[31vh] h-px w-[88vw] rotate-[-13deg] bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent"
-        style={{ x: signalA }}
-      />
-      <motion.div
-        className="absolute left-[16vw] top-[66vh] h-px w-[74vw] rotate-[18deg] bg-gradient-to-r from-transparent via-neutral-950/10 to-transparent"
-        style={{ y: signalB }}
-      />
-
-      <motion.div
-        className="absolute right-5 top-[18vh] hidden h-[64vh] w-px origin-top bg-neutral-950/14 lg:block"
-        style={{ scaleY: progressScale }}
-      />
-      <div className="absolute right-4 top-[18vh] hidden rounded-full border border-neutral-950/12 bg-white/48 px-2 py-1 text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur lg:block">
-        Scroll signal
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 h-[40rem] bg-gradient-to-t from-white via-white/58 to-transparent" />
-    </div>
-  );
-}
-
 function Chapter({
   id,
   children,
   className = "",
+  headerScene,
 }: {
   id?: string;
   children: ReactNode;
   className?: string;
+  headerScene?: string;
 }) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
     return (
-      <section id={id} className={className}>
+      <section id={id} data-header-scene={headerScene} className={className}>
         {children}
       </section>
     );
@@ -369,6 +343,7 @@ function Chapter({
   return (
     <motion.section
       id={id}
+      data-header-scene={headerScene}
       className={className}
       initial={{ opacity: 0, y: 56 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -403,7 +378,7 @@ function useActiveStudioSection() {
   const [activeId, setActiveId] = useState("opening");
 
   useEffect(() => {
-    const ids = ["opening", "systems", "whisper", "atlas", "grammar", "practice"];
+    const ids = studioRailItems.map((item) => item.id);
 
     let frame = 0;
 
@@ -455,73 +430,6 @@ function useActiveStudioSection() {
   return activeId;
 }
 
-function StudioRail({
-  onSelect,
-  activeId,
-}: {
-  onSelect: (id: string) => void;
-  activeId: string;
-}) {
-  const overDarkField = activeId === "whisper";
-  const items = [
-    ["01", "Opening", "opening"],
-    ["02", "Systems", "systems"],
-    ["03", "WHISPER", "whisper"],
-    ["04", "Atlas", "atlas"],
-    ["05", "Grammar", "grammar"],
-    ["06", "Practice", "practice"],
-  ];
-
-  return (
-    <nav className="fixed right-6 top-1/2 z-30 hidden -translate-y-1/2 2xl:block">
-      <div
-        className={[
-          "flex flex-col items-end gap-2 border-r pr-3 transition duration-500",
-          overDarkField
-            ? "border-white/16"
-            : "border-neutral-950/10",
-        ].join(" ")}
-      >
-        {items.map(([index, label, id]) => {
-          const active = activeId === id;
-          const buttonClass = active
-            ? overDarkField
-              ? "text-white"
-              : "text-neutral-950"
-            : overDarkField
-              ? "text-white/34 hover:text-white/78"
-              : "text-neutral-300 hover:text-neutral-700";
-          const indexClass = active
-            ? overDarkField
-              ? "border-white bg-white text-neutral-950"
-              : "border-neutral-950 bg-neutral-950 text-white"
-            : overDarkField
-              ? "border-white/14 text-white/34 group-hover:border-white/34 group-hover:text-white/78"
-              : "border-neutral-950/10 text-neutral-300 group-hover:border-neutral-950/20 group-hover:text-neutral-700";
-
-          return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => onSelect(id)}
-              aria-label={`Go to ${label}`}
-              data-studio-section={id}
-              className={`group grid grid-cols-[1.45rem_1fr] items-center gap-1.5 py-1 text-left text-[9px] uppercase tracking-[0.14em] transition-all duration-300 ${buttonClass}`}
-            >
-              <span
-                className={`grid h-5 w-5 place-items-center rounded-full border text-[8px] transition duration-300 ${indexClass}`}
-              >
-                {index}
-              </span>
-              <span>{label}</span>
-            </button>
-          );
-        })}
-      </div>
-    </nav>
-  );
-}
-
 function FloatingImage({
   src,
   label,
@@ -567,7 +475,11 @@ function OpeningChapter({
   onImmersive: () => void;
 }) {
   return (
-    <Chapter id="opening" className="relative min-h-screen overflow-hidden px-4 pb-16 pt-24 sm:px-6 lg:px-8">
+    <Chapter
+      id="opening"
+      headerScene="living-threshold"
+      className="relative min-h-screen overflow-hidden px-4 pb-16 pt-24 sm:px-6 lg:px-8"
+    >
       <div className="absolute inset-0 z-0">
         <StudioHeroField
           assets={[
@@ -577,6 +489,10 @@ function OpeningChapter({
             { src: media.creatorops, label: "CreatorOps" },
           ]}
         />
+      </div>
+
+      <div className="absolute right-[clamp(5.5rem,7vw,10rem)] top-[43%] z-10 hidden w-[19rem] xl:block 2xl:right-[11vw] 2xl:w-[21rem]">
+        <LiveBuildSignal readiness={78} />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center">
@@ -623,6 +539,10 @@ function OpeningChapter({
               Enter immersive →
             </button>
           </div>
+
+          <div className="mt-6 xl:hidden">
+            <LiveBuildSignal readiness={78} compact />
+          </div>
         </div>
       </div>
     </Chapter>
@@ -631,7 +551,11 @@ function OpeningChapter({
 
 function SystemsChapter() {
   return (
-    <Chapter id="systems" className="relative overflow-x-clip overflow-y-visible px-4 py-24 sm:px-6 lg:px-8">
+    <Chapter
+      id="systems"
+      headerScene="living-systems"
+      className="relative overflow-x-clip overflow-y-visible px-4 py-24 sm:px-6 lg:px-8"
+    >
       <div className="relative z-10 mx-auto w-[min(94vw,1640px)]">
         <div className="grid gap-14 xl:grid-cols-[0.34fr_0.66fr] xl:items-start">
           <div className="xl:sticky xl:top-28">
@@ -720,7 +644,7 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
   const titleOrigin = useTransform(progress, [0.04, 0.22], ["0% 50%", "0% 0%"]);
 
   return (
-    <section ref={target} id="whisper" className="relative min-h-[148vh]">
+    <section ref={target} id="whisper" data-header-scene="living-whisper" className="relative min-h-[148vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div
           className="absolute left-1/2 top-1/2 z-10 w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-neutral-950"
@@ -1049,7 +973,12 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
   const connectorOpacity = useTransform(progress, [0.1, 0.26, 0.9], [0, 1, 0.44]);
 
   return (
-    <section ref={target} id="atlas" className="relative px-4 pb-24 pt-8 sm:px-6 lg:px-8">
+    <section
+      ref={target}
+      id="atlas"
+      data-header-scene="living-atlas"
+      className="relative px-4 pb-24 pt-8 sm:px-6 lg:px-8"
+    >
       <div className="relative mx-auto mb-0 grid min-h-[68vh] w-[min(94vw,1640px)] items-center gap-12 overflow-hidden border-t border-neutral-950/12 py-10 xl:grid-cols-[0.45fr_0.55fr]">
         <motion.div style={{ y: handoffY, opacity: handoffOpacity }}>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Cinematic atlas</div>
@@ -1205,7 +1134,11 @@ function GrammarChapter() {
   const { targetRef, activeIndex } = useScrollActiveIndex(grammar.length);
 
   return (
-    <Chapter id="grammar" className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8">
+    <Chapter
+      id="grammar"
+      headerScene="living-grammar"
+      className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8"
+    >
       <div className="mx-auto grid min-h-[calc(100vh-12rem)] w-[min(94vw,1640px)] items-center gap-14 xl:grid-cols-[0.48fr_0.52fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface grammar</div>
@@ -1268,7 +1201,11 @@ function PracticeChapter({ onOpenProject }: { onOpenProject?: () => void }) {
   const { targetRef, activeIndex } = useScrollActiveIndex(practiceRows.length);
 
   return (
-    <Chapter id="practice" className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8">
+    <Chapter
+      id="practice"
+      headerScene="living-practice"
+      className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8"
+    >
       <div className="mx-auto grid min-h-[calc(100vh-10rem)] w-[min(94vw,1640px)] gap-12 xl:grid-cols-[0.42fr_0.58fr] xl:items-center">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Practice model</div>
@@ -1315,7 +1252,10 @@ function PracticeChapter({ onOpenProject }: { onOpenProject?: () => void }) {
         </div>
       </div>
 
-      <div className="mx-auto mt-12 w-[min(94vw,1640px)] border-t border-neutral-950/14 pt-12">
+      <div
+        data-header-scene="living-closing"
+        className="hidden"
+      >
         <div className="grid gap-8 xl:grid-cols-[0.66fr_0.34fr] xl:items-end">
           <div className="relative">
             <motion.div
@@ -1384,9 +1324,14 @@ export default function StudioIndex({
       {noIndex ? <StudioNoIndexMeta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-hidden bg-[#f2efe8] text-neutral-950">
-        <StudioMechanismBackdrop />
-        <StudioRail onSelect={scrollTo} activeId={activeId} />
+      <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
+        <AtmosphericSiteShell preset="living" />
+        <SectionRail
+          items={studioRailItems}
+          activeId={activeId}
+          onSelect={scrollTo}
+          label="Studio Index sections"
+        />
 
         <main className="relative z-10">
           <OpeningChapter
@@ -1405,6 +1350,8 @@ export default function StudioIndex({
 
           <PracticeChapter onOpenProject={onOpenProject} />
         </main>
+
+        <SiteFooterV2 onOpenProject={onOpenProject} variant="living" />
       </PageSurface>
     </>
   );

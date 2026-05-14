@@ -1,0 +1,27 @@
+.site-header {
+  background-color: var(--header-bg, rgba(251, 250, 246, 0.7));
+  color: var(--header-text, #0f0f0f);
+  border-color: var(--header-border, rgba(15, 15, 15, 0.09));
+  backdrop-filter: blur(var(--header-blur, 12px));
+  box-shadow: 0 18px 60px rgba(0, 0, 0, var(--header-elevation, 0));
+  transition:
+    background-color 720ms cubic-bezier(0.19, 1, 0.22, 1),
+    color 560ms cubic-bezier(0.19, 1, 0.22, 1),
+    border-color 720ms cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 720ms cubic-bezier(0.19, 1, 0.22, 1),
+    backdrop-filter 720ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.site-header * {
+  transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+  transition-duration: 520ms;
+  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header * {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,4 +1,4 @@
-const externalProfiles = [
+export const externalProfiles = [
   {
     label: "Brenych.com",
     href: "https://brenych.com",

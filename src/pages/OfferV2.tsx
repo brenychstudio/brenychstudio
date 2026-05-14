@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import OfferDeliveryModelEngine, { OfferDeliveryInterfaceOverlay } from "../ui/OfferDeliveryModelEngine";
 import OfferScrollArtifactHero from "../ui/OfferScrollArtifactHero";
 import PageSurface from "../ui/PageSurface";
+import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
+import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
+import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -164,6 +168,15 @@ const deliverables = [
   "Motion language and interaction states",
   "SEO and metadata basics",
   "QA, launch support, and handoff notes",
+];
+
+const offerRailItems: SectionRailItem[] = [
+  { index: "01", label: "Threshold", id: "offer-threshold" },
+  { index: "02", label: "Systems", id: "offer-systems" },
+  { index: "03", label: "Architecture", id: "engagement-model" },
+  { index: "04", label: "Delivery", id: "offer-delivery" },
+  { index: "05", label: "Formats", id: "offer-formats" },
+  { index: "06", label: "Output", id: "offer-output" },
 ];
 
 function OfferV2Meta() {
@@ -407,6 +420,7 @@ export default function OfferV2({
   const systemsRef = useRef<HTMLElement | null>(null);
   const [activeStage, setActiveStage] = useState(0);
   const [deliveryInterfaceOpen, setDeliveryInterfaceOpen] = useState(false);
+  const activeSectionId = useSectionRailActive(offerRailItems);
 
   useEffect(() => {
     if (!deliveryInterfaceOpen) return;
@@ -432,13 +446,16 @@ export default function OfferV2({
       {noIndex ? <OfferV2Meta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-clip bg-[#f3f0e9] text-neutral-950">
+      <PageSurface className="relative min-h-screen overflow-x-clip bg-transparent text-neutral-950">
+        <AtmosphericSiteShell preset="practice" />
+        <SectionRail
+          items={offerRailItems}
+          activeId={activeSectionId}
+          onSelect={scrollToRailSection}
+          label="Offer sections"
+        />
         <main className="relative pt-24">
-          <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.24] [background-image:linear-gradient(to_right,rgba(10,10,10,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.07)_1px,transparent_1px)] [background-size:86px_86px]" />
-          <div className="pointer-events-none fixed left-[7vw] top-[18vh] z-0 h-[40rem] w-[40rem] rounded-full border border-neutral-950/[0.055]" />
-          <div className="pointer-events-none fixed right-[6vw] top-[52vh] z-0 h-[30rem] w-[30rem] rounded-full border border-neutral-950/[0.045]" />
-
-          <section className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-center lg:py-12">
+          <section id="offer-threshold" data-header-scene="practice-threshold" className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-center lg:py-12">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -494,7 +511,7 @@ export default function OfferV2({
 
           <OfferScrollArtifactHero />
 
-          <section ref={systemsRef} className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
+          <section id="offer-systems" ref={systemsRef} data-header-scene="practice-build" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
             <div className="grid gap-10 border-y border-neutral-950/14 py-9 lg:grid-cols-[0.3fr_0.7fr]">
               <div>
                 <SectionLabel>01 / What I build</SectionLabel>
@@ -514,7 +531,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="engagement-model" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-16 lg:pb-20">
+          <section id="engagement-model" data-header-scene="practice-system" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-16 lg:pb-20">
             <div className="grid gap-10 lg:grid-cols-[0.38fr_0.62fr]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionLabel>02 / Service Architecture</SectionLabel>
@@ -531,7 +548,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
+          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
             <div className="grid gap-10 border-y border-neutral-950/14 py-9 lg:grid-cols-[0.32fr_0.68fr] lg:items-end">
               <div>
                 <SectionLabel>03 / Engagement Model</SectionLabel>
@@ -554,7 +571,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
+          <section id="offer-formats" data-header-scene="practice-formats" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
             <div className="grid gap-10 lg:grid-cols-[0.34fr_0.66fr]">
               <div>
                 <SectionLabel>04 / Ways to Begin</SectionLabel>
@@ -589,7 +606,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
+          <section id="offer-output" data-header-scene="practice-output" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
             <div className="grid gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
               <div>
                 <SectionLabel>05 / What You Receive</SectionLabel>
@@ -611,31 +628,9 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-24">
-            <div className="relative overflow-hidden border border-neutral-950 bg-neutral-950 p-6 text-white sm:p-8 lg:p-10">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_74%_20%,rgba(255,255,255,0.14),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_46%)]" />
-              <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-                <div>
-                  <SectionLabel light>06 / Closing CTA</SectionLabel>
-                  <h2 className="mt-5 max-w-[12ch] text-[54px] font-normal leading-[0.9] tracking-[-0.055em] sm:text-[84px]">
-                    Translate the system into an offer.
-                  </h2>
-                  <p className="mt-7 max-w-[38rem] text-[15px] leading-7 text-white/62">
-                    Bring a real project, product, archive, or commercial direction. The work is to turn it into a premium interface system that can be launched and understood.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={onOpenProject}
-                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white bg-white px-6 text-[11px] uppercase tracking-[0.16em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-neutral-100"
-                >
-                  Start a project -&gt;
-                </button>
-              </div>
-            </div>
-          </section>
         </main>
+
+        <SiteFooterV2 onOpenProject={onOpenProject} variant="practice" />
       </PageSurface>
 
       <AnimatePresence>

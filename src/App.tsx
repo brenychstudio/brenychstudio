@@ -10,7 +10,8 @@ import ImmersiveClassic from "./pages/Immersive";
 import ImmersiveV2 from "./pages/ImmersiveV2";
 import ImmersiveCasePage from "./pages/ImmersiveCasePage";
 import SpatialProof from "./pages/SpatialProof";
-import About from "./pages/About";
+import AboutClassic from "./pages/About";
+import AboutV2 from "./pages/AboutV2";
 import Privacy from "./pages/Privacy";
 import Legal from "./pages/Legal";
 import StudioIndex from "./pages/StudioIndex";
@@ -20,6 +21,7 @@ import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
 import { LocaleProvider } from "./store/useLocale";
+import { SoundProvider } from "./stage/audio/SoundProvider";
 
 function RouteNoIndexMeta() {
   useEffect(() => {
@@ -62,8 +64,9 @@ export default function App() {
 
   return (
     <LocaleProvider>
-      <BrowserRouter>
-        <ScrollToTop />
+      <SoundProvider>
+        <BrowserRouter>
+          <ScrollToTop />
 
         <Routes>
           <Route
@@ -139,10 +142,11 @@ export default function App() {
           <Route
             path="/about"
             element={
-              <About
+              <AboutV2
                 drawerOpen={drawerOpen}
                 onOpenProject={openProject}
                 onCloseProject={closeProject}
+                noIndex={false}
               />
             }
           />
@@ -218,6 +222,18 @@ export default function App() {
           />
 
           <Route
+            path="/about-v2"
+            element={
+              <AboutV2
+                drawerOpen={drawerOpen}
+                onOpenProject={openProject}
+                onCloseProject={closeProject}
+                noIndex
+              />
+            }
+          />
+
+          <Route
             path="/spatial-proof"
             element={
               <SpatialProof
@@ -280,12 +296,26 @@ export default function App() {
             }
           />
 
+          <Route
+            path="/about-classic"
+            element={
+              <HiddenRoute>
+                <AboutClassic
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
         <ProjectDrawerV2 open={drawerOpen} onClose={closeProject} />
-        <PageTransitionOverlay />
-      </BrowserRouter>
+          <PageTransitionOverlay />
+        </BrowserRouter>
+      </SoundProvider>
     </LocaleProvider>
   );
 }

@@ -10,9 +10,13 @@ import {
   type EvidenceCase,
   type EvidenceFilter,
 } from "../data/workEvidence";
+import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import PageSurface from "../ui/PageSurface";
+import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
+import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
+import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -40,6 +44,14 @@ const capabilityLayer = [
     label: "Cinematic proof",
     summary: "Visual systems where motion, scroll, imagery, and case structure support the commercial argument.",
   },
+];
+
+const evidenceRailItems: SectionRailItem[] = [
+  { index: "01", label: "Threshold", id: "evidence-threshold" },
+  { index: "02", label: "Reader", id: "proof-reader" },
+  { index: "03", label: "Dossiers", id: "evidence-featured" },
+  { index: "04", label: "Capability", id: "evidence-capability" },
+  { index: "05", label: "Index", id: "compact-archive" },
 ];
 
 function EvidenceAtlasMeta() {
@@ -237,6 +249,7 @@ export default function EvidenceAtlas({
   const [inspectOpen, setInspectOpen] = useState(false);
   const [activeFrameIndex, setActiveFrameIndex] = useState(0);
   const [proofSignalText, setProofSignalText] = useState("");
+  const activeSectionId = useSectionRailActive(evidenceRailItems);
 
   const filteredCases = useMemo(() => {
     if (activeFilter === "All") return evidenceCases;
@@ -295,21 +308,27 @@ export default function EvidenceAtlas({
   useEffect(() => {
     const fullText = activeCase.evidence.proofSummary;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let interval: number | undefined;
 
-    if (prefersReducedMotion) {
-      setProofSignalText(fullText);
-      return;
-    }
+    const startTimer = window.setTimeout(() => {
+      if (prefersReducedMotion) {
+        setProofSignalText(fullText);
+        return;
+      }
 
-    setProofSignalText("");
-    let index = 0;
-    const interval = window.setInterval(() => {
-      index += 2;
-      setProofSignalText(fullText.slice(0, index));
-      if (index >= fullText.length) window.clearInterval(interval);
-    }, 18);
+      setProofSignalText("");
+      let index = 0;
+      interval = window.setInterval(() => {
+        index += 2;
+        setProofSignalText(fullText.slice(0, index));
+        if (index >= fullText.length && interval !== undefined) window.clearInterval(interval);
+      }, 18);
+    }, 0);
 
-    return () => window.clearInterval(interval);
+    return () => {
+      window.clearTimeout(startTimer);
+      if (interval !== undefined) window.clearInterval(interval);
+    };
   }, [activeCase.evidence.proofSummary]);
 
   const mediaTraces = featuredCases.slice(0, 4);
@@ -325,13 +344,16 @@ export default function EvidenceAtlas({
       {noIndex ? <EvidenceAtlasMeta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-hidden bg-[#f3f1ec] text-neutral-950">
+      <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
+        <AtmosphericSiteShell preset="evidence" />
+        <SectionRail
+          items={evidenceRailItems}
+          activeId={activeSectionId}
+          onSelect={scrollToRailSection}
+          label="Evidence Atlas sections"
+        />
         <main className="relative pt-24" style={surfaceStyle}>
-          <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.28] [background-image:linear-gradient(to_right,rgba(10,10,10,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.07)_1px,transparent_1px)] [background-size:82px_82px]" />
-          <div className="pointer-events-none fixed left-[10vw] top-[15vh] z-0 h-[34rem] w-[34rem] rounded-full border border-neutral-950/[0.05]" />
-          <div className="pointer-events-none fixed right-[6vw] top-[44vh] z-0 h-[26rem] w-[26rem] rounded-full border border-neutral-950/[0.045]" />
-
-          <section className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
+          <section id="evidence-threshold" data-header-scene="evidence-threshold" className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
             <div className="grid min-h-[calc(100vh-10rem)] gap-10 border-y border-neutral-950/14 py-10 xl:grid-cols-[0.58fr_0.42fr] xl:items-center">
               <div>
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">
@@ -507,7 +529,7 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
-          <section id="proof-reader" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 pt-28 lg:pb-20 lg:pt-32">
+          <section id="proof-reader" data-header-scene="evidence-reader" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 pt-28 lg:pb-20 lg:pt-32">
             <div className="border-y border-neutral-950/14 py-8">
               <div className="grid gap-10 lg:grid-cols-[0.34fr_0.66fr] lg:items-end">
                 <div>
@@ -904,7 +926,7 @@ export default function EvidenceAtlas({
             )}
           </AnimatePresence>
 
-          <section className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
+          <section id="evidence-featured" data-header-scene="evidence-featured" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,400px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Featured Evidence</div>
@@ -989,7 +1011,7 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
-          <section className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-20 xl:grid-cols-[0.34fr_0.66fr]">
+          <section id="evidence-capability" data-header-scene="evidence-capability" className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-20 xl:grid-cols-[0.34fr_0.66fr]">
             <div>
               <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Capability Layer</div>
               <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] text-neutral-950 sm:text-[76px]">
@@ -1007,7 +1029,7 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
-          <section id="compact-archive" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
+          <section id="compact-archive" data-header-scene="evidence-index" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
             <div className="mb-9 grid gap-8 lg:grid-cols-[0.34fr_0.66fr]">
               <div>
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Compact Archive</div>
@@ -1040,28 +1062,9 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
-          <section className="relative z-10 mx-auto grid min-h-[62vh] w-[min(94vw,1720px)] items-center gap-12 py-16 lg:py-20 xl:grid-cols-[0.64fr_0.36fr]">
-            <h2 className="max-w-[13ch] text-[54px] font-normal leading-[0.9] text-neutral-950 sm:text-[88px] xl:text-[116px]">
-              Need a website, product surface, or interface system with this level of clarity?
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={onOpenProject}
-                className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
-              >
-                Start a project -&gt;
-              </button>
-              <button
-                type="button"
-                onClick={() => startSpaPageTransition(navigate, "/offer", onCloseProject)}
-                className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
-              >
-                View offer -&gt;
-              </button>
-            </div>
-          </section>
         </main>
+
+        <SiteFooterV2 onOpenProject={onOpenProject} variant="evidence" />
       </PageSurface>
     </div>
   );

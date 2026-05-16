@@ -87,6 +87,19 @@ Validated V2 cases:
 - House of Lune - luxury product reference
 - Barcelona Private Advisory - light advisory / real estate validation
 - CreatorOps - workflow / product system validation
+- SprintCRM - internal CRM / operator workflow validation
+- FLUID - cultural exhibition / QR artist-page validation
+- FORM INDEX - editorial motion / presentation-system validation
+- ARCWAVE - bilingual service architecture validation
+- Casa Nube - hospitality / multilingual local-service validation
+- Print Border Studio - production tool / print workflow validation
+
+Current public status:
+
+- `/work/:slug` now renders the canonical `CasePageV2` for non-immersive Work cases.
+- Legacy work case detail pages are hidden under `/work-classic/:slug` with noindex behavior.
+- `/work-lab/:slug` remains available as a hidden V2 lab/reference route.
+- Immersive / WHISPER remains outside this pattern and should use its own spatial case logic.
 
 ### Canonical evidence pattern
 
@@ -125,6 +138,27 @@ CreatorOps has been upgraded into a full V2 case:
 - Full desktop evidence set is included except the removed `Dark staging` frame.
 - Full mobile set is included.
 - `creatorops-4.webp` / `desktop-4` / `Dark staging` was intentionally removed from the V2 evidence flow.
+
+### Remaining Work archive current state
+
+The remaining non-immersive Work cases have been moved into the canonical V2 data flow:
+
+- SprintCRM
+- FLUID
+- FORM INDEX
+- ARCWAVE
+- Casa Nube
+- Print Border Studio
+
+They reuse `CasePageV2` through generated story records backed by the legacy `src/data/cases.ts` media inventory, with case-specific story metadata in `src/data/caseStories.ts`.
+
+Renderer updates:
+
+- Evidence frames now scale generically from every non-video, non-mobile case frame.
+- CreatorOps keeps its custom evidence order.
+- Mobile frames remain in the dedicated mobile surface rail.
+- Narrative copy now adapts by case type: workflow/tool, advisory, hospitality, service website, presentation/experimental, and luxury product.
+- Available Foundation copy now adapts by case type instead of assuming luxury commerce language.
 
 ### Barcelona Private Advisory current state
 

@@ -1,3 +1,7 @@
+import { getAvailableSystem } from "./availableSystems";
+import { cases, type Case, type CaseFrame } from "./cases";
+import { workEvidenceBySlug } from "./workEvidence";
+
 export type CaseStoryType =
   | "luxury-product"
   | "premium-website"
@@ -62,7 +66,7 @@ export type CaseStory = {
   }[];
 };
 
-export const caseStories: CaseStory[] = [
+const authoredCaseStories: CaseStory[] = [
   {
     slug: "house-of-lune",
     caseType: "product-system",
@@ -796,6 +800,575 @@ export const caseStories: CaseStory[] = [
     ],
   },
 ];
+
+type V2CaseConfig = {
+  caseType: CaseStoryType;
+  label: string;
+  subheadline: string;
+  proofClaim: string;
+  systemLayers: CaseStory["systemLayers"];
+  interactionLogic: string;
+  commercialLogic: string;
+  technicalFoundation: string[];
+  systemTags?: string[];
+  evidencePoints?: string[];
+  mediaLabels?: Record<string, string>;
+};
+
+const v2CaseConfigs: Record<string, V2CaseConfig> = {
+  sprintcrm: {
+    caseType: "workflow-tool",
+    label: "CASE SYSTEM / OPERATOR WORKFLOW / INTERNAL CRM",
+    subheadline: "Operator CRM workflow system.",
+    proofClaim:
+      "Internal CRM becomes a system when import, daily action, pipeline, reporting, and operator focus move as one controlled workspace.",
+    systemLayers: [
+      {
+        title: "Import architecture",
+        text:
+          "XLSX and CSV intake, mapping, row preview, duplicate awareness, and import reporting turn messy lead lists into controlled data entry.",
+      },
+      {
+        title: "Operator workspace",
+        text:
+          "Lead tables, filters, selected rows, and drawer-based detail review keep outreach work focused on the next useful action.",
+      },
+      {
+        title: "Daily workflow",
+        text:
+          "Today queue, next-action dates, lead status, and activity history shape the CRM around what the operator needs to do now.",
+      },
+      {
+        title: "Pipeline control",
+        text:
+          "Stage-based boards and active-contact views keep warm opportunities visible without turning the product into dashboard noise.",
+      },
+      {
+        title: "Reporting surface",
+        text:
+          "Reports summarize funnel health, sources, niches, overdue work, and active leads as practical operational feedback.",
+      },
+      {
+        title: "AI-ready foundation",
+        text:
+          "The architecture leaves space for assisted drafting and follow-up intelligence while keeping review and sending under manual control.",
+      },
+    ],
+    interactionLogic:
+      "Interaction is designed for repeated daily use: import feedback, drawer focus, status updates, theme switching, and reports all stay compact and operator-led.",
+    commercialLogic:
+      "SprintCRM proves that a portfolio can carry real internal-product thinking: workflow clarity, data-backed states, and a serious tool surface rather than only marketing pages.",
+    technicalFoundation: [
+      "React + TypeScript + Vite",
+      "Supabase-backed CRM records",
+      "XLSX / CSV import flow",
+      "Lead and activity data model",
+      "Pipeline and reports logic",
+      "Multilingual UI and theme persistence",
+    ],
+    mediaLabels: {
+      "sprintcrm-hero": "Signal Gate",
+      "sprintcrm-1": "Import upload",
+      "sprintcrm-2": "Import mapping",
+      "sprintcrm-3": "Dark import",
+      "sprintcrm-4": "Import report",
+      "sprintcrm-5": "Leads database",
+      "sprintcrm-6": "Light leads",
+      "sprintcrm-7": "Lead drawer",
+      "sprintcrm-8": "Dark drawer",
+      "sprintcrm-9": "Pipeline board",
+      "sprintcrm-10": "Dark pipeline",
+      "sprintcrm-11": "Today queue",
+      "sprintcrm-12": "Action workflow",
+      "sprintcrm-13": "Active contacts",
+      "sprintcrm-14": "Reports dashboard",
+    },
+  },
+  "fluid-exhibition": {
+    caseType: "experimental",
+    label: "CASE SYSTEM / CULTURAL SURFACE / EXHIBITION IDENTITY",
+    subheadline: "QR-driven exhibition interface system.",
+    proofClaim:
+      "Exhibition identity becomes a system when artist pages, QR access, multilingual content, venue context, and motion atmosphere stay connected.",
+    systemLayers: [
+      {
+        title: "Exhibition entry",
+        text:
+          "The landing surface frames the event as a coherent digital layer rather than a disposable announcement page.",
+      },
+      {
+        title: "Artist architecture",
+        text:
+          "Each artist page works as a direct QR destination while still carrying the shared exhibition identity.",
+      },
+      {
+        title: "Multilingual context",
+        text:
+          "Locale-aware content keeps event information, artist data, and visitor context readable across languages.",
+      },
+      {
+        title: "Motion atmosphere",
+        text:
+          "Fluid visual motion gives the system a memorable cultural identity without overpowering the content.",
+      },
+      {
+        title: "Mobile visitor path",
+        text:
+          "The mobile experience supports scan-to-context behavior for visitors moving through a physical exhibition.",
+      },
+      {
+        title: "Deployment surface",
+        text:
+          "The microsite is shaped as a lightweight cultural platform that can be deployed quickly under event constraints.",
+      },
+    ],
+    interactionLogic:
+      "Motion behaves as exhibition atmosphere: reflective, slow enough to read, and structured around artist access instead of decorative spectacle.",
+    commercialLogic:
+      "FLUID turns a physical event into reusable cultural infrastructure: visitors can enter through QR, artists get dedicated context, and the exhibition gains a coherent digital identity.",
+    technicalFoundation: [
+      "Astro + React islands",
+      "TypeScript + Tailwind CSS",
+      "Locale-based content structure",
+      "QR-ready artist pages",
+      "Responsive exhibition surfaces",
+      "Cloudflare Pages deployment",
+    ],
+    mediaLabels: {
+      "fluid-hero": "Exhibition threshold",
+      "fluid-1": "Artist system",
+      "fluid-2": "Artist profile",
+      "fluid-3": "Information blocks",
+      "fluid-mb-1": "Mobile entry",
+      "fluid-mb-2": "Mobile exhibition",
+      "fluid-mb-3": "Mobile artist list",
+      "fluid-mb-4": "Mobile artist page",
+    },
+  },
+  "form-index": {
+    caseType: "presentation-system",
+    label: "CASE SYSTEM / EDITORIAL MOTION / PRESENTATION ENGINE",
+    subheadline: "Scroll-driven editorial interface system.",
+    proofClaim:
+      "Editorial motion becomes a system when sticky composition, section progress, image rhythm, and controlled reveal behave as one authored surface.",
+    systemLayers: [
+      {
+        title: "Sticky stage",
+        text:
+          "Sections are composed as a directed stage, letting content progress through focus states instead of static blocks.",
+      },
+      {
+        title: "Motion grammar",
+        text:
+          "Opacity, blur, scale, and progress signals work together to make scrolling feel stable, smooth, and intentional.",
+      },
+      {
+        title: "Editorial hierarchy",
+        text:
+          "Large spacing, restrained typography, and image-led pacing keep the experience premium without adding noise.",
+      },
+      {
+        title: "Product rhythm",
+        text:
+          "Lookbook, selected pieces, surfaces, and detail views form a repeatable presentation architecture.",
+      },
+      {
+        title: "Mobile translation",
+        text:
+          "The mobile system preserves the same quiet hierarchy and image sequencing inside a narrower reading path.",
+      },
+      {
+        title: "Reusable foundation",
+        text:
+          "The architecture can become a studio archive, product index, editorial launch, or multilingual presentation system.",
+      },
+    ],
+    interactionLogic:
+      "The experience is driven by section progress and active-state choreography, giving motion a structural role instead of treating it as an effect layer.",
+    commercialLogic:
+      "FORM INDEX proves a reusable presentation foundation for premium archives, product systems, lookbooks, and editorial launches where polish is part of trust.",
+    technicalFoundation: [
+      "Vite + React + TypeScript",
+      "Tailwind CSS v4",
+      "Motion transitions",
+      "Sticky stage architecture",
+      "Section progress logic",
+      "Responsive presentation system",
+    ],
+    mediaLabels: {
+      "fr-hero": "Editorial threshold",
+      "fr-1": "Sticky stage",
+      "fr-2": "Campaign surface",
+      "fr-3": "Transition state",
+      "fr-4": "Surface studies",
+      "fr-5": "Editorial grouping",
+      "fr-6": "Product focus",
+      "fr-7": "Progress flow",
+      "fr-8": "Lookbook volumes",
+      "fr-9": "Selected pieces",
+      "fr-mob-1": "Mobile landing",
+      "fr-mob-2": "Mobile surfaces",
+      "fr-mob-3": "Mobile lookbook",
+      "fr-mob-4": "Mobile selection",
+      "fr-mob-5": "Mobile sequence",
+    },
+  },
+  "arcwave-integrations": {
+    caseType: "premium-website",
+    label: "CASE SYSTEM / SERVICE ARCHITECTURE / BILINGUAL B2B",
+    subheadline: "Bilingual service architecture system.",
+    proofClaim:
+      "Service websites become systems when offer structure, technical trust, bilingual content, quote flow, and deployment discipline move together.",
+    systemLayers: [
+      {
+        title: "Service architecture",
+        text:
+          "The offer is broken into typed service pages and scannable sections instead of a generic company brochure.",
+      },
+      {
+        title: "Bilingual parity",
+        text:
+          "English and Spanish content layers keep technical information consistent across routes and user contexts.",
+      },
+      {
+        title: "Technical trust",
+        text:
+          "Process, documentation, handover, and service detail are framed as evidence for a high-trust engineering buyer.",
+      },
+      {
+        title: "Quote flow",
+        text:
+          "Inquiry is shaped through service-specific selection and field hierarchy so commercial intent is clear early.",
+      },
+      {
+        title: "Reusable vertical",
+        text:
+          "The structure can be adapted for B2B services, integration companies, technical firms, and quote-led offers.",
+      },
+      {
+        title: "Production polish",
+        text:
+          "Redirect-safe routing, view transitions, deployment setup, and responsive QA make the concept feel operational.",
+      },
+    ],
+    interactionLogic:
+      "Transitions and page states stay restrained so the technical offer reads clearly, with motion supporting hierarchy rather than personality-first effects.",
+    commercialLogic:
+      "ARCWAVE translates a technical service business into a premium buyer path: understand the offer, trust the process, then request a quote.",
+    technicalFoundation: [
+      "Astro + TypeScript",
+      "React islands",
+      "Bilingual route system",
+      "Typed content architecture",
+      "Astro View Transitions",
+      "Cloudflare Pages deployment",
+    ],
+    mediaLabels: {
+      "arc-hero": "Service threshold",
+      "arc-1": "Service architecture",
+      "arc-2": "Process clarity",
+      "arc-3": "Service detail",
+      "arc-4": "Handover surface",
+      "arc-5": "Quote flow",
+      "arc-mb-1": "Mobile landing",
+      "arc-mb-2": "Mobile services",
+      "arc-mb-3": "Mobile handover",
+      "arc-mb-4": "Mobile quote",
+    },
+  },
+  "casa-nube": {
+    caseType: "hospitality",
+    label: "CASE SYSTEM / HOSPITALITY FOUNDATION / LOCAL SERVICE",
+    subheadline: "Multilingual hospitality website system.",
+    proofClaim:
+      "Hospitality websites become systems when atmosphere, menu clarity, visitor utility, multilingual content, and mobile action stay in one surface.",
+    systemLayers: [
+      {
+        title: "Atmospheric entry",
+        text:
+          "The homepage presents the cafe as a warm digital facade while keeping practical visitor actions close.",
+      },
+      {
+        title: "Web-native menu",
+        text:
+          "Menu content is structured as readable web UI instead of being hidden behind a PDF-first restaurant pattern.",
+      },
+      {
+        title: "Visit utility",
+        text:
+          "Hours, location, maps, reservation signals, WhatsApp, Instagram, and practical notes become the conversion layer.",
+      },
+      {
+        title: "Multilingual foundation",
+        text:
+          "ES, EN, and CA structure makes the hospitality surface useful for local and visitor audiences.",
+      },
+      {
+        title: "Mobile-first action",
+        text:
+          "Sticky mobile actions support the real visitor path: menu, reserve, maps, and local decision-making.",
+      },
+      {
+        title: "Reusable vertical",
+        text:
+          "The foundation can adapt to cafes, brunch places, boutique bakeries, restaurants, and small local service brands.",
+      },
+    ],
+    interactionLogic:
+      "Motion is soft and practical: route transitions, reveal rhythm, hover states, and footer movement support hospitality warmth without slowing down visitor decisions.",
+    commercialLogic:
+      "Casa Nube turns a local hospitality website into a reusable premium vertical: atmosphere first, utility close, contact and visit decisions always reachable.",
+    technicalFoundation: [
+      "Next.js App Router + TypeScript",
+      "Tailwind CSS",
+      "next-intl multilingual routing",
+      "Static export",
+      "Responsive QA",
+      "Cloudflare Pages deployment",
+    ],
+    mediaLabels: {
+      "casa-hero": "Hospitality threshold",
+      "casa-1": "Menu preview",
+      "casa-2": "Space and light",
+      "casa-3": "Menu page",
+      "casa-4": "Visit utility",
+      "casa-5": "Location planning",
+      "casa-mob-1": "Mobile home",
+      "casa-mob-2": "Mobile menu intro",
+      "casa-mob-3": "Mobile menu",
+      "casa-mob-4": "Mobile visit",
+      "casa-mob-5": "Mobile actions",
+    },
+  },
+  "print-border-studio": {
+    caseType: "tool",
+    label: "CASE SYSTEM / PRODUCTION TOOL / PRINT WORKFLOW",
+    subheadline: "Fine-art print preparation system.",
+    proofClaim:
+      "Creative production becomes a system when preview accuracy, border logic, queue state, inspection, and export readiness stay inside one focused tool.",
+    systemLayers: [
+      {
+        title: "Border engine",
+        text:
+          "Museum-style margins, format choices, and visual balance are controlled in a dedicated print-preparation surface.",
+      },
+      {
+        title: "Artwork preview",
+        text:
+          "The tool centers the image as the primary decision object, keeping controls close without crowding judgment.",
+      },
+      {
+        title: "Workspace modes",
+        text:
+          "Light and dark surfaces support different review contexts while preserving the same production logic.",
+      },
+      {
+        title: "Inspection flow",
+        text:
+          "Preview and focused review states let users evaluate proportion and presentation before export.",
+      },
+      {
+        title: "Queue logic",
+        text:
+          "Multiple artworks can move through a repeatable preparation workflow instead of one-off manual setup.",
+      },
+      {
+        title: "Export readiness",
+        text:
+          "The interface is shaped around preparing usable output, not simply decorating a gallery-style mockup.",
+      },
+    ],
+    interactionLogic:
+      "Controls, preview, inspection, and export states stay functional and calm because print preparation needs precision more than visual flourish.",
+    commercialLogic:
+      "Print Border Studio shows how a creative utility can become a premium product surface for artists, photographers, print studios, and collector-oriented workflows.",
+    technicalFoundation: [
+      "React + TypeScript",
+      "Canvas-oriented preview logic",
+      "Local workflow state",
+      "Export preparation",
+      "Desktop-first tool layout",
+      "Cloudflare Pages deployment",
+    ],
+    mediaLabels: {
+      "psb-hero": "Production surface",
+      "psb-1": "Light controls",
+      "psb-2": "Dark workspace",
+      "psb-3": "Border workflow",
+      "psb-4": "Preview inspect",
+      "psb-5": "Museum frame",
+      psb6: "Gallery mode",
+    },
+  },
+};
+
+const generatedCaseStorySlugs = [
+  "sprintcrm",
+  "fluid-exhibition",
+  "form-index",
+  "arcwave-integrations",
+  "casa-nube",
+  "print-border-studio",
+] as const;
+
+function getMediaStem(src: string) {
+  return src.split("/").pop()?.replace(/\.[^.]+$/, "") ?? src;
+}
+
+function toMediaLabel(frame: CaseFrame, config: V2CaseConfig, fallback: string) {
+  const stem = getMediaStem(frame.src);
+  if (config.mediaLabels?.[stem]) return config.mediaLabels[stem];
+
+  const cleanedAlt = frame.alt
+    ?.replace(/^[^-]+-\s*/, "")
+    .replace(/frame\s*0?\d+/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return cleanedAlt || fallback;
+}
+
+function toMediaRole(desktopIndex: number): CaseMediaRole {
+  if (desktopIndex === 1) return "proof";
+  if (desktopIndex === 2) return "detail";
+  if (desktopIndex === 3) return "flow";
+  return desktopIndex % 3 === 1 ? "proof" : desktopIndex % 3 === 2 ? "detail" : "flow";
+}
+
+function toMediaId(desktopIndex: number) {
+  if (desktopIndex === 1) return "collection";
+  if (desktopIndex === 2) return "craft";
+  if (desktopIndex === 3) return "inquiry";
+  return `desktop-${desktopIndex}`;
+}
+
+function isMobileFrame(frame: CaseFrame) {
+  return frame.device === "mobile" || frame.aspect === "phone" || frame.src.includes("/mobile/");
+}
+
+function getThresholdFrame(source: Case) {
+  const frames = source.content?.frames?.filter((frame) => frame.kind !== "video") ?? [];
+  return (
+    frames.find((frame) => frame.src === source.poster.src || frame.src === source.content?.hero?.poster) ?? {
+      src: source.poster.src,
+      alt: source.poster.alt,
+      caption: source.tagline,
+    }
+  );
+}
+
+function createMediaSequence(source: Case, config: V2CaseConfig): CaseStoryMedia[] {
+  const sequence: CaseStoryMedia[] = [];
+  const hero = source.content?.hero;
+  const threshold = getThresholdFrame(source);
+
+  if (hero?.kind === "video") {
+    sequence.push({
+      id: "walkthrough",
+      kind: "video",
+      src: hero.src,
+      poster: hero.poster ?? threshold.src,
+      alt: hero.alt ?? `${source.title} walkthrough video`,
+      label: "System walkthrough",
+      caption: hero.caption ?? source.content?.summary ?? source.tagline,
+      role: "hero",
+    });
+  }
+
+  sequence.push({
+    id: "threshold",
+    src: threshold.src,
+    alt: threshold.alt ?? `${source.title} case threshold`,
+    label: config.mediaLabels?.[getMediaStem(threshold.src)] ?? "Threshold",
+    caption: threshold.caption ?? source.content?.summary ?? source.tagline,
+    role: "hero",
+  });
+
+  const frames = source.content?.frames?.filter((frame) => frame.kind !== "video" && frame.src !== threshold.src) ?? [];
+  let desktopIndex = 0;
+  let mobileIndex = 0;
+
+  frames.forEach((frame) => {
+    if (isMobileFrame(frame)) {
+      mobileIndex += 1;
+      sequence.push({
+        id: `mobile-${mobileIndex}`,
+        src: frame.src,
+        alt: frame.alt ?? `${source.title} mobile frame ${mobileIndex}`,
+        label: toMediaLabel(frame, config, `Mobile ${mobileIndex}`),
+        caption: frame.caption ?? source.content?.summary ?? source.tagline,
+        role: "mobile",
+      });
+      return;
+    }
+
+    desktopIndex += 1;
+    sequence.push({
+      id: toMediaId(desktopIndex),
+      src: frame.src,
+      alt: frame.alt ?? `${source.title} desktop frame ${desktopIndex}`,
+      label: toMediaLabel(frame, config, `Desktop ${desktopIndex}`),
+      caption: frame.caption ?? source.content?.summary ?? source.tagline,
+      role: toMediaRole(desktopIndex),
+    });
+  });
+
+  return sequence;
+}
+
+function createAvailability(source: Case): CaseStory["availability"] {
+  const availability = getAvailableSystem(source.slug);
+  if (availability.status === "not-available") return undefined;
+
+  return {
+    status: availability.status,
+    label:
+      availability.status === "available"
+        ? "Available as a system foundation."
+        : availability.status === "custom-only"
+          ? "Available as a custom direction."
+          : "Available as a concept reference.",
+    summary: availability.summary,
+    bestFor: availability.bestFor,
+    adaptationIncludes: availability.adaptationIncludes,
+    licensingNote: availability.licensingNote,
+    exclusivityAvailable: availability.exclusivityAvailable,
+    ctaLabel: availability.ctaLabel,
+  };
+}
+
+function createGeneratedCaseStory(slug: string): CaseStory {
+  const source = cases.find((item) => item.slug === slug);
+  const config = v2CaseConfigs[slug];
+  const evidence = workEvidenceBySlug[slug];
+
+  if (!source || !config || !evidence) {
+    throw new Error(`Missing V2 case story source for ${slug}`);
+  }
+
+  return {
+    slug: source.slug,
+    caseType: config.caseType,
+    label: config.label,
+    headline: source.title,
+    subheadline: config.subheadline,
+    summary: source.content?.summary ?? source.tagline,
+    proofClaim: config.proofClaim,
+    evidencePoints: config.evidencePoints ?? evidence.proofPoints,
+    systemTags: config.systemTags ?? evidence.systemTags,
+    systemLayers: config.systemLayers,
+    mediaSequence: createMediaSequence(source, config),
+    interactionLogic: config.interactionLogic,
+    commercialLogic: config.commercialLogic,
+    technicalFoundation: config.technicalFoundation,
+    availability: createAvailability(source),
+    links: source.content?.links,
+  };
+}
+
+const generatedCaseStories = generatedCaseStorySlugs.map((slug) => createGeneratedCaseStory(slug));
+
+export const caseStories: CaseStory[] = [...authoredCaseStories, ...generatedCaseStories];
 
 const caseStorySlugAliases: Record<string, string> = {
   "bcn-advisory": "barcelona-private-advisory",

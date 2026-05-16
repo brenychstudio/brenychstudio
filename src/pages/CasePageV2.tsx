@@ -81,7 +81,7 @@ const technicalLedger = [
 ];
 
 function getCaseNarrative(story: CaseStory) {
-  if (story.slug === "creatorops" || story.caseType === "workflow-tool") {
+  if (story.slug === "creatorops") {
     return {
       heroMeta: "Library / smart mix / export / tools",
       heroReadiness: "01 / live beta system",
@@ -106,6 +106,34 @@ function getCaseNarrative(story: CaseStory) {
         "Adapt the creator workflow logic into a commissioned SaaS, content operations, or internal publishing tool.",
       availableBlueprint:
         "Commissioned workflow system with its own steps, data model, export logic, and tool layer.",
+    };
+  }
+
+  if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+    return {
+      heroMeta: "Workflow / states / output / proof",
+      heroReadiness: "01 / working system",
+      heroMediaTitle: "Operational product surface",
+      walkthroughTitle: ["The product", "turns work", "into flow."],
+      walkthroughIntro:
+        "The walkthrough follows a real workflow surface: intake, state changes, focused review, output, and operator trust stay visible as one product system.",
+      walkthroughSignals: [
+        { label: "Intake", text: "Raw work enters through a controlled interface instead of scattered manual handling." },
+        { label: "State", text: "The product exposes progress, selections, and next actions without turning into dashboard noise." },
+        { label: "Output", text: "The interface ends in practical operational value: export, reporting, review, or repeatable production." },
+      ],
+      mobileTitle: "Compact workflow rhythm.",
+      mobileIntro:
+        "Mobile frames appear when the product has a handheld surface; desktop-first tools keep their evidence in the full inspection field.",
+      screensTitle: ["Workflow", "as evidence."],
+      screensReadout:
+        "Each frame proves a product layer: intake, working state, review surface, output logic, and trust-building structure.",
+      screenSignals: ["Working surface", "State logic", "Output proof"],
+      proofLabels: ["Workflow clarity", "Operational state", "Practical output"],
+      availableStatement:
+        "Adapt the product logic into a commissioned tool, internal system, or creator-facing workflow.",
+      availableBlueprint:
+        "Commissioned product surface with its own workflow, state model, output logic, and deployment route.",
     };
   }
 
@@ -134,6 +162,90 @@ function getCaseNarrative(story: CaseStory) {
         "Adapt the advisory logic into a commissioned property, hospitality, or private-service surface.",
       availableBlueprint:
         "Commissioned advisory surface with its own territory, content, and inquiry rhythm.",
+    };
+  }
+
+  if (story.caseType === "hospitality") {
+    return {
+      heroMeta: "Atmosphere / menu / visit / mobile utility",
+      heroReadiness: "01 / ready to host",
+      heroMediaTitle: "Hospitality web surface",
+      walkthroughTitle: ["The visit", "starts before", "arrival."],
+      walkthroughIntro:
+        "The interface moves from atmosphere to menu clarity, location utility, reservation intent, and mobile action without becoming a generic restaurant template.",
+      walkthroughSignals: [
+        { label: "Atmosphere", text: "The first surface gives the place a clear digital mood and commercial position." },
+        { label: "Utility", text: "Menu, visit details, location, and contact remain close to the visitor's actual decision path." },
+        { label: "Mobile", text: "The handheld version keeps local actions immediate for visitors arriving from search, maps, or social." },
+      ],
+      mobileTitle: "Handheld visitor rhythm.",
+      mobileIntro:
+        "A mobile rail for inspecting menu, visit, maps, and action states as the practical hospitality path.",
+      screensTitle: ["Visitor path", "as evidence."],
+      screensReadout:
+        "Each frame proves a hospitality layer: atmosphere, menu, location, visit utility, and mobile conversion.",
+      screenSignals: ["Atmosphere", "Menu clarity", "Visit utility"],
+      proofLabels: ["Place signal", "Visitor utility", "Mobile action"],
+      availableStatement:
+        "Adapt the hospitality logic into a commissioned cafe, restaurant, boutique space, or local service surface.",
+      availableBlueprint:
+        "Commissioned hospitality foundation with its own place, menu structure, visit flow, and multilingual needs.",
+    };
+  }
+
+  if (story.caseType === "premium-website") {
+    return {
+      heroMeta: "Offer / trust / structure / inquiry",
+      heroReadiness: "01 / ready to convert",
+      heroMediaTitle: "Premium service surface",
+      walkthroughTitle: ["The offer", "becomes", "architecture."],
+      walkthroughIntro:
+        "The walkthrough shows how a service offer becomes structured: positioning, service detail, trust layers, and inquiry flow stay aligned.",
+      walkthroughSignals: [
+        { label: "Offer", text: "The first surface clarifies what the business does and why it should be trusted." },
+        { label: "Detail", text: "Service pages and content sections make technical information readable without flattening it." },
+        { label: "Inquiry", text: "The contact or quote path appears as part of the product architecture, not an afterthought." },
+      ],
+      mobileTitle: "Handheld service rhythm.",
+      mobileIntro:
+        "A mobile rail for inspecting service structure, trust content, and inquiry flow inside the compact route.",
+      screensTitle: ["Service proof", "as evidence."],
+      screensReadout:
+        "Each frame proves a commercial layer: offer clarity, technical trust, service detail, and quote readiness.",
+      screenSignals: ["Offer clarity", "Trust layers", "Inquiry flow"],
+      proofLabels: ["Service clarity", "Technical trust", "Conversion path"],
+      availableStatement:
+        "Adapt the service architecture into a commissioned B2B, technical, or quote-led commercial surface.",
+      availableBlueprint:
+        "Commissioned service foundation with its own offer model, content structure, and inquiry logic.",
+    };
+  }
+
+  if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+    return {
+      heroMeta: "Motion / content / rhythm / proof",
+      heroReadiness: "01 / presentation system",
+      heroMediaTitle: "Cinematic editorial surface",
+      walkthroughTitle: ["The story", "moves through", "structure."],
+      walkthroughIntro:
+        "The walkthrough shows how motion, image rhythm, typography, and content architecture become one readable presentation system.",
+      walkthroughSignals: [
+        { label: "Rhythm", text: "Motion establishes pacing and focus without hiding the information architecture." },
+        { label: "Content", text: "Images, text, and sections remain readable as the visual system becomes more cinematic." },
+        { label: "System", text: "The result is reusable presentation logic rather than a one-off visual flourish." },
+      ],
+      mobileTitle: "Handheld editorial rhythm.",
+      mobileIntro:
+        "A mobile rail for inspecting how the presentation surface translates into a compact reading path.",
+      screensTitle: ["Motion proof", "as evidence."],
+      screensReadout:
+        "Each frame proves a presentation layer: threshold, content rhythm, transition logic, mobile translation, and visual restraint.",
+      screenSignals: ["Motion rhythm", "Content clarity", "System surface"],
+      proofLabels: ["Presentation logic", "Motion control", "Reusable structure"],
+      availableStatement:
+        "Adapt the presentation logic into a commissioned campaign, exhibition, archive, or editorial product surface.",
+      availableBlueprint:
+        "Commissioned presentation foundation with its own content model, media rhythm, and motion direction.",
     };
   }
 
@@ -216,8 +328,11 @@ function getHeroFragments(story: CaseStory) {
 }
 
 function getEvidenceFrames(story: CaseStory) {
-  if (story.slug === "creatorops") {
-    return [
+  const nonMobileFrames = story.mediaSequence.filter(
+    (media) => media.kind !== "video" && media.role !== "mobile",
+  );
+  const orderBySlug: Record<string, string[]> = {
+    creatorops: [
       "threshold",
       "desktop-1",
       "desktop-2",
@@ -231,14 +346,19 @@ function getEvidenceFrames(story: CaseStory) {
       "desktop-11",
       "inquiry",
       "desktop-13",
-    ]
+    ],
+  };
+  const customOrder = orderBySlug[story.slug];
+
+  if (customOrder) {
+    const ordered = customOrder
       .map((id) => findMedia(story, id))
       .filter((media): media is CaseStoryMedia => Boolean(media));
+    const orderedIds = new Set(ordered.map((media) => media.id));
+    return [...ordered, ...nonMobileFrames.filter((media) => !orderedIds.has(media.id))];
   }
 
-  return ["threshold", "collection", "craft", "inquiry"]
-    .map((id) => findMedia(story, id))
-    .filter((media): media is CaseStoryMedia => Boolean(media));
+  return nonMobileFrames;
 }
 
 function getMobileFrames(story: CaseStory) {
@@ -1286,6 +1406,30 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
     story.availability.exclusivityAvailable ? "Exclusivity discussed" : "Shared direction",
     "Not a template",
   ];
+  const adaptationValue =
+    story.caseType === "advisory"
+      ? "Market structure, shortlist flow, private intake."
+      : story.caseType === "workflow-tool" || story.caseType === "tool"
+        ? "Workflow steps, state model, output logic."
+        : story.caseType === "hospitality"
+          ? "Place identity, menu structure, visitor flow."
+          : story.caseType === "premium-website"
+            ? "Offer model, content architecture, inquiry flow."
+            : story.caseType === "presentation-system" || story.caseType === "experimental"
+              ? "Content model, media rhythm, motion direction."
+              : "Brand, product structure, inquiry flow.";
+  const blueprintChips =
+    story.caseType === "advisory"
+      ? ["Private intake", "Deployable front-end"]
+      : story.caseType === "workflow-tool" || story.caseType === "tool"
+        ? ["Workflow logic", "Deployable product"]
+        : story.caseType === "hospitality"
+          ? ["Visitor utility", "Deployable front-end"]
+          : story.caseType === "premium-website"
+            ? ["Service architecture", "Quote-ready surface"]
+            : story.caseType === "presentation-system" || story.caseType === "experimental"
+              ? ["Media rhythm", "Deployable surface"]
+              : ["Private commerce", "Deployable front-end"];
   const passportRows = [
     {
       label: "Fit",
@@ -1293,12 +1437,7 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
     },
     {
       label: "Adaptation",
-      value:
-        story.caseType === "advisory"
-          ? "Market structure, shortlist flow, private intake."
-          : story.slug === "creatorops" || story.caseType === "workflow-tool"
-            ? "Workflow steps, export logic, tools layer."
-          : "Brand, product structure, inquiry flow.",
+      value: adaptationValue,
     },
     {
       label: "Terms",
@@ -1356,8 +1495,9 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 border-t border-white/12 pt-4 font-mono text-[8px] uppercase tracking-[0.16em] text-white/54">
-                  <span>Private commerce</span>
-                  <span>Deployable front-end</span>
+                  {blueprintChips.map((chip) => (
+                    <span key={chip}>{chip}</span>
+                  ))}
                 </div>
               </div>
             </div>

@@ -5,10 +5,22 @@ Status: canonical Work case pattern.
 Reference route:
 
 ```txt
-/work-lab/house-of-lune
+/work/house-of-lune
 ```
 
-House of Lune is the reference pattern for non-immersive Work case pages. It defines the narrative engine, not a visual style to copy literally.
+House of Lune is the original reference pattern for non-immersive Work case pages. It defines the narrative engine, not a visual style to copy literally.
+
+Public route:
+
+```txt
+/work/:slug
+```
+
+Hidden lab route:
+
+```txt
+/work-lab/:slug
+```
 
 ## Canonical Order
 
@@ -31,18 +43,23 @@ Different visual variants.
 One quality bar.
 ```
 
-New cases should be added through `src/data/caseStories.ts` and rendered through the same `/work-lab/:slug` route. Do not duplicate `CasePageV2` per case.
+New cases should be added through `src/data/caseStories.ts` and rendered through the same `/work/:slug` route. Do not duplicate `CasePageV2` per case.
 
-## First Validation Wave
+## Current Validation Set
 
 ```txt
-01 House of Lune — luxury product reference
-02 Barcelona Private Advisory — light advisory / real estate validation
-03 CreatorOps — workflow / product system validation
-04 Print Border Studio — production tool validation
+01 House of Lune - luxury product reference
+02 Barcelona Private Advisory - light advisory / real estate validation
+03 CreatorOps - workflow / product system validation
+04 SprintCRM - internal CRM / operator workflow validation
+05 FLUID - cultural exhibition / QR artist-page validation
+06 FORM INDEX - editorial motion / presentation-system validation
+07 ARCWAVE - bilingual service architecture validation
+08 Casa Nube - hospitality / multilingual local-service validation
+09 Print Border Studio - production tool validation
 ```
 
-Public `/work/:slug` remains on the current case system until at least three V2 cases are ready and reviewed.
+Public `/work/:slug` now renders `CasePageV2` for non-immersive Work cases. The previous detail renderer is retained only as a hidden noindex fallback under `/work-classic/:slug`.
 
 ## Canonical Evidence Mode
 
@@ -91,7 +108,7 @@ Each V2 case should provide:
 1 walkthrough video or strong motion sequence
 3-5 primary screens as evidence
 optional extended evidence frames through the canonical Flow / Atlas field
-1 mobile frame or mobile carousel
+1 mobile frame or mobile carousel when mobile evidence exists
 proof claim
 3 evidence points
 system spine

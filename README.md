@@ -99,7 +99,30 @@ Current public status:
 - `/work/:slug` now renders the canonical `CasePageV2` for non-immersive Work cases.
 - Legacy work case detail pages are hidden under `/work-classic/:slug` with noindex behavior.
 - `/work-lab/:slug` remains available as a hidden V2 lab/reference route.
-- Immersive / WHISPER remains outside this pattern and should use its own spatial case logic.
+- Immersive / WHISPER remains outside the Work V2 pattern and now uses its own spatial flagship case logic.
+
+### Immersive / WHISPER current state
+
+WHISPER is now the canonical flagship Immersive case:
+
+- Public route: `/immersive/whisper`
+- Main renderer: `src/ui/immersive/WhisperCaseLayout.tsx`
+- Route shell: `src/pages/ImmersiveCasePage.tsx`
+- Data source: `src/data/immersive.ts`
+- Immersive engine data: `src/data/immersiveSystems.ts`
+- Reference doc: `docs/immersive-whisper-reference-pattern.md`
+
+Canonical Immersive page order:
+
+1. Spatial threshold / flagship hero
+2. Spatial atlas
+3. Desktop web exhibition proof
+4. Quest XR proof
+5. Collector continuation
+6. Mobile proof
+7. Engine ledger / canon statement
+
+WHISPER deliberately does not reuse `CasePageV2`. It combines the strongest existing systems instead: spatial threshold language from Immersive, evidence-led proof from Work V2, the shared cinematic inspect reveal, complete desktop / Quest / mobile media coverage, and an engine ledger for future Immersive cases.
 
 ### Canonical evidence pattern
 
@@ -187,6 +210,6 @@ House of Lune is still the primary luxury-product reference case:
 
 ### Verification notes
 
-Recent visual checks were made through local screenshots in `exports/`.
+Recent visual checks were made through local screenshots.
 
-`npm run build` previously passed after the main V2 updates, with only the standard Vite large chunk warning. The latest local build/typecheck attempts later began hanging without diagnostics in the local Node/Vite process, so future sessions should re-run verification after clearing stale Node processes if needed.
+`npm run build` passes after the WHISPER Immersive case update, with only the standard Vite large chunk warning.

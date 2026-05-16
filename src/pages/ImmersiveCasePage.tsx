@@ -303,6 +303,24 @@ export default function ImmersiveCasePage({
     whisperCaseI18n[locale as keyof typeof whisperCaseI18n] ??
     whisperCaseI18n.en;
 
+  if (isWhisperCase) {
+    return (
+      <div className="min-h-screen bg-[#050505] text-white">
+        <Header
+          drawerOpen={drawerOpen}
+          onOpenProject={onOpenProject}
+          onCloseProject={onCloseProject}
+        />
+
+        <main className="pt-[60px]">
+          <PageSurface>
+            <WhisperCaseLayout item={data} />
+          </PageSurface>
+        </main>
+      </div>
+    );
+  }
+
   const detail =
     immersiveDetailCopy[data.slug] ??
     ({

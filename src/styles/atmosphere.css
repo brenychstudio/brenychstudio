@@ -1,4 +1,7 @@
 .atmospheric-site-shell {
+  --sound-presence: 0;
+  --sound-pulse: 0;
+  --sound-ambient: 0;
   --atmosphere-base: #f2efe8;
   --atmosphere-wash-a: rgba(18, 22, 24, 0.1);
   --atmosphere-wash-b: rgba(255, 255, 255, 0.9);
@@ -70,7 +73,7 @@
   width: 112vw;
   height: 1px;
   transform: rotate(-12deg);
-  opacity: var(--atmosphere-line-opacity);
+  opacity: calc(var(--atmosphere-line-opacity) + (var(--sound-presence) * 0.025) + (var(--sound-pulse) * 0.08));
   background: linear-gradient(90deg, transparent, rgb(10 10 10 / 0.95), transparent);
   animation: atmosphereSignalLine var(--atmosphere-line-speed) ease-in-out infinite alternate;
 }
@@ -91,6 +94,17 @@
   bottom: 0;
   height: 40rem;
   background: linear-gradient(to top, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.46), transparent);
+}
+
+.atmospheric-site-shell__sound-presence {
+  position: absolute;
+  inset: 0;
+  opacity: calc((var(--sound-presence) * 0.035) + (var(--sound-ambient) * 0.05) + (var(--sound-pulse) * 0.08));
+  background:
+    radial-gradient(circle at 72% 24%, rgba(10, 10, 10, 0.2), transparent 28%),
+    radial-gradient(circle at 22% 78%, rgba(10, 10, 10, 0.14), transparent 24%);
+  mix-blend-mode: multiply;
+  transition: opacity 260ms ease;
 }
 
 @keyframes atmosphereSignalLine {

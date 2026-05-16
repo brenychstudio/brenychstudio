@@ -8,7 +8,8 @@ export type EvidenceFilter =
   | "Advisory"
   | "Hospitality"
   | "Tools"
-  | "Experimental";
+  | "Experimental"
+  | "Available Systems";
 
 export type WorkEvidenceMeta = {
   proofLabel: string;
@@ -35,6 +36,7 @@ export const evidenceFilters: EvidenceFilter[] = [
   "Hospitality",
   "Tools",
   "Experimental",
+  "Available Systems",
 ];
 
 export const fallbackEvidence: WorkEvidenceMeta = {
@@ -107,7 +109,7 @@ export const workEvidenceBySlug: Record<string, WorkEvidenceMeta> = {
     filters: ["Premium websites", "Multilingual", "Hospitality"],
     capability: "Hospitality website architecture",
     layers: ["Service narrative", "Mobile booking path", "Local editorial structure"],
-    proofPoints: ["Clarifies offer and place without template clutter", "Supports multilingual presentation", "Keeps mobile service discovery direct"],
+    proofPoints: ["Clarifies offer and place without generic clutter", "Supports multilingual presentation", "Keeps mobile service discovery direct"],
   },
   "form-index": {
     proofLabel: "Repeatable presentation system",

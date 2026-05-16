@@ -10,6 +10,7 @@ import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
+import { useSound } from "../stage/audio/useSound";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 
 type PageProps = {
@@ -57,7 +58,7 @@ const buildSystems: BuildSystem[] = [
     title: "Premium Websites",
     what: "Editorial commercial websites with strong structure, premium visual direction, responsive polish, and calm conversion paths.",
     forWhom: "Brands, studios, founders, hospitality, advisory, culture, and service-led businesses.",
-    result: "A clear public surface that explains the offer, builds trust, and feels authored rather than templated.",
+    result: "A clear public surface that explains the offer, builds trust, and feels authored rather than generic.",
   },
   {
     title: "Interactive Product Surfaces",
@@ -129,6 +130,15 @@ const deliveryStages: DeliveryStage[] = [
 ];
 
 const formats: Format[] = [
+  {
+    title: "Available System Adaptation",
+    description:
+      "Start from an existing Brenych Studio concept and adapt it into a production-ready website, product surface, campaign page, or interactive presentation system.",
+    bestFor:
+      "Clients who already see a direction they like and want to move faster with a proven visual and structural foundation.",
+    output:
+      "Adapted visual system, client-specific content, responsive front-end, deployment-ready build, and optional exclusivity discussion.",
+  },
   {
     title: "Landing Sprint",
     description: "A focused commercial surface for a product, service, waitlist, launch, or high-trust offer.",
@@ -331,6 +341,7 @@ function DeliveryModelEngine({
   onOpenInterface: () => void;
 }) {
   const current = deliveryStages[activeStage] ?? deliveryStages[0];
+  const sound = useSound();
 
   return (
     <div className="relative overflow-hidden border-y border-neutral-950/14 bg-[#f8f6f0]/72">
@@ -380,6 +391,7 @@ function DeliveryModelEngine({
                 <button
                   key={stage.title}
                   type="button"
+                  onMouseEnter={() => sound.playRole("hover")}
                   onFocus={() => setActiveStage(index)}
                   onClick={() => setActiveStage(index)}
                   className={`grid min-h-12 grid-cols-[3rem_1fr] items-center gap-3 border px-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
@@ -399,6 +411,7 @@ function DeliveryModelEngine({
 
           <button
             type="button"
+            onMouseEnter={() => sound.playRole("hover")}
             onClick={onOpenInterface}
             className="mt-5 inline-flex min-h-11 w-full items-center justify-center border border-neutral-950 bg-neutral-950 px-4 text-[10px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
           >
@@ -417,10 +430,16 @@ export default function OfferV2({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { playRole, setScene, stopAmbient } = useSound();
   const systemsRef = useRef<HTMLElement | null>(null);
   const [activeStage, setActiveStage] = useState(0);
   const [deliveryInterfaceOpen, setDeliveryInterfaceOpen] = useState(false);
   const activeSectionId = useSectionRailActive(offerRailItems);
+
+  useEffect(() => {
+    setScene("practice");
+    stopAmbient();
+  }, [setScene, stopAmbient]);
 
   useEffect(() => {
     if (!deliveryInterfaceOpen) return;
@@ -434,11 +453,23 @@ export default function OfferV2({
   }, [deliveryInterfaceOpen]);
 
   const viewWork = () => {
+    playRole("select");
     startSpaPageTransition(navigate, "/work", onCloseProject);
   };
 
   const exploreSystems = () => {
+    playRole("select");
     systemsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const openProjectWithSound = () => {
+    playRole("open");
+    onOpenProject?.();
+  };
+
+  const setActiveStageWithSound = (index: number) => {
+    if (index !== activeStage) playRole("transition");
+    setActiveStage(index);
   };
 
   return (
@@ -473,13 +504,15 @@ export default function OfferV2({
               <div className="mt-9 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  onClick={onOpenProject}
+                  onMouseEnter={() => playRole("hover")}
+                  onClick={openProjectWithSound}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
                 >
                   Start a project -&gt;
                 </button>
                 <button
                   type="button"
+                  onMouseEnter={() => playRole("hover")}
                   onClick={viewWork}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-white/54 px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
                 >
@@ -487,6 +520,7 @@ export default function OfferV2({
                 </button>
                 <button
                   type="button"
+                  onMouseEnter={() => playRole("hover")}
                   onClick={exploreSystems}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-transparent px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-600 transition hover:-translate-y-0.5 hover:border-neutral-950/40 hover:text-neutral-950"
                 >
@@ -565,8 +599,11 @@ export default function OfferV2({
             <div className="mt-9">
               <DeliveryModelEngine
                 activeStage={activeStage}
-                setActiveStage={setActiveStage}
-                onOpenInterface={() => setDeliveryInterfaceOpen(true)}
+                setActiveStage={setActiveStageWithSound}
+                onOpenInterface={() => {
+                  playRole("open");
+                  setDeliveryInterfaceOpen(true);
+                }}
               />
             </div>
           </section>
@@ -602,6 +639,11 @@ export default function OfferV2({
                     </div>
                   </article>
                 ))}
+                <div className="border-t border-neutral-950/10 py-4 text-[12px] leading-6 text-neutral-500">
+                  Availability does not mean instant resale of the existing project as-is. Each adaptation is
+                  commissioned and customized for the client's brand, content, audience, market, and deployment
+                  requirements.
+                </div>
               </div>
             </div>
           </section>
@@ -638,8 +680,11 @@ export default function OfferV2({
           <OfferDeliveryInterfaceOverlay
             stages={deliveryStages}
             activeStage={activeStage}
-            setActiveStage={setActiveStage}
-            onClose={() => setDeliveryInterfaceOpen(false)}
+            setActiveStage={setActiveStageWithSound}
+            onClose={() => {
+              playRole("close");
+              setDeliveryInterfaceOpen(false);
+            }}
           />
         ) : null}
       </AnimatePresence>

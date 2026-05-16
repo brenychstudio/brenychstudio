@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 exports/
+.tmp-chrome*/
 
 # Editor directories and files
 .vscode/*

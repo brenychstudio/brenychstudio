@@ -129,7 +129,7 @@ export default function Header({
         "site-header fixed inset-x-0 top-0 z-50 border-b",
       ].join(" ")}
     >
-      <div className="relative mx-auto grid w-[min(94vw,1640px)] grid-cols-[1fr_auto] items-center gap-3 py-2.5 sm:h-[60px] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:py-0">
+      <div className="relative mx-auto grid w-[min(94vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-2.5 sm:h-[60px] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:py-0">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
         <div className="flex min-w-0 items-center gap-4">
           <button
@@ -222,14 +222,15 @@ export default function Header({
             type="button"
             onClick={onCta}
             aria-expanded={drawerOpen}
+            aria-label={drawerOpen ? "Close project drawer" : navLabels.start}
             className={[
-              "inline-flex min-w-[5.8rem] shrink-0 items-center justify-center gap-2 rounded-full px-3 py-[9px] text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] sm:min-w-[12.2rem] sm:px-4 sm:text-[11px]",
+              "inline-flex min-w-[2.75rem] shrink-0 items-center justify-center gap-2 rounded-full px-3 py-[9px] text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] min-[560px]:min-w-[5.8rem] sm:min-w-[12.2rem] sm:px-4 sm:text-[11px]",
               drawerOpen
                 ? "border border-[color:var(--header-progress)] bg-[color:var(--header-chip-bg)] text-[color:var(--header-text)] shadow-[0_10px_26px_rgba(0,0,0,0.07)]"
                 : "border border-[color:var(--header-action-border)] bg-[color:var(--header-action-bg)] text-[color:var(--header-action-text)] hover:opacity-85",
             ].join(" ")}
           >
-            <span className="sm:hidden">{navLabels.startShort}</span>
+            <span className="hidden min-[560px]:inline sm:hidden">{navLabels.startShort}</span>
             <span className="hidden sm:inline">{navLabels.start}</span>
             <span
               className={[

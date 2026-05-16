@@ -37,6 +37,7 @@ export default function AtmosphericSiteShell({
       <div className="atmospheric-site-shell__noise" />
       <div className="atmospheric-site-shell__ring" />
       <div className="atmospheric-site-shell__ring atmospheric-site-shell__ring--secondary" />
+      <div className="atmospheric-site-shell__sound-presence" />
       <div className="atmospheric-site-shell__line" />
       <div className="atmospheric-site-shell__line atmospheric-site-shell__line--secondary" />
       <div className="atmospheric-site-shell__bottom-fade" />

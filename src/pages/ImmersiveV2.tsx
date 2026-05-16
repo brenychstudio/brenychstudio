@@ -33,7 +33,6 @@ import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
-import SoundSignalControl from "../stage/audio/SoundSignalControl";
 import { useSound } from "../stage/audio/useSound";
 
 type PageProps = {
@@ -192,14 +191,14 @@ function useImmersiveChamberSelection(): ChamberSelectionState {
   const activeChamber = getImmersiveChamber(activeChamberId);
   const activeChamberEngines = getChamberEngines(activeChamberId);
 
-  const selectChamber = (id: ImmersiveChamberId, feedback: "transition" | "select" | "none" = "transition") => {
+  const selectChamber = useCallback((id: ImmersiveChamberId, feedback: "transition" | "select" | "none" = "transition") => {
     if (id !== activeChamberId && feedback !== "none") sound.playRole(feedback);
     setActiveChamberId(id);
-  };
+  }, [activeChamberId, sound]);
 
-  const resetChamber = () => {
+  const resetChamber = useCallback(() => {
     setActiveChamberId(defaultImmersiveChamberId);
-  };
+  }, []);
 
   return {
     activeChamberId,
@@ -658,7 +657,6 @@ function ChamberEntryField({
           </div>
 
           <div className="mt-6">
-            <SoundSignalControl />
           </div>
         </div>
 
@@ -865,6 +863,8 @@ function PracticeMapScene({
   const dragStartRef = useRef<{ x: number; y: number } | null>(null);
   const suppressPlaneClickRef = useRef(false);
   const atlasFieldRef = useRef<HTMLDivElement | null>(null);
+  const atlasActiveChamberId = chamberState.activeChamberId;
+  const selectAtlasChamber = chamberState.selectChamber;
   const chamberSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
     whisper: { x: 48, y: 34, rotate: -5, size: "large" },
     "product-world": { x: 24, y: 62, rotate: 6, size: "medium" },
@@ -880,13 +880,13 @@ function PracticeMapScene({
     "installation-field": { x: 43, y: 80, rotate: -3, size: "medium" },
   };
 
-  const selectChamberByOffset = (offset: number) => {
-    const currentIndex = immersiveChambers.findIndex((chamber) => chamber.id === chamberState.activeChamberId);
+  const selectChamberByOffset = useCallback((offset: number) => {
+    const currentIndex = immersiveChambers.findIndex((chamber) => chamber.id === atlasActiveChamberId);
     const nextIndex = (currentIndex + offset + immersiveChambers.length) % immersiveChambers.length;
     const nextId = immersiveChambers[nextIndex].id;
-    chamberState.selectChamber(nextId);
+    selectAtlasChamber(nextId);
     if (atlasOpen) setInspectedChamberId(nextId);
-  };
+  }, [atlasActiveChamberId, atlasOpen, selectAtlasChamber]);
 
   const clampPlaneOffsetX = (value: number) => Math.max(-240, Math.min(240, value));
   const clampPlaneOffsetY = (value: number) => Math.max(-160, Math.min(220, value));
@@ -988,7 +988,7 @@ function PracticeMapScene({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [atlasOpen, chamberState.activeChamberId, inspectedChamberId, atlasMode]);
+  }, [atlasOpen, chamberState.activeChamberId, inspectedChamberId, atlasMode, selectChamberByOffset, sound]);
 
   return (
     <Chapter id="map" className="relative min-h-screen overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
@@ -1335,6 +1335,10 @@ function PracticeMapScene({
 
                       inspectAtlasChamber(chamber.id);
                     }}
+                    onDoubleClick={(event) => {
+                      event.stopPropagation();
+                      openChamber(chamber.id);
+                    }}
                     onFocus={() => inspectAtlasChamber(chamber.id)}
                     onPointerDown={(event) => event.stopPropagation()}
                     data-atlas-control="true"
@@ -1415,6 +1419,48 @@ function PracticeMapScene({
                   </motion.button>
                 );
               })}
+
+              <AnimatePresence>
+                {inspectedChamber ? (
+                  <motion.div
+                    key={`${inspectedChamber.id}-terminal-focus`}
+                    className="absolute bottom-5 left-1/2 z-50 w-[min(46rem,calc(100%-2rem))] -translate-x-1/2 border-y border-white/18 bg-black/48 px-4 py-4 font-mono backdrop-blur-md"
+                    initial={{ opacity: 0, y: 22, clipPath: "inset(0 100% 0 0)" }}
+                    animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
+                    exit={{ opacity: 0, y: 16, clipPath: "inset(0 100% 0 0)" }}
+                    transition={{ duration: 0.76, ease }}
+                    data-atlas-control="true"
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onPointerUp={(event) => event.stopPropagation()}
+                  >
+                    <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+                      <div>
+                        <div className="text-[9px] uppercase tracking-[0.22em] text-white/34">Terminal focus signal</div>
+                        <p className="mt-2 text-[10px] uppercase leading-5 tracking-[0.12em] text-white/62">
+                          {inspectedChamber.chamberSignal} / {inspectedChamber.proofLine}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openChamber(inspectedChamber.id)}
+                          className="rounded-full border border-white bg-white px-4 py-2 text-[10px] uppercase tracking-[0.16em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-white/82"
+                        >
+                          Enter chamber -&gt;
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setInspectedChamberId(null)}
+                          className="border-y border-white/18 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/54 transition hover:border-white/48 hover:text-white"
+                        >
+                          Release
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
 
               <aside className="absolute right-0 top-[8%] z-50 hidden w-[23rem] border-l border-white/14 pl-5 xl:block">
                 <motion.div
@@ -2202,12 +2248,14 @@ export default function ImmersiveV2({
   }, [activeId, setAmbientSceneLevel, setScene]);
 
   useEffect(() => {
-    void startSceneAmbient("immersive");
+    void startSceneAmbient("immersive", immersiveHeaderScenes[activeId]);
+  }, [activeId, startSceneAmbient]);
 
+  useEffect(() => {
     return () => {
       stopAmbient();
     };
-  }, [startSceneAmbient, stopAmbient]);
+  }, [stopAmbient]);
 
   const goTo = (path: string) => {
     startSpaPageTransition(navigate, path, () => {

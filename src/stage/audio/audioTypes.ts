@@ -33,7 +33,7 @@ export type SoundEventRole =
   | "success"
   | "blocked";
 
-export type SoundScene = "portfolio" | "immersive" | "evidence" | "practice";
+export type SoundScene = "portfolio" | "immersive" | "evidence" | "practice" | "studio" | "trust";
 
 export type SoundPreference = {
   enabled: boolean;

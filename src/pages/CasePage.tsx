@@ -5,6 +5,7 @@ import Header from "../ui/Header";
 import Container from "../ui/Container";
 import PageSurface from "../ui/PageSurface";
 import { cases, type Case, type CaseContent, type CaseFrame } from "../data/cases";
+import { getAvailableSystem } from "../data/availableSystems";
 import { fluidCaseI18n } from "../data/fluidCaseI18n";
 import { formIndexCaseI18n } from "../data/formIndexCaseI18n";
 import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
@@ -1228,6 +1229,8 @@ export default function CasePage({
   const hasClosingNarrative = hasProofSurface || hasLinks;
   const primaryExternalLink = hasLinks ? (content.links ?? [])[0] ?? null : null;
   const extraLinks = primaryExternalLink ? (content.links ?? []).slice(1) : [];
+  const availableSystem = data ? getAvailableSystem(data.slug) : null;
+  const isAvailableFoundation = availableSystem?.status === "available";
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const lightboxTouchStartX = useRef<number | null>(null);
@@ -1467,6 +1470,70 @@ export default function CasePage({
               ) : null}
             </div>
           </section>
+
+          {isAvailableFoundation && availableSystem ? (
+            <section className="border-t border-neutral-100 py-6 md:py-10">
+              <div className="overflow-hidden rounded-[22px] border border-neutral-100 bg-[#f8f6f0]/78 md:rounded-[28px]">
+                <div className="grid gap-7 p-5 md:p-7 lg:grid-cols-[0.42fr_0.58fr] xl:p-9">
+                  <div>
+                    <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-400">
+                      Commissioned adaptation
+                    </div>
+                    <h2 className="mt-4 max-w-[13ch] text-[32px] leading-[0.98] tracking-[-0.04em] text-neutral-900 md:text-[44px]">
+                      Available as a system foundation
+                    </h2>
+                    <p className="mt-5 max-w-[58ch] text-[14px] leading-7 text-neutral-600 md:text-[15px]">
+                      This concept can be adapted into a production-ready website, product surface, or campaign system
+                      for a selected client project. Visual direction, content, branding, data, integrations,
+                      deployment, and ownership terms are defined per project.
+                    </p>
+                    <p className="mt-4 max-w-[58ch] text-[12px] leading-6 text-neutral-500">
+                      {availableSystem.licensingNote}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => onOpenProject?.()}
+                      className="mt-6 inline-flex min-h-[40px] items-center rounded-full border border-neutral-950 bg-neutral-950 px-4 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
+                      aria-haspopup="dialog"
+                    >
+                      {availableSystem.ctaLabel} -&gt;
+                    </button>
+                  </div>
+
+                  <div className="grid gap-5 border-y border-neutral-950/10 py-5 lg:border-y-0 lg:border-l lg:py-0 lg:pl-7">
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">Best for</div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {availableSystem.bestFor.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full border border-neutral-200/90 bg-white/62 px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-neutral-500"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">Adaptation includes</div>
+                      <div className="mt-3 grid gap-0 border-y border-neutral-950/10">
+                        {availableSystem.adaptationIncludes.map((item, index) => (
+                          <div key={item} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
+                            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="text-[13px] leading-5 text-neutral-700">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          ) : null}
 
           <section className="border-t border-neutral-100 pt-6 md:pt-10">
             <div className="grid gap-8 md:gap-10">

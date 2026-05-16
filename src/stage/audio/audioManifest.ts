@@ -25,13 +25,13 @@ export type ImmersiveSoundSceneConfig = {
 };
 
 export const immersiveAmbientSceneLevels: Record<ImmersiveSoundSceneId, number> = {
-  "immersive-threshold": 0.042,
-  "immersive-map": 0.052,
-  "immersive-proof": 0.064,
-  "immersive-engines": 0.044,
-  "immersive-future": 0.048,
-  "immersive-layer": 0.046,
-  "immersive-cta": 0.036,
+  "immersive-threshold": 0.032,
+  "immersive-map": 0.04,
+  "immersive-proof": 0.052,
+  "immersive-engines": 0.034,
+  "immersive-future": 0.038,
+  "immersive-layer": 0.036,
+  "immersive-cta": 0.028,
 };
 
 export const audioManifest: Record<SoundScene, AudioSceneConfig> = {
@@ -91,6 +91,32 @@ export const audioManifest: Record<SoundScene, AudioSceneConfig> = {
       density: "sparse",
       motion: "pulse",
       emotion: "confidence",
+      space: "near",
+    },
+  },
+  studio: {
+    mode: "micro-only",
+    defaultVolume: 0.048,
+    ambient: null,
+    tokens: {
+      material: "glass",
+      temperature: "neutral",
+      density: "sparse",
+      motion: "pulse",
+      emotion: "confidence",
+      space: "near",
+    },
+  },
+  trust: {
+    mode: "micro-only",
+    defaultVolume: 0.034,
+    ambient: null,
+    tokens: {
+      material: "signal",
+      temperature: "neutral",
+      density: "sparse",
+      motion: "still",
+      emotion: "confirmation",
       space: "near",
     },
   },

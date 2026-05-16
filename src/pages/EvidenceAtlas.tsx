@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import { getAvailableSystem, isAvailableSystem, type AvailableSystem } from "../data/availableSystems";
 import { cases } from "../data/cases";
 import {
   evidenceFilters,
@@ -17,6 +18,7 @@ import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
+import { useSound } from "../stage/audio/useSound";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -25,7 +27,25 @@ type PageProps = {
   noIndex?: boolean;
 };
 
+type AvailabilityView = {
+  label: string;
+  shortLabel: string;
+  tone: string;
+  primaryCta: string;
+};
+
+type ArchiveViewMode = "field" | "index";
+
 const ease = [0.22, 1, 0.36, 1] as const;
+
+const featuredSystemSlugs = [
+  "house-of-lune",
+  "bcn-advisory",
+  "creatorops",
+  "print-border-studio",
+  "fluid-exhibition",
+  "casa-nube",
+] as const;
 
 const capabilityLayer = [
   {
@@ -44,20 +64,26 @@ const capabilityLayer = [
     label: "Cinematic proof",
     summary: "Visual systems where motion, scroll, imagery, and case structure support the commercial argument.",
   },
+  {
+    label: "Available foundations",
+    summary: "Authored interface systems that can be adapted into commissioned client work.",
+  },
+  {
+    label: "Interactive systems",
+    summary: "Presentation surfaces, product flows, and experimental interfaces that carry real interaction logic.",
+  },
 ];
 
 const evidenceRailItems: SectionRailItem[] = [
-  { index: "01", label: "Threshold", id: "evidence-threshold" },
-  { index: "02", label: "Reader", id: "proof-reader" },
-  { index: "03", label: "Dossiers", id: "evidence-featured" },
-  { index: "04", label: "Capability", id: "evidence-capability" },
-  { index: "05", label: "Index", id: "compact-archive" },
+  { index: "01", label: "Atlas", id: "evidence-threshold" },
+  { index: "02", label: "Featured", id: "evidence-featured" },
+  { index: "03", label: "Capability", id: "evidence-capability" },
 ];
 
 function EvidenceAtlasMeta() {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Evidence Atlas - Rostyslav Brenych";
+    document.title = "Living Case Atlas - Brenych Studio";
 
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
     const previousContent = existing?.getAttribute("content") ?? null;
@@ -90,17 +116,53 @@ function getEvidenceCases(): EvidenceCase[] {
   }));
 }
 
+function getAvailabilityView(system: AvailableSystem): AvailabilityView {
+  if (system.status === "available") {
+    return {
+      label: "Available System",
+      shortLabel: "Ready to adapt",
+      tone: "text-neutral-950",
+      primaryCta: "Adapt this system",
+    };
+  }
+
+  if (system.status === "custom-only") {
+    return {
+      label: "Custom Direction",
+      shortLabel: "Custom only",
+      tone: "text-neutral-600",
+      primaryCta: "Discuss similar direction",
+    };
+  }
+
+  if (system.status === "concept-reference") {
+    return {
+      label: "Concept Reference",
+      shortLabel: "Direction available",
+      tone: "text-neutral-600",
+      primaryCta: "Discuss similar direction",
+    };
+  }
+
+  return {
+    label: "Case only",
+    shortLabel: "Case only",
+    tone: "text-neutral-400",
+    primaryCta: "Open case",
+  };
+}
+
 function getPreviewFrame(item: EvidenceCase) {
   return item.content?.hero?.poster ?? item.content?.hero?.src ?? item.poster.src;
 }
 
 function getVisualFrames(item: EvidenceCase) {
   const frames = item.content?.frames?.filter((frame) => frame.kind !== "video").map((frame) => frame.src) ?? [];
-  return [getPreviewFrame(item), ...frames].filter(Boolean).slice(0, 3);
+  return [getPreviewFrame(item), ...frames].filter(Boolean).slice(0, 4);
 }
 
 function getCaseCode(item: EvidenceCase, index: number) {
-  return item.code || `EV-${String(index + 1).padStart(2, "0")}`;
+  return item.code || `WK-${String(index + 1).padStart(2, "0")}`;
 }
 
 function getEvidenceAtmosphere(item: EvidenceCase) {
@@ -147,7 +209,7 @@ function getEvidenceAtmosphere(item: EvidenceCase) {
   }
 
   return {
-    label: "editorial proof",
+    label: "editorial system",
     wash: "rgba(190, 186, 176, 0.14)",
     glow: "rgba(210, 208, 198, 0.18)",
     accent: "rgba(86, 82, 74, 0.28)",
@@ -155,11 +217,30 @@ function getEvidenceAtmosphere(item: EvidenceCase) {
   };
 }
 
-function EvidenceTag({ children }: { children: string }) {
+function getFeaturedCases(evidenceCases: EvidenceCase[]) {
+  const bySlug = new Map(evidenceCases.map((item) => [item.slug, item]));
+  const selected = featuredSystemSlugs.map((slug) => bySlug.get(slug)).filter((item): item is EvidenceCase => Boolean(item));
+  const fallback = evidenceCases.filter((item) => item.evidence.featuredEvidence && !selected.some((selectedItem) => selectedItem.slug === item.slug));
+  return [...selected, ...fallback].slice(0, 6);
+}
+
+function SectionIntro({
+  label,
+  title,
+  description,
+}: {
+  label: string;
+  title: string;
+  description?: string;
+}) {
   return (
-    <span className="inline-flex min-h-8 shrink-0 items-center rounded-full border border-neutral-950/12 bg-white/58 px-3 text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-      {children}
-    </span>
+    <div>
+      <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">{label}</div>
+      <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.9] tracking-[-0.055em] text-neutral-950 sm:text-[76px]">
+        {title}
+      </h2>
+      {description ? <p className="mt-7 max-w-[34rem] text-[15px] leading-7 text-neutral-600">{description}</p> : null}
+    </div>
   );
 }
 
@@ -186,49 +267,363 @@ function FilterButton({
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.985 }}
     >
-      {active && (
-        <motion.span
-          layoutId="proof-filter-active"
-          className="absolute inset-0 bg-neutral-950"
-          transition={{ duration: 0.38, ease }}
-        />
-      )}
-
-      <span
-        className={`pointer-events-none absolute inset-x-0 top-0 h-px transition ${
-          active ? "bg-white/26" : "bg-neutral-950/0 group-hover:bg-neutral-950/14"
-        }`}
-      />
-
+      {active && <motion.span layoutId="evidence-filter-active" className="absolute inset-0 bg-neutral-950" transition={{ duration: 0.38, ease }} />}
       <span className="relative flex min-w-0 items-center gap-2.5">
-        <span
-          className={`relative h-1.5 w-1.5 shrink-0 rounded-full ${
-            active ? "bg-white" : "bg-neutral-950/18 group-hover:bg-neutral-950/42"
-          }`}
-        >
+        <span className={`relative h-1.5 w-1.5 shrink-0 rounded-full ${active ? "bg-white" : "bg-neutral-950/18 group-hover:bg-neutral-950/42"}`}>
           {active && <span className="absolute inset-0 animate-ping rounded-full bg-white/38" />}
         </span>
-
         <span className="truncate">{filter}</span>
       </span>
-
-      <span
-        className={`relative border-l pl-3 tabular-nums transition ${
-          active ? "border-white/18 text-white/56" : "border-neutral-950/10 text-neutral-300 group-hover:text-neutral-500"
-        }`}
-      >
+      <span className={`relative border-l pl-3 tabular-nums transition ${active ? "border-white/18 text-white/56" : "border-neutral-950/10 text-neutral-300 group-hover:text-neutral-500"}`}>
         {String(count).padStart(2, "0")}
       </span>
     </motion.button>
   );
 }
 
-function DossierRow({ label, value }: { label: string; value: string }) {
+function FeaturedFlowItem({
+  item,
+  index,
+  variant = "paired",
+  onOpenCase,
+  onRequestSystem,
+}: {
+  item: EvidenceCase;
+  index: number;
+  variant?: "selected" | "paired";
+  onOpenCase: (item: EvidenceCase) => void;
+  onRequestSystem: () => void;
+}) {
+  const chapterRef = useRef<HTMLElement | null>(null);
+  const reducedMotion = useReducedMotion();
+  const visuals = getVisualFrames(item);
+  const availability = getAvailableSystem(item.slug);
+  const availabilityView = getAvailabilityView(availability);
+  const canRequest =
+    availability.status === "available" ||
+    availability.status === "custom-only" ||
+    availability.status === "concept-reference";
+  const direction = index % 2 === 0 ? 1 : -1;
+  const depth = (index % 3) + 1;
+  const alignRight = index % 2 === 1;
+  const selected = variant === "selected";
+  const { scrollYProgress } = useScroll({
+    target: chapterRef,
+    offset: ["start 92%", "end 8%"],
+  });
+  const imageX = useTransform(scrollYProgress, [0, 0.5, 1], [34 * direction, 0, -34 * direction]);
+  const imageY = useTransform(scrollYProgress, [0, 0.5, 1], [82, 0, -78]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.48, 1], [0.955, 1.035, 0.985]);
+  const imageRotate = useTransform(scrollYProgress, [0, 0.5, 1], [direction * -1.8, 0, direction * 1.4]);
+  const copyX = useTransform(scrollYProgress, [0, 0.5, 1], [-18 * direction, 0, 18 * direction]);
+  const copyY = useTransform(scrollYProgress, [0, 0.5, 1], [36, 0, -32]);
+  const shadowOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.08, 0.32, 0.12]);
+  const shadowScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.72, 1, 0.8]);
+  const supportingVisuals = visuals.length > 1 ? visuals.slice(1, 4) : visuals.slice(0, 1);
+  const fragmentMotion = [
+    {
+      x: useTransform(scrollYProgress, [0, 0.5, 1], [-24 * direction, 0, 20 * direction]),
+      y: useTransform(scrollYProgress, [0, 0.5, 1], [44, 0, -42]),
+      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1.04, 0.96]),
+    },
+    {
+      x: useTransform(scrollYProgress, [0, 0.5, 1], [-48 * direction, 0, 40 * direction]),
+      y: useTransform(scrollYProgress, [0, 0.5, 1], [56, 0, -52]),
+      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.035, 0.955]),
+    },
+    {
+      x: useTransform(scrollYProgress, [0, 0.5, 1], [-72 * direction, 0, 60 * direction]),
+      y: useTransform(scrollYProgress, [0, 0.5, 1], [68, 0, -62]),
+      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.88, 1.025, 0.95]),
+    },
+  ];
+  const fragmentPositions = alignRight
+    ? ["left-[2%] top-[16%] h-[28%] w-[28%]", "left-[18%] bottom-[18%] h-[24%] w-[24%]", "right-[4%] top-[4%] h-[18%] w-[24%]"]
+    : ["right-[2%] top-[16%] h-[28%] w-[28%]", "right-[18%] bottom-[18%] h-[24%] w-[24%]", "left-[4%] top-[4%] h-[18%] w-[24%]"];
+  const fragmentRotations = alignRight ? [2.4, -1.8, 1.2] : [-2.4, 1.8, -1.2];
+
   return (
-    <div className="grid gap-3 border-t border-neutral-950/10 py-4 sm:grid-cols-[9rem_1fr]">
-      <div className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">{label}</div>
-      <div className="text-[14px] leading-6 text-neutral-700">{value}</div>
+    <motion.article
+      ref={chapterRef}
+      data-archive-flow-chapter
+      data-archive-depth={depth}
+      className={`group relative overflow-hidden border-neutral-950/12 ${
+        selected
+          ? "min-h-[660px] border-y py-7 sm:min-h-[760px] sm:py-9 xl:min-h-[840px]"
+          : "min-h-[600px] border-t py-8 sm:min-h-[740px] sm:py-10 xl:min-h-[790px]"
+      }`}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: false, amount: 0.18 }}
+      transition={{ duration: 0.5, ease }}
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div className={`relative overflow-hidden text-left ${selected ? "min-h-[600px] sm:min-h-[700px] xl:min-h-[780px]" : "min-h-[540px] sm:min-h-[660px] xl:min-h-[710px]"}`}>
+        <div className="absolute inset-x-3 top-3 z-40 flex flex-wrap items-center gap-2 sm:inset-x-5 sm:top-5">
+          <span className="border-y border-neutral-950/14 bg-[#f8f6f0]/76 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm">
+            {selected ? "Selected system" : availabilityView.shortLabel}
+          </span>
+          <span className="border-y border-neutral-950/12 bg-[#f8f6f0]/66 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur-sm">
+            {item.evidence.workType}
+          </span>
+          <span className="border-y border-neutral-950/12 bg-[#f8f6f0]/66 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur-sm">
+            depth {depth}
+          </span>
+        </div>
+
+        <div className="absolute bottom-4 left-3 right-3 z-50 flex flex-wrap gap-2 sm:bottom-5 sm:left-5 sm:right-5">
+          <button type="button" onClick={() => onOpenCase(item)} className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
+            View case -&gt;
+          </button>
+          {canRequest ? (
+            <button type="button" onClick={onRequestSystem} className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/72 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white">
+              {availabilityView.primaryCta} -&gt;
+            </button>
+          ) : null}
+        </div>
+
+        <button type="button" onClick={() => onOpenCase(item)} className="absolute inset-0 text-left" aria-label={`Open ${item.title}`}>
+          <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-45" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 3 64 C 24 22, 54 82, 94 28" fill="none" stroke="rgba(15,15,15,0.13)" strokeWidth="0.11" strokeDasharray="1.1 1.8" />
+            <path d="M 10 22 C 34 48, 56 34, 88 74" fill="none" stroke="rgba(15,15,15,0.08)" strokeWidth="0.1" strokeDasharray="0.8 2.3" />
+          </svg>
+
+          <motion.span
+            aria-hidden="true"
+            className={`absolute ${alignRight ? "right-[11%]" : "left-[11%]"} bottom-[15%] h-[18%] w-[58%] rounded-[50%] bg-neutral-950/30 blur-3xl`}
+            style={reducedMotion ? undefined : { opacity: shadowOpacity, scale: shadowScale }}
+          />
+
+          <motion.span
+            className={`absolute top-[7%] overflow-hidden border border-neutral-950/10 bg-neutral-950 shadow-[0_42px_120px_rgba(10,10,10,0.2)] ${
+              selected
+                ? `h-[62%] w-[88%] sm:top-[10%] sm:h-[66%] sm:w-[76%] ${alignRight ? "right-[5%] sm:right-[6%]" : "left-[5%] sm:left-[6%]"}`
+                : `h-[55%] w-[80%] sm:top-[13%] sm:h-[60%] sm:w-[68%] ${alignRight ? "right-[5%] sm:right-[8%]" : "left-[5%] sm:left-[8%]"}`
+            }`}
+            style={reducedMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, rotate: imageRotate }}
+          >
+            <img src={visuals[0]} alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-100 transition duration-700 group-hover:scale-[1.025]" />
+            <span className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.05),rgba(0,0,0,0)_46%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.16)_58%,rgba(0,0,0,0.34))]" />
+            <span className="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/66">{getCaseCode(item, index)}</span>
+            <span className="absolute bottom-4 left-4 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
+              image layer / depth {depth}
+            </span>
+          </motion.span>
+
+          {supportingVisuals.map((visual, visualIndex) => {
+            const motionStyle = fragmentMotion[visualIndex] ?? fragmentMotion[0];
+
+            return (
+              <motion.span
+                key={`${item.slug}-${visual}-${visualIndex}`}
+                className={`absolute ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
+                style={reducedMotion ? undefined : { x: motionStyle.x, y: motionStyle.y, scale: motionStyle.scale, rotate: fragmentRotations[visualIndex] ?? 0 }}
+              >
+                <img src={visual} alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-100" />
+                <span className="absolute bottom-2 left-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/70">signal {visualIndex + 1}</span>
+              </motion.span>
+            );
+          })}
+
+          <motion.span
+            className={`absolute z-30 ${alignRight ? "left-[4%] text-left" : "right-[4%] text-right"} ${selected ? "bottom-[7%] max-w-[38rem]" : "bottom-[8%] max-w-[27rem]"}`}
+            style={reducedMotion ? undefined : { x: copyX, y: copyY }}
+          >
+            <span aria-hidden="true" className="absolute -inset-x-4 -inset-y-3 -z-10 bg-[radial-gradient(circle_at_center,rgba(248,246,240,0.9),rgba(248,246,240,0.58)_44%,transparent_72%)] blur-sm" />
+            <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">{item.evidence.workType}</span>
+            <span className={`mt-3 block font-normal leading-[0.88] tracking-[-0.055em] text-neutral-950 ${selected ? "text-[50px] sm:text-[82px] lg:text-[98px]" : "text-[38px] sm:text-[56px] lg:text-[64px]"}`}>
+              {item.title}
+            </span>
+            <span className="mt-4 block max-w-[27rem] text-[13px] leading-6 text-neutral-500">
+              {item.evidence.proofLabel}
+            </span>
+          </motion.span>
+
+          <span className={`absolute ${alignRight ? "left-4" : "right-4"} top-[4.75rem] hidden max-w-[17rem] border-y border-neutral-950/12 bg-[#f8f6f0]/70 px-3 py-2 font-mono text-[9px] uppercase leading-4 tracking-[0.16em] text-neutral-500 backdrop-blur-sm sm:block`}>
+            {availability.bestFor.slice(0, 3).join(" / ")}
+          </span>
+        </button>
+      </div>
+    </motion.article>
+  );
+}
+
+function ArchiveViewToggle({
+  mode,
+  onChange,
+}: {
+  mode: ArchiveViewMode;
+  onChange: (mode: ArchiveViewMode) => void;
+}) {
+  const options: Array<{ value: ArchiveViewMode; label: string; caption: string }> = [
+    { value: "field", label: "Field", caption: "Spatial" },
+    { value: "index", label: "Index", caption: "Scan" },
+  ];
+
+  return (
+    <div className="grid grid-cols-2 overflow-hidden rounded-full border border-neutral-950/10 bg-white/44 p-1 backdrop-blur-sm">
+      {options.map((option) => {
+        const active = mode === option.value;
+
+        return (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() => onChange(option.value)}
+            className={`relative min-h-8 overflow-hidden rounded-full px-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
+              active ? "text-white" : "text-neutral-400 hover:text-neutral-950"
+            }`}
+            aria-pressed={active}
+          >
+            {active ? (
+              <motion.span
+                layoutId="archive-view-mode-active"
+                className="absolute inset-0 rounded-full bg-neutral-950"
+                transition={{ duration: 0.42, ease }}
+              />
+            ) : null}
+            <span className="relative grid grid-cols-[auto_1fr] items-center gap-2">
+              <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-white" : "bg-neutral-950/18"}`} />
+              <span className="grid">
+                <span className="font-mono text-[9px] uppercase leading-none tracking-[0.16em]">{option.label}</span>
+                <span className={`mt-1 hidden font-mono text-[8px] uppercase leading-none tracking-[0.13em] sm:block ${active ? "text-white/48" : "text-neutral-300"}`}>
+                  {option.caption}
+                </span>
+              </span>
+            </span>
+          </button>
+        );
+      })}
     </div>
+  );
+}
+
+function WorkIndexTransformList({
+  items,
+  onOpenCase,
+  onRequestSystem,
+  onFocusCase,
+}: {
+  items: EvidenceCase[];
+  onOpenCase: (item: EvidenceCase) => void;
+  onRequestSystem: () => void;
+  onFocusCase: (slug: string) => void;
+}) {
+  return (
+    <motion.div
+      key="work-index-transform-list"
+      className="relative overflow-hidden border-y border-neutral-950/14 bg-white/18 backdrop-blur-sm"
+      initial={{ opacity: 0, y: 34, filter: "blur(10px)", clipPath: "inset(0 0 100% 0)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0 0 0% 0)" }}
+      exit={{ opacity: 0, y: -24, filter: "blur(8px)", clipPath: "inset(0 0 100% 0)" }}
+      transition={{ duration: 0.72, ease }}
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div className="relative grid min-h-11 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/10 px-4">
+        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">Transformed index / visual scan</div>
+        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(items.length).padStart(2, "0")} systems</div>
+      </div>
+
+      <div className="relative">
+        {items.map((item, index) => {
+          const availability = getAvailableSystem(item.slug);
+          const availabilityView = getAvailabilityView(availability);
+          const canRequest =
+            availability.status === "available" ||
+            availability.status === "custom-only" ||
+            availability.status === "concept-reference";
+          const stackItems = item.stackLabel.split("/").map((part) => part.trim()).filter(Boolean).slice(0, 4);
+          const layerItems = item.evidence.layers.slice(0, 3);
+          const tagItems = item.evidence.systemTags.slice(0, 4);
+
+          return (
+            <motion.article
+              key={item.slug}
+              className="group relative grid gap-4 border-b border-neutral-950/10 px-4 py-4 last:border-b-0 md:grid-cols-[minmax(13rem,0.28fr)_minmax(0,1fr)] md:items-stretch md:px-5 lg:grid-cols-[minmax(16rem,0.3fr)_minmax(0,1fr)]"
+              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.56, delay: index * 0.045, ease }}
+              onMouseEnter={() => onFocusCase(item.slug)}
+              onFocus={() => onFocusCase(item.slug)}
+            >
+              <button
+                type="button"
+                onClick={() => onOpenCase(item)}
+                className="relative min-h-[170px] overflow-hidden border border-neutral-950/10 bg-[#f8f6f0]/82 text-left shadow-[0_20px_58px_rgba(10,10,10,0.08)] transition duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_28px_76px_rgba(10,10,10,0.13)] sm:min-h-[190px] md:min-h-[205px]"
+                aria-label={`Open ${item.title}`}
+              >
+                <span className="absolute inset-2 border border-neutral-950/6 bg-[radial-gradient(circle_at_50%_22%,rgba(255,255,255,0.55),transparent_38%),rgba(246,244,238,0.62)]" />
+                <img src={getPreviewFrame(item)} alt="" className="absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] object-contain object-center opacity-100 transition duration-700 group-hover:scale-[1.015]" />
+                <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0),rgba(0,0,0,0)_64%,rgba(0,0,0,0.08))]" />
+                <span className="absolute left-4 top-4 bg-neutral-950/28 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/78 backdrop-blur-sm">
+                  {getCaseCode(item, index)} / {item.evidence.workType}
+                </span>
+                <span className="absolute bottom-4 left-4 bg-neutral-950/24 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/76 backdrop-blur-sm">
+                  Open visual case -&gt;
+                </span>
+              </button>
+
+              <div className="grid min-h-full gap-4 border-y border-neutral-950/10 bg-[#f8f6f0]/42 px-4 py-4 backdrop-blur-sm sm:px-5 md:grid-cols-[minmax(0,1fr)_13rem] md:items-end">
+                <div className="self-center">
+                  <div className="flex flex-wrap gap-2">
+                    <span className="border-y border-neutral-950/12 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-400">
+                      {availabilityView.shortLabel}
+                    </span>
+                    <span className="border-y border-neutral-950/12 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-400">
+                      {item.evidence.capability}
+                    </span>
+                  </div>
+                  <button type="button" onClick={() => onOpenCase(item)} className="mt-5 block max-w-[13ch] text-left text-[40px] font-normal leading-[0.9] tracking-[-0.055em] text-neutral-950 transition group-hover:translate-x-1 sm:text-[54px] lg:text-[62px]">
+                    {item.title}
+                  </button>
+                  <p className="mt-4 max-w-[42rem] text-[14px] leading-6 text-neutral-600">{item.evidence.proofLabel}</p>
+                  <div className="mt-5 grid gap-0 border-y border-neutral-950/10 lg:grid-cols-3">
+                    <div className="border-b border-neutral-950/10 py-2.5 lg:border-b-0 lg:border-r lg:pr-4">
+                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">Stack</div>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {stackItems.map((stackItem) => (
+                          <span key={stackItem} className="border border-neutral-950/10 bg-white/38 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-500">
+                            {stackItem}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="border-b border-neutral-950/10 py-2.5 lg:border-b-0 lg:border-r lg:px-4">
+                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">System layers</div>
+                      <div className="mt-2 font-mono text-[9px] uppercase leading-5 tracking-[0.12em] text-neutral-500">
+                        {layerItems.join(" / ")}
+                      </div>
+                    </div>
+                    <div className="py-2.5 lg:pl-4">
+                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">Signals</div>
+                      <div className="mt-2 font-mono text-[9px] uppercase leading-5 tracking-[0.12em] text-neutral-500">
+                        {tagItems.join(" / ")}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 md:justify-items-end md:text-right">
+                  <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
+                    {availability.bestFor.slice(0, 3).join(" / ")}
+                  </div>
+                  <div className="flex flex-wrap gap-2 md:justify-end">
+                    <button type="button" onClick={() => onOpenCase(item)} className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
+                      View case -&gt;
+                    </button>
+                    {canRequest ? (
+                      <button type="button" onClick={onRequestSystem} className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/72 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white">
+                        Adapt -&gt;
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            </motion.article>
+          );
+        })}
+      </div>
+    </motion.div>
   );
 }
 
@@ -239,31 +634,74 @@ export default function EvidenceAtlas({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { playRole, setScene, stopAmbient } = useSound();
   const evidenceCases = useMemo(() => getEvidenceCases(), []);
-  const featuredCases = useMemo(
-    () => evidenceCases.filter((item) => item.evidence.featuredEvidence).slice(0, 4),
-    [evidenceCases]
+  const featuredCases = useMemo(() => getFeaturedCases(evidenceCases), [evidenceCases]);
+  const selectedFeaturedCase = featuredCases[0];
+  const supportingFeaturedCases = useMemo(() => featuredCases.slice(1), [featuredCases]);
+  const expandedArchiveRef = useRef<HTMLDivElement | null>(null);
+  const expandedArchiveSeenRef = useRef(false);
+  const expandedFeaturedCases = useMemo(
+    () => evidenceCases.filter((item) => !featuredCases.some((featuredItem) => featuredItem.slug === item.slug)),
+    [evidenceCases, featuredCases],
   );
   const [activeSlug, setActiveSlug] = useState(featuredCases[0]?.slug ?? evidenceCases[0]?.slug ?? "");
   const [activeFilter, setActiveFilter] = useState<EvidenceFilter>("All");
-  const [inspectOpen, setInspectOpen] = useState(false);
-  const [activeFrameIndex, setActiveFrameIndex] = useState(0);
-  const [proofSignalText, setProofSignalText] = useState("");
+  const [archiveViewMode, setArchiveViewMode] = useState<ArchiveViewMode>("field");
+  const [archiveExpanded, setArchiveExpanded] = useState(false);
+  const [focusedHeroSlug, setFocusedHeroSlug] = useState<string | null>(null);
   const activeSectionId = useSectionRailActive(evidenceRailItems);
+
+  useEffect(() => {
+    setScene("evidence");
+    stopAmbient();
+  }, [setScene, stopAmbient]);
 
   const filteredCases = useMemo(() => {
     if (activeFilter === "All") return evidenceCases;
+    if (activeFilter === "Available Systems") return evidenceCases.filter((item) => isAvailableSystem(item.slug));
     return evidenceCases.filter((item) => item.evidence.filters.includes(activeFilter));
   }, [activeFilter, evidenceCases]);
+
+  const archiveVisibleCases = useMemo(
+    () => filteredCases.filter((item) => item.slug !== selectedFeaturedCase?.slug),
+    [filteredCases, selectedFeaturedCase?.slug],
+  );
+
+  const filteredSupportingFeaturedCases = useMemo(() => {
+    const cases = supportingFeaturedCases.filter((item) => item.slug !== selectedFeaturedCase?.slug);
+    if (activeFilter === "All") return cases;
+    if (activeFilter === "Available Systems") return cases.filter((item) => isAvailableSystem(item.slug));
+    return cases.filter((item) => item.evidence.filters.includes(activeFilter));
+  }, [activeFilter, selectedFeaturedCase?.slug, supportingFeaturedCases]);
+
+  const filteredExpandedCases = useMemo(() => {
+    if (activeFilter === "All") return expandedFeaturedCases;
+    if (activeFilter === "Available Systems") return expandedFeaturedCases.filter((item) => isAvailableSystem(item.slug));
+    return expandedFeaturedCases.filter((item) => item.evidence.filters.includes(activeFilter));
+  }, [activeFilter, expandedFeaturedCases]);
+
+  const filteredSupportingFeaturedColumns = useMemo(
+    () => ({
+      left: filteredSupportingFeaturedCases.filter((_, index) => index % 2 === 0),
+      right: filteredSupportingFeaturedCases.filter((_, index) => index % 2 === 1),
+    }),
+    [filteredSupportingFeaturedCases],
+  );
+
+  const expandedFeaturedColumns = useMemo(
+    () => ({
+      left: filteredExpandedCases.filter((_, index) => index % 2 === 0),
+      right: filteredExpandedCases.filter((_, index) => index % 2 === 1),
+    }),
+    [filteredExpandedCases],
+  );
 
   const activeCase =
     filteredCases.find((item) => item.slug === activeSlug) ??
     evidenceCases.find((item) => item.slug === activeSlug) ??
     filteredCases[0] ??
     evidenceCases[0];
-  const activeCaseIndex = Math.max(0, evidenceCases.findIndex((item) => item.slug === activeCase.slug));
-  const activeVisuals = getVisualFrames(activeCase);
-  const activeFrame = activeVisuals[activeFrameIndex] ?? getPreviewFrame(activeCase);
   const atmosphere = getEvidenceAtmosphere(activeCase);
   const surfaceStyle = {
     "--evidence-wash": atmosphere.wash,
@@ -273,71 +711,92 @@ export default function EvidenceAtlas({
   } as CSSProperties;
 
   const filterCount = (filter: EvidenceFilter) =>
-    filter === "All" ? evidenceCases.length : evidenceCases.filter((item) => item.evidence.filters.includes(filter)).length;
+    filter === "All"
+      ? evidenceCases.length
+      : filter === "Available Systems"
+        ? evidenceCases.filter((item) => isAvailableSystem(item.slug)).length
+        : evidenceCases.filter((item) => item.evidence.filters.includes(filter)).length;
 
   const chooseFilter = (filter: EvidenceFilter) => {
+    playRole("select");
     setActiveFilter(filter);
     const firstMatch =
-      filter === "All" ? evidenceCases[0] : evidenceCases.find((item) => item.evidence.filters.includes(filter));
+      filter === "All"
+        ? evidenceCases[0]
+        : filter === "Available Systems"
+          ? evidenceCases.find((item) => isAvailableSystem(item.slug))
+          : evidenceCases.find((item) => item.evidence.filters.includes(filter));
     if (firstMatch) {
       setActiveSlug(firstMatch.slug);
-      setActiveFrameIndex(0);
     }
   };
 
   const openCase = (item: EvidenceCase) => {
+    playRole("select");
     startSpaPageTransition(navigate, `/work/${item.slug}`, onCloseProject);
   };
 
+  const requestSystem = () => {
+    playRole("open");
+    onOpenProject?.();
+  };
+
   const selectCase = (slug: string) => {
+    if (slug !== activeSlug) playRole("hover");
     setActiveSlug(slug);
-    setActiveFrameIndex(0);
+  };
+
+  const changeArchiveViewMode = (mode: ArchiveViewMode) => {
+    if (mode === archiveViewMode) return;
+    playRole("transition");
+    setArchiveViewMode(mode);
   };
 
   useEffect(() => {
-    if (!inspectOpen) return;
+    if (!archiveExpanded) return;
 
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setInspectOpen(false);
-    };
-
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [inspectOpen]);
-
-  useEffect(() => {
-    const fullText = activeCase.evidence.proofSummary;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let interval: number | undefined;
-
-    const startTimer = window.setTimeout(() => {
-      if (prefersReducedMotion) {
-        setProofSignalText(fullText);
-        return;
+    const collapseWhenReturning = () => {
+      const expandedTop = expandedArchiveRef.current?.offsetTop;
+      if (!expandedTop) return;
+      if (window.scrollY >= expandedTop - window.innerHeight * 0.35) {
+        expandedArchiveSeenRef.current = true;
       }
-
-      setProofSignalText("");
-      let index = 0;
-      interval = window.setInterval(() => {
-        index += 2;
-        setProofSignalText(fullText.slice(0, index));
-        if (index >= fullText.length && interval !== undefined) window.clearInterval(interval);
-      }, 18);
-    }, 0);
-
-    return () => {
-      window.clearTimeout(startTimer);
-      if (interval !== undefined) window.clearInterval(interval);
+      if (expandedArchiveSeenRef.current && window.scrollY < expandedTop - window.innerHeight * 0.72) {
+        setArchiveExpanded(false);
+      }
     };
-  }, [activeCase.evidence.proofSummary]);
 
-  const mediaTraces = featuredCases.slice(0, 4);
-  const heroMetrics = [
-    { label: "verified cases", value: evidenceCases.length },
-    { label: "premium websites", value: filterCount("Premium websites") },
-    { label: "product systems", value: filterCount("Product systems") },
-    { label: "multilingual surfaces", value: filterCount("Multilingual") },
-  ];
+    window.addEventListener("scroll", collapseWhenReturning, { passive: true });
+    return () => window.removeEventListener("scroll", collapseWhenReturning);
+  }, [archiveExpanded]);
+
+  const expandArchive = () => {
+    playRole("transition");
+    expandedArchiveSeenRef.current = false;
+    setArchiveExpanded(true);
+    window.setTimeout(() => {
+      expandedArchiveRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  };
+
+  const heroFragments = featuredCases.slice(0, 6);
+  const focusedHeroCase = heroFragments.find((item) => item.slug === focusedHeroSlug) ?? null;
+
+  const focusHeroCase = (item: EvidenceCase) => {
+    playRole("transition");
+    selectCase(item.slug);
+    setFocusedHeroSlug(item.slug);
+  };
+
+  const moveFocusedHero = (direction: 1 | -1) => {
+    if (!focusedHeroCase) return;
+
+    const currentIndex = heroFragments.findIndex((item) => item.slug === focusedHeroCase.slug);
+    const nextIndex = (currentIndex + direction + heroFragments.length) % heroFragments.length;
+    const nextCase = heroFragments[nextIndex];
+
+    if (nextCase) focusHeroCase(nextCase);
+  };
 
   return (
     <div className="min-h-screen bg-white text-neutral-950">
@@ -346,718 +805,350 @@ export default function EvidenceAtlas({
 
       <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="evidence" />
-        <SectionRail
-          items={evidenceRailItems}
-          activeId={activeSectionId}
-          onSelect={scrollToRailSection}
-          label="Evidence Atlas sections"
-        />
+        <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
+
         <main className="relative pt-24" style={surfaceStyle}>
           <section id="evidence-threshold" data-header-scene="evidence-threshold" className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
-            <div className="grid min-h-[calc(100vh-10rem)] gap-10 border-y border-neutral-950/14 py-10 xl:grid-cols-[0.58fr_0.42fr] xl:items-center">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-                  Work Archive / Evidence Atlas
-                </div>
-                <h1 className="mt-6 max-w-[8.5ch] text-[52px] font-normal leading-[0.9] text-neutral-950 sm:max-w-[12ch] sm:text-[96px] xl:text-[132px]">
-                  Selected work, structured as proof.
+            <div className="grid min-h-[calc(100vh-10rem)] gap-10 border-y border-neutral-950/14 py-10 xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
+              <div className="min-w-0">
+                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
+                <h1 className="mt-6 max-w-[10.5ch] text-[52px] font-normal leading-[0.9] tracking-[-0.06em] text-neutral-950 sm:text-[92px] xl:text-[124px]">
+                  Selected work, built as interface systems.
                 </h1>
-                <p className="mt-8 max-w-[21rem] break-words text-[17px] leading-8 text-neutral-600 sm:max-w-[44rem]">
-                  A curated archive of premium websites, product systems, tools, multilingual surfaces, and interface
-                  environments, organized by what each project proves.
+                <p className="mt-8 max-w-[44rem] text-[17px] leading-8 text-neutral-600">
+                  A curated atlas of premium websites, product systems, tools, multilingual surfaces, and immersive
+                  interface experiments, presented as visual systems, available foundations, and proof layers.
                 </p>
                 <div className="mt-10 flex flex-wrap gap-3">
-                  <a
-                    href="#proof-reader"
-                    className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
-                  >
-                    Open proof reader -&gt;
+                  <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800" href="#evidence-featured">
+                    Explore featured systems -&gt;
                   </a>
-                  <a
-                    href="#compact-archive"
-                    className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    View archive -&gt;
+                  <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white" href="#work-lens">
+                    View archive lens -&gt;
                   </a>
-                  <button
-                    type="button"
-                    onClick={onOpenProject}
-                    className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Start a project -&gt;
-                  </button>
+                  <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white" href="#work-lens">
+                    Switch archive view -&gt;
+                  </a>
                 </div>
               </div>
 
-              <div className="relative xl:pl-8">
-                <div className="pointer-events-none absolute -left-8 top-9 hidden h-44 w-44 border-l border-t border-neutral-950/10 xl:block" />
-                <div className="relative overflow-hidden border border-neutral-950/14 bg-[#f8f6f0]/78 shadow-[0_38px_140px_var(--evidence-shadow)] backdrop-blur-sm">
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_74%_20%,var(--evidence-glow),transparent_42%),linear-gradient(135deg,var(--evidence-wash),transparent_52%)]" />
-                  <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
-
-                  <div className="relative grid min-h-12 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/12 px-4">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Evidence instrument</div>
-                    <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                      {getCaseCode(activeCase, activeCaseIndex)}
-                    </div>
-                  </div>
-
-                  <div className="relative grid border-b border-neutral-950/12 sm:grid-cols-[0.44fr_0.56fr]">
-                    <div className="grid grid-cols-2 border-b border-neutral-950/12 sm:border-b-0 sm:border-r">
-                      {heroMetrics.map((metric) => (
-                        <div key={metric.label} className="min-h-[7.25rem] border-b border-r border-neutral-950/10 p-4 last:border-r-0 sm:[&:nth-child(2n)]:border-r-0 sm:[&:nth-last-child(-n+2)]:border-b-0">
-                          <div className="text-[42px] leading-none tracking-[-0.04em] text-neutral-950">
-                            {String(metric.value).padStart(2, "0")}
-                          </div>
-                          <div className="mt-3 max-w-[7rem] font-mono text-[9px] uppercase leading-4 tracking-[0.16em] text-neutral-400">
-                            {metric.label}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => setInspectOpen(true)}
-                      className="group relative min-h-[18rem] overflow-hidden p-5 text-left sm:min-h-[20rem]"
-                      aria-label={`Inspect proof signal for ${activeCase.title}`}
-                    >
-                      <AnimatePresence mode="wait">
-                        <motion.img
-                          key={`hero-signal-fill-${activeCase.slug}`}
-                          src={activeFrame}
-                          alt=""
-                          aria-hidden="true"
-                          className="absolute inset-0 h-full w-full scale-[1.05] object-cover object-center opacity-[0.13] saturate-[0.72]"
-                          initial={{ opacity: 0, scale: 1.09, filter: "blur(16px)" }}
-                          animate={{ opacity: 0.13, scale: 1.05, filter: "blur(9px)" }}
-                          exit={{ opacity: 0, scale: 1.07, filter: "blur(14px)" }}
-                          transition={{ duration: 0.78, ease }}
-                        />
-                      </AnimatePresence>
-                      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(248,246,240,0.38),rgba(248,246,240,0.88)_82%)]" />
-                      <motion.div
-                        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-neutral-950/22"
-                        animate={{ y: [0, 268, 0] }}
-                        transition={{ duration: 7.2, ease: "linear", repeat: Infinity }}
-                      />
-
-                      <div className="relative flex h-full min-h-[16rem] flex-col justify-between">
-                        <div className="flex items-start justify-between gap-5">
-                          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                            Live proof signal / {atmosphere.label}
-                          </div>
-                          <span className="h-2 w-2 rounded-full bg-neutral-950 shadow-[0_0_0_5px_rgba(10,10,10,0.06)]" />
-                        </div>
-
-                        <div className="pt-12">
-                          <AnimatePresence mode="wait">
-                            <motion.div
-                              key={`hero-signal-copy-${activeCase.slug}`}
-                              initial={{ opacity: 0, y: 16 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              transition={{ duration: 0.48, ease }}
-                            >
-                              <div className="text-[42px] leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[50px]">
-                                {activeCase.title}
-                              </div>
-                              <div className="mt-4 text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                                {activeCase.evidence.proofLabel}
-                              </div>
-                              <p className="mt-5 max-w-[24rem] text-[14px] leading-6 text-neutral-600">
-                                {activeCase.evidence.proofSummary}
-                              </p>
-                            </motion.div>
-                          </AnimatePresence>
-                        </div>
-
-                        <div className="mt-8 flex items-end justify-between gap-4 border-t border-neutral-950/12 pt-4">
-                          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                            01 active proof
-                          </div>
-                          <span className="whitespace-nowrap border-y border-neutral-950/20 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600 transition group-hover:border-neutral-950/50 group-hover:text-neutral-950">
-                            Inspect -&gt;
-                          </span>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-
-                  <div className="relative p-3">
-                    <div className="mb-3 flex items-center justify-between gap-4 px-1">
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Material traces</div>
-                      <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                        {String(mediaTraces.length).padStart(2, "0")} featured
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                      {mediaTraces.map((item, index) => {
-                        const active = item.slug === activeCase.slug;
-
-                        return (
-                          <button
-                            key={item.slug}
-                            type="button"
-                            onMouseEnter={() => selectCase(item.slug)}
-                            onFocus={() => selectCase(item.slug)}
-                            onClick={() => selectCase(item.slug)}
-                            className={`group relative h-24 overflow-hidden border bg-[#f8f6f0] text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:h-28 ${
-                              active ? "border-neutral-950" : "border-neutral-950/10 hover:border-neutral-950/40"
-                            }`}
-                            aria-label={`Select proof signal ${item.title}`}
-                          >
-                            <img
-                              src={getPreviewFrame(item)}
-                              alt=""
-                              className={`absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035] ${
-                                active ? "opacity-90" : "opacity-[0.38]"
-                              }`}
-                            />
-                            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(248,246,240,0.08),rgba(10,10,10,0.2))]" />
-                            <div className="absolute bottom-2 left-2 font-mono text-[9px] uppercase tracking-[0.14em] text-white/76">
-                              {String(index + 1).padStart(2, "0")}
-                            </div>
-                            <div className={`absolute right-2 top-2 h-2 w-2 rounded-full border ${active ? "border-white bg-white" : "border-white/45 bg-white/10"}`} />
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section id="proof-reader" data-header-scene="evidence-reader" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 pt-28 lg:pb-20 lg:pt-32">
-            <div className="border-y border-neutral-950/14 py-8">
-              <div className="grid gap-10 lg:grid-cols-[0.34fr_0.66fr] lg:items-end">
-                <div>
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-                    Active Case Evidence Panel
-                  </div>
-                  <h2 className="mt-5 max-w-[9ch] text-[54px] font-normal leading-[0.9] text-neutral-950 sm:text-[82px]">
-                    Proof reader.
-                  </h2>
+              <div className="relative min-h-[560px] overflow-hidden border border-neutral-950/10 bg-[#f8f6f0]/52 shadow-[0_24px_90px_rgba(10,10,10,0.08)] backdrop-blur-sm sm:min-h-[660px] xl:-ml-14 xl:mr-8 xl:w-[calc(100%+3.5rem)] 2xl:-ml-20 2xl:mr-0 2xl:w-[calc(100%+5rem)]">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,var(--evidence-glow),transparent_38%),linear-gradient(135deg,var(--evidence-wash),transparent_58%)] opacity-70" />
+                <div className="pointer-events-none absolute inset-0 opacity-[0.055] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:64px_64px]" />
+                <div className="relative grid min-h-12 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/12 px-4">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Living case field</div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(heroFragments.length).padStart(2, "0")} systems</div>
                 </div>
 
-                <div>
-                  <p className="max-w-[54rem] text-[15px] leading-7 text-neutral-600">
-                    Move through the ledger, compare proof claims, and open the full case when the evidence needs a deeper read.
-                  </p>
+                <div className="relative h-[calc(100%-3rem)] min-h-[510px] sm:min-h-[610px]">
+                  <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-45" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M 7 70 C 28 28, 55 74, 92 22" fill="none" stroke="rgba(15,15,15,0.18)" strokeWidth="0.12" strokeDasharray="1.2 1.8" />
+                    <path d="M 16 20 C 33 46, 58 34, 86 72" fill="none" stroke="rgba(15,15,15,0.12)" strokeWidth="0.1" strokeDasharray="0.8 2.2" />
+                  </svg>
 
-                  <div className="mt-7 overflow-hidden border-y border-neutral-950/10 bg-white/22 backdrop-blur-sm">
-                    <div className="grid min-h-10 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/10 px-3">
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                        Proof lens / live signal
-                      </div>
-
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                        {String(filteredCases.length).padStart(2, "0")} visible
-                      </div>
-                    </div>
-
-                    <div className="relative p-2">
-                      <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px)] [background-size:42px_42px]" />
-
-                      <div className="relative grid grid-flow-col auto-cols-[minmax(9.5rem,auto)] gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:grid-flow-row sm:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:pb-0 [&::-webkit-scrollbar]:hidden">
-                        {evidenceFilters.map((filter) => (
-                          <FilterButton
-                            key={filter}
-                            filter={filter}
-                            active={filter === activeFilter}
-                            count={filterCount(filter)}
-                            onClick={() => chooseFilter(filter)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative mt-9 overflow-hidden border-y border-neutral-950/14 bg-[#f8f6f0]/74 shadow-[0_44px_150px_var(--evidence-shadow)] backdrop-blur-sm">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_26%,var(--evidence-glow),transparent_40%),linear-gradient(125deg,var(--evidence-wash),transparent_48%)]" />
-              <div className="pointer-events-none absolute inset-0 opacity-[0.055] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:78px_78px]" />
-
-              <div className="relative grid min-h-12 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/10 px-4">
-                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                  Active evidence sheet / {atmosphere.label}
-                </div>
-
-                <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                  {getCaseCode(activeCase, activeCaseIndex)} / {String(activeCaseIndex + 1).padStart(2, "0")}
-                </div>
-              </div>
-
-              <div className="relative grid xl:grid-cols-[minmax(0,1fr)_24rem]">
-                <button
-                  type="button"
-                  onClick={() => setInspectOpen(true)}
-                  className="group relative h-[620px] overflow-hidden border-b border-neutral-950/10 bg-[#eeeae1] text-left sm:h-[660px] lg:h-[690px] xl:h-[720px] xl:border-b-0 xl:border-r"
-                  aria-label={`Inspect proof for ${activeCase.title}`}
-                >
-                  <div className="absolute inset-0 bg-[linear-gradient(135deg,#f8f6f0,var(--evidence-wash))]" />
-
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={`field-fill-${activeCase.slug}-${activeFrameIndex}`}
-                      src={activeFrame}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute inset-0 h-full w-full scale-[1.08] object-cover object-center opacity-[0.13] saturate-[0.88]"
-                      initial={{ opacity: 0, scale: 1.12, filter: "blur(18px)" }}
-                      animate={{ opacity: 0.13, scale: 1.08, filter: "blur(11px)" }}
-                      exit={{ opacity: 0, scale: 1.09, filter: "blur(16px)" }}
-                      transition={{ duration: 0.72, ease }}
-                    />
-                  </AnimatePresence>
-
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(248,246,240,0.38),transparent_14%,transparent_86%,rgba(248,246,240,0.34)),radial-gradient(circle_at_50%_42%,transparent_0,transparent_66%,rgba(10,10,10,0.06)_100%)]" />
-
-                  <div className="absolute inset-x-6 top-6 z-10 flex items-center justify-between gap-4">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">
-                      Visual evidence / active frame
-                    </div>
-
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                      F{String(activeFrameIndex + 1).padStart(2, "0")}
-                    </div>
-                  </div>
-
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={`field-${activeCase.slug}-${activeFrameIndex}`}
-                      src={activeFrame}
-                      alt=""
-                      className="absolute inset-x-[5%] top-[10%] h-[68%] w-[90%] object-contain object-center drop-shadow-[0_32px_85px_rgba(18,18,18,0.16)]"
-                      initial={{ opacity: 0, x: 28, scale: 1.018, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, x: -22, scale: 1.01, filter: "blur(8px)" }}
-                      transition={{ duration: 0.72, ease }}
-                    />
-                  </AnimatePresence>
-
-                  <div className="absolute inset-x-4 bottom-4 overflow-hidden border border-white/18 bg-neutral-950/70 px-4 py-4 text-white shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-md sm:inset-x-6 sm:px-5">
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0.1),transparent_36%,rgba(255,255,255,0.035))]" />
-
-                    <div className="relative grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
-                      <div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/58">
-                          What this proves
-                        </div>
-
-                        <p className="mt-2 min-h-[3.4rem] max-w-[56rem] text-[16px] leading-7 text-white/88 sm:text-[17px]">
-                          {proofSignalText}
-                          <span className="ml-1 inline-block h-4 w-[1px] translate-y-0.5 animate-pulse bg-white/72" />
-                        </p>
-                      </div>
-
-                      <span className="whitespace-nowrap justify-self-start border-y border-white/24 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-white/64 transition group-hover:border-white/44 group-hover:text-white lg:justify-self-end">
-                        Inspect proof -&gt;
-                      </span>
-                    </div>
-                  </div>
-                </button>
-
-                <aside className="relative h-auto overflow-hidden border-l border-neutral-950/10 bg-white/32 p-5 backdrop-blur-md sm:p-7 xl:h-[720px]">
-                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.66),rgba(255,255,255,0.22)_44%,transparent)]" />
-
-                  <div className="relative flex h-full flex-col">
-                    <div className="flex items-start justify-between gap-5">
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                        Signal readout
-                      </div>
-
-                      <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                        {String(filteredCases.length).padStart(2, "0")} in lens
-                      </div>
-                    </div>
-
-                    <div className="mt-7 border-y border-neutral-950/10 py-5">
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-400">
-                        {activeCase.evidence.proofLabel}
-                      </div>
-
-                      <p className="mt-4 text-[28px] leading-[1.12] tracking-[-0.04em] text-neutral-950">
-                        {activeCase.evidence.capability}
-                      </p>
-                    </div>
-
-                    <div className="mt-6">
-                      <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                        Evidence points
-                      </div>
-
-                      <div className="grid gap-0 border-y border-neutral-950/10">
-                        {activeCase.evidence.proofPoints.map((point, index) => (
-                          <div
-                            key={point}
-                            className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-3.5 last:border-b-0"
-                          >
-                            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                              {String(index + 1).padStart(2, "0")}
-                            </div>
-
-                            <p className="text-[13px] leading-5 text-neutral-700">{point}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
-                      <div className="mb-3 flex items-center justify-between gap-4">
-                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                          Frame signal
-                        </div>
-
-                        <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                          F{String(activeFrameIndex + 1).padStart(2, "0")}
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2">
-                        {activeVisuals.slice(0, 3).map((_, index) => {
-                          const frameActive = index === activeFrameIndex;
-
-                          return (
-                            <button
-                              key={`${activeCase.slug}-signal-${index}`}
-                              type="button"
-                              onClick={() => setActiveFrameIndex(index)}
-                              className={`h-2.5 flex-1 rounded-full transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
-                                frameActive ? "bg-neutral-950" : "bg-neutral-950/12 hover:bg-neutral-950/28"
-                              }`}
-                              aria-label={`Show frame ${index + 1} for ${activeCase.title}`}
-                            />
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
-                      <DossierRow label="System layers" value={activeCase.evidence.layers.join(" / ")} />
-                    </div>
-
-                    <div className="mt-6 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                      {activeCase.evidence.systemTags.slice(0, 4).map((tag) => (
-                        <EvidenceTag key={tag}>{tag}</EvidenceTag>
-                      ))}
-                    </div>
-
-                    <div className="mt-auto flex flex-wrap gap-3 pt-7">
-                      <button
-                        type="button"
-                        onClick={() => setInspectOpen(true)}
-                        className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
-                      >
-                        Inspect proof -&gt;
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => openCase(activeCase)}
-                        className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/58 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
-                      >
-                        Open full case -&gt;
-                      </button>
-                    </div>
-                  </div>
-                </aside>
-              </div>
-
-              <div className="relative border-t border-neutral-950/10 bg-[#fbfaf6]/74 p-3">
-                <div className="mb-4 flex items-center justify-between gap-5 px-1">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                    Evidence rail
-                  </div>
-
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                    Hover / focus to read, inspect for detail
-                  </div>
-                </div>
-
-                <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {filteredCases.map((item) => {
-                    const index = evidenceCases.findIndex((caseItem) => caseItem.slug === item.slug);
+                  {heroFragments.map((item, index) => {
                     const active = item.slug === activeCase.slug;
+                    const positions = [
+                      "left-[3%] top-[8%] h-[42%] w-[58%]",
+                      "right-[3%] top-[17%] h-[31%] w-[42%]",
+                      "left-[8%] bottom-[11%] h-[31%] w-[40%]",
+                      "right-[7%] bottom-[7%] h-[37%] w-[48%]",
+                      "left-[37%] top-[45%] h-[27%] w-[35%]",
+                      "right-[26%] top-[4%] h-[20%] w-[29%]",
+                    ];
 
                     return (
-                      <button
+                      <motion.button
                         key={item.slug}
                         type="button"
                         onMouseEnter={() => selectCase(item.slug)}
                         onFocus={() => selectCase(item.slug)}
-                        onClick={() => selectCase(item.slug)}
-                        className={`group grid w-[17rem] shrink-0 grid-cols-[6rem_1fr] overflow-hidden border text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
-                          active
-                            ? "border-neutral-950 bg-[#f8f6f0] text-neutral-950 shadow-[0_18px_44px_var(--evidence-shadow)]"
-                            : "border-neutral-950/10 bg-white/36 text-neutral-500 hover:border-neutral-950/30 hover:bg-white/72 hover:text-neutral-950"
+                        onClick={() => focusHeroCase(item)}
+                        onDoubleClick={() => openCase(item)}
+                        className={`group absolute ${positions[index] ?? positions[0]} overflow-hidden border bg-neutral-950 text-left shadow-[0_24px_70px_rgba(10,10,10,0.14)] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
+                          active ? "z-30 border-neutral-950" : "z-10 border-white/28 hover:z-40 hover:border-neutral-950/60"
                         }`}
-                        aria-label={`Select ${item.title}`}
+                        initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                        animate={{ opacity: active ? 1 : 0.9, y: 0, scale: active ? 1.02 : 1 }}
+                        transition={{ duration: 0.58, delay: index * 0.05, ease }}
+                        aria-label={`Open ${item.title}`}
                       >
-                        <span className="relative min-h-[6rem] overflow-hidden bg-neutral-950">
-                          <img
-                            src={getPreviewFrame(item)}
-                            alt=""
-                            className={`absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04] ${
-                              active ? "opacity-95 saturate-[1.02] contrast-[1.03]" : "opacity-50 saturate-[0.82]"
-                            }`}
-                          />
-
-                          <span className="absolute bottom-2 left-2 font-mono text-[9px] uppercase tracking-[0.14em] text-white/72">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                        </span>
-
-                        <span className="p-3">
-                          <span className="block text-[18px] leading-none tracking-[-0.03em]">{item.title}</span>
-
-                          <span
-                            className={`mt-3 block text-[10px] uppercase tracking-[0.14em] ${
-                              active ? "text-neutral-500" : "text-neutral-300"
-                            }`}
-                          >
-                            {item.evidence.proofLabel}
-                          </span>
-                        </span>
-                      </button>
+                        <img src={getPreviewFrame(item)} alt="" className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04]" />
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.18)_58%,rgba(0,0,0,0.34))]" />
+                        <div className="absolute inset-x-3 bottom-3">
+                          <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/62">{String(index + 1).padStart(2, "0")} / {getAvailableSystem(item.slug).shortLabel}</div>
+                          <div className="mt-1 truncate text-[20px] leading-none tracking-[-0.04em] text-white sm:text-[28px]">{item.title}</div>
+                        </div>
+                      </motion.button>
                     );
                   })}
+
+                  <AnimatePresence>
+                    {focusedHeroCase ? (
+                      <motion.div
+                        className="absolute inset-0 z-50 overflow-hidden bg-[#f8f6f0]/42 backdrop-blur-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.38, ease }}
+                      >
+                        <button
+                          type="button"
+                          aria-label="Close focused work preview"
+                          className="absolute inset-0 cursor-default"
+                          onClick={() => {
+                            playRole("close");
+                            setFocusedHeroSlug(null);
+                          }}
+                        />
+
+                        <motion.button
+                          type="button"
+                          onClick={(event) => event.stopPropagation()}
+                          onDoubleClick={() => openCase(focusedHeroCase)}
+                          className="absolute left-1/2 top-[43%] h-[52%] w-[82%] -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-neutral-950/18 bg-neutral-950 text-left shadow-[0_52px_150px_rgba(10,10,10,0.24)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:w-[76%]"
+                          initial={{ opacity: 0, scale: 0.74, y: 58, rotate: -1.8, filter: "blur(8px)" }}
+                          animate={{ opacity: 1, scale: 1, y: 0, rotate: 0, filter: "blur(0px)" }}
+                          exit={{ opacity: 0, scale: 0.86, y: 24, rotate: 1.2, filter: "blur(7px)" }}
+                          transition={{ duration: 0.72, ease }}
+                        >
+                          <img src={getPreviewFrame(focusedHeroCase)} alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-95" />
+                          <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.12)_62%,rgba(0,0,0,0.36))]" />
+                          <span className="absolute left-5 top-5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/62">
+                            Focused system / double click enters
+                          </span>
+                          <span className="absolute bottom-5 left-5 max-w-[13ch] text-[42px] leading-[0.88] tracking-[-0.055em] text-white drop-shadow-[0_8px_34px_rgba(0,0,0,0.42)] sm:text-[64px]">
+                            {focusedHeroCase.title}
+                          </span>
+                        </motion.button>
+
+                        <motion.div
+                          className="absolute bottom-4 left-4 right-4 z-10 border-y border-neutral-950/12 bg-[#f8f6f0]/82 px-4 py-3 backdrop-blur-md"
+                          initial={{ opacity: 0, y: 18, clipPath: "inset(0 100% 0 0)" }}
+                          animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
+                          exit={{ opacity: 0, y: 10, clipPath: "inset(0 100% 0 0)" }}
+                          transition={{ duration: 0.68, delay: 0.18, ease }}
+                        >
+                          <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+                            <div>
+                              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">Terminal signal</div>
+                              <p className="mt-2 max-w-[42rem] font-mono text-[10px] uppercase leading-5 tracking-[0.12em] text-neutral-600">
+                                {focusedHeroCase.evidence.proofLabel} / {focusedHeroCase.evidence.capability}
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              <button type="button" onClick={() => moveFocusedHero(-1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
+                                Prev
+                              </button>
+                              <button type="button" onClick={() => moveFocusedHero(1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
+                                Next
+                              </button>
+                              <button type="button" onClick={() => openCase(focusedHeroCase)} className="rounded-full border border-neutral-950 bg-neutral-950 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
+                                Open case -&gt;
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+
+                  <div className="absolute left-4 top-16 z-40 hidden max-w-[15rem] border-y border-neutral-950/12 bg-[#f8f6f0]/72 px-3 py-2 font-mono text-[9px] uppercase leading-4 tracking-[0.16em] text-neutral-500 backdrop-blur-sm sm:block">
+                    Desire / systems / availability / proof
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <AnimatePresence>
-            {inspectOpen && (
-              <motion.div
-                className="fixed inset-0 z-[80] flex items-center justify-center bg-[#f3f1ec]/88 px-4 py-5 backdrop-blur-sm"
-                role="dialog"
-                aria-modal="true"
-                aria-label={`Inspect proof for ${activeCase.title}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.32, ease }}
-              >
-                <button
-                  type="button"
-                  aria-label="Close proof inspect"
-                  className="absolute inset-0 cursor-default"
-                  onClick={() => setInspectOpen(false)}
-                />
-                <motion.div
-                  className="relative grid max-h-[92svh] w-[min(92rem,calc(100vw-2rem))] overflow-y-auto border border-neutral-950/14 bg-[#f8f6f0] shadow-[0_44px_180px_rgba(0,0,0,0.18)] lg:grid-cols-[minmax(0,1fr)_25rem]"
-                  initial={{ opacity: 0, y: 18, scale: 0.985 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 12, scale: 0.99 }}
-                  transition={{ duration: 0.56, ease }}
-                >
-                  <div className="relative min-h-[420px] overflow-hidden bg-neutral-950 lg:min-h-[720px]">
-                    <img src={activeFrame} alt="" className="absolute inset-0 h-full w-full object-contain object-center" />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.16)_54%,rgba(0,0,0,0.62))]" />
-                    <div className="absolute bottom-5 left-5 right-5 text-white">
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/58">
-                        Inspect shell / {getCaseCode(activeCase, activeCaseIndex)}
-                      </div>
-                      <div className="mt-4 max-w-[12ch] text-[48px] leading-[0.92] tracking-[-0.055em] sm:text-[76px]">
-                        {activeCase.title}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-6 sm:p-8">
-                    <div className="flex items-start justify-between gap-5">
-                      <div>
-                        <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-400">
-                          {activeCase.evidence.workType}
-                        </div>
-                        <div className="mt-4 text-[11px] uppercase tracking-[0.14em] text-neutral-500">
-                          {activeCase.evidence.proofLabel}
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setInspectOpen(false)}
-                        className="rounded-full border border-neutral-950/12 bg-white/58 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600 transition hover:border-neutral-950/30 hover:text-neutral-950"
-                      >
-                        Close
-                      </button>
-                    </div>
-
-                    <p className="mt-8 text-[26px] leading-9 tracking-[-0.03em] text-neutral-950">
-                      {activeCase.evidence.proofSummary}
-                    </p>
-
-                    <div className="mt-8 grid gap-0 border-y border-neutral-950/10">
-                      {activeCase.evidence.proofPoints.map((point, index) => (
-                        <div key={point} className="grid grid-cols-[3rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
-                          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                            {String(index + 1).padStart(2, "0")}
-                          </div>
-                          <p className="text-[14px] leading-6 text-neutral-700">{point}</p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-6">
-                      <DossierRow label="Capability" value={activeCase.evidence.capability} />
-                      <DossierRow label="System layers" value={activeCase.evidence.layers.join(" / ")} />
-                    </div>
-
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {activeCase.evidence.systemTags.map((tag) => (
-                        <EvidenceTag key={tag}>{tag}</EvidenceTag>
-                      ))}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => openCase(activeCase)}
-                      className="mt-8 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
-                    >
-                      Open full case -&gt;
-                    </button>
-                  </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <section id="evidence-featured" data-header-scene="evidence-featured" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
-            <div className="grid gap-10 lg:grid-cols-[minmax(260px,400px)_minmax(0,1fr)]">
+          <section id="evidence-featured" data-header-scene="evidence-featured" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
+            <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Featured Evidence</div>
-                <h2 className="mt-5 max-w-[9ch] text-[54px] font-normal leading-[0.9] text-neutral-950 sm:text-[78px]">
-                  Featured proof dossiers.
-                </h2>
-                <p className="mt-7 max-w-[28rem] text-[15px] leading-7 text-neutral-600">
-                  A smaller set of evidence surfaces for the cases that best show the commercial and system-level range.
-                </p>
+                <SectionIntro
+                  label="Featured Systems"
+                  title="Systems moving through a living scroll field."
+                  description="A controlled spatial reading surface: each case behaves like an authored object with image, caption, depth, proof, and adaptation signals moving as one system."
+                />
+                <div className="mt-8 hidden border-y border-neutral-950/12 py-4 font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400 lg:block">
+                  Motion serves spatial reading / captions remain signals / proof stays inspectable.
+                </div>
               </div>
 
-              <div className="grid gap-8">
-                {featuredCases.map((item, index) => {
-                  const visuals = getVisualFrames(item);
+              <div className="relative xl:pr-36 2xl:pr-20">
+                {selectedFeaturedCase ? (
+                  <div className="relative overflow-hidden bg-white/16 backdrop-blur-sm">
+                    <FeaturedFlowItem
+                      item={selectedFeaturedCase}
+                      index={0}
+                      variant="selected"
+                      onOpenCase={openCase}
+                      onRequestSystem={requestSystem}
+                    />
+                  </div>
+                ) : null}
 
-                  return (
-                    <motion.article
-                      key={item.slug}
-                      className="group grid overflow-hidden border-y border-neutral-950/14 bg-white/26 backdrop-blur-sm xl:grid-cols-[3fr_2fr]"
-                      initial={{ opacity: 0, y: 28 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: false, amount: 0.24 }}
-                      transition={{ duration: 0.66, delay: index * 0.04, ease }}
+                <div id="work-lens" className="mt-6 overflow-hidden border-y border-neutral-950/12 bg-white/22 backdrop-blur-sm">
+                  <div className="grid gap-3 border-b border-neutral-950/10 px-3 py-2 sm:grid-cols-[1fr_auto] sm:items-center">
+                    <div>
+                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Archive lens / compact filters</div>
+                      <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-300">{String(archiveVisibleCases.length).padStart(2, "0")} below flagship / {archiveViewMode === "field" ? "spatial field" : "visual index"}</div>
+                    </div>
+                    <ArchiveViewToggle mode={archiveViewMode} onChange={changeArchiveViewMode} />
+                  </div>
+                  <div className="grid gap-3 p-2 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-stretch">
+                    <div className="grid grid-flow-col auto-cols-[minmax(9.5rem,auto)] gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:grid-flow-row sm:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:pb-0 [&::-webkit-scrollbar]:hidden">
+                      {evidenceFilters.map((filter) => (
+                        <FilterButton key={filter} filter={filter} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
+                      ))}
+                    </div>
+                    <div className="border-y border-neutral-950/10 bg-[#f8f6f0]/62 px-3 py-3 font-mono text-[9px] uppercase leading-5 tracking-[0.15em] text-neutral-400">
+                      Availability lives on the case objects. Adaptation details stay inside each full case.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 xl:pr-36 2xl:pr-20">
+              <AnimatePresence mode="wait">
+                {archiveViewMode === "index" ? (
+                  <WorkIndexTransformList
+                    key={`archive-index-${activeFilter}`}
+                    items={archiveVisibleCases}
+                    onOpenCase={openCase}
+                    onRequestSystem={requestSystem}
+                    onFocusCase={selectCase}
+                  />
+                ) : (
+                  <motion.div
+                    key="archive-field"
+                    initial={{ opacity: 0, y: 34, filter: "blur(10px)", clipPath: "inset(0 0 100% 0)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0 0 0% 0)" }}
+                    exit={{ opacity: 0, y: -24, filter: "blur(8px)", clipPath: "inset(0 0 100% 0)" }}
+                    transition={{ duration: 0.72, ease }}
+                  >
+              <div className="relative overflow-hidden border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm">
+                <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
+                <div className="relative mx-auto grid max-w-[1480px] gap-16 md:grid-cols-2 md:gap-x-24 lg:gap-x-32">
+                  <div className="grid gap-16 md:gap-36 lg:gap-44">
+                    {filteredSupportingFeaturedColumns.left.map((item, index) => (
+                      <div key={item.slug} className="relative">
+                        <FeaturedFlowItem
+                          item={item}
+                          index={index * 2 + 1}
+                          onOpenCase={openCase}
+                          onRequestSystem={requestSystem}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="grid gap-16 md:gap-36 md:pt-44 lg:gap-44 lg:pt-56">
+                    {filteredSupportingFeaturedColumns.right.map((item, index) => (
+                      <div key={item.slug} className="relative">
+                        <FeaturedFlowItem
+                          item={item}
+                          index={index * 2 + 2}
+                          onOpenCase={openCase}
+                          onRequestSystem={requestSystem}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="relative mx-auto grid max-w-[1480px] gap-6 border-t border-neutral-950/10 px-4 py-8 md:grid-cols-2 md:py-10">
+                  <div className="hidden md:block" />
+                  <div className="max-w-[28rem] md:justify-self-end">
+                    <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
+                      Extended field / {String(filteredExpandedCases.length).padStart(2, "0")} more case objects
+                    </div>
+                    <p className="mt-3 text-[14px] leading-7 text-neutral-600">
+                      When the archive grows, this surface can unfold more systems without turning the page into a heavy
+                      catalogue.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={expandArchive}
+                      disabled={filteredExpandedCases.length === 0}
+                      className="mt-5 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 disabled:pointer-events-none disabled:border-neutral-300 disabled:bg-white/50 disabled:text-neutral-300"
                     >
-                      <button
-                        type="button"
-                        onMouseEnter={() => setActiveSlug(item.slug)}
-                        onFocus={() => setActiveSlug(item.slug)}
-                        onClick={() => openCase(item)}
-                        className="grid min-h-[460px] grid-rows-[1fr_7rem] gap-2 bg-neutral-950 p-2 text-left"
-                      >
-                        <div className="relative overflow-hidden">
-                          <img src={visuals[0]} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/54 via-transparent to-transparent" />
-                          <div className="absolute bottom-4 left-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/66">
-                            {getCaseCode(item, index)}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2">
-                          {visuals.slice(1, 3).map((visual) => (
-                            <div key={visual} className="relative overflow-hidden bg-white/8">
-                              <img src={visual} alt="" className="absolute inset-0 h-full w-full object-cover opacity-[0.88] transition duration-700 group-hover:scale-[1.04]" />
-                            </div>
-                          ))}
-                        </div>
-                      </button>
+                      Open extended field -&gt;
+                    </button>
+                  </div>
+                </div>
 
-                      <div className="p-6 md:p-8">
-                        <div className="flex items-start justify-between gap-5">
-                          <div className="text-[10px] uppercase tracking-[0.16em] text-neutral-400">{item.evidence.workType}</div>
-                          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">0{index + 1}</div>
-                        </div>
-                        <h3 className="mt-8 max-w-[13ch] text-[44px] font-normal leading-[0.94] text-neutral-950 sm:text-[62px]">
-                          {item.title}
-                        </h3>
-                        <div className="mt-7 text-[11px] uppercase tracking-[0.14em] text-neutral-500">{item.evidence.proofLabel}</div>
-                        <p className="mt-4 max-w-[40rem] text-[14px] leading-7 text-neutral-600">{item.evidence.proofSummary}</p>
-
-                        <div className="mt-7">
-                          <DossierRow label="Proves" value={item.evidence.proofPoints[0]} />
-                          <DossierRow label="Capability" value={item.evidence.capability} />
-                          <DossierRow label="System layers" value={item.evidence.layers.join(" / ")} />
-                        </div>
-
-                        <div className="mt-6 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
-                          {item.evidence.systemTags.slice(0, 4).map((tag) => (
-                            <EvidenceTag key={tag}>{tag}</EvidenceTag>
-                          ))}
+                <AnimatePresence>
+                  {archiveExpanded ? (
+                    <motion.div
+                      ref={expandedArchiveRef}
+                      id="extended-case-field"
+                      className="relative border-t border-neutral-950/10 bg-white/12 px-0 py-10"
+                      initial={{ opacity: 0, height: 0, y: 28 }}
+                      animate={{ opacity: 1, height: "auto", y: 0 }}
+                      exit={{ opacity: 0, height: 0, y: 18 }}
+                      transition={{ duration: 0.72, ease }}
+                    >
+                      <div className="mx-auto mb-10 grid max-w-[1480px] gap-3 px-4 md:grid-cols-[1fr_auto] md:items-center">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
+                          Expanded archive field / filtered by {activeFilter}
                         </div>
                         <button
                           type="button"
-                          onClick={() => openCase(item)}
-                          className="mt-8 border-y border-neutral-950/18 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-600 transition hover:border-neutral-950 hover:text-neutral-950"
+                          onClick={() => {
+                            playRole("close");
+                            setArchiveExpanded(false);
+                          }}
+                          className="justify-self-start border-y border-neutral-950/14 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950 md:justify-self-end"
                         >
-                          Open case -&gt;
+                          Close field -&gt;
                         </button>
                       </div>
-                    </motion.article>
-                  );
-                })}
+
+                      <div className="relative mx-auto grid max-w-[1480px] gap-16 md:grid-cols-2 md:gap-x-24 lg:gap-x-32">
+                        <div className="grid gap-16 md:gap-36 lg:gap-44">
+                          {expandedFeaturedColumns.left.map((item, index) => (
+                            <FeaturedFlowItem
+                              key={item.slug}
+                              item={item}
+                              index={featuredCases.length + index * 2}
+                              onOpenCase={openCase}
+                              onRequestSystem={requestSystem}
+                            />
+                          ))}
+                        </div>
+
+                        <div className="grid gap-16 md:gap-36 md:pt-36 lg:gap-44 lg:pt-48">
+                          {expandedFeaturedColumns.right.map((item, index) => (
+                            <FeaturedFlowItem
+                              key={item.slug}
+                              item={item}
+                              index={featuredCases.length + index * 2 + 1}
+                              onOpenCase={openCase}
+                              onRequestSystem={requestSystem}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
               </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </section>
 
-          <section id="evidence-capability" data-header-scene="evidence-capability" className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-20 xl:grid-cols-[0.34fr_0.66fr]">
-            <div>
-              <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Capability Layer</div>
-              <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] text-neutral-950 sm:text-[76px]">
-                What the archive proves.
-              </h2>
-            </div>
-            <div className="grid gap-0 border-y border-neutral-950/14 md:grid-cols-2">
+          <section id="evidence-capability" data-header-scene="evidence-capability" className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
+            <SectionIntro label="Capability Layer" title="What the archive proves." />
+            <div className="grid gap-0 border-y border-neutral-950/14 md:grid-cols-2 xl:grid-cols-3">
               {capabilityLayer.map((capability, index) => (
-                <div key={capability.label} className="border-b border-neutral-950/10 p-6 md:border-r md:even:border-r-0">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">0{index + 1}</div>
-                  <div className="mt-5 text-[32px] leading-none text-neutral-950">{capability.label}</div>
+                <div key={capability.label} className="border-b border-neutral-950/10 p-6 md:border-r md:even:border-r-0 xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-child(even)]:border-r">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(index + 1).padStart(2, "0")}</div>
+                  <div className="mt-5 text-[30px] leading-none tracking-[-0.04em] text-neutral-950">{capability.label}</div>
                   <p className="mt-5 max-w-[32rem] text-[14px] leading-7 text-neutral-600">{capability.summary}</p>
                 </div>
-              ))}
-            </div>
-          </section>
-
-          <section id="compact-archive" data-header-scene="evidence-index" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
-            <div className="mb-9 grid gap-8 lg:grid-cols-[0.34fr_0.66fr]">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Compact Archive</div>
-                <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] text-neutral-950 sm:text-[76px]">
-                  Fast proof index.
-                </h2>
-              </div>
-              <div className="self-end text-[15px] leading-7 text-neutral-600">
-                A dense scan layer for people who already understand the direction and want to compare cases quickly.
-              </div>
-            </div>
-
-            <div className="border-y border-neutral-950/14">
-              {evidenceCases.map((item, index) => (
-                <button
-                  key={item.slug}
-                  type="button"
-                  onMouseEnter={() => setActiveSlug(item.slug)}
-                  onFocus={() => setActiveSlug(item.slug)}
-                  onClick={() => openCase(item)}
-                  className="grid w-full gap-4 border-b border-neutral-950/10 py-5 text-left transition last:border-b-0 hover:bg-white/42 md:grid-cols-[4rem_0.24fr_0.2fr_1fr_7rem]"
-                >
-                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="text-[22px] leading-none text-neutral-950">{item.title}</span>
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-neutral-400">{item.evidence.workType}</span>
-                  <span className="text-[13px] leading-6 text-neutral-600">{item.evidence.proofLabel}</span>
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">Open -&gt;</span>
-                </button>
               ))}
             </div>
           </section>

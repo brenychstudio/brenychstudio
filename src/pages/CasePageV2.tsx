@@ -1,0 +1,1797 @@
+import { useCallback, useEffect, useMemo, useRef, useState, type WheelEvent } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
+import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
+import Header from "../ui/Header";
+import PageSurface from "../ui/PageSurface";
+import SiteFooterV2 from "../ui/SiteFooterV2";
+import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
+import { startSpaPageTransition } from "../ui/pageTransition";
+import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
+import { useSound } from "../stage/audio/useSound";
+import type { SectionRailItem } from "../ui/SectionRail";
+
+type PageProps = {
+  drawerOpen?: boolean;
+  onOpenProject?: () => void;
+  onCloseProject?: () => void;
+};
+
+type ProofLedgerItem = {
+  label: string;
+  text: string;
+};
+
+type EvidenceViewMode = "sequence" | "atlas";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+const INITIAL_EVIDENCE_FRAME_COUNT = 5;
+
+const caseSpineItems: SectionRailItem[] = [
+  { index: "01", label: "Threshold", id: "case-threshold" },
+  { index: "02", label: "Walkthrough", id: "case-walkthrough" },
+  { index: "03", label: "Screens", id: "case-media" },
+  { index: "04", label: "Proof", id: "case-proof-system" },
+  { index: "05", label: "Available", id: "case-available" },
+  { index: "06", label: "Next", id: "case-closing" },
+];
+
+const heroFragmentFrames = [
+  "right-[3%] top-[9%] h-[31%] w-[31%]",
+  "left-[5%] bottom-[11%] h-[25%] w-[28%]",
+  "right-[16%] bottom-[5%] h-[20%] w-[24%]",
+];
+
+const alignedHeroFragmentFrames = [
+  "right-[2%] top-[8%] aspect-video w-[36%]",
+  "left-[3%] bottom-[11%] aspect-video w-[32%]",
+  "right-[12%] bottom-[7%] aspect-video w-[27%]",
+];
+
+const heroFragmentShapes = [
+  "polygon(5% 0, 100% 8%, 93% 100%, 0 88%)",
+  "polygon(0 10%, 92% 0, 100% 86%, 8% 100%)",
+  "polygon(8% 0, 100% 0, 92% 100%, 0 90%)",
+];
+
+const proofLedger: ProofLedgerItem[] = [
+  {
+    label: "Product focus",
+    text: "Products are presented as rare objects, not catalogue inventory.",
+  },
+  {
+    label: "Private inquiry",
+    text: "Conversion becomes appointment-led and private, replacing checkout pressure with trust.",
+  },
+  {
+    label: "Commercial trust",
+    text: "Routing, dynamic product pages, editorial content, and deployment-ready engineering work together.",
+  },
+];
+
+const technicalLedger = [
+  "Next.js App Router + TypeScript",
+  "Multilingual routing",
+  "Dynamic product pages",
+  "Reusable editorial components",
+  "Metadata / Open Graph preparation",
+  "Cloudflare Workers deployment",
+];
+
+function getCaseNarrative(story: CaseStory) {
+  if (story.slug === "creatorops" || story.caseType === "workflow-tool") {
+    return {
+      heroMeta: "Library / smart mix / export / tools",
+      heroReadiness: "01 / live beta system",
+      heroMediaTitle: "Creator workflow engine",
+      walkthroughTitle: ["The workflow", "turns chaos", "into output."],
+      walkthroughIntro:
+        "CreatorOps moves scattered visual assets through Library, Smart Mix, Sequence, Planner, Captions, Export, and Bio Builder without turning the product into dashboard clutter.",
+      walkthroughSignals: [
+        { label: "Library", text: "Assets enter as raw material, then become selected publishing candidates." },
+        { label: "Smart Mix", text: "The decision layer ranks combinations, avoids repetition, and gives the user a cleaner path." },
+        { label: "Export", text: "The workflow ends in a real downloadable content pack instead of a decorative preview." },
+      ],
+      mobileTitle: "Handheld creator rhythm.",
+      mobileIntro:
+        "A circular mobile rail for inspecting the creator workflow, export logic, and Bio Builder handoff as compact product surfaces.",
+      screensTitle: ["Workflow", "as evidence."],
+      screensReadout:
+        "Each frame proves a working product layer: positioning, library intake, Smart Mix, planning, export, and profile tools.",
+      screenSignals: ["Workflow threshold", "Smart Mix", "Export tools"],
+      proofLabels: ["Decision support", "Practical output", "Tools layer"],
+      availableStatement:
+        "Adapt the creator workflow logic into a commissioned SaaS, content operations, or internal publishing tool.",
+      availableBlueprint:
+        "Commissioned workflow system with its own steps, data model, export logic, and tool layer.",
+    };
+  }
+
+  if (story.caseType === "advisory") {
+    return {
+      heroMeta: "District / shortlist / private intake / proof",
+      heroReadiness: "01 / ready to advise",
+      heroMediaTitle: "Curated advisory surface",
+      walkthroughTitle: ["The advisory", "moves through", "buyer fit."],
+      walkthroughIntro:
+        "The interface guides the visitor from location signal to curated search, shortlist logic, and private inquiry without falling into listing-portal noise.",
+      walkthroughSignals: [
+        { label: "Position", text: "Coastal advisory framing establishes trust before listings." },
+        { label: "Shortlist", text: "Curated selections narrow the decision field before private intake." },
+        { label: "Advisory", text: "District lens, bilingual access, and property showpieces stay in one flow." },
+      ],
+      mobileTitle: "Handheld buyer rhythm.",
+      mobileIntro:
+        "A circular mobile rail for inspecting the advisory journey without flattening it into a generic phone row.",
+      screensTitle: ["Buyer journey", "as evidence."],
+      screensReadout:
+        "Each frame proves a decision layer: location signal, curated search, district fit, shortlist logic, and private inquiry.",
+      screenSignals: ["Advisory threshold", "Curated search", "District lens"],
+      proofLabels: ["Buyer intent", "Curated search", "Private inquiry"],
+      availableStatement:
+        "Adapt the advisory logic into a commissioned property, hospitality, or private-service surface.",
+      availableBlueprint:
+        "Commissioned advisory surface with its own territory, content, and inquiry rhythm.",
+    };
+  }
+
+  return {
+    heroMeta: "Desire / systems / availability / proof",
+    heroReadiness: "01 / ready to adapt",
+    heroMediaTitle: "Cinematic product theatre",
+    walkthroughTitle: ["The interface", "moves like", "product theatre."],
+    walkthroughIntro:
+      "A luxury product interface should not behave like inventory. The walkthrough keeps desire, product focus, editorial pacing, and private inquiry in one moving surface.",
+    walkthroughSignals: [
+      { label: "Reveal", text: "Slow product focus before catalogue noise." },
+      { label: "Inquiry", text: "A private request path appears when desire is already formed." },
+      { label: "Surface", text: "Editorial rhythm, multilingual access, and commerce logic stay in one field." },
+    ],
+    mobileTitle: "Handheld maison rhythm.",
+    mobileIntro:
+      "A circular mobile rail for inspecting the handheld surface without flattening it into a static phone row.",
+    screensTitle: ["Screens", "as evidence."],
+    screensReadout:
+      "Complete frames stay readable. Motion adds depth; it does not hide the interface.",
+    screenSignals: ["Full surfaces", "Motion behind detail", "Desktop + mobile"],
+    proofLabels: ["Product focus", "Private inquiry", "Commercial trust"],
+    availableStatement:
+      "Adapt the maison logic into a commissioned product surface, not a template resale.",
+    availableBlueprint:
+      "Commissioned adaptation with its own brand, content, and inquiry rhythm.",
+  };
+}
+
+function CaseMeta({ story }: { story: CaseStory | null }) {
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = story
+      ? `${story.headline} - Case System Story - Brenych Studio`
+      : "Case Lab - Brenych Studio";
+
+    return () => {
+      document.title = previousTitle;
+    };
+  }, [story]);
+
+  return null;
+}
+
+function mediaRoleLabel(role: CaseStoryMedia["role"]) {
+  return role.replace("-", " ");
+}
+
+function getTitleLines(title: string) {
+  if (title === "CreatorOps") return ["Creator", "Ops"];
+
+  const words = title.split(" ");
+  if (words.length === 3 && title.length > 18) return [words.slice(0, 2).join(" "), words[2] ?? ""];
+  if (words.length <= 3) return words;
+
+  return [words.slice(0, -1).join(" "), words.at(-1) ?? ""];
+}
+
+function findMedia(story: CaseStory, id: string) {
+  return story.mediaSequence.find((media) => media.id === id) ?? null;
+}
+
+function getWalkthroughMedia(story: CaseStory) {
+  return findMedia(story, "walkthrough") ?? story.mediaSequence[0];
+}
+
+function getThresholdMedia(story: CaseStory) {
+  return (
+    findMedia(story, "threshold") ??
+    story.mediaSequence.find((media) => media.kind !== "video") ??
+    story.mediaSequence[0]
+  );
+}
+
+function getHeroFragments(story: CaseStory) {
+  return ["collection", "craft", "inquiry"]
+    .map((id) => findMedia(story, id))
+    .filter((media): media is CaseStoryMedia => Boolean(media));
+}
+
+function getEvidenceFrames(story: CaseStory) {
+  if (story.slug === "creatorops") {
+    return [
+      "threshold",
+      "desktop-1",
+      "desktop-2",
+      "desktop-3",
+      "desktop-5",
+      "collection",
+      "desktop-7",
+      "desktop-8",
+      "craft",
+      "desktop-10",
+      "desktop-11",
+      "inquiry",
+      "desktop-13",
+    ]
+      .map((id) => findMedia(story, id))
+      .filter((media): media is CaseStoryMedia => Boolean(media));
+  }
+
+  return ["threshold", "collection", "craft", "inquiry"]
+    .map((id) => findMedia(story, id))
+    .filter((media): media is CaseStoryMedia => Boolean(media));
+}
+
+function getMobileFrames(story: CaseStory) {
+  return story.mediaSequence.filter((media) => media.role === "mobile");
+}
+
+function getAvailabilitySignal(story: CaseStory) {
+  if (!story.availability) return "Custom direction";
+  if (story.availability.status === "available") return "Available foundation";
+  if (story.availability.status === "custom-only") return "Custom only";
+  if (story.availability.status === "concept-reference") return "Concept reference";
+  return "Case reference";
+}
+
+function CaseMediaView({
+  media,
+  priority = false,
+  ambient = false,
+  fit = "contain",
+  objectPosition,
+}: {
+  media: CaseStoryMedia;
+  priority?: boolean;
+  ambient?: boolean;
+  fit?: "cover" | "contain";
+  objectPosition?: "top" | "center" | "bottom";
+}) {
+  const positionClass =
+    objectPosition === "top"
+      ? "object-top"
+      : objectPosition === "bottom"
+        ? "object-bottom"
+        : media.role === "mobile"
+          ? "object-top"
+          : "object-center";
+  const frameClass = [
+    "h-full w-full",
+    fit === "cover" ? "object-cover" : "object-contain",
+    positionClass,
+  ].join(" ");
+
+  if (media.kind === "video") {
+    return (
+      <video
+        className={frameClass}
+        src={media.src}
+        poster={media.poster}
+        controls={!ambient}
+        autoPlay={ambient}
+        loop={ambient}
+        muted
+        playsInline
+        preload={priority ? "metadata" : "none"}
+      />
+    );
+  }
+
+  return (
+    <img
+      className={frameClass}
+      src={media.src}
+      alt={media.alt}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+    />
+  );
+}
+
+function SignalButton({
+  children,
+  onClick,
+  href,
+  variant = "primary",
+}: {
+  children: string;
+  onClick?: () => void;
+  href?: string;
+  variant?: "primary" | "secondary" | "quiet";
+}) {
+  const className = [
+    "inline-flex min-h-10 items-center justify-center rounded-full px-5 text-[11px] font-semibold uppercase tracking-[0.16em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400",
+    variant === "primary"
+      ? "border border-neutral-950 bg-neutral-950 text-white shadow-[0_14px_40px_rgba(15,15,15,0.14)] hover:-translate-y-0.5 hover:bg-neutral-800"
+      : variant === "secondary"
+        ? "border border-neutral-950/14 bg-white/58 text-neutral-800 backdrop-blur-sm hover:-translate-y-0.5 hover:border-neutral-950/26 hover:bg-white"
+        : "border border-transparent text-neutral-500 hover:text-neutral-950",
+  ].join(" ");
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <button type="button" onClick={onClick} className={className}>
+      {children}
+    </button>
+  );
+}
+
+function SectionSignal({ index, label }: { index: string; label: string }) {
+  return (
+    <div className="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase leading-4 tracking-[0.22em] text-neutral-500">
+      <span className="h-px w-10 bg-neutral-950/22" />
+      <span>{index}</span>
+      <span className="min-w-0 break-words">{label}</span>
+    </div>
+  );
+}
+
+function CaseSystemSpine({
+  items,
+  activeId,
+  onSelect,
+}: {
+  items: SectionRailItem[];
+  activeId: string;
+  onSelect: (id: string) => void;
+}) {
+  if (!items.length) return null;
+
+  return (
+    <nav
+      aria-label="Case system spine"
+      className="pointer-events-none fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 xl:block 2xl:right-5"
+    >
+      <div className="pointer-events-auto grid gap-2 border-r border-neutral-950/12 bg-[#f4f1ea]/18 py-2 pr-2 text-right backdrop-blur-sm 2xl:pr-3">
+        {items.map((item) => {
+          const active = activeId === item.id;
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => onSelect(item.id)}
+              aria-current={active ? "true" : undefined}
+              className={[
+                "group grid grid-cols-[1.45rem] items-center justify-end gap-2 py-1 text-[9px] uppercase tracking-[0.16em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 2xl:grid-cols-[1fr_1.45rem]",
+                active ? "text-neutral-950" : "text-neutral-400 hover:text-neutral-800",
+              ].join(" ")}
+            >
+              <span className="hidden truncate 2xl:block">{item.label}</span>
+              <span
+                className={[
+                  "grid h-5 w-5 place-items-center rounded-full border font-mono text-[8px] transition",
+                  active
+                    ? "border-neutral-950 bg-neutral-950 text-white"
+                    : "border-neutral-950/12 bg-white/24 text-neutral-400 group-hover:border-neutral-950/28",
+                ].join(" ")}
+              >
+                {item.index}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
+function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
+  const walkthrough = getWalkthroughMedia(story);
+  const narrative = getCaseNarrative(story);
+  const isAdvisory = story.caseType === "advisory";
+
+  return (
+    <section
+      id="case-walkthrough"
+      className="relative mx-auto w-[min(95vw,1680px)] overflow-hidden border-y border-neutral-950/12 py-14 md:py-16"
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:82px_82px]" />
+      <div className="pointer-events-none absolute right-[4%] top-[10%] h-[52%] w-[54%] rounded-[50%] bg-neutral-950/10 blur-3xl" />
+
+      <div className="relative mx-auto grid w-[min(92vw,1500px)] gap-5">
+        <div className="relative overflow-hidden border-y border-neutral-950/12 py-8 md:py-9">
+          <div className="pointer-events-none absolute inset-y-0 left-[53%] hidden w-px bg-neutral-950/10 lg:block" />
+          <div className="pointer-events-none absolute right-[10%] top-1/2 hidden h-[22rem] w-[22rem] -translate-y-1/2 rounded-full border border-neutral-950/5 lg:block" />
+          <div className="grid gap-8 lg:grid-cols-[0.56fr_0.18fr_0.52fr] lg:items-end">
+            <div>
+              <SectionSignal index="02" label="System walkthrough" />
+              <h2 className="max-w-[12ch] text-[clamp(3rem,4.9vw,5.65rem)] font-semibold leading-[0.9] tracking-normal text-neutral-950">
+                {narrative.walkthroughTitle.map((line, index) => (
+                  <span key={line} className={index === 1 ? "block pl-[14%]" : "block"}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
+            </div>
+            <div className="hidden self-stretch border-l border-neutral-950/12 pl-4 font-mono text-[9px] uppercase leading-6 tracking-[0.18em] text-neutral-400 lg:grid">
+              <span>Motion grammar</span>
+              <span>Private request path</span>
+              <span>Full system proof</span>
+            </div>
+            <div className="grid gap-5 lg:pb-2">
+              <p className="max-w-[32rem] text-lg leading-[1.38] text-neutral-700 md:text-[1.18rem]">
+                {narrative.walkthroughIntro}
+              </p>
+              <div className="border-y border-neutral-950/14">
+                {narrative.walkthroughSignals.map((signal, index) => (
+                  <div
+                    key={signal.label}
+                    className="grid gap-3 border-b border-neutral-950/10 py-3.5 last:border-b-0 md:grid-cols-[5.5rem_1fr]"
+                  >
+                    <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                      {String(index + 1).padStart(2, "0")} / {signal.label}
+                    </div>
+                    <p className="max-w-xl text-sm leading-relaxed text-neutral-600">
+                      {signal.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div
+            className={[
+              "relative mx-auto w-full overflow-hidden p-3 lg:w-[82%] md:p-5",
+              isAdvisory
+                ? "border border-neutral-950/10 bg-[#f7f3ea]/90 shadow-[0_34px_110px_rgba(122,101,72,0.14)]"
+                : "bg-neutral-950 shadow-[0_42px_130px_rgba(10,10,10,0.22)]",
+            ].join(" ")}
+          >
+            <div
+              className={[
+                "mb-3 flex flex-wrap items-center justify-between gap-3 border-y px-3 py-2 font-mono text-[8px] uppercase tracking-[0.18em]",
+                isAdvisory ? "border-neutral-950/12 text-neutral-500" : "border-white/12 text-white/52",
+              ].join(" ")}
+            >
+              <span>Walkthrough / full system motion</span>
+              <span>Sound optional / native controls</span>
+            </div>
+            <div
+              className={[
+                "relative aspect-video overflow-hidden border",
+                isAdvisory ? "border-neutral-950/10 bg-white" : "border-white/10 bg-[#050505]",
+              ].join(" ")}
+            >
+              <CaseMediaView media={walkthrough} priority fit="contain" />
+            </div>
+            <div
+              className={[
+                "mt-4 flex flex-wrap items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.18em]",
+                isAdvisory ? "text-neutral-500" : "text-white/54",
+              ].join(" ")}
+            >
+              <span>Motion grammar / private request path / case surface proof</span>
+              <span>Proof / not a static mockup</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseMediaChapter({
+  media,
+  index,
+  reducedMotion,
+  onInspect,
+}: {
+  media: CaseStoryMedia;
+  index: number;
+  reducedMotion: boolean;
+  onInspect: (id: string) => void;
+}) {
+  const chapterRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: chapterRef,
+    offset: ["start 92%", "end 8%"],
+  });
+  const direction = index % 2 === 0 ? 1 : -1;
+  const imageX = useTransform(scrollYProgress, [0, 0.5, 1], [28 * direction, 0, -24 * direction]);
+  const imageY = useTransform(scrollYProgress, [0, 0.5, 1], [54, 0, -48]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.965, 1.012, 0.98]);
+  const copyY = useTransform(scrollYProgress, [0, 0.5, 1], [26, 0, -24]);
+  const alignRight = index % 2 === 1;
+  const layout = [
+    {
+      article: "min-h-[760px] sm:min-h-[840px] lg:min-h-[900px]",
+      image: "top-[9%] w-[min(86vw,58rem)]",
+      copy: "bottom-[9%]",
+      title: "text-5xl md:text-7xl",
+      caption: "max-w-lg",
+    },
+    {
+      article: "min-h-[620px] sm:min-h-[690px] lg:min-h-[730px]",
+      image: "top-[11%] w-[min(82vw,45rem)]",
+      copy: "bottom-[10%]",
+      title: "text-4xl md:text-6xl",
+      caption: "max-w-md",
+    },
+    {
+      article: "min-h-[700px] sm:min-h-[770px] lg:min-h-[820px]",
+      image: "top-[8%] w-[min(86vw,52rem)]",
+      copy: "bottom-[8%]",
+      title: "text-5xl md:text-[4.25rem]",
+      caption: "max-w-lg",
+    },
+    {
+      article: "min-h-[590px] sm:min-h-[650px] lg:min-h-[690px]",
+      image: "top-[12%] w-[min(78vw,41rem)]",
+      copy: "bottom-[10%]",
+      title: "text-4xl md:text-5xl",
+      caption: "max-w-md",
+    },
+  ][index % 4];
+
+  return (
+    <motion.article
+      ref={chapterRef}
+      layout
+      className={["relative overflow-hidden border-t border-neutral-950/12 py-8 sm:py-10", layout.article].join(" ")}
+      initial={{ opacity: 0.72 }}
+      whileInView={{ opacity: 1 }}
+      exit={reducedMotion ? undefined : { opacity: 0, y: 18 }}
+      viewport={{ once: false, amount: 0.18 }}
+      transition={{ duration: 0.5, ease }}
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
+      <motion.div
+        className={[
+          "absolute aspect-video overflow-hidden border border-neutral-950/12 bg-[#f4f1ea]/64 shadow-[0_34px_100px_rgba(10,10,10,0.13)]",
+          alignRight ? "right-[5%]" : "left-[5%]",
+          layout.image,
+        ].join(" ")}
+        style={reducedMotion ? undefined : { x: imageX, y: imageY, scale: imageScale }}
+      >
+        <button
+          type="button"
+          onClick={() => onInspect(media.id)}
+          className="group relative h-full w-full overflow-hidden bg-transparent text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950"
+          aria-label={`Inspect ${media.label}`}
+        >
+          <CaseMediaView media={media} priority={index < 2} fit="contain" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,rgba(0,0,0,0.28))] opacity-0 transition duration-500 group-hover:opacity-100" />
+          <div className="pointer-events-none absolute right-4 top-4 border-y border-white/18 bg-black/32 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-white/62 opacity-0 backdrop-blur-md transition duration-500 group-hover:opacity-100">
+            Inspect surface
+          </div>
+        </button>
+      </motion.div>
+
+      <motion.div
+        className={[
+          "absolute z-10 max-w-xl border-l border-neutral-950/14 bg-[#f4f1ea]/78 py-5 pl-6 pr-4 backdrop-blur-sm",
+          alignRight ? "left-[5%]" : "right-[5%]",
+          layout.copy,
+        ].join(" ")}
+        style={reducedMotion ? undefined : { y: copyY }}
+      >
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">
+          Frame {String(index + 1).padStart(2, "0")} / {mediaRoleLabel(media.role)}
+        </div>
+        <h3 className={["mt-3 font-semibold leading-none tracking-normal text-neutral-950", layout.title].join(" ")}>
+          {media.label}
+        </h3>
+        <p className={["mt-4 text-base leading-8 text-neutral-600", layout.caption].join(" ")}>{media.caption}</p>
+      </motion.div>
+    </motion.article>
+  );
+}
+
+function MobileSurfaceRail({
+  story,
+  frames,
+  onInspect,
+}: {
+  story: CaseStory;
+  frames: CaseStoryMedia[];
+  onInspect: (id: string) => void;
+}) {
+  const narrative = getCaseNarrative(story);
+  const isAdvisoryCase = story.caseType === "advisory";
+  const isCreatorOpsCase = story.slug === "creatorops";
+  const usesTallPhoneFrames = isAdvisoryCase || isCreatorOpsCase;
+  const phoneAspectClass = isCreatorOpsCase
+    ? "aspect-[1080/2340] bg-neutral-950"
+    : isAdvisoryCase
+      ? "aspect-[1080/2088] bg-white"
+      : "aspect-[9/16] bg-neutral-950";
+  const sound = useSound();
+  const reduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [dragStart, setDragStart] = useState<number | null>(null);
+  const railRef = useRef<HTMLElement | null>(null);
+  const activeIndexRef = useRef(0);
+  const wheelLockRef = useRef(0);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  if (!frames.length) return null;
+
+  const activeFrame = frames[activeIndex] ?? frames[0];
+  const wrapIndex = (index: number) => (index + frames.length) % frames.length;
+  const clampIndex = (index: number) => Math.min(Math.max(index, 0), frames.length - 1);
+  const setActive = (index: number, wrap = true) => {
+    const nextIndex = wrap ? wrapIndex(index) : clampIndex(index);
+    if (nextIndex === activeIndexRef.current) return;
+    sound.playRole("transition");
+    activeIndexRef.current = nextIndex;
+    setActiveIndex(nextIndex);
+  };
+  const moveCarousel = (direction: 1 | -1) => setActive(activeIndex + direction);
+  const handleCarouselWheel = (event: WheelEvent<HTMLElement>) => {
+    const horizontalIntent = Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.shiftKey;
+    const now = window.performance.now();
+
+    if (horizontalIntent) {
+      if (now - wheelLockRef.current < 520) return;
+
+      event.preventDefault();
+      wheelLockRef.current = now;
+      moveCarousel(event.deltaX + event.deltaY > 0 ? 1 : -1);
+      return;
+    }
+
+    const verticalIntent = Math.abs(event.deltaY) > 12;
+    if (!verticalIntent || reduceMotion || frames.length < 2) return;
+    if (window.innerWidth < 900 || window.matchMedia("(pointer: coarse)").matches) return;
+
+    const section = railRef.current;
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const inCaptureZone = rect.top < viewportHeight * 0.46 && rect.bottom > viewportHeight * 0.54;
+    if (!inCaptureZone) return;
+
+    const direction: 1 | -1 = event.deltaY > 0 ? 1 : -1;
+    const currentIndex = activeIndexRef.current;
+    const atBoundary =
+      (direction > 0 && currentIndex >= frames.length - 1) ||
+      (direction < 0 && currentIndex <= 0);
+
+    if (atBoundary) return;
+    if (now - wheelLockRef.current < 620) {
+      event.preventDefault();
+      return;
+    }
+
+    event.preventDefault();
+    wheelLockRef.current = now;
+    setActive(currentIndex + direction, false);
+  };
+  const circularOffset = (index: number) => {
+    let offset = index - activeIndex;
+    const half = frames.length / 2;
+    if (offset > half) offset -= frames.length;
+    if (offset < -half) offset += frames.length;
+    return offset;
+  };
+
+  return (
+    <section
+      ref={railRef}
+      className="mx-auto w-[min(92vw,1480px)] pb-20"
+      onWheel={handleCarouselWheel}
+    >
+      <div className="grid gap-6 border-t border-neutral-950/12 pt-8 lg:grid-cols-[minmax(0,0.62fr)_minmax(18rem,0.38fr)] lg:items-end">
+        <div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">
+            Mobile surface carousel
+          </div>
+          <h3 className="mt-3 text-4xl font-semibold leading-none tracking-normal text-neutral-950 md:text-6xl">
+            {narrative.mobileTitle}
+          </h3>
+        </div>
+        <div className="grid gap-4 lg:justify-items-end lg:text-right">
+          <p className="max-w-md text-sm leading-7 text-neutral-500">
+            {narrative.mobileIntro}
+          </p>
+          <div className="flex flex-wrap gap-2 lg:justify-end">
+            <button
+              type="button"
+              onClick={() => moveCarousel(-1)}
+              className="grid h-10 w-10 place-items-center rounded-full border border-neutral-950/12 bg-white/46 font-mono text-[13px] text-neutral-600 backdrop-blur-sm transition hover:-translate-x-0.5 hover:border-neutral-950/24 hover:bg-white hover:text-neutral-950"
+              aria-label="Previous mobile frame"
+            >
+              &lt;
+            </button>
+            <button
+              type="button"
+              onClick={() => moveCarousel(1)}
+              className="grid h-10 w-10 place-items-center rounded-full border border-neutral-950/12 bg-white/46 font-mono text-[13px] text-neutral-600 backdrop-blur-sm transition hover:translate-x-0.5 hover:border-neutral-950/24 hover:bg-white hover:text-neutral-950"
+              aria-label="Next mobile frame"
+            >
+              &gt;
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/16 py-8 backdrop-blur-sm">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/6" />
+
+        <motion.div
+          className="relative h-[40rem] touch-pan-y select-none overflow-hidden sm:h-[43rem]"
+          drag={frames.length > 1 && !reduceMotion ? "x" : false}
+          dragElastic={0.12}
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragStart={(_, info) => setDragStart(info.point.x)}
+          onDragEnd={(_, info) => {
+            const start = dragStart ?? info.point.x;
+            const delta = info.point.x - start;
+            setDragStart(null);
+            if (Math.abs(delta) < 44) return;
+            moveCarousel(delta < 0 ? 1 : -1);
+          }}
+        >
+          {frames.map((media, index) => {
+            const offset = circularOffset(index);
+            const depth = Math.abs(offset);
+            const visible = depth <= 1 || frames.length <= 3;
+            const active = index === activeIndex;
+            const xOffset = offset * 250;
+            const rotate = offset * -9;
+            const scale = active ? 1 : 0.78;
+
+            return (
+              <motion.button
+                key={media.id}
+                type="button"
+                onClick={() => (active ? onInspect(media.id) : setActive(index))}
+                onMouseEnter={() => sound.playRole("hover")}
+                onFocus={() => sound.playRole("hover")}
+                className={[
+                  "group absolute left-1/2 top-5 cursor-zoom-in text-left outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
+                  isCreatorOpsCase
+                    ? "w-[min(52vw,16.5rem)] sm:w-[16rem]"
+                    : isAdvisoryCase
+                      ? "w-[min(58vw,18.5rem)] sm:w-[18rem]"
+                      : "w-[min(64vw,21rem)] sm:w-[20rem]",
+                ].join(" ")}
+                style={{ pointerEvents: visible ? "auto" : "none" }}
+                initial={reduceMotion ? false : { opacity: 0, y: 32, filter: "blur(10px)" }}
+                animate={{
+                  x: `calc(-50% + ${reduceMotion ? 0 : xOffset}px)`,
+                  y: reduceMotion ? 0 : active ? 0 : 28,
+                  scale: reduceMotion ? 1 : scale,
+                  rotate: reduceMotion ? 0 : rotate,
+                  opacity: reduceMotion ? (active ? 1 : 0) : visible ? (active ? 1 : 0.48) : 0,
+                  filter: visible ? "blur(0px)" : "blur(10px)",
+                  zIndex: 20 - depth,
+                }}
+                whileHover={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        y: active ? -10 : 16,
+                        scale: active ? 1.035 : 0.82,
+                        opacity: visible ? 1 : 0,
+                      }
+                }
+                transition={reduceMotion ? { duration: 0.01 } : { duration: 0.72, ease }}
+                aria-label={active ? `Inspect ${media.label}` : `Focus ${media.label}`}
+              >
+                <span
+                  className={[
+                    "block border border-neutral-950/10 shadow-[0_24px_78px_rgba(15,15,15,0.1)] backdrop-blur-sm",
+                    isCreatorOpsCase
+                      ? "bg-neutral-950/82 p-1"
+                      : isAdvisoryCase
+                        ? "bg-white/74 p-2"
+                        : "bg-[#f4f1ea]/82 p-3",
+                  ].join(" ")}
+                >
+                  <span
+                    className={[
+                      "relative block overflow-hidden shadow-[0_18px_64px_rgba(15,15,15,0.12)]",
+                      phoneAspectClass,
+                    ].join(" ")}
+                  >
+                    <CaseMediaView media={media} fit="contain" priority={active} />
+                    <span
+                      className={[
+                        "pointer-events-none absolute inset-0",
+                        usesTallPhoneFrames
+                          ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_22%,rgba(0,0,0,0.06))]"
+                          : "bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_20%,rgba(0,0,0,0.18))]",
+                      ].join(" ")}
+                    />
+                    <span
+                      className={[
+                        "pointer-events-none absolute bottom-3 right-3 border-y px-3 py-2 font-mono text-[8px] uppercase tracking-[0.16em] opacity-0 backdrop-blur-md transition duration-500 group-hover:opacity-100",
+                        isAdvisoryCase
+                          ? "border-neutral-950/12 bg-white/72 text-neutral-600"
+                          : "border-white/18 bg-black/36 text-white/62",
+                      ].join(" ")}
+                    >
+                      {active ? "Inspect" : "Focus"}
+                    </span>
+                  </span>
+                </span>
+              </motion.button>
+            );
+          })}
+
+          <div className="pointer-events-none absolute bottom-0 left-1/2 w-[min(86vw,42rem)] -translate-x-1/2 border-y border-neutral-950/10 bg-[#f4f1ea]/74 px-4 py-4 text-center backdrop-blur-md">
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+              Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
+            </div>
+            <h4 className="mt-2 text-2xl font-semibold tracking-normal text-neutral-950">
+              {activeFrame.label}
+            </h4>
+            <p className="mx-auto mt-2 max-w-[34rem] text-sm leading-6 text-neutral-600">
+              {activeFrame.caption}
+            </p>
+          </div>
+        </motion.div>
+
+        <div className="relative mt-6 flex items-center justify-center gap-2">
+          {frames.map((media, index) => (
+            <button
+              key={`${media.id}-dot`}
+              type="button"
+              onClick={() => setActive(index)}
+              className={`h-2 rounded-full border transition ${
+                index === activeIndex
+                  ? "w-8 border-neutral-950 bg-neutral-950"
+                  : "w-2 border-neutral-950/18 bg-white/50 hover:border-neutral-950/40"
+              }`}
+              aria-label={`Open mobile frame ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-5 flex snap-x gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden">
+        {frames.map((media, index) => (
+          <button
+            key={media.id}
+            type="button"
+            onClick={() => setActive(index)}
+            className={`w-28 shrink-0 snap-center border p-1 transition ${
+              index === activeIndex ? "border-neutral-950 bg-neutral-950" : "border-neutral-950/10 bg-white/50"
+            }`}
+            aria-label={`Focus ${media.label}`}
+          >
+            <span
+              className={[
+                "block overflow-hidden",
+                phoneAspectClass,
+              ].join(" ")}
+            >
+              <CaseMediaView media={media} fit="contain" />
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function EvidenceViewToggle({
+  mode,
+  onChange,
+}: {
+  mode: EvidenceViewMode;
+  onChange: (mode: EvidenceViewMode) => void;
+}) {
+  const options: Array<{ value: EvidenceViewMode; label: string; caption: string }> = [
+    { value: "sequence", label: "Flow", caption: "Cinematic" },
+    { value: "atlas", label: "Atlas", caption: "Grid scan" },
+  ];
+
+  return (
+    <div className="grid grid-cols-2 overflow-hidden rounded-full border border-neutral-950/10 bg-white/48 p-1 backdrop-blur-sm">
+      {options.map((option) => {
+        const active = mode === option.value;
+
+        return (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() => onChange(option.value)}
+            className={[
+              "relative min-h-9 overflow-hidden rounded-full px-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
+              active ? "text-white" : "text-neutral-400 hover:text-neutral-950",
+            ].join(" ")}
+            aria-pressed={active}
+          >
+            {active ? (
+              <motion.span
+                layoutId="case-evidence-view-active"
+                className="absolute inset-0 rounded-full bg-neutral-950"
+                transition={{ duration: 0.42, ease }}
+              />
+            ) : null}
+            <span className="relative grid grid-cols-[auto_1fr] items-center gap-2">
+              <span className={["h-1.5 w-1.5 rounded-full", active ? "bg-white" : "bg-neutral-950/18"].join(" ")} />
+              <span className="grid">
+                <span className="font-mono text-[9px] uppercase leading-none tracking-[0.16em]">{option.label}</span>
+                <span className={["mt-1 hidden font-mono text-[8px] uppercase leading-none tracking-[0.13em] sm:block", active ? "text-white/48" : "text-neutral-300"].join(" ")}>
+                  {option.caption}
+                </span>
+              </span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function EvidenceAtlasGrid({
+  frames,
+  totalFrames,
+  expanded,
+  reducedMotion,
+  onInspect,
+}: {
+  frames: CaseStoryMedia[];
+  totalFrames: number;
+  expanded: boolean;
+  reducedMotion: boolean;
+  onInspect: (id: string) => void;
+}) {
+  return (
+    <motion.div
+      layout
+      className="relative overflow-hidden border-y border-neutral-950/12 bg-white/14 px-3 py-5 backdrop-blur-sm sm:px-5 md:px-6 md:py-7"
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:64px_64px]" />
+      <div className="pointer-events-none absolute right-[9%] top-6 h-[22rem] w-[30rem] rounded-[50%] border border-neutral-950/[0.045]" />
+      <div className="relative mb-5 grid gap-3 border-b border-neutral-950/10 pb-4 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+            Evidence atlas / {expanded ? "full field" : "first signal set"}
+          </div>
+          <p className="mt-2 max-w-[31rem] text-sm leading-6 text-neutral-600">
+            Compact scan of the case surfaces, kept inside the same inspection system as the cinematic sequence.
+          </p>
+        </div>
+        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400 md:text-right">
+          {String(frames.length).padStart(2, "0")} / {String(totalFrames).padStart(2, "0")} visible
+        </div>
+      </div>
+
+      <motion.div layout className="relative grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {frames.map((media, index) => (
+          <motion.button
+            key={media.id}
+            type="button"
+            layout
+            initial={reducedMotion ? false : { opacity: 0, y: 18, scale: 0.985 }}
+            animate={reducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+            exit={reducedMotion ? undefined : { opacity: 0, y: 14, scale: 0.985 }}
+            transition={reducedMotion ? { duration: 0.01 } : { duration: 0.48, delay: Math.min(index, 8) * 0.035, ease }}
+            onClick={() => onInspect(media.id)}
+            className="group relative min-h-[16rem] overflow-hidden border border-neutral-950/10 bg-[#f4f1ea]/72 p-2 text-left shadow-[0_18px_52px_rgba(15,15,15,0.08)] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 hover:-translate-y-1 hover:border-neutral-950/22 hover:shadow-[0_28px_74px_rgba(15,15,15,0.12)]"
+            aria-label={`Inspect ${media.label}`}
+          >
+            <span className="relative block aspect-video overflow-hidden border border-neutral-950/10 bg-white/70">
+              <CaseMediaView media={media} priority={index < INITIAL_EVIDENCE_FRAME_COUNT} fit="cover" objectPosition="top" />
+              <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_46%,rgba(0,0,0,0.08))]" />
+            </span>
+            <span className="mt-3 flex items-center justify-between gap-3 border-t border-neutral-950/10 pt-3 font-mono text-[8px] uppercase tracking-[0.15em] text-neutral-400">
+              <span>{String(index + 1).padStart(2, "0")} / {mediaRoleLabel(media.role)}</span>
+              <span className="text-neutral-300 transition group-hover:text-neutral-700">Inspect</span>
+            </span>
+            <span className="mt-2 block text-lg font-semibold leading-tight tracking-normal text-neutral-950">
+              {media.label}
+            </span>
+            <span className="mt-2 line-clamp-3 block text-[12px] leading-5 text-neutral-500">
+              {media.caption}
+            </span>
+          </motion.button>
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function ScreensAsEvidence({
+  story,
+  reducedMotion,
+  onInspect,
+}: {
+  story: CaseStory;
+  reducedMotion: boolean;
+  onInspect: (id: string) => void;
+}) {
+  const frames = getEvidenceFrames(story);
+  const mobileFrames = getMobileFrames(story);
+  const narrative = getCaseNarrative(story);
+  const evidenceSignals = narrative.screenSignals;
+  const sound = useSound();
+  const [viewMode, setViewMode] = useState<EvidenceViewMode>("sequence");
+  const [expanded, setExpanded] = useState(false);
+  const visibleFrames = expanded ? frames : frames.slice(0, INITIAL_EVIDENCE_FRAME_COUNT);
+  const hasHiddenFrames = frames.length > INITIAL_EVIDENCE_FRAME_COUNT;
+  const hiddenFrameCount = Math.max(0, frames.length - INITIAL_EVIDENCE_FRAME_COUNT);
+  const fieldSummary = expanded
+    ? `Full field / ${String(frames.length).padStart(2, "0")} visible`
+    : `Compressed field / ${String(Math.min(frames.length, INITIAL_EVIDENCE_FRAME_COUNT)).padStart(2, "0")} visible / ${String(hiddenFrameCount).padStart(2, "0")} hidden`;
+  const changeViewMode = (nextMode: EvidenceViewMode) => {
+    if (nextMode === viewMode) return;
+    sound.playRole("transition");
+    setViewMode(nextMode);
+  };
+  const toggleExpanded = () => {
+    sound.playRole(expanded ? "close" : "open");
+    setExpanded((current) => !current);
+  };
+
+  return (
+    <section id="case-media" className="relative mx-auto w-[min(95vw,1680px)] py-10">
+      <div className="mx-auto w-[min(92vw,1480px)]">
+        <div className="relative overflow-hidden border-y border-neutral-950/12 py-10 md:py-12">
+          <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-neutral-950/8" />
+          <div className="pointer-events-none absolute right-[8%] top-1/2 h-[28rem] w-[28rem] -translate-y-1/2 rounded-full border border-neutral-950/5" />
+          <div className="grid gap-8 lg:grid-cols-[0.5fr_0.22fr_0.55fr] lg:items-end">
+            <div>
+              <SectionSignal index="03" label="Screens as evidence" />
+              <h2 className="max-w-[10ch] text-[clamp(3.8rem,7vw,7.2rem)] font-semibold leading-[0.86] tracking-normal text-neutral-950">
+                {narrative.screensTitle.map((line, index) => (
+                  <span key={line} className={index === 1 ? "block pl-[18%]" : "block"}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
+            </div>
+            <div className="hidden self-stretch border-l border-neutral-950/12 pl-4 font-mono text-[9px] uppercase leading-6 tracking-[0.18em] text-neutral-400 lg:grid">
+              <span>Readable surfaces</span>
+              <span>No crop theatre</span>
+              <span>Proof sequence</span>
+            </div>
+            <div className="relative lg:pb-3">
+              <div className="relative max-w-[42rem] border-y border-neutral-950/12 py-6">
+                <div className="pointer-events-none absolute -left-12 top-1/2 hidden h-px w-12 bg-neutral-950/18 lg:block" />
+                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                  Inspection readout
+                </div>
+                <p className="mt-4 max-w-[34rem] text-xl leading-[1.22] text-neutral-800 md:text-2xl">
+                  {narrative.screensReadout}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 border-t border-neutral-950/10 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500">
+                  {evidenceSignals.map((signal, index) => (
+                    <span key={signal}>
+                      {String(index + 1).padStart(2, "0")} / {signal}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6 flex flex-col gap-4 border-t border-neutral-950/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <EvidenceViewToggle mode={viewMode} onChange={changeViewMode} />
+                  <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400 sm:max-w-[16rem] sm:text-right">
+                    {fieldSummary}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-10">
+        <AnimatePresence mode="wait">
+          {viewMode === "sequence" ? (
+            <motion.div
+              key="sequence"
+              layout
+              className="border-y border-neutral-950/12"
+              initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+              animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+              exit={reducedMotion ? undefined : { opacity: 0, y: -12 }}
+              transition={reducedMotion ? { duration: 0.01 } : { duration: 0.5, ease }}
+            >
+              <AnimatePresence initial={false}>
+                {visibleFrames.map((media, index) => (
+                  <CaseMediaChapter
+                    key={media.id}
+                    media={media}
+                    index={index}
+                    reducedMotion={reducedMotion}
+                    onInspect={onInspect}
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          ) : (
+            <EvidenceAtlasGrid
+              key="atlas"
+              frames={visibleFrames}
+              totalFrames={frames.length}
+              expanded={expanded}
+              reducedMotion={reducedMotion}
+              onInspect={onInspect}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+
+      {hasHiddenFrames ? (
+        <div className="relative mx-auto grid w-[min(92vw,1480px)] gap-6 border-b border-neutral-950/12 px-0 py-8 md:grid-cols-2 md:py-10">
+          <div className="hidden md:block" />
+          <motion.div layout className="max-w-[30rem] md:justify-self-end">
+            <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
+              {expanded
+                ? `Full evidence field / ${String(frames.length).padStart(2, "0")} case surfaces`
+                : `Extended evidence field / ${String(hiddenFrameCount).padStart(2, "0")} more surfaces`}
+            </div>
+            <p className="mt-3 text-[14px] leading-7 text-neutral-600">
+              {expanded
+                ? "The full surface is open. Collapse it back into the focused five-frame readout when the story needs more air."
+                : "The case keeps its cinematic pace first, then unfolds the rest of the proof when the viewer asks for it."}
+            </p>
+            <button
+              type="button"
+              onClick={toggleExpanded}
+              className="mt-5 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+              aria-expanded={expanded}
+            >
+              {expanded ? "Close evidence field ->" : "Open full evidence field ->"}
+            </button>
+          </motion.div>
+        </div>
+      ) : null}
+      <MobileSurfaceRail story={story} frames={mobileFrames} onInspect={onInspect} />
+    </section>
+  );
+}
+
+function ProofBecomesSystem({ story }: { story: CaseStory }) {
+  const narrative = getCaseNarrative(story);
+  const proofNodes = proofLedger.map((item, index) => ({
+    ...item,
+    label: narrative.proofLabels[index] ?? item.label,
+    text: story.evidencePoints[index] ?? item.text,
+  }));
+  const systemSpine = story.systemLayers.slice(0, 6);
+  const compactClaim = story.proofClaim;
+
+  return (
+    <section
+      id="case-proof-system"
+      className="relative mx-auto w-[min(94vw,1540px)] overflow-hidden py-8 md:py-10"
+    >
+      <div className="relative overflow-hidden border-y border-neutral-950/12 bg-white/10 px-4 py-9 backdrop-blur-sm sm:px-6 md:px-8 md:py-11">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:70px_70px]" />
+        <div className="pointer-events-none absolute left-[12%] top-[12%] h-[28rem] w-[44rem] rounded-[50%] border border-neutral-950/[0.045]" />
+        <div className="pointer-events-none absolute bottom-[22%] left-[24%] h-px w-[52vw] rotate-[-5deg] bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
+
+        <div className="relative grid gap-9 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
+          <div className="relative z-10">
+            <SectionSignal index="04" label="Proof becomes system" />
+            <h2 className="max-w-[10ch] text-[clamp(3.3rem,6.8vw,6.4rem)] font-semibold leading-[0.84] tracking-normal text-neutral-950">
+              Proof becomes system.
+            </h2>
+
+            <div className="mt-7 max-w-[25rem] border-y border-neutral-950/12 py-4">
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                Proof map key
+              </div>
+              <p className="mt-3 text-sm leading-7 text-neutral-600">
+                A short synthesis layer: what the previous screens prove before the case turns into an available foundation.
+              </p>
+              <div className="mt-4 grid grid-cols-3 border-y border-neutral-950/10 py-3 font-mono text-[8px] uppercase tracking-[0.14em] text-neutral-500">
+                <span>Evidence</span>
+                <span>Logic</span>
+                <span>System</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative z-10 grid gap-5 lg:ml-auto lg:w-[min(100%,52rem)]">
+            <div className="relative overflow-hidden border-y border-neutral-950/12 px-0 py-5 md:py-6">
+              <div className="pointer-events-none absolute right-[4%] top-[7%] hidden h-[15rem] w-[28rem] rounded-[50%] border border-neutral-950/[0.045] lg:block" />
+              <svg
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 hidden h-full w-full text-neutral-950/14 lg:block"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                <path d="M 4 48 C 28 36, 56 65, 96 34" fill="none" stroke="currentColor" strokeWidth="0.14" strokeDasharray="1 1.8" />
+                <path d="M 8 75 C 34 50, 60 58, 94 62" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.8 2" />
+              </svg>
+
+              <div className="relative max-w-[39rem]">
+                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                  System claim
+                </div>
+                <p className="mt-3 max-w-[38rem] text-[clamp(1.8rem,2.75vw,2.85rem)] leading-[1.02] text-neutral-950">
+                  {compactClaim}
+                </p>
+              </div>
+
+              <div className="relative mt-6 border-t border-neutral-950/12">
+                {proofNodes.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className="grid gap-3 border-b border-neutral-950/10 py-3.5 md:grid-cols-[3.5rem_minmax(8rem,0.3fr)_1fr] md:items-baseline md:gap-4"
+                  >
+                    <div className="flex items-center gap-2.5 font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-400">
+                      <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold leading-tight tracking-normal text-neutral-950">
+                      {item.label}
+                    </h3>
+                    <p className="max-w-[29rem] text-[13px] leading-6 text-neutral-600">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative lg:ml-auto lg:w-[82%]">
+              <div className="relative border-y border-neutral-950/12 py-3.5">
+              <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
+                <span className="text-neutral-400">System spine</span>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {systemSpine.map((layer, index) => (
+                    <span key={layer.title} className="grid grid-cols-[1.55rem_1fr] gap-2">
+                      <span className="text-neutral-300">{String(index + 1).padStart(2, "0")}</span>
+                      <span>{layer.title}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpenProject?: () => void }) {
+  if (!story.availability) return null;
+
+  const narrative = getCaseNarrative(story);
+  const blueprintMedia = findMedia(story, "collection") ?? findMedia(story, "threshold") ?? story.mediaSequence[0];
+  const technicalRows = story.technicalFoundation.length > 0 ? story.technicalFoundation : technicalLedger;
+  const terms = [
+    "Commissioned adaptation",
+    story.availability.exclusivityAvailable ? "Exclusivity discussed" : "Shared direction",
+    "Not a template",
+  ];
+  const passportRows = [
+    {
+      label: "Fit",
+      value: story.availability.bestFor?.slice(0, 3).join(" / ") ?? "Jewelry / Fashion / Collector objects",
+    },
+    {
+      label: "Adaptation",
+      value:
+        story.caseType === "advisory"
+          ? "Market structure, shortlist flow, private intake."
+          : story.slug === "creatorops" || story.caseType === "workflow-tool"
+            ? "Workflow steps, export logic, tools layer."
+          : "Brand, product structure, inquiry flow.",
+    },
+    {
+      label: "Terms",
+      value: terms.slice(0, 2).join(" / "),
+    },
+  ];
+
+  return (
+    <section
+      id="case-available"
+      className="relative mx-auto w-[min(95vw,1680px)] overflow-hidden py-8 md:py-10"
+    >
+      <div className="relative mx-auto overflow-hidden border-y border-neutral-950/12 bg-white/10">
+        <div className="pointer-events-none absolute inset-y-8 right-[4%] w-[40%] rounded-[50%] bg-neutral-950/6 blur-3xl" />
+        <div className="pointer-events-none absolute left-[8%] top-4 h-[38rem] w-[58rem] rotate-[-8deg] rounded-[50%] border border-neutral-950/[0.055]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
+
+        <div className="relative mx-auto grid w-[min(92vw,1420px)] gap-8 py-10 md:py-12">
+          <div className="grid gap-8 lg:grid-cols-[0.43fr_0.57fr] lg:items-end">
+            <div>
+              <SectionSignal index="05" label="Available / trust" />
+              <h2 className="max-w-[11ch] text-[clamp(4.2rem,8.6vw,8rem)] font-semibold leading-[0.84] tracking-normal text-neutral-950">
+                Available foundation.
+              </h2>
+            </div>
+            <div className="border-y border-neutral-950/12 py-5 lg:mb-4 lg:ml-0 lg:w-[34rem] lg:max-w-none xl:ml-4 xl:w-[36rem]">
+              <p className="max-w-none text-2xl leading-[1.04] text-neutral-800 md:text-[2rem] xl:text-[2.08rem]">
+                {narrative.availableStatement}
+              </p>
+              <p className="mt-4 max-w-[33rem] text-sm leading-7 text-neutral-500 xl:max-w-[35rem]">
+                {story.availability.summary}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-center">
+            <div
+              className="relative min-h-[28rem] overflow-hidden bg-neutral-950 p-6 text-white shadow-[0_30px_110px_rgba(15,15,15,0.2)] md:p-7"
+              style={{ clipPath: "polygon(0 0, 100% 0, 94% 100%, 0 92%)" }}
+            >
+              <div className="absolute inset-0 opacity-34">
+                <CaseMediaView media={blueprintMedia} fit="cover" />
+              </div>
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_66%_28%,rgba(255,255,255,0.13),transparent_24%),linear-gradient(90deg,rgba(3,3,3,0.96),rgba(10,10,10,0.82)_58%,rgba(3,3,3,0.94))]" />
+              <div className="pointer-events-none absolute left-[18%] top-[16%] h-[76%] w-[72%] rounded-[50%] border border-white/12" />
+              <div className="pointer-events-none absolute left-6 right-6 top-[43%] h-px bg-gradient-to-r from-white/34 via-white/10 to-transparent" />
+              <div className="pointer-events-none absolute bottom-24 left-6 h-px w-[58%] rotate-[-8deg] bg-white/16" />
+              <div className="relative flex h-full min-h-[23rem] flex-col justify-between">
+                <div>
+                  <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/46">
+                    Commission blueprint
+                  </div>
+                  <p className="mt-10 max-w-[23rem] text-3xl leading-[1.02] text-white md:text-4xl">
+                    {narrative.availableBlueprint}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4 border-t border-white/12 pt-4 font-mono text-[8px] uppercase tracking-[0.16em] text-white/54">
+                  <span>Private commerce</span>
+                  <span>Deployable front-end</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-6">
+            <div className="grid gap-3 md:grid-cols-3">
+              {passportRows.map((row, index) => (
+                <div key={row.label} className="border-y border-neutral-950/12 py-4 md:min-h-36">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-400">
+                    {String(index + 1).padStart(2, "0")} / {row.label}
+                  </div>
+                  <div className="mt-5 text-lg leading-7 text-neutral-800 md:text-[1.35rem]">{row.value}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="border-y border-neutral-950/12 py-3">
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                Deployable surface
+              </div>
+              <div className="mt-3 grid gap-y-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-2 sm:gap-x-5">
+                {technicalRows.slice(0, 6).map((item, index) => (
+                  <span key={item} className="grid grid-cols-[1.6rem_1fr] gap-2 border-t border-neutral-950/8 pt-2 first:border-t-0 sm:first:border-t">
+                    <span className="text-neutral-300">{String(index + 1).padStart(2, "0")}</span>
+                    <span>{item.replace("Next.js App Router + TypeScript", "Next.js + TypeScript").replace("Metadata / Open Graph preparation", "Metadata / Open Graph").replace(/\.$/, "")}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <div className="grid gap-5 border-y border-neutral-950/12 px-4 py-5 md:grid-cols-[1fr_auto] md:items-center">
+            <p className="max-w-4xl text-sm leading-7 text-neutral-500">
+              Final ownership, content, visual reuse, and adaptation terms are defined per project.
+            </p>
+            <SignalButton onClick={onOpenProject}>{story.availability.ctaLabel}</SignalButton>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LabFallback({
+  drawerOpen,
+  onOpenProject,
+  onCloseProject,
+}: PageProps) {
+  const navigate = useNavigate();
+
+  const goBack = () => startSpaPageTransition(navigate, "/work", onCloseProject);
+
+  return (
+    <div className="min-h-screen bg-[#f4f1ea] text-neutral-950">
+      <AtmosphericSiteShell preset="case" />
+      <Header
+        drawerOpen={drawerOpen}
+        onOpenProject={onOpenProject}
+        onCloseProject={onCloseProject}
+      />
+      <PageSurface className="relative z-10 mx-auto flex min-h-screen w-[min(92vw,1180px)] items-center pt-28">
+        <div className="max-w-2xl border-y border-neutral-950/12 py-14">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-500">
+            Work lab / missing story
+          </p>
+          <h1 className="mt-5 text-5xl font-semibold tracking-normal text-neutral-950 md:text-7xl">
+            This case is not in the V2 lab yet.
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-neutral-600">
+            The public work archive is still available. The lab route only opens cases that
+            already have a Case System Story data record.
+          </p>
+          <SignalButton onClick={goBack}>Back to Work</SignalButton>
+        </div>
+      </PageSurface>
+    </div>
+  );
+}
+
+export default function CasePageV2({
+  drawerOpen = false,
+  onOpenProject,
+  onCloseProject,
+}: PageProps) {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const sound = useSound();
+  const reduceMotion = useReducedMotion();
+  const story = useMemo(() => getCaseStory(slug), [slug]);
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+
+  const spineItems = useMemo(
+    () => caseSpineItems.filter((item) => story?.availability || item.id !== "case-available"),
+    [story],
+  );
+  const activeSpineId = useSectionRailActive(spineItems, spineItems[0]?.id);
+  const inspectFrames = useMemo(
+    () => story?.mediaSequence.filter((media) => media.kind !== "video") ?? [],
+    [story],
+  );
+  const openInspect = useCallback(
+    (mediaId: string) => {
+      const nextIndex = inspectFrames.findIndex((media) => media.id === mediaId);
+      if (nextIndex < 0) return;
+      sound.playRole("open");
+      setInspectIndex(nextIndex);
+    },
+    [inspectFrames, sound],
+  );
+
+  if (!story) {
+    return (
+      <>
+        <CaseMeta story={story} />
+        <LabFallback
+          drawerOpen={drawerOpen}
+          onOpenProject={onOpenProject}
+          onCloseProject={onCloseProject}
+        />
+      </>
+    );
+  }
+
+  const thresholdMedia = getThresholdMedia(story);
+  const heroFragments = getHeroFragments(story);
+  const visibleLinks = story.links ?? [];
+  const titleLines = getTitleLines(story.headline);
+  const narrative = getCaseNarrative(story);
+  const isAdvisoryCase = story.caseType === "advisory";
+  const isCreatorOpsCase = story.slug === "creatorops";
+  const hasAlignedHeroCards = isAdvisoryCase || story.slug === "house-of-lune" || isCreatorOpsCase;
+  const goToWork = () => startSpaPageTransition(navigate, "/work", onCloseProject);
+  const openProject = () => onOpenProject?.();
+
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#f4f1ea] text-neutral-950">
+      <CaseMeta story={story} />
+      <AtmosphericSiteShell preset="case" />
+      <Header
+        drawerOpen={drawerOpen}
+        onOpenProject={onOpenProject}
+        onCloseProject={onCloseProject}
+      />
+      <CaseSystemSpine
+        items={spineItems}
+        activeId={activeSpineId}
+        onSelect={scrollToRailSection}
+      />
+
+      <PageSurface className="relative z-10">
+        <main>
+          <section
+            id="case-threshold"
+            className="relative mx-auto min-h-screen w-[min(95vw,1680px)] overflow-hidden pb-12 pt-28 lg:min-h-[930px]"
+          >
+            <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-neutral-950/14" />
+            <div className="pointer-events-none absolute left-[7%] top-[12%] h-[78%] w-[76%] rounded-[50%] border border-neutral-950/6" />
+            <div className="pointer-events-none absolute right-[2%] top-[20%] h-[54%] w-[44%] rounded-[50%] bg-neutral-950/7 blur-3xl" />
+
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+              animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease }}
+              className="relative z-20 max-w-[52rem] lg:max-w-[43%] xl:max-w-[45%]"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                {["Case system", getAvailabilitySignal(story), story.caseType.replace("-", " ")].map(
+                  (item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-neutral-950/10 bg-white/42 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur-sm"
+                    >
+                      {item}
+                    </span>
+                  ),
+                )}
+              </div>
+
+              <h1 className="mt-10 text-[clamp(5.1rem,11.2vw,10.4rem)] font-semibold leading-[0.82] tracking-normal text-neutral-950">
+                {titleLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </h1>
+
+              <div className="mt-8 max-w-[35rem]">
+                <p className="text-3xl leading-[1.08] text-neutral-800 md:text-5xl">
+                  {story.subheadline}
+                </p>
+                <p className="mt-6 text-[15px] leading-8 text-neutral-600 md:text-base">
+                  {story.summary}
+                </p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  {visibleLinks[0] ? (
+                    <SignalButton href={visibleLinks[0].href}>{visibleLinks[0].label}</SignalButton>
+                  ) : null}
+                  <SignalButton variant="secondary" onClick={openProject}>
+                    {story.availability?.ctaLabel ?? "Start a project"}
+                  </SignalButton>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, x: 42, scale: 0.98 }}
+              animate={reduceMotion ? undefined : { opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.08, ease }}
+              className="relative z-10 mt-14 min-h-[520px] lg:absolute lg:bottom-16 lg:right-2 lg:mt-0 lg:h-[650px] lg:w-[52%] xl:right-8 xl:h-[690px]"
+            >
+              <div className="absolute inset-0 border border-neutral-950/10 bg-white/18 backdrop-blur-[1px]" />
+              <motion.button
+                type="button"
+                onClick={() => openInspect(thresholdMedia.id)}
+                onMouseEnter={() => sound.playRole("hover")}
+                onFocus={() => sound.playRole("hover")}
+                whileHover={reduceMotion ? undefined : { y: -12, scale: 1.022, rotate: -1.2 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.992 }}
+                animate={reduceMotion ? undefined : { y: [0, -5, 0], rotate: [0, -0.35, 0.25, 0] }}
+                transition={reduceMotion ? undefined : { duration: 7.5, repeat: Infinity, repeatType: "mirror", ease }}
+                className={[
+                  "absolute left-[6%] top-[9%] h-[64%] w-[76%] cursor-zoom-in overflow-hidden text-left transition-shadow duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
+                  isAdvisoryCase
+                    ? "border border-neutral-950/10 bg-white/92 p-2 shadow-[0_38px_116px_rgba(30,30,30,0.12)] hover:shadow-[0_48px_132px_rgba(30,30,30,0.16)] md:p-3"
+                    : isCreatorOpsCase
+                      ? "border border-neutral-950/10 bg-white/84 p-2 shadow-[0_34px_104px_rgba(15,15,15,0.16)] hover:shadow-[0_44px_124px_rgba(15,15,15,0.22)] md:p-3"
+                      : "bg-neutral-950 p-3 shadow-[0_46px_130px_rgba(15,15,15,0.26)] hover:shadow-[0_58px_150px_rgba(15,15,15,0.34)] md:p-4",
+                ].join(" ")}
+                style={
+                  hasAlignedHeroCards
+                    ? undefined
+                    : { clipPath: "polygon(0 5%, 96% 0, 100% 86%, 7% 100%)" }
+                }
+              >
+                <CaseMediaView
+                  media={thresholdMedia}
+                  priority
+                  ambient
+                  fit={isAdvisoryCase || isCreatorOpsCase ? "cover" : "contain"}
+                  objectPosition={isAdvisoryCase || isCreatorOpsCase ? "top" : undefined}
+                />
+                <div
+                  className={[
+                    "absolute inset-0",
+                    isAdvisoryCase
+                      ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.1),transparent_52%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18))]"
+                      : isCreatorOpsCase
+                        ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.1),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.06))]"
+                        : "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.06),transparent_30%),linear-gradient(90deg,rgba(0,0,0,0.14),transparent_52%),linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.24))]",
+                  ].join(" ")}
+                />
+                <div className={["absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.18em]", isAdvisoryCase ? "text-neutral-600" : "text-white/62"].join(" ")}>
+                  {narrative.heroMeta}
+                </div>
+                <div className="absolute bottom-14 left-5 right-5">
+                  <div className={["font-mono text-[10px] uppercase tracking-[0.18em]", isAdvisoryCase ? "text-neutral-500" : "text-white/52"].join(" ")}>
+                    {narrative.heroReadiness}
+                  </div>
+                  <div className={["mt-2 max-w-md text-2xl font-semibold leading-tight tracking-normal md:text-3xl", isAdvisoryCase ? "text-neutral-950" : "text-white"].join(" ")}>
+                    {narrative.heroMediaTitle}
+                  </div>
+                </div>
+              </motion.button>
+
+              {heroFragments.map((media, index) => (
+                <motion.button
+                  key={media.id}
+                  type="button"
+                  onClick={() => openInspect(media.id)}
+                  onMouseEnter={() => sound.playRole("hover")}
+                  onFocus={() => sound.playRole("hover")}
+                  className={[
+                    `absolute ${
+                      hasAlignedHeroCards
+                        ? (alignedHeroFragmentFrames[index] ?? alignedHeroFragmentFrames[0])
+                        : (heroFragmentFrames[index] ?? heroFragmentFrames[0])
+                    } cursor-zoom-in overflow-hidden border p-1.5 text-left backdrop-blur-sm transition-shadow duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300`,
+                    isAdvisoryCase
+                      ? "border-neutral-950/10 bg-white/90 shadow-[0_16px_54px_rgba(30,30,30,0.1)] hover:shadow-[0_24px_72px_rgba(30,30,30,0.14)]"
+                      : isCreatorOpsCase
+                        ? "border-neutral-950/10 bg-white/88 shadow-[0_18px_58px_rgba(15,15,15,0.13)] hover:shadow-[0_28px_78px_rgba(15,15,15,0.2)]"
+                        : "border-white/38 bg-neutral-950/90 shadow-[0_22px_64px_rgba(15,15,15,0.16)] hover:shadow-[0_34px_92px_rgba(15,15,15,0.24)]",
+                  ].join(" ")}
+                  initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+                  animate={
+                    reduceMotion
+                      ? undefined
+                      : {
+                          opacity: 1,
+                          y: [0, -7 - index * 2, 0],
+                          rotate: index % 2 === 0 ? [0, 0.55, -0.35, 0] : [0, -0.55, 0.35, 0],
+                        }
+                  }
+                  whileHover={
+                    reduceMotion
+                      ? undefined
+                      : {
+                          y: -14 - index * 2,
+                          scale: 1.055,
+                          rotate: index % 2 === 0 ? 2.2 : -2.2,
+                          zIndex: 35,
+                        }
+                  }
+                  whileTap={reduceMotion ? undefined : { scale: 0.99 }}
+                  transition={
+                    reduceMotion
+                      ? undefined
+                      : {
+                          opacity: { duration: 0.62, delay: 0.22 + index * 0.08, ease },
+                          y: { duration: 5.8 + index * 0.9, repeat: Infinity, repeatType: "mirror", ease },
+                          rotate: { duration: 6.4 + index * 0.8, repeat: Infinity, repeatType: "mirror", ease },
+                          scale: { duration: 0.42, ease },
+                        }
+                  }
+                  style={
+                    hasAlignedHeroCards
+                      ? undefined
+                      : { clipPath: heroFragmentShapes[index] ?? heroFragmentShapes[0] }
+                  }
+                >
+                  <span
+                    className={[
+                      "block h-full w-full",
+                      isAdvisoryCase
+                        ? "opacity-95 saturate-[1.02]"
+                        : isCreatorOpsCase
+                          ? "opacity-100 saturate-[1.08] brightness-[1.1]"
+                          : "opacity-70 saturate-[0.9]",
+                    ].join(" ")}
+                  >
+                    <CaseMediaView
+                      media={media}
+                      fit={isAdvisoryCase || isCreatorOpsCase ? "cover" : "contain"}
+                      objectPosition={
+                        isAdvisoryCase
+                          ? (index === 2 ? "top" : "bottom")
+                          : isCreatorOpsCase
+                            ? "top"
+                            : undefined
+                      }
+                    />
+                  </span>
+                  <div
+                    className={[
+                      "absolute inset-0",
+                      isAdvisoryCase
+                        ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.1))]"
+                        : isCreatorOpsCase
+                          ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.06),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.1))]"
+                          : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.1),rgba(0,0,0,0.68))]",
+                    ].join(" ")}
+                  />
+                  <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", isAdvisoryCase ? "text-neutral-600" : "text-white/72"].join(" ")}>
+                    signal {index + 1} / {mediaRoleLabel(media.role)}
+                  </div>
+                </motion.button>
+              ))}
+
+              <div className="absolute bottom-4 right-4 grid max-w-[23rem] gap-px border border-neutral-950/10 bg-[#f4f1ea]/72 text-[9px] uppercase tracking-[0.16em] text-neutral-600 backdrop-blur-md sm:grid-cols-2">
+                {story.systemTags.slice(0, 4).map((tag) => (
+                  <span key={tag} className="border-neutral-950/8 px-3 py-2 sm:border-r sm:odd:border-r">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+
+          <SystemWalkthroughTheatre story={story} />
+          <ScreensAsEvidence
+            story={story}
+            reducedMotion={Boolean(reduceMotion)}
+            onInspect={openInspect}
+          />
+          <ProofBecomesSystem story={story} />
+          <AvailableFoundation story={story} onOpenProject={openProject} />
+
+          <section
+            id="case-closing"
+            className="mx-auto w-[min(94vw,1540px)] pb-10 pt-5"
+            data-footer-rail-state="closing"
+          >
+            <div className="relative overflow-hidden border-y border-neutral-950/12 bg-white/8 px-4 py-10 backdrop-blur-sm sm:px-6 md:px-8 md:py-12">
+              <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
+              <div className="pointer-events-none absolute right-[4%] top-1/2 h-[26rem] w-[26rem] -translate-y-1/2 rounded-full border border-neutral-950/[0.055]" />
+              <div className="pointer-events-none absolute right-[20%] top-[12%] h-[19rem] w-[31rem] rotate-[-15deg] rounded-[50%] border border-neutral-950/[0.045]" />
+              <div className="relative grid min-h-[29rem] gap-8 lg:grid-cols-[0.62fr_0.38fr] lg:items-end">
+                <div className="relative z-10">
+                  <SectionSignal index="06" label="Final conversion" />
+                  <p className="max-w-[12ch] text-[clamp(3.3rem,7.1vw,7.2rem)] font-semibold leading-[0.86] tracking-normal text-neutral-950">
+                    Adapt this system &mdash; or build one with the same clarity.
+                  </p>
+                </div>
+
+                <div className="relative z-10 grid gap-5 border-y border-neutral-950/12 py-5 lg:mb-5">
+                  <div>
+                      <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                      Next move
+                      </div>
+                    <p className="mt-4 max-w-[28rem] text-2xl leading-[1.12] text-neutral-800 md:text-[1.7rem]">
+                      The proof is structured. Now choose fit, scope, and commission rhythm.
+                      </p>
+                  </div>
+                  <div className="grid grid-cols-3 border-y border-neutral-950/12 py-3 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500">
+                    <span>Proof</span>
+                    <span>Fit</span>
+                    <span>Build</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <SignalButton onClick={openProject}>
+                      {story.availability?.ctaLabel ?? "Start a project"}
+                    </SignalButton>
+                    <SignalButton variant="secondary" onClick={openProject}>
+                      Start a project
+                    </SignalButton>
+                    <SignalButton variant="quiet" onClick={goToWork}>
+                      Back to Work
+                    </SignalButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <SiteFooterV2 variant="case" />
+      </PageSurface>
+      <CinematicInspectReveal
+        frames={inspectFrames}
+        index={inspectIndex}
+        onClose={() => setInspectIndex(null)}
+        onSelect={setInspectIndex}
+      />
+    </div>
+  );
+}

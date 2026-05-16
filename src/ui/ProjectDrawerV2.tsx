@@ -2,12 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { useSound } from "../stage/audio/useSound";
+
 type Props = {
   open: boolean;
   onClose: () => void;
 };
 
 type ProjectDirection =
+  | "available-system"
   | "premium-website"
   | "product-surface"
   | "multilingual-system"
@@ -16,6 +19,7 @@ type ProjectDirection =
   | "not-sure";
 
 type ProjectSignal =
+  | "specific-case"
   | "new-launch"
   | "existing-offer"
   | "product-demo"
@@ -43,6 +47,16 @@ type SignalOption = {
 const CONTACT_EMAIL = "info@brenych.com";
 
 const projectDirections: DirectionOption[] = [
+  {
+    value: "available-system",
+    label: "Adapt an available system",
+    helper: "Commissioned adaptation of a studio foundation",
+    readout:
+      "Start from an authored Brenych Studio concept and adapt it into a production-ready client system.",
+    firstFormat: "Available system adaptation",
+    nextStep: "Send the case you like, brand context, market, content state, and timeline.",
+    tags: ["Foundation", "Adaptation", "Commission"],
+  },
   {
     value: "premium-website",
     label: "Premium website",
@@ -100,6 +114,11 @@ const projectDirections: DirectionOption[] = [
 ];
 
 const projectSignals: SignalOption[] = [
+  {
+    value: "specific-case",
+    label: "I like a specific case",
+    helper: "Adapting from a selected system direction.",
+  },
   {
     value: "new-launch",
     label: "New launch",
@@ -166,6 +185,7 @@ function getSignal(value: ProjectSignal) {
 }
 
 export default function ProjectDrawerV2({ open, onClose }: Props) {
+  const { playRole } = useSound();
   const isMobile = useIsMobileSheet();
   const lastFocusedRef = useRef<HTMLElement | null>(null);
   const copyTimerRef = useRef<number | null>(null);
@@ -180,6 +200,10 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
 
   const direction = getDirection(selectedDirection);
   const signal = getSignal(selectedSignal);
+  const projectNotePlaceholder =
+    selectedDirection === "available-system" || selectedSignal === "specific-case"
+      ? "Tell me which available system you like and what you want to adapt it for: brand, product, audience, market, timeline, or required features."
+      : "Project, offer, audience, timeline, current challenge...";
 
   const hasInteraction =
     selectedDirection !== "not-sure" ||
@@ -192,7 +216,8 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
     if (!open) return;
 
     lastFocusedRef.current = document.activeElement as HTMLElement | null;
-  }, [open]);
+    playRole("open");
+  }, [open, playRole]);
 
   useEffect(() => {
     if (!open) return;
@@ -212,12 +237,13 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
   }, [open]);
 
   const closeDrawer = useCallback(() => {
+    playRole("close");
     onClose();
 
     window.setTimeout(() => {
       lastFocusedRef.current?.focus?.();
     }, 0);
-  }, [onClose]);
+  }, [onClose, playRole]);
 
   useEffect(() => {
     if (!open) return;
@@ -262,17 +288,20 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
   async function copyEmail() {
     try {
       await navigator.clipboard?.writeText(CONTACT_EMAIL);
+      playRole("success");
       setCopiedEmail(true);
 
       if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
       copyTimerRef.current = window.setTimeout(() => setCopiedEmail(false), 1400);
     } catch {
+      playRole("blocked");
       setCopiedEmail(false);
     }
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    playRole(hasInteraction ? "success" : "blocked");
     window.location.href = mailtoHref;
   }
 
@@ -392,7 +421,11 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                             key={option.value}
                             type="button"
                             aria-pressed={active}
-                            onClick={() => setSelectedDirection(option.value)}
+                            onMouseEnter={() => playRole("hover")}
+                            onClick={() => {
+                              playRole("select");
+                              setSelectedDirection(option.value);
+                            }}
                             className={[
                               "group grid w-full grid-cols-[2.25rem_1fr] gap-3 border-b px-0 py-3.5 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
                               active
@@ -512,7 +545,11 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                             key={option.value}
                             type="button"
                             aria-pressed={active}
-                            onClick={() => setSelectedSignal(option.value)}
+                            onMouseEnter={() => playRole("hover")}
+                            onClick={() => {
+                              playRole("select");
+                              setSelectedSignal(option.value);
+                            }}
                             className={[
                               "grid w-full grid-cols-[1fr_auto] items-center gap-3 border-b py-2.5 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
                               active
@@ -588,7 +625,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                         value={message}
                         onChange={(event) => setMessage(event.target.value)}
                         rows={7}
-                        placeholder="Project, offer, audience, timeline, current challenge..."
+                        placeholder={projectNotePlaceholder}
                         className="min-h-[158px] w-full resize-y border-0 border-y border-neutral-300/80 bg-transparent px-0 py-4 text-[15px] leading-7 text-neutral-900 outline-none transition duration-300 placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                       />
                     </label>
@@ -609,6 +646,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                 <footer className="shrink-0 border-t border-neutral-300/70 bg-[#f5f2eb]/96 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-7">
                   <button
                     type="submit"
+                    onMouseEnter={() => playRole("hover")}
                     className={[
                       "flex h-12 w-full items-center justify-between border px-4 text-left text-[11px] font-semibold uppercase tracking-[0.2em] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
                       hasInteraction
@@ -623,6 +661,8 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <div className="mt-3 grid grid-cols-2 gap-2">
                     <a
                       href={mailtoHref}
+                      onMouseEnter={() => playRole("hover")}
+                      onClick={() => playRole("success")}
                       className="flex h-10 items-center justify-center border border-neutral-300/80 bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/44 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
                       Email directly
@@ -630,6 +670,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     <button
                       type="button"
                       onClick={copyEmail}
+                      onMouseEnter={() => playRole("hover")}
                       className="flex h-10 items-center justify-center border border-neutral-300/80 bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/44 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
                       {copiedEmail ? "Email copied" : "Copy email"}

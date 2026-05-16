@@ -179,6 +179,10 @@ class AudioEngine {
     this.fadeAmbientTo(Math.max(0, Math.min(0.09, volume)), rampSeconds);
   }
 
+  rampAmbientVolume(targetVolume: number, duration = 1.2) {
+    this.setAmbientVolume(targetVolume, duration);
+  }
+
   isAmbientPlaying() {
     return Boolean(this.ambientAudio && !this.ambientAudio.paused && this.ambientState === "playing");
   }

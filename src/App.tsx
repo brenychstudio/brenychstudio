@@ -5,6 +5,7 @@ import HomeClassic from "./pages/Home";
 import OfferClassic from "./pages/Offer";
 import OfferV2 from "./pages/OfferV2";
 import CasePage from "./pages/CasePage";
+import CasePageV2 from "./pages/CasePageV2";
 import WorkArchiveClassic from "./pages/WorkArchive";
 import ImmersiveClassic from "./pages/Immersive";
 import ImmersiveV2 from "./pages/ImmersiveV2";
@@ -13,13 +14,16 @@ import SpatialProof from "./pages/SpatialProof";
 import AboutClassic from "./pages/About";
 import AboutV2 from "./pages/AboutV2";
 import Privacy from "./pages/Privacy";
+import PrivacyV2 from "./pages/PrivacyV2";
 import Legal from "./pages/Legal";
+import LegalV2 from "./pages/LegalV2";
 import StudioIndex from "./pages/StudioIndex";
 import EvidenceAtlas from "./pages/EvidenceAtlas";
 
 import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
+import SoundSignalDock from "./ui/SoundSignalDock";
 import { LocaleProvider } from "./store/useLocale";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
@@ -129,6 +133,19 @@ export default function App() {
           />
 
           <Route
+            path="/work-lab/:slug"
+            element={
+              <HiddenRoute>
+                <CasePageV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
+            }
+          />
+
+          <Route
             path="/immersive/:slug"
             element={
               <ImmersiveCasePage
@@ -154,7 +171,7 @@ export default function App() {
           <Route
             path="/privacy"
             element={
-              <Privacy
+              <PrivacyV2
                 drawerOpen={drawerOpen}
                 onOpenProject={openProject}
                 onCloseProject={closeProject}
@@ -165,11 +182,37 @@ export default function App() {
           <Route
             path="/legal"
             element={
-              <Legal
+              <LegalV2
                 drawerOpen={drawerOpen}
                 onOpenProject={openProject}
                 onCloseProject={closeProject}
               />
+            }
+          />
+
+          <Route
+            path="/privacy-v2"
+            element={
+              <HiddenRoute>
+                <PrivacyV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
+            }
+          />
+
+          <Route
+            path="/legal-v2"
+            element={
+              <HiddenRoute>
+                <LegalV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
             }
           />
 
@@ -309,10 +352,37 @@ export default function App() {
             }
           />
 
+          <Route
+            path="/privacy-classic"
+            element={
+              <HiddenRoute>
+                <Privacy
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
+            }
+          />
+
+          <Route
+            path="/legal-classic"
+            element={
+              <HiddenRoute>
+                <Legal
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
         <ProjectDrawerV2 open={drawerOpen} onClose={closeProject} />
+          <SoundSignalDock />
           <PageTransitionOverlay />
         </BrowserRouter>
       </SoundProvider>

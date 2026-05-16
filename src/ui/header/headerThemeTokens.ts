@@ -166,6 +166,18 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
     surface: "rgba(247, 246, 241, 0.82)",
     elevation: 0.05,
   },
+  "policy-privacy": {
+    id: "policy-privacy",
+    signalLabel: "PRIVACY LAYER",
+    ...lightDense,
+    surface: "rgba(250, 249, 245, 0.78)",
+  },
+  "policy-legal": {
+    id: "policy-legal",
+    signalLabel: "LEGAL LAYER",
+    ...lightDense,
+    surface: "rgba(250, 249, 245, 0.78)",
+  },
   "immersive-threshold": {
     id: "immersive-threshold",
     signalLabel: "IMMERSIVE SYSTEMS",
@@ -209,12 +221,17 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
   },
   "evidence-reader": {
     id: "evidence-reader",
-    signalLabel: "PROOF READER",
+    signalLabel: "EVIDENCE READER",
     ...lightDense,
   },
   "evidence-featured": {
     id: "evidence-featured",
-    signalLabel: "PROOF DOSSIERS",
+    signalLabel: "FEATURED SYSTEMS",
+    ...lightDense,
+  },
+  "evidence-available": {
+    id: "evidence-available",
+    signalLabel: "AVAILABLE SYSTEMS",
     ...lightDense,
   },
   "evidence-capability": {
@@ -307,7 +324,12 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
 };
 
 export function getHeaderMoodForPath(pathname: string) {
-  if (pathname === "/work" || pathname.startsWith("/work/") || pathname === "/evidence-atlas") {
+  if (
+    pathname === "/work" ||
+    pathname.startsWith("/work/") ||
+    pathname.startsWith("/work-lab/") ||
+    pathname === "/evidence-atlas"
+  ) {
     return headerThemeTokens.evidence;
   }
   if (
@@ -321,7 +343,17 @@ export function getHeaderMoodForPath(pathname: string) {
   if (pathname === "/offer" || pathname.startsWith("/offer") || pathname === "/offer-v2") {
     return headerThemeTokens.practice;
   }
-  if (pathname === "/about" || pathname === "/about-v2" || pathname === "/about-classic") return headerThemeTokens.studio;
+  if (
+    pathname === "/about" ||
+    pathname === "/about-v2" ||
+    pathname === "/about-classic" ||
+    pathname === "/privacy" ||
+    pathname === "/privacy-v2" ||
+    pathname === "/legal" ||
+    pathname === "/legal-v2"
+  ) {
+    return headerThemeTokens.studio;
+  }
   return headerThemeTokens.living;
 }
 

@@ -22,6 +22,7 @@ import SiteFooterV2 from "../ui/SiteFooterV2";
 import StudioHeroField from "../ui/StudioHeroField";
 import FormulaSignalStrand from "../ui/StudioSystemStrand";
 import { startSpaPageTransition } from "../ui/pageTransition";
+import { useSound } from "../stage/audio/useSound";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -474,6 +475,8 @@ function OpeningChapter({
   onWork: () => void;
   onImmersive: () => void;
 }) {
+  const sound = useSound();
+
   return (
     <Chapter
       id="opening"
@@ -519,6 +522,7 @@ function OpeningChapter({
           <div className="mt-9 flex flex-wrap gap-3">
             <button
               type="button"
+              onMouseEnter={() => sound.playRole("hover")}
               onClick={onSystems}
               className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
@@ -526,6 +530,7 @@ function OpeningChapter({
             </button>
             <button
               type="button"
+              onMouseEnter={() => sound.playRole("hover")}
               onClick={onWork}
               className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
@@ -533,6 +538,7 @@ function OpeningChapter({
             </button>
             <button
               type="button"
+              onMouseEnter={() => sound.playRole("hover")}
               onClick={onImmersive}
               className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
@@ -1296,8 +1302,15 @@ export default function StudioIndex({
 }: PageProps) {
   const navigate = useNavigate();
   const activeId = useActiveStudioSection();
+  const { playRole, setScene, stopAmbient } = useSound();
+
+  useEffect(() => {
+    setScene("portfolio");
+    stopAmbient();
+  }, [setScene, stopAmbient]);
 
   const goTo = (path: string) => {
+    playRole(path === "/immersive" ? "open" : "select");
     startSpaPageTransition(navigate, path, () => {
       onCloseProject?.();
     });
@@ -1317,6 +1330,7 @@ export default function StudioIndex({
       top: targetTop,
       behavior: "smooth",
     });
+    playRole("select");
   };
 
   return (

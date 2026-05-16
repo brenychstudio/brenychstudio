@@ -9,6 +9,7 @@ import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
+import { useSound } from "../stage/audio/useSound";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 
 type PageProps = {
@@ -75,7 +76,7 @@ const methodItems: MethodItem[] = [
 
 const technicalLedger = [
   ["Front-end architecture", "Reusable structure that can carry content, motion, routes, and future growth."],
-  ["Motion system", "Stateful transitions and reveals that mark behavior instead of decorating it."],
+  ["Motion system", "Staged transitions and reveals that mark behavior instead of decorating it."],
   ["Atmospheric / WebGL layer", "Stage logic and media fields added only when presence strengthens the work."],
   ["Responsive + accessibility", "Readable layouts, controls, contrast, and states across real viewports."],
   ["Deployment + QA", "Build checks, responsive passes, metadata, and launch review before release."],
@@ -175,6 +176,7 @@ function useActiveMethodItem() {
 
 function MethodSignalSpine() {
   const activeId = useActiveMethodItem();
+  const sound = useSound();
 
   return (
     <div className="grid gap-10 lg:grid-cols-[0.34fr_0.66fr]">
@@ -216,6 +218,8 @@ function MethodSignalSpine() {
               data-method-id={item.id}
               key={item.id}
               tabIndex={0}
+              onMouseEnter={() => sound.playRole("hover")}
+              onFocus={() => sound.playRole("hover")}
               className={`group relative grid gap-4 border-b border-neutral-950/10 px-4 py-8 transition duration-300 last:border-b-0 hover:bg-white/28 focus:bg-white/36 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:grid-cols-[5rem_1fr] sm:px-6 lg:min-h-[220px] lg:items-center ${
                 active ? "bg-white/24" : ""
               }`}
@@ -256,11 +260,23 @@ export default function AboutV2({
 }: PageProps) {
   const navigate = useNavigate();
   const activeSectionId = useSectionRailActive(aboutRailItems);
+  const { playRole, setScene, stopAmbient } = useSound();
+
+  useEffect(() => {
+    setScene("studio");
+    stopAmbient();
+  }, [setScene, stopAmbient]);
 
   const goTo = (path: string) => {
+    playRole(path === "/immersive" ? "open" : "select");
     startSpaPageTransition(navigate, path, () => {
       onCloseProject?.();
     });
+  };
+
+  const openProjectWithSound = () => {
+    playRole("open");
+    onOpenProject?.();
   };
 
   return (
@@ -284,15 +300,16 @@ export default function AboutV2({
             className="mx-auto grid min-h-[calc(100vh-5rem)] w-[min(94vw,1720px)] gap-12 border-y border-neutral-950/14 py-12 md:py-16 lg:grid-cols-[0.48fr_0.52fr] lg:items-center lg:py-14"
           >
             <motion.div
+              className="min-w-0"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.62, ease }}
             >
               <SectionLabel>Studio position</SectionLabel>
-              <h1 className="mt-6 max-w-[13ch] text-[52px] font-normal leading-[0.9] tracking-[-0.06em] text-neutral-950 sm:text-[76px] lg:text-[74px] xl:text-[78px] 2xl:text-[100px]">
+              <h1 className="mt-6 max-w-[10ch] text-[46px] font-normal leading-[0.92] tracking-[-0.055em] text-neutral-950 sm:max-w-[13ch] sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.06em] lg:text-[74px] xl:text-[78px] 2xl:text-[100px]">
                 I build interface systems for premium web, product surfaces, and immersive digital experiences.
               </h1>
-              <p className="mt-6 max-w-[43rem] text-[16px] leading-7 text-neutral-600 sm:text-[17px]">
+              <p className="mt-6 max-w-[34ch] text-[16px] leading-7 text-neutral-600 sm:max-w-[43rem] sm:text-[17px]">
                 Brenych Studio is an independent creative development practice focused on premium front-end systems,
                 interactive storytelling, multilingual websites, WebGL stages, and spatial interface research.
               </p>
@@ -300,6 +317,7 @@ export default function AboutV2({
               <div className="mt-8 flex flex-wrap gap-3">
                 <button
                   type="button"
+                  onMouseEnter={() => playRole("hover")}
                   onClick={() => goTo("/work")}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
                 >
@@ -307,6 +325,7 @@ export default function AboutV2({
                 </button>
                 <button
                   type="button"
+                  onMouseEnter={() => playRole("hover")}
                   onClick={() => goTo("/immersive")}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-white/56 px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
                 >
@@ -314,7 +333,8 @@ export default function AboutV2({
                 </button>
                 <button
                   type="button"
-                  onClick={onOpenProject}
+                  onMouseEnter={() => playRole("hover")}
+                  onClick={openProjectWithSound}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-transparent px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:border-neutral-950/40 hover:text-neutral-950"
                 >
                   Start a project
@@ -345,6 +365,7 @@ export default function AboutV2({
                   {practiceLayers.map((layer, index) => (
                     <motion.article
                       key={layer.label}
+                      onMouseEnter={() => playRole("hover")}
                       className="group relative min-h-[18rem] border-b border-neutral-950/10 p-5 transition duration-300 hover:bg-white/24 last:border-b-0 lg:min-h-[28rem] lg:border-b-0 lg:p-8"
                       initial={{ opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -377,8 +398,8 @@ export default function AboutV2({
             <MethodSignalSpine />
           </section>
 
-          <section id="about-technical" data-header-scene="about-technical" className="mx-auto w-[min(94vw,1720px)] pb-20 lg:pb-28">
-            <div className="grid gap-12 border-y border-neutral-950/14 py-11 lg:grid-cols-[0.34fr_0.66fr]">
+          <section id="about-technical" data-header-scene="about-technical" className="mx-auto w-[min(94vw,1720px)] pb-24 lg:pb-32">
+            <div className="grid gap-12 border-y border-neutral-950/14 py-12 lg:grid-cols-[0.34fr_0.66fr] lg:py-14">
               <div>
                 <SectionLabel>04 / Technical foundation</SectionLabel>
                 <h2 className="mt-5 max-w-[9ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[76px]">
@@ -390,32 +411,35 @@ export default function AboutV2({
                 </p>
               </div>
 
-              <div className="border-y border-neutral-950/12">
+              <div className="relative border-y border-neutral-950/10 py-2">
+                <div className="pointer-events-none absolute left-4 top-0 hidden h-full w-px bg-gradient-to-b from-transparent via-neutral-950/12 to-transparent md:block" />
                 {technicalLedger.map(([label, text], index) => (
                   <motion.div
                     key={label}
                     tabIndex={0}
-                    className="grid gap-5 border-b border-neutral-950/10 px-3 py-6 transition duration-300 last:border-b-0 hover:bg-white/26 focus:bg-white/34 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 md:grid-cols-[3.5rem_15rem_1fr] md:items-start"
+                    className="group relative grid gap-5 border-b border-neutral-950/[0.075] px-3 py-7 transition duration-300 last:border-b-0 hover:bg-white/28 focus:bg-white/34 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 md:grid-cols-[3.5rem_minmax(12rem,17rem)_1fr] md:items-start md:px-6"
                     initial={{ opacity: 0, x: 18 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{ duration: 0.46, delay: index * 0.03, ease }}
                   >
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                      {String(index + 1).padStart(2, "0")}
+                    <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                      <span className="h-2 w-2 rounded-full border border-neutral-950/18 bg-[#f3f0e9] transition duration-300 group-hover:border-neutral-950/42 group-hover:bg-neutral-950" />
+                      <span>{String(index + 1).padStart(2, "0")}</span>
                     </div>
-                    <div className="text-[17px] uppercase leading-6 tracking-[0.1em] text-neutral-950">{label}</div>
-                    <p className="max-w-[42rem] text-[15px] leading-7 text-neutral-600">{text}</p>
+                    <div className="text-[18px] uppercase leading-6 tracking-[0.09em] text-neutral-950 md:text-[19px]">{label}</div>
+                    <p className="max-w-[44rem] text-[16px] leading-8 text-neutral-600">{text}</p>
                   </motion.div>
                 ))}
               </div>
             </div>
           </section>
 
-          <section id="about-authorial" data-header-scene="about-closing" className="mx-auto w-[min(94vw,1720px)] pb-20 lg:pb-28">
-            <div className="relative grid gap-12 overflow-hidden border-y border-neutral-950/14 py-14 lg:grid-cols-[0.38fr_0.62fr] lg:items-center">
-              <div className="pointer-events-none absolute right-[8%] top-[18%] h-[28rem] w-[28rem] rounded-full border border-neutral-950/[0.055]" />
-              <div className="pointer-events-none absolute left-[28%] bottom-[16%] h-px w-[54%] rotate-[-9deg] bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />
+          <section id="about-authorial" data-header-scene="about-closing" className="mx-auto w-[min(94vw,1720px)] pb-24 lg:pb-36">
+            <div className="relative grid gap-12 overflow-hidden border-y border-neutral-950/14 py-16 lg:grid-cols-[0.38fr_0.62fr] lg:items-center lg:py-20">
+              <div className="pointer-events-none absolute right-[8%] top-[10%] h-[32rem] w-[32rem] rounded-full border border-neutral-950/[0.055]" />
+              <div className="pointer-events-none absolute right-[18%] top-[22%] h-[20rem] w-[20rem] rounded-full border border-neutral-950/[0.04]" />
+              <div className="pointer-events-none absolute left-[28%] bottom-[16%] h-px w-[54%] rotate-[-9deg] bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
               <div>
                 <SectionLabel>05 / Authorial note</SectionLabel>
                 <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[78px]">
@@ -423,8 +447,12 @@ export default function AboutV2({
                 </h2>
               </div>
 
-              <div className="relative border-l border-neutral-950/24 bg-white/18 py-8 pl-6 sm:pl-8 lg:py-12">
-                <p className="max-w-[54rem] text-[23px] leading-[1.45] tracking-[-0.015em] text-neutral-700 sm:text-[30px]">
+              <div className="relative border-l border-neutral-950/30 bg-white/24 py-9 pl-6 shadow-[0_28px_90px_rgba(20,20,20,0.035)] sm:pl-9 lg:py-14">
+                <div className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
+                  <span>Human signal / practice position</span>
+                </div>
+                <p className="max-w-[54rem] text-[24px] leading-[1.42] tracking-[-0.018em] text-neutral-700 sm:text-[32px]">
                   My work sits between front-end engineering, visual direction, photography, cinematic media, and
                   experimental interface research. I am interested in websites that feel precise, atmospheric, and
                   alive, while remaining usable, fast, and clear.
@@ -433,32 +461,47 @@ export default function AboutV2({
             </div>
           </section>
 
-          <section id="about-principles" data-header-scene="about-principles" className="mx-auto w-[min(94vw,1720px)] pb-20 lg:pb-28">
-            <div className="relative overflow-hidden border border-neutral-950 bg-neutral-950 p-6 text-white sm:p-8 lg:p-10">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.13),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_48%)]" />
+          <section id="about-principles" data-header-scene="about-principles" className="mx-auto w-[min(94vw,1720px)] pb-20 lg:pb-32">
+            <div className="relative overflow-hidden border border-white/10 bg-[rgb(12,12,12)] p-6 text-white shadow-[0_48px_180px_rgba(0,0,0,0.22)] sm:p-8 lg:p-10">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,rgba(255,255,255,0.16),transparent_34%),radial-gradient(circle_at_20%_84%,rgba(255,255,255,0.075),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.085),transparent_48%)]" />
+              <div className="pointer-events-none absolute inset-0 opacity-[0.085] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
+              <div className="pointer-events-none absolute -right-[8%] top-[4%] h-[36rem] w-[36rem] rounded-full border border-white/[0.07]" />
+              <div className="pointer-events-none absolute right-[18%] top-[22%] h-[22rem] w-[22rem] rounded-full border border-white/[0.055]" />
+              <div className="pointer-events-none absolute left-[10%] bottom-[18%] h-px w-[76%] rotate-[-7deg] bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+              <div className="pointer-events-none absolute left-[24%] top-[22%] h-px w-[68%] rotate-[5deg] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
               <div className="relative grid gap-12 lg:grid-cols-[0.42fr_0.58fr]">
-                <div>
-                  <SectionLabel light>06 / Working principles</SectionLabel>
+                <div className="flex flex-col justify-between gap-10">
+                  <div>
+                    <SectionLabel light>06 / Principle field</SectionLabel>
                   <h2 className="mt-5 max-w-[10ch] text-[54px] font-normal leading-[0.9] tracking-[-0.055em] sm:text-[84px]">
                     Calm rules for expressive systems.
                   </h2>
+                  </div>
+                  <div className="flex w-fit items-center gap-3 border-y border-white/14 px-2 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/48">
+                    <span className="relative h-2 w-2 rounded-full bg-white">
+                      <span className="absolute inset-0 animate-ping rounded-full bg-white/30" />
+                    </span>
+                    <span>Method signal / stable</span>
+                  </div>
                 </div>
 
-                <div className="border-y border-white/16">
+                <div className="border-y border-white/14">
                   {principles.map((principle, index) => (
                     <motion.div
                       key={principle}
                       tabIndex={0}
-                      className="grid gap-5 border-b border-white/12 px-3 py-6 transition duration-300 last:border-b-0 hover:bg-white/[0.055] focus:bg-white/[0.075] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 md:grid-cols-[4rem_1fr]"
-                      initial={{ opacity: 0, y: 18 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-80px" }}
-                      transition={{ duration: 0.46, delay: index * 0.035, ease }}
+                      onMouseEnter={() => playRole("hover")}
+                      onFocus={() => playRole("hover")}
+                      className="group relative grid gap-5 border-b border-white/10 px-3 py-6 transition duration-300 last:border-b-0 hover:bg-white/[0.045] focus:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 md:grid-cols-[4rem_1fr] md:py-7"
+                      transition={{ duration: 0.28, delay: index * 0.02, ease }}
                     >
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/34">
-                        {String(index + 1).padStart(2, "0")}
+                      <div className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-white/26 transition duration-500 group-hover:scale-x-100 group-focus:scale-x-100" />
+                      <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/34">
+                        <span className="h-1.5 w-1.5 rounded-full bg-white/18 transition duration-300 group-hover:bg-white group-focus:bg-white" />
+                        <span>{String(index + 1).padStart(2, "0")}</span>
                       </div>
-                      <div className="text-[30px] font-normal leading-[1.02] tracking-[-0.04em] text-white sm:text-[42px]">
+                      <div className="text-[29px] font-normal leading-[1.04] tracking-[-0.04em] text-white/86 transition duration-300 group-hover:text-white group-focus:text-white sm:text-[40px]">
                         {principle}
                       </div>
                     </motion.div>

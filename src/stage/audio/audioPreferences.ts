@@ -4,8 +4,8 @@ const STORAGE_KEY = "brenychstudio:sound-preference:v1";
 
 export const defaultSoundPreference: SoundPreference = {
   enabled: false,
-  muted: true,
-  mode: "silent",
+  muted: false,
+  mode: "micro",
   volume: 0.06,
 };
 

@@ -11,7 +11,6 @@ import {
 import { audioEngine } from "./audioEngine";
 import { audioManifest, resolveAmbientVolume, resolveSoundEvent, resolveSoundVolume } from "./audioManifest";
 import {
-  defaultSoundPreference,
   readSoundPreference,
   writeSoundPreference,
 } from "./audioPreferences";
@@ -42,17 +41,32 @@ type SoundContextValue = {
 const SoundContext = createContext<SoundContextValue | null>(null);
 
 export function SoundProvider({ children }: { children: ReactNode }) {
-  const [preference, setPreference] = useState<SoundPreference>(defaultSoundPreference);
+  const [preference, setPreference] = useState<SoundPreference>(() => readSoundPreference());
   const [scene, setSceneState] = useState<SoundScene>("portfolio");
   const [sceneId, setSceneIdState] = useState<string | null>(null);
   const [ambientState, setAmbientState] = useState<AmbientState>("off");
+  const [ambientSuppressed, setAmbientSuppressed] = useState(false);
+
+  const setSoundCssVariable = useCallback((name: string, value: string) => {
+    if (typeof document === "undefined") return;
+    document.documentElement.style.setProperty(name, value);
+  }, []);
+
+  const triggerVisualPulse = useCallback(() => {
+    if (typeof window === "undefined") return;
+    setSoundCssVariable("--sound-pulse", "1");
+    window.setTimeout(() => setSoundCssVariable("--sound-pulse", "0"), 260);
+  }, [setSoundCssVariable]);
 
   useEffect(() => {
-    const storedPreference = readSoundPreference();
-    setPreference(storedPreference);
-    audioEngine.setMuted(storedPreference.muted || !storedPreference.enabled);
-    audioEngine.setVolume(storedPreference.volume);
-  }, []);
+    audioEngine.setMuted(preference.muted || !preference.enabled);
+    audioEngine.setVolume(preference.volume);
+  }, [preference.enabled, preference.muted, preference.volume]);
+
+  useEffect(() => {
+    setSoundCssVariable("--sound-presence", preference.enabled && !preference.muted ? "1" : "0");
+    setSoundCssVariable("--sound-ambient", ambientState === "playing" || ambientState === "loading" ? "1" : "0");
+  }, [ambientState, preference.enabled, preference.muted, setSoundCssVariable]);
 
   const updatePreference = useCallback((nextPreference: SoundPreference) => {
     setPreference(nextPreference);
@@ -68,16 +82,17 @@ export function SoundProvider({ children }: { children: ReactNode }) {
   const setScene = useCallback((nextScene: SoundScene, nextSceneId: string | null = null) => {
     setSceneState(nextScene);
     setSceneIdState(nextSceneId);
+    if (nextScene !== "immersive") setAmbientSuppressed(false);
     audioEngine.setScene(nextScene);
     audioEngine.setVolume(resolveSoundVolume(nextScene, nextSceneId));
-    audioEngine.setAmbientVolume(resolveAmbientVolume(nextScene, nextSceneId), 1.45);
+    audioEngine.rampAmbientVolume(resolveAmbientVolume(nextScene, nextSceneId), 1.45);
   }, []);
 
   const setSceneId = useCallback(
     (nextSceneId: string | null) => {
       setSceneIdState(nextSceneId);
       audioEngine.setVolume(resolveSoundVolume(scene, nextSceneId));
-      audioEngine.setAmbientVolume(resolveAmbientVolume(scene, nextSceneId), 1.45);
+      audioEngine.rampAmbientVolume(resolveAmbientVolume(scene, nextSceneId), 1.45);
     },
     [scene],
   );
@@ -94,6 +109,7 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       mode: nextMode,
       volume: nextVolume,
     });
+    setAmbientSuppressed(false);
 
     const ambient = audioManifest[scene].ambient;
     if (ambient) {
@@ -108,9 +124,9 @@ export function SoundProvider({ children }: { children: ReactNode }) {
   const startSceneAmbient = useCallback(
     async (nextScene: SoundScene, nextSceneId: string | null = null) => {
       const ambient = audioManifest[nextScene].ambient;
-      if (!ambient || !preference.enabled || preference.muted) {
+      if (!ambient || ambientSuppressed || !preference.enabled || preference.muted) {
         audioEngine.stopAmbient(ambient?.fadeOut ?? 0.9);
-        syncAmbientState();
+        setAmbientState("off");
         return;
       }
 
@@ -118,41 +134,54 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       await audioEngine.startAmbient(ambient, resolveAmbientVolume(nextScene, nextSceneId));
       syncAmbientState();
     },
-    [preference.enabled, preference.muted, syncAmbientState],
+    [ambientSuppressed, preference.enabled, preference.muted, syncAmbientState],
   );
 
   const setAmbientSceneLevel = useCallback(
     (nextSceneId: string | null) => {
       if (!preference.enabled || preference.muted) return;
-      audioEngine.setAmbientVolume(resolveAmbientVolume(scene, nextSceneId), 1.45);
+      audioEngine.rampAmbientVolume(resolveAmbientVolume(scene, nextSceneId), 1.2);
     },
     [preference.enabled, preference.muted, scene],
   );
 
   const enableAmbient = useCallback(async () => {
-    await startSceneAmbient(scene);
-  }, [scene, startSceneAmbient]);
+    setAmbientSuppressed(false);
+
+    const ambient = audioManifest[scene].ambient;
+    if (!ambient || !preference.enabled || preference.muted) {
+      audioEngine.stopAmbient(ambient?.fadeOut ?? 0.9);
+      setAmbientState("off");
+      return;
+    }
+
+    setAmbientState("loading");
+    await audioEngine.startAmbient(ambient, resolveAmbientVolume(scene, sceneId));
+    syncAmbientState();
+  }, [preference.enabled, preference.muted, scene, sceneId, syncAmbientState]);
 
   const stopAmbient = useCallback(() => {
     audioEngine.stopAmbient(audioManifest[scene].ambient?.fadeOut ?? 0.9);
-    syncAmbientState();
-  }, [scene, syncAmbientState]);
+    setAmbientState("off");
+  }, [scene]);
 
   const disableAmbient = useCallback(() => {
+    setAmbientSuppressed(true);
     audioEngine.stopAmbient(audioManifest[scene].ambient?.fadeOut ?? 0.9);
-    syncAmbientState();
-  }, [scene, syncAmbientState]);
+    setAmbientState("off");
+  }, [scene]);
 
   const continueSilent = useCallback(() => {
     audioEngine.stopAmbient(audioManifest[scene].ambient?.fadeOut ?? 0.9);
-    syncAmbientState();
+    setAmbientSuppressed(false);
+    setAmbientState("off");
     updatePreference({
       enabled: false,
       muted: true,
       mode: "silent",
       volume: resolveSoundVolume(scene, sceneId),
     });
-  }, [scene, sceneId, syncAmbientState, updatePreference]);
+  }, [scene, sceneId, updatePreference]);
 
   const disable = useCallback(() => {
     continueSilent();
@@ -176,31 +205,34 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     const nextMode = audioManifest[scene].ambient ? "micro-ambient" : "micro";
     updatePreference({ enabled: true, muted: false, mode: nextMode, volume: nextVolume });
     const ambient = audioManifest[scene].ambient;
-    if (ambient) {
+    if (ambient && !ambientSuppressed) {
       setAmbientState("loading");
       await audioEngine.startAmbient(ambient, resolveAmbientVolume(scene, sceneId));
       syncAmbientState();
     }
     audioEngine.play("successQuiet");
-  }, [scene, sceneId, syncAmbientState, updatePreference]);
+  }, [ambientSuppressed, scene, sceneId, syncAmbientState, updatePreference]);
 
   const play = useCallback(
     (event: SoundEvent) => {
       if (!preference.enabled || preference.muted) return;
+      if (event === "transitionPulse") triggerVisualPulse();
       audioEngine.play(event, { volume: resolveSoundVolume(scene, sceneId), sceneId });
     },
-    [preference.enabled, preference.muted, scene, sceneId],
+    [preference.enabled, preference.muted, scene, sceneId, triggerVisualPulse],
   );
 
   const playRole = useCallback(
     (role: SoundEventRole) => {
       if (!preference.enabled || preference.muted) return;
-      audioEngine.play(resolveSoundEvent(role, scene, sceneId), {
+      const event = resolveSoundEvent(role, scene, sceneId);
+      if (event === "transitionPulse") triggerVisualPulse();
+      audioEngine.play(event, {
         volume: resolveSoundVolume(scene, sceneId),
         sceneId,
       });
     },
-    [preference.enabled, preference.muted, scene, sceneId],
+    [preference.enabled, preference.muted, scene, sceneId, triggerVisualPulse],
   );
 
   const value = useMemo<SoundContextValue>(

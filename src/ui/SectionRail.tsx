@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 export type SectionRailItem = {
@@ -19,16 +20,38 @@ export default function SectionRail({
 }) {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 96, damping: 30, mass: 0.42 });
+  const [footerVisible, setFooterVisible] = useState(false);
   const darkActive =
     activeId.includes("whisper") ||
     activeId.includes("proof") ||
     activeId.includes("principles");
 
+  useEffect(() => {
+    const footer = document.querySelector<HTMLElement>("[data-footer-rail-state='closing']");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterVisible(Boolean(entry?.isIntersecting)),
+      {
+        root: null,
+        rootMargin: "0px 0px -18% 0px",
+        threshold: 0.08,
+      },
+    );
+
+    observer.observe(footer);
+
+    return () => observer.disconnect();
+  }, []);
+
   if (!items.length) return null;
 
   return (
     <nav
-      className="pointer-events-none fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-3 xl:flex"
+      className={[
+        "pointer-events-none fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-3 transition duration-500 xl:flex",
+        footerVisible ? "translate-x-3 opacity-0" : "opacity-100",
+      ].join(" ")}
       aria-label={label}
       data-rail-tone={darkActive ? "dark" : "light"}
     >

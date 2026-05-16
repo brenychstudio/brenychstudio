@@ -124,7 +124,7 @@ export default function App() {
           <Route
             path="/work/:slug"
             element={
-              <CasePage
+              <CasePageV2
                 drawerOpen={drawerOpen}
                 onOpenProject={openProject}
                 onCloseProject={closeProject}
@@ -305,6 +305,19 @@ export default function App() {
             element={
               <HiddenRoute>
                 <WorkArchiveClassic
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
+            }
+          />
+
+          <Route
+            path="/work-classic/:slug"
+            element={
+              <HiddenRoute>
+                <CasePage
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
                   onCloseProject={closeProject}

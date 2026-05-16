@@ -140,6 +140,24 @@ export const caseStories: CaseStory[] = [
         role: "hero",
       },
       {
+        id: "desktop-1",
+        src: "/cases/house-of-lune/desktop/house-of-lune-1.webp",
+        alt: "House of Lune homepage composition",
+        label: "Maison entry",
+        caption:
+          "The opening surface introduces the maison world through controlled pace, editorial spacing, and object-led atmosphere.",
+        role: "detail",
+      },
+      {
+        id: "desktop-2",
+        src: "/cases/house-of-lune/desktop/house-of-lune-2.webp",
+        alt: "House of Lune editorial product section",
+        label: "Editorial product field",
+        caption:
+          "Product desire is supported by editorial rhythm before the interface asks for commercial action.",
+        role: "detail",
+      },
+      {
         id: "collection",
         src: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
         alt: "House of Lune collection surface",
@@ -167,6 +185,24 @@ export const caseStories: CaseStory[] = [
         role: "flow",
       },
       {
+        id: "desktop-6",
+        src: "/cases/house-of-lune/desktop/house-of-lune-6.webp",
+        alt: "House of Lune maison philosophy surface",
+        label: "Maison philosophy",
+        caption:
+          "The brand layer gives the commercial system a quieter position: values, restraint, and luxury context.",
+        role: "detail",
+      },
+      {
+        id: "desktop-7",
+        src: "/cases/house-of-lune/desktop/house-of-lune-7.webp",
+        alt: "House of Lune journal and editorial surface",
+        label: "Editorial layer",
+        caption:
+          "Journal-style content extends the product system into a reusable storytelling foundation.",
+        role: "flow",
+      },
+      {
         id: "mobile",
         src: "/cases/house-of-lune/mobile/house-of-lune-mb-1.webp",
         alt: "House of Lune mobile collection surface",
@@ -181,6 +217,24 @@ export const caseStories: CaseStory[] = [
         label: "Mobile navigation",
         caption:
           "Compact navigation translates the private maison journey into a handheld surface.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-product",
+        src: "/cases/house-of-lune/mobile/house-of-lune-mb-3.webp",
+        alt: "House of Lune mobile product detail",
+        label: "Mobile product",
+        caption:
+          "The product detail remains object-led and private even when reduced to a narrow mobile frame.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-editorial",
+        src: "/cases/house-of-lune/mobile/house-of-lune-mb-4.webp",
+        alt: "House of Lune mobile editorial content",
+        label: "Mobile editorial",
+        caption:
+          "Editorial depth carries through the handheld version without collapsing into a simple catalogue.",
         role: "mobile",
       },
       {
@@ -329,6 +383,15 @@ export const caseStories: CaseStory[] = [
         role: "detail",
       },
       {
+        id: "desktop-3",
+        src: "/cases/bcn-advisory/desktop/bcn-advisory-3.webp",
+        alt: "Barcelona Private Advisory property detail surface",
+        label: "Property review",
+        caption:
+          "Property detail is framed as guided evaluation, pairing imagery, context, and decision support.",
+        role: "proof",
+      },
+      {
         id: "inquiry",
         src: "/cases/bcn-advisory/desktop/bcn-advisory-4.webp",
         alt: "Barcelona Private Advisory shortlist drawer",
@@ -336,6 +399,24 @@ export const caseStories: CaseStory[] = [
         caption:
           "Saved properties turn into a structured advisory selection before private contact.",
         role: "flow",
+      },
+      {
+        id: "desktop-5",
+        src: "/cases/bcn-advisory/desktop/bcn-advisory-5.webp",
+        alt: "Barcelona Private Advisory contact and intake surface",
+        label: "Private contact",
+        caption:
+          "Contact is shaped as a buyer-intake moment with direct channels and a calmer advisory frame.",
+        role: "flow",
+      },
+      {
+        id: "desktop-6",
+        src: "/cases/bcn-advisory/desktop/bcn-advisory-6.webp",
+        alt: "Barcelona Private Advisory bilingual advisory content",
+        label: "Bilingual context",
+        caption:
+          "The system can stretch into bilingual and territory-aware content without losing the premium buyer rhythm.",
+        role: "detail",
       },
       {
         id: "mobile",
@@ -361,6 +442,15 @@ export const caseStories: CaseStory[] = [
         label: "Mobile shortlist",
         caption:
           "Saved apartments become a compact private advisory selection on mobile.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-gallery",
+        src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-4.webp",
+        alt: "Barcelona Private Advisory mobile property gallery",
+        label: "Mobile gallery",
+        caption:
+          "Gallery inspection keeps the property decision visual and compact inside the mobile buyer path.",
         role: "mobile",
       },
     ],
@@ -707,6 +797,11 @@ export const caseStories: CaseStory[] = [
   },
 ];
 
+const caseStorySlugAliases: Record<string, string> = {
+  "bcn-advisory": "barcelona-private-advisory",
+};
+
 export function getCaseStory(slug: string | undefined) {
-  return caseStories.find((story) => story.slug === slug) ?? null;
+  const canonicalSlug = slug ? caseStorySlugAliases[slug] ?? slug : undefined;
+  return caseStories.find((story) => story.slug === canonicalSlug) ?? null;
 }

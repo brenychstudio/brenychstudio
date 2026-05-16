@@ -136,7 +136,7 @@ export default function SoundSignalDock() {
   const activeSceneId = useActiveHeaderScene(location.pathname);
   const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
   const routeSoundScene = useMemo(() => getRouteSoundScene(location.pathname), [location.pathname]);
-  const caseMode = location.pathname.startsWith("/work-lab/");
+  const caseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");
   const soundTheme = useMemo(
     () => resolveHeaderTheme({ routeTheme, activeSceneId }),
     [activeSceneId, routeTheme],

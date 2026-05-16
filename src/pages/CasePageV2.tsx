@@ -1629,7 +1629,7 @@ export default function CasePageV2({
   const narrative = getCaseNarrative(story);
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
-  const hasAlignedHeroCards = isAdvisoryCase || story.slug === "house-of-lune" || isCreatorOpsCase;
+  const hasAlignedHeroCards = true;
   const goToWork = () => startSpaPageTransition(navigate, "/work", onCloseProject);
   const openProject = () => onOpenProject?.();
 

@@ -116,13 +116,31 @@ Canonical Immersive page order:
 
 1. Spatial threshold / flagship hero
 2. Spatial atlas
-3. Desktop web exhibition proof
-4. Quest XR proof
-5. Collector continuation
-6. Mobile proof
-7. Engine ledger / canon statement
+3. Desktop web walkthrough video
+4. Spatial evidence field
+5. Quest XR proof
+6. Collector continuation
+7. Mobile proof
+8. Engine ledger / canon statement
 
-WHISPER deliberately does not reuse `CasePageV2`. It combines the strongest existing systems instead: spatial threshold language from Immersive, evidence-led proof from Work V2, the shared cinematic inspect reveal, complete desktop / Quest / mobile media coverage, and an engine ledger for future Immersive cases.
+WHISPER deliberately does not reuse `CasePageV2`. It combines the strongest existing systems instead: spatial threshold language from Immersive, evidence-led proof from Work V2, a draggable spatial evidence field, the shared cinematic inspect reveal, complete desktop / Quest / mobile media coverage, and an engine ledger for future Immersive cases.
+
+Current refinement pass:
+
+- Hero collage was cleaned into a clearer primary website plane with quieter Quest, mobile, and signal overlays.
+- Spatial Atlas now behaves as a living spatial map instead of a flat table of proof rows.
+- Collector continuation now uses an object / print / AR chamber treatment.
+- Mobile proof now uses a darker cinematic phone field instead of the lighter generic mobile showcase.
+- Engine ledger final CTA now stays inside the immersive system language instead of switching to a cream marketing block.
+
+Canonical Immersive interaction notes:
+
+- `SpatialEvidenceField` turns screenshot proof into a controlled horizontal spatial field.
+- Drag, wheel, dots, and next controls all snap toward one active proof frame.
+- Clicking a frame centers/focuses it; focused frames can open the shared inspect reveal.
+- `SpatialAtlasMap` is the canonical way to summarize connected Immersive surfaces without making the atlas feel like a static table.
+- Collector and mobile proof sections should feel like chambers inside the same room: object handoff, AR preview, and handheld route remain atmospheric but still inspectable.
+- Atmospheric color wash transitions are now a reference device for Immersive pages: the next section should feel like it enters the current room, not like a hard page break.
 
 ### Canonical evidence pattern
 

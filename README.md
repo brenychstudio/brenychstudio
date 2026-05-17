@@ -142,6 +142,66 @@ Canonical Immersive interaction notes:
 - Collector and mobile proof sections should feel like chambers inside the same room: object handoff, AR preview, and handheld route remain atmospheric but still inspectable.
 - Atmospheric color wash transitions are now a reference device for Immersive pages: the next section should feel like it enters the current room, not like a hard page break.
 
+### 2026-05-17 refinement log
+
+Сьогоднішній прохід був сфокусований на тому, щоб прибрати шаблонну блоковість, вирівняти сторінки під єдину канонічну систему сайту і довести WHISPER до більш цілісного flagship-рівня.
+
+#### Offer V2 / hero signal
+
+- Великий чорний hero-блок справа був прибраний, бо надто сильно відволікав від сторінки.
+- Замість нього реалізовано легший концептуальний `Live offer signal` з terminal-like друком тексту.
+- Hero тепер читається ближче до головної сторінки: більше повітря, менше важкої рамковості, більше відчуття живої системи.
+- Права частина hero працює як інформаційний signal-field, а не як окремий чорний інтерфейсний екран.
+
+#### WHISPER / section 02 Spatial Atlas
+
+- Чорний суцільний блок у секції `02 Spatial Atlas` прибрано.
+- Зображення залишені як самостійні просторові поверхні, без важкого контейнера.
+- Тексти адаптовані під легшу, концептуальнішу композицію.
+- Додано/вирівняно канонічну праву навігаційну панель для сторінки.
+- Header chameleon було доведено до однакової логіки з іншими сторінками.
+
+#### WHISPER / section 03 Desktop Web Walkthrough
+
+- Відеоплеєр переосмислено як cinematic capture surface замість шаблонного embed-блоку.
+- Відео має відтворюватись одразу на сторінці, а не тільки після відкриття терміналу.
+- Відкриття відео перенесено у cinematic terminal environment для повноекранного перегляду.
+- Прибрано надмірну сітку поверх відео та зайві бокові блоки.
+- Підпис під відео перенесено вліво, щоб нижня інформаційна зона виглядала структурніше.
+- У відео-консолі `Signal Source` опущено нижче, щоб він не прилипав до верхнього краю.
+
+#### WHISPER / section 03.1 Spatial Evidence Field
+
+- Виправлено drag-перемикання скріншотів.
+- Виправлено перемикання кліком по фото.
+- Центральна активна картинка більше не виглядає випадково затемненою.
+- Клік по центральному фото відкриває shared inspect reveal.
+- Hover-controls з'являються при наведенні на активну площину і зникають після відведення курсора.
+- Перемикання фото зроблено циклічним: після останнього кадру навігація повертається до першого.
+- Для вкладеної секції `03.1` додано окрему header-scene `whisper-evidence`, щоб header, sound dock і правий section rail коректно адаптувались до темної секції.
+
+#### WHISPER / section 04 Quest XR Proof
+
+- Quest video surface повернуто ближче до початкового масштабу, без зайвого зменшення.
+- Відео відкривається у тому самому cinematic terminal pattern, що і desktop walkthrough.
+- Прибрано зайву блоковість навколо відео, щоб секція залишалась частиною immersive-середовища.
+
+#### WHISPER / section 05 Collector Continuation
+
+- Примітивний чорний інтерфейсний блок замінено на світліший object / print / AR handoff field.
+- Зображення тепер працюють як накладені просторові докази, а не як screenshot всередині важкого чорного UI.
+- Текстова логіка була спрощена: дублюючі нижні labels прибрано, основний зміст повернено в змістовний блок справа.
+- Виправлено проблему відкриття зображень у console/inspect середовищі.
+- Sound control у нижньому правому куті приведено до компактнішого канонічного вигляду.
+
+#### Shared site systems
+
+- `useActiveHeaderScene` оновлено так, щоб вкладені секції могли перемагати parent-section при визначенні активної chameleon-теми.
+- `useSectionRailActive` оновлено для коректного визначення вкладених/коротших секцій на сторінці.
+- `SectionRail`, `SoundSignalDock` і header theme tokens тепер краще підтримують WHISPER dark/light transitions.
+- На WHISPER додано канонічний immersive footer через `SiteFooterV2`.
+- Підготовлено/оновлено documentation workflow для універсальних розробок сайту через `scripts/generate-development-playbooks.mjs`.
+
 ### Canonical evidence pattern
 
 The `Screens as Evidence` section now uses the canonical `Flow / Atlas` system:
@@ -226,8 +286,43 @@ House of Lune is still the primary luxury-product reference case:
 - Keep the `Flow / Atlas` evidence behavior and synchronized inspect thumbnail rail as canonical.
 - Preserve the site language: restrained, technical, cinematic, premium, and evidence-led.
 
+### Current project status / 2026-05-17
+
+The project is now in an advanced visual-system refinement stage.
+
+Stable foundations:
+
+- `CasePageV2` remains the canonical foundation for non-immersive Work cases.
+- `/immersive/whisper` remains the canonical flagship Immersive case and does not reuse `CasePageV2`.
+- `CinematicInspectReveal` is the shared inspect environment for case proof, image evidence, and cinematic review.
+- `SectionRail` is the canonical right-side page navigation pattern.
+- `useActiveHeaderScene` and `headerThemeTokens` drive the chameleon header / sound dock behavior across light and dark sections.
+- `SiteFooterV2` is the canonical footer system and is now attached to WHISPER as well.
+
+Active refinement areas:
+
+- Offer V2 is visually much lighter and closer to the living-signal language, but still needs a final responsive QA pass.
+- WHISPER has reached a much stronger flagship direction, especially in sections 02, 03, 03.1, 04, and 05.
+- Video surfaces now share a cinematic terminal pattern, but final browser-level media QA is still important.
+- Chameleon behavior is improved for nested WHISPER sections, including `03.1 Spatial Evidence Field`.
+- Documentation/export tooling exists, but the universal development playbooks should be regenerated and reviewed whenever the interaction patterns stabilize.
+
+### Next priority actions
+
+1. Run a full visual QA pass across WHISPER on desktop, laptop, tablet, and mobile widths.
+2. Re-check video playback on desktop walkthrough and Quest proof: autoplay, terminal opening, controls, sound state, and fallback behavior.
+3. Audit header chameleon, right rail, left/header navigation, and sound dock across every WHISPER section after a fresh dev-server restart.
+4. Resolve the remaining `rawFrames` hook dependency warnings in `WhisperCaseLayout.tsx`.
+5. Review performance and bundle size; Vite still reports the standard large chunk warning.
+6. Do a focused mobile pass for WHISPER sections 03, 03.1, 04, and 05, because these have the densest interaction layouts.
+7. Re-run and polish the six Ukrainian development playbooks so they include final mechanics, examples, and reusable implementation notes.
+8. Package reusable extracts only after the related source patterns are stable: WebGL home animation, cinematic terminal video viewer, spatial evidence field, phone screenshot carousel, and right-side section rail.
+9. Prepare final copy polish for EN / UA / ES / RU where routes or case content still feel draft-like.
+
 ### Verification notes
 
-Recent visual checks were made through local screenshots.
+Recent visual checks were made through local screenshots and browser inspection.
 
-`npm run build` passes after the WHISPER Immersive case update, with only the standard Vite large chunk warning.
+`npm run build` passes after the latest WHISPER and Offer updates, with only the standard Vite large chunk warning.
+
+Targeted ESLint checks pass for the touched files with no errors. The only current warnings are the existing `rawFrames` dependency warnings in `src/ui/immersive/WhisperCaseLayout.tsx`.

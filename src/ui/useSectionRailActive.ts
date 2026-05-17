@@ -28,29 +28,27 @@ export function useSectionRailActive(items: SectionRailItem[], fallbackId?: stri
 
       const viewportAnchor = window.innerHeight * 0.46;
       let nextId = ids[0] ?? "";
-      let closestDistance = Number.POSITIVE_INFINITY;
+      let bestScore = Number.NEGATIVE_INFINITY;
 
-      for (const id of ids) {
+      ids.forEach((id, order) => {
         const section = document.getElementById(id);
-        if (!section) continue;
+        if (!section) return;
 
         const rect = section.getBoundingClientRect();
-
-        if (rect.top <= viewportAnchor && rect.bottom >= viewportAnchor) {
-          nextId = id;
-          break;
-        }
-
+        const containsAnchor = rect.top <= viewportAnchor && rect.bottom >= viewportAnchor;
         const distance = Math.min(
           Math.abs(rect.top - viewportAnchor),
           Math.abs(rect.bottom - viewportAnchor),
         );
+        const score = containsAnchor
+          ? 10000 - rect.height / 34 - Math.abs(rect.top - viewportAnchor) / 46 + order / 1000
+          : -distance + order / 1000;
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
+        if (score > bestScore) {
+          bestScore = score;
           nextId = id;
         }
-      }
+      });
 
       if (nextId && activeRef.current !== nextId) {
         activeRef.current = nextId;

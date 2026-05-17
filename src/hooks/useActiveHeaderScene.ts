@@ -1,79 +1,82 @@
 import { useEffect, useState } from "react";
 
-type VisibleScene = {
-  id: string;
-  ratio: number;
-  top: number;
-};
-
 const sensorTarget = () => Math.min(92, window.innerHeight * 0.12);
 
 export function useActiveHeaderScene(routeKey: string) {
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
 
   useEffect(() => {
-    setActiveSceneId(null);
-
-    const elements = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-header-scene]"),
-    );
-
-    if (!elements.length) {
-      setActiveSceneId(null);
-      return;
-    }
-
-    const visibleScenes = new Map<Element, VisibleScene>();
+    let frame = 0;
 
     const chooseActiveScene = () => {
-      const candidates = Array.from(visibleScenes.values());
+      frame = 0;
 
-      if (!candidates.length) {
+      const elements = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-header-scene]"),
+      );
+
+      if (!elements.length) {
         setActiveSceneId(null);
         return;
       }
 
-      candidates.sort((a, b) => {
-        const target = sensorTarget();
-        const scoreA = a.ratio * 120 - Math.abs(a.top - target) / 18;
-        const scoreB = b.ratio * 120 - Math.abs(b.top - target) / 18;
-        return scoreB - scoreA;
+      const target = sensorTarget();
+      let nextId: string | null = null;
+      let bestScore = Number.NEGATIVE_INFINITY;
+
+      elements.forEach((element, order) => {
+        const sceneId = element.dataset.headerScene;
+        if (!sceneId) return;
+
+        const rect = element.getBoundingClientRect();
+        const containsTarget = rect.top <= target && rect.bottom >= target;
+        const distance = Math.min(
+          Math.abs(rect.top - target),
+          Math.abs(rect.bottom - target),
+        );
+        const score = containsTarget
+          ? 10000 - rect.height / 24 - Math.abs(rect.top - target) / 30 + order / 1000
+          : -distance / 18 + order / 1000;
+
+        if (score > bestScore) {
+          bestScore = score;
+          nextId = sceneId;
+        }
       });
 
-      setActiveSceneId((current) => (current === candidates[0].id ? current : candidates[0].id));
+      if (!nextId) {
+        delete document.documentElement.dataset.activeHeaderScene;
+        setActiveSceneId(null);
+        return;
+      }
+
+      document.documentElement.dataset.activeHeaderScene = nextId;
+      setActiveSceneId((current) => (current === nextId ? current : nextId));
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const sceneId = (entry.target as HTMLElement).dataset.headerScene;
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(chooseActiveScene);
+    };
 
-          if (!sceneId) return;
+    const observer = new MutationObserver(requestUpdate);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-header-scene"],
+    });
 
-          if (entry.isIntersecting) {
-            visibleScenes.set(entry.target, {
-              id: sceneId,
-              ratio: entry.intersectionRatio,
-              top: entry.boundingClientRect.top,
-            });
-            return;
-          }
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
-          visibleScenes.delete(entry.target);
-        });
-
-        chooseActiveScene();
-      },
-      {
-        root: null,
-        rootMargin: "0px 0px -86% 0px",
-        threshold: [0, 0.01, 0.04, 0.08, 0.12],
-      },
-    );
-
-    elements.forEach((element) => observer.observe(element));
-
-    return () => observer.disconnect();
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
   }, [routeKey]);
 
   return activeSceneId;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
@@ -43,14 +43,35 @@ type DeliveryStage = {
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const practiceLayers = [
-  "strategy",
-  "interface architecture",
-  "visual system",
-  "motion grammar",
-  "front-end delivery",
-  "multilingual layer",
-  "immersive extension",
+const heroObjectLayers = [
+  {
+    title: "Commercial thesis",
+    signal: "strategy",
+    text: "Offer shape, audience pressure, proof claims, and conversion intent become the first structural layer.",
+  },
+  {
+    title: "Interface spine",
+    signal: "architecture",
+    text: "The page becomes a sequence of rooms: threshold, proof, service model, delivery, formats, and output.",
+  },
+  {
+    title: "Cinematic surface",
+    signal: "visual / motion",
+    text: "Typography, image rhythm, motion states, and interaction feedback make the offer feel authored.",
+  },
+  {
+    title: "Production route",
+    signal: "delivery",
+    text: "The concept lands as a responsive React system with QA, deployment logic, and handoff clarity.",
+  },
+];
+
+const offerSignalLine =
+  "Parsing offer signal: audience -> proof -> route.";
+
+const offerSignalFollowUp = [
+  "The service exposes its working logic.",
+  "Each project opens as visible stages, claims, motion states, and delivery route.",
 ];
 
 const buildSystems: BuildSystem[] = [
@@ -226,48 +247,163 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
   );
 }
 
-function HeroSystemReadout() {
-  return (
-    <div className="relative min-h-[520px] overflow-hidden border-y border-neutral-950/14 bg-white/24 lg:min-h-[720px]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_54%_34%,rgba(255,255,255,0.72),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.54),rgba(224,218,207,0.22))]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px]" />
-      <div className="pointer-events-none absolute right-[-8rem] top-[-4rem] h-[28rem] w-[28rem] rounded-full border border-neutral-950/[0.07]" />
-      <div className="pointer-events-none absolute bottom-[-12rem] left-[-8rem] h-[34rem] w-[34rem] rounded-full border border-neutral-950/[0.05]" />
+function OfferSignalReadout() {
+  const prefersReducedMotion = useReducedMotion();
+  const [activeLayer, setActiveLayer] = useState(0);
+  const [typedLine, setTypedLine] = useState("");
+  const sound = useSound();
+  const active = heroObjectLayers[activeLayer] ?? heroObjectLayers[0];
+  const visibleTypedLine = prefersReducedMotion ? offerSignalLine : typedLine;
+  const activeProgress = ((activeLayer + 1) / heroObjectLayers.length) * 100;
 
-      <div className="relative flex min-h-[520px] flex-col justify-between p-4 sm:p-6 lg:min-h-[720px] lg:p-7">
-        <div className="grid min-h-11 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/10">
-          <SectionLabel>System Signal</SectionLabel>
-          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">hero follows</div>
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 2;
+      setTypedLine(offerSignalLine.slice(0, index));
+      if (index >= offerSignalLine.length) window.clearInterval(timer);
+    }, 28);
+
+    return () => window.clearInterval(timer);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const timer = window.setInterval(() => {
+      setActiveLayer((current) => (current + 1) % heroObjectLayers.length);
+    }, 2600);
+
+    return () => window.clearInterval(timer);
+  }, [prefersReducedMotion]);
+
+  return (
+    <motion.aside
+      className="relative mx-auto min-h-[430px] w-full max-w-[44rem] overflow-visible text-neutral-950 sm:min-h-[460px] lg:min-h-[560px]"
+      aria-label="Offer signal field"
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 18, filter: "blur(4px)" }}
+      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.72, ease, delay: 0.1 }}
+    >
+      <div className="pointer-events-none absolute left-[2%] right-[18%] top-[12%] h-px bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
+      <div className="pointer-events-none absolute bottom-[13%] left-[8%] right-[18%] h-px bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
+      <div className="pointer-events-none absolute right-[9%] top-[21%] h-[58%] w-px bg-gradient-to-b from-transparent via-neutral-950/14 to-transparent" />
+      <div className="pointer-events-none absolute left-[46%] top-[4%] h-[28rem] w-[28rem] rounded-full border border-neutral-950/[0.04]" />
+      <div className="pointer-events-none absolute left-[2%] top-[52%] h-px w-[90%] rotate-[-10deg] bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
+      <div className="pointer-events-none absolute right-[8%] top-[18%] h-2 w-2 rounded-full bg-neutral-950 shadow-[0_0_28px_rgba(17,17,17,0.18)]" />
+
+      <div className="relative grid min-h-[430px] gap-7 py-7 sm:min-h-[460px] sm:py-8 md:grid-cols-[0.52fr_0.48fr] md:items-center lg:min-h-[560px]">
+        <div className="relative z-10 self-start md:self-center">
+          <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">Live offer signal</div>
+          <div className="mt-2 max-w-[18rem] font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
+            {active.signal} / commercial surface
+          </div>
+
+          <div className="mt-9 max-w-[22rem] font-mono text-[12px] leading-6 text-neutral-600">
+            <p>
+              {visibleTypedLine}
+              {!prefersReducedMotion && visibleTypedLine.length < offerSignalLine.length ? (
+                <span className="ml-1 inline-block h-3 w-px translate-y-0.5 bg-neutral-950/70" />
+              ) : null}
+            </p>
+
+            {offerSignalFollowUp.map((line, index) => (
+              <motion.p
+                key={line}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 4 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.42, ease, delay: 1 + index * 0.16 }}
+              >
+                {line}
+              </motion.p>
+            ))}
+          </div>
+
+          <motion.div
+            key={active.title}
+            className="mt-10 max-w-[20rem]"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+            animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, ease }}
+          >
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-300">
+              {String(activeLayer + 1).padStart(2, "0")} active layer
+            </div>
+            <h2 className="mt-3 text-[38px] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950 sm:text-[48px]">
+              {active.title}
+            </h2>
+            <p className="mt-4 text-[14px] leading-6 text-neutral-600">
+              {active.text}
+            </p>
+          </motion.div>
         </div>
 
-        <motion.div
-          className="grid gap-8 py-8 sm:py-10"
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.72, ease }}
-        >
-          <div className="max-w-[33rem] text-[34px] font-normal leading-[0.96] tracking-[-0.045em] text-neutral-950 sm:text-[46px] lg:text-[58px]">
-            A commercial system first. A cinematic object next.
-          </div>
-          <p className="max-w-[34rem] text-[15px] leading-7 text-neutral-600">
-            The page now moves from offer clarity into a live WebGL practice object: the structure rotates with scroll,
-            then breaks apart into its working layers before the service system begins.
-          </p>
-        </motion.div>
+        <div className="relative z-10 grid gap-0 self-center">
+          {heroObjectLayers.map((item, index) => {
+            const isActive = index === activeLayer;
 
-        <div className="grid gap-2 border-t border-neutral-950/10 pt-4 sm:grid-cols-2 xl:grid-cols-4">
-          {practiceLayers.map((item, index) => (
-            <div key={item} className="grid grid-cols-[2.3rem_1fr] gap-3 border-t border-neutral-950/10 pt-3 first:border-t-0 sm:first:border-t">
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                {String(index + 1).padStart(2, "0")}
-              </div>
-              <div className="text-[12px] uppercase leading-5 tracking-[0.12em] text-neutral-600">{item}</div>
+            return (
+              <button
+                key={item.title}
+                type="button"
+                onMouseEnter={() => {
+                  sound.playRole("hover");
+                  setActiveLayer(index);
+                }}
+                onFocus={() => setActiveLayer(index)}
+                onClick={() => {
+                  sound.playRole("select");
+                  setActiveLayer(index);
+                }}
+                className={`group relative grid min-h-[4.6rem] grid-cols-[2.8rem_1fr] items-center gap-4 border-t border-neutral-950/10 text-left transition last:border-b focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
+                  isActive ? "text-neutral-950" : "text-neutral-400 hover:text-neutral-700"
+                }`}
+              >
+                <span
+                  className={`font-mono text-[10px] uppercase tracking-[0.16em] transition ${
+                    isActive ? "text-neutral-950" : "text-neutral-300"
+                  }`}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0 py-4">
+                  <span className={`block text-[15px] uppercase leading-5 tracking-[0.13em] transition ${isActive ? "translate-x-1" : ""}`}>
+                    {item.title}
+                  </span>
+                  <span className="mt-1 block truncate font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+                    {item.signal}
+                  </span>
+                </span>
+                <span
+                  className={`absolute -left-4 bottom-3 top-3 w-px bg-neutral-950 transition ${
+                    isActive ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 group-hover:scale-y-50 group-hover:opacity-30"
+                  }`}
+                />
+              </button>
+            );
+          })}
+
+          <div className="mt-6 grid gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
+            <div className="flex items-center justify-between gap-4">
+              <span>{active.signal} route</span>
+              <span className="text-neutral-950">
+                {String(activeLayer + 1).padStart(2, "0")} / {String(heroObjectLayers.length).padStart(2, "0")}
+              </span>
             </div>
-          ))}
+            <div className="h-px w-full bg-neutral-950/12">
+              <motion.div
+                className="h-px bg-neutral-950"
+                initial={false}
+                animate={{ width: `${activeProgress}%` }}
+                transition={{ duration: 0.42, ease }}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.aside>
   );
 }
 
@@ -486,7 +622,7 @@ export default function OfferV2({
           label="Offer sections"
         />
         <main className="relative pt-24">
-          <section id="offer-threshold" data-header-scene="practice-threshold" className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-center lg:py-12">
+          <section id="offer-threshold" data-header-scene="practice-threshold" className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-center lg:py-12">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -540,7 +676,7 @@ export default function OfferV2({
               </div>
             </motion.div>
 
-            <HeroSystemReadout />
+            <OfferSignalReadout />
           </section>
 
           <OfferScrollArtifactHero />

@@ -4,9 +4,11 @@ import {
   useMemo,
   useRef,
   useState,
+  type MouseEvent,
   type PointerEvent,
   type WheelEvent,
 } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +17,10 @@ import type { ImmersiveItem, ImmersiveMedia } from "../../data/immersive";
 import { getChamberEngines } from "../../data/immersiveSystems";
 import { whisperCaseI18n } from "../../data/whisperCaseI18n";
 import { useSound } from "../../stage/audio/useSound";
+import SectionRail, { type SectionRailItem } from "../SectionRail";
+import SiteFooterV2 from "../SiteFooterV2";
 import { startSpaPageTransition } from "../pageTransition";
+import { useSectionRailActive } from "../useSectionRailActive";
 import CinematicInspectReveal from "../work/CinematicInspectReveal";
 
 type WhisperCaseLayoutProps = {
@@ -43,15 +48,18 @@ const WHISPER_REPO_URL = "https://github.com/brenychstudio/Whisper";
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const railItems: Array<{ id: SectionId; index: string; label: string }> = [
-  { id: "threshold", index: "01", label: "Threshold" },
-  { id: "atlas", index: "02", label: "Atlas" },
-  { id: "web", index: "03", label: "Web" },
-  { id: "xr", index: "04", label: "Quest" },
-  { id: "collector", index: "05", label: "Collector" },
-  { id: "mobile", index: "06", label: "Mobile" },
-  { id: "engine", index: "07", label: "Engine" },
+const railItems: SectionRailItem[] = [
+  { id: "whisper-threshold", index: "01", label: "Threshold" },
+  { id: "whisper-atlas", index: "02", label: "Atlas" },
+  { id: "whisper-web", index: "03", label: "Web" },
+  { id: "whisper-evidence", index: "3.1", label: "Field" },
+  { id: "whisper-xr", index: "04", label: "Quest" },
+  { id: "whisper-collector", index: "05", label: "Collector" },
+  { id: "whisper-mobile", index: "06", label: "Mobile" },
+  { id: "whisper-engine", index: "07", label: "Engine" },
 ];
+
+const darkRailSections = new Set(["whisper-threshold", "whisper-evidence", "whisper-xr", "whisper-mobile", "whisper-engine"]);
 
 const proofLayers: Array<{
   id: LayerId;
@@ -172,7 +180,7 @@ function Chapter({
 
   if (reduceMotion) {
     return (
-      <section id={`whisper-${id}`} className={className}>
+      <section id={`whisper-${id}`} data-header-scene={`whisper-${id}`} className={className}>
         {children}
       </section>
     );
@@ -181,6 +189,7 @@ function Chapter({
   return (
     <motion.section
       id={`whisper-${id}`}
+      data-header-scene={`whisper-${id}`}
       className={className}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -226,46 +235,39 @@ function KineticTitle({
   );
 }
 
-function WhisperRail({
-  activeId,
-  onSelect,
+function TypedSignalText({
+  text,
+  dark = false,
+  className,
 }: {
-  activeId: SectionId;
-  onSelect: (id: SectionId) => void;
+  text: string;
+  dark?: boolean;
+  className?: string;
 }) {
+  const reduceMotion = useReducedMotion();
+  const [typedText, setTypedText] = useState("");
+  const visibleText = reduceMotion ? text : typedText;
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 2;
+      setTypedText(text.slice(0, index));
+      if (index >= text.length) window.clearInterval(timer);
+    }, 28);
+
+    return () => window.clearInterval(timer);
+  }, [reduceMotion, text]);
+
   return (
-    <nav className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 items-end gap-4 2xl:flex">
-      <div className="h-[22rem] w-px overflow-hidden bg-white/16">
-        <motion.div
-          className="h-full w-full origin-top bg-[#f3efe4]"
-          animate={{ scaleY: Math.max(0.08, (railItems.findIndex((item) => item.id === activeId) + 1) / railItems.length) }}
-          transition={{ duration: 0.42, ease }}
-        />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        {railItems.map((item) => {
-          const active = activeId === item.id;
-
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onSelect(item.id)}
-              className={cx(
-                "grid grid-cols-[2rem_1fr] items-center gap-2 border px-3 py-2 text-left text-[10px] uppercase tracking-[0.14em] backdrop-blur-xl transition",
-                active
-                  ? "border-[#f3efe4] bg-[#f3efe4] text-neutral-950"
-                  : "border-white/12 bg-black/18 text-white/42 hover:border-white/34 hover:text-white",
-              )}
-            >
-              <span className={active ? "text-neutral-500" : "text-white/24"}>{item.index}</span>
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </div>
-    </nav>
+    <span className={cx("font-mono", className)}>
+      {visibleText}
+      {!reduceMotion && visibleText.length < text.length ? (
+        <span className={cx("ml-1 inline-block h-3 w-px translate-y-0.5", dark ? "bg-white/76" : "bg-neutral-950/70")} />
+      ) : null}
+    </span>
   );
 }
 
@@ -279,6 +281,10 @@ function VideoSurface({
   onOpen: () => void;
 }) {
   const sound = useSound();
+  const isDark = tone === "dark";
+  const signalText = isDark
+    ? "Quest proof is playing as a spatial capture stream; open terminal for full cinematic review."
+    : "Desktop proof is running as a live capture surface; open terminal for full cinematic review.";
 
   return (
     <button
@@ -286,41 +292,62 @@ function VideoSurface({
       onClick={onOpen}
       onMouseEnter={() => sound.playRole("hover")}
       className={cx(
-        "group block w-full overflow-hidden border p-2 text-left transition",
-        tone === "dark"
-          ? "border-white/14 bg-white/[0.035] hover:border-white/38"
-          : "border-neutral-950/12 bg-white/68 hover:border-neutral-950/28",
+        "group relative block w-full overflow-visible text-left transition duration-500",
+        isDark ? "text-white" : "text-neutral-950",
       )}
     >
-      <div className="relative aspect-video overflow-hidden bg-black">
-        <video
-          className="h-full w-full object-contain"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={video.poster}
-        >
-          <source src={video.src} type="video/mp4" />
-        </video>
+      <div
+        className={cx(
+          "relative overflow-hidden border p-2 transition duration-500",
+          isDark
+            ? "border-white/13 bg-white/[0.025] shadow-[0_26px_120px_rgba(0,0,0,0.34)] group-hover:border-white/32"
+            : "border-neutral-950/12 bg-white/50 shadow-[0_26px_120px_rgba(38,34,26,0.12)] group-hover:border-neutral-950/24",
+        )}
+      >
+        <div className="pointer-events-none absolute left-[8%] top-[12%] h-[72%] w-[70%] rounded-full border border-current opacity-[0.055]" />
+        <div className="pointer-events-none absolute bottom-[13%] left-[-3%] h-px w-[82%] -rotate-[6deg] bg-current opacity-10" />
 
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.32))]" />
-        <div className="absolute left-4 top-4 border border-white/20 bg-black/42 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/72 backdrop-blur">
-          {video.label}
-        </div>
-        <div className="absolute bottom-4 right-4 border border-white/24 bg-white/12 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/82 backdrop-blur transition group-hover:bg-white group-hover:text-neutral-950">
-          View capture
-        </div>
-      </div>
+        <div className="relative aspect-video overflow-hidden bg-[#050505]">
+          <video
+            className="h-full w-full object-contain opacity-95 saturate-[0.98] transition duration-700 group-hover:scale-[1.01] group-hover:opacity-100"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={video.poster}
+          >
+            <source src={video.src} type="video/mp4" />
+          </video>
 
-      <div className={cx("grid gap-2 px-2 py-4 md:grid-cols-[0.34fr_1fr]", tone === "dark" ? "text-white" : "text-neutral-950")}>
-        <div className={cx("text-[10px] uppercase tracking-[0.18em]", tone === "dark" ? "text-white/42" : "text-neutral-500")}>
-          {video.title}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08),transparent_36%,rgba(0,0,0,0.26)),radial-gradient(circle_at_50%_46%,transparent_42%,rgba(0,0,0,0.2))]" />
+
+          <div className="absolute left-4 top-4 md:left-6 md:top-6">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-white/42">live capture signal</div>
+            <div className="mt-2 text-[10px] uppercase tracking-[0.16em] text-white/82">{video.label}</div>
+          </div>
+
+          <div className="absolute bottom-4 left-4 max-w-[32rem] md:bottom-6 md:left-6">
+            <TypedSignalText
+              text={signalText}
+              dark
+              className="block text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58"
+            />
+          </div>
+
+          <div className="absolute bottom-4 right-4 border border-white/18 bg-[#f7f1e8] px-4 py-3 text-[10px] uppercase tracking-[0.16em] text-neutral-950 shadow-[0_18px_54px_rgba(0,0,0,0.25)] transition group-hover:bg-white md:bottom-6 md:right-6">
+            Open terminal
+          </div>
         </div>
-        <p className={cx("text-sm leading-6", tone === "dark" ? "text-white/62" : "text-neutral-600")}>
-          {video.caption}
-        </p>
+
+        <div className="relative grid max-w-[58rem] gap-2 px-2 pb-2 pt-4 md:grid-cols-[12rem_minmax(0,42rem)] md:items-start md:px-3 md:pb-3">
+          <div className={cx("text-[10px] uppercase tracking-[0.18em]", isDark ? "text-white/38" : "text-neutral-400")}>
+            {video.title}
+          </div>
+          <p className={cx("max-w-[54rem] text-sm leading-6", isDark ? "text-white/56" : "text-neutral-600")}>
+            {video.caption}
+          </p>
+        </div>
       </div>
     </button>
   );
@@ -403,15 +430,20 @@ function SpatialEvidenceField({
   const reduceMotion = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<Array<HTMLElement | null>>([]);
-  const dragRef = useRef<{ x: number; scrollLeft: number } | null>(null);
+  const dragRef = useRef<{ x: number; scrollLeft: number; moved: boolean; lastDelta: number } | null>(null);
   const clickSuppressRef = useRef(false);
   const scrollRafRef = useRef<number | null>(null);
   const settleTimerRef = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const clampIndex = useCallback(
-    (index: number) => Math.min(Math.max(index, 0), Math.max(frames.length - 1, 0)),
+  const wrapIndex = useCallback(
+    (index: number) => {
+      if (!frames.length) return 0;
+      return ((index % frames.length) + frames.length) % frames.length;
+    },
     [frames.length],
   );
 
@@ -443,9 +475,20 @@ function SpatialEvidenceField({
     return nextIndex;
   }, [findClosestFrame]);
 
+  const getScrollEdge = useCallback(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return { atStart: false, atEnd: false };
+
+    const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    return {
+      atStart: scroller.scrollLeft <= 2,
+      atEnd: scroller.scrollLeft >= maxLeft - 2,
+    };
+  }, []);
+
   const centerFrame = useCallback(
     (index: number, behavior: ScrollBehavior = "smooth") => {
-      const safeIndex = clampIndex(index);
+      const safeIndex = wrapIndex(index);
       const scroller = scrollRef.current;
       const node = cardRefs.current[safeIndex];
       if (!scroller || !node) return;
@@ -461,27 +504,27 @@ function SpatialEvidenceField({
 
       setActiveIndex(safeIndex);
     },
-    [clampIndex, reduceMotion],
+    [reduceMotion, wrapIndex],
   );
 
   const focusFrame = useCallback(
     (index: number, feedback: "select" | "transition" = "select") => {
-      const safeIndex = clampIndex(index);
+      const safeIndex = wrapIndex(index);
       sound.playRole(feedback);
       setFocusedIndex(safeIndex);
       centerFrame(safeIndex);
     },
-    [centerFrame, clampIndex, sound],
+    [centerFrame, sound, wrapIndex],
   );
 
   const openFocusedFrame = useCallback(
     (index: number) => {
-      const frame = frames[clampIndex(index)];
+      const frame = frames[wrapIndex(index)];
       if (!frame) return;
       sound.playRole("select");
       onOpenFrame(frame.src);
     },
-    [clampIndex, frames, onOpenFrame, sound],
+    [frames, onOpenFrame, sound, wrapIndex],
   );
 
   const scheduleSettle = useCallback(
@@ -519,10 +562,51 @@ function SpatialEvidenceField({
 
       event.preventDefault();
       setFocusedIndex(null);
+
+      const { atStart, atEnd } = getScrollEdge();
+      const edgeIndex = updateActiveFromScroll();
+      const atFirstFrame = edgeIndex === 0;
+      const atLastFrame = edgeIndex === frames.length - 1;
+
+      if (
+        (dominantDelta < 0 && (atStart || atFirstFrame)) ||
+        (dominantDelta > 0 && (atEnd || atLastFrame))
+      ) {
+        focusFrame(edgeIndex + (dominantDelta > 0 ? 1 : -1), "transition");
+        return;
+      }
+
       scroller.scrollBy({ left: dominantDelta, behavior: "auto" });
       scheduleSettle(260);
     },
-    [scheduleSettle],
+    [focusFrame, frames.length, getScrollEdge, scheduleSettle, updateActiveFromScroll],
+  );
+
+  const handleFieldClick = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      if (clickSuppressRef.current) return;
+
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("[data-evidence-control='true']")) return;
+
+      const pointTarget = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement | null;
+      const article =
+        target?.closest<HTMLElement>("[data-evidence-index]") ??
+        pointTarget?.closest<HTMLElement>("[data-evidence-index]");
+
+      if (!article || !event.currentTarget.contains(article)) return;
+
+      const nextIndex = Number(article.dataset.evidenceIndex);
+      if (!Number.isFinite(nextIndex)) return;
+
+      if (activeIndex === nextIndex || focusedIndex === nextIndex) {
+        openFocusedFrame(nextIndex);
+        return;
+      }
+
+      focusFrame(nextIndex, "transition");
+    },
+    [activeIndex, focusFrame, focusedIndex, openFocusedFrame],
   );
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
@@ -533,8 +617,11 @@ function SpatialEvidenceField({
     dragRef.current = {
       x: event.clientX,
       scrollLeft: scroller.scrollLeft,
+      moved: false,
+      lastDelta: 0,
     };
     clickSuppressRef.current = false;
+    setIsDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
@@ -544,24 +631,44 @@ function SpatialEvidenceField({
     if (!drag || !scroller) return;
 
     const delta = event.clientX - drag.x;
+    drag.lastDelta = delta;
     if (Math.abs(delta) > 5) {
+      drag.moved = true;
       clickSuppressRef.current = true;
       setFocusedIndex(null);
+      event.preventDefault();
     }
 
     scroller.scrollLeft = drag.scrollLeft - delta;
   };
 
   const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current) return;
+    const drag = dragRef.current;
+    if (!drag) {
+      setIsDragging(false);
+      return;
+    }
     dragRef.current = null;
+    setIsDragging(false);
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
 
-    const nextIndex = updateActiveFromScroll();
-    centerFrame(nextIndex);
+    if (drag.moved) {
+      const { atStart, atEnd } = getScrollEdge();
+      const nextIndex = updateActiveFromScroll();
+      const atFirstFrame = nextIndex === 0;
+      const atLastFrame = nextIndex === frames.length - 1;
+
+      if ((atEnd || atLastFrame) && drag.lastDelta < -5) {
+        focusFrame(nextIndex + 1, "transition");
+      } else if ((atStart || atFirstFrame) && drag.lastDelta > 5) {
+        focusFrame(nextIndex - 1, "transition");
+      } else {
+        centerFrame(nextIndex);
+      }
+    }
 
     window.setTimeout(() => {
       clickSuppressRef.current = false;
@@ -589,7 +696,11 @@ function SpatialEvidenceField({
   const focusedFrame = focusedIndex !== null ? frames[focusedIndex] : null;
 
   return (
-    <section className="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden bg-[#060706] py-16 text-white shadow-[0_-1px_0_rgba(0,0,0,0.28),0_1px_0_rgba(0,0,0,0.28)] md:py-22">
+    <section
+      id="whisper-evidence"
+      data-header-scene="whisper-evidence"
+      className="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden bg-[#060706] py-16 text-white shadow-[0_-1px_0_rgba(0,0,0,0.28),0_1px_0_rgba(0,0,0,0.28)] md:py-22"
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_48%_44%,rgba(240,233,214,0.16),transparent_24%),radial-gradient(circle_at_78%_32%,rgba(64,92,75,0.16),transparent_28%),linear-gradient(90deg,rgba(0,0,0,0.78),rgba(0,0,0,0.18)_50%,rgba(0,0,0,0.82))]" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.075] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:92px_92px]" />
       <div className="pointer-events-none absolute left-[12%] top-[16%] h-[38rem] w-[38rem] rounded-full border border-white/10" />
@@ -622,29 +733,39 @@ function SpatialEvidenceField({
       <div className="relative z-10 mt-10">
         <div
           ref={scrollRef}
-          className="flex cursor-grab gap-8 overflow-x-auto overscroll-x-contain px-[max(1.5rem,10vw)] py-12 active:cursor-grabbing md:gap-12 md:py-18 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          style={{ scrollSnapType: "x mandatory", perspective: "1400px" }}
+          className="flex cursor-grab select-none gap-8 overflow-x-auto overscroll-x-contain px-[max(1.5rem,21vw,calc(50vw-410px))] py-12 active:cursor-grabbing md:gap-12 md:py-18 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ scrollSnapType: isDragging ? "none" : "x mandatory", perspective: "1400px" }}
           onScroll={handleScroll}
           onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
+          onClick={handleFieldClick}
         >
           {frames.map((frame, index) => {
             const offset = index - activeIndex;
             const distance = Math.abs(offset);
             const focused = focusedIndex === index;
+            const hovered = hoveredIndex === index;
             const active = focused || activeIndex === index;
+            const controlsVisible = focused || hovered;
             const trueIndex = startIndex + index;
 
             return (
               <motion.article
                 key={frame.src}
+                data-evidence-index={index}
                 ref={(node) => {
                   cardRefs.current[index] = node;
                 }}
-                onMouseEnter={() => sound.playRole("hover")}
+                onMouseEnter={() => {
+                  sound.playRole("hover");
+                  setHoveredIndex(index);
+                }}
+                onMouseLeave={() => {
+                  setHoveredIndex((current) => (current === index ? null : current));
+                }}
                 className="group relative min-h-[28rem] w-[min(78vw,760px)] shrink-0 origin-center touch-pan-y text-left outline-none md:w-[min(58vw,820px)]"
                 style={{
                   scrollSnapAlign: "center",
@@ -666,14 +787,6 @@ function SpatialEvidenceField({
               >
                 <button
                   type="button"
-                  onClick={() => {
-                    if (clickSuppressRef.current) return;
-                    if (focused) {
-                      openFocusedFrame(index);
-                      return;
-                    }
-                    focusFrame(index, active ? "select" : "transition");
-                  }}
                   className={cx(
                     "relative block w-full overflow-hidden border bg-black text-left shadow-[0_42px_160px_rgba(0,0,0,0.44)] transition",
                     focused ? "border-[#f4efe4]/80" : active ? "border-white/36" : "border-white/12 group-hover:border-white/30",
@@ -686,8 +799,14 @@ function SpatialEvidenceField({
                       className="h-full w-full object-contain"
                       loading="lazy"
                       decoding="async"
+                      draggable={false}
                     />
-                    <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.38))]" />
+                    <span
+                      className={cx(
+                        "pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.38))] transition-opacity duration-300",
+                        active ? "opacity-0" : "opacity-80",
+                      )}
+                    />
                     <span className="pointer-events-none absolute left-4 top-4 border border-white/18 bg-black/42 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/70 backdrop-blur">
                       Signal {formatIndex(trueIndex + 1)}
                     </span>
@@ -707,9 +826,12 @@ function SpatialEvidenceField({
                 </button>
 
                 <AnimatePresence>
-                  {focused ? (
+                  {controlsVisible ? (
                     <motion.div
                       className="absolute bottom-4 right-4 flex flex-wrap justify-end gap-2"
+                      data-evidence-control="true"
+                      onPointerDown={(event) => event.stopPropagation()}
+                      onClick={(event) => event.stopPropagation()}
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
@@ -731,7 +853,10 @@ function SpatialEvidenceField({
                       </button>
                       <button
                         type="button"
-                        onClick={() => setFocusedIndex(null)}
+                        onClick={() => {
+                          setFocusedIndex(null);
+                          setHoveredIndex(null);
+                        }}
                         className="border border-white/16 bg-black/48 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/58 backdrop-blur"
                       >
                         Close
@@ -801,30 +926,31 @@ function SpatialAtlasMap({
   const activePreview = previewFrames[activeLayer];
   const positions: Record<LayerId, { left: string; top: string; width: string; rotate: number }> = {
     web: { left: "7%", top: "15%", width: "47%", rotate: -5 },
-    xr: { left: "48%", top: "8%", width: "39%", rotate: 4 },
+    xr: { left: "min(48%, calc(100% - 250px))", top: "8%", width: "39%", rotate: 4 },
     collector: { left: "28%", top: "46%", width: "43%", rotate: 2 },
-    mobile: { left: "67%", top: "38%", width: "20%", rotate: -4 },
+    mobile: { left: "min(67%, calc(100% - 150px))", top: "38%", width: "20%", rotate: -4 },
   };
 
   return (
-    <div className="relative min-h-[660px] overflow-hidden border border-neutral-950/14 bg-[#070807] text-white shadow-[0_46px_160px_rgba(0,0,0,0.18)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_42%_35%,rgba(238,231,210,0.15),transparent_24%),radial-gradient(circle_at_74%_52%,rgba(75,98,80,0.22),transparent_29%),linear-gradient(120deg,rgba(0,0,0,0.54),rgba(0,0,0,0.08)_48%,rgba(0,0,0,0.68))]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:76px_76px]" />
-      <div className="pointer-events-none absolute left-[17%] top-[13%] h-[34rem] w-[34rem] rounded-full border border-white/10" />
-      <div className="pointer-events-none absolute left-[7%] top-[52%] h-px w-[82%] rotate-[10deg] bg-gradient-to-r from-transparent via-[#f4efe4]/20 to-transparent" />
-      <div className="pointer-events-none absolute left-[14%] top-[22%] h-px w-[70%] -rotate-[14deg] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+    <div className="relative min-h-[660px] overflow-visible text-neutral-950">
+      <div className="pointer-events-none absolute left-[14%] top-[12%] h-[34rem] w-[34rem] rounded-full border border-neutral-950/[0.06]" />
+      <div className="pointer-events-none absolute left-[3%] right-[4%] top-[13%] h-px bg-gradient-to-r from-transparent via-neutral-950/18 to-transparent" />
+      <div className="pointer-events-none absolute bottom-[17%] left-[7%] right-[11%] h-px bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
+      <div className="pointer-events-none absolute left-[7%] top-[52%] h-px w-[82%] rotate-[10deg] bg-gradient-to-r from-transparent via-neutral-950/18 to-transparent" />
+      <div className="pointer-events-none absolute left-[14%] top-[22%] h-px w-[70%] -rotate-[14deg] bg-gradient-to-r from-transparent via-neutral-950/10 to-transparent" />
+      <div className="pointer-events-none absolute right-[8%] top-[20%] h-2 w-2 rounded-full bg-neutral-950 shadow-[0_0_28px_rgba(17,17,17,0.16)]" />
 
-      <div className="relative z-10 flex items-start justify-between gap-4 p-5 md:p-7">
+      <div className="relative z-10 flex items-start justify-between gap-4 px-1 pt-6 md:px-3">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.2em] text-white/36">Spatial map / live system</div>
-          <div className="mt-2 text-[12px] uppercase tracking-[0.18em] text-[#f4efe4]/70">{activeProof.signal}</div>
+          <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">Spatial map / live system</div>
+          <div className="mt-2 text-[12px] uppercase tracking-[0.18em] text-neutral-700">{activeProof.signal}</div>
         </div>
-        <div className="hidden border border-white/12 bg-black/22 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/38 backdrop-blur md:block">
+        <div className="hidden text-[10px] uppercase tracking-[0.18em] text-neutral-400 md:block">
           Surface orbit
         </div>
       </div>
 
-      <div className="relative z-10 min-h-[505px]">
+      <div className="relative z-10 min-h-[560px]">
         {proofLayers.map((layer) => {
           const active = activeLayer === layer.id;
           const frame = previewFrames[layer.id];
@@ -840,37 +966,51 @@ function SpatialAtlasMap({
               }}
               onMouseEnter={() => sound.playRole("hover")}
               className={cx(
-                "absolute overflow-hidden border bg-black/54 p-2 text-left shadow-[0_36px_130px_rgba(0,0,0,0.4)] backdrop-blur transition",
-                active ? "border-[#f4efe4]/82" : "border-white/12 hover:border-white/34",
+                "absolute text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
+                active ? "z-20" : "z-10 hover:z-20",
                 layer.id === "mobile" ? "min-w-[130px]" : "min-w-[230px]",
               )}
               style={{ left: position.left, top: position.top, width: position.width }}
-              animate={{ rotate: active ? 0 : position.rotate, scale: active ? 1.06 : 1, opacity: active ? 1 : 0.72 }}
+              animate={{ rotate: active ? 0 : position.rotate, scale: active ? 1.06 : 1, opacity: active ? 1 : 0.82 }}
               transition={{ duration: 0.54, ease }}
             >
-              <span className={cx("grid place-items-center overflow-hidden bg-black", layer.id === "mobile" ? "aspect-[9/16]" : "aspect-[16/10]")}>
+              <span
+                className={cx(
+                  "grid place-items-center overflow-hidden border bg-white/54 p-1.5 shadow-[0_28px_90px_rgba(17,17,17,0.11)] backdrop-blur-sm transition",
+                  active ? "border-neutral-950/34 shadow-[0_34px_120px_rgba(17,17,17,0.16)]" : "border-neutral-950/12 hover:border-neutral-950/26",
+                  layer.id === "mobile" ? "aspect-[9/16]" : "aspect-[16/10]",
+                )}
+              >
                 {frame ? (
                   <img src={frame.src} alt={frame.alt ?? ""} className="h-full w-full object-contain" loading="lazy" decoding="async" />
                 ) : (
-                  <span className="px-4 text-[10px] uppercase tracking-[0.16em] text-white/32">Pending media</span>
+                  <span className="px-4 text-[10px] uppercase tracking-[0.16em] text-neutral-400">Pending media</span>
                 )}
               </span>
-              <span className="mt-2 grid gap-1 border-t border-white/10 pt-2">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-white/34">{layer.index}</span>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/76">{layer.title}</span>
+              <span
+                className={cx(
+                  "mt-3 grid grid-cols-[2rem_1fr] gap-3 transition",
+                  active ? "opacity-100" : "pointer-events-none opacity-0",
+                )}
+              >
+                <span className={cx("text-[10px] uppercase tracking-[0.18em]", active ? "text-neutral-950" : "text-neutral-300")}>{layer.index}</span>
+                <span>
+                  <span className={cx("block text-[11px] font-semibold uppercase tracking-[0.14em]", active ? "text-neutral-950" : "text-neutral-500")}>{layer.title}</span>
+                  <span className="mt-1 block text-[10px] uppercase tracking-[0.16em] text-neutral-400">{layer.signal}</span>
+                </span>
               </span>
             </motion.button>
           );
         })}
       </div>
 
-      <div className="relative z-10 grid gap-5 border-t border-white/12 bg-black/48 p-5 backdrop-blur md:grid-cols-[0.2fr_0.48fr_1fr] md:p-6">
-        <div className="text-[10px] uppercase tracking-[0.2em] text-white/34">{activeProof.index}</div>
+      <div className="relative z-10 grid gap-5 border-y border-neutral-950/12 px-1 py-5 md:grid-cols-[0.16fr_0.42fr_1fr] md:px-3">
+        <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-300">{activeProof.index}</div>
         <div>
-          <div className="text-[20px] font-semibold leading-tight tracking-normal text-white md:text-[28px]">{activeProof.title}</div>
-          <div className="mt-3 text-[10px] uppercase tracking-[0.18em] text-[#f4efe4]/52">{activePreview?.label ?? activeProof.signal}</div>
+          <div className="text-[20px] font-semibold leading-tight tracking-normal text-neutral-950 md:text-[28px]">{activeProof.title}</div>
+          <div className="mt-3 text-[10px] uppercase tracking-[0.18em] text-neutral-400">{activePreview?.label ?? activeProof.signal}</div>
         </div>
-        <p className="text-sm leading-7 text-white/58 md:text-[15px]">{activeProof.text}</p>
+        <p className="text-sm leading-7 text-neutral-600 md:text-[15px]">{activeProof.text}</p>
       </div>
     </div>
   );
@@ -884,95 +1024,152 @@ function CollectorChamber({
   onOpenFrame: (src: string) => void;
 }) {
   const sound = useSound();
+  const [activeId, setActiveId] = useState("print");
   const chamberItems = [
     {
       id: "print",
-      eyebrow: "01 / print object",
+      eyebrow: "01 / edition object",
       label: "Edition detail",
-      text: "Framing, material notes, price logic, and purchase handoff become the object layer.",
+      signal: "material proof",
+      text: "Framing, material notes, price logic, and purchase intent move the case from screen surface into object logic.",
       frame: frames[0] ?? null,
     },
     {
       id: "ar",
       eyebrow: "02 / AR chamber",
       label: "AR preview",
-      text: "The collector sees the framed work as a preview surface instead of a detached screenshot.",
+      signal: "room preview",
+      text: "The collector sees the framed work as a placed preview surface, not as a detached technical screenshot.",
       frame: frames[1] ?? null,
     },
     {
       id: "notes",
       eyebrow: "03 / notes layer",
       label: "Handoff notes",
-      text: "Context, ownership intent, and collector continuation stay attached to the artwork.",
+      signal: "context layer",
+      text: "Context, authorship, and ownership intent remain attached to the artwork as the experience leaves XR.",
       frame: frames[2] ?? null,
     },
   ];
   const primary = chamberItems[0];
+  const activeItem = chamberItems.find((item) => item.id === activeId) ?? primary;
 
   if (!primary?.frame) return null;
 
   return (
-    <div className="relative mt-14 overflow-hidden border border-white/12 bg-[#070806] text-white shadow-[0_46px_180px_rgba(0,0,0,0.24)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_32%_30%,rgba(238,231,210,0.13),transparent_25%),radial-gradient(circle_at_74%_62%,rgba(65,90,74,0.18),transparent_31%),linear-gradient(135deg,rgba(0,0,0,0.82),rgba(0,0,0,0.22)_55%,rgba(0,0,0,0.88))]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.065] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:82px_82px]" />
+    <div className="relative mt-16 min-h-[620px] overflow-visible text-neutral-950">
+      <div className="pointer-events-none absolute left-[7%] top-[5%] h-[42rem] w-[42rem] rounded-full border border-neutral-950/[0.055]" />
+      <div className="pointer-events-none absolute right-[9%] top-[18%] h-[26rem] w-[26rem] rounded-full border border-neutral-950/[0.045]" />
+      <div className="pointer-events-none absolute left-[2%] right-[4%] top-[18%] h-px bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
+      <div className="pointer-events-none absolute left-[8%] right-[8%] top-[54%] h-px -rotate-[8deg] bg-gradient-to-r from-transparent via-neutral-950/13 to-transparent" />
+      <div className="pointer-events-none absolute bottom-[12%] left-[4%] right-[4%] h-px bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />
 
-      <div className="relative z-10 grid gap-8 p-4 md:p-7 lg:grid-cols-[0.58fr_0.42fr]">
-        <button
-          type="button"
-          onClick={() => onOpenFrame(primary.frame!.src)}
-          onMouseEnter={() => sound.playRole("hover")}
-          className="group block min-w-0 text-left"
-        >
-          <div className="overflow-hidden border border-white/14 bg-black p-2 transition group-hover:border-[#f4efe4]/62">
-            <div className="grid aspect-[16/11] place-items-center overflow-hidden bg-black">
-              <img src={primary.frame.src} alt={primary.frame.alt ?? ""} className="h-full w-full object-contain" loading="lazy" decoding="async" />
-            </div>
-          </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-[0.28fr_1fr]">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-[#f4efe4]/42">{primary.eyebrow}</div>
-            <div>
-              <h3 className="text-[26px] font-semibold leading-tight tracking-normal text-white">{primary.label}</h3>
-              <p className="mt-3 max-w-[48rem] text-sm leading-7 text-white/56">{primary.text}</p>
-            </div>
-          </div>
-        </button>
+      <div className="relative z-10 grid gap-12 lg:grid-cols-[0.61fr_0.39fr] lg:items-start">
+        <div className="relative min-h-[510px]">
+          <button
+            type="button"
+            onClick={() => onOpenFrame(primary.frame!.src)}
+            onMouseEnter={() => {
+              sound.playRole("hover");
+              setActiveId(primary.id);
+            }}
+            onFocus={() => setActiveId(primary.id)}
+            className="group relative w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 lg:absolute lg:left-0 lg:top-10 lg:w-[min(760px,78%)]"
+          >
+            <span className="block border border-neutral-950/16 bg-[#f8f5ee]/56 p-2 shadow-[0_34px_120px_rgba(26,23,18,0.14)] backdrop-blur-sm transition group-hover:border-neutral-950/34">
+              <span className="grid aspect-[16/11] place-items-center overflow-hidden bg-[#f4f0e7]">
+                <img src={primary.frame.src} alt={primary.frame.alt ?? ""} className="h-full w-full object-contain" loading="lazy" decoding="async" />
+              </span>
+            </span>
+            <span className="mt-4 grid gap-3 border-t border-neutral-950/12 pt-4 md:grid-cols-[0.25fr_1fr]">
+              <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-400">{primary.eyebrow}</span>
+              <span>
+                <span className="block text-[28px] font-semibold leading-tight tracking-normal text-neutral-950">{primary.label}</span>
+                <span className="mt-3 block max-w-[42rem] text-sm leading-7 text-neutral-600">{primary.text}</span>
+              </span>
+            </span>
+          </button>
 
-        <div className="grid gap-5">
-          <div className="border border-white/12 bg-white/[0.035] p-5">
-            <div className="text-[10px] uppercase tracking-[0.2em] text-white/34">Collector chamber</div>
-            <p className="mt-5 text-[24px] font-semibold leading-tight tracking-normal text-white md:text-[34px]">
-              Object logic, print proof, and AR preview sit in one quiet handoff room.
-            </p>
-          </div>
-
-          {chamberItems.slice(1).map((item) =>
+          {chamberItems.slice(1).map((item, index) =>
             item.frame ? (
-              <button
+              <motion.button
                 key={item.id}
                 type="button"
                 onClick={() => onOpenFrame(item.frame!.src)}
-                onMouseEnter={() => sound.playRole("hover")}
-                className="group grid gap-4 border border-white/12 bg-black/28 p-3 text-left transition hover:border-[#f4efe4]/48 md:grid-cols-[0.44fr_1fr]"
+                onMouseEnter={() => {
+                  sound.playRole("hover");
+                  setActiveId(item.id);
+                }}
+                onFocus={() => setActiveId(item.id)}
+                className={cx(
+                  "group relative mt-8 w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 lg:absolute lg:mt-0",
+                  index === 0 ? "lg:right-[4%] lg:top-[3%] lg:w-[42%] lg:min-w-[280px]" : "lg:right-[12%] lg:top-[55%] lg:w-[34%] lg:min-w-[250px]",
+                )}
+                animate={{ rotate: activeId === item.id ? 0 : index === 0 ? 3 : -4, scale: activeId === item.id ? 1.04 : 1 }}
+                transition={{ duration: 0.48, ease }}
               >
-                <span className="grid aspect-[16/10] place-items-center overflow-hidden bg-black">
-                  <img src={item.frame.src} alt={item.frame.alt ?? ""} className="h-full w-full object-contain" loading="lazy" decoding="async" />
+                <span
+                  className={cx(
+                    "block border bg-[#f8f5ee]/62 p-2 shadow-[0_26px_90px_rgba(26,23,18,0.12)] backdrop-blur-sm transition",
+                    activeId === item.id ? "border-neutral-950/32" : "border-neutral-950/13 group-hover:border-neutral-950/28",
+                  )}
+                >
+                  <span className="grid aspect-[16/10] place-items-center overflow-hidden bg-[#f4f0e7]">
+                    <img src={item.frame.src} alt={item.frame.alt ?? ""} className="h-full w-full object-contain" loading="lazy" decoding="async" />
+                  </span>
                 </span>
-                <span>
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-white/34">{item.eyebrow}</span>
-                  <span className="mt-4 block text-[18px] font-semibold leading-tight tracking-normal text-white">{item.label}</span>
-                  <span className="mt-3 block text-sm leading-6 text-white/52">{item.text}</span>
+                <span className={cx("mt-3 grid grid-cols-[2rem_1fr] gap-3 transition", activeId === item.id ? "opacity-100" : "opacity-45 group-hover:opacity-100")}>
+                  <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-400">{formatIndex(index + 2)}</span>
+                  <span>
+                    <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-950">{item.label}</span>
+                    <span className="mt-1 block text-[10px] uppercase tracking-[0.16em] text-neutral-400">{item.signal}</span>
+                  </span>
                 </span>
-              </button>
+              </motion.button>
             ) : null,
           )}
+        </div>
 
-          <div className="grid grid-cols-3 border border-white/12 bg-[#f4efe4]/8">
-            {["Edition", "Preview", "Handoff"].map((item, index) => (
-              <div key={item} className="border-r border-white/10 p-4 last:border-r-0">
-                <div className="text-[10px] uppercase tracking-[0.18em] text-white/28">{formatIndex(index + 1)}</div>
-                <div className="mt-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#f4efe4]/66">{item}</div>
-              </div>
-            ))}
+        <div className="relative pt-8 lg:pt-10">
+          <div className="flex items-center justify-between gap-4 border-y border-neutral-950/12 py-4">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">Collector handoff field</div>
+              <div className="mt-2 text-[12px] uppercase tracking-[0.18em] text-neutral-700">{activeItem.signal}</div>
+            </div>
+            <div className="h-2 w-2 rounded-full bg-neutral-950 shadow-[0_0_26px_rgba(17,17,17,0.16)]" />
+          </div>
+
+          <p className="mt-6 max-w-[34rem] text-[22px] font-semibold leading-tight tracking-normal text-neutral-950 md:text-[28px]">
+            Edition, preview, and notes become one quiet handoff route.
+          </p>
+          <p className="mt-4 max-w-[36rem] text-sm leading-7 text-neutral-600">
+            The collector layer is treated as a continuity system: the artwork remains the anchor while commerce, AR, and context become calm supporting signals.
+          </p>
+
+          <div className="mt-7 grid gap-0 border-y border-neutral-950/12">
+            {chamberItems.map((item) =>
+              item.frame ? (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    sound.playRole("select");
+                    setActiveId(item.id);
+                  }}
+                  onDoubleClick={() => onOpenFrame(item.frame!.src)}
+                  className={cx(
+                    "group grid gap-3 border-b border-neutral-950/10 py-4 text-left last:border-b-0 md:grid-cols-[3rem_1fr]",
+                    activeId === item.id ? "text-neutral-950" : "text-neutral-400 hover:text-neutral-800",
+                  )}
+                >
+                  <span className="text-[10px] uppercase tracking-[0.18em]">{item.eyebrow.slice(0, 2)}</span>
+                  <span>
+                    <span className="block text-[18px] font-semibold leading-tight tracking-normal">{item.label}</span>
+                    <span className="mt-2 block text-[13px] leading-6 text-neutral-500">{item.text}</span>
+                  </span>
+                </button>
+              ) : null,
+            )}
           </div>
         </div>
       </div>
@@ -1096,6 +1293,14 @@ function CinematicMobileField({
 }
 
 function VideoModal({ video, onClose }: { video: VideoProof | null; onClose: () => void }) {
+  const sound = useSound();
+  const reduceMotion = useReducedMotion();
+
+  const close = useCallback(() => {
+    sound.playRole("close");
+    onClose();
+  }, [onClose, sound]);
+
   useEffect(() => {
     if (!video) return;
 
@@ -1103,7 +1308,7 @@ function VideoModal({ video, onClose }: { video: VideoProof | null; onClose: () 
     document.body.style.overflow = "hidden";
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") close();
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -1112,64 +1317,100 @@ function VideoModal({ video, onClose }: { video: VideoProof | null; onClose: () 
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [onClose, video]);
+  }, [close, video]);
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <AnimatePresence>
       {video ? (
         <motion.div
-          className="fixed inset-0 z-[90] bg-[#030303] text-white"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.28, ease }}
+          data-video-terminal="true"
+          className="fixed inset-0 z-[999] overflow-hidden bg-[#030303] text-[#f7f1e8]"
+          initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 1.012, filter: "blur(4px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.992, filter: "blur(5px)" }}
+          transition={{ duration: 0.54, ease }}
         >
           <button
             type="button"
             aria-label="Close video proof"
-            className="absolute inset-0 cursor-default bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.12),transparent_32%),linear-gradient(180deg,rgba(12,16,16,0.3),rgba(0,0,0,0.96))]"
-            onClick={onClose}
+            className="absolute inset-0 cursor-default"
+            onClick={close}
           />
 
-          <div className="relative z-[91] grid h-dvh grid-rows-[auto_minmax(0,1fr)_auto]">
-            <header className="flex items-center justify-between gap-4 border-b border-white/12 px-4 py-4 md:px-8">
+          {video.poster ? (
+            <motion.img
+              src={video.poster}
+              alt=""
+              className="pointer-events-none absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-18 blur-2xl saturate-[0.86]"
+              initial={reduceMotion ? { opacity: 0.16 } : { opacity: 0, scale: 1.08, filter: "blur(34px)" }}
+              animate={{ opacity: 0.18, scale: 1, filter: "blur(28px)" }}
+              exit={{ opacity: 0, scale: 0.98, filter: "blur(36px)" }}
+              transition={{ duration: 0.82, ease }}
+            />
+          ) : null}
+
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(246,239,225,0.15),transparent_34%),linear-gradient(180deg,rgba(12,16,16,0.2),rgba(0,0,0,0.95)_68%)]" />
+          <div className="pointer-events-none absolute left-[8vw] top-[67vh] h-px w-[84vw] rotate-[5deg] bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+          <div className="pointer-events-none absolute left-1/2 top-[12%] h-[62vw] max-h-[48rem] w-[62vw] max-w-[48rem] -translate-x-1/2 rounded-full border border-white/[0.075]" />
+
+          <div className="relative z-[1000] grid h-dvh grid-rows-[auto_minmax(0,1fr)_auto] px-4 py-4 sm:px-6 sm:py-6">
+            <header className="pointer-events-none mx-auto flex w-full max-w-[1760px] items-start justify-between gap-4">
               <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-white/38">WHISPER video proof</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-white/38">WHISPER video terminal</div>
                 <h2 className="mt-2 truncate text-2xl font-semibold tracking-normal text-white md:text-4xl">{video.title}</h2>
               </div>
               <button
                 type="button"
-                onClick={onClose}
-                className="border border-white/16 bg-white/8 px-4 py-3 text-[10px] uppercase tracking-[0.16em] text-white/72 transition hover:bg-white hover:text-neutral-950"
+                onClick={close}
+                onMouseEnter={() => sound.playRole("hover")}
+                className="pointer-events-auto shrink-0 border border-white/16 bg-white/8 px-4 py-3 text-[10px] uppercase tracking-[0.16em] text-white/72 backdrop-blur transition hover:bg-[#f7f1e8] hover:text-neutral-950"
               >
                 Close x
               </button>
             </header>
 
-            <main className="grid min-h-0 place-items-center px-4 py-6 md:px-8">
-              <motion.video
-                key={video.src}
-                className="max-h-full w-full max-w-[1600px] border border-white/14 bg-black object-contain shadow-[0_34px_160px_rgba(0,0,0,0.64)]"
-                controls
-                autoPlay
-                playsInline
-                poster={video.poster}
-                initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            <main className="grid min-h-0 place-items-center py-4 md:py-6">
+              <motion.div
+                className="relative w-full max-w-[min(92vw,1720px)]"
+                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 26, scale: 0.985 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.99 }}
-                transition={{ duration: 0.5, ease }}
+                exit={{ opacity: 0, y: 14, scale: 0.99 }}
+                transition={{ duration: 0.62, ease }}
               >
-                <source src={video.src} type="video/mp4" />
-              </motion.video>
+                <video
+                  key={video.src}
+                  className="block max-h-[78dvh] min-h-[320px] w-full bg-black object-contain shadow-[0_34px_180px_rgba(0,0,0,0.76)]"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="auto"
+                  poster={video.poster}
+                >
+                  <source src={video.src} type="video/mp4" />
+                </video>
+
+                <div className="pointer-events-none absolute left-4 top-12 md:left-6 md:top-16">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-white/36">signal source</div>
+                  <div className="mt-2 text-[10px] uppercase tracking-[0.16em] text-white/78">{video.label}</div>
+                </div>
+              </motion.div>
             </main>
 
-            <footer className="border-t border-white/12 px-4 py-4 text-sm leading-6 text-white/58 md:px-8">
-              {video.caption}
+            <footer className="pointer-events-none mx-auto flex w-full max-w-[1760px] flex-wrap items-end justify-between gap-4">
+              <TypedSignalText
+                text={video.caption ?? "Cinematic playback environment is active."}
+                dark
+                className="max-w-[46rem] text-[10px] uppercase leading-5 tracking-[0.16em] text-white/52"
+              />
+              <span className="text-[10px] uppercase tracking-[0.18em] text-white/36">source active / esc to close</span>
             </footer>
           </div>
         </motion.div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -1242,7 +1483,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     [item.stack],
   );
 
-  const [activeSection, setActiveSection] = useState<SectionId>("threshold");
+  const activeSection = useSectionRailActive(railItems, "whisper-threshold");
   const [activeLayer, setActiveLayer] = useState<LayerId>("web");
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
   const [activeVideo, setActiveVideo] = useState<VideoProof | null>(null);
@@ -1266,9 +1507,13 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
   );
 
   const scrollToSection = useCallback(
-    (id: SectionId) => {
+    (id: string) => {
       sound.playRole("transition");
-      document.getElementById(`whisper-${id}`)?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      const section = document.getElementById(id);
+      if (!section) return;
+
+      const top = Math.max(0, section.getBoundingClientRect().top + window.scrollY - 76);
+      window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
     },
     [reduceMotion, sound],
   );
@@ -1288,30 +1533,15 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
     };
   }, [sound]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        const nextId = visible?.target.id.replace("whisper-", "") as SectionId | undefined;
-        if (nextId) setActiveSection(nextId);
-      },
-      { rootMargin: "-26% 0px -54% 0px", threshold: [0.18, 0.34, 0.5] },
-    );
-
-    railItems.forEach((item) => {
-      const node = document.getElementById(`whisper-${item.id}`);
-      if (node) observer.observe(node);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden overflow-x-hidden bg-[#050505] text-[#f4efe4]">
-      <WhisperRail activeId={activeSection} onSelect={scrollToSection} />
+      <SectionRail
+        items={railItems}
+        activeId={activeSection}
+        onSelect={scrollToSection}
+        label="WHISPER sections"
+        tone={darkRailSections.has(activeSection) ? "dark" : "light"}
+      />
 
       <Chapter id="threshold" className="relative min-h-[calc(100vh-5rem)] overflow-hidden">
         <video
@@ -1679,7 +1909,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
                 </a>
                 <button
                   type="button"
-                  onClick={() => scrollToSection("threshold")}
+                  onClick={() => scrollToSection("whisper-threshold")}
                   className="border border-white/16 bg-black/22 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/66 transition hover:border-white/40 hover:text-white"
                 >
                   Back to threshold
@@ -1689,6 +1919,8 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
           </div>
         </div>
       </Chapter>
+
+      <SiteFooterV2 variant="immersive" />
 
       <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />
       <CinematicInspectReveal

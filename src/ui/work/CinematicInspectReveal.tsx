@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type TouchEvent, type WheelEvent } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import type { CaseStoryMedia } from "../../data/caseStories";
@@ -85,6 +86,7 @@ export default function CinematicInspectReveal({
 
     closeTimerRef.current = window.setTimeout(() => {
       closeTimerRef.current = null;
+      setClosing(false);
       onClose();
     }, closeRevealMs);
   }, [closing, onClose, sound]);
@@ -151,7 +153,6 @@ export default function CinematicInspectReveal({
 
   useEffect(() => {
     if (index === null) return;
-    setClosing(false);
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -202,7 +203,9 @@ export default function CinematicInspectReveal({
     return () => window.cancelAnimationFrame(animationFrame);
   }, [frames.length, index, reduceMotion]);
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <AnimatePresence>
       {index !== null && currentFrame ? (
         <motion.div
@@ -504,6 +507,7 @@ export default function CinematicInspectReveal({
           </div>
         </motion.div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

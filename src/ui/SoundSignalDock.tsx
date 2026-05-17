@@ -136,7 +136,8 @@ export default function SoundSignalDock() {
   const activeSceneId = useActiveHeaderScene(location.pathname);
   const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
   const routeSoundScene = useMemo(() => getRouteSoundScene(location.pathname), [location.pathname]);
-  const caseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");
+  const workCaseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");
+  const compactMode = workCaseMode || location.pathname.startsWith("/immersive/whisper");
   const soundTheme = useMemo(
     () => resolveHeaderTheme({ routeTheme, activeSceneId }),
     [activeSceneId, routeTheme],
@@ -165,8 +166,8 @@ export default function SoundSignalDock() {
   }, [location.pathname, routeSoundScene, setScene, stopAmbient]);
 
   return (
-    <div className={["pointer-events-none fixed z-[72]", caseMode ? "right-2 top-[4.35rem] sm:right-3 sm:top-[4.75rem]" : "bottom-3 right-3 sm:bottom-4 sm:right-4"].join(" ")}>
-      <CompactSoundSignal style={soundDockStyle} caseMode={caseMode} />
+    <div className={["pointer-events-none fixed z-[72]", workCaseMode ? "right-2 top-[4.35rem] sm:right-3 sm:top-[4.75rem]" : "bottom-3 right-3 sm:bottom-4 sm:right-4"].join(" ")}>
+      <CompactSoundSignal style={soundDockStyle} caseMode={compactMode} />
     </div>
   );
 }

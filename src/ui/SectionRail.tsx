@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 export type SectionRailItem = {
@@ -7,24 +8,29 @@ export type SectionRailItem = {
   label: string;
 };
 
+export type SectionRailTone = "auto" | "light" | "dark";
+
 export default function SectionRail({
   items,
   activeId,
   onSelect,
   label = "Page sections",
+  tone = "auto",
 }: {
   items: SectionRailItem[];
   activeId: string;
   onSelect?: (id: string) => void;
   label?: string;
+  tone?: SectionRailTone;
 }) {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 96, damping: 30, mass: 0.42 });
   const [footerVisible, setFooterVisible] = useState(false);
-  const darkActive =
+  const autoDarkActive =
     activeId.includes("whisper") ||
     activeId.includes("proof") ||
     activeId.includes("principles");
+  const darkActive = tone === "dark" || (tone === "auto" && autoDarkActive);
 
   useEffect(() => {
     const footer = document.querySelector<HTMLElement>("[data-footer-rail-state='closing']");
@@ -46,10 +52,10 @@ export default function SectionRail({
 
   if (!items.length) return null;
 
-  return (
+  const rail = (
     <nav
       className={[
-        "pointer-events-none fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-3 transition duration-500 xl:flex",
+        "pointer-events-none fixed right-5 top-1/2 z-[70] hidden -translate-y-1/2 items-center gap-3 transition duration-500 xl:flex",
         footerVisible ? "translate-x-3 opacity-0" : "opacity-100",
       ].join(" ")}
       aria-label={label}
@@ -83,14 +89,14 @@ export default function SectionRail({
               : "text-neutral-950"
             : darkActive
               ? "text-white/48 hover:text-white/88"
-              : "text-neutral-400 hover:text-neutral-800";
+              : "text-neutral-500 hover:text-neutral-900";
           const indexClass = active
             ? darkActive
               ? "border-white bg-white text-neutral-950 shadow-[0_8px_24px_rgba(0,0,0,0.22)]"
               : "border-neutral-950 bg-neutral-950 text-white shadow-[0_8px_24px_rgba(15,15,15,0.12)]"
             : darkActive
               ? "border-white/18 bg-black/12 text-white/48 group-hover:border-white/38 group-hover:text-white/88"
-              : "border-neutral-950/12 bg-white/34 text-neutral-400 group-hover:border-neutral-950/24 group-hover:text-neutral-800";
+              : "border-neutral-950/14 bg-white/70 text-neutral-500 shadow-[0_8px_22px_rgba(15,15,15,0.08)] group-hover:border-neutral-950/30 group-hover:text-neutral-900";
 
           return (
             <button
@@ -119,4 +125,8 @@ export default function SectionRail({
       </div>
     </nav>
   );
+
+  if (typeof document === "undefined") return rail;
+
+  return createPortal(rail, document.body);
 }

@@ -133,11 +133,13 @@ function CompactSoundSignal({ style, caseMode = false }: { style: SoundDockStyle
 export default function SoundSignalDock() {
   const location = useLocation();
   const { setScene, stopAmbient } = useSound();
+  const [footerState, setFooterState] = useState({ pathname: "", visible: false });
   const activeSceneId = useActiveHeaderScene(location.pathname);
   const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
   const routeSoundScene = useMemo(() => getRouteSoundScene(location.pathname), [location.pathname]);
   const workCaseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");
   const compactMode = workCaseMode || location.pathname.startsWith("/immersive/whisper");
+  const footerVisible = footerState.pathname === location.pathname && footerState.visible;
   const soundTheme = useMemo(
     () => resolveHeaderTheme({ routeTheme, activeSceneId }),
     [activeSceneId, routeTheme],
@@ -164,6 +166,31 @@ export default function SoundSignalDock() {
     setScene(routeSoundScene);
     stopAmbient();
   }, [location.pathname, routeSoundScene, setScene, stopAmbient]);
+
+  useEffect(() => {
+    let observer: IntersectionObserver | null = null;
+    const frame = window.requestAnimationFrame(() => {
+      const footer = document.querySelector<HTMLElement>("[data-footer-rail-state='closing']");
+      if (!footer) return;
+
+      observer = new IntersectionObserver(
+        ([entry]) =>
+          setFooterState({
+            pathname: location.pathname,
+            visible: Boolean(entry?.isIntersecting && entry.intersectionRatio > 0.08),
+          }),
+        { threshold: [0, 0.08, 0.18], rootMargin: "0px 0px -8% 0px" },
+      );
+      observer.observe(footer);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [location.pathname]);
+
+  if (footerVisible) return null;
 
   return (
     <div className={["pointer-events-none fixed z-[72]", workCaseMode ? "right-2 top-[4.35rem] sm:right-3 sm:top-[4.75rem]" : "bottom-3 right-3 sm:bottom-4 sm:right-4"].join(" ")}>

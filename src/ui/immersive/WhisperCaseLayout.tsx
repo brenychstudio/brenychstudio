@@ -25,6 +25,7 @@ import CinematicInspectReveal from "../work/CinematicInspectReveal";
 
 type WhisperCaseLayoutProps = {
   item: ImmersiveItem;
+  onOpenProject?: () => void;
 };
 
 type SectionId = "threshold" | "atlas" | "web" | "xr" | "collector" | "mobile" | "engine";
@@ -340,11 +341,18 @@ function VideoSurface({
           </div>
         </div>
 
-        <div className="relative grid max-w-[58rem] gap-2 px-2 pb-2 pt-4 md:grid-cols-[12rem_minmax(0,42rem)] md:items-start md:px-3 md:pb-3">
+        <div
+          className={cx(
+            "relative gap-2 px-2 pb-2 pt-4 md:px-3 md:pb-3",
+            isDark
+              ? "grid max-w-[58rem] md:grid-cols-[12rem_minmax(0,42rem)] md:items-start"
+              : "grid max-w-[34rem]",
+          )}
+        >
           <div className={cx("text-[10px] uppercase tracking-[0.18em]", isDark ? "text-white/38" : "text-neutral-400")}>
             {video.title}
           </div>
-          <p className={cx("max-w-[54rem] text-sm leading-6", isDark ? "text-white/56" : "text-neutral-600")}>
+          <p className={cx("text-sm leading-6", isDark ? "max-w-[54rem] text-white/56" : "max-w-[32rem] text-neutral-600")}>
             {video.caption}
           </p>
         </div>
@@ -436,7 +444,6 @@ function SpatialEvidenceField({
   const settleTimerRef = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const wrapIndex = useCallback(
@@ -587,8 +594,6 @@ function SpatialEvidenceField({
       if (clickSuppressRef.current) return;
 
       const target = event.target as HTMLElement | null;
-      if (target?.closest("[data-evidence-control='true']")) return;
-
       const pointTarget = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement | null;
       const article =
         target?.closest<HTMLElement>("[data-evidence-index]") ??
@@ -747,9 +752,7 @@ function SpatialEvidenceField({
             const offset = index - activeIndex;
             const distance = Math.abs(offset);
             const focused = focusedIndex === index;
-            const hovered = hoveredIndex === index;
             const active = focused || activeIndex === index;
-            const controlsVisible = focused || hovered;
             const trueIndex = startIndex + index;
 
             return (
@@ -759,13 +762,7 @@ function SpatialEvidenceField({
                 ref={(node) => {
                   cardRefs.current[index] = node;
                 }}
-                onMouseEnter={() => {
-                  sound.playRole("hover");
-                  setHoveredIndex(index);
-                }}
-                onMouseLeave={() => {
-                  setHoveredIndex((current) => (current === index ? null : current));
-                }}
+                onMouseEnter={() => sound.playRole("hover")}
                 className="group relative min-h-[28rem] w-[min(78vw,760px)] shrink-0 origin-center touch-pan-y text-left outline-none md:w-[min(58vw,820px)]"
                 style={{
                   scrollSnapAlign: "center",
@@ -824,46 +821,6 @@ function SpatialEvidenceField({
                     </span>
                   </span>
                 </button>
-
-                <AnimatePresence>
-                  {controlsVisible ? (
-                    <motion.div
-                      className="absolute bottom-4 right-4 flex flex-wrap justify-end gap-2"
-                      data-evidence-control="true"
-                      onPointerDown={(event) => event.stopPropagation()}
-                      onClick={(event) => event.stopPropagation()}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.34, ease }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => openFocusedFrame(index)}
-                        className="border border-[#f4efe4] bg-[#f4efe4] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-950"
-                      >
-                        Open inspect
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => focusFrame(index + 1, "transition")}
-                        className="border border-white/16 bg-black/48 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/72 backdrop-blur"
-                      >
-                        Next
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFocusedIndex(null);
-                          setHoveredIndex(null);
-                        }}
-                        className="border border-white/16 bg-black/48 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/58 backdrop-blur"
-                      >
-                        Close
-                      </button>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
               </motion.article>
             );
           })}
@@ -1414,7 +1371,7 @@ function VideoModal({ video, onClose }: { video: VideoProof | null; onClose: () 
   );
 }
 
-export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
+export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLayoutProps) {
   const navigate = useNavigate();
   const sound = useSound();
   const reduceMotion = useReducedMotion();
@@ -1920,7 +1877,7 @@ export default function WhisperCaseLayout({ item }: WhisperCaseLayoutProps) {
         </div>
       </Chapter>
 
-      <SiteFooterV2 variant="immersive" />
+      <SiteFooterV2 onOpenProject={onOpenProject} variant="immersiveCase" />
 
       <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />
       <CinematicInspectReveal

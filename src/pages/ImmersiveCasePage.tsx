@@ -314,7 +314,7 @@ export default function ImmersiveCasePage({
 
         <main className="pt-[60px]">
           <PageSurface>
-            <WhisperCaseLayout item={data} />
+            <WhisperCaseLayout item={data} onOpenProject={onOpenProject} />
           </PageSurface>
         </main>
       </div>

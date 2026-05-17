@@ -17,7 +17,7 @@ type FooterExternalLink = {
   href: string;
 };
 
-type FooterVariant = "living" | "evidence" | "immersive" | "practice" | "studio" | "case";
+type FooterVariant = "living" | "evidence" | "immersive" | "immersiveCase" | "practice" | "studio" | "case";
 
 type FooterCopy = {
   headline: string;
@@ -76,6 +76,13 @@ const footerCopyByVariant: Record<FooterVariant, FooterCopy> = {
     nextStep: "start a project",
     bottomLine: "Built as a spatial interface system.",
   },
+  immersiveCase: {
+    headline: "Build the next room as an interface.",
+    signal: "spatial systems",
+    intake: "available",
+    nextStep: "start a project",
+    bottomLine: "Built as a spatial interface system.",
+  },
   practice: {
     headline: "Translate the system into an offer.",
     signal: "practice route",
@@ -128,6 +135,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
   const reduceMotion = useReducedMotion();
   const copy = footerCopyByVariant[variant];
   const isCase = variant === "case";
+  const isImmersiveCase = variant === "immersiveCase";
 
   if (isCase) {
     return (
@@ -208,6 +216,148 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
                   key={link.to}
                   to={link.to}
                   className="transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div>&copy; 2026 Brenych Studio</div>
+          </div>
+        </div>
+      </motion.footer>
+    );
+  }
+
+  if (isImmersiveCase) {
+    return (
+      <motion.footer
+        id="site-footer"
+        data-header-scene="footer-closing"
+        data-footer-rail-state="closing"
+        className="relative z-10 overflow-hidden border-t border-white/12 bg-[#a9a8a1] text-neutral-950"
+      >
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.66),transparent_30%),radial-gradient(circle_at_76%_42%,rgba(10,10,10,0.24),transparent_36%),linear-gradient(108deg,rgba(239,238,232,0.94)_0%,rgba(184,183,176,0.9)_48%,rgba(128,128,123,0.84)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.34),transparent_30%,rgba(0,0,0,0.09)_72%,rgba(255,255,255,0.08)),linear-gradient(rgba(17,17,17,0.036)_1px,transparent_1px),linear-gradient(90deg,rgba(17,17,17,0.034)_1px,transparent_1px)] bg-[size:100%_100%,72px_72px,72px_72px] opacity-60" />
+        <div className="pointer-events-none absolute left-[7vw] top-10 h-[32rem] w-[32rem] rounded-full border border-neutral-950/[0.06]" />
+        <div className="pointer-events-none absolute right-[6vw] top-24 h-[26rem] w-[26rem] rounded-full border border-white/18" />
+        <div className="pointer-events-none absolute bottom-16 right-[8vw] h-px w-[52vw] -rotate-[6deg] bg-gradient-to-r from-transparent via-neutral-950/24 to-transparent" />
+
+        <div className="relative mx-auto w-[min(92vw,1640px)] py-14 sm:py-16 lg:w-[min(94vw,1640px)] lg:py-18">
+          <div className="grid gap-10 border-b border-neutral-950/14 pb-11 lg:grid-cols-[minmax(0,0.58fr)_minmax(26rem,0.42fr)] lg:items-end">
+            <div>
+              <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-700">
+                <span>Closing signal</span>
+                <motion.span
+                  className="h-1.5 w-1.5 rounded-full bg-neutral-950"
+                  animate={reduceMotion ? undefined : { opacity: [0.45, 1, 0.45], scale: [1, 1.24, 1] }}
+                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
+              <h2 className="mt-6 max-w-[10.5ch] text-[52px] font-normal leading-[0.88] tracking-normal text-neutral-950 sm:text-[76px] lg:text-[104px]">
+                {copy.headline}
+              </h2>
+              <p className="mt-7 max-w-[36rem] text-[15px] leading-7 text-neutral-700">
+                WHISPER closes as the reference pattern: spatial proof, inspectable evidence, media playback, and project intake stay inside one calm immersive system.
+              </p>
+            </div>
+
+            <div className="relative border border-white/22 bg-neutral-950/[0.035] p-5 shadow-[0_34px_110px_rgba(17,17,17,0.16),inset_0_1px_0_rgba(255,255,255,0.42)] backdrop-blur-xl sm:p-6">
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.2),transparent_44%,rgba(0,0,0,0.045))]" />
+              <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/86 to-transparent" />
+              <div className="pointer-events-none absolute bottom-6 left-6 top-6 w-px bg-gradient-to-b from-transparent via-neutral-950/16 to-transparent" />
+              <div className="relative">
+              <div className="flex items-center justify-between gap-4 border-b border-neutral-950/14 pb-4 font-mono text-[9px] uppercase tracking-[0.22em]">
+                <span className="text-neutral-500">Spatial handoff</span>
+                <span className="text-neutral-950">Case canon</span>
+              </div>
+
+              <div className="grid gap-0 font-mono text-[10px] uppercase tracking-[0.19em]">
+                {[
+                  ["Studio signal", copy.signal],
+                  ["Project intake", copy.intake],
+                  ["Next step", copy.nextStep],
+                ].map(([label, value]) => (
+                  <div key={label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-5 border-b border-neutral-950/12 py-4 last:border-b-0">
+                    <span className="text-neutral-600">{label}</span>
+                    <span className="text-right font-semibold text-neutral-950">{value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onOpenProject?.()}
+                className="group mt-6 inline-flex min-h-12 w-full items-center justify-between border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.2)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#141414] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-100 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+              >
+                <span>Start a project</span>
+                <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
+              </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-8 border-b border-neutral-950/14 py-8 lg:grid-cols-[0.95fr_1.25fr_1fr] lg:items-start">
+            <div>
+              <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
+              <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
+                <span>{copy.bottomLine}</span>
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">Systems</div>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                {systemLinks.map((link) => (
+                  <Link
+                    key={`immersive-case-systems-${link.to}-${link.label}`}
+                    to={link.to}
+                    className="text-[12px] uppercase tracking-[0.12em] text-neutral-800 transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">Routes</div>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                {routeLinks.map((link) => (
+                  <Link
+                    key={`immersive-case-routes-${link.to}-${link.label}`}
+                    to={link.to}
+                    className="text-[12px] uppercase tracking-[0.12em] text-neutral-800 transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-700 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              {profileLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {legalLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
                 >
                   {link.label}
                 </Link>

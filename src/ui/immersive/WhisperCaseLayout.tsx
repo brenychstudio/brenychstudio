@@ -710,6 +710,7 @@ function SpatialEvidenceField({
       <div className="pointer-events-none absolute inset-0 opacity-[0.075] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:92px_92px]" />
       <div className="pointer-events-none absolute left-[12%] top-[16%] h-[38rem] w-[38rem] rounded-full border border-white/10" />
       <div className="pointer-events-none absolute left-[7vw] top-[55%] h-px w-[86vw] rotate-[7deg] bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-[linear-gradient(180deg,transparent,rgba(7,8,7,0.78)_58%,#070807)]" />
 
       <div className="relative z-10 mx-auto grid w-[min(92vw,1640px)] gap-8 px-4 md:px-8 lg:grid-cols-[0.36fr_0.64fr] lg:items-end">
         <div>
@@ -1692,7 +1693,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         </div>
       </Chapter>
 
-      <Chapter id="web" className="bg-[#f2eee4] px-4 pb-24 text-neutral-950 md:px-8 lg:pb-32">
+      <Chapter id="web" className="bg-[#f2eee4] px-4 pb-0 text-neutral-950 md:px-8">
         <div className="mx-auto w-[min(92vw,1640px)]">
           <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
             <div>
@@ -1720,7 +1721,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
       </Chapter>
 
       <Chapter id="xr" className="relative overflow-hidden bg-[#070807] px-4 py-24 text-white md:px-8 lg:py-32">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_64%_28%,rgba(105,127,98,0.24),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_28%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_64%_28%,rgba(105,127,98,0.24),transparent_28%),linear-gradient(180deg,rgba(6,7,6,0.94),transparent_20%,rgba(255,255,255,0.04)_34%,transparent_52%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:86px_86px]" />
 
         <div className="relative mx-auto grid w-[min(92vw,1640px)] gap-14 lg:grid-cols-[0.38fr_0.62fr]">

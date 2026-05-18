@@ -97,7 +97,7 @@ Validated V2 cases:
 Current public status:
 
 - `/work/:slug` now renders the canonical `CasePageV2` for non-immersive Work cases.
-- Legacy work case detail pages are hidden under `/work-classic/:slug` with noindex behavior.
+- Classic work case detail pages are detached from the production router and retained only as source reference.
 - `/work-lab/:slug` remains available as a hidden V2 lab/reference route.
 - Immersive / WHISPER remains outside the Work V2 pattern and now uses its own spatial flagship case logic.
 
@@ -314,7 +314,7 @@ Validated Work case slugs:
 - `casa-nube`
 - `print-border-studio`
 
-Hidden / reference routes remain available with noindex behavior:
+Hidden V2 / reference routes remain available with noindex behavior:
 
 - `/studio-index`
 - `/evidence-atlas`
@@ -322,13 +322,13 @@ Hidden / reference routes remain available with noindex behavior:
 - `/offer-v2`
 - `/about-v2`
 - `/spatial-proof`
-- `/home-classic`
-- `/work-classic`
-- `/immersive-classic`
-- `/offer-classic`
-- `/about-classic`
-- `/privacy-classic`
-- `/legal-classic`
+
+Legacy archive status:
+
+- Classic routes are detached from the production router.
+- Legacy files are retained as a reference archive, not as public routes.
+- Sitemap now contains only canonical public URLs.
+- Archive note: `docs/legacy-archive.md`.
 
 Priority implementation pass / 2026-05-18:
 

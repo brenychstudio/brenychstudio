@@ -9,21 +9,13 @@ import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import { LocaleProvider } from "./store/useLocale";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
-const HomeClassic = lazy(() => import("./pages/Home"));
-const OfferClassic = lazy(() => import("./pages/Offer"));
 const OfferV2 = lazy(() => import("./pages/OfferV2"));
-const CasePage = lazy(() => import("./pages/CasePage"));
 const CasePageV2 = lazy(() => import("./pages/CasePageV2"));
-const WorkArchiveClassic = lazy(() => import("./pages/WorkArchive"));
-const ImmersiveClassic = lazy(() => import("./pages/Immersive"));
 const ImmersiveV2 = lazy(() => import("./pages/ImmersiveV2"));
 const ImmersiveCasePage = lazy(() => import("./pages/ImmersiveCasePage"));
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
-const AboutClassic = lazy(() => import("./pages/About"));
 const AboutV2 = lazy(() => import("./pages/AboutV2"));
-const Privacy = lazy(() => import("./pages/Privacy"));
 const PrivacyV2 = lazy(() => import("./pages/PrivacyV2"));
-const Legal = lazy(() => import("./pages/Legal"));
 const LegalV2 = lazy(() => import("./pages/LegalV2"));
 const StudioIndex = lazy(() => import("./pages/StudioIndex"));
 const EvidenceAtlas = lazy(() => import("./pages/EvidenceAtlas"));
@@ -359,110 +351,6 @@ export default function App() {
                 onOpenProject={openProject}
                 onCloseProject={closeProject}
               />
-            }
-          />
-
-          <Route
-            path="/home-classic"
-            element={
-              <HiddenRoute>
-                <HomeClassic
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/work-classic"
-            element={
-              <HiddenRoute>
-                <WorkArchiveClassic
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/work-classic/:slug"
-            element={
-              <HiddenRoute>
-                <CasePage
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/immersive-classic"
-            element={
-              <HiddenRoute>
-                <ImmersiveClassic
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/offer-classic"
-            element={
-              <HiddenRoute>
-                <OfferClassic
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/about-classic"
-            element={
-              <HiddenRoute>
-                <AboutClassic
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/privacy-classic"
-            element={
-              <HiddenRoute>
-                <Privacy
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
-            }
-          />
-
-          <Route
-            path="/legal-classic"
-            element={
-              <HiddenRoute>
-                <Legal
-                  drawerOpen={drawerOpen}
-                  onOpenProject={openProject}
-                  onCloseProject={closeProject}
-                />
-              </HiddenRoute>
             }
           />
 

@@ -395,7 +395,6 @@ export function getHeaderMoodForPath(pathname: string) {
   if (
     pathname === "/about" ||
     pathname === "/about-v2" ||
-    pathname === "/about-classic" ||
     pathname === "/privacy" ||
     pathname === "/privacy-v2" ||
     pathname === "/legal" ||

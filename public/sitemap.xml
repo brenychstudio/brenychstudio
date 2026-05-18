@@ -1,7 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://brenychstudio.com/</loc>
   </url>
@@ -9,39 +7,48 @@
     <loc>https://brenychstudio.com/work</loc>
   </url>
   <url>
-    <loc>https://brenychstudio.com/work/whisper</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/work/gallery</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/work/musician</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/work/bcn-advisory</loc>
-  </url>
-  <url>
     <loc>https://brenychstudio.com/immersive</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/immersive/atlas-arc</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/immersive/signal-room-ar</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/immersive/nocturne-interface</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/immersive/echo-drift-xr</loc>
-  </url>
-  <url>
-    <loc>https://brenychstudio.com/immersive/threshold-memory</loc>
   </url>
   <url>
     <loc>https://brenychstudio.com/offer</loc>
   </url>
   <url>
     <loc>https://brenychstudio.com/about</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/privacy</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/legal</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/house-of-lune</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/barcelona-private-advisory</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/creatorops</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/sprintcrm</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/fluid-exhibition</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/form-index</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/arcwave-integrations</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/casa-nube</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/work/print-border-studio</loc>
+  </url>
+  <url>
+    <loc>https://brenychstudio.com/immersive/whisper</loc>
   </url>
 </urlset>

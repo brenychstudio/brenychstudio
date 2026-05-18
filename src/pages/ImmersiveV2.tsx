@@ -35,6 +35,7 @@ import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { useImmersiveProofChromeActive } from "../hooks/useImmersiveProofChromeActive";
+import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -2272,6 +2273,7 @@ export default function ImmersiveV2({
 }: PageProps) {
   const navigate = useNavigate();
   const chamberState = useImmersiveChamberSelection();
+  const routeContentReady = useDeferredRouteContent();
   const activeId = useActiveSection();
   const proofChromeActive = useImmersiveProofChromeActive();
   const railActiveId = proofChromeActive ? "proof" : activeId;
@@ -2350,14 +2352,20 @@ export default function ImmersiveV2({
             onExplore={() => scrollTo("map")}
             onOpenProject={onOpenProject}
           />
-          <PracticeMapScene chamberState={chamberState} openChamber={openChamber} />
-          <CompletedProofScene onOpenWhisper={() => goTo("/immersive/whisper")} />
-          <EngineStackScene />
-          <FutureChambersScene />
-          <ApplicationLayerScene />
+          {routeContentReady ? (
+            <>
+              <PracticeMapScene chamberState={chamberState} openChamber={openChamber} />
+              <CompletedProofScene onOpenWhisper={() => goTo("/immersive/whisper")} />
+              <EngineStackScene />
+              <FutureChambersScene />
+              <ApplicationLayerScene />
+            </>
+          ) : (
+            <div aria-hidden="true" className="min-h-[500vh]" />
+          )}
         </main>
 
-        <SiteFooterV2 onOpenProject={onOpenProject} variant="immersive" />
+        {routeContentReady ? <SiteFooterV2 onOpenProject={onOpenProject} variant="immersive" /> : null}
       </PageSurface>
     </>
   );

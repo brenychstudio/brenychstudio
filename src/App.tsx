@@ -1,6 +1,12 @@
 import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 
+import OfferV2 from "./pages/OfferV2";
+import ImmersiveV2 from "./pages/ImmersiveV2";
+import ImmersiveCasePage from "./pages/ImmersiveCasePage";
+import AboutV2 from "./pages/AboutV2";
+import StudioIndex from "./pages/StudioIndex";
+import EvidenceAtlas from "./pages/EvidenceAtlas";
 import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
@@ -9,16 +15,10 @@ import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import { LocaleProvider } from "./store/useLocale";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
-const OfferV2 = lazy(() => import("./pages/OfferV2"));
 const CasePageV2 = lazy(() => import("./pages/CasePageV2"));
-const ImmersiveV2 = lazy(() => import("./pages/ImmersiveV2"));
-const ImmersiveCasePage = lazy(() => import("./pages/ImmersiveCasePage"));
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
-const AboutV2 = lazy(() => import("./pages/AboutV2"));
 const PrivacyV2 = lazy(() => import("./pages/PrivacyV2"));
 const LegalV2 = lazy(() => import("./pages/LegalV2"));
-const StudioIndex = lazy(() => import("./pages/StudioIndex"));
-const EvidenceAtlas = lazy(() => import("./pages/EvidenceAtlas"));
 
 const routeSeo = {
   home: {
@@ -75,7 +75,29 @@ function SeoRoute({ meta, children }: { meta: SeoMetaProps; children: ReactNode 
 }
 
 function RoutePendingSurface() {
-  return <div aria-hidden="true" className="min-h-screen bg-[#f4f1ea]" />;
+  const { pathname } = useLocation();
+  const isWorkCase = pathname.startsWith("/work/");
+  const isImmersiveCase = pathname.startsWith("/immersive/");
+  const isPolicy = pathname === "/privacy" || pathname === "/legal";
+
+  let background = "bg-[#f2efe8]";
+
+  if (pathname === "/work") background = "bg-[#f3f1ec]";
+  else if (pathname === "/immersive") background = "bg-[#f1eee7]";
+  else if (pathname === "/offer" || pathname === "/about") background = "bg-[#f3f0e9]";
+  else if (isPolicy || isWorkCase) background = "bg-[#f6f4ef]";
+  else if (isImmersiveCase) background = "bg-[#080807]";
+
+  return (
+    <div aria-hidden="true" className={`relative min-h-screen overflow-hidden transition-colors duration-300 ${background}`}>
+      {!isImmersiveCase ? (
+        <>
+          <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:88px_88px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_520px_at_50%_0%,rgba(255,255,255,0.72),transparent_68%)]" />
+        </>
+      ) : null}
+    </div>
+  );
 }
 
 function RouteNoIndexMeta() {

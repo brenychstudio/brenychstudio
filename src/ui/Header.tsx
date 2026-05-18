@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
-import { startHardPageTransition, startSpaPageTransition } from "./pageTransition";
+import { startSpaPageTransition } from "./pageTransition";
 import { availableLocales } from "../i18n";
 import { useLocale } from "../store/useLocale";
 import { useActiveHeaderScene } from "../hooks/useActiveHeaderScene";
@@ -77,13 +77,6 @@ export default function Header({
 
   const navigateWithTransition = (to: string) => {
     if (location.pathname === to) return;
-
-    if (onHome) {
-      startHardPageTransition(to, () => {
-        onCloseProject?.();
-      });
-      return;
-    }
 
     startSpaPageTransition(navigate, to, () => {
       onCloseProject?.();

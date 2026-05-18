@@ -18,6 +18,7 @@ export default function PageTransitionOverlay() {
   const [phase, setPhase] = useState<Phase>(() =>
     consumePendingHardTransition() ? "cover" : "hidden"
   );
+  const [targetPath, setTargetPath] = useState("");
 
   const hardPendingRef = useRef(phase === "cover");
   const spaPendingRef = useRef(false);
@@ -26,6 +27,7 @@ export default function PageTransitionOverlay() {
     const onStart = (event: Event) => {
       const detail = (event as CustomEvent<TransitionStartDetail>).detail;
       spaPendingRef.current = detail?.mode === "spa";
+      setTargetPath(detail?.to ?? "");
       setPhase("cover");
     };
 
@@ -39,6 +41,7 @@ export default function PageTransitionOverlay() {
     const resetOverlay = () => {
       hardPendingRef.current = false;
       spaPendingRef.current = false;
+      setTargetPath("");
       setPhase("hidden");
       releasePageTransitionLock();
     };
@@ -106,6 +109,9 @@ export default function PageTransitionOverlay() {
 
   const visible = phase !== "hidden";
   const covering = phase === "cover";
+  const transitionPath = targetPath || location.pathname;
+  const darkTransition =
+    transitionPath.startsWith("/immersive/") && transitionPath !== "/immersive";
 
   return (
     <div
@@ -119,8 +125,12 @@ export default function PageTransitionOverlay() {
         className={[
           "absolute inset-0 transition-[opacity,backdrop-filter] duration-[340ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
           covering
-            ? "bg-white/44 opacity-100 backdrop-blur-[2px]"
-            : "bg-white/44 opacity-0 backdrop-blur-0",
+            ? darkTransition
+              ? "bg-neutral-950/82 opacity-100 backdrop-blur-[3px]"
+              : "bg-neutral-950/5 opacity-100 backdrop-blur-[2px]"
+            : darkTransition
+              ? "bg-neutral-950/0 opacity-0 backdrop-blur-0"
+              : "bg-neutral-950/0 opacity-0 backdrop-blur-0",
         ].join(" ")}
       />
 
@@ -131,7 +141,9 @@ export default function PageTransitionOverlay() {
         ].join(" ")}
         style={{
           background:
-            "linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.10) 22%, rgba(255,255,255,0.04) 52%, rgba(255,255,255,0.00) 100%)",
+            darkTransition
+              ? "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 38%, rgba(255,255,255,0.00) 100%)"
+              : "linear-gradient(180deg, rgba(17,17,17,0.035) 0%, rgba(17,17,17,0.012) 38%, rgba(17,17,17,0.00) 100%)",
         }}
       />
     </div>

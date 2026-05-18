@@ -19,6 +19,7 @@ import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
+import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -635,6 +636,7 @@ export default function EvidenceAtlas({
 }: PageProps) {
   const navigate = useNavigate();
   const { playRole, setScene, stopAmbient } = useSound();
+  const routeContentReady = useDeferredRouteContent();
   const evidenceCases = useMemo(() => getEvidenceCases(), []);
   const featuredCases = useMemo(() => getFeaturedCases(evidenceCases), [evidenceCases]);
   const selectedFeaturedCase = featuredCases[0];
@@ -961,6 +963,8 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
+          {routeContentReady ? (
+            <>
           <section id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
@@ -1152,10 +1156,14 @@ export default function EvidenceAtlas({
               ))}
             </div>
           </section>
+            </>
+          ) : (
+            <div aria-hidden="true" className="min-h-[260vh]" />
+          )}
 
         </main>
 
-        <SiteFooterV2 onOpenProject={onOpenProject} variant="evidence" />
+        {routeContentReady ? <SiteFooterV2 onOpenProject={onOpenProject} variant="evidence" /> : null}
       </PageSurface>
     </div>
   );

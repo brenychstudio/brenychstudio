@@ -72,6 +72,23 @@ Active work is focused on the new canonical Work case system:
 
 `CasePageV2` is now the canonical non-immersive Work case page foundation. It should be reused for future Work cases instead of duplicating page templates.
 
+### 2026-05-19 navigation polish status
+
+Main-route navigation was stabilized after the legacy detach checkpoint.
+
+- Header navigation now uses SPA transitions consistently instead of hard reload behavior from the home route.
+- Main public routes are kept in the primary runtime path to avoid lazy fallback flashes during top-level navigation.
+- SPA transitions use the browser View Transition API when available, with a direct `requestAnimationFrame` fallback.
+- `PageSurface` no longer fades every route in from full transparency; this removes the page-refresh feeling between sections.
+- Home, Work, and Immersive defer below-the-fold heavy route content until after the first transition frame through `useDeferredRouteContent`.
+- `PageTransitionOverlay` remains available for hard transitions, but normal top-level SPA navigation no longer uses a fullscreen white/dark flash.
+
+Validation notes:
+
+- `npm run lint` passes with the known non-blocking warnings.
+- `npm run build` passes; current expected warning is the large `vendor-three-core` chunk plus the larger primary runtime chunk caused by keeping launch-critical public routes ready for smoother navigation.
+- Manual result: flashes are practically removed; Offer/About are the smoothest routes, and Home/Work/Immersive are improved by deferred below-the-fold mounting.
+
 Canonical page order:
 
 1. Threshold / Hero

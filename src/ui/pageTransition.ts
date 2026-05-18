@@ -1,8 +1,9 @@
 import type { NavigateFunction } from "react-router-dom";
+import { flushSync } from "react-dom";
 
 const HARD_TRANSITION_KEY = "app:page-transition-hard";
-const EXIT_MS = 140;
-const REVEAL_BUFFER_MS = 280;
+const EXIT_MS = 110;
+const REVEAL_BUFFER_MS = 240;
 
 let transitionLocked = false;
 
@@ -68,17 +69,27 @@ export function startSpaPageTransition(
   onBeforeNavigate?: () => void
 ) {
   if (typeof window === "undefined") return;
-  if (!acquireLock()) return;
 
   onBeforeNavigate?.();
 
-  window.dispatchEvent(
-    new CustomEvent("app:page-transition-start", {
-      detail: { mode: "spa", to },
-    })
-  );
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const viewTransition = document.startViewTransition;
 
-  window.setTimeout(() => {
+  if (!prefersReducedMotion && typeof viewTransition === "function") {
+    try {
+      viewTransition.call(document, () => {
+        flushSync(() => {
+          navigate(to);
+        });
+      });
+      return;
+    } catch {
+      navigate(to);
+      return;
+    }
+  }
+
+  window.requestAnimationFrame(() => {
     navigate(to);
-  }, EXIT_MS);
+  });
 }

@@ -23,6 +23,7 @@ import StudioHeroField from "../ui/StudioHeroField";
 import FormulaSignalStrand from "../ui/StudioSystemStrand";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
+import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -1314,6 +1315,7 @@ export default function StudioIndex({
 }: PageProps) {
   const navigate = useNavigate();
   const activeId = useActiveStudioSection();
+  const routeContentReady = useDeferredRouteContent();
   const { playRole, setScene, stopAmbient } = useSound();
 
   useEffect(() => {
@@ -1366,18 +1368,24 @@ export default function StudioIndex({
             onImmersive={() => goTo("/immersive")}
           />
 
-          <SystemsChapter />
+          {routeContentReady ? (
+            <>
+              <SystemsChapter />
 
-          <WhisperChapter onOpen={() => goTo("/immersive")} />
+              <WhisperChapter onOpen={() => goTo("/immersive")} />
 
-          <AtlasChapter goTo={goTo} />
+              <AtlasChapter goTo={goTo} />
 
-          <GrammarChapter />
+              <GrammarChapter />
 
-          <PracticeChapter onOpenProject={onOpenProject} />
+              <PracticeChapter onOpenProject={onOpenProject} />
+            </>
+          ) : (
+            <div aria-hidden="true" className="min-h-[420vh]" />
+          )}
         </main>
 
-        <SiteFooterV2 onOpenProject={onOpenProject} variant="living" />
+        {routeContentReady ? <SiteFooterV2 onOpenProject={onOpenProject} variant="living" /> : null}
       </PageSurface>
     </>
   );

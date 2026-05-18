@@ -112,13 +112,10 @@ export default function ProjectDrawer({ open, onClose }: Props) {
   }, [
     budgetLabel,
     email,
-    form.budget,
     form.email,
     form.links,
     form.message,
     form.name,
-    form.timeline,
-    form.type,
     projectTypeLabel,
     t,
     timelineLabel,

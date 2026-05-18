@@ -1,31 +1,90 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-
-import HomeClassic from "./pages/Home";
-import OfferClassic from "./pages/Offer";
-import OfferV2 from "./pages/OfferV2";
-import CasePage from "./pages/CasePage";
-import CasePageV2 from "./pages/CasePageV2";
-import WorkArchiveClassic from "./pages/WorkArchive";
-import ImmersiveClassic from "./pages/Immersive";
-import ImmersiveV2 from "./pages/ImmersiveV2";
-import ImmersiveCasePage from "./pages/ImmersiveCasePage";
-import SpatialProof from "./pages/SpatialProof";
-import AboutClassic from "./pages/About";
-import AboutV2 from "./pages/AboutV2";
-import Privacy from "./pages/Privacy";
-import PrivacyV2 from "./pages/PrivacyV2";
-import Legal from "./pages/Legal";
-import LegalV2 from "./pages/LegalV2";
-import StudioIndex from "./pages/StudioIndex";
-import EvidenceAtlas from "./pages/EvidenceAtlas";
 
 import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
 import SoundSignalDock from "./ui/SoundSignalDock";
+import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import { LocaleProvider } from "./store/useLocale";
 import { SoundProvider } from "./stage/audio/SoundProvider";
+
+const HomeClassic = lazy(() => import("./pages/Home"));
+const OfferClassic = lazy(() => import("./pages/Offer"));
+const OfferV2 = lazy(() => import("./pages/OfferV2"));
+const CasePage = lazy(() => import("./pages/CasePage"));
+const CasePageV2 = lazy(() => import("./pages/CasePageV2"));
+const WorkArchiveClassic = lazy(() => import("./pages/WorkArchive"));
+const ImmersiveClassic = lazy(() => import("./pages/Immersive"));
+const ImmersiveV2 = lazy(() => import("./pages/ImmersiveV2"));
+const ImmersiveCasePage = lazy(() => import("./pages/ImmersiveCasePage"));
+const SpatialProof = lazy(() => import("./pages/SpatialProof"));
+const AboutClassic = lazy(() => import("./pages/About"));
+const AboutV2 = lazy(() => import("./pages/AboutV2"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const PrivacyV2 = lazy(() => import("./pages/PrivacyV2"));
+const Legal = lazy(() => import("./pages/Legal"));
+const LegalV2 = lazy(() => import("./pages/LegalV2"));
+const StudioIndex = lazy(() => import("./pages/StudioIndex"));
+const EvidenceAtlas = lazy(() => import("./pages/EvidenceAtlas"));
+
+const routeSeo = {
+  home: {
+    title: "Brenych Studio - Premium Interface Systems",
+    description:
+      "Premium web, product surfaces, immersive digital experiences, and interface systems by Rostyslav Brenych.",
+    path: "/",
+  },
+  work: {
+    title: "Work - Brenych Studio Interface Systems",
+    description:
+      "Selected case systems, commercial interfaces, workflow tools, immersive prototypes, and available foundations.",
+    path: "/work",
+  },
+  immersive: {
+    title: "Immersive Interface Systems - Brenych Studio",
+    description:
+      "WebGL, WebXR, spatial proof layers, cinematic archives, and immersive prototype systems by Brenych Studio.",
+    path: "/immersive",
+  },
+  offer: {
+    title: "Offer - Brenych Studio",
+    description:
+      "Premium websites, interactive product surfaces, multilingual systems, immersive prototypes, and creative technology direction.",
+    path: "/offer",
+  },
+  about: {
+    title: "About - Brenych Studio",
+    description:
+      "The practice behind Brenych Studio: front-end engineering, visual direction, motion grammar, image, and interface research.",
+    path: "/about",
+  },
+  privacy: {
+    title: "Privacy Policy - Brenych Studio",
+    description:
+      "How Brenych Studio handles information shared through project inquiries, preferences, and basic website interactions.",
+    path: "/privacy",
+  },
+  legal: {
+    title: "Legal Notice - Brenych Studio",
+    description:
+      "Terms for using the Brenych Studio website, viewing portfolio materials, and contacting the studio about projects.",
+    path: "/legal",
+  },
+} satisfies Record<string, SeoMetaProps>;
+
+function SeoRoute({ meta, children }: { meta: SeoMetaProps; children: ReactNode }) {
+  return (
+    <>
+      <SeoMeta {...meta} />
+      {children}
+    </>
+  );
+}
+
+function RoutePendingSurface() {
+  return <div aria-hidden="true" className="min-h-screen bg-[#f4f1ea]" />;
+}
 
 function RouteNoIndexMeta() {
   useEffect(() => {
@@ -72,52 +131,61 @@ export default function App() {
         <BrowserRouter>
           <ScrollToTop />
 
-        <Routes>
+          <Suspense fallback={<RoutePendingSurface />}>
+            <Routes>
           <Route
             path="/"
             element={
-              <StudioIndex
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-                noIndex={false}
-              />
+              <SeoRoute meta={routeSeo.home}>
+                <StudioIndex
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                  noIndex={false}
+                />
+              </SeoRoute>
             }
           />
 
           <Route
             path="/work"
             element={
-              <EvidenceAtlas
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-                noIndex={false}
-              />
+              <SeoRoute meta={routeSeo.work}>
+                <EvidenceAtlas
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                  noIndex={false}
+                />
+              </SeoRoute>
             }
           />
 
           <Route
             path="/immersive"
             element={
-              <ImmersiveV2
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-                noIndex={false}
-              />
+              <SeoRoute meta={routeSeo.immersive}>
+                <ImmersiveV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                  noIndex={false}
+                />
+              </SeoRoute>
             }
           />
 
           <Route
             path="/offer"
             element={
-              <OfferV2
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-                noIndex={false}
-              />
+              <SeoRoute meta={routeSeo.offer}>
+                <OfferV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                  noIndex={false}
+                />
+              </SeoRoute>
             }
           />
 
@@ -140,6 +208,7 @@ export default function App() {
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
                   onCloseProject={closeProject}
+                  noIndex
                 />
               </HiddenRoute>
             }
@@ -159,34 +228,40 @@ export default function App() {
           <Route
             path="/about"
             element={
-              <AboutV2
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-                noIndex={false}
-              />
+              <SeoRoute meta={routeSeo.about}>
+                <AboutV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                  noIndex={false}
+                />
+              </SeoRoute>
             }
           />
 
           <Route
             path="/privacy"
             element={
-              <PrivacyV2
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-              />
+              <SeoRoute meta={routeSeo.privacy}>
+                <PrivacyV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </SeoRoute>
             }
           />
 
           <Route
             path="/legal"
             element={
-              <LegalV2
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-              />
+              <SeoRoute meta={routeSeo.legal}>
+                <LegalV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </SeoRoute>
             }
           />
 
@@ -392,9 +467,10 @@ export default function App() {
           />
 
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            </Routes>
+          </Suspense>
 
-        <ProjectDrawerV2 open={drawerOpen} onClose={closeProject} />
+          <ProjectDrawerV2 open={drawerOpen} onClose={closeProject} />
           <SoundSignalDock />
           <PageTransitionOverlay />
         </BrowserRouter>

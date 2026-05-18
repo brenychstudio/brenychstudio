@@ -143,6 +143,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
         id="site-footer"
         data-header-scene="footer-closing"
         data-footer-rail-state="closing"
+        data-sound-safe-area
         className="relative z-10 overflow-hidden border-t border-neutral-950/12 text-neutral-950"
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(15,15,15,0.055),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.46),rgba(244,242,236,0.34))]" />
@@ -235,6 +236,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
         id="site-footer"
         data-header-scene="footer-closing"
         data-footer-rail-state="closing"
+        data-sound-safe-area
         className="relative z-10 overflow-hidden border-t border-white/12 bg-[#a9a8a1] text-neutral-950"
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.66),transparent_30%),radial-gradient(circle_at_76%_42%,rgba(10,10,10,0.24),transparent_36%),linear-gradient(108deg,rgba(239,238,232,0.94)_0%,rgba(184,183,176,0.9)_48%,rgba(128,128,123,0.84)_100%)]" />
@@ -376,6 +378,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
       id="site-footer"
       data-header-scene="footer-closing"
       data-footer-rail-state="closing"
+      data-sound-safe-area
       className="relative z-10 overflow-hidden border-t border-neutral-950/12 text-neutral-950"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(255,255,255,0.72),transparent_30%),radial-gradient(circle_at_82%_42%,rgba(120,120,120,0.11),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.46),rgba(244,242,236,0.4))]" />

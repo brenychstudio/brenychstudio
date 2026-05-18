@@ -622,7 +622,7 @@ export default function OfferV2({
           label="Offer sections"
         />
         <main className="relative pt-24">
-          <section id="offer-threshold" data-header-scene="practice-threshold" className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-center lg:py-12">
+          <section id="offer-threshold" data-header-scene="practice-threshold" data-sound-safe-area className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-center lg:py-12 xl:pr-36">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}

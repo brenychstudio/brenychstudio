@@ -286,43 +286,125 @@ House of Lune is still the primary luxury-product reference case:
 - Keep the `Flow / Atlas` evidence behavior and synchronized inspect thumbnail rail as canonical.
 - Preserve the site language: restrained, technical, cinematic, premium, and evidence-led.
 
-### Current project status / 2026-05-17
+### Prelaunch system audit / 2026-05-18
 
-The project is now in an advanced visual-system refinement stage.
+The site is coherent enough to move into final launch polish. The canonical public structure is stable, production build passes, representative desktop and mobile browser smoke checks pass, and the main navigation / project drawer flow works.
 
-Stable foundations:
+Canonical public routes:
 
-- `CasePageV2` remains the canonical foundation for non-immersive Work cases.
-- `/immersive/whisper` remains the canonical flagship Immersive case and does not reuse `CasePageV2`.
-- `CinematicInspectReveal` is the shared inspect environment for case proof, image evidence, and cinematic review.
-- `SectionRail` is the canonical right-side page navigation pattern.
-- `useActiveHeaderScene` and `headerThemeTokens` drive the chameleon header / sound dock behavior across light and dark sections.
-- `SiteFooterV2` is the canonical footer system and is now attached to WHISPER as well.
+- `/` - new Studio Index home experience.
+- `/work` - Evidence Atlas / Work overview.
+- `/immersive` - Immersive overview.
+- `/offer` - Offer V2.
+- `/about` - About V2.
+- `/privacy` and `/legal` - public policy routes.
+- `/work/:slug` - canonical `CasePageV2` renderer for non-immersive Work cases.
+- `/immersive/whisper` - canonical Immersive flagship case.
 
-Active refinement areas:
+Validated Work case slugs:
 
-- Offer V2 is visually much lighter and closer to the living-signal language, but still needs a final responsive QA pass.
-- WHISPER has reached a much stronger flagship direction, especially in sections 02, 03, 03.1, 04, and 05.
-- Video surfaces now share a cinematic terminal pattern, but final browser-level media QA is still important.
-- Chameleon behavior is improved for nested WHISPER sections, including `03.1 Spatial Evidence Field`.
-- Documentation/export tooling exists, but the universal development playbooks should be regenerated and reviewed whenever the interaction patterns stabilize.
+- `house-of-lune`
+- `barcelona-private-advisory`
+- `bcn-advisory` alias
+- `creatorops`
+- `sprintcrm`
+- `fluid-exhibition`
+- `form-index`
+- `arcwave-integrations`
+- `casa-nube`
+- `print-border-studio`
 
-### Next priority actions
+Hidden / reference routes remain available with noindex behavior:
 
-1. Run a full visual QA pass across WHISPER on desktop, laptop, tablet, and mobile widths.
-2. Re-check video playback on desktop walkthrough and Quest proof: autoplay, terminal opening, controls, sound state, and fallback behavior.
-3. Audit header chameleon, right rail, left/header navigation, and sound dock across every WHISPER section after a fresh dev-server restart.
-4. Resolve the remaining `rawFrames` hook dependency warnings in `WhisperCaseLayout.tsx`.
-5. Review performance and bundle size; Vite still reports the standard large chunk warning.
-6. Do a focused mobile pass for WHISPER sections 03, 03.1, 04, and 05, because these have the densest interaction layouts.
-7. Re-run and polish the six Ukrainian development playbooks so they include final mechanics, examples, and reusable implementation notes.
-8. Package reusable extracts only after the related source patterns are stable: WebGL home animation, cinematic terminal video viewer, spatial evidence field, phone screenshot carousel, and right-side section rail.
-9. Prepare final copy polish for EN / UA / ES / RU where routes or case content still feel draft-like.
+- `/studio-index`
+- `/evidence-atlas`
+- `/immersive-v2`
+- `/offer-v2`
+- `/about-v2`
+- `/spatial-proof`
+- `/home-classic`
+- `/work-classic`
+- `/immersive-classic`
+- `/offer-classic`
+- `/about-classic`
+- `/privacy-classic`
+- `/legal-classic`
 
-### Verification notes
+Priority implementation pass / 2026-05-18:
 
-Recent visual checks were made through local screenshots and browser inspection.
+- Public route-level SEO is now handled by `src/ui/SeoMeta.tsx` and wired through `src/App.tsx`.
+- Public canonical routes now set title, description, canonical URL, robots, Open Graph, and Twitter metadata.
+- Case detail pages now generate case-specific metadata through `CasePageV2` and keep `/work-lab/:slug` noindex.
+- `/immersive/whisper` now has its own public case metadata in `ImmersiveCasePage`.
+- `CinematicInspectReveal` now behaves as an accessible modal dialog with `role="dialog"`, `aria-modal`, labelled title, description, Escape close, focus trap, focus restore, and inert background.
+- Heavy page routes are lazy-loaded with `React.lazy` / `Suspense`.
+- Vite manual chunks now separate React, Framer Motion, Three.js, R3F, Drei, Three examples, and Tone audio.
+- Case media crop behavior is now data-driven through `CaseStoryMedia.fit` and `CaseStoryMedia.objectPosition` instead of renderer-level case-type assumptions.
+- Mobile sound dock collision handling now hides the dock when marked dense surfaces overlap its safe zone.
+- Final case CTA copy now varies by case type and avoids duplicate `Start a project` actions.
 
-`npm run build` passes after the latest WHISPER and Offer updates, with only the standard Vite large chunk warning.
+Verification results:
 
-Targeted ESLint checks pass for the touched files with no errors. The only current warnings are the existing `rawFrames` dependency warnings in `src/ui/immersive/WhisperCaseLayout.tsx`.
+- `npm run build` passes.
+- `npm run lint` exits successfully with 0 errors and 8 existing non-blocking warnings.
+- `exports/` is ignored by lint because it contains generated reusable extracts and smoke artifacts, not source application code.
+- Desktop browser route audit passed for the public routes, hidden V2/reference routes, legacy noindex routes, all listed Work cases, and `/immersive/whisper`.
+- Production preview smoke passed for `/`, `/work`, `/immersive`, `/offer`, `/about`, `/privacy`, `/legal`, `/work/house-of-lune`, `/work/barcelona-private-advisory`, `/work/creatorops`, `/immersive/whisper`, and `/work-lab/house-of-lune`.
+- SEO smoke verified status 200, title, canonical, robots, description, Open Graph URL/title, and Twitter card for the checked routes.
+- Inspect modal smoke verified dialog semantics, inert background, focus trap, Escape close, and focus/background restoration.
+- Mobile sound dock smoke verified that the dock is visible in the case header zone and hidden over the dense evidence safe area.
+- Smoke report artifact: `exports/launch-polish-smoke-2026-05-18/smoke-report.json`.
+- Header navigation was previously click-tested across Home, Work, Immersive, Offer, About, and back to Home.
+- `START A PROJECT` opens the project drawer in production preview without runtime errors.
+- Public PDF links exist in `public/docs`: `price-pack-2026.pdf`, `website-management-2026.pdf`, and `cv-2026.pdf`.
+
+Cleanup completed:
+
+- Removed ignored root-level Vite/Codex/dev log files.
+- Removed temporary `.tmp` audit artifacts.
+- Removed the empty root-level `↗` artifact.
+- Kept `dist/`, `exports/`, `logs/`, and `node_modules/` intact because they are ignored build/export/runtime folders, not source routes.
+
+Current non-blocking warnings:
+
+- Vite still reports one large chunk warning, now isolated to `vendor-three-core` after route and vendor splitting. This is expected while Three.js remains part of the public runtime.
+- ESLint still reports non-blocking warnings around animation-driven `setState` in effects and Fast Refresh export shape in existing component/utility files.
+- Dev-server console can report React/R3F `key` spread warnings on Offer, but production preview is clean.
+
+### LAUNCH-FINAL-QA-01 / 2026-05-18
+
+Final viewport, WHISPER, and copy QA is complete.
+
+Polish completed:
+
+- Sound dock safe areas were tightened for dense CTA/proof surfaces on About, Immersive, Offer, Work evidence, WHISPER threshold/web/XR/collector/mobile/engine, and footer/closing sections.
+- Right rail behavior was stabilized for closing/footer zones so final CTAs and footer links are not covered at desktop or wide desktop widths.
+- WHISPER mobile threshold spacing keeps the back/status controls below the fixed header, and dense proof sections now reserve enough right-side space for the canonical rail.
+- Offer and WHISPER wide proof/control surfaces now keep a cleaner right gutter around the fixed rail.
+- Copy sanity pass found no launch-blocking CTA/shop/template residue. Remaining "template" references are intentional explanatory wording such as "not a template".
+
+Final QA coverage:
+
+- Viewport checks covered 390, 430, 768, 1024, 1366, and wide desktop widths across the canonical public routes.
+- WHISPER was manually and browser-smoke checked across threshold, atlas, web proof, spatial field, XR proof, collector, mobile proof, and engine sections.
+- Production hard-refresh smoke passed for `/`, `/work`, `/offer`, `/about`, `/privacy`, `/legal`, `/work/house-of-lune`, `/work/barcelona-private-advisory`, and `/immersive/whisper`.
+- Project drawer open/close passed on mobile and desktop production preview.
+- Internal PDF links verified: `price-pack-2026.pdf`, `website-management-2026.pdf`, and `cv-2026.pdf`.
+
+Final verification artifacts:
+
+- `exports/launch-final-qa-01/launch-final-qa-01-targeted-report.json`
+- `exports/launch-final-qa-01/launch-final-qa-01-production-smoke.json`
+- `exports/launch-final-qa-01/creatorops-wide-bottom-rail-final.json`
+
+Current launch readiness:
+
+- The priority audit tasks from the PDF research pass are implemented and verified.
+- The public route structure, deep links, case routes, SEO metadata, inspect modal, media presentation rules, mobile dock behavior, WHISPER rhythm, and final CTA/rail spacing are stable enough for deploy / active sharing.
+- Remaining work is optional: final human visual taste pass in a real browser and zero-warning lint cleanup only if a future CI gate requires it.
+
+Optional polish after launch readiness:
+
+1. Decide whether the isolated `vendor-three-core` chunk warning is acceptable for first release or should be handled by deferring more 3D surfaces.
+2. Resolve the 8 remaining ESLint warnings only if a zero-warning CI gate is required.
+3. Do one final subjective visual pass before publishing the live URL broadly.

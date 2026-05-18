@@ -10,6 +10,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveTone } from "../data/immersive";
 import { whisperCaseI18n } from "../data/whisperCaseI18n";
 import { useLocale } from "../store/useLocale";
+import SeoMeta from "../ui/SeoMeta";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -306,6 +307,14 @@ export default function ImmersiveCasePage({
   if (isWhisperCase) {
     return (
       <div className="min-h-screen bg-[#050505] text-white">
+        <SeoMeta
+          title="WHISPER - Immersive Case - Brenych Studio"
+          description={data.tagline}
+          path="/immersive/whisper"
+          image={data.previewPoster}
+          imageAlt="WHISPER immersive exhibition case"
+          type="article"
+        />
         <Header
           drawerOpen={drawerOpen}
           onOpenProject={onOpenProject}
@@ -346,6 +355,14 @@ export default function ImmersiveCasePage({
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
+      <SeoMeta
+        title={`${data.title} - Immersive Case - Brenych Studio`}
+        description={data.tagline}
+        path={`/immersive/${data.slug}`}
+        image={data.previewPoster}
+        imageAlt={data.title}
+        type="article"
+      />
       <Header
         drawerOpen={drawerOpen}
         onOpenProject={onOpenProject}

@@ -31,13 +31,44 @@ export default function SectionRail({
     activeId.includes("proof") ||
     activeId.includes("principles");
   const darkActive = tone === "dark" || (tone === "auto" && autoDarkActive);
+  const closingActive = activeId.includes("closing");
 
   useEffect(() => {
-    const footer = document.querySelector<HTMLElement>("[data-footer-rail-state='closing']");
-    if (!footer) return;
+    const closingElements = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-footer-rail-state='closing']"),
+    );
+
+    const visibleClosingElements = new Set<Element>();
+    let frame = 0;
+
+    const updateFooterVisibility = () => {
+      frame = 0;
+      const nearDocumentEnd =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - Math.min(window.innerHeight * 0.9, 900);
+      const anyClosingElementInView = closingElements.some((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      });
+      setFooterVisible(nearDocumentEnd || anyClosingElementInView || visibleClosingElements.size > 0);
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateFooterVisibility);
+    };
 
     const observer = new IntersectionObserver(
-      ([entry]) => setFooterVisible(Boolean(entry?.isIntersecting)),
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleClosingElements.add(entry.target);
+          } else {
+            visibleClosingElements.delete(entry.target);
+          }
+        });
+        requestUpdate();
+      },
       {
         root: null,
         rootMargin: "0px 0px -18% 0px",
@@ -45,9 +76,17 @@ export default function SectionRail({
       },
     );
 
-    observer.observe(footer);
+    closingElements.forEach((element) => observer.observe(element));
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
-    return () => observer.disconnect();
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
   }, []);
 
   if (!items.length) return null;
@@ -56,7 +95,7 @@ export default function SectionRail({
     <nav
       className={[
         "pointer-events-none fixed right-5 top-1/2 z-[70] hidden -translate-y-1/2 items-center gap-3 transition duration-500 xl:flex",
-        footerVisible ? "translate-x-3 opacity-0" : "opacity-100",
+        footerVisible || closingActive ? "translate-x-3 opacity-0" : "opacity-100",
       ].join(" ")}
       aria-label={label}
       data-rail-tone={darkActive ? "dark" : "light"}

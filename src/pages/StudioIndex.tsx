@@ -45,8 +45,13 @@ type StoryMediaAsset = {
   src: string;
   poster?: string;
   label: string;
+};
+
+type StoryPlaneLayout = {
   className: string;
   shape: string;
+  shadow: string;
+  label: string;
 };
 
 type StoryFrame = {
@@ -71,6 +76,9 @@ const media = {
   whisperDesktopVideo: "/immersive/Whisper/Video/whisper-desktop-video.mp4",
   whisperVrVideo: "/immersive/Whisper/Video/whisper-vr-video.mp4",
   whisperVrPoster: "/immersive/Whisper/desktop/whisper-vr-1.jpg",
+  whisperVrWide: "/immersive/Whisper/desktop/whisper-vr-2.jpg",
+  whisperHeroImage: "/immersive/Whisper/desktop/whisper-hero.jpg",
+  whisperGallery: "/immersive/Whisper/desktop/whisper-3.jpg",
   whisperDetail: "/immersive/Whisper/desktop/whisper-8.jpg",
   whisperMobile: "/immersive/Whisper/mobile/whisper-mb-3.jpg",
 
@@ -149,27 +157,19 @@ const storyFrames: StoryFrame[] = [
     route: "/immersive",
     media: [
       {
-        kind: "video",
-        src: media.whisperDesktopVideo,
-        poster: media.whisperDetail,
-        label: "web exhibition walkthrough",
-        className: "left-[0%] top-[3%] h-[64%] w-[66%]",
-        shape: "polygon(0 7%, 100% 0, 94% 91%, 8% 100%)",
+        kind: "image",
+        src: media.whisperHeroImage,
+        label: "whisper threshold",
       },
       {
-        kind: "video",
-        src: media.whisperVrVideo,
-        poster: media.whisperVrPoster,
+        kind: "image",
+        src: media.whisperVrWide,
         label: "quest spatial capture",
-        className: "right-[0%] top-[15%] h-[52%] w-[41%]",
-        shape: "polygon(7% 0, 100% 8%, 92% 100%, 0 88%)",
       },
       {
         kind: "image",
         src: media.whisperDetail,
-        label: "archive detail",
-        className: "left-[35%] bottom-[2%] h-[29%] w-[45%]",
-        shape: "polygon(5% 0, 100% 8%, 94% 100%, 0 88%)",
+        label: "archive interface",
       },
     ],
   },
@@ -186,23 +186,17 @@ const storyFrames: StoryFrame[] = [
         src: media.houseVideo,
         poster: media.house,
         label: "luxury product theatre",
-        className: "left-[3%] top-[5%] h-[64%] w-[60%]",
-        shape: "polygon(0 0, 94% 6%, 100% 84%, 8% 100%)",
       },
       {
         kind: "video",
         src: media.advisoryVideo,
         poster: media.advisory,
         label: "advisory buyer journey",
-        className: "right-[0%] top-[4%] h-[47%] w-[43%]",
-        shape: "polygon(9% 0, 100% 0, 90% 93%, 0 100%)",
       },
       {
         kind: "image",
         src: media.houseDetail,
         label: "object detail",
-        className: "right-[14%] bottom-[4%] h-[39%] w-[34%]",
-        shape: "polygon(0 10%, 100% 0, 92% 100%, 8% 92%)",
       },
     ],
   },
@@ -219,23 +213,17 @@ const storyFrames: StoryFrame[] = [
         src: media.creatoropsVideo,
         poster: media.creatorops,
         label: "creator workflow system",
-        className: "right-[0%] top-[5%] h-[64%] w-[60%]",
-        shape: "polygon(6% 0, 100% 7%, 93% 100%, 0 91%)",
       },
       {
         kind: "video",
         src: media.printVideo,
         poster: media.print,
         label: "museum print preparation",
-        className: "left-[0%] top-[14%] h-[52%] w-[46%]",
-        shape: "polygon(0 8%, 92% 0, 100% 86%, 7% 100%)",
       },
       {
         kind: "image",
         src: media.creatoropsDetail,
         label: "pipeline detail",
-        className: "left-[22%] bottom-[2%] h-[38%] w-[34%]",
-        shape: "polygon(8% 0, 100% 8%, 90% 100%, 0 88%)",
       },
     ],
   },
@@ -252,24 +240,18 @@ const storyFrames: StoryFrame[] = [
         src: media.fluidVideo,
         poster: media.fluid,
         label: "fluid exhibition field",
-        className: "left-[0%] top-[3%] h-[58%] w-[58%]",
-        shape: "polygon(0 0, 100% 8%, 92% 92%, 7% 100%)",
       },
       {
         kind: "video",
         src: media.arcwaveVideo,
         poster: media.arcwave,
         label: "arcwave signal surface",
-        className: "right-[0%] top-[10%] h-[50%] w-[46%]",
-        shape: "polygon(8% 0, 100% 0, 92% 100%, 0 90%)",
       },
       {
         kind: "video",
         src: media.casaVideo,
         poster: media.casa,
         label: "hospitality rhythm",
-        className: "left-[25%] bottom-[2%] h-[40%] w-[38%]",
-        shape: "polygon(0 10%, 100% 0, 94% 100%, 10% 90%)",
       },
     ],
   },
@@ -290,6 +272,69 @@ const practiceRows = [
   ["Immersive / XR Prototypes", "WebGL, WebXR, Quest-tested spatial demos, AR preview flows, and future-facing presentation systems."],
   ["Creative Technology Direction", "Concept, interface architecture, motion grammar, prototype systems, and production-ready delivery."],
 ];
+
+const storyPlaneLayouts = [
+  {
+    className: "left-[4%] top-[8%] h-[54%] w-[58%] z-20",
+    shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
+    shadow: "shadow-[0_42px_130px_rgba(18,18,18,0.16)]",
+    label: "left-5 bottom-5",
+  },
+  {
+    className: "right-[3%] top-[17%] h-[43%] w-[41%] z-30",
+    shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
+    shadow: "shadow-[0_34px_110px_rgba(18,18,18,0.14)]",
+    label: "left-5 bottom-5",
+  },
+  {
+    className: "left-[34%] bottom-[8%] h-[31%] w-[40%] z-40",
+    shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
+    shadow: "shadow-[0_28px_90px_rgba(18,18,18,0.12)]",
+    label: "left-5 bottom-4",
+  },
+] satisfies readonly StoryPlaneLayout[];
+
+const whisperPlaneLayouts = [
+  {
+    className: "left-[3%] top-[7%] h-[54%] w-[60%] z-30",
+    shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
+    shadow: "shadow-[0_46px_142px_rgba(18,18,18,0.17)]",
+    label: "left-5 bottom-5",
+  },
+  {
+    className: "right-[2%] top-[17%] h-[41%] w-[43%] z-40",
+    shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
+    shadow: "shadow-[0_36px_112px_rgba(18,18,18,0.14)]",
+    label: "left-5 bottom-5",
+  },
+  {
+    className: "left-[34%] bottom-[7%] h-[32%] w-[42%] z-50",
+    shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
+    shadow: "shadow-[0_30px_92px_rgba(18,18,18,0.125)]",
+    label: "left-5 bottom-4",
+  },
+] satisfies readonly StoryPlaneLayout[];
+
+const atlasIntroPlaneLayouts = [
+  {
+    className: "left-[3%] top-[8%] h-[54%] w-[60%] z-30",
+    shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
+    shadow: "shadow-[0_44px_136px_rgba(18,18,18,0.16)]",
+    label: "left-5 bottom-5",
+  },
+  {
+    className: "right-[2%] top-[18%] h-[40%] w-[43%] z-40",
+    shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
+    shadow: "shadow-[0_34px_106px_rgba(18,18,18,0.13)]",
+    label: "left-5 bottom-5",
+  },
+  {
+    className: "left-[34%] bottom-[7%] h-[32%] w-[42%] z-50",
+    shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
+    shadow: "shadow-[0_28px_88px_rgba(18,18,18,0.115)]",
+    label: "left-5 bottom-4",
+  },
+] satisfies readonly StoryPlaneLayout[];
 
 function StudioNoIndexMeta() {
   useEffect(() => {
@@ -764,8 +809,17 @@ function KineticTitle({
   );
 }
 
-function StoryMedia({ asset, index }: { asset: StoryMediaAsset; index: number }) {
+function StoryMedia({
+  asset,
+  index,
+  layouts = storyPlaneLayouts,
+}: {
+  asset: StoryMediaAsset;
+  index: number;
+  layouts?: readonly StoryPlaneLayout[];
+}) {
   const reduceMotion = useReducedMotion();
+  const layout = layouts[index % layouts.length];
   const filterId = `story-fluid-${index}-${asset.label.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
 
   const mx = useMotionValue(0);
@@ -777,21 +831,21 @@ function StoryMedia({ asset, index }: { asset: StoryMediaAsset; index: number })
   const smoothY = useSpring(my, { stiffness: 120, damping: 20, mass: 0.28 });
   const fluid = useSpring(distortion, { stiffness: 170, damping: 22, mass: 0.22 });
 
-  const rotateY = useTransform(smoothX, [-1, 1], [-7, 7]);
-  const rotateX = useTransform(smoothY, [-1, 1], [6, -6]);
-  const mediaX = useTransform(smoothX, [-1, 1], ["-4.4%", "4.4%"]);
-  const mediaY = useTransform(smoothY, [-1, 1], ["-4.4%", "4.4%"]);
-  const mediaScale = useTransform(fluid, [0, 1], [1, 1.045]);
-  const displacementScale = useTransform(fluid, [0, 1], [0, 28]);
+  const rotateY = useTransform(smoothX, [-1, 1], [-3.5, 3.5]);
+  const rotateX = useTransform(smoothY, [-1, 1], [3, -3]);
+  const mediaX = useTransform(smoothX, [-1, 1], ["-2.2%", "2.2%"]);
+  const mediaY = useTransform(smoothY, [-1, 1], ["-2.2%", "2.2%"]);
+  const mediaScale = useTransform(fluid, [0, 1], [1, 1.024]);
+  const displacementScale = useTransform(fluid, [0, 1], [0, 14]);
   const turbulenceFrequency = useTransform(fluid, [0, 1], ["0.006 0.014", "0.018 0.04"]);
-  const chromaOpacity = useTransform(fluid, [0, 1], [0, 0.22]);
-  const warpOpacity = useTransform(fluid, [0, 1], [0, 0.88]);
-  const chromaRedX = useTransform(smoothX, [-1, 1], ["-1.8%", "1.8%"]);
-  const chromaRedY = useTransform(smoothY, [-1, 1], ["-1.2%", "1.2%"]);
-  const chromaBlueX = useTransform(smoothX, [-1, 1], ["1.6%", "-1.6%"]);
-  const chromaBlueY = useTransform(smoothY, [-1, 1], ["1.2%", "-1.2%"]);
-  const sheenX = useTransform(smoothX, [-1, 1], ["-5%", "5%"]);
-  const sheenY = useTransform(smoothY, [-1, 1], ["-3%", "3%"]);
+  const chromaOpacity = useTransform(fluid, [0, 1], [0, 0.14]);
+  const warpOpacity = useTransform(fluid, [0, 1], [0, 0.52]);
+  const chromaRedX = useTransform(smoothX, [-1, 1], ["-1%", "1%"]);
+  const chromaRedY = useTransform(smoothY, [-1, 1], ["-0.7%", "0.7%"]);
+  const chromaBlueX = useTransform(smoothX, [-1, 1], ["0.9%", "-0.9%"]);
+  const chromaBlueY = useTransform(smoothY, [-1, 1], ["0.7%", "-0.7%"]);
+  const sheenX = useTransform(smoothX, [-1, 1], ["-3%", "3%"]);
+  const sheenY = useTransform(smoothY, [-1, 1], ["-2%", "2%"]);
   const localWarpMask = useMotionTemplate`radial-gradient(circle at ${cursorX}% ${cursorY}%, #000 0%, #000 4.5%, rgba(0,0,0,0.78) 9%, rgba(0,0,0,0.34) 16%, transparent 28%)`;
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
@@ -835,19 +889,19 @@ function StoryMedia({ asset, index }: { asset: StoryMediaAsset; index: number })
 
   return (
     <motion.figure
-      className={`group absolute overflow-hidden border border-white/70 bg-white/10 shadow-[0_46px_150px_rgba(0,0,0,0.17)] backdrop-blur-[2px] will-change-transform ${asset.className}`}
+      className={`group absolute overflow-hidden border border-white/70 bg-[#f7f5ef]/18 ${layout.shadow} backdrop-blur-[2px] will-change-transform ${layout.className}`}
       style={{
-        clipPath: asset.shape,
+        clipPath: layout.shape,
         rotateX: reduceMotion ? 0 : rotateX,
         rotateY: reduceMotion ? 0 : rotateY,
-        transformPerspective: 900,
+        transformPerspective: 1100,
         transformStyle: "preserve-3d",
       }}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      initial={reduceMotion ? undefined : { opacity: 0, y: 62, scale: 0.98 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1.04 }}
-      whileHover={reduceMotion ? undefined : { scale: 1.075, zIndex: 20 }}
+      initial={reduceMotion ? undefined : { opacity: 0, y: 46, scale: 0.985 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+      whileHover={reduceMotion ? undefined : { scale: 1.026, zIndex: 60 }}
       viewport={{ once: false, amount: 0.35 }}
       transition={{ duration: 0.95, delay: index * 0.08, ease }}
     >
@@ -931,7 +985,7 @@ function StoryMedia({ asset, index }: { asset: StoryMediaAsset; index: number })
         {renderMedia("h-full w-full opacity-54 saturate-[1.25] contrast-[1.1] [filter:sepia(1)_hue-rotate(170deg)_saturate(2.1)]")}
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(242,239,232,0),rgba(242,239,232,0.015)_58%,rgba(242,239,232,0.24))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(242,239,232,0),rgba(242,239,232,0.01)_58%,rgba(242,239,232,0.18))]" />
       <motion.div
         className="pointer-events-none absolute inset-[-12%] mix-blend-screen"
         style={{
@@ -954,7 +1008,7 @@ function StoryMedia({ asset, index }: { asset: StoryMediaAsset; index: number })
         }}
       />
 
-      <figcaption className="absolute bottom-5 left-5 right-5">
+      <figcaption className={`absolute right-5 ${layout.label}`}>
         <div className="inline-flex rounded-full border border-white/55 bg-white/28 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-neutral-800/72 shadow-[0_10px_34px_rgba(0,0,0,0.08)] backdrop-blur-md">
           {asset.label}
         </div>
@@ -998,68 +1052,21 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
         </motion.div>
 
         <motion.div
-          className="relative min-h-[31rem] xl:min-h-[40rem]"
+          className="relative min-h-[34rem] xl:min-h-[43rem]"
           style={{ x: fragmentX, rotate: fragmentRotate }}
         >
           <div className="pointer-events-none absolute left-[4%] top-[13%] h-px w-[88%] rotate-[-12deg] bg-gradient-to-r from-transparent via-neutral-950/18 to-transparent" />
           <div className="pointer-events-none absolute left-[18%] top-[5%] h-[36rem] w-[36rem] rounded-full border border-neutral-950/[0.055]" />
           <div className="pointer-events-none absolute bottom-[8%] right-[3%] h-px w-[78%] rotate-[8deg] bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />
 
-          <motion.div
-            className="absolute left-[2%] top-[6%] h-[52%] w-[58%] overflow-hidden border border-white/70 bg-neutral-950 shadow-[0_44px_130px_rgba(0,0,0,0.16)]"
-            style={{ clipPath: "polygon(0 8%, 100% 0, 92% 92%, 8% 100%)" }}
-            initial={{ opacity: 0, y: 54, rotate: -4 }}
-            whileInView={{ opacity: 1, y: 0, rotate: -2 }}
-            viewport={{ once: false, amount: 0.34 }}
-            transition={{ duration: 0.95, ease }}
-          >
-            <video
-              className="h-full w-full object-cover saturate-[1.05] contrast-[1.04]"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={media.whisperDetail}
-            >
-              <source src={media.whisperDesktopVideo} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.22))]" />
-          </motion.div>
-
-          <motion.div
-            className="absolute right-[2%] top-[20%] h-[43%] w-[39%] overflow-hidden border border-white/60 bg-neutral-950 shadow-[0_34px_110px_rgba(0,0,0,0.14)]"
-            style={{ clipPath: "polygon(8% 0, 100% 7%, 91% 100%, 0 88%)" }}
-            initial={{ opacity: 0, y: 70, rotate: 5 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 3 }}
-            viewport={{ once: false, amount: 0.34 }}
-            transition={{ duration: 1, delay: 0.08, ease }}
-          >
-            <video
-              className="h-full w-full object-cover saturate-[1.03] contrast-[1.06]"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={media.whisperVrPoster}
-            >
-              <source src={media.whisperVrVideo} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-black/18" />
-          </motion.div>
-
-          <motion.div
-            className="absolute bottom-[4%] left-[28%] h-[28%] w-[45%] overflow-hidden border border-white/70 bg-white/20 shadow-[0_28px_90px_rgba(0,0,0,0.12)]"
-            style={{ clipPath: "polygon(5% 0, 100% 9%, 94% 100%, 0 89%)" }}
-            initial={{ opacity: 0, y: 58, rotate: -1 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 2 }}
-            viewport={{ once: false, amount: 0.34 }}
-            transition={{ duration: 0.95, delay: 0.14, ease }}
-          >
-            <img src={media.whisperMobile} alt="" className="h-full w-full object-cover saturate-[0.98] contrast-[1.03]" />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(242,239,232,0),rgba(242,239,232,0.18))]" />
-          </motion.div>
+          {storyFrames[0].media.map((asset, assetIndex) => (
+            <StoryMedia
+              key={`atlas-intro-${asset.label}`}
+              asset={asset}
+              index={assetIndex}
+              layouts={atlasIntroPlaneLayouts}
+            />
+          ))}
 
           <div className="absolute left-[3%] bottom-[13%] rounded-full border border-neutral-950/10 bg-white/58 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
             spatial proof turns into atlas
@@ -1084,7 +1091,10 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
           style={{ x: driftA, y: driftB, rotate: driftC }}
         />
 
-        {storyFrames.map((frame, frameIndex) => (
+        {storyFrames.map((frame) => {
+          const isWhisperFrame = frame.id === "spatial-archive";
+
+          return (
           <article
             key={frame.id}
             className="relative min-h-[calc(100vh-5rem)] border-t border-neutral-950/12 py-14 last:border-b"
@@ -1121,7 +1131,8 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
                   <StoryMedia
                     key={`${frame.id}-${asset.label}`}
                     asset={asset}
-                    index={assetIndex + frameIndex}
+                    index={assetIndex}
+                    layouts={isWhisperFrame ? whisperPlaneLayouts : storyPlaneLayouts}
                   />
                 ))}
 
@@ -1130,7 +1141,8 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
               </div>
             </div>
           </article>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

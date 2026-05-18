@@ -12,11 +12,13 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
 import type { SectionRailItem } from "../ui/SectionRail";
+import SeoMeta from "../ui/SeoMeta";
 
 type PageProps = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
+  noIndex?: boolean;
 };
 
 type ProofLedgerItem = {
@@ -276,19 +278,26 @@ function getCaseNarrative(story: CaseStory) {
   };
 }
 
-function CaseMeta({ story }: { story: CaseStory | null }) {
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = story
-      ? `${story.headline} - Case System Story - Brenych Studio`
-      : "Case Lab - Brenych Studio";
+function CaseMeta({ story, noIndex = false }: { story: CaseStory | null; noIndex?: boolean }) {
+  const media =
+    story?.mediaSequence.find((item) => item.kind !== "video" && item.role === "hero") ??
+    story?.mediaSequence.find((item) => item.kind !== "video") ??
+    null;
 
-    return () => {
-      document.title = previousTitle;
-    };
-  }, [story]);
-
-  return null;
+  return (
+    <SeoMeta
+      title={story ? `${story.headline} - Case System - Brenych Studio` : "Case System - Brenych Studio"}
+      description={
+        story?.summary ??
+        "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure."
+      }
+      path={story ? `/work/${story.slug}` : "/work"}
+      image={media?.src}
+      imageAlt={media?.alt ?? story?.headline}
+      type="article"
+      noIndex={noIndex}
+    />
+  );
 }
 
 function mediaRoleLabel(role: CaseStoryMedia["role"]) {
@@ -373,11 +382,65 @@ function getAvailabilitySignal(story: CaseStory) {
   return "Case reference";
 }
 
+function getClosingMove(story: CaseStory) {
+  if (story.caseType === "advisory") {
+    return {
+      headline: "Use this advisory foundation — or commission a sharper buyer path.",
+      prompt: "The decision journey is mapped. Choose territory, intake logic, and launch scope.",
+      steps: ["Territory", "Fit", "Launch"],
+    };
+  }
+
+  if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+    return {
+      headline: "Turn this workflow logic into a commissioned product.",
+      prompt: "The operating model is visible. Choose users, states, and output rules.",
+      steps: ["Users", "States", "Output"],
+    };
+  }
+
+  if (story.caseType === "hospitality") {
+    return {
+      headline: "Shape the next visitor path with this rhythm.",
+      prompt: "The place journey is clear. Choose language, actions, and local conversion flow.",
+      steps: ["Place", "Action", "Launch"],
+    };
+  }
+
+  if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+    return {
+      headline: "Turn the visual grammar into a new authored route.",
+      prompt: "The motion model is proven. Choose content, pacing, and release surface.",
+      steps: ["Content", "Rhythm", "Release"],
+    };
+  }
+
+  return {
+    headline: "Use this foundation — or commission one with the same clarity.",
+    prompt: "The direction is structured. Choose brand fit, content depth, and launch rhythm.",
+    steps: ["Fit", "Scope", "Build"],
+  };
+}
+
+function getDirectMailHref(story: CaseStory) {
+  const subject = `${story.headline} project inquiry`;
+  const body = `Hi Rostyslav,\n\nI would like to discuss a commissioned direction related to ${story.headline}.\n\nProject:\nTimeline:\nBudget:\nLinks:\n\nThanks,`;
+
+  return `mailto:info@brenych.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function getSecondaryClosingLink(story: CaseStory, links: NonNullable<CaseStory["links"]>) {
+  const liveLink = links.find((link) => !/repository|github/i.test(link.label));
+  if (liveLink) return { label: "View live case", href: liveLink.href };
+
+  return { label: "Email directly", href: getDirectMailHref(story) };
+}
+
 function CaseMediaView({
   media,
   priority = false,
   ambient = false,
-  fit = "contain",
+  fit,
   objectPosition,
 }: {
   media: CaseStoryMedia;
@@ -386,17 +449,19 @@ function CaseMediaView({
   fit?: "cover" | "contain";
   objectPosition?: "top" | "center" | "bottom";
 }) {
+  const resolvedFit = fit ?? media.fit ?? "contain";
+  const resolvedObjectPosition = objectPosition ?? media.objectPosition;
   const positionClass =
-    objectPosition === "top"
+    resolvedObjectPosition === "top"
       ? "object-top"
-      : objectPosition === "bottom"
+      : resolvedObjectPosition === "bottom"
         ? "object-bottom"
         : media.role === "mobile"
           ? "object-top"
           : "object-center";
   const frameClass = [
     "h-full w-full",
-    fit === "cover" ? "object-cover" : "object-contain",
+    resolvedFit === "cover" ? "object-cover" : "object-contain",
     positionClass,
   ].join(" ");
 
@@ -448,8 +513,10 @@ function SignalButton({
   ].join(" ");
 
   if (href) {
+    const external = /^https?:\/\//i.test(href);
+
     return (
-      <a href={href} target="_blank" rel="noreferrer" className={className}>
+      <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined} className={className}>
         {children}
       </a>
     );
@@ -481,7 +548,36 @@ function CaseSystemSpine({
   activeId: string;
   onSelect: (id: string) => void;
 }) {
-  if (!items.length) return null;
+  const [nearDocumentEnd, setNearDocumentEnd] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const updateNearDocumentEnd = () => {
+      frame = 0;
+      setNearDocumentEnd(
+        window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight - Math.min(window.innerHeight * 0.9, 900),
+      );
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateNearDocumentEnd);
+    };
+
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
+
+  if (!items.length || activeId.includes("closing") || nearDocumentEnd) return null;
 
   return (
     <nav
@@ -822,6 +918,7 @@ function MobileSurfaceRail({
   return (
     <section
       ref={railRef}
+      data-sound-safe-area
       className="mx-auto w-[min(92vw,1480px)] pb-20"
       onWheel={handleCarouselWheel}
     >
@@ -1121,7 +1218,7 @@ function EvidenceAtlasGrid({
             aria-label={`Inspect ${media.label}`}
           >
             <span className="relative block aspect-video overflow-hidden border border-neutral-950/10 bg-white/70">
-              <CaseMediaView media={media} priority={index < INITIAL_EVIDENCE_FRAME_COUNT} fit="cover" objectPosition="top" />
+              <CaseMediaView media={media} priority={index < INITIAL_EVIDENCE_FRAME_COUNT} />
               <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_46%,rgba(0,0,0,0.08))]" />
             </span>
             <span className="mt-3 flex items-center justify-between gap-3 border-t border-neutral-950/10 pt-3 font-mono text-[8px] uppercase tracking-[0.15em] text-neutral-400">
@@ -1174,7 +1271,7 @@ function ScreensAsEvidence({
   };
 
   return (
-    <section id="case-media" className="relative mx-auto w-[min(95vw,1680px)] py-10">
+    <section id="case-media" data-sound-safe-area className="relative mx-auto w-[min(95vw,1680px)] py-10">
       <div className="mx-auto w-[min(92vw,1480px)]">
         <div className="relative overflow-hidden border-y border-neutral-950/12 py-10 md:py-12">
           <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-neutral-950/8" />
@@ -1582,6 +1679,7 @@ export default function CasePageV2({
   drawerOpen = false,
   onOpenProject,
   onCloseProject,
+  noIndex = false,
 }: PageProps) {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -1612,7 +1710,7 @@ export default function CasePageV2({
   if (!story) {
     return (
       <>
-        <CaseMeta story={story} />
+        <CaseMeta story={story} noIndex={noIndex} />
         <LabFallback
           drawerOpen={drawerOpen}
           onOpenProject={onOpenProject}
@@ -1627,6 +1725,8 @@ export default function CasePageV2({
   const visibleLinks = story.links ?? [];
   const titleLines = getTitleLines(story.headline);
   const narrative = getCaseNarrative(story);
+  const closingMove = getClosingMove(story);
+  const secondaryClosingLink = getSecondaryClosingLink(story, visibleLinks);
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
   const hasAlignedHeroCards = true;
@@ -1635,7 +1735,7 @@ export default function CasePageV2({
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f4f1ea] text-neutral-950">
-      <CaseMeta story={story} />
+      <CaseMeta story={story} noIndex={noIndex} />
       <AtmosphericSiteShell preset="case" />
       <Header
         drawerOpen={drawerOpen}
@@ -1737,8 +1837,6 @@ export default function CasePageV2({
                   media={thresholdMedia}
                   priority
                   ambient
-                  fit={isAdvisoryCase || isCreatorOpsCase ? "cover" : "contain"}
-                  objectPosition={isAdvisoryCase || isCreatorOpsCase ? "top" : undefined}
                 />
                 <div
                   className={[
@@ -1829,17 +1927,7 @@ export default function CasePageV2({
                           : "opacity-70 saturate-[0.9]",
                     ].join(" ")}
                   >
-                    <CaseMediaView
-                      media={media}
-                      fit={isAdvisoryCase || isCreatorOpsCase ? "cover" : "contain"}
-                      objectPosition={
-                        isAdvisoryCase
-                          ? (index === 2 ? "top" : "bottom")
-                          : isCreatorOpsCase
-                            ? "top"
-                            : undefined
-                      }
-                    />
+                    <CaseMediaView media={media} />
                   </span>
                   <div
                     className={[
@@ -1880,6 +1968,7 @@ export default function CasePageV2({
             id="case-closing"
             className="mx-auto w-[min(94vw,1540px)] pb-10 pt-5"
             data-footer-rail-state="closing"
+            data-sound-safe-area
           >
             <div className="relative overflow-hidden border-y border-neutral-950/12 bg-white/8 px-4 py-10 backdrop-blur-sm sm:px-6 md:px-8 md:py-12">
               <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
@@ -1889,30 +1978,30 @@ export default function CasePageV2({
                 <div className="relative z-10">
                   <SectionSignal index="06" label="Final conversion" />
                   <p className="max-w-[12ch] text-[clamp(3.3rem,7.1vw,7.2rem)] font-semibold leading-[0.86] tracking-normal text-neutral-950">
-                    Adapt this system &mdash; or build one with the same clarity.
+                    {closingMove.headline}
                   </p>
                 </div>
 
                 <div className="relative z-10 grid gap-5 border-y border-neutral-950/12 py-5 lg:mb-5">
                   <div>
-                      <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+                    <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
                       Next move
-                      </div>
+                    </div>
                     <p className="mt-4 max-w-[28rem] text-2xl leading-[1.12] text-neutral-800 md:text-[1.7rem]">
-                      The proof is structured. Now choose fit, scope, and commission rhythm.
-                      </p>
+                      {closingMove.prompt}
+                    </p>
                   </div>
                   <div className="grid grid-cols-3 border-y border-neutral-950/12 py-3 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500">
-                    <span>Proof</span>
-                    <span>Fit</span>
-                    <span>Build</span>
+                    {closingMove.steps.map((step) => (
+                      <span key={step}>{step}</span>
+                    ))}
                   </div>
                   <div className="flex flex-wrap gap-3">
                     <SignalButton onClick={openProject}>
                       {story.availability?.ctaLabel ?? "Start a project"}
                     </SignalButton>
-                    <SignalButton variant="secondary" onClick={openProject}>
-                      Start a project
+                    <SignalButton variant="secondary" href={secondaryClosingLink.href}>
+                      {secondaryClosingLink.label}
                     </SignalButton>
                     <SignalButton variant="quiet" onClick={goToWork}>
                       Back to Work

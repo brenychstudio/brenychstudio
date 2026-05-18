@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useLocation } from "react-router-dom";
 
 import { useActiveHeaderScene } from "../hooks/useActiveHeaderScene";
+import { useImmersiveProofChromeActive } from "../hooks/useImmersiveProofChromeActive";
 import { useSound } from "../stage/audio/useSound";
 import { getHeaderMoodForPath, resolveHeaderTheme } from "./header/headerThemeTokens";
 import type { SoundScene } from "../stage/audio/audioTypes";
@@ -34,6 +35,83 @@ function getRouteSoundScene(pathname: string): SoundScene {
 
 function routeAllowsAmbient(pathname: string) {
   return pathname === "/immersive" || pathname === "/immersive-v2";
+}
+
+function routeHasImmersiveProofChrome(pathname: string) {
+  return pathname === "/immersive" || pathname === "/immersive-v2";
+}
+
+function zoneOverlapsElement(element: HTMLElement, workCaseMode: boolean) {
+  const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const dockZone = workCaseMode
+    ? {
+        left: Math.max(0, viewportWidth - 360),
+        right: viewportWidth,
+        top: 0,
+        bottom: 150,
+      }
+    : {
+        left: Math.max(0, viewportWidth - 360),
+        right: viewportWidth,
+        top: Math.max(0, viewportHeight - 150),
+        bottom: viewportHeight,
+      };
+
+  return (
+    rect.left < dockZone.right &&
+    rect.right > dockZone.left &&
+    rect.top < dockZone.bottom &&
+    rect.bottom > dockZone.top
+  );
+}
+
+function useSoundSafeArea(pathname: string, workCaseMode: boolean) {
+  const [safeAreaActive, setSafeAreaActive] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+    const timers: number[] = [];
+    const observer = new MutationObserver(() => requestUpdate());
+
+    const updateSafeArea = () => {
+      frame = 0;
+
+      const safeAreas = Array.from(document.querySelectorAll<HTMLElement>("[data-sound-safe-area]"));
+      setSafeAreaActive(safeAreas.some((element) => zoneOverlapsElement(element, workCaseMode)));
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateSafeArea);
+    };
+
+    requestUpdate();
+    timers.push(
+      window.setTimeout(requestUpdate, 150),
+      window.setTimeout(requestUpdate, 600),
+      window.setTimeout(requestUpdate, 1200),
+    );
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-sound-safe-area"],
+    });
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      observer.disconnect();
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [pathname, workCaseMode]);
+
+  return safeAreaActive;
 }
 
 function CompactSoundSignal({ style, caseMode = false }: { style: SoundDockStyle; caseMode?: boolean }) {
@@ -135,14 +213,17 @@ export default function SoundSignalDock() {
   const { setScene, stopAmbient } = useSound();
   const [footerState, setFooterState] = useState({ pathname: "", visible: false });
   const activeSceneId = useActiveHeaderScene(location.pathname);
+  const proofChromeActive = useImmersiveProofChromeActive(routeHasImmersiveProofChrome(location.pathname));
+  const effectiveActiveSceneId = proofChromeActive ? "immersive-proof" : activeSceneId;
   const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
   const routeSoundScene = useMemo(() => getRouteSoundScene(location.pathname), [location.pathname]);
   const workCaseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");
   const compactMode = workCaseMode || location.pathname.startsWith("/immersive/whisper");
   const footerVisible = footerState.pathname === location.pathname && footerState.visible;
+  const safeAreaActive = useSoundSafeArea(location.pathname, workCaseMode);
   const soundTheme = useMemo(
-    () => resolveHeaderTheme({ routeTheme, activeSceneId }),
-    [activeSceneId, routeTheme],
+    () => resolveHeaderTheme({ routeTheme, activeSceneId: effectiveActiveSceneId }),
+    [effectiveActiveSceneId, routeTheme],
   );
   const soundDockStyle = useMemo<SoundDockStyle>(
     () => ({
@@ -190,7 +271,7 @@ export default function SoundSignalDock() {
     };
   }, [location.pathname]);
 
-  if (footerVisible) return null;
+  if (footerVisible || safeAreaActive) return null;
 
   return (
     <div className={["pointer-events-none fixed z-[72]", workCaseMode ? "right-2 top-[4.35rem] sm:right-3 sm:top-[4.75rem]" : "bottom-3 right-3 sm:bottom-4 sm:right-4"].join(" ")}>

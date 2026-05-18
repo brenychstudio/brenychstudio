@@ -1241,24 +1241,24 @@ export default function CasePage({
       const idx = lightboxFrames.findIndex((f) => f.src === src);
       if (idx >= 0) setLightboxIndex(idx);
     },
-    [lightboxFrames]
+    [lightboxFrames, setLightboxIndex]
   );
 
-  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [setLightboxIndex]);
 
   const goPrev = useCallback(() => {
     setLightboxIndex((prevValue) => {
       if (prevValue === null) return prevValue;
       return prevValue === 0 ? lightboxFrames.length - 1 : prevValue - 1;
     });
-  }, [lightboxFrames.length]);
+  }, [lightboxFrames.length, setLightboxIndex]);
 
   const goNext = useCallback(() => {
     setLightboxIndex((prevValue) => {
       if (prevValue === null) return prevValue;
       return prevValue === lightboxFrames.length - 1 ? 0 : prevValue + 1;
     });
-  }, [lightboxFrames.length]);
+  }, [lightboxFrames.length, setLightboxIndex]);
 
   const handleLightboxTouchStart = useCallback((event: TouchEvent<HTMLDivElement>) => {
     const touch = event.touches[0];

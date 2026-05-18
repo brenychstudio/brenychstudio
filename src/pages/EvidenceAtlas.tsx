@@ -808,7 +808,7 @@ export default function EvidenceAtlas({
         <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
 
         <main className="relative pt-24" style={surfaceStyle}>
-          <section id="evidence-threshold" data-header-scene="evidence-threshold" className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
+          <section id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
             <div className="grid min-h-[calc(100vh-10rem)] gap-10 border-y border-neutral-950/14 py-10 xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
               <div className="min-w-0">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
@@ -961,7 +961,7 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
-          <section id="evidence-featured" data-header-scene="evidence-featured" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
+          <section id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionIntro

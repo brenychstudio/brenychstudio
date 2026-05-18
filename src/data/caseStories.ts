@@ -21,6 +21,9 @@ export type CaseAvailabilityStatus =
   | "concept-reference"
   | "not-available";
 
+export type CaseMediaFit = "cover" | "contain";
+export type CaseMediaObjectPosition = "top" | "center" | "bottom";
+
 export type CaseStoryMedia = {
   id: string;
   kind?: "image" | "video";
@@ -30,6 +33,8 @@ export type CaseStoryMedia = {
   label: string;
   caption: string;
   role: CaseMediaRole;
+  fit?: CaseMediaFit;
+  objectPosition?: CaseMediaObjectPosition;
 };
 
 export type CaseStory = {
@@ -1246,6 +1251,21 @@ function isMobileFrame(frame: CaseFrame) {
   return frame.device === "mobile" || frame.aspect === "phone" || frame.src.includes("/mobile/");
 }
 
+function getMediaPresentation(
+  frame: Pick<CaseFrame, "aspect" | "src">,
+  config: Pick<V2CaseConfig, "caseType">,
+): Pick<CaseStoryMedia, "fit" | "objectPosition"> {
+  if (frame.aspect === "phone" || frame.src.includes("/mobile/")) {
+    return { fit: "contain", objectPosition: "top" };
+  }
+
+  if (config.caseType === "advisory" || config.caseType === "workflow-tool" || config.caseType === "tool") {
+    return { fit: "cover", objectPosition: "top" };
+  }
+
+  return { fit: "contain", objectPosition: "center" };
+}
+
 function getThresholdFrame(source: Case) {
   const frames = source.content?.frames?.filter((frame) => frame.kind !== "video") ?? [];
   return (
@@ -1272,6 +1292,7 @@ function createMediaSequence(source: Case, config: V2CaseConfig): CaseStoryMedia
       label: "System walkthrough",
       caption: hero.caption ?? source.content?.summary ?? source.tagline,
       role: "hero",
+      ...getMediaPresentation(hero, config),
     });
   }
 
@@ -1282,6 +1303,7 @@ function createMediaSequence(source: Case, config: V2CaseConfig): CaseStoryMedia
     label: config.mediaLabels?.[getMediaStem(threshold.src)] ?? "Threshold",
     caption: threshold.caption ?? source.content?.summary ?? source.tagline,
     role: "hero",
+    ...getMediaPresentation(threshold, config),
   });
 
   const frames = source.content?.frames?.filter((frame) => frame.kind !== "video" && frame.src !== threshold.src) ?? [];
@@ -1298,6 +1320,7 @@ function createMediaSequence(source: Case, config: V2CaseConfig): CaseStoryMedia
         label: toMediaLabel(frame, config, `Mobile ${mobileIndex}`),
         caption: frame.caption ?? source.content?.summary ?? source.tagline,
         role: "mobile",
+        ...getMediaPresentation(frame, config),
       });
       return;
     }
@@ -1310,10 +1333,30 @@ function createMediaSequence(source: Case, config: V2CaseConfig): CaseStoryMedia
       label: toMediaLabel(frame, config, `Desktop ${desktopIndex}`),
       caption: frame.caption ?? source.content?.summary ?? source.tagline,
       role: toMediaRole(desktopIndex),
+      ...getMediaPresentation(frame, config),
     });
   });
 
   return sequence;
+}
+
+function normalizeStoryMedia(story: CaseStory): CaseStory {
+  return {
+    ...story,
+    mediaSequence: story.mediaSequence.map((media) => {
+      if (media.fit) return media;
+
+      if (media.role === "mobile" || media.src.includes("/mobile/")) {
+        return { ...media, fit: "contain", objectPosition: media.objectPosition ?? "top" };
+      }
+
+      if (story.caseType === "advisory" || story.caseType === "workflow-tool" || story.caseType === "tool") {
+        return { ...media, fit: "cover", objectPosition: media.objectPosition ?? "top" };
+      }
+
+      return { ...media, fit: "contain", objectPosition: media.objectPosition ?? "center" };
+    }),
+  };
 }
 
 function createAvailability(source: Case): CaseStory["availability"] {
@@ -1368,7 +1411,7 @@ function createGeneratedCaseStory(slug: string): CaseStory {
 
 const generatedCaseStories = generatedCaseStorySlugs.map((slug) => createGeneratedCaseStory(slug));
 
-export const caseStories: CaseStory[] = [...authoredCaseStories, ...generatedCaseStories];
+export const caseStories: CaseStory[] = [...authoredCaseStories, ...generatedCaseStories].map(normalizeStoryMedia);
 
 const caseStorySlugAliases: Record<string, string> = {
   "bcn-advisory": "barcelona-private-advisory",

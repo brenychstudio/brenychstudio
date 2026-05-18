@@ -297,6 +297,7 @@ export default function AboutV2({
           <section
             id="about-threshold"
             data-header-scene="about-threshold"
+            data-sound-safe-area
             className="mx-auto grid min-h-[calc(100vh-5rem)] w-[min(94vw,1720px)] gap-12 border-y border-neutral-950/14 py-12 md:py-16 lg:grid-cols-[0.48fr_0.52fr] lg:items-center lg:py-14"
           >
             <motion.div

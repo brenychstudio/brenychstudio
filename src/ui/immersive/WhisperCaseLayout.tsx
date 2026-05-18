@@ -172,16 +172,26 @@ function Chapter({
   id,
   children,
   className = "",
+  soundSafeArea = false,
+  footerRailState,
 }: {
   id: SectionId;
   children: React.ReactNode;
   className?: string;
+  soundSafeArea?: boolean;
+  footerRailState?: "closing";
 }) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
     return (
-      <section id={`whisper-${id}`} data-header-scene={`whisper-${id}`} className={className}>
+      <section
+        id={`whisper-${id}`}
+        data-header-scene={`whisper-${id}`}
+        data-sound-safe-area={soundSafeArea ? true : undefined}
+        data-footer-rail-state={footerRailState}
+        className={className}
+      >
         {children}
       </section>
     );
@@ -191,6 +201,8 @@ function Chapter({
     <motion.section
       id={`whisper-${id}`}
       data-header-scene={`whisper-${id}`}
+      data-sound-safe-area={soundSafeArea ? true : undefined}
+      data-footer-rail-state={footerRailState}
       className={className}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -1377,8 +1389,8 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
   const sound = useSound();
   const reduceMotion = useReducedMotion();
   const copy = whisperCaseI18n.en;
-  const rawFrames = item.frames ?? [];
-  const rawVideos = item.videos ?? [];
+  const rawFrames = useMemo(() => item.frames ?? [], [item.frames]);
+  const rawVideos = useMemo(() => item.videos ?? [], [item.videos]);
 
   const webFrames = useMemo(
     () =>
@@ -1501,7 +1513,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         tone={darkRailSections.has(activeSection) ? "dark" : "light"}
       />
 
-      <Chapter id="threshold" className="relative min-h-[calc(100vh-5rem)] overflow-hidden">
+      <Chapter id="threshold" soundSafeArea className="relative min-h-[calc(100vh-5rem)] overflow-hidden">
         <video
           className="absolute inset-0 h-full w-full object-cover opacity-72 saturate-[1.04] contrast-[1.05]"
           autoPlay
@@ -1519,7 +1531,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         <div className="pointer-events-none absolute left-[45%] top-[13%] h-[66vw] max-h-[760px] w-[66vw] max-w-[760px] -translate-x-1/2 rounded-full border border-white/12" />
         <div className="pointer-events-none absolute left-[8%] top-[64%] h-px w-[86%] rotate-[7deg] bg-gradient-to-r from-transparent via-white/22 to-transparent" />
 
-        <div className="absolute left-4 right-4 top-5 z-20 mx-auto flex w-[min(92vw,1680px)] flex-wrap items-center justify-between gap-3 md:left-8 md:right-8 md:top-7">
+        <div className="absolute left-4 right-4 top-28 z-20 mx-auto flex w-[min(92vw,1680px)] flex-wrap items-center justify-between gap-3 md:left-8 md:right-8 md:top-7">
           <button
             type="button"
             onClick={openImmersiveIndex}
@@ -1538,7 +1550,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
           </div>
         </div>
 
-        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] w-[min(92vw,1680px)] gap-12 px-4 pb-14 pt-24 max-[640px]:w-full max-[640px]:px-7 max-[640px]:pt-28 md:px-8 lg:grid-cols-[0.45fr_0.55fr] lg:items-end lg:pt-28">
+        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] w-[min(92vw,1680px)] gap-12 px-4 pb-14 pt-24 max-[640px]:w-full max-[640px]:px-7 max-[640px]:pt-64 md:px-8 lg:grid-cols-[0.45fr_0.55fr] lg:items-end lg:pt-28">
           <div className="max-w-[46rem] pb-2 max-[640px]:max-w-full">
             <div className="mb-8 flex flex-wrap gap-2">
               {["Flagship immersive", "Completed proof", "Web / XR / AR"].map((label) => (
@@ -1636,7 +1648,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
               </button>
             ) : null}
 
-            <div className="absolute bottom-[6%] left-[31%] right-[8%] hidden grid-cols-5 border border-white/12 bg-black/46 text-white shadow-[0_22px_90px_rgba(0,0,0,0.3)] backdrop-blur xl:grid">
+            <div className="absolute bottom-[6%] left-[31%] right-[8%] hidden grid-cols-5 border border-white/12 bg-black/46 text-white shadow-[0_22px_90px_rgba(0,0,0,0.3)] backdrop-blur 2xl:grid">
               {flagshipSignals.map((signal) => (
                 <div key={signal} className="border-r border-white/10 px-3 py-3 text-[10px] uppercase tracking-[0.15em] text-white/52 last:border-r-0">
                   {signal}
@@ -1693,8 +1705,8 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         </div>
       </Chapter>
 
-      <Chapter id="web" className="bg-[#f2eee4] px-4 pb-0 text-neutral-950 md:px-8">
-        <div className="mx-auto w-[min(92vw,1640px)]">
+      <Chapter id="web" soundSafeArea className="bg-[#f2eee4] px-4 pb-0 text-neutral-950 md:px-8">
+        <div className="mx-auto w-[min(92vw,1640px)] xl:pr-36">
           <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
             <div>
               <SectionLabel index="03" label="Web exhibition" />
@@ -1720,11 +1732,11 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         </div>
       </Chapter>
 
-      <Chapter id="xr" className="relative overflow-hidden bg-[#070807] px-4 py-24 text-white md:px-8 lg:py-32">
+      <Chapter id="xr" soundSafeArea className="relative overflow-hidden bg-[#070807] px-4 py-24 text-white md:px-8 lg:py-32">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_64%_28%,rgba(105,127,98,0.24),transparent_28%),linear-gradient(180deg,rgba(6,7,6,0.94),transparent_20%,rgba(255,255,255,0.04)_34%,transparent_52%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:86px_86px]" />
 
-        <div className="relative mx-auto grid w-[min(92vw,1640px)] gap-14 lg:grid-cols-[0.38fr_0.62fr]">
+        <div className="relative mx-auto grid w-[min(92vw,1640px)] gap-14 lg:grid-cols-[0.38fr_0.62fr] xl:pr-36">
           <div>
             <SectionLabel index="04" label="XR proof" dark />
             <KineticTitle
@@ -1755,7 +1767,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         </div>
       </Chapter>
 
-      <Chapter id="collector" className="bg-[#ebe6dc] px-4 py-24 text-neutral-950 md:px-8 lg:py-32">
+      <Chapter id="collector" soundSafeArea className="bg-[#ebe6dc] px-4 py-24 text-neutral-950 md:px-8 lg:py-32">
         <div className="mx-auto w-[min(92vw,1640px)]">
           <div className="grid gap-10 lg:grid-cols-[0.48fr_0.52fr] lg:items-end">
             <div>
@@ -1776,7 +1788,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         </div>
       </Chapter>
 
-      <Chapter id="mobile" className="relative overflow-hidden bg-[#070806] px-4 py-24 text-white md:px-8 lg:py-32">
+      <Chapter id="mobile" soundSafeArea className="relative overflow-hidden bg-[#070806] px-4 py-24 text-white md:px-8 lg:py-32">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(235,230,220,0.08),transparent_24%),radial-gradient(circle_at_22%_24%,rgba(241,234,214,0.12),transparent_28%)]" />
         <div className="relative mx-auto w-[min(92vw,1500px)]">
           <div className="grid gap-10 lg:grid-cols-[0.45fr_0.55fr] lg:items-end">
@@ -1796,7 +1808,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         </div>
       </Chapter>
 
-      <Chapter id="engine" className="relative overflow-hidden bg-[#050505] px-4 py-24 text-white md:px-8 lg:py-32">
+      <Chapter id="engine" soundSafeArea footerRailState="closing" className="relative overflow-hidden bg-[#050505] px-4 py-24 text-white md:px-8 lg:py-32">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_22%,rgba(222,210,179,0.14),transparent_26%),radial-gradient(circle_at_78%_42%,rgba(77,104,94,0.2),transparent_26%)]" />
         <div className="relative mx-auto grid w-[min(92vw,1640px)] gap-16 lg:grid-cols-[0.38fr_0.62fr]">
           <div>

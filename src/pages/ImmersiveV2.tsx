@@ -34,6 +34,7 @@ import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
+import { useImmersiveProofChromeActive } from "../hooks/useImmersiveProofChromeActive";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -577,6 +578,7 @@ function ChamberEntryField({
     <section
       id="threshold"
       data-header-scene={immersiveHeaderScenes.threshold}
+      data-sound-safe-area
       className="relative min-h-screen overflow-hidden px-4 pb-16 pt-24 sm:px-6 lg:px-8"
       data-entry-chamber={activeChamberId}
     >
@@ -703,31 +705,62 @@ function ImmersiveV2Meta() {
 
 function useActiveSection() {
   const [activeId, setActiveId] = useState<SectionId>("threshold");
+  const activeRef = useRef<SectionId>("threshold");
 
   useEffect(() => {
-    const sections = sectionItems
-      .map((item) => document.getElementById(item.id))
-      .filter((section): section is HTMLElement => Boolean(section));
+    activeRef.current = activeId;
+  }, [activeId]);
 
-    if (!sections.length) return;
+  useEffect(() => {
+    let frame = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    const updateActiveSection = () => {
+      frame = 0;
 
-        if (visible?.target.id) setActiveId(visible.target.id as SectionId);
-      },
-      {
-        threshold: [0.18, 0.32, 0.48, 0.62],
-        rootMargin: "-24% 0px -46% 0px",
-      },
-    );
+      const viewportAnchor = window.innerHeight * 0.46;
+      let nextId: SectionId = sectionItems[0].id;
+      let bestScore = Number.NEGATIVE_INFINITY;
 
-    sections.forEach((section) => observer.observe(section));
+      sectionItems.forEach((item, order) => {
+        const section = document.getElementById(item.id);
+        if (!section) return;
 
-    return () => observer.disconnect();
+        const rect = section.getBoundingClientRect();
+        const containsAnchor = rect.top <= viewportAnchor && rect.bottom >= viewportAnchor;
+        const distance = Math.min(
+          Math.abs(rect.top - viewportAnchor),
+          Math.abs(rect.bottom - viewportAnchor),
+        );
+        const score = containsAnchor
+          ? 10000 - rect.height / 34 - Math.abs(rect.top - viewportAnchor) / 46 + order / 1000
+          : -distance + order / 1000;
+
+        if (score > bestScore) {
+          bestScore = score;
+          nextId = item.id;
+        }
+      });
+
+      if (activeRef.current !== nextId) {
+        activeRef.current = nextId;
+        setActiveId(nextId);
+      }
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
   }, []);
 
   return activeId;
@@ -991,14 +1024,14 @@ function PracticeMapScene({
   }, [atlasOpen, chamberState.activeChamberId, inspectedChamberId, atlasMode, selectChamberByOffset, sound]);
 
   return (
-    <Chapter id="map" className="relative min-h-screen overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
+    <Chapter id="map" className="relative min-h-screen overflow-hidden px-4 pb-12 pt-16 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[4vw] top-[22vh] h-px w-[92vw] rotate-[-9deg] bg-gradient-to-r from-transparent via-neutral-950/10 to-transparent" />
         <div className="absolute right-[12vw] top-[9vh] h-[36rem] w-[36rem] rounded-full border border-neutral-950/[0.045]" />
       </div>
 
-      <div className="relative z-10 mx-auto min-h-[calc(100vh-10rem)] w-[min(96vw,1740px)]">
-        <div className="mb-8 grid gap-6 xl:grid-cols-[0.42fr_0.58fr] xl:items-end">
+      <div className="relative z-10 mx-auto min-h-[calc(100vh-8rem)] w-[min(96vw,1740px)]">
+        <div className="mb-6 grid gap-6 xl:grid-cols-[0.42fr_0.58fr] xl:items-end">
           <div>
             <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Spatial practice map</div>
             <h2 className="mt-4 max-w-[9ch] text-[64px] font-normal leading-[0.82] tracking-[-0.08em] text-neutral-950 sm:text-[88px] xl:text-[112px]">
@@ -1012,7 +1045,7 @@ function PracticeMapScene({
           </p>
         </div>
 
-        <div className="relative min-h-[780px] overflow-hidden border-y border-neutral-950 bg-neutral-950 text-white shadow-[0_48px_160px_rgba(0,0,0,0.18)]">
+        <div className="relative min-h-[720px] overflow-hidden border-y border-neutral-950 bg-neutral-950 text-white shadow-[0_48px_160px_rgba(0,0,0,0.18)]">
           <img
             key={`${activeChamber.id}-backdrop`}
             src={activePoster}
@@ -1790,10 +1823,10 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
   };
 
   return (
-    <Chapter id="proof" className="relative px-4 py-24 sm:px-6 lg:px-8">
-      <div ref={proofRef} className="relative mx-auto min-h-[220vh] w-[min(96vw,1780px)]">
+    <Chapter id="proof" className="relative px-4 pb-4 pt-0 sm:px-6 lg:px-8">
+      <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(96vw,1780px)]">
         <div
-          className="sticky top-[4.5rem] min-h-[calc(100vh-5rem)] overflow-hidden border-y border-white/12 bg-[#090908] text-white shadow-[0_54px_180px_rgba(0,0,0,0.22)]"
+          className="sticky top-[3.75rem] min-h-[calc(100vh-3.75rem)] overflow-hidden border-y border-white/12 bg-[#090908] text-white shadow-[0_54px_180px_rgba(0,0,0,0.22)]"
           onPointerDown={handleProofPointerDown}
           onPointerUp={handleProofPointerUp}
           onPointerCancel={() => {
@@ -1811,7 +1844,7 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
           <div className="pointer-events-none absolute left-[30%] top-[24%] h-[45%] w-[38%] rotate-[-12deg] rounded-[50%] border border-white/12" />
           <div className="pointer-events-none absolute left-[6%] top-[58%] h-px w-[88%] rotate-[8deg] bg-gradient-to-r from-transparent via-white/18 to-transparent" />
 
-          <div className="relative z-10 min-h-[calc(100vh-5rem)] p-6 sm:p-8 lg:p-12 xl:p-16">
+          <div className="relative z-10 min-h-[calc(100vh-3.75rem)] p-6 sm:p-8 lg:p-12 xl:p-16">
             <div className="pointer-events-none absolute inset-x-[4%] top-[17%] h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
             <div className="pointer-events-none absolute inset-x-[4%] bottom-[14%] h-px bg-gradient-to-r from-transparent via-white/16 to-transparent" />
 
@@ -2014,8 +2047,8 @@ function EngineStackScene() {
   };
 
   return (
-    <Chapter id="engines" className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-12rem)] w-[min(92vw,1600px)] items-center gap-14 xl:grid-cols-[0.44fr_0.56fr]">
+    <Chapter id="engines" className="relative px-4 pb-16 pt-20 sm:px-6 lg:px-8 lg:pt-24">
+      <div className="mx-auto grid w-[min(92vw,1600px)] items-start gap-14 xl:grid-cols-[0.44fr_0.56fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface engines</div>
           <KineticTitle
@@ -2029,7 +2062,7 @@ function EngineStackScene() {
         </div>
 
         <div
-          className="relative min-h-[720px]"
+          className="relative min-h-[660px]"
           onPointerMove={handleEnginePointerMove}
           onPointerLeave={() => setEnginePointer(null)}
         >
@@ -2137,8 +2170,8 @@ function EngineStackScene() {
 
 function FutureChambersScene() {
   return (
-    <Chapter id="future" className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto min-h-[calc(100vh-12rem)] w-[min(92vw,1600px)]">
+    <Chapter id="future" className="relative min-h-screen px-4 pb-16 pt-16 sm:px-6 lg:px-8">
+      <div className="mx-auto min-h-[calc(100vh-7rem)] w-[min(92vw,1600px)]">
         <div className="grid gap-10 xl:grid-cols-[0.42fr_0.58fr]">
           <div>
             <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Future chambers</div>
@@ -2153,7 +2186,7 @@ function FutureChambersScene() {
           </p>
         </div>
 
-        <div className="relative mt-16 min-h-[760px]">
+        <div className="relative mt-10 min-h-[680px]">
           <div className="absolute left-1/2 top-[8%] hidden h-[78%] w-px bg-neutral-950/12 lg:block" />
           {futureChambers.map((item, index) => {
             const left = index % 2 === 0;
@@ -2201,8 +2234,8 @@ function FutureChambersScene() {
 
 function ApplicationLayerScene() {
   return (
-    <Chapter id="applications" className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-12rem)] w-[min(92vw,1600px)] items-center gap-14 xl:grid-cols-[0.46fr_0.54fr]">
+    <Chapter id="applications" className="relative min-h-screen px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+      <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(92vw,1600px)] items-center gap-14 xl:grid-cols-[0.46fr_0.54fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Application layer</div>
           <KineticTitle
@@ -2240,6 +2273,8 @@ export default function ImmersiveV2({
   const navigate = useNavigate();
   const chamberState = useImmersiveChamberSelection();
   const activeId = useActiveSection();
+  const proofChromeActive = useImmersiveProofChromeActive();
+  const railActiveId = proofChromeActive ? "proof" : activeId;
   const { playRole, setScene, setAmbientSceneLevel, startSceneAmbient, stopAmbient } = useSound();
 
   useEffect(() => {
@@ -2295,9 +2330,10 @@ export default function ImmersiveV2({
         <AtmosphericSiteShell preset="immersive" />
         <SectionRail
           items={sectionItems}
-          activeId={activeId}
+          activeId={railActiveId}
           onSelect={(id) => scrollTo(id as SectionId)}
           label="Immersive sections"
+          tone="light"
         />
 
         <main

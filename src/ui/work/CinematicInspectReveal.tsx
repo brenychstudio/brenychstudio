@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type TouchEvent, type WheelEvent } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type TouchEvent, type WheelEvent } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
@@ -17,6 +17,16 @@ const closeRevealMs = 760;
 const wheelFrameThreshold = 48;
 const wheelFrameCooldownMs = 620;
 const wheelIntentResetMs = 180;
+const focusableSelector = [
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
+type InertElement = HTMLElement & { inert?: boolean };
 
 function formatIndex(value: number) {
   return String(value).padStart(2, "0");
@@ -44,11 +54,17 @@ export default function CinematicInspectReveal({
   const wheelDeltaRef = useRef(0);
   const wheelLockUntilRef = useRef(0);
   const wheelResetTimerRef = useRef<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
   const thumbnailRailRef = useRef<HTMLDivElement | null>(null);
   const thumbnailButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const dialogTitleId = useId();
+  const dialogDescriptionId = useId();
   const [closing, setClosing] = useState(false);
   const [frameDirection, setFrameDirection] = useState<1 | -1>(1);
   const currentFrame = index !== null ? frames[index] ?? null : null;
+  const isOpen = index !== null;
   const previousFrame = index !== null && frames.length > 1
     ? frames[(index - 1 + frames.length) % frames.length]
     : null;
@@ -152,24 +168,101 @@ export default function CinematicInspectReveal({
   }, [closing, frames.length, goNext, goPrev, index]);
 
   useEffect(() => {
-    if (index === null) return;
+    if (!isOpen) return;
 
+    lastFocusedRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const previousOverflow = document.body.style.overflow;
+    const appRoot = document.getElementById("root") as InertElement | null;
+    const previousRootInert = appRoot?.inert ?? false;
+    const previousRootAriaHidden = appRoot?.getAttribute("aria-hidden") ?? null;
+
     document.body.style.overflow = "hidden";
+    if (appRoot) {
+      appRoot.inert = true;
+      appRoot.setAttribute("aria-hidden", "true");
+    }
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      (closeButtonRef.current ?? dialogRef.current)?.focus({ preventScroll: true });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.style.overflow = previousOverflow;
+
+      if (appRoot) {
+        appRoot.inert = previousRootInert;
+        if (previousRootAriaHidden === null) {
+          appRoot.removeAttribute("aria-hidden");
+        } else {
+          appRoot.setAttribute("aria-hidden", previousRootAriaHidden);
+        }
+      }
+
+      lastFocusedRef.current?.focus?.({ preventScroll: true });
+      lastFocusedRef.current = null;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
-      if (event.key === "ArrowLeft") goPrev();
-      if (event.key === "ArrowRight") goNext();
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goPrev();
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goNext();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+
+      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        (element) => !element.hasAttribute("disabled") && element.getAttribute("aria-hidden") !== "true",
+      );
+
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus({ preventScroll: true });
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+        return;
+      }
+
+      if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [close, frames.length, goNext, goPrev, index]);
+  }, [close, goNext, goPrev, isOpen]);
 
   useEffect(() => {
     return () => {
@@ -209,6 +302,12 @@ export default function CinematicInspectReveal({
     <AnimatePresence>
       {index !== null && currentFrame ? (
         <motion.div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={dialogTitleId}
+          aria-describedby={dialogDescriptionId}
+          tabIndex={-1}
           className={[
             "fixed inset-0 z-[92] overflow-hidden bg-[#050505] text-[#f6f1e8]",
             closing ? "pointer-events-none" : "",
@@ -226,6 +325,7 @@ export default function CinematicInspectReveal({
           <motion.button
             type="button"
             aria-label="Close inspect reveal"
+            tabIndex={-1}
             className="absolute inset-0 cursor-default bg-[radial-gradient(circle_at_50%_38%,rgba(255,255,255,0.12),transparent_34%),linear-gradient(180deg,rgba(244,241,234,0.09),rgba(5,5,5,0.96)_55%)]"
             onClick={close}
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 1.06, filter: "blur(10px)" }}
@@ -331,7 +431,7 @@ export default function CinematicInspectReveal({
                   Cinematic inspect reveal / {formatIndex(index + 1)} / {formatIndex(frames.length)}
                 </div>
                 <div className="mt-2 flex flex-wrap items-center gap-3">
-                  <h2 className="text-2xl font-semibold leading-none tracking-normal text-white md:text-4xl">
+                  <h2 id={dialogTitleId} className="text-2xl font-semibold leading-none tracking-normal text-white md:text-4xl">
                     {currentFrame.label}
                   </h2>
                   <span className="rounded-full border border-white/12 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-white/48">
@@ -360,6 +460,7 @@ export default function CinematicInspectReveal({
                   &rarr;
                 </button>
                 <button
+                  ref={closeButtonRef}
                   type="button"
                   onClick={close}
                   onMouseEnter={() => sound.playRole("hover")}
@@ -449,7 +550,7 @@ export default function CinematicInspectReveal({
                       <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/38">
                         What this frame proves
                       </div>
-                      <p className="mt-2 max-w-3xl text-sm leading-6 md:mt-0 md:text-[15px]">
+                      <p id={dialogDescriptionId} className="mt-2 max-w-3xl text-sm leading-6 md:mt-0 md:text-[15px]">
                         {currentFrame.caption}
                       </p>
                     </motion.div>

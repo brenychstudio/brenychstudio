@@ -480,12 +480,14 @@ function DeliveryModelEngine({
   const sound = useSound();
 
   return (
-    <div className="relative overflow-hidden border-y border-neutral-950/14 bg-[#f8f6f0]/72">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_42%_36%,rgba(255,255,255,0.9),transparent_34%),linear-gradient(120deg,rgba(255,255,255,0.82),rgba(222,216,206,0.24))]" />
+    <div className="relative overflow-hidden border-y border-neutral-950/10 bg-white/[0.18]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_42%_34%,rgba(255,255,255,0.82),transparent_34%),linear-gradient(120deg,rgba(255,255,255,0.58),rgba(226,222,214,0.16)_48%,rgba(255,255,255,0.46))]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-white/58 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-white/54 to-transparent" />
 
       <div className="relative grid lg:grid-cols-[minmax(0,1fr)_24rem]">
         <motion.div
-          className="relative min-h-[380px] overflow-hidden border-b border-neutral-950/10 lg:min-h-[640px] lg:border-b-0 lg:border-r"
+          className="relative min-h-[380px] overflow-hidden border-b border-neutral-950/10 lg:min-h-[640px] lg:border-b-0 lg:border-r lg:border-neutral-950/10"
           initial={{ opacity: 0.78 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-120px" }}
@@ -500,7 +502,7 @@ function DeliveryModelEngine({
           </div>
         </motion.div>
 
-        <aside className="relative p-5 sm:p-7">
+        <aside className="relative bg-white/[0.08] p-5 sm:p-7">
           <SectionLabel>Stage control</SectionLabel>
 
           <AnimatePresence mode="wait">
@@ -718,29 +720,38 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
-            <div className="grid gap-10 border-y border-neutral-950/14 py-9 lg:grid-cols-[0.32fr_0.68fr] lg:items-end">
-              <div>
-                <SectionLabel>03 / Engagement Model</SectionLabel>
-                <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] sm:text-[78px]">
-                  Built through clear stages.
-                </h2>
-              </div>
-              <p className="max-w-[46rem] text-[16px] leading-8 text-neutral-600">
-                Each project moves from commercial concept into interface architecture, visual direction, motion behavior,
-                and production front-end delivery.
-              </p>
-            </div>
+          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-16 lg:pb-20">
+            <div className="relative isolate -mx-[3vw] overflow-hidden px-[3vw] py-14 lg:py-20">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white via-white/84 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white via-white/82 to-transparent" />
+              <div className="pointer-events-none absolute inset-y-8 left-0 right-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0),rgba(244,241,234,0.34)_22%,rgba(246,244,239,0.48)_54%,rgba(255,255,255,0)_100%)]" />
+              <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px]" />
+              <div className="pointer-events-none absolute left-[12%] top-[3rem] -z-10 h-[32rem] w-[32rem] rounded-full border border-neutral-950/[0.025]" />
+              <div className="pointer-events-none absolute right-[10%] bottom-[2rem] -z-10 h-[28rem] w-[28rem] rounded-full border border-neutral-950/[0.02]" />
 
-            <div className="mt-9">
-              <DeliveryModelEngine
-                activeStage={activeStage}
-                setActiveStage={setActiveStageWithSound}
-                onOpenInterface={() => {
-                  playRole("open");
-                  setDeliveryInterfaceOpen(true);
-                }}
-              />
+              <div className="grid gap-10 border-y border-neutral-950/10 py-9 lg:grid-cols-[0.32fr_0.68fr] lg:items-end">
+                <div>
+                  <SectionLabel>03 / Engagement Model</SectionLabel>
+                  <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] sm:text-[78px]">
+                    Built through clear stages.
+                  </h2>
+                </div>
+                <p className="max-w-[46rem] text-[16px] leading-8 text-neutral-600">
+                  Each project moves from commercial concept into interface architecture, visual direction, motion behavior,
+                  and production front-end delivery.
+                </p>
+              </div>
+
+              <div className="mt-9">
+                <DeliveryModelEngine
+                  activeStage={activeStage}
+                  setActiveStage={setActiveStageWithSound}
+                  onOpenInterface={() => {
+                    playRole("open");
+                    setDeliveryInterfaceOpen(true);
+                  }}
+                />
+              </div>
             </div>
           </section>
 

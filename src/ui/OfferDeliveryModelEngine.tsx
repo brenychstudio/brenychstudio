@@ -1136,7 +1136,9 @@ export default function OfferDeliveryModelEngine({
       }}
       onPointerLeave={() => setPointer({ x: 0, y: 0 })}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_46%_42%,rgba(255,255,255,0.98),rgba(255,255,255,0.72)_31%,rgba(244,241,234,0.48)_66%,rgba(226,220,209,0.34)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_46%_42%,rgba(255,255,255,0.92),rgba(255,255,255,0.64)_31%,rgba(244,241,234,0.24)_66%,rgba(255,255,255,0.18)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/48 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white/42 to-transparent" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.055] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px]" />
       <div className="pointer-events-none absolute inset-x-[3%] top-[16%] h-px bg-neutral-950/[0.055]" />
       <div className="pointer-events-none absolute inset-x-[8%] bottom-[22%] h-px bg-neutral-950/[0.035]" />

@@ -41,6 +41,43 @@ function routeHasImmersiveProofChrome(pathname: string) {
   return pathname === "/immersive" || pathname === "/immersive-v2";
 }
 
+function routeHasStudioWhisperChrome(pathname: string) {
+  return pathname === "/" || pathname === "/studio-index";
+}
+
+function useStudioWhisperChromeActive(enabled: boolean) {
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const updateActive = () => {
+      frame = 0;
+      setActive(enabled && document.documentElement.dataset.studioWhisperChrome === "active");
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActive);
+    };
+
+    const observer = new MutationObserver(requestUpdate);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-studio-whisper-chrome"],
+    });
+
+    requestUpdate();
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [enabled]);
+
+  return active;
+}
+
 function zoneOverlapsElement(element: HTMLElement, workCaseMode: boolean) {
   const rect = element.getBoundingClientRect();
   const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -214,7 +251,12 @@ export default function SoundSignalDock() {
   const [footerState, setFooterState] = useState({ pathname: "", visible: false });
   const activeSceneId = useActiveHeaderScene(location.pathname);
   const proofChromeActive = useImmersiveProofChromeActive(routeHasImmersiveProofChrome(location.pathname));
-  const effectiveActiveSceneId = proofChromeActive ? "immersive-proof" : activeSceneId;
+  const studioWhisperChromeActive = useStudioWhisperChromeActive(routeHasStudioWhisperChrome(location.pathname));
+  const effectiveActiveSceneId = proofChromeActive
+    ? "immersive-proof"
+    : activeSceneId === "living-whisper" && !studioWhisperChromeActive
+      ? "living-atlas"
+      : activeSceneId;
   const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
   const routeSoundScene = useMemo(() => getRouteSoundScene(location.pathname), [location.pathname]);
   const workCaseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");

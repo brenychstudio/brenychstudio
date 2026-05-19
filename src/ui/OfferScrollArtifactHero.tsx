@@ -619,12 +619,13 @@ export default function OfferScrollArtifactHero() {
       onPointerLeave={() => setPointer({ x: 0, y: 0 })}
     >
       <div className="sticky top-[14.25rem] h-[calc(100vh-14.25rem)] min-h-[620px] overflow-visible sm:top-0 sm:h-screen sm:min-h-[720px]">
-        <div className="relative left-1/2 h-full w-screen -translate-x-1/2 overflow-hidden bg-[#f5f2eb]">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.82)_28%,rgba(244,241,234,0.9)_58%,rgba(236,232,223,0.88)_100%)]" />
-          <div className="pointer-events-none absolute inset-x-[max(1.5rem,5vw)] top-1/2 h-px bg-neutral-950/[0.07]" />
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.055] sm:h-[42rem] sm:w-[42rem] lg:h-[54rem] lg:w-[54rem]" />
+        <div className="relative left-1/2 h-full w-screen -translate-x-1/2 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.52)_30%,rgba(244,241,234,0.18)_56%,rgba(255,255,255,0)_82%)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.022] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_84%,transparent_100%)]" />
+          <div className="pointer-events-none absolute inset-x-[max(1.5rem,5vw)] top-1/2 h-px bg-neutral-950/[0.055]" />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.045] sm:h-[42rem] sm:w-[42rem] lg:h-[54rem] lg:w-[54rem]" />
           <div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.035] opacity-70 sm:h-[52rem] sm:w-[52rem] lg:h-[66rem] lg:w-[66rem]"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.028] opacity-70 sm:h-[52rem] sm:w-[52rem] lg:h-[66rem] lg:w-[66rem]"
             style={{ transform: `translate(-50%, -50%) scale(${1 + disassemble * 0.08})` }}
           />
 
@@ -635,7 +636,7 @@ export default function OfferScrollArtifactHero() {
             </div>
           </div>
 
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_88%,transparent_100%)]">
             <Canvas
               camera={{ position: [0, 0, 8.25], fov: 31, near: 0.1, far: 100 }}
               dpr={[1, 1.55]}

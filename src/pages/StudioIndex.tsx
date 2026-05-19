@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import {
   motion,
   useMotionTemplate,
@@ -46,6 +46,7 @@ type StoryMediaAsset = {
   src: string;
   poster?: string;
   label: string;
+  route?: string;
 };
 
 type StoryPlaneLayout = {
@@ -150,33 +151,8 @@ const studioRailItems: SectionRailItem[] = [
 
 const storyFrames: StoryFrame[] = [
   {
-    id: "spatial-archive",
-    eyebrow: "Scene 01 / spatial archive",
-    title: "A photographic archive opens as web, mobile, and VR space.",
-    text:
-      "WHISPER is not a single case cover. It is a connected spatial proof: public website, mobile presentation, cinematic archive, and Quest-tested room.",
-    route: "/immersive",
-    media: [
-      {
-        kind: "image",
-        src: media.whisperHeroImage,
-        label: "whisper threshold",
-      },
-      {
-        kind: "image",
-        src: media.whisperVrWide,
-        label: "quest spatial capture",
-      },
-      {
-        kind: "image",
-        src: media.whisperDetail,
-        label: "archive interface",
-      },
-    ],
-  },
-  {
     id: "product-theatre",
-    eyebrow: "Scene 02 / commercial atmosphere",
+    eyebrow: "Scene 01 / commercial atmosphere",
     title: "Product and advisory sites become staged decision surfaces.",
     text:
       "The commercial work uses the same cinematic grammar: controlled reveal, media proof, inquiry paths, and multilingual structure.",
@@ -187,23 +163,26 @@ const storyFrames: StoryFrame[] = [
         src: media.houseVideo,
         poster: media.house,
         label: "luxury product theatre",
+        route: "/work/house-of-lune",
       },
       {
         kind: "video",
         src: media.advisoryVideo,
         poster: media.advisory,
         label: "advisory buyer journey",
+        route: "/work/barcelona-private-advisory",
       },
       {
         kind: "image",
         src: media.houseDetail,
         label: "object detail",
+        route: "/work/house-of-lune",
       },
     ],
   },
   {
     id: "workflow-machine",
-    eyebrow: "Scene 03 / product mechanics",
+    eyebrow: "Scene 02 / product mechanics",
     title: "Tools expose the system behind production.",
     text:
       "CreatorOps and Print Border Studio shift the portfolio from visual showcase into real product logic: publishing, export, preparation, review, and collector-facing presentation.",
@@ -214,23 +193,26 @@ const storyFrames: StoryFrame[] = [
         src: media.creatoropsVideo,
         poster: media.creatorops,
         label: "creator workflow system",
+        route: "/work/creatorops",
       },
       {
         kind: "video",
         src: media.printVideo,
         poster: media.print,
         label: "museum print preparation",
+        route: "/work/print-border-studio",
       },
       {
         kind: "image",
         src: media.creatoropsDetail,
         label: "pipeline detail",
+        route: "/work/creatorops",
       },
     ],
   },
   {
     id: "field-language",
-    eyebrow: "Scene 04 / interface field",
+    eyebrow: "Scene 03 / interface field",
     title: "The visual language becomes repeatable across contexts.",
     text:
       "FLUID, ARCWAVE, FORM INDEX, Casa Nube, and the immersive work prove that the practice is not one style. It is a reusable grammar for atmosphere, language, motion, and structure.",
@@ -241,22 +223,54 @@ const storyFrames: StoryFrame[] = [
         src: media.fluidVideo,
         poster: media.fluid,
         label: "fluid exhibition field",
+        route: "/work/fluid-exhibition",
       },
       {
         kind: "video",
         src: media.arcwaveVideo,
         poster: media.arcwave,
         label: "arcwave signal surface",
+        route: "/work/arcwave-integrations",
       },
       {
         kind: "video",
         src: media.casaVideo,
         poster: media.casa,
         label: "hospitality rhythm",
+        route: "/work/casa-nube",
       },
     ],
   },
 ];
+
+const immersiveAtlasMedia = immersiveItems
+  .map((item): StoryMediaAsset | null => {
+    const cover =
+      item.previewPoster ??
+      item.frames?.find((frame) => frame.device === "desktop")?.src ??
+      item.frames?.[0]?.src;
+
+    if (!cover) return null;
+
+    return {
+      kind: "image",
+      src: cover,
+      label: item.supportLabel ?? item.title,
+      route: `/immersive/${item.slug}`,
+    };
+  })
+  .filter((asset): asset is StoryMediaAsset => asset !== null)
+  .slice(0, 4);
+
+const atlasIntroMedia: StoryMediaAsset[] = immersiveAtlasMedia.length
+  ? immersiveAtlasMedia
+  : [
+      {
+        kind: "image",
+        src: media.whisperPoster,
+        label: "Spatial proof",
+      },
+    ];
 
 const grammar = [
   ["signal", "attention appears before interaction"],
@@ -295,44 +309,29 @@ const storyPlaneLayouts = [
   },
 ] satisfies readonly StoryPlaneLayout[];
 
-const whisperPlaneLayouts = [
-  {
-    className: "left-[3%] top-[7%] h-[54%] w-[60%] z-30",
-    shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
-    shadow: "shadow-[0_46px_142px_rgba(18,18,18,0.17)]",
-    label: "left-5 bottom-5",
-  },
-  {
-    className: "right-[2%] top-[17%] h-[41%] w-[43%] z-40",
-    shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
-    shadow: "shadow-[0_36px_112px_rgba(18,18,18,0.14)]",
-    label: "left-5 bottom-5",
-  },
-  {
-    className: "left-[34%] bottom-[7%] h-[32%] w-[42%] z-50",
-    shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
-    shadow: "shadow-[0_30px_92px_rgba(18,18,18,0.125)]",
-    label: "left-5 bottom-4",
-  },
-] satisfies readonly StoryPlaneLayout[];
-
 const atlasIntroPlaneLayouts = [
   {
-    className: "left-[3%] top-[8%] h-[54%] w-[60%] z-30",
+    className: "left-[3%] top-[8%] h-[54%] w-[57%] z-30",
     shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
     shadow: "shadow-[0_44px_136px_rgba(18,18,18,0.16)]",
     label: "left-5 bottom-5",
   },
   {
-    className: "right-[2%] top-[18%] h-[40%] w-[43%] z-40",
+    className: "right-[2%] top-[16%] h-[40%] w-[42%] z-40",
     shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
     shadow: "shadow-[0_34px_106px_rgba(18,18,18,0.13)]",
     label: "left-5 bottom-5",
   },
   {
-    className: "left-[34%] bottom-[7%] h-[32%] w-[42%] z-50",
+    className: "left-[30%] bottom-[7%] h-[32%] w-[39%] z-50",
     shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
     shadow: "shadow-[0_28px_88px_rgba(18,18,18,0.115)]",
+    label: "left-5 bottom-4",
+  },
+  {
+    className: "right-[8%] bottom-[1%] h-[28%] w-[34%] z-20",
+    shape: "polygon(4% 8%, 100% 0, 94% 92%, 0 100%)",
+    shadow: "shadow-[0_24px_74px_rgba(18,18,18,0.1)]",
     label: "left-5 bottom-4",
   },
 ] satisfies readonly StoryPlaneLayout[];
@@ -475,6 +474,48 @@ function useActiveStudioSection() {
   }, []);
 
   return activeId;
+}
+
+function useStudioWhisperChromeActive() {
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const updateActive = () => {
+      frame = 0;
+
+      const videoSurface = document.querySelector<HTMLElement>("[data-studio-whisper-media]");
+      if (!videoSurface) {
+        setActive(false);
+        return;
+      }
+
+      const rect = videoSurface.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const headerOffset = 76;
+      const dockProbe = Math.max(headerOffset, viewportHeight - 150);
+
+      setActive(rect.top <= headerOffset && rect.bottom >= dockProbe);
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActive);
+    };
+
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
+
+  return active;
 }
 
 function FloatingImage({
@@ -694,11 +735,13 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
   const detailY = useTransform(progress, [0.2, 0.36], ["0.8rem", "0rem"]);
   const titleScale = useTransform(progress, [0.04, 0.22, 0.62], [1.04, 1, 0.96]);
   const titleOrigin = useTransform(progress, [0.04, 0.22], ["0% 50%", "0% 0%"]);
+  const railShadeOpacity = useTransform(progress, [0.08, 0.2, 0.84, 0.98], [0, 1, 1, 0]);
 
   return (
     <section ref={target} id="whisper" data-header-scene="living-whisper" className="relative min-h-[148vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div
+          data-studio-whisper-media
           className="absolute left-1/2 top-1/2 z-10 w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-neutral-950"
           style={{
             height: mediaHeight,
@@ -718,6 +761,12 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
             <source src={media.whisperVideo} type="video/mp4" />
           </motion.video>
         </motion.div>
+
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 z-20 hidden w-[36rem] bg-gradient-to-l from-black/64 via-black/28 to-transparent xl:block"
+          style={{ opacity: railShadeOpacity }}
+        />
 
         <motion.div
           className="pointer-events-none absolute left-0 top-1/2 z-20 h-px w-screen origin-left"
@@ -814,10 +863,12 @@ function StoryMedia({
   asset,
   index,
   layouts = storyPlaneLayouts,
+  onOpen,
 }: {
   asset: StoryMediaAsset;
   index: number;
   layouts?: readonly StoryPlaneLayout[];
+  onOpen?: (path: string) => void;
 }) {
   const reduceMotion = useReducedMotion();
   const layout = layouts[index % layouts.length];
@@ -871,6 +922,19 @@ function StoryMedia({
     distortion.set(0);
   };
 
+  const openRoute = () => {
+    if (!asset.route) return;
+    onOpen?.(asset.route);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (!asset.route) return;
+    if (event.key !== "Enter" && event.key !== " ") return;
+
+    event.preventDefault();
+    openRoute();
+  };
+
   const renderMedia = (className = "h-full w-full opacity-100 saturate-[1.04] contrast-[1.04]") =>
     asset.kind === "video" ? (
       <video
@@ -890,7 +954,7 @@ function StoryMedia({
 
   return (
     <motion.figure
-      className={`group absolute overflow-hidden border border-white/70 bg-[#f7f5ef]/18 ${layout.shadow} backdrop-blur-[2px] will-change-transform ${layout.className}`}
+      className={`group absolute overflow-hidden border border-white/70 bg-[#f7f5ef]/18 ${layout.shadow} backdrop-blur-[2px] will-change-transform ${asset.route ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/28" : ""} ${layout.className}`}
       style={{
         clipPath: layout.shape,
         rotateX: reduceMotion ? 0 : rotateX,
@@ -898,8 +962,13 @@ function StoryMedia({
         transformPerspective: 1100,
         transformStyle: "preserve-3d",
       }}
+      role={asset.route ? "button" : undefined}
+      tabIndex={asset.route ? 0 : undefined}
+      aria-label={asset.route ? `Open ${asset.label} case` : undefined}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
+      onClick={openRoute}
+      onKeyDown={handleKeyDown}
       initial={reduceMotion ? undefined : { opacity: 0, y: 46, scale: 0.985 }}
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
       whileHover={reduceMotion ? undefined : { scale: 1.026, zIndex: 60 }}
@@ -1044,11 +1113,11 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
         <motion.div style={{ y: handoffY, opacity: handoffOpacity }}>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Cinematic atlas</div>
           <h2 className="mt-5 max-w-[10ch] text-[64px] font-normal leading-[0.82] tracking-[-0.08em] text-neutral-950 sm:text-[96px] xl:text-[132px]">
-            The work opens as a living canvas.
+            Immersive cases become connected proof.
           </h2>
           <p className="mt-8 max-w-[43rem] text-[17px] leading-[1.85] text-neutral-600">
-            Instead of presenting projects as cards, this section treats them as fragments of one practice:
-            web walkthroughs, VR captures, product details, workflow tools, mobile surfaces, and atmospheric fields.
+            This atlas gathers spatial studies, cinematic web environments, XR captures, archive surfaces,
+            and future immersive case covers into one visual field before the wider practice continues below.
           </p>
         </motion.div>
 
@@ -1060,20 +1129,21 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
           <div className="pointer-events-none absolute left-[18%] top-[5%] h-[36rem] w-[36rem] rounded-full border border-neutral-950/[0.055]" />
           <div className="pointer-events-none absolute bottom-[8%] right-[3%] h-px w-[78%] rotate-[8deg] bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />
 
-          {storyFrames[0].media.map((asset, assetIndex) => (
+          {atlasIntroMedia.map((asset, assetIndex) => (
             <StoryMedia
               key={`atlas-intro-${asset.label}`}
               asset={asset}
               index={assetIndex}
               layouts={atlasIntroPlaneLayouts}
+              onOpen={goTo}
             />
           ))}
 
           <div className="absolute left-[3%] bottom-[13%] rounded-full border border-neutral-950/10 bg-white/58 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-            spatial proof turns into atlas
+            immersive covers become atlas
           </div>
           <div className="absolute right-[9%] bottom-[10%] rounded-full border border-neutral-950/10 bg-white/48 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-            scene 04 / atlas
+            spatial proof index
           </div>
         </motion.div>
       </div>
@@ -1092,10 +1162,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
           style={{ x: driftA, y: driftB, rotate: driftC }}
         />
 
-        {storyFrames.map((frame) => {
-          const isWhisperFrame = frame.id === "spatial-archive";
-
-          return (
+        {storyFrames.map((frame) => (
           <article
             key={frame.id}
             className="relative min-h-[calc(100vh-5rem)] border-t border-neutral-950/12 py-14 last:border-b"
@@ -1133,7 +1200,8 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
                     key={`${frame.id}-${asset.label}`}
                     asset={asset}
                     index={assetIndex}
-                    layouts={isWhisperFrame ? whisperPlaneLayouts : storyPlaneLayouts}
+                    layouts={storyPlaneLayouts}
+                    onOpen={goTo}
                   />
                 ))}
 
@@ -1142,8 +1210,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
               </div>
             </div>
           </article>
-          );
-        })}
+        ))}
       </div>
     </section>
   );
@@ -1315,6 +1382,7 @@ export default function StudioIndex({
 }: PageProps) {
   const navigate = useNavigate();
   const activeId = useActiveStudioSection();
+  const whisperChromeActive = useStudioWhisperChromeActive();
   const routeContentReady = useDeferredRouteContent();
   const { playRole, setScene, stopAmbient } = useSound();
 
@@ -1322,6 +1390,14 @@ export default function StudioIndex({
     setScene("portfolio");
     stopAmbient();
   }, [setScene, stopAmbient]);
+
+  useEffect(() => {
+    document.documentElement.dataset.studioWhisperChrome = whisperChromeActive ? "active" : "inactive";
+
+    return () => {
+      delete document.documentElement.dataset.studioWhisperChrome;
+    };
+  }, [whisperChromeActive]);
 
   const goTo = (path: string) => {
     playRole(path === "/immersive" ? "open" : "select");
@@ -1359,6 +1435,7 @@ export default function StudioIndex({
           activeId={activeId}
           onSelect={scrollTo}
           label="Studio Index sections"
+          tone={whisperChromeActive ? "dark" : "light"}
         />
 
         <main className="relative z-10">

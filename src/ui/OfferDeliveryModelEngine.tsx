@@ -534,6 +534,7 @@ function EngineScene({
   stages,
   activeStage,
   labelStage = activeStage,
+  labelSwitching = false,
   stageCount,
   pointer,
   reducedMotion,
@@ -543,6 +544,7 @@ function EngineScene({
   stages: DeliveryEngineStage[];
   activeStage: number;
   labelStage?: number;
+  labelSwitching?: boolean;
   stageCount: number;
   pointer: Pointer;
   reducedMotion: boolean;
@@ -649,16 +651,21 @@ function EngineScene({
       delta
     );
     camera.position.y = THREE.MathUtils.damp(camera.position.y, activeAnchor.y * 0.045 - pointerRef.current.y * (immersive ? 0.075 : 0.06), 3.6, delta);
-    camera.position.z = THREE.MathUtils.damp(camera.position.z, (immersive ? 5.36 : 5.86) - Math.abs(activeAnchor.x) * 0.035, 3.6, delta);
-    camera.lookAt(immersive ? 0.06 : activeAnchor.x * 0.1, activeAnchor.y * 0.08, 0);
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, (immersive ? 5.36 : 5.34) - Math.abs(activeAnchor.x) * 0.035, 3.6, delta);
+    camera.lookAt(immersive ? 0.06 : activeAnchor.x * 0.06 - 0.12, activeAnchor.y * 0.04 + 0.04, 0);
 
     if (rootRef.current) {
-      rootRef.current.position.y = (immersive ? -0.04 : 0.08) + (closing ? -0.035 : 0);
-      rootRef.current.position.x = immersive ? 0.08 : 0;
+      rootRef.current.position.y = (immersive ? -0.04 : 0.16) + (closing ? -0.035 : 0);
+      rootRef.current.position.x = immersive ? 0.08 : -0.46;
       rootRef.current.rotation.x = -0.1 + pointerRef.current.y * -0.05 + (closing ? -0.035 : 0);
       rootRef.current.rotation.y = pointerRef.current.x * 0.06 + Math.sin(time * 0.2) * 0.024;
       rootRef.current.rotation.z = Math.sin(time * 0.18) * 0.014 + (closing ? -0.012 : 0);
-      rootRef.current.scale.setScalar((immersive ? 1.02 : 1) * (closing ? 0.94 : 1));
+      const closingScale = closing ? 0.94 : 1;
+      if (immersive) {
+        rootRef.current.scale.setScalar(1.02 * closingScale);
+      } else {
+        rootRef.current.scale.set(1.14 * closingScale, 1.06 * closingScale, closingScale);
+      }
     }
 
     const positions = currentPositionsRef.current;
@@ -1089,8 +1096,10 @@ function EngineScene({
         {stages.map((stage, index) => {
           const anchor = anchorVector(index);
           const active = index === labelStage;
-          const yOffset = variant === "immersive" ? -0.45 : -0.36;
+          const immersiveLift = index >= 3 ? 0.28 : -0.45;
+          const yOffset = variant === "immersive" ? immersiveLift : -0.36;
           const xOffset = index === 0 ? 0.22 : index === stages.length - 1 ? -0.72 : 0;
+          const activeVisible = active && !labelSwitching;
 
           return (
             <Html
@@ -1100,9 +1109,10 @@ function EngineScene({
               distanceFactor={variant === "immersive" ? (index === stages.length - 1 ? 3.55 : 3.85) : 4.45}
               zIndexRange={[18, 0]}
               style={{
-                opacity: active ? 1 : variant === "immersive" ? 0.58 : 0.42,
-                transform: `translateY(${active ? 0 : 6}px)`,
-                transition: "opacity 420ms ease, transform 420ms ease",
+                opacity: activeVisible ? 1 : active ? 0.08 : variant === "immersive" ? 0.46 : 0.34,
+                filter: active && labelSwitching ? "blur(6px)" : "blur(0px)",
+                transform: `translateY(${activeVisible ? 0 : active ? 12 : 8}px) scale(${activeVisible ? 1 : 0.985})`,
+                transition: "opacity 560ms cubic-bezier(0.22,1,0.36,1), transform 560ms cubic-bezier(0.22,1,0.36,1), filter 560ms cubic-bezier(0.22,1,0.36,1)",
               }}
             >
               <TerminalStageLabel stage={stage} active={active} variant={variant} />
@@ -1123,6 +1133,39 @@ export default function OfferDeliveryModelEngine({
 }) {
   const reducedMotion = useReducedMotion() ?? false;
   const [pointer, setPointer] = useState<Pointer>({ x: 0, y: 0 });
+  const [readoutStage, setReadoutStage] = useState(activeStage);
+  const [labelSwitching, setLabelSwitching] = useState(false);
+  const readoutStageRef = useRef(activeStage);
+  const switchTimersRef = useRef<number[]>([]);
+
+  const clearSwitchTimers = useCallback(() => {
+    switchTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    switchTimersRef.current = [];
+  }, []);
+
+  useEffect(() => {
+    if (activeStage === readoutStageRef.current) return;
+
+    clearSwitchTimers();
+    switchTimersRef.current = [
+      window.setTimeout(() => setLabelSwitching(true), reducedMotion ? 0 : 20),
+      window.setTimeout(
+        () => {
+          readoutStageRef.current = activeStage;
+          setReadoutStage(activeStage);
+          switchTimersRef.current.push(
+            window.setTimeout(() => {
+              setLabelSwitching(false);
+              switchTimersRef.current = [];
+            }, reducedMotion ? 0 : 420)
+          );
+        },
+        reducedMotion ? 0 : 240
+      ),
+    ];
+  }, [activeStage, clearSwitchTimers, reducedMotion]);
+
+  useEffect(() => clearSwitchTimers, [clearSwitchTimers]);
 
   return (
     <div
@@ -1154,6 +1197,8 @@ export default function OfferDeliveryModelEngine({
         <EngineScene
           stages={stages}
           activeStage={activeStage}
+          labelStage={readoutStage}
+          labelSwitching={labelSwitching}
           stageCount={stages.length}
           pointer={pointer}
           reducedMotion={reducedMotion}
@@ -1164,8 +1209,8 @@ export default function OfferDeliveryModelEngine({
         <div className="grid min-w-[18rem] grid-cols-5 gap-2">
           {stages.map((stage, index) => (
             <div key={stage.title} className="grid gap-2">
-              <div className={`h-px ${index === activeStage ? "bg-neutral-950" : "bg-neutral-950/12"}`} />
-              <div className={`font-mono text-[9px] uppercase tracking-[0.14em] ${index === activeStage ? "text-neutral-950" : "text-neutral-300"}`}>
+              <div className={`h-px ${index === readoutStage ? "bg-neutral-950" : "bg-neutral-950/12"}`} />
+              <div className={`font-mono text-[9px] uppercase tracking-[0.14em] ${index === readoutStage ? "text-neutral-950" : "text-neutral-300"}`}>
                 {stage.label}
               </div>
             </div>
@@ -1312,6 +1357,7 @@ export function OfferDeliveryInterfaceOverlay({
               stages={stages}
               activeStage={activeStage}
               labelStage={readoutStage}
+              labelSwitching={switching}
               stageCount={stages.length}
               pointer={pointer}
               reducedMotion={reducedMotion}

@@ -485,24 +485,24 @@ function DeliveryModelEngine({
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-white/58 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-white/54 to-transparent" />
 
-      <div className="relative grid lg:grid-cols-[minmax(0,1fr)_24rem]">
+      <div className="relative lg:min-h-[760px]">
         <motion.div
-          className="relative min-h-[380px] overflow-hidden border-b border-neutral-950/10 lg:min-h-[640px] lg:border-b-0 lg:border-r lg:border-neutral-950/10"
+          className="relative min-h-[460px] overflow-hidden border-b border-neutral-950/10 lg:min-h-[760px] lg:border-b-0"
           initial={{ opacity: 0.78 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.72, ease }}
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex min-h-12 justify-end border-b border-neutral-950/10 px-4">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex min-h-12 justify-end border-b border-neutral-950/10 px-4 lg:pr-[23rem]">
             <div className="self-center font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{current.label} active</div>
           </div>
 
-          <div className="absolute inset-0 pt-12">
+          <div className="absolute inset-y-0 left-0 right-0 pt-12 lg:right-[22rem] xl:right-[23.5rem]">
             <OfferDeliveryModelEngine stages={deliveryStages} activeStage={activeStage} />
           </div>
         </motion.div>
 
-        <aside className="relative bg-white/[0.08] p-5 sm:p-7">
+        <aside className="relative border-t border-neutral-950/10 bg-white/[0.44] p-5 backdrop-blur-[2px] sm:p-7 lg:absolute lg:right-6 lg:top-16 lg:z-20 lg:w-[20rem] lg:border lg:border-neutral-950/10 lg:bg-white/58 xl:right-8 xl:w-[21rem]">
           <SectionLabel>Stage control</SectionLabel>
 
           <AnimatePresence mode="wait">

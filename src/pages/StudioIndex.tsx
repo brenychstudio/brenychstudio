@@ -38,6 +38,7 @@ type SystemItem = {
   label: string;
   text: string;
   proof: string;
+  tags: string[];
   src: string;
 };
 
@@ -120,6 +121,7 @@ const systems: SystemItem[] = [
     label: "directed web scenes",
     text: "Reusable cinematic stage modules for atmospheric hero scenes, object reveals, product worlds, archive fields, and scroll-driven visual states.",
     proof: "Scenes behave as directed environments, not decorative backgrounds.",
+    tags: ["WebGL scenes", "Motion logic", "Stage states"],
     src: media.arcwave,
   },
   {
@@ -128,15 +130,17 @@ const systems: SystemItem[] = [
     label: "spatial proof layer",
     text: "A cinematic Web / XR exhibition system connecting photography, print logic, mobile presentation, AR preview, and Quest-tested spatial experience.",
     proof: "A photographic archive becomes website, collector surface, and spatial room.",
+    tags: ["Spatial proof", "Collector logic", "XR layer"],
     src: media.whisperPoster,
   },
   {
     index: "03",
-    title: "Atmospheric Backdrop System",
-    label: "global atmosphere",
-    text: "A visual field behind the interface: subtle signal, motion, depth, and atmosphere without compromising readability.",
-    proof: "The site gains presence while content stays readable and calm.",
-    src: media.fluid,
+    title: "Living Interface OS",
+    label: "Presence OS / signal state layer",
+    text: "A signal-state layer where route context, attention, motion, sound, media depth, and interaction states shape how the interface behaves.",
+    proof: "The site stops acting like linked pages and starts behaving like one responsive environment.",
+    tags: ["Signal state", "Presence logic", "Memory layer", "Adaptive interface"],
+    src: media.creatorops,
   },
 ];
 
@@ -704,6 +708,16 @@ function SystemsChapter() {
                     <p className="mt-5 max-w-[38rem] border-t border-neutral-950/12 pt-5 text-[12px] uppercase tracking-[0.16em] text-neutral-400">
                       {system.proof}
                     </p>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {system.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="border border-neutral-950/12 bg-white/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-neutral-500"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </motion.article>
               ))}

@@ -1887,6 +1887,7 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
   const sound = useSound();
   const [activeProofIndex, setActiveProofIndex] = useState(0);
   const [proofPhase, setProofPhase] = useState(0);
+  const [proofExitBlend, setProofExitBlend] = useState(0);
   const proofRef = useRef<HTMLDivElement | null>(null);
   const dragRef = useRef<{ x: number; y: number } | null>(null);
   const activeProof = whisperProofStates[activeProofIndex] ?? whisperProofStates[0];
@@ -1905,14 +1906,20 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
       const node = proofRef.current;
       if (!node) return;
 
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
       const rect = node.getBoundingClientRect();
-      const travel = Math.max(rect.height - window.innerHeight, 1);
-      const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.12 - rect.top) / travel));
+      const travel = Math.max(rect.height - viewportHeight, 1);
+      const progress = Math.min(1, Math.max(0, (viewportHeight * 0.12 - rect.top) / travel));
       const nextPhase = progress * (whisperProofStates.length - 1);
       const nextIndex = Math.min(whisperProofStates.length - 1, Math.round(nextPhase));
+      const exitStart = Math.min(viewportHeight * 0.34, 380);
+      const exitEnd = Math.min(viewportHeight * 0.22, 250);
+      const exitRaw = Math.min(1, Math.max(0, (exitStart - rect.bottom) / Math.max(exitStart - exitEnd, 1)));
+      const nextExitBlend = exitRaw * exitRaw * (3 - 2 * exitRaw);
 
       setProofPhase(nextPhase);
       setActiveProofIndex(nextIndex);
+      setProofExitBlend(nextExitBlend);
     };
 
     updateActiveProof();
@@ -1946,6 +1953,7 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
       <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(96vw,1780px)]">
         <div
           className="sticky top-[3.75rem] min-h-[calc(100vh-3.75rem)] overflow-hidden border-y border-white/12 bg-[#090908] text-white shadow-[0_54px_180px_rgba(0,0,0,0.22)]"
+          style={{ opacity: 1 - proofExitBlend, pointerEvents: proofExitBlend > 0.82 ? "none" : undefined }}
           onPointerDown={handleProofPointerDown}
           onPointerUp={handleProofPointerUp}
           onPointerCancel={() => {
@@ -2144,30 +2152,19 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
 }
 
 function EngineStackScene() {
-  const [enginePointer, setEnginePointer] = useState<{ x: number; y: number } | null>(null);
-  const engineRowCenters = immersiveEngineStack.map((_, index) => 9.5 + index * 11);
-  const activeEngineIndex =
-    enginePointer == null
-      ? null
-      : engineRowCenters.reduce((closestIndex, center, index) => {
-          const currentDistance = Math.abs(enginePointer.y - center);
-          const closestDistance = Math.abs(enginePointer.y - engineRowCenters[closestIndex]);
-
-          return currentDistance < closestDistance ? index : closestIndex;
-        }, 0);
-
-  const handleEnginePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-
-    setEnginePointer({
-      x: (event.clientX - rect.left) / rect.width,
-      y: ((event.clientY - rect.top) / rect.height) * 100,
-    });
-  };
+  const prefersReducedMotion = useReducedMotion();
+  const [activeEngineIndex, setActiveEngineIndex] = useState<number | null>(null);
+  const activeSignalTop =
+    activeEngineIndex == null ? "8%" : `${((activeEngineIndex + 0.5) / immersiveEngineStack.length) * 100}%`;
 
   return (
-    <Chapter id="engines" className="relative px-4 pb-16 pt-20 sm:px-6 lg:px-8 lg:pt-24">
-      <div className="mx-auto grid w-[min(92vw,1600px)] items-start gap-14 xl:grid-cols-[0.44fr_0.56fr]">
+    <Chapter id="engines" className="relative z-20 px-4 pb-16 pt-20 sm:px-6 lg:px-8 lg:pt-24">
+      <div
+        data-header-scene={immersiveHeaderScenes.engines}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -top-44 z-0 h-44"
+      />
+      <div className="relative z-10 mx-auto grid w-[min(92vw,1600px)] items-start gap-14 xl:grid-cols-[0.44fr_0.56fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface engines</div>
           <KineticTitle
@@ -2181,89 +2178,92 @@ function EngineStackScene() {
         </div>
 
         <div
-          className="relative min-h-[660px]"
-          onPointerMove={handleEnginePointerMove}
-          onPointerLeave={() => setEnginePointer(null)}
+          className="relative overflow-hidden border-y border-neutral-950/12 py-2"
+          onPointerLeave={() => setActiveEngineIndex(null)}
         >
-          <div className="absolute left-[12%] top-[8%] h-[80%] w-px bg-neutral-950/14" />
-          <div className="absolute left-[12%] top-[8%] h-[80%] w-[70%] rounded-[48%] border border-neutral-950/8" />
+          <div className="pointer-events-none absolute left-[9%] top-0 h-full w-px bg-neutral-950/10" />
+          <div className="pointer-events-none absolute left-[12%] top-[8%] h-[78%] w-[70%] rounded-[48%] border border-neutral-950/7" />
           <motion.div
-            className="pointer-events-none absolute left-[9%] h-px w-[78%] origin-left bg-gradient-to-r from-neutral-950/42 via-neutral-950/16 to-transparent"
+            className="pointer-events-none absolute left-[6%] h-px w-[84%] origin-left bg-gradient-to-r from-neutral-950/38 via-neutral-950/14 to-transparent"
             animate={{
-              opacity: enginePointer ? 1 : 0,
-              top: enginePointer ? `${enginePointer.y}%` : "8%",
-              scaleX: enginePointer ? 1 : 0.28,
+              opacity: activeEngineIndex == null ? 0 : 1,
+              top: activeSignalTop,
+              scaleX: activeEngineIndex == null ? 0.28 : 1,
             }}
-            transition={{ duration: 0.38, ease }}
+            transition={{ duration: 0.34, ease }}
           />
           <motion.div
-            className="pointer-events-none absolute left-[12%] h-7 w-7 rounded-full border border-neutral-950/18 bg-white/70 backdrop-blur-md"
+            className="pointer-events-none absolute left-[9%] h-7 w-7 rounded-full border border-neutral-950/18 bg-white/70 backdrop-blur-md"
             animate={{
-              opacity: enginePointer ? 1 : 0,
-              top: enginePointer ? `calc(${enginePointer.y}% - 0.875rem)` : "8%",
-              scale: enginePointer ? 1 : 0.65,
+              opacity: activeEngineIndex == null ? 0 : 1,
+              top: `calc(${activeSignalTop} - 0.875rem)`,
+              scale: activeEngineIndex == null ? 0.65 : 1,
             }}
-            transition={{ duration: 0.38, ease }}
+            transition={{ duration: 0.34, ease }}
           />
 
           {immersiveEngineStack.map((engine, index) => {
-            const rowCenter = engineRowCenters[index];
-            const distance = enginePointer == null ? 100 : Math.abs(enginePointer.y - rowCenter);
-            const intensity = Math.max(0, 1 - distance / 18);
-            const lateral = enginePointer == null ? 0 : enginePointer.x - 0.5;
             const active = activeEngineIndex === index;
 
             return (
-              <motion.div
+              <motion.article
                 key={engine.id}
-                className="absolute left-[4%] right-[4%] border-t border-neutral-950/12 py-4"
-                style={{ top: `${6 + index * 11}%` }}
+                tabIndex={0}
+                aria-expanded={active}
+                className="group relative min-h-[8rem] border-b border-neutral-950/12 px-2 py-4 outline-none transition last:border-b-0 hover:bg-white/[0.16] focus-visible:bg-white/[0.22] md:min-h-[5.75rem] md:px-0 md:py-3"
+                onPointerEnter={() => setActiveEngineIndex(index)}
+                onFocus={() => setActiveEngineIndex(index)}
+                onClick={() => setActiveEngineIndex(index)}
                 initial={{ opacity: 0, x: 26 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: false, amount: 0.22 }}
                 transition={{ duration: 0.64, delay: index * 0.035, ease }}
               >
                 <motion.div
-                  className="grid grid-cols-[4rem_1fr] items-center gap-5 md:grid-cols-[5rem_1fr_8rem]"
+                  className="grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-4 md:grid-cols-[5rem_minmax(0,1fr)_8rem] md:gap-5"
                   animate={{
-                    x: intensity * (18 + lateral * 14),
-                    scale: 1 + intensity * 0.018,
+                    x: active && !prefersReducedMotion ? 10 : 0,
                   }}
                   transition={{ duration: 0.42, ease }}
                 >
                   <motion.span
-                    className="text-[11px] uppercase tracking-[0.2em] text-neutral-300"
+                    className="pt-1 text-[11px] uppercase tracking-[0.2em] text-neutral-300"
                     animate={{ color: active ? "rgba(10,10,10,0.72)" : "rgba(10,10,10,0.22)" }}
                     transition={{ duration: 0.32, ease }}
                   >
                     0{index + 1}
                   </motion.span>
 
-                  <span className="relative overflow-hidden">
-                    <motion.span
+                  <div className="min-w-0">
+                    <motion.h3
                       className="block text-[28px] leading-none tracking-normal text-neutral-950 md:text-[40px]"
-                      animate={{ x: intensity * 10 }}
+                      animate={{
+                        color: active ? "rgba(10,10,10,1)" : "rgba(10,10,10,0.9)",
+                        x: active && !prefersReducedMotion ? 6 : 0,
+                      }}
                       transition={{ duration: 0.38, ease }}
                     >
                       {engine.title}
-                    </motion.span>
-                    <motion.span
-                      className="mt-3 block max-w-[36rem] text-[12px] leading-6 text-neutral-500"
+                    </motion.h3>
+
+                    <motion.p
+                      className="pointer-events-none mt-2 h-12 max-w-[42rem] overflow-hidden text-[12px] leading-6 text-neutral-500 md:h-6 md:pr-6"
+                      aria-hidden={!active}
+                      initial={false}
                       animate={{
                         opacity: active ? 1 : 0,
-                        y: active ? 0 : 8,
-                        height: active ? "auto" : 0,
+                        y: active || prefersReducedMotion ? 0 : -5,
                       }}
-                      transition={{ duration: 0.36, ease }}
+                      transition={{ duration: 0.34, ease }}
                     >
                       {engine.summary}
-                    </motion.span>
-                  </span>
+                    </motion.p>
+                  </div>
 
                   <motion.span
-                    className="hidden rounded-full border border-neutral-950/12 bg-white/34 px-3 py-1.5 text-center text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur md:inline-block"
+                    className="hidden rounded-full border border-neutral-950/12 bg-white/34 px-3 py-1.5 text-center text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur md:mt-1 md:inline-block"
                     animate={{
-                      x: intensity * (-16 - lateral * 10),
+                      x: active && !prefersReducedMotion ? -12 : 0,
                       borderColor: active ? "rgba(10,10,10,0.34)" : "rgba(10,10,10,0.12)",
                       color: active ? "rgba(10,10,10,0.58)" : "rgba(10,10,10,0.36)",
                     }}
@@ -2274,11 +2274,11 @@ function EngineStackScene() {
                 </motion.div>
 
                 <motion.div
-                  className="mt-4 h-px origin-left bg-neutral-950/26"
-                  animate={{ scaleX: 0.08 + intensity * 0.92, opacity: 0.14 + intensity * 0.5 }}
+                  className="absolute bottom-0 left-0 right-0 h-px origin-left bg-neutral-950/26"
+                  animate={{ scaleX: active ? 1 : 0.08, opacity: active ? 0.62 : 0.14 }}
                   transition={{ duration: 0.38, ease }}
                 />
-              </motion.div>
+              </motion.article>
             );
           })}
         </div>
@@ -2368,54 +2368,58 @@ function FutureChambersScene() {
                     </div>
 
                     <div className="grid gap-4">
-                      <div>
-                        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Role</div>
-                        <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.role}</p>
-                      </div>
+                      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,20rem)]">
+                        <div className="grid content-start gap-4">
+                          <div>
+                            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Role</div>
+                            <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.role}</p>
+                          </div>
 
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Will prove</div>
-                          <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.proof}</p>
-                        </div>
-                        <div>
-                          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Best for</div>
-                          <p className="mt-1.5 text-[13px] leading-6 text-neutral-500">{details.application}</p>
-                        </div>
-                      </div>
+                          <div>
+                            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Will prove</div>
+                            <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.proof}</p>
+                          </div>
 
-                      <div className="flex flex-wrap gap-2">
-                        {details.tags.map((tag) => (
-                          <span key={tag} className="border border-neutral-950/12 bg-white/30 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-neutral-500">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="grid gap-3 border-t border-neutral-950/10 pt-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
-                        <div className="flex min-w-0 items-center gap-3">
-                          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Trace material</div>
-                          <div className="flex gap-1.5" aria-label={`${details.traces.length} working trace frames`}>
-                            {details.traces.map((trace, traceIndex) => (
-                              <span
-                                key={trace.src}
-                                className="border border-neutral-950/12 bg-white/30 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.12em] text-neutral-400"
-                              >
-                                0{traceIndex + 1}
+                          <div className="flex flex-nowrap gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                            {details.tags.map((tag) => (
+                              <span key={tag} className="shrink-0 border border-neutral-950/12 bg-white/30 px-2 py-1.5 font-mono text-[7px] uppercase tracking-[0.1em] text-neutral-500">
+                                {tag}
                               </span>
                             ))}
                           </div>
                         </div>
 
-                        <button
-                          type="button"
-                          className="w-fit border-b border-neutral-950/30 pb-1 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
-                          aria-expanded={isInspecting}
-                          aria-controls={tracePanelId}
-                          onClick={() => setInspectedTraceId(isInspecting ? null : item.id)}
-                        >
-                          {isInspecting ? "Close traces" : "View traces"}
-                        </button>
+                        <div className="grid content-start gap-3 border-t border-neutral-950/10 pt-3 xl:border-t-0 xl:pt-0">
+                          <button
+                            type="button"
+                            className="group/cover block w-full text-left focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
+                            aria-expanded={isInspecting}
+                            aria-controls={tracePanelId}
+                            onClick={() => setInspectedTraceId(isInspecting ? null : item.id)}
+                          >
+                            <span className="relative block aspect-[16/10] overflow-hidden border border-neutral-950/12 bg-white/35">
+                              <img
+                                src={details.traces[0].src}
+                                alt={`${item.title} trace cover`}
+                                className="h-full w-full object-cover opacity-88 grayscale-[0.18] contrast-[0.98] transition duration-300 group-hover/cover:scale-[1.025] group-hover/cover:opacity-100 group-focus-visible/cover:opacity-100"
+                                loading="lazy"
+                              />
+                              <span className="absolute bottom-2 left-2 border border-white/25 bg-black/42 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.14em] text-white/78">
+                                Trace 01
+                              </span>
+                            </span>
+                          </button>
+
+                          <button
+                            type="button"
+                            className="w-fit border-b border-neutral-950/30 pb-1 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
+                            aria-expanded={isInspecting}
+                            aria-controls={tracePanelId}
+                            onClick={() => setInspectedTraceId(isInspecting ? null : item.id)}
+                          >
+                            {isInspecting ? "Close traces" : "View traces"}
+                          </button>
+                        </div>
                       </div>
 
                       <AnimatePresence initial={false}>

@@ -154,7 +154,23 @@ function getAvailabilityView(system: AvailableSystem): AvailabilityView {
 }
 
 function getPreviewFrame(item: EvidenceCase) {
-  return item.content?.hero?.poster ?? item.content?.hero?.src ?? item.poster.src;
+  return item.poster.src ?? item.content?.hero?.poster ?? item.content?.hero?.src;
+}
+
+function getCoverImageTreatment(item: EvidenceCase, emphasis: "standard" | "hero" = "standard") {
+  if (item.coverTone === "dark") {
+    return emphasis === "hero" ? "brightness-[1.02] saturate-[1.03]" : "saturate-[1.02]";
+  }
+
+  if (item.coverTone === "mixed") {
+    return emphasis === "hero"
+      ? "brightness-[1.04] saturate-[1.03]"
+      : "brightness-[1.02] saturate-[1.02]";
+  }
+
+  return emphasis === "hero"
+    ? "brightness-[1.03] saturate-[1.03]"
+    : "brightness-[1.02] saturate-[1.02]";
 }
 
 function getVisualFrames(item: EvidenceCase) {
@@ -403,8 +419,8 @@ function FeaturedFlowItem({
             }`}
             style={reducedMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, rotate: imageRotate }}
           >
-            <img src={visuals[0]} alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-100 transition duration-700 group-hover:scale-[1.025]" />
-            <span className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.05),rgba(0,0,0,0)_46%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.16)_58%,rgba(0,0,0,0.34))]" />
+            <img src={visuals[0]} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 transition duration-700 group-hover:scale-[1.025] ${getCoverImageTreatment(item, "hero")}`} />
+            <span className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.035),rgba(0,0,0,0)_46%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.26))]" />
             <span className="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/66">{getCaseCode(item, index)}</span>
             <span className="absolute bottom-4 left-4 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
               image layer / depth {depth}
@@ -420,7 +436,7 @@ function FeaturedFlowItem({
                 className={`absolute ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
                 style={reducedMotion ? undefined : { x: motionStyle.x, y: motionStyle.y, scale: motionStyle.scale, rotate: fragmentRotations[visualIndex] ?? 0 }}
               >
-                <img src={visual} alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-100" />
+                <img src={visual} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(item)}`} />
                 <span className="absolute bottom-2 left-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/70">signal {visualIndex + 1}</span>
               </motion.span>
             );
@@ -554,7 +570,7 @@ function WorkIndexTransformList({
                 aria-label={`Open ${item.title}`}
               >
                 <span className="absolute inset-2 border border-neutral-950/6 bg-[radial-gradient(circle_at_50%_22%,rgba(255,255,255,0.55),transparent_38%),rgba(246,244,238,0.62)]" />
-                <img src={getPreviewFrame(item)} alt="" className="absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] object-contain object-center opacity-100 transition duration-700 group-hover:scale-[1.015]" />
+                <img src={getPreviewFrame(item)} alt="" className={`absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] object-contain object-center opacity-100 transition duration-700 group-hover:scale-[1.015] ${getCoverImageTreatment(item, "hero")}`} />
                 <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0),rgba(0,0,0,0)_64%,rgba(0,0,0,0.08))]" />
                 <span className="absolute left-4 top-4 bg-neutral-950/28 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/78 backdrop-blur-sm">
                   {getCaseCode(item, index)} / {item.evidence.workType}
@@ -875,8 +891,8 @@ export default function EvidenceAtlas({
                         transition={{ duration: 0.58, delay: index * 0.05, ease }}
                         aria-label={`Open ${item.title}`}
                       >
-                        <img src={getPreviewFrame(item)} alt="" className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04]" />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.18)_58%,rgba(0,0,0,0.34))]" />
+                        <img src={getPreviewFrame(item)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04] ${getCoverImageTreatment(item, "hero")}`} />
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.28))]" />
                         <div className="absolute inset-x-3 bottom-3">
                           <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/62">{String(index + 1).padStart(2, "0")} / {getAvailableSystem(item.slug).shortLabel}</div>
                           <div className="mt-1 truncate text-[20px] leading-none tracking-[-0.04em] text-white sm:text-[28px]">{item.title}</div>
@@ -914,8 +930,8 @@ export default function EvidenceAtlas({
                           exit={{ opacity: 0, scale: 0.86, y: 24, rotate: 1.2, filter: "blur(7px)" }}
                           transition={{ duration: 0.72, ease }}
                         >
-                          <img src={getPreviewFrame(focusedHeroCase)} alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-95" />
-                          <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.12)_62%,rgba(0,0,0,0.36))]" />
+                          <img src={getPreviewFrame(focusedHeroCase)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`} />
+                          <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.3))]" />
                           <span className="absolute left-5 top-5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/62">
                             Focused system / double click enters
                           </span>

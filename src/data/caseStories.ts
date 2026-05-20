@@ -1268,8 +1268,11 @@ function getMediaPresentation(
 
 function getThresholdFrame(source: Case) {
   const frames = source.content?.frames?.filter((frame) => frame.kind !== "video") ?? [];
+  const posterFrame = frames.find((frame) => frame.src === source.poster.src);
+  const heroPosterFrame = frames.find((frame) => frame.src === source.content?.hero?.poster);
+
   return (
-    frames.find((frame) => frame.src === source.poster.src || frame.src === source.content?.hero?.poster) ?? {
+    posterFrame ?? heroPosterFrame ?? {
       src: source.poster.src,
       alt: source.poster.alt,
       caption: source.tagline,

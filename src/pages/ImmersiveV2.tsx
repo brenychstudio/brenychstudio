@@ -66,13 +66,131 @@ const immersiveHeaderScenes: Record<SectionId, string> = {
   applications: "immersive-layer",
 };
 
-const futureChambers = immersiveChambers.slice(1);
+type FutureChamberId = Exclude<ImmersiveChamberId, "whisper">;
 
-const statusLabels: Record<ImmersiveSystemItem["status"], string> = {
-  completed: "completed",
-  prototype: "prototype direction",
-  research: "research chamber",
-  upcoming: "future spatial proof",
+const futureChamberIds: FutureChamberId[] = [
+  "product-world",
+  "presence-archive",
+  "collector-continuation",
+];
+
+const futureChambers = immersiveChambers.filter((chamber): chamber is ImmersiveSystemItem & { id: FutureChamberId } =>
+  futureChamberIds.includes(chamber.id as FutureChamberId),
+);
+
+const futureChamberDetails: Record<FutureChamberId, {
+  role: string;
+  proof: string;
+  state: string;
+  application: string;
+  tags: string[];
+  readout: string[];
+  traces: Array<{
+    src: string;
+    label: string;
+    caption: string;
+  }>;
+}> = {
+  "product-world": {
+    role: "Products or services become navigable decision environments.",
+    proof: "Products stop behaving like catalogue entries and start behaving like staged worlds.",
+    state: "Prototype direction",
+    application: "Premium product launches / service demos / founder presentations",
+    tags: ["product surface", "guided proof", "interactive launch"],
+    readout: ["Stage logic", "Guided proof", "Interactive launch"],
+    traces: [
+      {
+        src: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
+        label: "Prototype still",
+        caption: "Staged launch surface.",
+      },
+      {
+        src: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
+        label: "Working trace",
+        caption: "Decision surface study.",
+      },
+      {
+        src: "/cases/creatorops/desktop/creatorops-hero.webp",
+        label: "Motion note",
+        caption: "Guided proof material.",
+      },
+    ],
+  },
+  "presence-archive": {
+    role: "Archives become living fields shaped by attention, memory, return, and media fragments.",
+    proof: "An archive can respond to presence without becoming noisy or gamified.",
+    state: "Research chamber",
+    application: "Artist archives / cultural collections / memory-based interfaces",
+    tags: ["archive field", "memory layer", "editorial presence"],
+    readout: ["Attention field", "Memory return", "Media fragments"],
+    traces: [
+      {
+        src: "/immersive/Whisper/desktop/whisper-8.jpg",
+        label: "Research frame",
+        caption: "Archive atmosphere study.",
+      },
+      {
+        src: "/immersive/Whisper/desktop/whisper-5.jpg",
+        label: "Presence note",
+        caption: "Attention-led fragment.",
+      },
+      {
+        src: "/immersive/Whisper/mobile/whisper-mb-6.jpg",
+        label: "Working trace",
+        caption: "Mobile memory surface.",
+      },
+    ],
+  },
+  "collector-continuation": {
+    role: "Print, edition, AR preview, and collector logic extend the digital surface into object space.",
+    proof: "A web experience can continue into physical presentation and collector workflows.",
+    state: "Continuation layer",
+    application: "Print editions / collector catalogues / AR previews / private viewing rooms",
+    tags: ["print logic", "AR preview", "edition system"],
+    readout: ["Edition logic", "Object preview", "Private room"],
+    traces: [
+      {
+        src: "/cases/print-border-studio/desktop/psb-hero.webp",
+        label: "Prototype still",
+        caption: "Print and edition surface.",
+      },
+      {
+        src: "/immersive/Whisper/desktop/whisper-9.jpg",
+        label: "AR note",
+        caption: "Object-scale preview.",
+      },
+      {
+        src: "/cases/print-border-studio/desktop/psb-3.webp",
+        label: "Working trace",
+        caption: "Private viewing trace.",
+      },
+    ],
+  },
+  "installation-field": {
+    role: "A web-born interface becomes projection, camera, kiosk, and room-scale presentation.",
+    proof: "The same interface grammar can move from screen to exhibition environment.",
+    state: "Future exhibition mode",
+    application: "Installations / gallery walls / projected interfaces / room-scale experiences",
+    tags: ["projection", "installation", "room-scale"],
+    readout: ["Projection grammar", "Kiosk mode", "Room scale"],
+    traces: [
+      {
+        src: "/immersive/Whisper/desktop/whisper-vr-1.jpg",
+        label: "Research frame",
+        caption: "Room-scale material.",
+      },
+      {
+        src: "/immersive/Whisper/desktop/whisper-vr-2.jpg",
+        label: "Projection note",
+        caption: "Projection grammar trace.",
+      },
+      {
+        src: "/immersive/Whisper/desktop/whisper-10.jpg",
+        label: "Working trace",
+        caption: "Screen-to-space study.",
+      },
+    ],
+  },
 };
 
 type WhisperProofId = "web" | "mobile" | "print" | "ar" | "quest";
@@ -1416,7 +1534,7 @@ function PracticeMapScene({
                       } ${sizeClass}`}
                       style={{ clipPath: selected ? "polygon(2% 0, 100% 5%, 94% 94%, 0 100%)" : index % 2 === 0 ? "polygon(4% 0, 100% 7%, 94% 100%, 0 90%)" : "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)" }}
                     >
-                      <img src={poster} alt="" className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-100 saturate-[1.12] contrast-[1.04] brightness-[1.08] transition duration-700 group-hover:scale-[1.055] group-hover:brightness-[1.18] ${selected ? "scale-[1.015]" : ""}`} />
+                      <img src={poster} alt="" className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-100 saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.055] group-hover:brightness-[1.07] ${selected ? "scale-[1.015]" : ""}`} />
                       <span className={`absolute inset-0 transition duration-500 ${selected ? "bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.22)_70%,rgba(0,0,0,0.44))]" : "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.22)_72%,rgba(0,0,0,0.42))] group-hover:bg-black/10"}`} />
                       <span className={`absolute right-4 top-4 overflow-hidden border border-white/22 opacity-68 [clip-path:polygon(6%_0,100%_10%,88%_100%,0_86%)] ${selected ? "h-[18%] w-[22%]" : "h-[22%] w-[28%]"}`}>
                         <img src={trace} alt="" className="h-full w-full object-cover saturate-[1.1] brightness-[1.1]" />
@@ -1622,7 +1740,7 @@ function PracticeMapScene({
                               <img
                                 src={poster}
                                 alt=""
-                                className="absolute inset-[-3%] h-[106%] w-[106%] object-cover saturate-[1.12] contrast-[1.05] brightness-[1.08] transition duration-700 group-hover:scale-[1.045] group-hover:brightness-[1.16]"
+                                className="absolute inset-[-3%] h-[106%] w-[106%] object-cover saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.045] group-hover:brightness-[1.07]"
                               />
                               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.25)_66%,rgba(0,0,0,0.58))]" />
                               <div className="absolute right-5 top-5 h-[22%] w-[24%] overflow-hidden border border-white/20 opacity-70 [clip-path:polygon(8%_0,100%_10%,88%_100%,0_88%)]">
@@ -2170,66 +2288,244 @@ function EngineStackScene() {
 }
 
 function FutureChambersScene() {
+  const chambers = futureChambers;
+  const [inspectedTraceId, setInspectedTraceId] = useState<FutureChamberId | null>(null);
+  const [previewTrace, setPreviewTrace] = useState<{
+    chamberTitle: string;
+    trace: (typeof futureChamberDetails)[FutureChamberId]["traces"][number];
+  } | null>(null);
+
+  useEffect(() => {
+    if (!previewTrace) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPreviewTrace(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [previewTrace]);
+
   return (
-    <Chapter id="future" className="relative min-h-screen px-4 pb-16 pt-16 sm:px-6 lg:px-8">
-      <div className="mx-auto min-h-[calc(100vh-7rem)] w-[min(92vw,1600px)]">
-        <div className="grid gap-10 xl:grid-cols-[0.42fr_0.58fr]">
-          <div>
-            <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Future chambers</div>
-            <KineticTitle
-              text="Four rooms prepared for the next proofs."
-              className="mt-6 max-w-[10.5ch] text-[58px] font-normal leading-[0.86] tracking-normal text-neutral-950 sm:text-[88px] xl:text-[116px]"
-            />
-          </div>
-          <p className="max-w-[40rem] text-[16px] leading-[1.85] text-neutral-600 xl:pt-20">
-            These directions are not placeholders. They are chambers for future immersive work: each already has a
-            role, signal language, media behavior, and application path.
+    <>
+    <Chapter id="future" className="relative min-h-screen scroll-mt-24 px-4 pb-16 pt-16 sm:px-6 lg:px-8">
+      <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(92vw,1600px)] content-start gap-10 xl:grid-cols-[minmax(360px,0.55fr)_minmax(720px,1fr)] xl:items-start xl:pt-[16vh]">
+        <div className="relative z-10">
+          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Prepared chambers / systems in development</div>
+          <KineticTitle
+            text="Three chambers prepared for the next proofs."
+            className="mt-6 max-w-[10.5ch] text-[58px] font-normal leading-[0.86] tracking-normal text-neutral-950 sm:text-[88px] xl:text-[108px]"
+          />
+          <p className="mt-8 max-w-[32rem] text-[15px] leading-8 text-neutral-600">
+            These are not public cases yet. They are prepared directions for future product, archive, and collector
+            continuation systems.
           </p>
         </div>
 
-        <div className="relative mt-10 min-h-[680px]">
-          <div className="absolute left-1/2 top-[8%] hidden h-[78%] w-px bg-neutral-950/12 lg:block" />
-          {futureChambers.map((item, index) => {
-            const left = index % 2 === 0;
+        <motion.div
+          className="relative isolate overflow-hidden border-y border-neutral-950/14 bg-white/[0.12] backdrop-blur-[1px]"
+          initial={{ opacity: 0, y: 34 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.24 }}
+          transition={{ duration: 0.72, ease }}
+        >
+          <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:56px_56px]" />
+          <div className="pointer-events-none absolute left-[12%] top-[10%] h-[36rem] w-[36rem] rounded-full border border-neutral-950/[0.03]" />
+          <div className="relative z-10">
+            <div className="grid gap-4 border-b border-neutral-950/12 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">Future Direction Register</div>
+                <p className="mt-2 max-w-[31rem] text-[13px] leading-6 text-neutral-500">
+                  Prepared directions, not public case studies. Each chamber defines a role, proof claim, material trace, and possible application path.
+                </p>
+              </div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">03 directions</div>
+            </div>
 
-            return (
-              <motion.article
-                key={item.id}
-                className={`relative mb-10 border-y border-neutral-950/12 py-7 lg:absolute lg:mb-0 lg:w-[44%] ${
-                  left ? "lg:left-0" : "lg:right-0"
-                }`}
-                style={{ top: `${index * 19}%` }}
-                initial={{ opacity: 0, y: 36 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.24 }}
-                transition={{ duration: 0.75, delay: index * 0.06, ease }}
-              >
-                <div className={`absolute top-8 hidden h-px w-[12%] bg-neutral-950/16 lg:block ${left ? "right-[-14%]" : "left-[-14%]"}`} />
-                <div className={`absolute top-6 hidden h-4 w-4 rounded-full border border-neutral-950/16 bg-white lg:block ${left ? "right-[-16%]" : "left-[-16%]"}`} />
+            <div className="divide-y divide-neutral-950/12">
+              {chambers.map((item, index) => {
+                const details = futureChamberDetails[item.id];
+                const isInspecting = inspectedTraceId === item.id;
+                const tracePanelId = `future-traces-${item.id}`;
 
-                <div className="grid gap-6 md:grid-cols-[9rem_1fr]">
-                  <div className="h-32 overflow-hidden rounded-[1.2rem] border border-white/70 bg-white/36 shadow-[0_22px_80px_rgba(0,0,0,0.08)]">
-                    <img src={item.media?.poster} alt="" className="h-full w-full object-cover opacity-76 saturate-[1.02]" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">{statusLabels[item.status]}</div>
-                    <h3 className="mt-3 text-[40px] font-normal leading-none tracking-normal text-neutral-950 md:text-[54px]">{item.title}</h3>
-                    <p className="mt-5 max-w-[36rem] text-[14px] leading-7 text-neutral-600">{item.summary}</p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {item.tags.map((tag) => (
-                        <span key={tag} className="rounded-full border border-neutral-950/12 bg-white/36 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-neutral-500">
-                          {tag}
-                        </span>
-                      ))}
+                return (
+                  <article
+                    key={item.id}
+                    className="group relative grid gap-5 px-5 py-5 transition hover:bg-white/[0.2] focus-within:bg-white/[0.2] sm:px-7 lg:grid-cols-[3.5rem_minmax(13rem,0.36fr)_minmax(0,1fr)] lg:items-start"
+                  >
+                    <div className="flex items-center gap-3 lg:block">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-300">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="block h-2 w-2 rounded-full border border-neutral-950/20 bg-white/80 transition group-hover:bg-neutral-950 lg:mt-5" />
                     </div>
-                  </div>
-                </div>
-              </motion.article>
-            );
-          })}
-        </div>
+
+                    <div>
+                      <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{details.state}</div>
+                      <h3 className="mt-3 text-[30px] leading-none tracking-normal text-neutral-950 sm:text-[36px]">
+                        {item.title}
+                      </h3>
+                    </div>
+
+                    <div className="grid gap-4">
+                      <div>
+                        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Role</div>
+                        <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.role}</p>
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Will prove</div>
+                          <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.proof}</p>
+                        </div>
+                        <div>
+                          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Best for</div>
+                          <p className="mt-1.5 text-[13px] leading-6 text-neutral-500">{details.application}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {details.tags.map((tag) => (
+                          <span key={tag} className="border border-neutral-950/12 bg-white/30 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-neutral-500">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="grid gap-3 border-t border-neutral-950/10 pt-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Trace material</div>
+                          <div className="flex gap-1.5" aria-label={`${details.traces.length} working trace frames`}>
+                            {details.traces.map((trace, traceIndex) => (
+                              <span
+                                key={trace.src}
+                                className="border border-neutral-950/12 bg-white/30 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.12em] text-neutral-400"
+                              >
+                                0{traceIndex + 1}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          className="w-fit border-b border-neutral-950/30 pb-1 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
+                          aria-expanded={isInspecting}
+                          aria-controls={tracePanelId}
+                          onClick={() => setInspectedTraceId(isInspecting ? null : item.id)}
+                        >
+                          {isInspecting ? "Close traces" : "View traces"}
+                        </button>
+                      </div>
+
+                      <AnimatePresence initial={false}>
+                        {isInspecting && (
+                          <motion.div
+                            id={tracePanelId}
+                            className="overflow-hidden border-y border-neutral-950/12 bg-white/35"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.32, ease }}
+                          >
+                            <div className="grid gap-3 p-3">
+                              <div className="border-b border-neutral-950/10 pb-2">
+                                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+                                  Working material / not public case
+                                </div>
+                              </div>
+
+                              <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:grid sm:grid-cols-[repeat(3,minmax(0,12.5rem))] sm:justify-end sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
+                                {details.traces.map((trace, traceIndex) => (
+                                  <figure key={trace.src} className="w-[15rem] shrink-0 border-t border-neutral-950/10 pt-2 sm:w-auto sm:min-w-0">
+                                    <button
+                                      type="button"
+                                      className="group/trace block aspect-[16/10] w-full overflow-hidden border border-neutral-950/12 bg-neutral-100 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
+                                      onClick={() => setPreviewTrace({ chamberTitle: item.title, trace })}
+                                    >
+                                      <img
+                                        src={trace.src}
+                                        alt={`${item.title} ${trace.label.toLowerCase()} expanded ${traceIndex + 1}`}
+                                        className="h-full w-full object-cover opacity-82 grayscale-[0.32] contrast-[0.96] transition duration-300 group-hover/trace:scale-[1.025] group-hover/trace:opacity-100 group-focus-visible/trace:opacity-100"
+                                        loading="lazy"
+                                      />
+                                    </button>
+                                    <figcaption className="mt-1.5">
+                                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-400">{trace.label}</div>
+                                      <p className="mt-1 text-[11px] leading-4 text-neutral-500">{trace.caption}</p>
+                                    </figcaption>
+                                  </figure>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <span className="absolute bottom-[-1px] left-0 h-px w-0 bg-neutral-950/42 transition-all duration-300 group-hover:w-full group-focus-within:w-full" />
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </Chapter>
+    <AnimatePresence>
+      {previewTrace && (
+        <motion.div
+          className="fixed inset-0 z-[90] grid place-items-center bg-neutral-950/24 px-4 py-8 backdrop-blur-[3px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, ease }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${previewTrace.chamberTitle} trace preview`}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setPreviewTrace(null);
+          }}
+        >
+          <motion.div
+            className="w-[min(92vw,900px)] border border-neutral-950/16 bg-[#f5f4ef]/95 p-4 shadow-[0_32px_120px_rgba(0,0,0,0.18)]"
+            initial={{ y: 18, scale: 0.985 }}
+            animate={{ y: 0, scale: 1 }}
+            exit={{ y: 10, scale: 0.985 }}
+            transition={{ duration: 0.24, ease }}
+          >
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-950/12 pb-3">
+              <div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-500">
+                  Working material / not public case
+                </div>
+                <div className="mt-1 text-[15px] leading-5 text-neutral-700">
+                  {previewTrace.chamberTitle} / {previewTrace.trace.label}
+                </div>
+              </div>
+              <button
+                type="button"
+                className="border-b border-neutral-950/32 pb-1 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
+                onClick={() => setPreviewTrace(null)}
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-4 overflow-hidden border border-neutral-950/12 bg-neutral-100">
+              <img
+                src={previewTrace.trace.src}
+                alt={`${previewTrace.chamberTitle} ${previewTrace.trace.label.toLowerCase()} preview`}
+                className="max-h-[68vh] w-full object-contain opacity-95"
+              />
+            </div>
+
+            <p className="mt-3 max-w-[36rem] text-[13px] leading-6 text-neutral-600">{previewTrace.trace.caption}</p>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }
 

@@ -442,12 +442,14 @@ function CaseMediaView({
   ambient = false,
   fit,
   objectPosition,
+  className = "",
 }: {
   media: CaseStoryMedia;
   priority?: boolean;
   ambient?: boolean;
   fit?: "cover" | "contain";
   objectPosition?: "top" | "center" | "bottom";
+  className?: string;
 }) {
   const resolvedFit = fit ?? media.fit ?? "contain";
   const resolvedObjectPosition = objectPosition ?? media.objectPosition;
@@ -463,6 +465,7 @@ function CaseMediaView({
     "h-full w-full",
     resolvedFit === "cover" ? "object-cover" : "object-contain",
     positionClass,
+    className,
   ].join(" ");
 
   if (media.kind === "video") {
@@ -1837,6 +1840,13 @@ export default function CasePageV2({
                   media={thresholdMedia}
                   priority
                   ambient
+                  className={
+                    isAdvisoryCase
+                      ? "saturate-[1.02]"
+                      : isCreatorOpsCase
+                        ? "brightness-[1.03] saturate-[1.04]"
+                        : "brightness-[1.02] saturate-[1.03]"
+                  }
                 />
                 <div
                   className={[
@@ -1844,8 +1854,8 @@ export default function CasePageV2({
                     isAdvisoryCase
                       ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.1),transparent_52%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18))]"
                       : isCreatorOpsCase
-                        ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.1),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.06))]"
-                        : "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.06),transparent_30%),linear-gradient(90deg,rgba(0,0,0,0.14),transparent_52%),linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.24))]",
+                        ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.11),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.04),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.035))]"
+                        : "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(90deg,rgba(0,0,0,0.06),transparent_52%),linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.13))]",
                   ].join(" ")}
                 />
                 <div className={["absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.18em]", isAdvisoryCase ? "text-neutral-600" : "text-white/62"].join(" ")}>
@@ -1921,10 +1931,10 @@ export default function CasePageV2({
                     className={[
                       "block h-full w-full",
                       isAdvisoryCase
-                        ? "opacity-95 saturate-[1.02]"
+                        ? "opacity-100 saturate-[1.02]"
                         : isCreatorOpsCase
-                          ? "opacity-100 saturate-[1.08] brightness-[1.1]"
-                          : "opacity-70 saturate-[0.9]",
+                          ? "opacity-100 saturate-[1.04] brightness-[1.03]"
+                          : "opacity-[0.92] saturate-[1.03] brightness-[1.02]",
                     ].join(" ")}
                   >
                     <CaseMediaView media={media} />
@@ -1935,8 +1945,8 @@ export default function CasePageV2({
                       isAdvisoryCase
                         ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.1))]"
                         : isCreatorOpsCase
-                          ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.06),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.1))]"
-                          : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.1),rgba(0,0,0,0.68))]",
+                          ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.07),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.055))]"
+                          : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.09),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.32))]",
                     ].join(" ")}
                   />
                   <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", isAdvisoryCase ? "text-neutral-600" : "text-white/72"].join(" ")}>

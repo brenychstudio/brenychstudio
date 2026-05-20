@@ -22,9 +22,11 @@ type PageProps = {
 
 type BuildSystem = {
   title: string;
+  signal: string;
   what: string;
   forWhom: string;
   result: string;
+  focus: string[];
 };
 
 type Format = {
@@ -77,33 +79,43 @@ const offerSignalFollowUp = [
 const buildSystems: BuildSystem[] = [
   {
     title: "Premium Websites",
-    what: "Editorial commercial websites with strong structure, premium visual direction, responsive polish, and calm conversion paths.",
+    signal: "Editorial public surface",
+    what: "Editorial websites that organize the offer, proof, media rhythm, and conversion route into one clear premium surface.",
     forWhom: "Brands, studios, founders, hospitality, advisory, culture, and service-led businesses.",
     result: "A clear public surface that explains the offer, builds trust, and feels authored rather than generic.",
+    focus: ["Offer hierarchy", "Proof rhythm", "Calm conversion"],
   },
   {
     title: "Interactive Product Surfaces",
-    what: "Product demos, workflow interfaces, proof-led presentations, and founder surfaces where interaction makes the system easier to understand.",
+    signal: "Product logic made visible",
+    what: "Product demos and workflow interfaces that make logic, states, and decisions understandable through interaction.",
     forWhom: "Products, operators, internal tools, startups, creator systems, and commercial prototypes.",
     result: "A working interface layer that turns product logic into visible states, flows, and decisions.",
+    focus: ["Demo states", "Guided flows", "Decision clarity"],
   },
   {
     title: "Multilingual Front-end Systems",
-    what: "Language-aware site structures with repeatable sections, locale-safe interface patterns, and content that can travel cleanly.",
+    signal: "One system across locales",
+    what: "Language-aware site systems with repeatable sections, locale-safe UI, and content structure that travels cleanly.",
     forWhom: "International services, property, hospitality, product launches, and cross-market brand systems.",
     result: "A front-end structure that can support more than one language without losing rhythm or clarity.",
+    focus: ["Locale-safe UI", "Repeatable sections", "Cross-market rhythm"],
   },
   {
     title: "Immersive Prototypes",
-    what: "WebGL, spatial, WebXR, cinematic object, or experimental presentation layers connected to a real commercial or cultural goal.",
+    signal: "Controlled future-facing proof",
+    what: "Contained WebGL, spatial, WebXR, or cinematic prototypes tied to a real commercial or cultural goal.",
     forWhom: "Brands, creators, institutions, exhibitions, product stories, and future-facing digital experiences.",
     result: "A controlled prototype that shows what the next interface layer could become without turning the project into chaos.",
+    focus: ["WebGL / spatial", "Cinematic object", "Prototype scope"],
   },
   {
     title: "Creative Technology Direction",
-    what: "Concept, interface architecture, motion grammar, prototype direction, and production guidance for a sharper digital system.",
+    signal: "Sharper build before production",
+    what: "Concept, interface architecture, motion grammar, prototype direction, and production guidance before or during a high-stakes build.",
     forWhom: "Teams that need a senior digital direction before build, during redesign, or around a flagship launch.",
     result: "A clear model for what to build, why it matters, and how the system should behave.",
+    focus: ["Concept model", "Motion grammar", "Production guidance"],
   },
 ];
 
@@ -407,31 +419,124 @@ function OfferSignalReadout() {
   );
 }
 
-function BuildSystemRow({ item, index }: { item: BuildSystem; index: number }) {
+function BuildSystemsInterface() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const { playRole } = useSound();
+  const active = buildSystems[activeIndex] ?? buildSystems[0];
+
   return (
-    <motion.article
-      className="group grid gap-5 border-t border-neutral-950/12 py-6 first:border-t-0 lg:grid-cols-[4rem_0.8fr_1fr_1fr]"
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.52, ease, delay: index * 0.035 }}
-    >
-      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-        {String(index + 1).padStart(2, "0")}
+    <div className="grid gap-5 lg:grid-cols-[0.86fr_1.14fr] xl:gap-8">
+      <div className="border-y border-neutral-950/10">
+        {buildSystems.map((item, index) => {
+          const isActive = index === activeIndex;
+
+          return (
+            <motion.button
+              key={item.title}
+              type="button"
+              aria-pressed={isActive}
+              onMouseEnter={() => {
+                playRole("hover");
+                setActiveIndex(index);
+              }}
+              onFocus={() => setActiveIndex(index)}
+              onClick={() => {
+                playRole("select");
+                setActiveIndex(index);
+              }}
+              className={`group relative grid min-h-[6.2rem] w-full grid-cols-[3rem_1fr] gap-4 border-b border-neutral-950/10 py-4 pr-4 text-left transition last:border-b-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:grid-cols-[4rem_1fr] ${
+                isActive
+                  ? "bg-white/72 text-neutral-950"
+                  : "text-neutral-500 hover:bg-white/44 hover:text-neutral-950"
+              }`}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.44, ease, delay: index * 0.035 }}
+            >
+              <span
+                className={`font-mono text-[10px] uppercase tracking-[0.16em] transition ${
+                  isActive ? "text-neutral-950" : "text-neutral-300 group-hover:text-neutral-400"
+                }`}
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[23px] font-normal leading-[0.98] tracking-[-0.04em] sm:text-[28px]">
+                  {item.title}
+                </span>
+                <span
+                  className={`mt-3 block font-mono text-[10px] uppercase leading-5 tracking-[0.15em] transition ${
+                    isActive ? "text-neutral-500" : "text-neutral-400"
+                  }`}
+                >
+                  {item.signal}
+                </span>
+              </span>
+              <span
+                className={`absolute bottom-4 left-0 top-4 w-px bg-neutral-950 transition ${
+                  isActive ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 group-hover:scale-y-50 group-hover:opacity-25"
+                }`}
+              />
+            </motion.button>
+          );
+        })}
       </div>
-      <h3 className="text-[30px] font-normal leading-[0.96] tracking-[-0.04em] text-neutral-950 sm:text-[38px]">
-        {item.title}
-      </h3>
-      <div>
-        <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">For</div>
-        <p className="text-[14px] leading-6 text-neutral-600">{item.forWhom}</p>
-      </div>
-      <div>
-        <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Result</div>
-        <p className="text-[14px] leading-6 text-neutral-700">{item.result}</p>
-      </div>
-      <p className="lg:col-start-2 lg:col-span-3 text-[15px] leading-7 text-neutral-600">{item.what}</p>
-    </motion.article>
+
+      <AnimatePresence mode="wait">
+        <motion.aside
+          key={active.title}
+          className="relative overflow-hidden border-y border-neutral-950/12 bg-white/[0.34] p-5 sm:p-6 lg:sticky lg:top-28 lg:self-start"
+          initial={{ opacity: 0, y: 12, filter: "blur(3px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -8, filter: "blur(3px)" }}
+          transition={{ duration: 0.34, ease }}
+        >
+          <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px)] [background-size:58px_58px]" />
+          <div className="relative">
+            <div className="flex items-center justify-between gap-4 border-b border-neutral-950/10 pb-4">
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
+                Selected format
+              </div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                {String(activeIndex + 1).padStart(2, "0")} / {String(buildSystems.length).padStart(2, "0")}
+              </div>
+            </div>
+
+            <h3 className="mt-7 max-w-[12ch] text-[42px] font-normal leading-[0.9] tracking-[-0.05em] text-neutral-950 sm:text-[56px]">
+              {active.title}
+            </h3>
+            <p className="mt-5 max-w-[42rem] text-[16px] leading-7 text-neutral-600">
+              {active.what}
+            </p>
+
+            <div className="mt-7 grid border-y border-neutral-950/10">
+              <div className="grid gap-3 border-b border-neutral-950/10 py-4 sm:grid-cols-[8rem_1fr]">
+                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">For</div>
+                <p className="text-[14px] leading-6 text-neutral-600">{active.forWhom}</p>
+              </div>
+              <div className="grid gap-3 py-4 sm:grid-cols-[8rem_1fr]">
+                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Result</div>
+                <p className="text-[14px] leading-6 text-neutral-700">{active.result}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {active.focus.map((focus, index) => (
+                <div key={focus} className="border-t border-neutral-950/10 pt-3">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  <div className="mt-2 text-[13px] uppercase leading-5 tracking-[0.1em] text-neutral-600">
+                    {focus}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.aside>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -482,8 +587,8 @@ function DeliveryModelEngine({
   return (
     <div className="relative overflow-hidden border-y border-neutral-950/10 bg-white/[0.18]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_42%_34%,rgba(255,255,255,0.82),transparent_34%),linear-gradient(120deg,rgba(255,255,255,0.58),rgba(226,222,214,0.16)_48%,rgba(255,255,255,0.46))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-white/58 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-white/54 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-white/34 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-white/30 to-transparent" />
 
       <div className="relative lg:min-h-[760px]">
         <motion.div
@@ -695,11 +800,7 @@ export default function OfferV2({
                 </p>
               </div>
 
-              <div className="border-y border-neutral-950/10">
-                {buildSystems.map((item, index) => (
-                  <BuildSystemRow key={item.title} item={item} index={index} />
-                ))}
-              </div>
+              <BuildSystemsInterface />
             </div>
           </section>
 
@@ -720,14 +821,12 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-16 lg:pb-20">
-            <div className="relative isolate -mx-[3vw] overflow-hidden px-[3vw] py-14 lg:py-20">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white via-white/84 to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white via-white/82 to-transparent" />
-              <div className="pointer-events-none absolute inset-y-8 left-0 right-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0),rgba(244,241,234,0.34)_22%,rgba(246,244,239,0.48)_54%,rgba(255,255,255,0)_100%)]" />
-              <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px]" />
-              <div className="pointer-events-none absolute left-[12%] top-[3rem] -z-10 h-[32rem] w-[32rem] rounded-full border border-neutral-950/[0.025]" />
-              <div className="pointer-events-none absolute right-[10%] bottom-[2rem] -z-10 h-[28rem] w-[28rem] rounded-full border border-neutral-950/[0.02]" />
+          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-8 lg:pb-10">
+            <div className="relative isolate -mx-[3vw] overflow-visible px-[3vw] pb-8 pt-10 lg:pb-10 lg:pt-16">
+              <div className="pointer-events-none absolute -inset-x-[4vw] -inset-y-20 -z-10 bg-[radial-gradient(circle_at_38%_20%,rgba(255,255,255,0.58),transparent_34%),radial-gradient(circle_at_72%_78%,rgba(244,241,234,0.36),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0),rgba(246,244,239,0.28)_34%,rgba(246,244,239,0.2)_68%,rgba(255,255,255,0))] opacity-80 [mask-image:linear-gradient(180deg,transparent,black_18%,black_82%,transparent)]" />
+              <div className="pointer-events-none absolute -inset-x-[4vw] -inset-y-16 -z-10 opacity-[0.035] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(180deg,transparent,black_16%,black_84%,transparent)]" />
+              <div className="pointer-events-none absolute left-[12%] top-[1rem] -z-10 h-[32rem] w-[32rem] rounded-full border border-neutral-950/[0.018]" />
+              <div className="pointer-events-none absolute right-[10%] bottom-[-1rem] -z-10 h-[28rem] w-[28rem] rounded-full border border-neutral-950/[0.016]" />
 
               <div className="grid gap-10 border-y border-neutral-950/10 py-9 lg:grid-cols-[0.32fr_0.68fr] lg:items-end">
                 <div>

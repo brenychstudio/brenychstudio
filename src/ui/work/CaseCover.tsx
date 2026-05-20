@@ -27,6 +27,7 @@ const toneMap: Record<
     shell: string;
     frame: string;
     placeholder: string;
+    image: string;
     halo?: string;
   }
 > = {
@@ -35,6 +36,7 @@ const toneMap: Record<
       "border border-black/[0.045] bg-[#f5f5f7] p-2 shadow-[0_16px_34px_rgba(15,23,42,0.04)]",
     frame: "border border-black/[0.045] bg-[#ffffff]",
     placeholder: "bg-[#ececf0]",
+    image: "saturate-[1.01]",
     halo: "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.62)]",
   },
   dark: {
@@ -42,12 +44,14 @@ const toneMap: Record<
       "border border-black/[0.04] bg-white p-1.5 shadow-[0_12px_28px_rgba(15,23,42,0.03)]",
     frame: "border border-black/[0.04] bg-neutral-50",
     placeholder: "bg-neutral-100",
+    image: "saturate-[1.02]",
   },
   mixed: {
     shell:
       "border border-black/[0.045] bg-[#f4f4f6] p-1.5 shadow-[0_14px_30px_rgba(15,23,42,0.035)]",
     frame: "border border-black/[0.045] bg-white/96",
     placeholder: "bg-[#ececef]",
+    image: "brightness-[1.02] saturate-[1.02]",
     halo: "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.42)]",
   },
 };
@@ -97,6 +101,7 @@ export default function CaseCover({
             className={[
               "absolute inset-0 h-full w-full object-cover transition duration-700",
               posterScale,
+              toneStyles.image,
               loaded ? "opacity-100 blur-0" : "opacity-0 blur-[8px]",
               imageClassName,
             ].join(" ")}

@@ -28,6 +28,12 @@ export default function StickyStage({
   const y = (1 - p) * travel - 18;
   const scale = 1.062 - p * 0.048;
   const bgY = -(1 - p) * 8;
+  const posterTreatment =
+    activeCase.coverTone === "dark"
+      ? "saturate-[1.02]"
+      : activeCase.coverTone === "mixed"
+        ? "brightness-[1.02] saturate-[1.02]"
+        : "saturate-[1.01]";
 
   return (
     <motion.div
@@ -89,6 +95,7 @@ export default function StickyStage({
                     className={[
                       "block max-h-[70vh] max-w-full rounded-[18px]",
                       "border border-black/6 object-contain",
+                      posterTreatment,
                       "shadow-[0_10px_30px_rgba(15,23,42,0.045)]",
                     ].join(" ")}
                     draggable={false}

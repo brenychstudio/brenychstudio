@@ -3,6 +3,8 @@ import { useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
+import { useSound } from "../stage/audio/useSound";
+
 type Plane = "xy" | "yz" | "xz";
 
 type FragmentKind = "shellStrong" | "shellSoft" | "cagePrimary" | "cageSecondary" | "core";
@@ -41,6 +43,13 @@ function clamp(value: number, min = 0, max = 1) {
 function smoothstep(edge0: number, edge1: number, value: number) {
   const x = clamp((value - edge0) / (edge1 - edge0));
   return x * x * (3 - 2 * x);
+}
+
+function scrollSoundPhase(progress: number) {
+  if (progress >= 0.82) return 3;
+  if (progress >= 0.52) return 2;
+  if (progress >= 0.34) return 1;
+  return 0;
 }
 
 function releasePhase(kind: FragmentKind, progress: number) {
@@ -602,8 +611,33 @@ export default function OfferScrollArtifactHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const progress = useScrollProgress(sectionRef);
   const reducedMotion = useReducedMotion() ?? false;
+  const sound = useSound();
   const [pointer, setPointer] = useState<Pointer>({ x: 0, y: 0 });
+  const soundPhaseRef = useRef<number | null>(null);
   const disassemble = smoothstep(0.48, 0.96, progress);
+
+  useEffect(() => {
+    const nextPhase = scrollSoundPhase(reducedMotion ? 0 : progress);
+    const previousPhase = soundPhaseRef.current;
+
+    if (previousPhase === null) {
+      soundPhaseRef.current = nextPhase;
+      return;
+    }
+
+    if (nextPhase === previousPhase) return;
+
+    if (nextPhase > previousPhase) {
+      if (nextPhase === 1) sound.playRole("surface");
+      if (nextPhase === 2) sound.playRole("transition");
+      if (nextPhase === 3) sound.playRole("open");
+    } else {
+      if (previousPhase === 3) sound.playRole("transition");
+      if (nextPhase <= 1) sound.playRole("close");
+    }
+
+    soundPhaseRef.current = nextPhase;
+  }, [progress, reducedMotion, sound]);
 
   return (
     <section

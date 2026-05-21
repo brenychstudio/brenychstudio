@@ -15,7 +15,8 @@ export type ImmersiveSoundSceneId =
   | "immersive-engines"
   | "immersive-future"
   | "immersive-layer"
-  | "immersive-cta";
+  | "immersive-cta"
+  | "whisper-case";
 
 export type ImmersiveSoundSceneConfig = {
   material: SoundTokens["material"];
@@ -25,13 +26,14 @@ export type ImmersiveSoundSceneConfig = {
 };
 
 export const immersiveAmbientSceneLevels: Record<ImmersiveSoundSceneId, number> = {
-  "immersive-threshold": 0.032,
-  "immersive-map": 0.04,
-  "immersive-proof": 0.052,
-  "immersive-engines": 0.034,
-  "immersive-future": 0.038,
-  "immersive-layer": 0.036,
-  "immersive-cta": 0.028,
+  "immersive-threshold": 0.044,
+  "immersive-map": 0.05,
+  "immersive-proof": 0.058,
+  "immersive-engines": 0.044,
+  "immersive-future": 0.048,
+  "immersive-layer": 0.044,
+  "immersive-cta": 0.038,
+  "whisper-case": 0.056,
 };
 
 export const audioManifest: Record<SoundScene, AudioSceneConfig> = {
@@ -52,8 +54,7 @@ export const audioManifest: Record<SoundScene, AudioSceneConfig> = {
     mode: "micro-ambient",
     defaultVolume: 0.082,
     ambient: {
-      src: "/audio/immersive/immersive-room.webm",
-      fallbackSrc: "/audio/immersive/immersive-room.mp3",
+      src: "/audio/immersive/immersive-room.mp3",
       volume: 0.056,
       fadeIn: 1.8,
       fadeOut: 0.9,
@@ -215,6 +216,20 @@ export const immersiveSoundScenes: Record<ImmersiveSoundSceneId, ImmersiveSoundS
       surface: "surfaceDrift",
       atlasOpen: "atlasOpen",
       success: "successQuiet",
+    },
+  },
+  "whisper-case": {
+    material: "forest",
+    density: "sparse",
+    volumeScale: 0.9,
+    events: {
+      hover: "hoverSoft",
+      select: "selectPrecise",
+      open: "openAir",
+      close: "closeReverse",
+      transition: "transitionPulse",
+      surface: "surfaceDrift",
+      atlasOpen: "atlasOpen",
     },
   },
 };

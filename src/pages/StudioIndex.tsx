@@ -95,10 +95,13 @@ const media = {
 
   creatorops: casePoster("creatorops", "/cases/creatorops/desktop/creatorops-hero.webp"),
   creatoropsVideo: "/cases/creatorops/video/creatorops-video.mp4",
-  creatoropsDetail: "/cases/creatorops/desktop/creatorops-6.webp",
+  creatoropsMechanics: "/cases/creatorops/desktop/creatorops-7.webp",
+
+  sprintcrmHero: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
 
   print: casePoster("print-border-studio", "/cases/print-border-studio/desktop/psb-hero.webp"),
   printVideo: "/cases/print-border-studio/video/psb-video.mp4",
+  printPrepCover: "/cases/print-border-studio/desktop/psb-4.webp",
   printDetail: "/cases/print-border-studio/desktop/psb-3.webp",
 
   casa: casePoster("casa-nube", "/cases/casa-nube/desktop/casa-hero.webp"),
@@ -189,28 +192,28 @@ const storyFrames: StoryFrame[] = [
     eyebrow: "Scene 02 / product mechanics",
     title: "Tools expose the system behind production.",
     text:
-      "CreatorOps and Print Border Studio shift the portfolio from visual showcase into real product logic: publishing, export, preparation, review, and collector-facing presentation.",
+      "CreatorOps, Sprint CRM, and Print Border Studio move the portfolio from visual showcase into product logic: publishing, operator workflow, export, preparation, and collector-facing presentation.",
     route: "/work",
     media: [
       {
         kind: "video",
         src: media.creatoropsVideo,
-        poster: media.creatorops,
+        poster: media.creatoropsMechanics,
         label: "creator workflow system",
         route: "/work/creatorops",
       },
       {
         kind: "video",
         src: media.printVideo,
-        poster: media.print,
+        poster: media.printPrepCover,
         label: "museum print preparation",
         route: "/work/print-border-studio",
       },
       {
         kind: "image",
-        src: media.creatoropsDetail,
-        label: "pipeline detail",
-        route: "/work/creatorops",
+        src: media.sprintcrmHero,
+        label: "operator CRM surface",
+        route: "/work/sprintcrm",
       },
     ],
   },
@@ -297,19 +300,19 @@ const storyPlaneLayouts = [
     className: "left-[4%] top-[8%] h-[54%] w-[58%] z-20",
     shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
     shadow: "shadow-[0_42px_130px_rgba(18,18,18,0.16)]",
-    label: "left-5 bottom-5",
+    label: "left-[7%] top-[calc(100%+0.75rem)]",
   },
   {
     className: "right-[3%] top-[17%] h-[43%] w-[41%] z-30",
     shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
     shadow: "shadow-[0_34px_110px_rgba(18,18,18,0.14)]",
-    label: "left-5 bottom-5",
+    label: "right-[7%] top-[calc(100%+0.75rem)]",
   },
   {
     className: "left-[34%] bottom-[8%] h-[31%] w-[40%] z-40",
     shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
     shadow: "shadow-[0_28px_90px_rgba(18,18,18,0.12)]",
-    label: "left-5 bottom-4",
+    label: "left-[8%] top-[calc(100%+0.7rem)]",
   },
 ] satisfies readonly StoryPlaneLayout[];
 
@@ -318,25 +321,25 @@ const atlasIntroPlaneLayouts = [
     className: "left-[3%] top-[8%] h-[54%] w-[57%] z-30",
     shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
     shadow: "shadow-[0_44px_136px_rgba(18,18,18,0.16)]",
-    label: "left-5 bottom-5",
+    label: "left-[7%] top-[calc(100%+0.75rem)]",
   },
   {
     className: "right-[2%] top-[16%] h-[40%] w-[42%] z-40",
     shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
     shadow: "shadow-[0_34px_106px_rgba(18,18,18,0.13)]",
-    label: "left-5 bottom-5",
+    label: "right-[7%] top-[calc(100%+0.75rem)]",
   },
   {
     className: "left-[30%] bottom-[7%] h-[32%] w-[39%] z-50",
     shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
     shadow: "shadow-[0_28px_88px_rgba(18,18,18,0.115)]",
-    label: "left-5 bottom-4",
+    label: "left-[8%] top-[calc(100%+0.7rem)]",
   },
   {
     className: "right-[8%] bottom-[1%] h-[28%] w-[34%] z-20",
     shape: "polygon(4% 8%, 100% 0, 94% 92%, 0 100%)",
     shadow: "shadow-[0_24px_74px_rgba(18,18,18,0.1)]",
-    label: "left-5 bottom-4",
+    label: "right-[7%] bottom-[calc(100%+0.7rem)]",
   },
 ] satisfies readonly StoryPlaneLayout[];
 
@@ -887,6 +890,7 @@ function StoryMedia({
   const reduceMotion = useReducedMotion();
   const layout = layouts[index % layouts.length];
   const filterId = `story-fluid-${index}-${asset.label.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
+  const captionIndex = String(index + 1).padStart(2, "0");
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -968,14 +972,7 @@ function StoryMedia({
 
   return (
     <motion.figure
-      className={`group absolute overflow-hidden border border-white/70 bg-[#f7f5ef]/18 ${layout.shadow} backdrop-blur-[2px] will-change-transform ${asset.route ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/28" : ""} ${layout.className}`}
-      style={{
-        clipPath: layout.shape,
-        rotateX: reduceMotion ? 0 : rotateX,
-        rotateY: reduceMotion ? 0 : rotateY,
-        transformPerspective: 1100,
-        transformStyle: "preserve-3d",
-      }}
+      className={`group absolute overflow-visible will-change-transform ${asset.route ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/28" : ""} ${layout.className}`}
       role={asset.route ? "button" : undefined}
       tabIndex={asset.route ? 0 : undefined}
       aria-label={asset.route ? `Open ${asset.label} case` : undefined}
@@ -989,115 +986,171 @@ function StoryMedia({
       viewport={{ once: false, amount: 0.35 }}
       transition={{ duration: 0.95, delay: index * 0.08, ease }}
     >
-      <svg className="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
-        <filter id={filterId} x="-14%" y="-14%" width="128%" height="128%" colorInterpolationFilters="sRGB">
-          <motion.feTurbulence
-            type="fractalNoise"
-            baseFrequency={turbulenceFrequency}
-            numOctaves="2"
-            seed={index + 7}
-            result="noise"
-          />
-          <motion.feDisplacementMap
-            in="SourceGraphic"
-            in2="noise"
-            scale={displacementScale}
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </svg>
-
       <motion.div
-        className="absolute inset-[-5%] h-[110%] w-[110%] will-change-transform"
+        className={`relative h-full w-full overflow-hidden border border-white/70 bg-[#f7f5ef]/18 ${layout.shadow} backdrop-blur-[2px] will-change-transform`}
         style={{
-          x: reduceMotion ? 0 : mediaX,
-          y: reduceMotion ? 0 : mediaY,
-          scale: reduceMotion ? 1 : mediaScale,
+          clipPath: layout.shape,
+          rotateX: reduceMotion ? 0 : rotateX,
+          rotateY: reduceMotion ? 0 : rotateY,
+          transformPerspective: 1100,
+          transformStyle: "preserve-3d",
         }}
       >
-        {renderMedia()}
+        <svg className="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
+          <filter id={filterId} x="-14%" y="-14%" width="128%" height="128%" colorInterpolationFilters="sRGB">
+            <motion.feTurbulence
+              type="fractalNoise"
+              baseFrequency={turbulenceFrequency}
+              numOctaves="2"
+              seed={index + 7}
+              result="noise"
+            />
+            <motion.feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale={displacementScale}
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </svg>
+
+        <motion.div
+          className="absolute inset-[-5%] h-[110%] w-[110%] will-change-transform"
+          style={{
+            x: reduceMotion ? 0 : mediaX,
+            y: reduceMotion ? 0 : mediaY,
+            scale: reduceMotion ? 1 : mediaScale,
+          }}
+        >
+          {renderMedia()}
+        </motion.div>
+
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-[-8%] h-[116%] w-[116%] will-change-transform"
+          style={{
+            x: reduceMotion ? 0 : mediaX,
+            y: reduceMotion ? 0 : mediaY,
+            scale: reduceMotion ? 1 : mediaScale,
+            opacity: reduceMotion ? 0 : warpOpacity,
+            filter: reduceMotion ? undefined : `url(#${filterId})`,
+            WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
+            maskImage: reduceMotion ? "none" : localWarpMask,
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+          }}
+        >
+          {renderMedia("h-full w-full opacity-100 saturate-[1.08] contrast-[1.08] brightness-[1.02]")}
+        </motion.div>
+
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-[-5%] h-[110%] w-[110%] mix-blend-screen will-change-transform"
+          style={{
+            x: reduceMotion ? 0 : chromaRedX,
+            y: reduceMotion ? 0 : chromaRedY,
+            opacity: reduceMotion ? 0 : chromaOpacity,
+            WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
+            maskImage: reduceMotion ? "none" : localWarpMask,
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+          }}
+        >
+          {renderMedia("h-full w-full opacity-70 saturate-[1.22] contrast-[1.12] [filter:sepia(1)_hue-rotate(305deg)_saturate(2.4)]")}
+        </motion.div>
+
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-[-5%] h-[110%] w-[110%] mix-blend-screen will-change-transform"
+          style={{
+            x: reduceMotion ? 0 : chromaBlueX,
+            y: reduceMotion ? 0 : chromaBlueY,
+            opacity: reduceMotion ? 0 : chromaOpacity,
+            WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
+            maskImage: reduceMotion ? "none" : localWarpMask,
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+          }}
+        >
+          {renderMedia("h-full w-full opacity-54 saturate-[1.25] contrast-[1.1] [filter:sepia(1)_hue-rotate(170deg)_saturate(2.1)]")}
+        </motion.div>
+
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(242,239,232,0),rgba(242,239,232,0.01)_58%,rgba(242,239,232,0.18))]" />
+        <motion.div
+          className="pointer-events-none absolute inset-[-12%] mix-blend-screen"
+          style={{
+            x: reduceMotion ? 0 : sheenX,
+            y: reduceMotion ? 0 : sheenY,
+            opacity: reduceMotion ? 0 : chromaOpacity,
+            WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
+            maskImage: reduceMotion ? "none" : localWarpMask,
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            background:
+              "linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.16) 36%, rgba(255,255,255,0.05) 48%, transparent 62%)",
+          }}
+        />
+        <motion.div
+          className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            backgroundImage:
+              "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.12) 42%, transparent 57%)",
+          }}
+        />
       </motion.div>
 
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-[-8%] h-[116%] w-[116%] will-change-transform"
-        style={{
-          x: reduceMotion ? 0 : mediaX,
-          y: reduceMotion ? 0 : mediaY,
-          scale: reduceMotion ? 1 : mediaScale,
-          opacity: reduceMotion ? 0 : warpOpacity,
-          filter: reduceMotion ? undefined : `url(#${filterId})`,
-          WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
-          maskImage: reduceMotion ? "none" : localWarpMask,
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-        }}
-      >
-        {renderMedia("h-full w-full opacity-100 saturate-[1.08] contrast-[1.08] brightness-[1.02]")}
-      </motion.div>
-
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-[-5%] h-[110%] w-[110%] mix-blend-screen will-change-transform"
-        style={{
-          x: reduceMotion ? 0 : chromaRedX,
-          y: reduceMotion ? 0 : chromaRedY,
-          opacity: reduceMotion ? 0 : chromaOpacity,
-          WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
-          maskImage: reduceMotion ? "none" : localWarpMask,
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-        }}
-      >
-        {renderMedia("h-full w-full opacity-70 saturate-[1.22] contrast-[1.12] [filter:sepia(1)_hue-rotate(305deg)_saturate(2.4)]")}
-      </motion.div>
-
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-[-5%] h-[110%] w-[110%] mix-blend-screen will-change-transform"
-        style={{
-          x: reduceMotion ? 0 : chromaBlueX,
-          y: reduceMotion ? 0 : chromaBlueY,
-          opacity: reduceMotion ? 0 : chromaOpacity,
-          WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
-          maskImage: reduceMotion ? "none" : localWarpMask,
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-        }}
-      >
-        {renderMedia("h-full w-full opacity-54 saturate-[1.25] contrast-[1.1] [filter:sepia(1)_hue-rotate(170deg)_saturate(2.1)]")}
-      </motion.div>
-
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(242,239,232,0),rgba(242,239,232,0.01)_58%,rgba(242,239,232,0.18))]" />
-      <motion.div
-        className="pointer-events-none absolute inset-[-12%] mix-blend-screen"
-        style={{
-          x: reduceMotion ? 0 : sheenX,
-          y: reduceMotion ? 0 : sheenY,
-          opacity: reduceMotion ? 0 : chromaOpacity,
-          WebkitMaskImage: reduceMotion ? "none" : localWarpMask,
-          maskImage: reduceMotion ? "none" : localWarpMask,
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-          background:
-            "linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.16) 36%, rgba(255,255,255,0.05) 48%, transparent 62%)",
-        }}
-      />
-      <motion.div
-        className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          backgroundImage:
-            "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.12) 42%, transparent 57%)",
-        }}
-      />
-
-      <figcaption className={`absolute right-5 ${layout.label}`}>
-        <div className="inline-flex rounded-full border border-white/55 bg-white/28 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-neutral-800/72 shadow-[0_10px_34px_rgba(0,0,0,0.08)] backdrop-blur-md">
-          {asset.label}
+      <figcaption className={`pointer-events-none absolute z-[80] hidden min-w-[14rem] max-w-[18rem] sm:block ${layout.label}`}>
+        <div className="mb-1.5 h-px w-16 bg-gradient-to-r from-neutral-950/34 via-neutral-950/18 to-transparent" />
+        <div className="inline-flex max-w-full items-center gap-2 border border-neutral-950/12 bg-white/72 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-neutral-700/82 shadow-[0_14px_38px_rgba(20,20,20,0.08)] backdrop-blur-md">
+          <span className="text-neutral-400">{captionIndex}</span>
+          <span className="truncate">{asset.label}</span>
         </div>
       </figcaption>
     </motion.figure>
+  );
+}
+
+function SurfaceCaptionLegend({
+  assets,
+  onOpen,
+}: {
+  assets: StoryMediaAsset[];
+  onOpen: (path: string) => void;
+}) {
+  return (
+    <div className="absolute inset-x-0 bottom-3 z-[90] grid gap-1.5 px-2 sm:hidden">
+      {assets.map((asset, index) => {
+        const captionIndex = String(index + 1).padStart(2, "0");
+        const content = (
+          <>
+            <span className="text-neutral-400">{captionIndex}</span>
+            <span className="truncate">{asset.label}</span>
+          </>
+        );
+        const className =
+          "flex min-h-9 w-full items-center gap-2 border border-neutral-950/10 bg-white/76 px-3 text-left text-[10px] uppercase tracking-[0.14em] text-neutral-700/84 shadow-[0_12px_30px_rgba(20,20,20,0.07)] backdrop-blur-md";
+
+        if (!asset.route) {
+          return (
+            <div key={asset.label} className={className}>
+              {content}
+            </div>
+          );
+        }
+
+        return (
+          <button
+            key={asset.label}
+            type="button"
+            onClick={() => onOpen(asset.route as string)}
+            className={`${className} transition active:translate-y-px`}
+          >
+            {content}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
@@ -1152,6 +1205,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
               onOpen={goTo}
             />
           ))}
+          <SurfaceCaptionLegend assets={atlasIntroMedia} onOpen={goTo} />
 
           <div className="absolute left-[3%] bottom-[13%] rounded-full border border-neutral-950/10 bg-white/58 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
             immersive covers become atlas
@@ -1218,6 +1272,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
                     onOpen={goTo}
                   />
                 ))}
+                <SurfaceCaptionLegend assets={frame.media} onOpen={goTo} />
 
                 <div className="pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/8" />
                 <div className="pointer-events-none absolute left-[9%] top-[33%] h-px w-[84%] rotate-[-12deg] bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />

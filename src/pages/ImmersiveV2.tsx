@@ -1242,6 +1242,7 @@ function PracticeMapScene({
   const dragStartRef = useRef<{ x: number; y: number } | null>(null);
   const suppressPlaneClickRef = useRef(false);
   const atlasFieldRef = useRef<HTMLDivElement | null>(null);
+  const atlasShellRef = useRef<HTMLDivElement | null>(null);
   const atlasActiveChamberId = chamberState.activeChamberId;
   const selectAtlasChamber = chamberState.selectChamber;
   const chamberSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
@@ -1292,6 +1293,23 @@ function PracticeMapScene({
     chamberState.selectChamber(id);
     setInspectedChamberId(id);
   };
+
+  const resetAtlasViewport = useCallback(() => {
+    const shell = atlasShellRef.current;
+    if (!shell) return;
+
+    shell.scrollTop = 0;
+    shell.scrollLeft = 0;
+    window.requestAnimationFrame(() => {
+      shell.scrollTop = 0;
+      shell.scrollLeft = 0;
+    });
+  }, []);
+
+  const returnAtlasToOrbit = useCallback(() => {
+    resetAtlasViewport();
+    setAtlasMode("orbit");
+  }, [resetAtlasViewport]);
 
   const handleAtlasWheel = (event: WheelEvent<HTMLDivElement>) => {
     if (atlasMode === "assemble") return;
@@ -1344,7 +1362,7 @@ function PracticeMapScene({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (atlasMode === "assemble") {
-          setAtlasMode("orbit");
+          returnAtlasToOrbit();
           return;
         }
 
@@ -1367,7 +1385,12 @@ function PracticeMapScene({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [atlasOpen, chamberState.activeChamberId, inspectedChamberId, atlasMode, selectChamberByOffset, sound]);
+  }, [atlasOpen, chamberState.activeChamberId, inspectedChamberId, atlasMode, selectChamberByOffset, sound, returnAtlasToOrbit]);
+
+  useEffect(() => {
+    if (!atlasOpen || atlasMode !== "orbit") return;
+    resetAtlasViewport();
+  }, [atlasOpen, atlasMode, resetAtlasViewport]);
 
   return (
     <Chapter id="map" className="relative min-h-screen overflow-hidden px-4 pb-12 pt-16 sm:px-6 lg:px-8">
@@ -1419,6 +1442,7 @@ function PracticeMapScene({
                 setInspectedChamberId(null);
                 setAtlasPlaneOffsets({});
                 setAtlasOpen(true);
+                window.requestAnimationFrame(resetAtlasViewport);
               }}
               className="mt-6 rounded-full border border-white bg-white px-4 py-2.5 text-[10px] uppercase tracking-[0.16em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-white/82"
             >
@@ -1551,6 +1575,7 @@ function PracticeMapScene({
         <AnimatePresence>
           {atlasOpen && (
             <motion.div
+              ref={atlasShellRef}
               className={`fixed inset-0 z-[999] bg-[#050504] text-white ${
                 atlasMode === "assemble" ? "overflow-y-auto overflow-x-hidden" : "cursor-grab overflow-hidden active:cursor-grabbing"
               }`}
@@ -1615,7 +1640,11 @@ function PracticeMapScene({
                   type="button"
                   onClick={() => {
                     setInspectedChamberId(null);
-                    setAtlasMode((current) => (current === "orbit" ? "assemble" : "orbit"));
+                    setAtlasMode((current) => {
+                      if (current === "orbit") return "assemble";
+                      resetAtlasViewport();
+                      return "orbit";
+                    });
                   }}
                   onPointerDown={(event) => event.stopPropagation()}
                   data-atlas-control="true"
@@ -1771,14 +1800,9 @@ function PracticeMapScene({
                       </span>
                       <span className="absolute bottom-4 left-4 right-4">
                         <span className="block text-[10px] uppercase tracking-[0.16em] text-white/54">{chamber.statusLabel}</span>
-                        <span className={`mt-1 block max-w-[11ch] leading-[0.88] tracking-[-0.055em] text-white ${selected ? "text-[36px] lg:text-[58px]" : "text-[28px] lg:text-[38px]"}`}>
+                        <span className={`mt-2 block max-w-[11ch] leading-[0.88] tracking-[-0.055em] text-white ${selected ? "text-[40px] lg:text-[64px]" : "text-[28px] lg:text-[38px]"}`}>
                           {chamber.shortTitle}
                         </span>
-                        {selected && (
-                          <span className="mt-4 block max-w-[34rem] text-[15px] normal-case leading-7 tracking-normal text-white/74">
-                            {chamber.proofLine}
-                          </span>
-                        )}
                       </span>
                     </span>
                     {selected && (
@@ -1790,8 +1814,8 @@ function PracticeMapScene({
                         transition={{ duration: 0.78, delay: 0.38, ease }}
                       >
                         <span className="block text-[9px] uppercase tracking-[0.2em] text-white/30">Inspect signal</span>
-                        <span className="mt-2 block text-[10px] uppercase leading-5 tracking-[0.12em] text-white/58">
-                          {chamber.chamberSignal} / {chamber.proofLine}
+                        <span className="mt-2 block max-w-[34rem] text-[14px] normal-case leading-7 tracking-normal text-white/70">
+                          {chamber.proofLine}
                         </span>
                       </motion.span>
                     )}
@@ -1800,10 +1824,10 @@ function PracticeMapScene({
               })}
 
               <AnimatePresence>
-                {inspectedChamber ? (
-                  <motion.div
-                    key={`${inspectedChamber.id}-terminal-focus`}
-                    className="absolute bottom-5 left-1/2 z-50 w-[min(46rem,calc(100%-2rem))] -translate-x-1/2 border-y border-white/18 bg-black/48 px-4 py-4 font-mono backdrop-blur-md"
+                  {inspectedChamber ? (
+                    <motion.div
+                      key={`${inspectedChamber.id}-terminal-focus`}
+                    className="absolute bottom-6 left-1/2 z-50 w-[min(25rem,calc(100%-2rem))] -translate-x-1/2 border-y border-white/18 bg-black/38 px-3 py-3 font-mono backdrop-blur-md lg:left-[61%] lg:-translate-x-0 xl:left-[58%]"
                     initial={{ opacity: 0, y: 22, clipPath: "inset(0 100% 0 0)" }}
                     animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
                     exit={{ opacity: 0, y: 16, clipPath: "inset(0 100% 0 0)" }}
@@ -1812,30 +1836,24 @@ function PracticeMapScene({
                     onPointerDown={(event) => event.stopPropagation()}
                     onPointerUp={(event) => event.stopPropagation()}
                   >
-                    <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-                      <div>
-                        <div className="text-[9px] uppercase tracking-[0.22em] text-white/34">Terminal focus signal</div>
-                        <p className="mt-2 text-[10px] uppercase leading-5 tracking-[0.12em] text-white/62">
-                          {inspectedChamber.chamberSignal} / {inspectedChamber.proofLine}
-                        </p>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
-                          onClick={() => openChamber(inspectedChamber.id)}
-                          className="rounded-full border border-white bg-white px-4 py-2 text-[10px] uppercase tracking-[0.16em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-white/82"
-                        >
-                          Enter chamber -&gt;
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setInspectedChamberId(null)}
-                          className="border-y border-white/18 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/54 transition hover:border-white/48 hover:text-white"
-                        >
-                          Release
-                        </button>
-                      </div>
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => openChamber(inspectedChamber.id)}
+                        className="rounded-full border border-white bg-white px-4 py-2 text-[10px] uppercase tracking-[0.16em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-white/82"
+                      >
+                        Enter chamber -&gt;
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          sound.playRole("close");
+                          setInspectedChamberId(null);
+                        }}
+                        className="border-y border-white/18 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/54 transition hover:border-white/48 hover:text-white"
+                      >
+                        Release
+                      </button>
                     </div>
                   </motion.div>
                 ) : null}
@@ -1918,7 +1936,7 @@ function PracticeMapScene({
                     </p>
                     <button
                       type="button"
-                      onClick={() => setAtlasMode("orbit")}
+                      onClick={returnAtlasToOrbit}
                       data-atlas-control="true"
                       className="mt-8 border-y border-white/28 px-3 py-3 text-[10px] uppercase tracking-[0.16em] text-white/68 transition hover:border-white hover:text-white"
                     >
@@ -1950,7 +1968,7 @@ function PracticeMapScene({
                               onMouseEnter={() => sound.playRole("hover")}
                               onClick={() => {
                                 sound.playRole("select");
-                                setAtlasMode("orbit");
+                                returnAtlasToOrbit();
                                 inspectAtlasChamber(chamber.id);
                               }}
                               data-atlas-control="true"
@@ -2020,7 +2038,7 @@ function PracticeMapScene({
                                     }
 
                                     sound.playRole("select");
-                                    setAtlasMode("orbit");
+                                    returnAtlasToOrbit();
                                     inspectAtlasChamber(chamber.id);
                                   }}
                                   data-atlas-control="true"
@@ -2337,9 +2355,14 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
 
 function EngineStackScene() {
   const prefersReducedMotion = useReducedMotion();
+  const sound = useSound();
   const [activeEngineIndex, setActiveEngineIndex] = useState<number | null>(null);
   const activeSignalTop =
     activeEngineIndex == null ? "8%" : `${((activeEngineIndex + 0.5) / immersiveEngineStack.length) * 100}%`;
+  const focusEngine = (index: number, feedback: "hover" | "select" = "hover") => {
+    if (feedback === "select" || activeEngineIndex !== index) sound.playRole(feedback);
+    setActiveEngineIndex(index);
+  };
 
   return (
     <Chapter id="engines" className="relative z-20 px-4 pb-16 pt-20 sm:px-6 lg:px-8 lg:pt-24">
@@ -2395,9 +2418,9 @@ function EngineStackScene() {
                 tabIndex={0}
                 aria-expanded={active}
                 className="group relative min-h-[8rem] border-b border-neutral-950/12 px-2 py-4 outline-none transition last:border-b-0 hover:bg-white/[0.16] focus-visible:bg-white/[0.22] md:min-h-[5.75rem] md:px-0 md:py-3"
-                onPointerEnter={() => setActiveEngineIndex(index)}
-                onFocus={() => setActiveEngineIndex(index)}
-                onClick={() => setActiveEngineIndex(index)}
+                onPointerEnter={() => focusEngine(index)}
+                onFocus={() => focusEngine(index)}
+                onClick={() => focusEngine(index, "select")}
                 initial={{ opacity: 0, x: 26 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: false, amount: 0.22 }}
@@ -2473,22 +2496,30 @@ function EngineStackScene() {
 
 function FutureChambersScene() {
   const chambers = futureChambers;
+  const sound = useSound();
   const [inspectedTraceId, setInspectedTraceId] = useState<FutureChamberId | null>(null);
   const [previewTrace, setPreviewTrace] = useState<{
     chamberTitle: string;
     trace: (typeof futureChamberDetails)[FutureChamberId]["traces"][number];
   } | null>(null);
+  const toggleTracePanel = (id: FutureChamberId, isInspecting: boolean) => {
+    sound.playRole(isInspecting ? "close" : "select");
+    setInspectedTraceId(isInspecting ? null : id);
+  };
 
   useEffect(() => {
     if (!previewTrace) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setPreviewTrace(null);
+      if (event.key === "Escape") {
+        sound.playRole("close");
+        setPreviewTrace(null);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [previewTrace]);
+  }, [previewTrace, sound]);
 
   return (
     <>
@@ -2579,7 +2610,8 @@ function FutureChambersScene() {
                             className="group/cover block w-full text-left focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
                             aria-expanded={isInspecting}
                             aria-controls={tracePanelId}
-                            onClick={() => setInspectedTraceId(isInspecting ? null : item.id)}
+                            onMouseEnter={() => sound.playRole("hover")}
+                            onClick={() => toggleTracePanel(item.id, isInspecting)}
                           >
                             <span className="relative block aspect-[16/10] overflow-hidden border border-neutral-950/12 bg-white/35">
                               <img
@@ -2599,7 +2631,8 @@ function FutureChambersScene() {
                             className="w-fit border-b border-neutral-950/30 pb-1 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
                             aria-expanded={isInspecting}
                             aria-controls={tracePanelId}
-                            onClick={() => setInspectedTraceId(isInspecting ? null : item.id)}
+                            onMouseEnter={() => sound.playRole("hover")}
+                            onClick={() => toggleTracePanel(item.id, isInspecting)}
                           >
                             {isInspecting ? "Close traces" : "View traces"}
                           </button>
@@ -2629,7 +2662,11 @@ function FutureChambersScene() {
                                     <button
                                       type="button"
                                       className="group/trace block aspect-[16/10] w-full overflow-hidden border border-neutral-950/12 bg-neutral-100 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
-                                      onClick={() => setPreviewTrace({ chamberTitle: item.title, trace })}
+                                      onMouseEnter={() => sound.playRole("hover")}
+                                      onClick={() => {
+                                        sound.playRole("open");
+                                        setPreviewTrace({ chamberTitle: item.title, trace });
+                                      }}
                                     >
                                       <img
                                         src={trace.src}
@@ -2672,7 +2709,10 @@ function FutureChambersScene() {
           aria-modal="true"
           aria-label={`${previewTrace.chamberTitle} trace preview`}
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setPreviewTrace(null);
+            if (event.target === event.currentTarget) {
+              sound.playRole("close");
+              setPreviewTrace(null);
+            }
           }}
         >
           <motion.div
@@ -2694,7 +2734,11 @@ function FutureChambersScene() {
               <button
                 type="button"
                 className="border-b border-neutral-950/32 pb-1 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
-                onClick={() => setPreviewTrace(null)}
+                onMouseEnter={() => sound.playRole("hover")}
+                onClick={() => {
+                  sound.playRole("close");
+                  setPreviewTrace(null);
+                }}
               >
                 Close
               </button>

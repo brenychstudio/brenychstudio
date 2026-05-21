@@ -119,12 +119,15 @@ const buildSystems: BuildSystem[] = [
   },
 ];
 
-const systemLayers = [
+const coreSystemLayers = [
   ["Strategy", "Offer shape, audience logic, proof hierarchy, project priorities, and commercial clarity."],
   ["Interface Architecture", "Page model, section system, user journeys, decision paths, and interaction states."],
   ["Visual System", "Typography, layout rhythm, media treatment, hierarchy, and premium surface language."],
   ["Motion Grammar", "Transitions, reveal logic, feedback states, and signature behaviors that explain structure."],
   ["Front-end Delivery", "Production-ready React build, responsive implementation, QA pass, and deploy-ready structure."],
+];
+
+const optionalSystemLayers = [
   ["Multilingual Layer", "Language structure, translation-ready content, locale-aware UI, and international presentation logic."],
   ["Immersive Extension", "Optional WebGL, spatial prototype, cinematic object, or future-facing experience layer."],
 ];
@@ -166,11 +169,11 @@ const formats: Format[] = [
   {
     title: "Available System Adaptation",
     description:
-      "Start from an existing Brenych Studio concept and adapt it into a production-ready website, product surface, campaign page, or interactive presentation system.",
+      "Adapt an existing Brenych Studio direction into a production-ready website, product surface, or campaign system.",
     bestFor:
-      "Clients who already see a direction they like and want to move faster with a proven visual and structural foundation.",
+      "Clients who already see a direction they like and want to move faster.",
     output:
-      "Adapted visual system, client-specific content, responsive front-end, deployment-ready build, and optional exclusivity discussion.",
+      "Adapted visual system, client content, responsive front-end, and deploy-ready build.",
   },
   {
     title: "Landing Sprint",
@@ -180,28 +183,33 @@ const formats: Format[] = [
   },
   {
     title: "Micro-site",
-    description: "A compact multi-section or multi-page surface for a campaign, studio, service, cultural project, or proof archive.",
-    bestFor: "Projects that need more structure than a landing page but not a full platform.",
+    description: "A compact multi-section or multi-page surface for a campaign, studio, service, or proof archive.",
+    bestFor: "Projects that need more structure than a landing page.",
     output: "A clear editorial site system with reusable sections and strong visual rhythm.",
   },
   {
     title: "Product / Founder Demo",
-    description: "A sharp interface prototype that makes workflow, product logic, data states, or founder narrative visible.",
+    description: "An interface prototype that makes product logic, workflow, or founder narrative visible.",
     bestFor: "Early products, internal tools, investor demos, and product-led proof.",
     output: "A working surface that explains the product through interaction, not slides.",
   },
   {
     title: "Immersive Prototype",
-    description: "A future-facing WebGL, spatial, or cinematic experience connected to a real brand, product, or archive direction.",
-    bestFor: "Teams that need a signature digital moment or experimental proof of direction.",
+    description: "A contained WebGL, spatial, or cinematic proof tied to a real brand, product, or archive.",
+    bestFor: "Teams that need a signature digital moment or proof of direction.",
     output: "A contained immersive prototype that can sit beside the commercial system.",
   },
   {
     title: "Creative Technology Direction",
-    description: "A senior systems pass for teams that need the right concept, interface architecture, or motion model before production.",
+    description: "A senior systems pass before production: concept, interface architecture, motion model, and build direction.",
     bestFor: "Brands and teams with ambition but an unclear digital shape.",
     output: "A practical direction model, not just inspiration.",
   },
+];
+
+const formatGroups = [
+  { label: "Primary entry points", note: "Most common ways to begin.", items: formats.slice(0, 3) },
+  { label: "Secondary directions", note: "Specialized proof, prototype, or direction work.", items: formats.slice(3) },
 ];
 
 const deliverables = [
@@ -209,7 +217,6 @@ const deliverables = [
   "Structured content and section logic",
   "Responsive interface system",
   "Motion language and interaction states",
-  "SEO and metadata basics",
   "QA, launch support, and handoff notes",
 ];
 
@@ -446,8 +453,8 @@ function BuildSystemsInterface() {
               }}
               className={`group relative grid min-h-[6.2rem] w-full grid-cols-[3rem_1fr] gap-4 border-b border-neutral-950/10 py-4 pr-4 text-left transition last:border-b-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:grid-cols-[4rem_1fr] ${
                 isActive
-                  ? "bg-white/72 text-neutral-950"
-                  : "text-neutral-500 hover:bg-white/44 hover:text-neutral-950"
+                  ? "bg-white/86 text-neutral-950 shadow-[0_18px_54px_rgba(24,24,22,0.06)]"
+                  : "text-neutral-400 opacity-[0.62] hover:bg-white/38 hover:text-neutral-800 hover:opacity-100"
               }`}
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -456,7 +463,7 @@ function BuildSystemsInterface() {
             >
               <span
                 className={`font-mono text-[10px] uppercase tracking-[0.16em] transition ${
-                  isActive ? "text-neutral-950" : "text-neutral-300 group-hover:text-neutral-400"
+                  isActive ? "text-neutral-950" : "text-neutral-300 group-hover:text-neutral-500"
                 }`}
               >
                 {String(index + 1).padStart(2, "0")}
@@ -467,7 +474,7 @@ function BuildSystemsInterface() {
                 </span>
                 <span
                   className={`mt-3 block font-mono text-[10px] uppercase leading-5 tracking-[0.15em] transition ${
-                    isActive ? "text-neutral-500" : "text-neutral-400"
+                    isActive ? "text-neutral-500" : "text-neutral-300 group-hover:text-neutral-400"
                   }`}
                 >
                   {item.signal}
@@ -476,6 +483,11 @@ function BuildSystemsInterface() {
               <span
                 className={`absolute bottom-4 left-0 top-4 w-px bg-neutral-950 transition ${
                   isActive ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 group-hover:scale-y-50 group-hover:opacity-25"
+                }`}
+              />
+              <span
+                className={`absolute right-4 top-4 h-2 w-2 rounded-full border transition ${
+                  isActive ? "border-neutral-950 bg-neutral-950" : "border-neutral-950/16 bg-transparent group-hover:border-neutral-950/32"
                 }`}
               />
             </motion.button>
@@ -541,32 +553,63 @@ function BuildSystemsInterface() {
 }
 
 function SystemLayerSpine() {
+  const layerGroups = [
+    { label: "Core layers", layers: coreSystemLayers, optional: false },
+    { label: "Optional layers", layers: optionalSystemLayers, optional: true },
+  ];
+  let layerIndex = 0;
+
   return (
     <div className="relative overflow-hidden border-y border-neutral-950/14 bg-white/24">
       <div className="pointer-events-none absolute left-[2.15rem] top-0 h-full w-px bg-neutral-950/12 sm:left-[4.65rem]" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px)] [background-size:64px_64px]" />
 
-      {systemLayers.map(([label, text], index) => (
-        <motion.div
-          key={label}
-          className="relative grid gap-4 border-b border-neutral-950/10 px-4 py-5 last:border-b-0 sm:grid-cols-[5rem_1fr] sm:px-6"
-          initial={{ opacity: 0, x: 18 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.48, ease, delay: index * 0.04 }}
-        >
-          <div className="relative flex items-center gap-4">
-            <span className="relative z-10 h-3 w-3 rounded-full border border-neutral-950 bg-[#f3f0e9]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-              {String(index + 1).padStart(2, "0")}
-            </span>
+      {layerGroups.map((group) => (
+        <div key={group.label} className="relative border-b border-neutral-950/10 last:border-b-0">
+          <div className="grid gap-3 border-b border-neutral-950/10 px-4 py-3 sm:grid-cols-[5rem_1fr] sm:px-6">
+            <div />
+            <div className="flex items-center justify-between gap-4">
+              <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">{group.label}</div>
+              {group.optional ? (
+                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">Add when useful</div>
+              ) : null}
+            </div>
           </div>
 
-          <div className="grid gap-3 lg:grid-cols-[14rem_1fr]">
-            <div className="text-[15px] uppercase tracking-[0.11em] text-neutral-950">{label}</div>
-            <p className="text-[14px] leading-6 text-neutral-600">{text}</p>
-          </div>
-        </motion.div>
+          {group.layers.map(([label, text]) => {
+            const index = layerIndex;
+            layerIndex += 1;
+
+            return (
+              <motion.div
+                key={label}
+                className={`relative grid gap-4 border-b border-neutral-950/10 px-4 py-5 last:border-b-0 sm:grid-cols-[5rem_1fr] sm:px-6 ${
+                  group.optional ? "bg-white/[0.18]" : ""
+                }`}
+                initial={{ opacity: 0, x: 18 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.48, ease, delay: index * 0.04 }}
+              >
+                <div className="relative flex items-center gap-4">
+                  <span
+                    className={`relative z-10 h-3 w-3 rounded-full border ${
+                      group.optional ? "border-neutral-950/32 bg-white/40" : "border-neutral-950 bg-[#f3f0e9]"
+                    }`}
+                  />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <div className="grid gap-3 lg:grid-cols-[14rem_1fr]">
+                  <div className={`text-[15px] uppercase tracking-[0.11em] ${group.optional ? "text-neutral-600" : "text-neutral-950"}`}>{label}</div>
+                  <p className={`text-[14px] leading-6 ${group.optional ? "text-neutral-500" : "text-neutral-600"}`}>{text}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       ))}
     </div>
   );
@@ -773,8 +816,8 @@ export default function OfferV2({
                   Not a page. A system.
                 </h2>
                 <p className="mt-7 max-w-[31rem] text-[15px] leading-7 text-neutral-600">
-                  The commercial surface is built from connected layers: the offer, the interface, the visual language,
-                  the motion behavior, the front-end, and the optional future-facing extension.
+                  The commercial surface is built from five core layers. Multilingual and immersive layers stay available
+                  when the project genuinely needs them.
                 </p>
               </div>
 
@@ -825,27 +868,55 @@ export default function OfferV2({
               </div>
 
               <div className="grid border-y border-neutral-950/14">
-                {formats.map((item, index) => (
-                  <article key={item.title} className="grid gap-5 border-b border-neutral-950/10 py-5 last:border-b-0 lg:grid-cols-[3rem_0.72fr_1fr]">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-                    <div>
-                      <h3 className="text-[30px] font-normal leading-none tracking-[-0.04em] text-neutral-950">{item.title}</h3>
-                      <p className="mt-4 text-[14px] leading-6 text-neutral-600">{item.description}</p>
-                    </div>
-                    <div className="grid gap-4">
-                      <div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Best for</div>
-                        <p className="mt-2 text-[14px] leading-6 text-neutral-700">{item.bestFor}</p>
+                {formatGroups.map((group, groupIndex) => {
+                  const startIndex = groupIndex === 0 ? 0 : 3;
+
+                  return (
+                    <div key={group.label} className="border-b border-neutral-950/10 last:border-b-0">
+                      <div className="grid gap-2 border-b border-neutral-950/10 py-4 lg:grid-cols-[3rem_1fr]">
+                        <div className="hidden lg:block" />
+                        <div className="flex flex-wrap items-end justify-between gap-3">
+                          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-500">{group.label}</div>
+                          <div className="max-w-[22rem] text-[12px] leading-5 text-neutral-400">{group.note}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Output</div>
-                        <p className="mt-2 text-[14px] leading-6 text-neutral-700">{item.output}</p>
-                      </div>
+
+                      {group.items.map((item, index) => {
+                        const absoluteIndex = startIndex + index;
+                        const primary = groupIndex === 0;
+
+                        return (
+                          <article
+                            key={item.title}
+                            className={`grid gap-4 border-b border-neutral-950/10 py-5 last:border-b-0 lg:grid-cols-[3rem_0.76fr_0.94fr] ${
+                              primary ? "" : "text-neutral-600"
+                            }`}
+                          >
+                            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+                              {String(absoluteIndex + 1).padStart(2, "0")}
+                            </div>
+                            <div>
+                              <h3 className={`font-normal leading-none tracking-[-0.04em] ${primary ? "text-[30px] text-neutral-950" : "text-[26px] text-neutral-800"}`}>
+                                {item.title}
+                              </h3>
+                              <p className={`mt-3 text-[14px] leading-6 ${primary ? "text-neutral-600" : "text-neutral-500"}`}>{item.description}</p>
+                            </div>
+                            <div className="grid gap-2 self-start border-t border-neutral-950/8 pt-3 text-[12px] leading-5 text-neutral-500 lg:border-t-0 lg:pt-1">
+                              <p>
+                                <span className="mr-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-300">Best</span>
+                                {item.bestFor}
+                              </p>
+                              <p>
+                                <span className="mr-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-300">Output</span>
+                                {item.output}
+                              </p>
+                            </div>
+                          </article>
+                        );
+                      })}
                     </div>
-                  </article>
-                ))}
+                  );
+                })}
                 <div className="border-t border-neutral-950/10 py-4 text-[12px] leading-6 text-neutral-500">
                   Availability does not mean instant resale of the existing project as-is. Each adaptation is
                   commissioned and customized for the client's brand, content, audience, market, and deployment

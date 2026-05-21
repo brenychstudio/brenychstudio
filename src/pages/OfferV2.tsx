@@ -592,75 +592,36 @@ function DeliveryModelEngine({
 
       <div className="relative lg:min-h-[760px]">
         <motion.div
-          className="relative min-h-[460px] overflow-hidden border-b border-neutral-950/10 lg:min-h-[760px] lg:border-b-0"
+          className="relative min-h-[560px] overflow-hidden sm:min-h-[640px] lg:min-h-[760px]"
           initial={{ opacity: 0.78 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.72, ease }}
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex min-h-12 justify-end border-b border-neutral-950/10 px-4 lg:pr-[23rem]">
-            <div className="self-center font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{current.label} active</div>
+          <div className="absolute inset-x-0 top-0 z-20 flex min-h-14 items-center justify-between gap-4 border-b border-neutral-950/10 px-4 sm:px-5">
+            <div className="pointer-events-none font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+              {current.label} active
+            </div>
+            <button
+              type="button"
+              onMouseEnter={() => sound.playRole("hover")}
+              onClick={onOpenInterface}
+              className="inline-flex min-h-10 shrink-0 items-center justify-center border border-neutral-950 bg-neutral-950 px-4 text-[10px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+            >
+              Open interface -&gt;
+            </button>
           </div>
 
-          <div className="absolute inset-y-0 left-0 right-0 pt-12 lg:right-[22rem] xl:right-[23.5rem]">
-            <OfferDeliveryModelEngine stages={deliveryStages} activeStage={activeStage} />
+          <div className="absolute inset-0 pt-14">
+            <OfferDeliveryModelEngine
+              stages={deliveryStages}
+              activeStage={activeStage}
+              onSelectStage={setActiveStage}
+              onStageHover={() => sound.playRole("hover")}
+              variant="wide"
+            />
           </div>
         </motion.div>
-
-        <aside className="relative border-t border-neutral-950/10 bg-white/[0.44] p-5 backdrop-blur-[2px] sm:p-7 lg:absolute lg:right-6 lg:top-16 lg:z-20 lg:w-[20rem] lg:border lg:border-neutral-950/10 lg:bg-white/58 xl:right-8 xl:w-[21rem]">
-          <SectionLabel>Stage control</SectionLabel>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current.title}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.34, ease }}
-              className="mt-8 border-y border-neutral-950/10 py-5"
-            >
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{current.label}</div>
-              <h3 className="mt-4 text-[32px] font-normal leading-[0.94] tracking-[-0.045em] text-neutral-950">
-                {current.title}
-              </h3>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="mt-5 grid gap-2">
-            {deliveryStages.map((stage, index) => {
-              const active = index === activeStage;
-
-              return (
-                <button
-                  key={stage.title}
-                  type="button"
-                  onMouseEnter={() => sound.playRole("hover")}
-                  onFocus={() => setActiveStage(index)}
-                  onClick={() => setActiveStage(index)}
-                  className={`grid min-h-12 grid-cols-[3rem_1fr] items-center gap-3 border px-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
-                    active
-                      ? "border-neutral-950 bg-neutral-950 text-white"
-                      : "border-neutral-950/10 bg-white/34 text-neutral-600 hover:border-neutral-950/28 hover:bg-white/70 hover:text-neutral-950"
-                  }`}
-                >
-                  <span className={`font-mono text-[10px] uppercase tracking-[0.14em] ${active ? "text-white/52" : "text-neutral-300"}`}>
-                    {stage.label}
-                  </span>
-                  <span className="text-[14px] leading-5">{stage.title}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <button
-            type="button"
-            onMouseEnter={() => sound.playRole("hover")}
-            onClick={onOpenInterface}
-            className="mt-5 inline-flex min-h-11 w-full items-center justify-center border border-neutral-950 bg-neutral-950 px-4 text-[10px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
-          >
-            Open interface -&gt;
-          </button>
-        </aside>
       </div>
     </div>
   );

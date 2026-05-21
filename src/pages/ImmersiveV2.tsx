@@ -199,6 +199,7 @@ type WhisperProofState = {
   id: WhisperProofId;
   index: string;
   label: string;
+  railLabel: string;
   signal: string;
   readout: string;
   media: {
@@ -213,7 +214,8 @@ const whisperProofStates: WhisperProofState[] = [
   {
     id: "web",
     index: "01",
-    label: "web exhibition",
+    label: "Web exhibition",
+    railLabel: "Web",
     signal: "public cinematic surface",
     readout: "The public website becomes the first threshold: image, motion, text, and navigation behave as one exhibition field.",
     media: {
@@ -230,9 +232,10 @@ const whisperProofStates: WhisperProofState[] = [
   {
     id: "mobile",
     index: "02",
-    label: "mobile presentation",
+    label: "Mobile presentation",
+    railLabel: "Mobile",
     signal: "handheld threshold",
-    readout: "The public exhibition compresses into a handheld threshold without losing cinematic atmosphere or collector context.",
+    readout: "The handheld surface keeps the archive present without flattening the atmosphere.",
     media: {
       type: "image",
       src: "/immersive/Whisper/mobile/whisper-mb-3.jpg",
@@ -246,9 +249,10 @@ const whisperProofStates: WhisperProofState[] = [
   {
     id: "print",
     index: "03",
-    label: "print logic",
+    label: "Print edition",
+    railLabel: "Print",
     signal: "edition surface",
-    readout: "The web surface connects to edition data, print selection, pricing, and a collector-facing object system.",
+    readout: "Edition logic extends the digital work into collectible object form.",
     media: {
       type: "image",
       src: "/immersive/Whisper/desktop/whisper-7.jpg",
@@ -263,8 +267,9 @@ const whisperProofStates: WhisperProofState[] = [
     id: "ar",
     index: "04",
     label: "AR preview",
+    railLabel: "AR",
     signal: "screen to object",
-    readout: "Preview logic turns the flat screen into a bridge toward object scale, room context, and collector confidence.",
+    readout: "Preview logic connects the screen surface to physical placement and scale.",
     media: {
       type: "image",
       src: "/immersive/Whisper/desktop/whisper-9.jpg",
@@ -279,8 +284,9 @@ const whisperProofStates: WhisperProofState[] = [
     id: "quest",
     index: "05",
     label: "Quest-tested spatial room",
+    railLabel: "Room",
     signal: "room-scale proof",
-    readout: "The final proof moves beyond presentation: WHISPER becomes a Quest-tested spatial room with photographic memory around the viewer.",
+    readout: "The archive becomes a spatial room with photographic memory around the viewer.",
     media: {
       type: "video",
       src: "/immersive/Whisper/Video/whisper-vr-video.mp4",
@@ -293,6 +299,227 @@ const whisperProofStates: WhisperProofState[] = [
     ],
   },
 ];
+
+function WhisperProofMedia({
+  proof,
+  className,
+  fit = "cover",
+}: {
+  proof: WhisperProofState;
+  className?: string;
+  fit?: "cover" | "contain";
+}) {
+  const fitClass = fit === "contain" ? "object-contain" : "object-cover";
+
+  if (proof.media.type === "video") {
+    return (
+      <video
+        className={`${fitClass} ${className ?? ""}`}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={proof.media.poster}
+      >
+        <source src={proof.media.src} type="video/mp4" />
+      </video>
+    );
+  }
+
+  return <img src={proof.media.src} alt="" className={`${fitClass} ${className ?? ""}`} />;
+}
+
+function WhisperProofTrace({
+  src,
+  className,
+}: {
+  src?: string;
+  className?: string;
+}) {
+  if (!src) return null;
+
+  return <img src={src} alt="" className={`object-cover ${className ?? ""}`} />;
+}
+
+function SurfaceProofStage({
+  proof,
+  reduceMotion,
+  onNext,
+}: {
+  proof: WhisperProofState;
+  reduceMotion: boolean | null;
+  onNext: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onNext}
+      aria-label={`Show next WHISPER proof surface after ${proof.railLabel}`}
+      className="group relative block min-h-[24rem] w-full overflow-hidden border border-neutral-950/10 bg-white/[0.34] text-left shadow-[0_44px_128px_rgba(24,24,22,0.1)] outline-none transition focus-visible:ring-2 focus-visible:ring-neutral-950 sm:min-h-[32rem] lg:min-h-[58vh]"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,rgba(255,255,255,0.46),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.2),rgba(238,238,233,0.16))]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.38] [background-image:linear-gradient(to_right,rgba(10,10,10,0.052)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.045)_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div className="pointer-events-none absolute inset-x-[5%] top-[8%] h-px bg-neutral-950/10" />
+      <div className="pointer-events-none absolute inset-x-[5%] bottom-[8%] h-px bg-neutral-950/8" />
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={proof.id}
+          className="absolute inset-0"
+          initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 10, scale: 0.992 }}
+          animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10, scale: 1.006 }}
+          transition={{ duration: 0.52, ease }}
+        >
+          {renderWhisperSurface(proof)}
+        </motion.div>
+      </AnimatePresence>
+
+      <span className="pointer-events-none absolute left-4 top-4 z-20 font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-950/48 sm:left-5 sm:top-5 sm:text-[9px]">
+        WHISPER / Surface {proof.index}
+      </span>
+      <span className="pointer-events-none absolute bottom-4 right-4 z-20 hidden border-t border-neutral-950/22 pt-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-950/48 transition group-hover:text-neutral-950 sm:block">
+        Next surface -&gt;
+      </span>
+    </button>
+  );
+}
+
+function renderWhisperSurface(proof: WhisperProofState) {
+  switch (proof.id) {
+    case "mobile":
+      return (
+        <div className="absolute inset-0">
+          <WhisperProofTrace
+            src={proof.traces[1]}
+            className="absolute left-[16%] top-[20%] h-[55%] w-[20%] -rotate-[10deg] opacity-[0.16] grayscale blur-[0.2px]"
+          />
+          <WhisperProofTrace
+            src={proof.traces[0]}
+            className="absolute right-[14%] top-[17%] h-[60%] w-[24%] rotate-[8deg] opacity-[0.1] grayscale blur-[0.3px]"
+          />
+          <div className="pointer-events-none absolute left-[13%] top-[17%] h-[62%] w-[28%] border border-neutral-950/10" />
+          <div className="pointer-events-none absolute right-[13%] top-[21%] h-[54%] w-[25%] border border-neutral-950/8" />
+          <div className="absolute inset-0 flex items-center justify-center px-8 py-12 sm:px-12 sm:py-14">
+            <div className="relative h-[82%] max-h-[38rem] min-h-[18rem] aspect-[9/19] overflow-hidden rounded-[1.6rem] border-[7px] border-neutral-950 bg-neutral-950 shadow-[0_30px_110px_rgba(0,0,0,0.28)] sm:border-[10px]">
+              <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.05] contrast-[1.05]" />
+              <span className="absolute left-1/2 top-2 h-1.5 w-12 -translate-x-1/2 rounded-full bg-white/16" />
+              <span className="absolute inset-0 ring-1 ring-inset ring-white/12" />
+            </div>
+          </div>
+          <div className="pointer-events-none absolute left-[28%] top-[72%] h-px w-[44%] bg-neutral-950/18" />
+          <div className="pointer-events-none absolute left-[48%] top-[16%] h-[70%] w-px bg-neutral-950/8" />
+        </div>
+      );
+
+    case "print":
+      return (
+        <div className="absolute inset-0">
+          <div className="pointer-events-none absolute left-[14%] top-[18%] h-[58%] w-[54%] -rotate-[4deg] border border-neutral-950/10 bg-white/[0.18] shadow-[0_28px_95px_rgba(28,28,24,0.1)]" />
+          <div className="pointer-events-none absolute right-[11%] top-[23%] h-[48%] w-[38%] rotate-[5deg] border border-neutral-950/8 bg-white/[0.12]" />
+          <div className="absolute inset-0 flex items-center justify-center px-7 py-12 sm:px-12">
+            <div className="relative w-[min(82%,48rem)] rotate-[1.2deg] border border-neutral-950/22 bg-[#f8f8f5] p-4 shadow-[0_38px_130px_rgba(28,28,24,0.2)] sm:p-6">
+              <div className="grid gap-4 sm:grid-cols-[minmax(0,1.15fr)_0.85fr] sm:gap-5">
+                <div className="relative min-h-[12rem] overflow-hidden bg-neutral-950 sm:min-h-[18rem]">
+                  <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.08] contrast-[1.14] brightness-[1.02]" />
+                  <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.08))]" />
+                </div>
+                <div className="flex min-h-[12rem] flex-col justify-between border-l border-neutral-950/18 pl-4 font-mono uppercase tracking-[0.16em] text-neutral-950 sm:min-h-[18rem] sm:pl-5">
+                  <div>
+                    <div className="text-[9px] text-neutral-500">Whisper / Edition Archive</div>
+                    <div className="mt-5 text-[18px] leading-none tracking-normal sm:text-[24px]">Limited Edition</div>
+                    <div className="mt-3 h-px w-full bg-neutral-950/24" />
+                  </div>
+                  <div className="text-[9px] leading-5 text-neutral-500">
+                    Object proof / collector surface
+                    <br />
+                    Archive continuity / 03
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between border-t border-neutral-950/18 pt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500">
+                <span>Printed atmosphere</span>
+                <span>Edition 01 / 30</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "ar":
+      return (
+        <div className="absolute inset-0">
+          <div className="pointer-events-none absolute inset-[10%] border border-neutral-950/8 opacity-[0.72] [background-image:linear-gradient(to_right,rgba(10,10,10,0.042)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.038)_1px,transparent_1px)] [background-size:38px_38px]" />
+          <div className="pointer-events-none absolute left-[15%] top-[18%] h-[56%] w-[70%] border border-neutral-950/10" />
+          <div className="pointer-events-none absolute left-[24%] top-[28%] h-[40%] w-[52%] rotate-[-9deg] border border-neutral-950/8" />
+          <div className="absolute inset-0 flex items-center justify-center px-8 py-12">
+            <div className="relative w-[min(78%,48rem)]">
+              <div className="relative aspect-[1.58/1] overflow-hidden border border-neutral-950/18 bg-white/[0.18] shadow-[0_34px_118px_rgba(24,24,22,0.14)]">
+                <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.08] contrast-[1.12] brightness-[1.02]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_52%_46%,transparent_0,transparent_48%,rgba(246,246,243,0.18)_84%)]" />
+                <span className="absolute left-4 top-4 h-7 w-7 border-l border-t border-white/74" />
+                <span className="absolute right-4 top-4 h-7 w-7 border-r border-t border-white/74" />
+                <span className="absolute bottom-4 left-4 h-7 w-7 border-b border-l border-white/74" />
+                <span className="absolute bottom-4 right-4 h-7 w-7 border-b border-r border-white/74" />
+              </div>
+              <div className="mt-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-500">
+                <span className="h-2 w-2 rounded-full border border-neutral-950/40 bg-white/40" />
+                <span>Placement plane / scale preview</span>
+                <span className="h-px flex-1 bg-neutral-950/16" />
+              </div>
+            </div>
+          </div>
+          <WhisperProofTrace
+            src={proof.traces[0]}
+            className="absolute bottom-[14%] right-[13%] h-[30%] w-[12%] opacity-[0.14] grayscale"
+          />
+        </div>
+      );
+
+    case "quest":
+      return (
+        <div className="absolute inset-0 bg-white/[0.22]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_54%_44%,rgba(255,255,255,0.36),transparent_35%),radial-gradient(circle_at_50%_78%,rgba(0,0,0,0.1),transparent_48%)]" />
+          <div className="absolute inset-x-[6%] top-[13%] bottom-[16%] overflow-hidden bg-neutral-950 shadow-[0_42px_138px_rgba(0,0,0,0.3)]">
+            <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.08] contrast-[1.08] brightness-[0.9]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.42),transparent_28%,transparent_72%,rgba(0,0,0,0.38)),radial-gradient(circle_at_50%_42%,transparent_0,rgba(0,0,0,0.18)_54%,rgba(0,0,0,0.52)_100%)]" />
+            <div className="absolute inset-x-[6%] bottom-[9%] h-[28%] opacity-[0.35] [background-image:linear-gradient(to_right,rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:46px_28px]" />
+            <div className="absolute bottom-[11%] left-[8%] right-[8%] h-px bg-white/28" />
+          </div>
+          <div className="pointer-events-none absolute left-[8%] top-[11%] h-[72%] w-[24%] border-l border-neutral-950/12" />
+          <div className="pointer-events-none absolute right-[8%] top-[11%] h-[72%] w-[24%] border-r border-neutral-950/12" />
+        </div>
+      );
+
+    case "web":
+    default:
+      return (
+        <div className="absolute inset-0">
+          <WhisperProofTrace
+            src={proof.traces[0]}
+            className="absolute bottom-[12%] left-[9%] h-[18%] w-[28%] opacity-[0.12] grayscale"
+          />
+          <WhisperProofTrace
+            src={proof.traces[1]}
+            className="absolute right-[8%] top-[16%] h-[20%] w-[24%] opacity-[0.1] grayscale"
+          />
+          <div className="absolute inset-0 flex items-center justify-center px-6 py-12 sm:px-10">
+            <div className="relative w-[min(94%,58rem)] overflow-hidden bg-neutral-950 shadow-[0_40px_130px_rgba(0,0,0,0.26)]">
+              <div className="aspect-[16/9]">
+                <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.1] contrast-[1.08] brightness-[1]" />
+                <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.18))]" />
+              </div>
+              <div className="absolute left-0 right-0 top-0 flex items-center justify-between border-b border-white/12 bg-black/22 px-4 py-3 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 sm:text-[9px]">
+                <span>Whisper / Web exhibition</span>
+                <span>Public threshold</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+  }
+}
 
 type ChamberSelectionState = {
   activeChamberId: ImmersiveChamberId;
@@ -1908,8 +2135,9 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
 
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
       const rect = node.getBoundingClientRect();
-      const travel = Math.max(rect.height - viewportHeight, 1);
-      const progress = Math.min(1, Math.max(0, (viewportHeight * 0.12 - rect.top) / travel));
+      const progressStart = viewportHeight * 0.05;
+      const progressEnd = -viewportHeight * 0.52;
+      const progress = Math.min(1, Math.max(0, (progressStart - rect.top) / Math.max(progressStart - progressEnd, 1)));
       const nextPhase = progress * (whisperProofStates.length - 1);
       const nextIndex = Math.min(whisperProofStates.length - 1, Math.round(nextPhase));
       const exitStart = Math.min(viewportHeight * 0.34, 380);
@@ -1948,11 +2176,13 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
     selectProofIndex(activeProofIndex + (deltaX < 0 ? 1 : -1));
   };
 
+  const relayProgress = proofCount > 1 ? Math.min(100, Math.max(0, (proofPhase / (proofCount - 1)) * 100)) : 0;
+
   return (
-    <Chapter id="proof" className="relative px-4 pb-4 pt-0 sm:px-6 lg:px-8">
-      <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(96vw,1780px)]">
+    <Chapter id="proof" className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(94vw,1680px)]">
         <div
-          className="sticky top-[3.75rem] min-h-[calc(100vh-3.75rem)] overflow-hidden border-y border-white/12 bg-[#090908] text-white shadow-[0_54px_180px_rgba(0,0,0,0.22)]"
+          className="sticky top-[4.75rem] min-h-[calc(100vh-6rem)] overflow-hidden border-y border-neutral-950/12 bg-white/[0.16] text-neutral-950 backdrop-blur-[1px]"
           style={{ opacity: 1 - proofExitBlend, pointerEvents: proofExitBlend > 0.82 ? "none" : undefined }}
           onPointerDown={handleProofPointerDown}
           onPointerUp={handleProofPointerUp}
@@ -1960,131 +2190,41 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
             dragRef.current = null;
           }}
         >
-          <img
-            src="/immersive/Whisper/desktop/whisper-hero.jpg"
-            alt=""
-            className="pointer-events-none absolute inset-[-5%] h-[110%] w-[110%] object-cover opacity-38 saturate-[1.08] contrast-[1.04]"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,rgba(255,255,255,0.15),transparent_31%),linear-gradient(90deg,rgba(4,4,4,0.84),rgba(9,9,8,0.58)_48%,rgba(4,4,4,0.9))]" />
-          <div className="pointer-events-none absolute inset-0 opacity-[0.075] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:92px_92px]" />
-          <div className="pointer-events-none absolute left-[8%] top-[12%] h-[74%] w-[64%] rounded-[50%] border border-white/10" />
-          <div className="pointer-events-none absolute left-[30%] top-[24%] h-[45%] w-[38%] rotate-[-12deg] rounded-[50%] border border-white/12" />
-          <div className="pointer-events-none absolute left-[6%] top-[58%] h-px w-[88%] rotate-[8deg] bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.38] [background-image:linear-gradient(to_right,rgba(10,10,10,0.075)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.06)_1px,transparent_1px)] [background-size:92px_92px]" />
+          <div className="pointer-events-none absolute left-[18%] top-[9%] h-[72%] w-[62%] rounded-[50%] border border-neutral-950/7" />
+          <div className="pointer-events-none absolute left-[44%] top-[18%] h-[48%] w-[34%] rotate-[-12deg] rounded-[50%] border border-neutral-950/8" />
+          <div className="pointer-events-none absolute left-[6%] top-[55%] h-px w-[88%] rotate-[-8deg] bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
 
-          <div className="relative z-10 min-h-[calc(100vh-3.75rem)] p-6 sm:p-8 lg:p-12 xl:p-16">
-            <div className="pointer-events-none absolute inset-x-[4%] top-[17%] h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
-            <div className="pointer-events-none absolute inset-x-[4%] bottom-[14%] h-px bg-gradient-to-r from-transparent via-white/16 to-transparent" />
+          <div className="relative z-10 min-h-[calc(100vh-6rem)] p-6 sm:p-8 lg:p-12 xl:p-14">
+            <div className="pointer-events-none absolute inset-x-[4%] top-[14%] h-px bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-[4%] bottom-[14%] h-px bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
 
-            <div className="relative z-30 max-w-[36rem]">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.24em] text-white/42">Completed proof / WHISPER</div>
+            <div className="relative z-30 grid min-h-[calc(100vh-13rem)] items-center gap-9 xl:grid-cols-[minmax(20rem,0.36fr)_minmax(0,0.64fr)] xl:gap-12 2xl:gap-14">
+              <div className="max-w-[36rem]">
+                <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Completed proof / WHISPER</div>
                 <KineticTitle
                   text="The first completed spatial proof."
-                  className="mt-6 max-w-[8.5ch] text-[54px] font-normal leading-[0.84] tracking-normal text-white sm:text-[82px] xl:text-[104px]"
+                  className="mt-6 max-w-[8.5ch] text-[54px] font-normal leading-[0.84] tracking-normal text-neutral-950 sm:text-[82px] xl:text-[102px]"
                 />
-              </div>
-            </div>
+                <p className="mt-8 max-w-[34rem] text-[15px] leading-7 text-neutral-600">
+                  WHISPER proves that one photographic archive can move across web, mobile, print, AR, and room-scale
+                  presence without losing atmosphere.
+                </p>
 
-            <div className="pointer-events-none absolute inset-y-[8%] left-[3%] right-[3%] z-10">
-              {whisperProofStates.map((proof, index) => {
-                const wrappedOffset = ((index - proofPhase + proofCount / 2 + proofCount) % proofCount) - proofCount / 2;
-                const distance = Math.abs(wrappedOffset);
-                const active = distance < 0.52;
-                const mediaSource = proof.media.poster ?? proof.media.src;
-                const width = proof.id === "mobile" ? "clamp(16rem, 20vw, 24rem)" : "clamp(20rem, 30vw, 35rem)";
-                const height = proof.id === "mobile" ? "clamp(25rem, 56vh, 36rem)" : "clamp(24rem, 54vh, 34rem)";
-                const x = `${wrappedOffset * 38}vw`;
-                const y = `${Math.sin(wrappedOffset * 1.3) * 5 + distance * 2}vh`;
-                const scale = Math.max(0.54, 1 - distance * 0.18);
-                const rotate = wrappedOffset * -8;
-                const opacity = Math.max(0.22, 1 - distance * 0.28);
-                const zIndex = Math.round(80 - distance * 18);
-
-                return (
-                  <motion.button
-                    key={proof.id}
-                    type="button"
-                    onClick={() => selectProofIndex(index)}
-                    onFocus={() => selectProofIndex(index)}
-                    className="pointer-events-auto absolute left-1/2 top-[43%] block origin-center -translate-x-1/2 -translate-y-1/2 text-left outline-none"
-                    style={{
-                      width,
-                      height,
-                      zIndex,
-                    }}
-                    animate={
-                      reduceMotion
-                        ? { opacity: active ? 1 : 0.35 }
-                        : {
-                            x,
-                            y,
-                            scale,
-                            rotate,
-                            opacity,
-                          }
-                    }
-                    whileHover={reduceMotion ? undefined : { opacity: 1, scale: active ? 1.035 : scale + 0.05, zIndex: 90 }}
-                    transition={{ duration: 0.74, ease }}
-                  >
-                    <span
-                      className={`relative block h-full w-full overflow-hidden border bg-white/[0.045] shadow-[0_54px_180px_rgba(0,0,0,0.46)] transition ${
-                        active ? "border-white/36" : "border-white/14"
-                      }`}
-                      style={{
-                        clipPath:
-                          proof.id === "mobile"
-                            ? "polygon(11% 0, 89% 4%, 97% 100%, 5% 92%)"
-                            : "polygon(3% 0, 100% 5%, 94% 94%, 0 100%)",
-                      }}
-                    >
-                      {active && proof.media.type === "video" ? (
-                        <video
-                          className="absolute inset-[-4%] h-[108%] w-[108%] object-cover saturate-[1.12] contrast-[1.05] brightness-[1.08]"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          poster={proof.media.poster}
-                        >
-                          <source src={proof.media.src} type="video/mp4" />
-                        </video>
-                      ) : (
-                        <img
-                          src={mediaSource}
-                          alt=""
-                          className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover saturate-[1.12] contrast-[1.05] brightness-[1.08] ${
-                            proof.id === "mobile" ? "object-contain p-7" : ""
-                          }`}
-                        />
-                      )}
-                      <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.16)_52%,rgba(0,0,0,0.62))]" />
-                      <span className="absolute bottom-5 left-5 right-5">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/56">{proof.signal}</span>
-                        <span className={`mt-2 block max-w-[11ch] font-normal leading-[0.86] tracking-[-0.055em] text-white ${active ? "text-[44px] md:text-[64px]" : "text-[30px] md:text-[42px]"}`}>
-                          {proof.label}
-                        </span>
-                      </span>
+                <div className="mt-8 max-w-[34rem]">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">Proof formula</div>
+                  <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.16em] text-neutral-950 sm:text-[13px]">
+                    <span>ONE ARCHIVE</span>
+                    <span aria-hidden="true" className="text-neutral-400">
+                      →
                     </span>
-                  </motion.button>
-                );
-              })}
-            </div>
+                    <span>FIVE SURFACES</span>
+                  </div>
+                  <div className="mt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 sm:text-[10px]">
+                    WEB → MOBILE → PRINT → AR → ROOM
+                  </div>
+                </div>
 
-            <div className="absolute bottom-[7%] left-[5%] z-30 max-w-[34rem] border-l border-white/18 pl-5">
-                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">Active proof signal</div>
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={activeProof.id}
-                    className="mt-4 text-[15px] leading-7 text-white/66"
-                    initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16, filter: "blur(4px)" }}
-                    animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, filter: "blur(4px)" }}
-                    transition={{ duration: 0.48, ease }}
-                  >
-                    {activeProof.readout}
-                  </motion.p>
-                </AnimatePresence>
                 <button
                   type="button"
                   onMouseEnter={() => sound.playRole("hover")}
@@ -2092,58 +2232,102 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
                     sound.playRole("open");
                     onOpenWhisper();
                   }}
-                  className="mt-7 border-y border-white/34 px-3 py-2.5 text-[10px] uppercase tracking-[0.16em] text-white/78 transition hover:border-white hover:text-white"
+                  className="mt-8 hidden border-y border-neutral-950/30 px-3 py-2.5 text-[10px] uppercase tracking-[0.16em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950/60 xl:inline-flex"
                 >
-                  Enter WHISPER -&gt;
+                  Enter Whisper
                 </button>
-            </div>
-
-            <aside className="absolute right-[4%] top-[18%] z-30 w-[min(28vw,27rem)]">
-              <div className="mb-7 max-w-[30rem] text-[15px] leading-7 text-white/56">
-                WHISPER proves a chain of surfaces: web, mobile, print, AR, and Quest-tested room-scale presence.
               </div>
 
-              <div className="border-y border-white/14">
-                {whisperProofStates.map((proof, index) => {
-                  const active = activeProof.id === proof.id;
+              <div className="relative z-20 w-full">
+                <SurfaceProofStage
+                  proof={activeProof}
+                  reduceMotion={reduceMotion}
+                  onNext={() => selectProofIndex(activeProofIndex + 1)}
+                />
 
-                  return (
-                    <button
-                      key={proof.id}
-                      type="button"
-                      onMouseEnter={() => {
-                        sound.playRole("hover");
-                        selectProofIndex(index);
-                      }}
-                      onFocus={() => selectProofIndex(index)}
-                      onClick={() => selectProofIndex(index)}
-                      className={`group grid w-full grid-cols-[3.5rem_1fr] items-center gap-4 border-b border-white/12 py-5 text-left transition last:border-b-0 ${
-                        active ? "text-white" : "text-white/32 hover:text-white/78"
-                      }`}
+                <div className="mt-5 border-y border-neutral-950/10 py-4">
+                  <div className="flex items-center gap-3 font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-500 sm:text-[9px]">
+                    <span>One archive</span>
+                    <span className="relative h-px flex-1 bg-neutral-950/12">
+                      <motion.span
+                        className="absolute inset-y-0 left-0 bg-neutral-950"
+                        initial={false}
+                        animate={{ width: `${relayProgress}%` }}
+                        transition={{ duration: reduceMotion ? 0 : 0.42, ease }}
+                      />
+                    </span>
+                    <span>Five surfaces</span>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-5 gap-0 font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-500 sm:text-[9px]">
+                    {whisperProofStates.map((proof, index) => {
+                      const active = activeProof.id === proof.id;
+                      return (
+                        <button
+                          key={proof.id}
+                          type="button"
+                          aria-pressed={active}
+                          onMouseEnter={() => sound.playRole("hover")}
+                          onFocus={() => selectProofIndex(index)}
+                          onClick={() => selectProofIndex(index)}
+                          className={`group min-w-0 px-1 py-1.5 text-left transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950/60 sm:px-2 ${
+                            active ? "text-neutral-950" : "text-neutral-400 hover:text-neutral-700"
+                          }`}
+                        >
+                          <span className="flex items-center gap-1 sm:gap-2">
+                            <span
+                              className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border text-[8px] transition ${
+                                active
+                                  ? "border-neutral-950 bg-neutral-950 text-white"
+                                  : "border-neutral-950/18 bg-white/30 text-neutral-400 group-hover:border-neutral-950/32"
+                              }`}
+                            >
+                              {proof.index}
+                            </span>
+                            <span className="min-w-0 truncate">{proof.railLabel}</span>
+                          </span>
+                          <span
+                            className={`mt-2 block h-px w-full transition ${
+                              active ? "bg-neutral-950" : "bg-neutral-950/12 group-hover:bg-neutral-950/24"
+                            }`}
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeProof.id}
+                      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                      animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                      transition={{ duration: 0.35, ease }}
                     >
-                      <span className={`font-mono text-[10px] uppercase tracking-[0.18em] transition ${active ? "text-white/72" : "text-white/24"}`}>
-                        {proof.index}
-                      </span>
-                      <span>
-                        <span className={`block text-[28px] leading-none tracking-[-0.04em] transition md:text-[38px] ${active ? "translate-x-0" : "group-hover:translate-x-2"}`}>
-                          {proof.label}
-                        </span>
-                        <span className={`mt-2 block font-mono text-[9px] uppercase tracking-[0.17em] transition ${active ? "text-white/48" : "text-transparent group-hover:text-white/30"}`}>
-                          {proof.signal}
-                        </span>
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+                      <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+                        Surface {activeProof.index} / {activeProof.signal}
+                      </div>
+                      <h3 className="mt-2 text-[25px] leading-none tracking-normal text-neutral-950 sm:text-[32px]">{activeProof.label}</h3>
+                      <p className="mt-3 max-w-[52rem] text-[14px] leading-7 text-neutral-600">{activeProof.readout}</p>
+                    </motion.div>
+                  </AnimatePresence>
 
-              <div className="mt-8 grid grid-cols-[1fr_auto] gap-4 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-white/34">
-                <span>active proof state</span>
-                <span>{activeProof.index}</span>
-                <span>media behavior</span>
-                <span>{activeProof.media.type}</span>
+                  <button
+                    type="button"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => {
+                      sound.playRole("open");
+                      onOpenWhisper();
+                    }}
+                    className="w-max border-y border-neutral-950/30 px-3 py-2.5 text-[10px] uppercase tracking-[0.16em] text-neutral-700 transition hover:border-neutral-950 hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950/60 xl:hidden"
+                  >
+                    Enter Whisper
+                  </button>
+                </div>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </div>

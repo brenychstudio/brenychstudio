@@ -17,6 +17,7 @@ type Pointer = {
 };
 
 type NodeRole = "stage" | "satellite" | "relay";
+type EngineVariant = "panel" | "wide" | "immersive";
 
 type NodeSeed = {
   id: number;
@@ -68,6 +69,30 @@ const stageAnchors = [
   [1.82, 0.24, 0.08],
 ] as const;
 
+const wideStageHotspots = [
+  { left: "12.6%", top: "34%" },
+  { left: "34.2%", top: "59%" },
+  { left: "54.1%", top: "38%" },
+  { left: "72.8%", top: "60%" },
+  { left: "91.8%", top: "40%" },
+] as const;
+
+const wideLabelOffsets = [
+  { x: -0.54, y: -0.72 },
+  { x: -0.38, y: 1.34 },
+  { x: -0.5, y: -0.6 },
+  { x: -0.48, y: 1.34 },
+  { x: -0.52, y: -0.68 },
+] as const;
+
+const immersiveLabelOffsets = [
+  { x: -0.44, y: -0.72 },
+  { x: -0.38, y: 1.2 },
+  { x: -0.5, y: -0.56 },
+  { x: -1.0, y: 0.86 },
+  { x: -1.14, y: -0.66 },
+] as const;
+
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
@@ -88,6 +113,14 @@ function rng(seed = 2048) {
 function anchorVector(index: number) {
   const anchor = stageAnchors[clamp(index, 0, stageAnchors.length - 1)] ?? stageAnchors[0];
   return new THREE.Vector3(anchor[0], anchor[1], anchor[2]);
+}
+
+function blendedAnchorVector(value: number) {
+  const fromIndex = clamp(Math.floor(value), 0, stageAnchors.length - 1);
+  const toIndex = clamp(fromIndex + 1, 0, stageAnchors.length - 1);
+  const blend = smoothstep(0, 1, clamp(value - fromIndex));
+
+  return anchorVector(fromIndex).lerp(anchorVector(toIndex), blend);
 }
 
 function makeCircleGeometry(radius = 1, segments = 360) {
@@ -313,7 +346,7 @@ function makeSignalRails(stageCount: number) {
   for (let stageIndex = 0; stageIndex < stageCount; stageIndex += 1) {
     const anchor = anchorVector(stageIndex);
 
-    for (let i = 0; i < 3; i += 1) {
+    for (let i = 0; i < 2; i += 1) {
       const direction = i % 2 === 0 ? 1 : -1;
       rails.push({
         id: rails.length,
@@ -346,11 +379,12 @@ function TerminalStageLabel({
 }: {
   stage: DeliveryEngineStage;
   active: boolean;
-  variant: "panel" | "immersive";
+  variant: EngineVariant;
 }) {
   const reducedMotion = useReducedMotion() ?? false;
   const fullText = terminalLine(stage);
-  const [typed, setTyped] = useState(active || reducedMotion ? fullText : "");
+  const instantText = reducedMotion || variant === "wide" || variant === "immersive";
+  const [typed, setTyped] = useState(active || instantText ? fullText : "");
 
   useEffect(() => {
     if (!active) {
@@ -358,7 +392,7 @@ function TerminalStageLabel({
       return;
     }
 
-    if (reducedMotion) {
+    if (instantText) {
       setTyped(fullText);
       return;
     }
@@ -372,12 +406,12 @@ function TerminalStageLabel({
     }, 14);
 
     return () => window.clearInterval(interval);
-  }, [active, fullText, reducedMotion]);
+  }, [active, fullText, instantText]);
 
   return (
     <div
       className={`pointer-events-none select-none font-mono uppercase ${
-        variant === "immersive" ? "w-[22rem]" : "w-[15.5rem]"
+        variant === "immersive" ? "w-[22rem]" : variant === "wide" ? "w-[13.5rem] sm:w-[17rem]" : "w-[15.5rem]"
       } ${active ? "opacity-100" : "opacity-70"}`}
     >
       <div
@@ -535,6 +569,9 @@ function EngineScene({
   activeStage,
   labelStage = activeStage,
   labelSwitching = false,
+  hoveredStage = null,
+  onSelectStage,
+  onHoverStage,
   stageCount,
   pointer,
   reducedMotion,
@@ -545,13 +582,17 @@ function EngineScene({
   activeStage: number;
   labelStage?: number;
   labelSwitching?: boolean;
+  hoveredStage?: number | null;
+  onSelectStage?: (index: number) => void;
+  onHoverStage?: (index: number | null) => void;
   stageCount: number;
   pointer: Pointer;
   reducedMotion: boolean;
   closing?: boolean;
-  variant?: "panel" | "immersive";
+  variant?: EngineVariant;
 }) {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
+  const compact = size.width < 640;
   const rootRef = useRef<THREE.Group>(null);
   const linkRef = useRef<THREE.LineSegments>(null);
   const activeLinkRef = useRef<THREE.LineSegments>(null);
@@ -567,7 +608,10 @@ function EngineScene({
   const railRefs = useRef<THREE.Mesh[]>([]);
   const nodeRefs = useRef<THREE.Group[]>([]);
   const nodeCoreRefs = useRef<THREE.Mesh[]>([]);
+  const nodeInnerRefs = useRef<THREE.Mesh[]>([]);
   const nodeHaloRefs = useRef<THREE.Mesh[]>([]);
+  const nodeRimRefs = useRef<THREE.LineLoop[]>([]);
+  const nodeShellRefs = useRef<THREE.LineLoop[]>([]);
   const flowRefs = useRef<THREE.Mesh[]>([]);
   const flowTrailRefs = useRef<THREE.Mesh[]>([]);
   const activeRef = useRef(activeStage);
@@ -589,7 +633,10 @@ function EngineScene({
   const geometries = useMemo(
     () => ({
       node: new THREE.SphereGeometry(1, 64, 36),
+      hit: new THREE.SphereGeometry(1, 24, 16),
       halo: new THREE.SphereGeometry(1, 64, 32),
+      nodeRim: makeCircleGeometry(1, 240),
+      nodeShell: makeCircleGeometry(1, 240),
       flow: new THREE.SphereGeometry(1, 20, 14),
       flowTrail: new THREE.PlaneGeometry(1, 1),
       tick: new THREE.PlaneGeometry(1, 1),
@@ -633,36 +680,58 @@ function EngineScene({
 
   useFrame((state, delta) => {
     const immersive = variant === "immersive";
+    const wide = variant === "wide";
     const targetActive = reducedMotion ? 0 : activeStage;
-    activeRef.current = THREE.MathUtils.damp(activeRef.current, targetActive, 4.9, delta);
-    pointerRef.current.x = THREE.MathUtils.damp(pointerRef.current.x, pointer.x, 4.2, delta);
-    pointerRef.current.y = THREE.MathUtils.damp(pointerRef.current.y, pointer.y, 4.2, delta);
+    activeRef.current = THREE.MathUtils.damp(activeRef.current, targetActive, wide ? 2.65 : 4.9, delta);
+    pointerRef.current.x = THREE.MathUtils.damp(pointerRef.current.x, pointer.x, wide ? 2.8 : 4.2, delta);
+    pointerRef.current.y = THREE.MathUtils.damp(pointerRef.current.y, pointer.y, wide ? 2.8 : 4.2, delta);
 
     const time = reducedMotion ? 0 : state.clock.elapsedTime;
     const activeFloat = activeRef.current;
     const activeRounded = clamp(Math.round(activeFloat), 0, stageCount - 1);
-    const activeAnchor = anchorVector(activeRounded);
+    const activeAnchor = blendedAnchorVector(activeFloat);
     const pulse = Math.sin(time * 1.55) * 0.5 + 0.5;
+    const wideQuality = wide ? 1.18 : 1;
+    const widePointerX = wide ? 0.06 : 0.12;
+    const widePointerY = wide ? 0.035 : 0.06;
 
     camera.position.x = THREE.MathUtils.damp(
       camera.position.x,
-      immersive ? 0.02 + pointerRef.current.x * 0.12 : activeAnchor.x * 0.16 + pointerRef.current.x * 0.12,
-      3.6,
+      immersive
+        ? 0.02 + pointerRef.current.x * 0.12
+        : wide
+          ? activeAnchor.x * 0.025 + pointerRef.current.x * widePointerX
+          : activeAnchor.x * 0.16 + pointerRef.current.x * 0.12,
+      wide ? 2.4 : 3.6,
       delta
     );
-    camera.position.y = THREE.MathUtils.damp(camera.position.y, activeAnchor.y * 0.045 - pointerRef.current.y * (immersive ? 0.075 : 0.06), 3.6, delta);
-    camera.position.z = THREE.MathUtils.damp(camera.position.z, (immersive ? 5.36 : 5.34) - Math.abs(activeAnchor.x) * 0.035, 3.6, delta);
-    camera.lookAt(immersive ? 0.06 : activeAnchor.x * 0.06 - 0.12, activeAnchor.y * 0.04 + 0.04, 0);
+    camera.position.y = THREE.MathUtils.damp(
+      camera.position.y,
+      activeAnchor.y * (wide ? 0.026 : 0.045) - pointerRef.current.y * (immersive ? 0.075 : widePointerY),
+      wide ? 2.4 : 3.6,
+      delta
+    );
+    camera.position.z = THREE.MathUtils.damp(
+      camera.position.z,
+      wide && compact ? 8.35 : wide ? 6.05 : (immersive ? 5.36 : 5.34) - Math.abs(activeAnchor.x) * 0.035,
+      wide ? 2.4 : 3.6,
+      delta
+    );
+    camera.lookAt(immersive ? 0.06 : wide ? activeAnchor.x * 0.012 : activeAnchor.x * 0.06 - 0.12, activeAnchor.y * (wide ? 0.018 : 0.04) + 0.04, 0);
 
     if (rootRef.current) {
-      rootRef.current.position.y = (immersive ? -0.04 : 0.16) + (closing ? -0.035 : 0);
-      rootRef.current.position.x = immersive ? 0.08 : -0.46;
-      rootRef.current.rotation.x = -0.1 + pointerRef.current.y * -0.05 + (closing ? -0.035 : 0);
-      rootRef.current.rotation.y = pointerRef.current.x * 0.06 + Math.sin(time * 0.2) * 0.024;
-      rootRef.current.rotation.z = Math.sin(time * 0.18) * 0.014 + (closing ? -0.012 : 0);
+      rootRef.current.position.y = (immersive ? -0.04 : wide ? (compact ? 0.02 : 0.08) : 0.16) + (closing ? -0.035 : 0);
+      rootRef.current.position.x = immersive ? 0.08 : wide ? 0.02 : -0.46;
+      rootRef.current.rotation.x = -0.1 + pointerRef.current.y * (wide ? -0.024 : -0.05) + (closing ? -0.035 : 0);
+      rootRef.current.rotation.y = pointerRef.current.x * (wide ? 0.028 : 0.06) + Math.sin(time * 0.2) * (wide ? 0.01 : 0.024);
+      rootRef.current.rotation.z = Math.sin(time * 0.18) * (wide ? 0.006 : 0.014) + (closing ? -0.012 : 0);
       const closingScale = closing ? 0.94 : 1;
       if (immersive) {
         rootRef.current.scale.setScalar(1.02 * closingScale);
+      } else if (wide && compact) {
+        rootRef.current.scale.set(0.68 * closingScale, 0.9 * closingScale, closingScale);
+      } else if (wide) {
+        rootRef.current.scale.set(1.44 * closingScale, 1.12 * closingScale, closingScale);
       } else {
         rootRef.current.scale.set(1.14 * closingScale, 1.06 * closingScale, closingScale);
       }
@@ -671,10 +740,16 @@ function EngineScene({
     const positions = currentPositionsRef.current;
 
     nodes.forEach((node, index) => {
-      const focusRange = node.role === "stage" ? 2.6 : node.role === "relay" ? 1.8 : 1.35;
+      const focusRange = node.role === "stage" ? 1.72 : node.role === "relay" ? 1.45 : 1.2;
       const focus = 1 - clamp(Math.abs(activeFloat - node.stageIndex) / focusRange);
       const stageFocus = smoothstep(0.08, 0.92, focus);
-      const driftScale = reducedMotion ? 0 : node.role === "stage" ? 0.08 : node.role === "relay" ? 0.42 : 1;
+      const activeExact =
+        node.role === "stage"
+          ? smoothstep(0.08, 0.96, 1 - clamp(Math.abs(activeFloat - node.stageIndex) / 0.72))
+          : 0;
+      const hovered = node.role === "stage" && hoveredStage === node.stageIndex;
+      const hoverSignal = hovered ? 1 : 0;
+      const driftScale = reducedMotion ? 0 : node.role === "stage" ? 0.032 : node.role === "relay" ? 0.26 : 0.68;
       const orbital = new THREE.Vector3(
         Math.sin(time * (0.5 + node.drift.x) + node.phase) * node.drift.x * driftScale,
         Math.cos(time * (0.44 + node.drift.y) + node.phase * 1.24) * node.drift.y * driftScale,
@@ -689,20 +764,68 @@ function EngineScene({
 
       if (group) {
         group.position.copy(positions[index]);
-        group.scale.setScalar(node.radius * (1 + stageFocus * (node.role === "stage" ? 1.28 : node.role === "relay" ? 0.44 : 0.58)));
+        group.scale.setScalar(
+          node.radius *
+            (1 +
+              stageFocus * (node.role === "stage" ? 0.62 : node.role === "relay" ? 0.34 : 0.42) +
+              activeExact * 0.62 +
+              hoverSignal * 0.34)
+        );
       }
 
       const coreMaterial = nodeCoreRefs.current[index]?.material;
+      const innerMaterial = nodeInnerRefs.current[index]?.material;
       const haloMaterial = nodeHaloRefs.current[index]?.material;
+      const rim = nodeRimRefs.current[index];
+      const shell = nodeShellRefs.current[index];
 
       if (coreMaterial instanceof THREE.MeshBasicMaterial) {
-        const strength = immersive ? 1.16 : 1;
-        coreMaterial.opacity = (node.role === "stage" ? 0.28 + stageFocus * 0.5 : node.role === "relay" ? 0.08 + stageFocus * 0.22 : 0.04 + stageFocus * 0.28) * strength;
+        const strength = immersive ? 1.18 : wideQuality;
+        coreMaterial.opacity =
+          (node.role === "stage"
+            ? 0.24 + stageFocus * 0.22 + activeExact * 0.28 + hoverSignal * 0.1
+            : node.role === "relay"
+              ? 0.065 + stageFocus * 0.18
+              : 0.032 + stageFocus * 0.2) * strength;
         coreMaterial.color.set(node.role === "stage" || stageFocus > 0.54 ? "#070707" : "#424242");
       }
 
+      if (innerMaterial instanceof THREE.MeshBasicMaterial) {
+        innerMaterial.opacity = node.role === "stage" ? (activeExact * 0.18 + hoverSignal * 0.045) * (immersive ? 1.18 : 1) : 0;
+        innerMaterial.color.set(activeExact > 0.58 ? "#000000" : "#1d1d1d");
+      }
+
       if (haloMaterial instanceof THREE.MeshBasicMaterial) {
-        haloMaterial.opacity = (node.role === "stage" ? 0.008 + stageFocus * 0.032 : node.role === "relay" ? 0.006 + stageFocus * 0.018 : 0.003 + stageFocus * 0.016) * (immersive ? 1.18 : 0.9);
+        haloMaterial.opacity =
+          (node.role === "stage"
+            ? 0.012 + stageFocus * 0.026 + activeExact * 0.03 + hoverSignal * 0.024
+            : node.role === "relay"
+              ? 0.004 + stageFocus * 0.012
+              : 0.002 + stageFocus * 0.011) * (immersive ? 1.08 : wide ? 1 : 0.82);
+      }
+
+      if (rim) {
+        rim.rotation.x = time * 0.12 + node.phase;
+        rim.rotation.y = 0.72 + Math.sin(time * 0.18 + node.phase) * 0.06;
+        rim.rotation.z = -0.28 + pointerRef.current.x * 0.12;
+        rim.scale.setScalar(2.6 + activeExact * 0.84 + hoverSignal * 0.28);
+
+        const material = rim.material;
+        if (material instanceof THREE.LineBasicMaterial) {
+          material.opacity = node.role === "stage" ? (activeExact * 0.08 + hoverSignal * 0.025) * (immersive ? 1.05 : 0.76) : 0;
+        }
+      }
+
+      if (shell) {
+        shell.rotation.x = 1.1 + pointerRef.current.y * 0.08;
+        shell.rotation.y = time * -0.065 + node.phase * 0.28;
+        shell.rotation.z = time * 0.075;
+        shell.scale.setScalar(3.15 + activeExact * 1.06 + pulse * 0.08);
+
+        const material = shell.material;
+        if (material instanceof THREE.LineBasicMaterial) {
+          material.opacity = node.role === "stage" ? activeExact * 0.034 * (immersive ? 1.05 : 0.68) : 0;
+        }
       }
     });
 
@@ -739,12 +862,12 @@ function EngineScene({
 
     const linkMaterial = linkRef.current?.material;
     if (linkMaterial instanceof THREE.LineBasicMaterial) {
-      linkMaterial.opacity = (0.042 + pulse * 0.012) * (immersive ? 1.2 : 0.9);
+      linkMaterial.opacity = (0.042 + pulse * 0.012) * (immersive ? 1.2 : wide ? 1.18 : 0.9);
     }
 
     const activeLinkMaterial = activeLinkRef.current?.material;
     if (activeLinkMaterial instanceof THREE.LineBasicMaterial) {
-      activeLinkMaterial.opacity = (0.038 + pulse * 0.02) * (immersive ? 1.35 : 1);
+      activeLinkMaterial.opacity = (0.038 + pulse * 0.02) * (immersive ? 1.35 : wide ? 1.22 : 1);
     }
 
     pathRefs.current.forEach((line, index) => {
@@ -754,7 +877,7 @@ function EngineScene({
 
       const material = line.material;
       if (material instanceof THREE.LineBasicMaterial) {
-        material.opacity = (index <= 1 ? 0.1 + pulse * 0.024 : 0.012 + pulse * 0.005) * (immersive ? 1.08 : 0.82);
+        material.opacity = (index <= 1 ? 0.1 + pulse * 0.024 : 0.012 + pulse * 0.005) * (immersive ? 1.08 : wide ? 1.02 : 0.82);
       }
     });
 
@@ -763,7 +886,7 @@ function EngineScene({
 
       const material = tube.material;
       if (material instanceof THREE.MeshBasicMaterial) {
-        material.opacity = (index === 0 ? 0.2 + pulse * 0.036 : 0.034 + pulse * 0.014) * (immersive ? 1.12 : 0.9);
+        material.opacity = (index === 0 ? 0.2 + pulse * 0.036 : 0.034 + pulse * 0.014) * (immersive ? 1.12 : wide ? 1.16 : 0.9);
       }
     });
 
@@ -779,7 +902,7 @@ function EngineScene({
         core.scale.setScalar(1 + activeSignal * 0.024);
         const material = core.material;
         if (material instanceof THREE.MeshBasicMaterial) {
-          material.opacity = (0.055 + activeSignal * 0.42 + breathing * 0.028 * activeSignal) * (immersive ? 1.26 : 1);
+          material.opacity = (0.055 + activeSignal * 0.42 + breathing * 0.028 * activeSignal) * (immersive ? 1.26 : wide ? 1.2 : 1);
         }
       }
 
@@ -787,34 +910,34 @@ function EngineScene({
         glow.scale.setScalar(1 + activeSignal * 0.036);
         const material = glow.material;
         if (material instanceof THREE.MeshBasicMaterial) {
-          material.opacity = (0.008 + activeSignal * 0.054 + breathing * 0.012 * activeSignal) * (immersive ? 1.18 : 0.9);
+          material.opacity = (0.008 + activeSignal * 0.054 + breathing * 0.012 * activeSignal) * (immersive ? 1.18 : wide ? 1.08 : 0.9);
         }
       }
     });
 
     ringRefs.current.forEach((ring, index) => {
       ring.position.copy(activeAnchor);
-      ring.rotation.x = 0.86 + index * 0.46 + time * (0.08 + index * 0.012);
-      ring.rotation.y = -0.28 + index * 0.32 + time * (0.045 + index * 0.018);
-      ring.rotation.z = time * (0.055 + index * 0.012);
-      ring.scale.setScalar(0.34 + index * 0.14 + pulse * 0.018);
+      ring.rotation.x = 0.82 + index * 0.3 + time * (0.035 + index * 0.006);
+      ring.rotation.y = -0.18 + index * 0.2 + time * (0.025 + index * 0.008);
+      ring.rotation.z = time * (0.032 + index * 0.006);
+      ring.scale.setScalar(0.28 + index * 0.09 + pulse * 0.01);
 
       const material = ring.material;
       if (material instanceof THREE.LineBasicMaterial) {
-        material.opacity = (0.06 - index * 0.012 + pulse * 0.01) * (immersive ? 1.15 : 0.72);
+        material.opacity = (0.024 - index * 0.004 + pulse * 0.004) * (immersive ? 0.9 : 0.48);
       }
     });
 
     arcRefs.current.forEach((arc, index) => {
       arc.position.copy(activeAnchor);
-      arc.rotation.x = 0.76 + index * 0.34 + time * (0.05 + index * 0.008);
-      arc.rotation.y = -0.2 + index * 0.26 + pointerRef.current.x * 0.12;
-      arc.rotation.z = time * (0.08 + index * 0.022) + index * 0.7;
-      arc.scale.setScalar(0.58 + index * 0.22 + pulse * 0.02);
+      arc.rotation.x = 0.68 + index * 0.22 + time * (0.024 + index * 0.006);
+      arc.rotation.y = -0.16 + index * 0.14 + pointerRef.current.x * 0.05;
+      arc.rotation.z = time * (0.044 + index * 0.012) + index * 0.54;
+      arc.scale.setScalar(0.4 + index * 0.12 + pulse * 0.012);
 
       const material = arc.material;
       if (material instanceof THREE.LineBasicMaterial) {
-        material.opacity = (0.075 - index * 0.018 + pulse * 0.012) * (immersive ? 1.18 : 0.78);
+        material.opacity = (0.034 - index * 0.008 + pulse * 0.005) * (immersive ? 0.9 : 0.52);
       }
     });
 
@@ -822,13 +945,13 @@ function EngineScene({
       lens.position.copy(activeAnchor);
       lens.position.z -= 0.18 + index * 0.032;
       lens.rotation.x = 0.22 + index * 0.34;
-      lens.rotation.y = -0.16 + pointerRef.current.x * 0.05;
-      lens.rotation.z = time * (0.018 + index * 0.01);
-      lens.scale.setScalar(0.48 + index * 0.14 + pulse * 0.018);
+      lens.rotation.y = -0.12 + pointerRef.current.x * 0.035;
+      lens.rotation.z = time * (0.012 + index * 0.006);
+      lens.scale.setScalar(0.38 + index * 0.1 + pulse * 0.01);
 
       const material = lens.material;
       if (material instanceof THREE.MeshBasicMaterial) {
-        material.opacity = (0.006 - index * 0.0008 + pulse * 0.002) * (immersive ? 1.35 : 0.9);
+        material.opacity = (0.0035 - index * 0.0005 + pulse * 0.001) * (immersive ? 1 : 0.68);
       }
     });
 
@@ -838,11 +961,11 @@ function EngineScene({
       scan.position.y += Math.sin(time * 0.34 + index) * 0.035;
       scan.position.z = -0.13 - index * 0.03;
       scan.rotation.z = -0.28 + index * 0.11;
-      scan.scale.set(1.0 + index * 0.24 + pulse * 0.05, 0.028, 1);
+      scan.scale.set(0.78 + index * 0.16 + pulse * 0.026, 0.018, 1);
 
       const material = scan.material;
       if (material instanceof THREE.MeshBasicMaterial) {
-        material.opacity = (0.025 - index * 0.005 + pulse * 0.008) * (immersive ? 1.15 : 0.8);
+        material.opacity = (0.014 - index * 0.003 + pulse * 0.004) * (immersive ? 0.9 : 0.56);
       }
     });
 
@@ -850,18 +973,18 @@ function EngineScene({
       const mesh = tickRefs.current[index];
       if (!mesh) return;
 
-      const focus = smoothstep(0.1, 0.95, 1 - clamp(Math.abs(activeFloat - tick.stageIndex) / 2));
+      const focus = smoothstep(0.16, 0.96, 1 - clamp(Math.abs(activeFloat - tick.stageIndex) / 1.35));
       const shimmer = Math.sin(time * 1.4 + tick.phase) * 0.5 + 0.5;
 
       mesh.position.copy(tick.base);
-      mesh.position.x += pointerRef.current.x * 0.018 * focus;
-      mesh.position.y += Math.sin(time * 0.33 + tick.phase) * 0.012 * focus;
-      mesh.rotation.z = tick.angle + Math.sin(time * 0.22 + tick.phase) * 0.018;
-      mesh.scale.set(tick.length * (0.7 + focus * 0.82), 0.006 + focus * 0.005, 1);
+      mesh.position.x += pointerRef.current.x * 0.012 * focus;
+      mesh.position.y += Math.sin(time * 0.28 + tick.phase) * 0.007 * focus;
+      mesh.rotation.z = tick.angle + Math.sin(time * 0.16 + tick.phase) * 0.008;
+      mesh.scale.set(tick.length * (0.56 + focus * 0.5), 0.004 + focus * 0.003, 1);
 
       const material = mesh.material;
       if (material instanceof THREE.MeshBasicMaterial) {
-        material.opacity = (0.008 + focus * 0.032 + shimmer * 0.008 * focus) * (immersive ? 1 : 0.72);
+        material.opacity = (0.005 + focus * 0.018 + shimmer * 0.004 * focus) * (immersive ? 0.82 : 0.54);
       }
     });
 
@@ -869,17 +992,17 @@ function EngineScene({
       const mesh = railRefs.current[index];
       if (!mesh) return;
 
-      const focus = smoothstep(0.08, 0.92, 1 - clamp(Math.abs(activeFloat - rail.stageIndex) / 1.35));
+      const focus = smoothstep(0.12, 0.94, 1 - clamp(Math.abs(activeFloat - rail.stageIndex) / 1.08));
       const breath = Math.sin(time * 0.9 + rail.phase) * 0.5 + 0.5;
 
       mesh.position.copy(rail.base);
       mesh.position.z -= 0.05;
-      mesh.rotation.z = rail.angle + pointerRef.current.x * 0.025;
-      mesh.scale.set(rail.width * (0.78 + focus * 0.54), 0.012 + focus * 0.018 + breath * 0.004, 1);
+      mesh.rotation.z = rail.angle + pointerRef.current.x * 0.014;
+      mesh.scale.set(rail.width * (0.68 + focus * 0.38), 0.007 + focus * 0.01 + breath * 0.002, 1);
 
       const material = mesh.material;
       if (material instanceof THREE.MeshBasicMaterial) {
-        material.opacity = (0.006 + focus * 0.028 + breath * 0.006 * focus) * (immersive ? 0.95 : 0.62);
+        material.opacity = (0.004 + focus * 0.014 + breath * 0.003 * focus) * (immersive ? 0.72 : 0.45);
       }
     });
 
@@ -906,12 +1029,12 @@ function EngineScene({
 
       const material = mesh.material;
       if (material instanceof THREE.MeshBasicMaterial) {
-        material.opacity = edgeFade * ((immersive ? 0.12 : 0.1) + (immersive ? 0.2 : 0.16) * (1 - Math.abs(activeFloat - activeRounded)));
+        material.opacity = edgeFade * ((immersive ? 0.08 : 0.074) + (immersive ? 0.12 : 0.1) * (1 - Math.abs(activeFloat - activeRounded)));
       }
 
       const trailMaterial = trail.material;
       if (trailMaterial instanceof THREE.MeshBasicMaterial) {
-        trailMaterial.opacity = edgeFade * (immersive ? 0.13 : 0.09);
+        trailMaterial.opacity = edgeFade * (immersive ? 0.078 : 0.058);
       }
     });
   });
@@ -1051,7 +1174,36 @@ function EngineScene({
             ref={(group: THREE.Group | null) => {
               if (group) nodeRefs.current[index] = group;
             }}
+            onPointerOver={
+              node.role === "stage" && onSelectStage
+                ? (event) => {
+                    event.stopPropagation();
+                    onHoverStage?.(node.stageIndex);
+                  }
+                : undefined
+            }
+            onPointerOut={
+              node.role === "stage" && onSelectStage
+                ? (event) => {
+                    event.stopPropagation();
+                    onHoverStage?.(null);
+                  }
+                : undefined
+            }
+            onClick={
+              node.role === "stage" && onSelectStage
+                ? (event) => {
+                    event.stopPropagation();
+                    onSelectStage(node.stageIndex);
+                  }
+                : undefined
+            }
           >
+            {node.role === "stage" && onSelectStage ? (
+              <mesh geometry={geometries.hit} scale={3.8}>
+                <meshBasicMaterial color="#111111" transparent opacity={0.001} depthWrite={false} />
+              </mesh>
+            ) : null}
             <mesh
               ref={(mesh: THREE.Mesh | null) => {
                 if (mesh) nodeHaloRefs.current[index] = mesh;
@@ -1061,6 +1213,35 @@ function EngineScene({
             >
               <meshBasicMaterial color="#111111" transparent opacity={0.012} depthWrite={false} />
             </mesh>
+            {node.role === "stage" ? (
+              <>
+                <lineLoop
+                  ref={(line: THREE.LineLoop | null) => {
+                    if (line) nodeShellRefs.current[index] = line;
+                  }}
+                  geometry={geometries.nodeShell}
+                >
+                  <lineBasicMaterial color="#111111" transparent opacity={0.02} depthWrite={false} />
+                </lineLoop>
+                <lineLoop
+                  ref={(line: THREE.LineLoop | null) => {
+                    if (line) nodeRimRefs.current[index] = line;
+                  }}
+                  geometry={geometries.nodeRim}
+                >
+                  <lineBasicMaterial color="#030303" transparent opacity={0.04} depthWrite={false} />
+                </lineLoop>
+                <mesh
+                  ref={(mesh: THREE.Mesh | null) => {
+                    if (mesh) nodeInnerRefs.current[index] = mesh;
+                  }}
+                  geometry={geometries.node}
+                  scale={0.42}
+                >
+                  <meshBasicMaterial color="#000000" transparent opacity={0.12} depthWrite={false} />
+                </mesh>
+              </>
+            ) : null}
             <mesh
               ref={(mesh: THREE.Mesh | null) => {
                 if (mesh) nodeCoreRefs.current[index] = mesh;
@@ -1096,9 +1277,20 @@ function EngineScene({
         {stages.map((stage, index) => {
           const anchor = anchorVector(index);
           const active = index === labelStage;
-          const immersiveLift = index >= 3 ? 0.28 : -0.45;
-          const yOffset = variant === "immersive" ? immersiveLift : -0.36;
-          const xOffset = index === 0 ? 0.22 : index === stages.length - 1 ? -0.72 : 0;
+          const wideOffset = wideLabelOffsets[index] ?? wideLabelOffsets[0];
+          const immersiveOffset = immersiveLabelOffsets[index] ?? immersiveLabelOffsets[0];
+          const yOffset = variant === "wide" ? wideOffset.y : variant === "immersive" ? immersiveOffset.y : -0.36;
+          const wideEdgeScale = compact ? 0.72 : 1;
+          const xOffset =
+            variant === "wide"
+              ? wideOffset.x * wideEdgeScale
+              : variant === "immersive"
+                ? immersiveOffset.x
+              : index === 0
+                ? 0.22
+                : index === stages.length - 1
+                  ? -0.72
+                  : 0;
           const activeVisible = active && !labelSwitching;
 
           return (
@@ -1109,7 +1301,7 @@ function EngineScene({
               distanceFactor={variant === "immersive" ? (index === stages.length - 1 ? 3.55 : 3.85) : 4.45}
               zIndexRange={[18, 0]}
               style={{
-                opacity: activeVisible ? 1 : active ? 0.08 : variant === "immersive" ? 0.46 : 0.34,
+                opacity: activeVisible ? 1 : active ? 0.08 : variant === "wide" || variant === "immersive" ? 0 : 0.34,
                 filter: active && labelSwitching ? "blur(6px)" : "blur(0px)",
                 transform: `translateY(${activeVisible ? 0 : active ? 12 : 8}px) scale(${activeVisible ? 1 : 0.985})`,
                 transition: "opacity 560ms cubic-bezier(0.22,1,0.36,1), transform 560ms cubic-bezier(0.22,1,0.36,1), filter 560ms cubic-bezier(0.22,1,0.36,1)",
@@ -1127,21 +1319,39 @@ function EngineScene({
 export default function OfferDeliveryModelEngine({
   stages,
   activeStage,
+  onSelectStage,
+  onStageHover,
+  variant = "panel",
 }: {
   stages: DeliveryEngineStage[];
   activeStage: number;
+  onSelectStage?: (index: number) => void;
+  onStageHover?: (index: number) => void;
+  variant?: EngineVariant;
 }) {
   const reducedMotion = useReducedMotion() ?? false;
   const [pointer, setPointer] = useState<Pointer>({ x: 0, y: 0 });
+  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
   const [readoutStage, setReadoutStage] = useState(activeStage);
   const [labelSwitching, setLabelSwitching] = useState(false);
   const readoutStageRef = useRef(activeStage);
+  const hoveredStageRef = useRef<number | null>(null);
   const switchTimersRef = useRef<number[]>([]);
+  const labelStage = readoutStage;
 
   const clearSwitchTimers = useCallback(() => {
     switchTimersRef.current.forEach((timer) => window.clearTimeout(timer));
     switchTimersRef.current = [];
   }, []);
+
+  const handleHoverStage = useCallback(
+    (index: number | null) => {
+      if (index !== null && hoveredStageRef.current !== index) onStageHover?.(index);
+      hoveredStageRef.current = index;
+      setHoveredStage(index);
+    },
+    [onStageHover]
+  );
 
   useEffect(() => {
     if (activeStage === readoutStageRef.current) return;
@@ -1167,6 +1377,17 @@ export default function OfferDeliveryModelEngine({
 
   useEffect(() => clearSwitchTimers, [clearSwitchTimers]);
 
+  useEffect(() => {
+    if (hoveredStage === null || !onSelectStage) return;
+
+    const previousCursor = document.body.style.cursor;
+    document.body.style.cursor = "pointer";
+
+    return () => {
+      document.body.style.cursor = previousCursor;
+    };
+  }, [hoveredStage, onSelectStage]);
+
   return (
     <div
       className="absolute inset-0 overflow-hidden"
@@ -1177,7 +1398,10 @@ export default function OfferDeliveryModelEngine({
           y: ((event.clientY - rect.top) / rect.height) * 2 - 1,
         });
       }}
-      onPointerLeave={() => setPointer({ x: 0, y: 0 })}
+      onPointerLeave={() => {
+        setPointer({ x: 0, y: 0 });
+        handleHoverStage(null);
+      }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_46%_42%,rgba(255,255,255,0.92),rgba(255,255,255,0.64)_31%,rgba(244,241,234,0.24)_66%,rgba(255,255,255,0.18)_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/48 to-transparent" />
@@ -1190,27 +1414,65 @@ export default function OfferDeliveryModelEngine({
       <div className="pointer-events-none absolute right-[12%] bottom-[9%] h-[20rem] w-[20rem] rounded-full border border-neutral-950/[0.02]" />
 
       <Canvas
-        camera={{ position: [0, 0, 5.78], fov: 33, near: 0.1, far: 100 }}
-        dpr={[1.5, 2.4]}
+        camera={{ position: [0, 0, variant === "wide" ? 6.05 : 5.78], fov: variant === "wide" ? 31 : 33, near: 0.1, far: 100 }}
+        dpr={variant === "wide" ? [1.85, 3] : [1.55, 2.5]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
         <EngineScene
           stages={stages}
           activeStage={activeStage}
-          labelStage={readoutStage}
+          labelStage={labelStage}
           labelSwitching={labelSwitching}
+          hoveredStage={hoveredStage}
+          onSelectStage={onSelectStage}
+          onHoverStage={handleHoverStage}
           stageCount={stages.length}
           pointer={pointer}
           reducedMotion={reducedMotion}
+          variant={variant}
         />
       </Canvas>
 
-      <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-10 hidden justify-end sm:flex">
-        <div className="grid min-w-[18rem] grid-cols-5 gap-2">
+      {onSelectStage && variant === "wide" ? (
+        <div className="pointer-events-none absolute inset-0 z-20">
+          {stages.map((stage, index) => {
+            const hotspot = wideStageHotspots[index] ?? wideStageHotspots[0];
+            const active = index === activeStage;
+            const previewed = index === hoveredStage;
+
+            return (
+              <button
+                key={`delivery-hotspot-${stage.title}`}
+                type="button"
+                aria-label={`Select delivery stage ${stage.label}: ${stage.title}`}
+                aria-pressed={active}
+                onMouseEnter={() => handleHoverStage(index)}
+                onMouseLeave={() => handleHoverStage(null)}
+                onFocus={() => handleHoverStage(index)}
+                onBlur={() => handleHoverStage(null)}
+                onClick={() => onSelectStage(index)}
+                className={`pointer-events-auto absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 sm:h-[5.25rem] sm:w-[5.25rem] ${
+                  active
+                    ? "border-neutral-950/18 bg-neutral-950/[0.025]"
+                    : previewed
+                      ? "border-neutral-950/14 bg-neutral-950/[0.018]"
+                      : "border-neutral-950/0 bg-transparent hover:border-neutral-950/12 hover:bg-neutral-950/[0.014]"
+                }`}
+                style={{ left: hotspot.left, top: hotspot.top }}
+              >
+                <span className="sr-only">{stage.title}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+
+      <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-10 hidden justify-center sm:flex">
+        <div className="grid min-w-[22rem] grid-cols-5 gap-2">
           {stages.map((stage, index) => (
             <div key={stage.title} className="grid gap-2">
-              <div className={`h-px ${index === readoutStage ? "bg-neutral-950" : "bg-neutral-950/12"}`} />
-              <div className={`font-mono text-[9px] uppercase tracking-[0.14em] ${index === readoutStage ? "text-neutral-950" : "text-neutral-300"}`}>
+              <div className={`h-px ${index === labelStage ? "bg-neutral-950" : "bg-neutral-950/12"}`} />
+              <div className={`font-mono text-[9px] uppercase tracking-[0.14em] ${index === labelStage ? "text-neutral-950" : "text-neutral-300"}`}>
                 {stage.label}
               </div>
             </div>
@@ -1237,6 +1499,7 @@ export function OfferDeliveryInterfaceOverlay({
   const [closing, setClosing] = useState(false);
   const [readoutStage, setReadoutStage] = useState(activeStage);
   const [switching, setSwitching] = useState(false);
+  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
   const closeTimerRef = useRef<number | null>(null);
   const switchTimerRef = useRef<number | null>(null);
 
@@ -1266,6 +1529,14 @@ export function OfferDeliveryInterfaceOverlay({
       setActiveStage(index);
     },
     [activeStage, closing, setActiveStage]
+  );
+
+  const handleHoverStage = useCallback(
+    (index: number | null) => {
+      if (closing) return;
+      setHoveredStage(index);
+    },
+    [closing]
   );
 
   const beginClose = useCallback(() => {
@@ -1299,6 +1570,17 @@ export function OfferDeliveryInterfaceOverlay({
     },
     []
   );
+
+  useEffect(() => {
+    if (hoveredStage === null || closing) return;
+
+    const previousCursor = document.body.style.cursor;
+    document.body.style.cursor = "pointer";
+
+    return () => {
+      document.body.style.cursor = previousCursor;
+    };
+  }, [closing, hoveredStage]);
 
   return (
     <motion.div
@@ -1346,11 +1628,14 @@ export function OfferDeliveryInterfaceOverlay({
               y: ((event.clientY - rect.top) / rect.height) * 2 - 1,
             });
           }}
-          onPointerLeave={() => setPointer({ x: 0, y: 0 })}
+          onPointerLeave={() => {
+            setPointer({ x: 0, y: 0 });
+            handleHoverStage(null);
+          }}
         >
           <Canvas
             camera={{ position: [0, 0, 4.72], fov: 31, near: 0.1, far: 100 }}
-            dpr={[1.5, 2.5]}
+            dpr={[1.8, 3]}
             gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           >
             <EngineScene
@@ -1358,6 +1643,9 @@ export function OfferDeliveryInterfaceOverlay({
               activeStage={activeStage}
               labelStage={readoutStage}
               labelSwitching={switching}
+              hoveredStage={hoveredStage}
+              onSelectStage={requestStage}
+              onHoverStage={handleHoverStage}
               stageCount={stages.length}
               pointer={pointer}
               reducedMotion={reducedMotion}
@@ -1428,27 +1716,75 @@ export function OfferDeliveryInterfaceOverlay({
           <SignalStack stages={stages} activeStage={readoutStage} />
         </motion.div>
 
-        <div className="absolute bottom-5 left-5 right-5 z-20 grid gap-4 border-t border-neutral-950/10 pt-4 sm:left-8 sm:right-8 lg:justify-end">
-          <div className="grid gap-2 sm:grid-cols-5 lg:min-w-[46rem]">
+        <div className="absolute bottom-5 left-5 right-5 z-20 border-t border-neutral-950/10 pt-4 sm:left-8 sm:right-8">
+          <div className="grid gap-2 sm:grid-cols-5">
             {stages.map((stage, index) => {
               const active = index === readoutStage;
+              const previewed = index === hoveredStage;
+              const complete = index < readoutStage;
 
               return (
                 <button
                   key={stage.title}
                   type="button"
-                  onFocus={() => requestStage(index)}
+                  aria-label={`Select delivery stage ${stage.label}: ${stage.title}`}
+                  aria-pressed={active}
+                  onMouseEnter={() => handleHoverStage(index)}
+                  onMouseLeave={() => handleHoverStage(null)}
+                  onFocus={() => handleHoverStage(index)}
+                  onBlur={() => handleHoverStage(null)}
                   onClick={() => requestStage(index)}
-                  className={`pointer-events-auto grid min-h-16 gap-2 border px-3 py-3 text-left transition ${
+                  className={`group pointer-events-auto grid min-h-[4.4rem] grid-rows-[auto_1fr] gap-2 border-t px-1 pt-2 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 ${
                     active
-                      ? "border-neutral-950 bg-neutral-950 text-white"
-                      : "border-neutral-950/12 bg-white/48 text-neutral-600 hover:border-neutral-950/36 hover:bg-white/78 hover:text-neutral-950"
+                      ? "border-neutral-950 text-neutral-950"
+                      : previewed
+                        ? "border-neutral-950/34 text-neutral-800"
+                        : "border-neutral-950/12 text-neutral-500 hover:border-neutral-950/28 hover:text-neutral-800"
                   }`}
                 >
-                  <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${active ? "text-white/50" : "text-neutral-300"}`}>
-                    {stage.label}
+                  <span className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
+                    <span
+                      className={`grid h-6 w-6 place-items-center rounded-full border font-mono text-[8px] uppercase tracking-[0.08em] transition ${
+                        active
+                          ? "border-neutral-950 bg-neutral-950 text-white"
+                          : complete
+                            ? "border-neutral-950/26 bg-neutral-950/[0.06] text-neutral-600"
+                            : "border-neutral-950/14 bg-white/42 text-neutral-400 group-hover:border-neutral-950/30 group-hover:text-neutral-700"
+                      }`}
+                    >
+                      {stage.label}
+                    </span>
+                    <span className="relative h-px overflow-hidden bg-neutral-950/10">
+                      <motion.span
+                        className="absolute inset-y-0 left-0 bg-neutral-950"
+                        initial={false}
+                        animate={{
+                          opacity: active ? 0.96 : complete ? 0.36 : previewed ? 0.28 : 0.1,
+                          width: active ? "100%" : complete ? "72%" : previewed ? "48%" : "18%",
+                        }}
+                        transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    </span>
+                    <span
+                      className={`h-2 w-2 rounded-full transition ${
+                        active
+                          ? "bg-neutral-950"
+                          : previewed
+                            ? "bg-neutral-950/44"
+                            : "bg-neutral-950/14 group-hover:bg-neutral-950/28"
+                      }`}
+                    />
                   </span>
-                  <span className="text-[13px] leading-4">{stage.title}</span>
+                  <span className="grid gap-1">
+                    <span className="truncate text-[13px] leading-4 tracking-[-0.015em]">{stage.title}</span>
+                    <span
+                      className={`font-mono text-[8px] uppercase leading-3 tracking-[0.14em] transition ${
+                        active ? "text-neutral-600" : "text-neutral-300 group-hover:text-neutral-500"
+                      }`}
+                    >
+                      {active ? "locked / live" : complete ? "passed / mapped" : "standby / route"}
+                    </span>
+                  </span>
                 </button>
               );
             })}

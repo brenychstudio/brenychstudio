@@ -60,6 +60,60 @@ Currently focused on:
 
 ## Current project brief
 
+### 2026-05-21 handoff brief
+
+Current active pass focused on two public surfaces: Offer section 03 and Immersive section Proof.
+
+#### Offer / Engagement Model
+
+- `src/pages/OfferV2.tsx`
+- `src/ui/OfferDeliveryModelEngine.tsx`
+
+Section `03 / Engagement Model` was moved away from the earlier right-side stage-control panel. The delivery engine now works as a wider page-level animation: users switch stages by interacting with the black stage nodes directly, while the only persistent action remains the open-interface control.
+
+The opened interface uses the same node-based interaction logic. Its bottom controls were rebuilt from primitive blocks into a more conceptual stage rail with numbered nodes, live/locked/passed states, and a quieter system readout. The engine render was also tuned for higher visual quality, smoother transitions, more stable stage switching, clearer node hit areas, and less random-looking motion.
+
+Current Offer interaction rules:
+
+- stage selection happens through animation nodes, not a separate right-side list;
+- stage information cards appear only after a concrete node click;
+- card positions are mapped per stage so they avoid nearby nodes and preserve composition;
+- the full interface keeps the same stage-card placement logic;
+- mobile and reduced-motion behavior remain supported by the existing component structure.
+
+#### Immersive / WHISPER Proof
+
+- `src/pages/ImmersiveV2.tsx`
+
+The WHISPER proof section was rebuilt into a Surface Relay Stage instead of a small screenshot slider. The current structure keeps the light spatial shell and the headline `The first completed spatial proof.`, but the right side now carries the visual weight with a large proof surface and a surface-specific state layout.
+
+Proof states now behave as distinct surfaces:
+
+- `01 Web` uses a large cinematic web surface.
+- `02 Mobile` uses a vertical phone surface with quiet ghost traces.
+- `03 Print` uses an edition-sheet / collector-object layout.
+- `04 AR` uses a placement preview with calibration geometry.
+- `05 Room` uses a deep spatial room surface.
+
+The relay navigation is now a proof-chain rail (`One archive` to `Five surfaces`) rather than generic boxed tabs. State switching remains keyboard accessible through focusable controls, and the main surface can advance to the next proof.
+
+Latest tone calibration:
+
+- stage backing is more neutral smoke/off-white and less cream/yellow;
+- active media is full-strength and readable;
+- ghost traces are muted separately with lower opacity and occasional grayscale;
+- Print has clearer material boundaries, cooler paper tone, and stronger but still subtle shadow;
+- AR has less gray veil and stronger preview readability;
+- Room remains deep inside the stage without turning the full section back into a dark dashboard.
+
+#### Validation
+
+- `npm run build` passes.
+- `npm run lint` passes with 8 known non-blocking warnings in existing files:
+  `SoundProvider.tsx`, `OfferDeliveryModelEngine.tsx`, `StudioHeroField.tsx`,
+  `ExternalProfileLinks.tsx`, `LiveBuildSignal.tsx`, and `CaseMobileShowcase.tsx`.
+- Vite still reports the known large chunk warning for the primary runtime and Three.js vendor chunk.
+
 Active work is focused on the new canonical Work case system:
 
 - Main route pattern: `/work-lab/:slug`

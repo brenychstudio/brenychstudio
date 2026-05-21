@@ -192,7 +192,11 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
   "immersive-proof": {
     id: "immersive-proof",
     signalLabel: "FIRST PROOF",
-    ...darkProof,
+    ...lightDefault,
+    surface: "rgba(248, 248, 245, 0.72)",
+    border: "rgba(15, 15, 15, 0.085)",
+    chipSurface: "rgba(255, 255, 255, 0.58)",
+    elevation: 0.04,
   },
   "immersive-engines": {
     id: "immersive-engines",

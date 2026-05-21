@@ -356,10 +356,10 @@ function SurfaceProofStage({
       type="button"
       onClick={onNext}
       aria-label={`Show next WHISPER proof surface after ${proof.railLabel}`}
-      className="group relative block min-h-[24rem] w-full overflow-hidden border border-neutral-950/10 bg-white/[0.34] text-left shadow-[0_44px_128px_rgba(24,24,22,0.1)] outline-none transition focus-visible:ring-2 focus-visible:ring-neutral-950 sm:min-h-[32rem] lg:min-h-[58vh]"
+      className="group relative block min-h-[24rem] w-full overflow-hidden border border-neutral-950/[0.075] bg-zinc-50/[0.24] text-left shadow-[0_36px_110px_rgba(24,24,22,0.075)] outline-none transition focus-visible:ring-2 focus-visible:ring-neutral-950 sm:min-h-[32rem] lg:min-h-[58vh]"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,rgba(255,255,255,0.46),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.2),rgba(238,238,233,0.16))]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.38] [background-image:linear-gradient(to_right,rgba(10,10,10,0.052)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.045)_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,rgba(255,255,255,0.34),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.14),rgba(242,242,239,0.1))]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.28] [background-image:linear-gradient(to_right,rgba(10,10,10,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.034)_1px,transparent_1px)] [background-size:72px_72px]" />
       <div className="pointer-events-none absolute inset-x-[5%] top-[8%] h-px bg-neutral-950/10" />
       <div className="pointer-events-none absolute inset-x-[5%] bottom-[8%] h-px bg-neutral-950/8" />
 
@@ -422,8 +422,8 @@ function renderWhisperSurface(proof: WhisperProofState) {
             <div className="relative w-[min(82%,48rem)] rotate-[1.2deg] border border-neutral-950/22 bg-[#f8f8f5] p-4 shadow-[0_38px_130px_rgba(28,28,24,0.2)] sm:p-6">
               <div className="grid gap-4 sm:grid-cols-[minmax(0,1.15fr)_0.85fr] sm:gap-5">
                 <div className="relative min-h-[12rem] overflow-hidden bg-neutral-950 sm:min-h-[18rem]">
-                  <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.08] contrast-[1.14] brightness-[1.02]" />
-                  <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.08))]" />
+                  <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.08] contrast-[1.14] brightness-[1.03]" />
+                  <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.025))]" />
                 </div>
                 <div className="flex min-h-[12rem] flex-col justify-between border-l border-neutral-950/18 pl-4 font-mono uppercase tracking-[0.16em] text-neutral-950 sm:min-h-[18rem] sm:pl-5">
                   <div>
@@ -480,10 +480,10 @@ function renderWhisperSurface(proof: WhisperProofState) {
     case "quest":
       return (
         <div className="absolute inset-0 bg-white/[0.22]">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_54%_44%,rgba(255,255,255,0.36),transparent_35%),radial-gradient(circle_at_50%_78%,rgba(0,0,0,0.1),transparent_48%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_54%_44%,rgba(255,255,255,0.36),transparent_35%),radial-gradient(circle_at_50%_78%,rgba(0,0,0,0.04),transparent_48%)]" />
           <div className="absolute inset-x-[6%] top-[13%] bottom-[16%] overflow-hidden bg-neutral-950 shadow-[0_42px_138px_rgba(0,0,0,0.3)]">
-            <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.08] contrast-[1.08] brightness-[0.9]" />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.42),transparent_28%,transparent_72%,rgba(0,0,0,0.38)),radial-gradient(circle_at_50%_42%,transparent_0,rgba(0,0,0,0.18)_54%,rgba(0,0,0,0.52)_100%)]" />
+            <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.1] contrast-[1.1] brightness-[1.12]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.055),transparent_28%,transparent_72%,rgba(0,0,0,0.05)),radial-gradient(circle_at_50%_42%,transparent_0,rgba(0,0,0,0.02)_54%,rgba(0,0,0,0.065)_100%)]" />
             <div className="absolute inset-x-[6%] bottom-[9%] h-[28%] opacity-[0.35] [background-image:linear-gradient(to_right,rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:46px_28px]" />
             <div className="absolute bottom-[11%] left-[8%] right-[8%] h-px bg-white/28" />
           </div>
@@ -507,8 +507,8 @@ function renderWhisperSurface(proof: WhisperProofState) {
           <div className="absolute inset-0 flex items-center justify-center px-6 py-12 sm:px-10">
             <div className="relative w-[min(94%,58rem)] overflow-hidden bg-neutral-950 shadow-[0_40px_130px_rgba(0,0,0,0.26)]">
               <div className="aspect-[16/9]">
-                <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.1] contrast-[1.08] brightness-[1]" />
-                <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.18))]" />
+                <WhisperProofMedia proof={proof} className="absolute inset-0 h-full w-full saturate-[1.1] contrast-[1.1] brightness-[1.04]" />
+                <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.045))]" />
               </div>
               <div className="absolute left-0 right-0 top-0 flex items-center justify-between border-b border-white/12 bg-black/22 px-4 py-3 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 sm:text-[9px]">
                 <span>Whisper / Web exhibition</span>
@@ -2182,7 +2182,7 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
     <Chapter id="proof" className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(94vw,1680px)]">
         <div
-          className="sticky top-[4.75rem] min-h-[calc(100vh-6rem)] overflow-hidden border-y border-neutral-950/12 bg-white/[0.16] text-neutral-950 backdrop-blur-[1px]"
+          className="sticky top-[4.75rem] min-h-[calc(100vh-6rem)] overflow-hidden border-y border-neutral-950/[0.085] bg-zinc-50/[0.12] text-neutral-950 backdrop-blur-[1px]"
           style={{ opacity: 1 - proofExitBlend, pointerEvents: proofExitBlend > 0.82 ? "none" : undefined }}
           onPointerDown={handleProofPointerDown}
           onPointerUp={handleProofPointerUp}
@@ -2190,7 +2190,7 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
             dragRef.current = null;
           }}
         >
-          <div className="pointer-events-none absolute inset-0 opacity-[0.38] [background-image:linear-gradient(to_right,rgba(10,10,10,0.075)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.06)_1px,transparent_1px)] [background-size:92px_92px]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.3] [background-image:linear-gradient(to_right,rgba(10,10,10,0.058)_1px,transparent_1px),linear-gradient(to_bottom,rgba(10,10,10,0.046)_1px,transparent_1px)] [background-size:92px_92px]" />
           <div className="pointer-events-none absolute left-[18%] top-[9%] h-[72%] w-[62%] rounded-[50%] border border-neutral-950/7" />
           <div className="pointer-events-none absolute left-[44%] top-[18%] h-[48%] w-[34%] rotate-[-12deg] rounded-[50%] border border-neutral-950/8" />
           <div className="pointer-events-none absolute left-[6%] top-[55%] h-px w-[88%] rotate-[-8deg] bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />

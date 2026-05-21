@@ -437,6 +437,41 @@ function FramePlate({
   );
 }
 
+function WhisperPhoneFrame({
+  frame,
+  active,
+}: {
+  frame: ImmersiveMedia;
+  active: boolean;
+}) {
+  return (
+    <span
+      className={cx(
+        "relative block aspect-[9/19] overflow-hidden rounded-[1.7rem] border-[7px] border-black bg-black shadow-[0_34px_110px_rgba(0,0,0,0.5)] transition sm:border-[9px]",
+        active
+          ? "ring-1 ring-[#f4efe4]/68 shadow-[0_44px_140px_rgba(0,0,0,0.62)]"
+          : "ring-1 ring-white/10 group-hover:ring-white/30",
+      )}
+    >
+      <span className="absolute inset-[2px] overflow-hidden rounded-[1.15rem] bg-black">
+        <img
+          src={frame.src}
+          alt={frame.alt ?? ""}
+          className={cx(
+            "h-full w-full object-cover saturate-[1.05] contrast-[1.04] transition duration-500",
+            active ? "opacity-100 brightness-[1.04]" : "opacity-[0.76] brightness-[0.9] group-hover:opacity-95 group-hover:brightness-100",
+          )}
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+      <span className="pointer-events-none absolute left-1/2 top-2 h-1.5 w-12 -translate-x-1/2 rounded-full bg-white/14" />
+      <span className="pointer-events-none absolute inset-0 rounded-[1.15rem] ring-1 ring-inset ring-white/12" />
+      <span className="pointer-events-none absolute bottom-2 left-1/2 h-1 w-9 -translate-x-1/2 rounded-full bg-white/18" />
+    </span>
+  );
+}
+
 function SpatialEvidenceField({
   frames,
   startIndex = 0,
@@ -1242,11 +1277,7 @@ function CinematicMobileField({
                 }
                 transition={{ duration: 0.48, ease }}
               >
-                <span className={cx("block overflow-hidden rounded-[1.35rem] border bg-black p-2 shadow-[0_28px_90px_rgba(0,0,0,0.44)] transition", active ? "border-[#f4efe4]/72" : "border-white/12 group-hover:border-white/34")}>
-                  <span className="block overflow-hidden rounded-[1rem] bg-black">
-                    <img src={frame.src} alt={frame.alt ?? ""} className="aspect-[9/16] h-full w-full object-contain" loading="lazy" decoding="async" />
-                  </span>
-                </span>
+                <WhisperPhoneFrame frame={frame} active={active} />
                 <span className="mt-3 grid grid-cols-[2.4rem_1fr] gap-3">
                   <span className="text-[10px] uppercase tracking-[0.16em] text-white/28">{formatIndex(index + 1)}</span>
                   <span>

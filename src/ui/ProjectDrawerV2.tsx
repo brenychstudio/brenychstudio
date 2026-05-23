@@ -156,6 +156,50 @@ const projectSignals: SignalOption[] = [
   },
 ];
 
+const mobileDirectionOptions: ProjectDirection[] = [
+  "premium-website",
+  "product-surface",
+  "multilingual-system",
+  "immersive-prototype",
+  "available-system",
+  "not-sure",
+];
+
+const mobileSignalOptions: ProjectSignal[] = [
+  "new-launch",
+  "existing-offer",
+  "product-demo",
+  "specific-case",
+  "not-sure",
+];
+
+const mobileDirectionLabels: Partial<Record<ProjectDirection, string>> = {
+  "available-system": "Adapt system",
+  "premium-website": "Website",
+  "product-surface": "Product",
+  "multilingual-system": "Multilingual",
+  "immersive-prototype": "Immersive",
+  "not-sure": "Not sure",
+};
+
+const mobileSignalLabels: Partial<Record<ProjectSignal, string>> = {
+  "new-launch": "New launch",
+  "existing-offer": "Improve",
+  "product-demo": "Demo",
+  "specific-case": "Specific case",
+  "not-sure": "Not sure",
+};
+
+const desktopDirectionLabels: Partial<Record<ProjectDirection, string>> = {
+  "available-system": "Adapt system",
+  "premium-website": "Website",
+  "product-surface": "Product surface",
+  "multilingual-system": "Multilingual",
+  "immersive-prototype": "Immersive",
+  "creative-technology": "Creative tech",
+  "not-sure": "Not sure",
+};
+
 function useIsMobileSheet() {
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.matchMedia("(max-width: 639px)").matches : false,
@@ -331,7 +375,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
           <motion.aside
             role="dialog"
             aria-modal="true"
-            aria-labelledby="project-signal-title"
+            aria-labelledby={isMobile ? "project-signal-title-mobile" : "project-signal-title"}
             className="fixed bottom-0 left-0 right-0 flex h-[96svh] max-h-[96svh] max-w-full flex-col overflow-hidden rounded-t-[8px] border-t border-neutral-300/70 bg-[#f5f2eb] text-neutral-950 shadow-[0_-18px_64px_rgba(0,0,0,0.14)] sm:bottom-auto sm:left-auto sm:top-0 sm:h-svh sm:max-h-none sm:w-[min(92vw,540px)] sm:rounded-none sm:border-l sm:border-t-0 sm:shadow-[-24px_0_74px_rgba(0,0,0,0.12)]"
             initial={panelInitial}
             animate={{
@@ -356,7 +400,185 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(255,255,255,0.96),rgba(255,255,255,0.28)_35%,rgba(245,242,235,0)_70%)]" />
 
             <div className="relative flex min-h-0 flex-1 flex-col">
-              <header className="shrink-0 px-4 pb-3 pt-4 sm:px-7 sm:pb-5 sm:pt-7">
+              <form onSubmit={onSubmit} className="relative flex min-h-0 flex-1 flex-col sm:hidden">
+                <header className="shrink-0 px-4 pb-3 pt-3">
+                  <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-neutral-950/16" />
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                        Project signal
+                      </p>
+                      <h2
+                        id="project-signal-title-mobile"
+                        className="mt-1 text-[34px] font-normal leading-none tracking-normal text-neutral-950"
+                      >
+                        Start a project
+                      </h2>
+                    </div>
+
+                    <button
+                      type="button"
+                      onMouseEnter={() => playRole("hover")}
+                      onClick={closeDrawer}
+                      className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-neutral-300/80 bg-white/72 px-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-700 shadow-[0_8px_20px_rgba(0,0,0,0.045)] transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                    >
+                      Close
+                    </button>
+                  </div>
+
+                  <p className="mt-3 text-[13px] leading-6 text-neutral-600">
+                    Pick a direction, add a short note, and I'll reply with the cleanest next step.
+                  </p>
+
+                </header>
+
+                <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pb-5 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <section>
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                        What are we building?
+                      </h3>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-neutral-400">01</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      {mobileDirectionOptions.map((value) => {
+                        const option = getDirection(value);
+                        const active = selectedDirection === value;
+
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            aria-pressed={active}
+                            onMouseEnter={() => playRole("hover")}
+                            onClick={() => {
+                              playRole("select");
+                              setSelectedDirection(value);
+                            }}
+                            className={[
+                              "min-h-[4.25rem] rounded-[18px] border px-3 py-3 text-left transition active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
+                              active
+                                ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_16px_34px_rgba(0,0,0,0.13)]"
+                                : "border-neutral-300/70 bg-white/46 text-neutral-800 shadow-[0_8px_24px_rgba(0,0,0,0.035)]",
+                            ].join(" ")}
+                          >
+                            <span className="block text-[12px] font-semibold leading-4">
+                              {mobileDirectionLabels[value] ?? option.label}
+                            </span>
+                            <span className={["mt-1.5 block text-[10px] leading-4", active ? "text-white/58" : "text-neutral-500"].join(" ")}>
+                              {option.helper}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
+
+                  <section className="mt-5">
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                        Current need
+                      </h3>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-neutral-400">02</span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {mobileSignalOptions.map((value) => {
+                        const option = getSignal(value);
+                        const active = selectedSignal === value;
+
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            aria-pressed={active}
+                            onMouseEnter={() => playRole("hover")}
+                            onClick={() => {
+                              playRole("select");
+                              setSelectedSignal(value);
+                            }}
+                            className={[
+                              "min-h-10 rounded-full border px-4 text-[10px] font-semibold uppercase tracking-[0.11em] transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
+                              active
+                                ? "border-neutral-950 bg-neutral-950 text-white"
+                                : "border-neutral-300/70 bg-white/50 text-neutral-600",
+                            ].join(" ")}
+                          >
+                            {mobileSignalLabels[value] ?? option.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
+
+                  <section className="mt-5">
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                        Short note
+                      </h3>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-neutral-400">03</span>
+                    </div>
+
+                    <textarea
+                      value={message}
+                      onChange={(event) => setMessage(event.target.value)}
+                      rows={4}
+                      placeholder="Offer, audience, timeline, current page, or what should become clearer..."
+                      className="min-h-[116px] w-full resize-none rounded-[20px] border border-neutral-300/70 bg-white/48 px-4 py-3 text-[14px] leading-6 text-neutral-900 outline-none shadow-[0_10px_26px_rgba(0,0,0,0.035)] transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
+                    />
+                  </section>
+
+                  <section className="mt-4 grid gap-2">
+                    <input
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      type="email"
+                      inputMode="email"
+                      placeholder="Email for reply"
+                      className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/54 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
+                    />
+                    <input
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      placeholder="Name / company, optional"
+                      className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/40 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
+                    />
+                  </section>
+                </div>
+
+                <footer className="shrink-0 border-t border-neutral-300/70 bg-[#f5f2eb]/98 px-4 pb-[max(0.85rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-18px_42px_rgba(245,242,235,0.9)]">
+                  <button
+                    type="submit"
+                    onMouseEnter={() => playRole("hover")}
+                    className="flex h-12 w-full items-center justify-between rounded-full bg-neutral-950 px-5 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-white shadow-[0_16px_36px_rgba(0,0,0,0.14)] transition active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                  >
+                    <span>Send project signal</span>
+                    <span aria-hidden>{"->"}</span>
+                  </button>
+
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    <a
+                      href={mailtoHref}
+                      onMouseEnter={() => playRole("hover")}
+                      onClick={() => playRole("success")}
+                      className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/46 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-700 transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                    >
+                      Email directly
+                    </a>
+                    <button
+                      type="button"
+                      onMouseEnter={() => playRole("hover")}
+                      onClick={copyEmail}
+                      className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/46 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-700 transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                    >
+                      {copiedEmail ? "Copied" : "Copy email"}
+                    </button>
+                  </div>
+                </footer>
+              </form>
+
+              <header className="hidden shrink-0 px-4 pb-3 pt-4 sm:block sm:px-7 sm:pb-5 sm:pt-7">
                 <div className="flex items-start justify-between gap-3 sm:gap-5">
                   <div className="min-w-0">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500 sm:tracking-[0.3em]">
@@ -399,22 +621,19 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                 </div>
               </header>
 
-              <form onSubmit={onSubmit} className="relative flex min-h-0 flex-1 flex-col">
-                <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pb-6 pt-2 [scrollbar-color:rgba(0,0,0,0.22)_transparent] [scrollbar-width:thin] sm:px-7 sm:pb-7 sm:pt-3 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-950/20 [&::-webkit-scrollbar-track]:bg-transparent">
-                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
-                    <div className="flex items-end justify-between gap-4">
-                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
-                        What do you want to build?
+              <form onSubmit={onSubmit} className="relative hidden min-h-0 flex-1 flex-col sm:flex">
+                <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-7 pb-6 pt-3 [scrollbar-color:rgba(0,0,0,0.22)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-950/20 [&::-webkit-scrollbar-track]:bg-transparent">
+                  <section className="border-t border-neutral-300/70 pt-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
+                        What are we building?
                       </h3>
-                      <span className="text-[10px] uppercase tracking-[0.22em] text-neutral-400">
-                        01
-                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">01</span>
                     </div>
 
-                    <div className="mt-4 border-t border-neutral-300/70">
-                      {projectDirections.map((option, index) => {
+                    <div className="mt-4 grid grid-cols-2 gap-2.5">
+                      {projectDirections.map((option) => {
                         const active = selectedDirection === option.value;
-                        const number = String(index + 1).padStart(2, "0");
 
                         return (
                           <button
@@ -427,32 +646,17 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                               setSelectedDirection(option.value);
                             }}
                             className={[
-                              "group grid w-full grid-cols-[2.25rem_1fr] gap-3 border-b px-0 py-3.5 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
+                              "min-h-[5.25rem] rounded-[18px] border px-4 py-3 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
                               active
-                                ? "border-neutral-950 bg-neutral-950 px-3 text-white shadow-[0_12px_30px_rgba(0,0,0,0.1)]"
-                                : "border-neutral-300/70 text-neutral-700 hover:border-neutral-700 hover:bg-white/36",
+                                ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_18px_40px_rgba(0,0,0,0.13)]"
+                                : "border-neutral-300/70 bg-white/42 text-neutral-800 shadow-[0_8px_24px_rgba(0,0,0,0.035)] hover:border-neutral-500 hover:bg-white/70",
                             ].join(" ")}
                           >
-                            <span
-                              className={[
-                                "pt-0.5 font-mono text-[11px] leading-none",
-                                active ? "text-white/58" : "text-neutral-400",
-                              ].join(" ")}
-                            >
-                              {number}
+                            <span className="block text-[13px] font-semibold leading-4">
+                              {desktopDirectionLabels[option.value] ?? option.label}
                             </span>
-                            <span className="min-w-0">
-                              <span className="block text-[14px] leading-5 text-current">
-                                {option.label}
-                              </span>
-                              <span
-                                className={[
-                                  "mt-1 block text-[12px] leading-5",
-                                  active ? "text-white/62" : "text-neutral-500",
-                                ].join(" ")}
-                              >
-                                {option.helper}
-                              </span>
+                            <span className={["mt-2 block text-[11px] leading-4", active ? "text-white/58" : "text-neutral-500"].join(" ")}>
+                              {option.helper}
                             </span>
                           </button>
                         );
@@ -460,10 +664,47 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     </div>
                   </section>
 
-                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
+                  <section className="mt-6">
+                    <div className="flex items-center justify-between gap-4">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
+                        Current need
+                      </h3>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">02</span>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {mobileSignalOptions.map((value) => {
+                        const option = getSignal(value);
+                        const active = selectedSignal === value;
+
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            aria-pressed={active}
+                            onMouseEnter={() => playRole("hover")}
+                            onClick={() => {
+                              playRole("select");
+                              setSelectedSignal(value);
+                            }}
+                            className={[
+                              "min-h-10 rounded-full border px-4 text-[10px] font-semibold uppercase tracking-[0.13em] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
+                              active
+                                ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_12px_26px_rgba(0,0,0,0.12)]"
+                                : "border-neutral-300/70 bg-white/46 text-neutral-600 hover:border-neutral-500 hover:bg-white/72",
+                            ].join(" ")}
+                          >
+                            {mobileSignalLabels[value] ?? option.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
+
+                  <section className="mt-6">
                     <AnimatePresence mode="wait" initial={false}>
                       <motion.div
-                        key={direction.value}
+                        key={`${direction.value}-${signal.value}`}
                         initial={{ opacity: 0, y: 6 }}
                         animate={{
                           opacity: 1,
@@ -475,180 +716,77 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                           y: -4,
                           transition: { duration: 0.14, ease: [0.4, 0, 0.2, 1] },
                         }}
-                        className="border-l border-neutral-950/45 pl-4"
+                        className="rounded-[20px] border border-neutral-300/70 bg-white/38 p-4 shadow-[0_12px_34px_rgba(0,0,0,0.035)]"
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
-                            Selected signal
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
+                            Route preview
                           </p>
-                          <span className="text-[10px] uppercase tracking-[0.22em] text-neutral-400">
-                            Live
-                          </span>
+                          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">Live</span>
                         </div>
 
-                        <p className="mt-3 text-[24px] leading-[1.05] text-neutral-950">
-                          {direction.label}
-                        </p>
-                        <p className="mt-3 text-[13px] leading-6 text-neutral-600">
-                          {direction.readout}
-                        </p>
-
-                        <div className="mt-4 grid gap-3 border-t border-neutral-300/70 pt-4">
-                          <div>
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-400">
-                              Suggested first format
+                        <div className="mt-3 grid grid-cols-[1fr_auto] gap-4">
+                          <div className="min-w-0">
+                            <p className="text-[24px] leading-[1.02] text-neutral-950">
+                              {desktopDirectionLabels[direction.value] ?? direction.label}
                             </p>
-                            <p className="mt-1 text-[13px] leading-5 text-neutral-800">
+                            <p className="mt-2 text-[12px] leading-5 text-neutral-600">
                               {direction.firstFormat}
                             </p>
                           </div>
-                          <div>
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-400">
-                              Best next step
-                            </p>
-                            <p className="mt-1 text-[13px] leading-5 text-neutral-800">
-                              {direction.nextStep}
-                            </p>
+                          <div className="self-start rounded-full border border-neutral-300/80 bg-white/55 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                            {mobileSignalLabels[signal.value] ?? signal.label}
                           </div>
                         </div>
 
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {direction.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="border border-neutral-300/70 bg-white/34 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-neutral-500"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                        <p className="mt-4 border-t border-neutral-300/70 pt-3 text-[13px] leading-6 text-neutral-600">
+                          {direction.nextStep}
+                        </p>
                       </motion.div>
                     </AnimatePresence>
                   </section>
 
-                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
-                    <div className="flex items-end justify-between gap-4">
-                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
-                        What is the current need?
-                      </h3>
-                      <span className="text-[10px] uppercase tracking-[0.22em] text-neutral-400">
-                        02
-                      </span>
-                    </div>
-
-                    <div className="mt-4 border-t border-neutral-300/70">
-                      {projectSignals.map((option) => {
-                        const active = selectedSignal === option.value;
-
-                        return (
-                          <button
-                            key={option.value}
-                            type="button"
-                            aria-pressed={active}
-                            onMouseEnter={() => playRole("hover")}
-                            onClick={() => {
-                              playRole("select");
-                              setSelectedSignal(option.value);
-                            }}
-                            className={[
-                              "grid w-full grid-cols-[1fr_auto] items-center gap-3 border-b py-2.5 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
-                              active
-                                ? "border-neutral-950 bg-neutral-950 px-3 text-white"
-                                : "border-neutral-300/70 text-neutral-700 hover:border-neutral-700 hover:bg-white/32",
-                            ].join(" ")}
-                          >
-                            <span className="min-w-0">
-                              <span className="block text-[13px] leading-5">{option.label}</span>
-                              <span
-                                className={[
-                                  "mt-0.5 block text-[11px] leading-4",
-                                  active ? "text-white/58" : "text-neutral-400",
-                                ].join(" ")}
-                              >
-                                {option.helper}
-                              </span>
-                            </span>
-                            <span
-                              className={[
-                                "text-[10px] font-semibold uppercase tracking-[0.2em]",
-                                active ? "text-white/62" : "text-neutral-400",
-                              ].join(" ")}
-                            >
-                              {active ? "Live" : "Idle"}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </section>
-
-                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
-                    <div className="flex items-end justify-between gap-4">
-                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
+                  <section className="mt-6 border-t border-neutral-300/70 pt-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
                         Project note
                       </h3>
-                      <span className="text-[10px] uppercase tracking-[0.22em] text-neutral-400">
-                        03
-                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">03</span>
                     </div>
 
-                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <label className="block">
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-                          Name / company
-                        </span>
-                        <input
-                          value={name}
-                          onChange={(event) => setName(event.target.value)}
-                          placeholder="Optional"
-                          className="mt-2 h-10 w-full border-0 border-b border-neutral-300/80 bg-transparent px-0 text-[14px] text-neutral-900 outline-none transition duration-300 placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
-                        />
-                      </label>
-
-                      <label className="block">
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-                          Email
-                        </span>
-                        <input
-                          value={email}
-                          onChange={(event) => setEmail(event.target.value)}
-                          type="email"
-                          placeholder="Optional"
-                          className="mt-2 h-10 w-full border-0 border-b border-neutral-300/80 bg-transparent px-0 text-[14px] text-neutral-900 outline-none transition duration-300 placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
-                        />
-                      </label>
-                    </div>
-
-                    <label className="mt-5 block">
-                      <span className="sr-only">Project note</span>
-                      <textarea
-                        value={message}
-                        onChange={(event) => setMessage(event.target.value)}
-                        rows={7}
-                        placeholder={projectNotePlaceholder}
-                        className="min-h-[158px] w-full resize-y border-0 border-y border-neutral-300/80 bg-transparent px-0 py-4 text-[15px] leading-7 text-neutral-900 outline-none transition duration-300 placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      <input
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        placeholder="Name / company"
+                        className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/48 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                       />
-                    </label>
-                  </section>
-
-                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
-                    <div className="flex items-start gap-4 border-l border-neutral-950/45 pl-4">
-                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-neutral-950" />
-                      <p className="text-[13px] leading-6 text-neutral-600">
-                        Best for premium websites, product surfaces, multilingual
-                        systems, immersive prototypes, and creative technology
-                        direction.
-                      </p>
+                      <input
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        type="email"
+                        inputMode="email"
+                        placeholder="Email for reply"
+                        className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/48 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
+                      />
                     </div>
+
+                    <textarea
+                      value={message}
+                      onChange={(event) => setMessage(event.target.value)}
+                      rows={5}
+                      placeholder={projectNotePlaceholder}
+                      className="mt-3 min-h-[132px] w-full resize-none rounded-[20px] border border-neutral-300/70 bg-white/44 px-4 py-3 text-[14px] leading-6 text-neutral-900 outline-none shadow-[0_10px_26px_rgba(0,0,0,0.025)] transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
+                    />
                   </section>
                 </div>
 
-                <footer className="shrink-0 border-t border-neutral-300/70 bg-[#f5f2eb]/96 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 sm:px-7 sm:pt-4">
+                <footer className="shrink-0 border-t border-neutral-300/70 bg-[#f5f2eb]/98 px-7 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-18px_42px_rgba(245,242,235,0.92)]">
                   <button
                     type="submit"
                     onMouseEnter={() => playRole("hover")}
                     className={[
-                      "flex h-12 w-full items-center justify-between border px-4 text-left text-[11px] font-semibold uppercase tracking-[0.2em] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
+                      "flex h-12 w-full items-center justify-between rounded-full border px-5 text-left text-[11px] font-semibold uppercase tracking-[0.18em] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]",
                       hasInteraction
                         ? "border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800"
                         : "border-neutral-950/80 bg-neutral-950/88 text-white/86 hover:bg-neutral-950",
@@ -663,7 +801,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       href={mailtoHref}
                       onMouseEnter={() => playRole("hover")}
                       onClick={() => playRole("success")}
-                      className="flex h-10 items-center justify-center border border-neutral-300/80 bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/44 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                      className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/42 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/76 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
                       Email directly
                     </a>
@@ -671,7 +809,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       type="button"
                       onClick={copyEmail}
                       onMouseEnter={() => playRole("hover")}
-                      className="flex h-10 items-center justify-center border border-neutral-300/80 bg-transparent text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/44 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                      className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/42 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/76 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
                       {copiedEmail ? "Email copied" : "Copy email"}
                     </button>

@@ -21,11 +21,13 @@
     min-height: 100%;
     background-color: #ffffff;
     scrollbar-gutter: stable;
+    overflow-x: clip;
   }
 
   body {
     min-height: 100vh;
     margin: 0;
+    overflow-x: clip;
     background:
       radial-gradient(1200px 640px at 50% -10%, rgba(0, 0, 0, 0.03), transparent 62%),
       linear-gradient(180deg, #ffffff 0%, #fcfcfb 100%);
@@ -34,6 +36,7 @@
 
   #root {
     min-height: 100vh;
+    overflow-x: clip;
   }
 
   button,
@@ -46,6 +49,13 @@
   ::selection {
     background: rgba(17, 17, 17, 0.12);
     color: #111111;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -86,6 +96,163 @@
     to {
       opacity: 1;
       filter: blur(0);
+    }
+  }
+}
+
+@layer components {
+  .mobile-interface-surface {
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --mobile-header-height: 56px;
+      --mobile-page-x: clamp(1rem, 4vw, 1.25rem);
+      --mobile-section-y: clamp(3.5rem, 11vw, 5rem);
+      --mobile-chapter-y: clamp(2.75rem, 9vw, 4rem);
+    }
+
+    html,
+    body,
+    #root {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    .mobile-interface-surface {
+      padding-inline: 0;
+      contain: paint;
+    }
+
+    .mobile-interface-surface :is(section, article, aside, header, footer, div) {
+      min-width: 0;
+    }
+
+    .mobile-interface-surface :is(h1, h2, h3) {
+      overflow-wrap: anywhere;
+      text-wrap: balance;
+    }
+
+    .mobile-interface-surface h1 {
+      max-width: 12ch;
+      font-size: clamp(3rem, 16vw, 4.6rem) !important;
+      line-height: 0.92 !important;
+      letter-spacing: 0 !important;
+    }
+
+    .mobile-interface-surface h2 {
+      max-width: 14ch;
+      font-size: clamp(2.35rem, 12vw, 3.65rem) !important;
+      line-height: 0.95 !important;
+      letter-spacing: 0 !important;
+    }
+
+    .mobile-interface-surface h3 {
+      font-size: clamp(1.55rem, 8vw, 2.45rem) !important;
+      line-height: 1.02 !important;
+      letter-spacing: 0 !important;
+    }
+
+    .mobile-interface-surface p {
+      max-width: 38rem;
+    }
+
+    .mobile-interface-surface [class*="text-[7px]"],
+    .mobile-interface-surface [class*="text-[8px]"] {
+      font-size: 0.625rem !important;
+    }
+
+    .mobile-interface-surface [class*="tracking-[0.2"],
+    .mobile-interface-surface [class*="tracking-[0.3"] {
+      letter-spacing: 0.14em !important;
+    }
+
+    .mobile-interface-surface [class*="min-h-screen"],
+    .mobile-interface-surface [class*="min-h-[calc(100vh"],
+    .mobile-interface-surface [class*="min-h-[100vh"] {
+      min-height: auto !important;
+    }
+
+    .mobile-interface-surface > [class*="min-h-screen"]:first-child,
+    .mobile-interface-surface section:first-of-type[class*="min-h-screen"] {
+      min-height: min(720px, calc(100svh - var(--mobile-header-height))) !important;
+    }
+
+    .mobile-interface-surface [class*="h-[calc(100vh"],
+    .mobile-interface-surface [class*="h-screen"] {
+      height: auto !important;
+    }
+
+    .mobile-interface-surface [class*="py-24"] {
+      padding-block: var(--mobile-section-y) !important;
+    }
+
+    .mobile-interface-surface [class*="pt-28"],
+    .mobile-interface-surface [class*="pt-24"] {
+      padding-top: calc(var(--mobile-header-height) + 1.5rem) !important;
+    }
+
+    .mobile-interface-surface [class*="pb-24"],
+    .mobile-interface-surface [class*="pb-20"],
+    .mobile-interface-surface [class*="pb-16"] {
+      padding-bottom: var(--mobile-chapter-y) !important;
+    }
+
+    .mobile-interface-surface [class*="gap-14"],
+    .mobile-interface-surface [class*="gap-16"],
+    .mobile-interface-surface [class*="gap-20"],
+    .mobile-interface-surface [class*="gap-24"] {
+      gap: clamp(1.75rem, 8vw, 3rem) !important;
+    }
+
+    .mobile-interface-surface [class*="mt-9"],
+    .mobile-interface-surface [class*="mt-10"],
+    .mobile-interface-surface [class*="mt-12"],
+    .mobile-interface-surface [class*="mt-14"],
+    .mobile-interface-surface [class*="mt-16"] {
+      margin-top: clamp(1.75rem, 7vw, 2.75rem) !important;
+    }
+
+    .mobile-interface-surface :is(img, video) {
+      height: auto;
+    }
+
+    .mobile-interface-surface video {
+      width: 100%;
+    }
+
+    .mobile-interface-surface :is(table, pre) {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .mobile-chapter {
+      display: grid;
+      gap: 1.25rem;
+      padding-block: var(--mobile-chapter-y);
+    }
+
+    .mobile-chapter__label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .mobile-chapter__heading {
+      max-width: 14ch;
+      font-size: clamp(2.2rem, 11vw, 3.35rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .mobile-chapter__summary {
+      max-width: 34rem;
+      font-size: 0.9375rem;
+      line-height: 1.7;
     }
   }
 }

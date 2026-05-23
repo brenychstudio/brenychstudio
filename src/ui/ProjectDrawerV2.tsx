@@ -332,7 +332,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="project-signal-title"
-            className="fixed bottom-0 left-0 right-0 flex h-[94svh] max-h-[94svh] flex-col overflow-hidden rounded-t-[8px] border-t border-neutral-300/70 bg-[#f5f2eb] text-neutral-950 shadow-[0_-18px_64px_rgba(0,0,0,0.14)] sm:bottom-auto sm:left-auto sm:top-0 sm:h-svh sm:max-h-none sm:w-[min(92vw,540px)] sm:rounded-none sm:border-l sm:border-t-0 sm:shadow-[-24px_0_74px_rgba(0,0,0,0.12)]"
+            className="fixed bottom-0 left-0 right-0 flex h-[96svh] max-h-[96svh] max-w-full flex-col overflow-hidden rounded-t-[8px] border-t border-neutral-300/70 bg-[#f5f2eb] text-neutral-950 shadow-[0_-18px_64px_rgba(0,0,0,0.14)] sm:bottom-auto sm:left-auto sm:top-0 sm:h-svh sm:max-h-none sm:w-[min(92vw,540px)] sm:rounded-none sm:border-l sm:border-t-0 sm:shadow-[-24px_0_74px_rgba(0,0,0,0.12)]"
             initial={panelInitial}
             animate={{
               ...panelAnimate,
@@ -356,15 +356,15 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(255,255,255,0.96),rgba(255,255,255,0.28)_35%,rgba(245,242,235,0)_70%)]" />
 
             <div className="relative flex min-h-0 flex-1 flex-col">
-              <header className="shrink-0 px-5 pb-4 pt-5 sm:px-7 sm:pb-5 sm:pt-7">
-                <div className="flex items-start justify-between gap-5">
+              <header className="shrink-0 px-4 pb-3 pt-4 sm:px-7 sm:pb-5 sm:pt-7">
+                <div className="flex items-start justify-between gap-3 sm:gap-5">
                   <div className="min-w-0">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-neutral-500">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500 sm:tracking-[0.3em]">
                       Project signal
                     </p>
                     <h2
                       id="project-signal-title"
-                      className="mt-3 text-[40px] font-normal leading-[0.96] tracking-normal text-neutral-950 sm:text-[50px]"
+                      className="mt-2 text-[34px] font-normal leading-[0.98] tracking-normal text-neutral-950 sm:mt-3 sm:text-[50px]"
                     >
                       Start a project
                     </h2>
@@ -373,20 +373,20 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <button
                     type="button"
                     onClick={closeDrawer}
-                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-neutral-300/80 bg-white/60 px-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-neutral-500 hover:bg-white/86 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
+                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-neutral-300/80 bg-white/60 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-neutral-500 hover:bg-white/86 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb] sm:px-4 sm:tracking-[0.22em]"
                   >
                     Close
                   </button>
                 </div>
 
-                <p className="mt-5 max-w-[39rem] text-[14px] leading-6 text-neutral-600">
+                <p className="mt-4 max-w-[39rem] text-[13px] leading-6 text-neutral-600 sm:mt-5 sm:text-[14px]">
                   Tell me what you want to build. I'll respond with the best next
                   format: landing page, micro-site, product surface, immersive
                   prototype, or creative technology direction.
                 </p>
 
-                <div className="mt-5 border-t border-neutral-300/70 pt-3">
-                  <div className="grid grid-cols-2 gap-4 text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                <div className="mt-4 border-t border-neutral-300/70 pt-3 sm:mt-5">
+                  <div className="grid grid-cols-2 gap-3 text-[9px] uppercase tracking-[0.14em] text-neutral-500 sm:gap-4 sm:text-[10px] sm:tracking-[0.2em]">
                     <div>
                       <span className="block text-neutral-400">01 / Signal intake</span>
                       <span className="mt-1 block text-neutral-800">Direction + need</span>
@@ -400,8 +400,8 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
               </header>
 
               <form onSubmit={onSubmit} className="relative flex min-h-0 flex-1 flex-col">
-                <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-7 pt-3 [scrollbar-color:rgba(0,0,0,0.22)_transparent] [scrollbar-width:thin] sm:px-7 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-950/20 [&::-webkit-scrollbar-track]:bg-transparent">
-                  <section className="border-t border-neutral-300/70 py-5">
+                <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pb-6 pt-2 [scrollbar-color:rgba(0,0,0,0.22)_transparent] [scrollbar-width:thin] sm:px-7 sm:pb-7 sm:pt-3 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-950/20 [&::-webkit-scrollbar-track]:bg-transparent">
+                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
                     <div className="flex items-end justify-between gap-4">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
                         What do you want to build?
@@ -460,7 +460,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     </div>
                   </section>
 
-                  <section className="border-t border-neutral-300/70 py-5">
+                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
                     <AnimatePresence mode="wait" initial={false}>
                       <motion.div
                         key={direction.value}
@@ -526,7 +526,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     </AnimatePresence>
                   </section>
 
-                  <section className="border-t border-neutral-300/70 py-5">
+                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
                     <div className="flex items-end justify-between gap-4">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
                         What is the current need?
@@ -582,7 +582,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     </div>
                   </section>
 
-                  <section className="border-t border-neutral-300/70 py-5">
+                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
                     <div className="flex items-end justify-between gap-4">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-neutral-500">
                         Project note
@@ -631,7 +631,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     </label>
                   </section>
 
-                  <section className="border-t border-neutral-300/70 py-5">
+                  <section className="border-t border-neutral-300/70 py-4 sm:py-5">
                     <div className="flex items-start gap-4 border-l border-neutral-950/45 pl-4">
                       <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-neutral-950" />
                       <p className="text-[13px] leading-6 text-neutral-600">
@@ -643,7 +643,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   </section>
                 </div>
 
-                <footer className="shrink-0 border-t border-neutral-300/70 bg-[#f5f2eb]/96 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 sm:px-7">
+                <footer className="shrink-0 border-t border-neutral-300/70 bg-[#f5f2eb]/96 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 sm:px-7 sm:pt-4">
                   <button
                     type="submit"
                     onMouseEnter={() => playRole("hover")}

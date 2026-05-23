@@ -6,5 +6,9 @@ type Props = {
 };
 
 export default function PageSurface({ children, className = "" }: Props) {
-  return <div className={className}>{children}</div>;
+  return (
+    <div className={["mobile-interface-surface", className].filter(Boolean).join(" ")}>
+      {children}
+    </div>
+  );
 }

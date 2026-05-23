@@ -37,6 +37,7 @@ export default function Header({
   const navigate = useNavigate();
   const { locale, setLocale, t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
 
   const onHome = location.pathname === "/";
@@ -46,6 +47,7 @@ export default function Header({
     () => resolveHeaderTheme({ routeTheme, activeSceneId }),
     [activeSceneId, routeTheme],
   );
+  const mobileMenuIsDark = headerTheme.foreground.toLowerCase() !== "#0f0f0f";
 
   useHeaderThemeMorph(headerRef, headerTheme, scrolled);
 
@@ -65,6 +67,8 @@ export default function Header({
 
     return "";
   }, [location.pathname]);
+  const mobileMenuContext = `${drawerOpen ? "drawer-open" : "drawer-closed"}:${location.pathname}`;
+  const mobileMenuContextRef = useRef(mobileMenuContext);
 
   useEffect(() => {
     const updateScrolled = () => setScrolled(window.scrollY > 12);
@@ -74,6 +78,19 @@ export default function Header({
 
     return () => window.removeEventListener("scroll", updateScrolled);
   }, []);
+
+  useEffect(() => {
+    if (mobileMenuContextRef.current === mobileMenuContext) return;
+
+    mobileMenuContextRef.current = mobileMenuContext;
+    if (!mobileMenuOpen) return;
+
+    const frame = window.requestAnimationFrame(() => setMobileMenuOpen(false));
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [mobileMenuContext, mobileMenuOpen]);
 
   const navigateWithTransition = (to: string) => {
     if (location.pathname === to) return;
@@ -97,6 +114,7 @@ export default function Header({
   };
 
   const onNav = (to: NavItem["to"]) => {
+    setMobileMenuOpen(false);
     navigateWithTransition(to);
   };
 
@@ -107,6 +125,7 @@ export default function Header({
     ].join(" ");
 
   const onCta = () => {
+    setMobileMenuOpen(false);
     if (drawerOpen) onCloseProject?.();
     else onOpenProject?.();
   };
@@ -122,7 +141,7 @@ export default function Header({
         "site-header fixed inset-x-0 top-0 z-50 border-b",
       ].join(" ")}
     >
-      <div className="relative mx-auto grid w-[min(94vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-2.5 sm:h-[60px] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:py-0">
+      <div className="relative mx-auto grid min-h-[56px] w-[min(94vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-2 py-2 sm:h-[60px] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:gap-3 sm:py-0">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
         <div className="flex min-w-0 items-center gap-4">
           <button
@@ -179,7 +198,7 @@ export default function Header({
           })}
         </nav>
 
-        <div className="flex min-w-0 items-center justify-end gap-2 sm:gap-3">
+        <div className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
           <div className="hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 lg:flex">
             <span className="relative h-1.5 w-1.5 rounded-full bg-[color:var(--header-progress)]" />
             <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
@@ -213,17 +232,30 @@ export default function Header({
 
           <button
             type="button"
+            onClick={() => setMobileMenuOpen((value) => !value)}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-header-menu"
+            className={[
+              "inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 md:hidden",
+              mobileMenuOpen ? "shadow-[0_10px_24px_rgba(0,0,0,0.07)]" : "opacity-88",
+            ].join(" ")}
+          >
+            Menu
+          </button>
+
+          <button
+            type="button"
             onClick={onCta}
             aria-expanded={drawerOpen}
             aria-label={drawerOpen ? "Close project drawer" : navLabels.start}
             className={[
-              "inline-flex min-w-[2.75rem] shrink-0 items-center justify-center gap-2 rounded-full px-3 py-[9px] text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] min-[560px]:min-w-[5.8rem] sm:min-w-[12.2rem] sm:px-4 sm:text-[11px]",
+              "inline-flex min-w-[4.8rem] shrink-0 items-center justify-center gap-1.5 rounded-full px-3 py-[9px] text-[10px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] sm:min-w-[12.2rem] sm:gap-2 sm:px-4 sm:text-[11px] sm:tracking-[0.16em]",
               drawerOpen
                 ? "border border-[color:var(--header-progress)] bg-[color:var(--header-chip-bg)] text-[color:var(--header-text)] shadow-[0_10px_26px_rgba(0,0,0,0.07)]"
                 : "border border-[color:var(--header-action-border)] bg-[color:var(--header-action-bg)] text-[color:var(--header-action-text)] hover:opacity-85",
             ].join(" ")}
           >
-            <span className="hidden min-[560px]:inline sm:hidden">{navLabels.startShort}</span>
+            <span className="inline sm:hidden">{navLabels.startShort}</span>
             <span className="hidden sm:inline">{navLabels.start}</span>
             <span
               className={[
@@ -235,6 +267,44 @@ export default function Header({
             </span>
           </button>
         </div>
+
+        {mobileMenuOpen ? (
+          <div
+            id="mobile-header-menu"
+            className={[
+              "absolute inset-x-0 top-[calc(100%+0.55rem)] z-50 overflow-hidden rounded-[10px] border p-2 shadow-[0_24px_70px_rgba(15,15,15,0.18)] md:hidden",
+              mobileMenuIsDark
+                ? "border-white/14 bg-[#080807] text-[#f7f3ea] shadow-[0_24px_70px_rgba(0,0,0,0.38)]"
+                : "border-neutral-950/10 bg-[#f8f6f0] text-neutral-950",
+            ].join(" ")}
+          >
+            <div className="grid gap-1">
+              {navItems.map((item) => {
+                const isActive = activePath === item.to;
+
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => onNav(item.to)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={[
+                      "flex min-h-10 items-center justify-between rounded-[6px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2",
+                      isActive
+                        ? "bg-[color:var(--header-active-chip-bg)] text-[color:var(--header-active-chip-text)]"
+                        : "text-[color:var(--header-muted)] hover:bg-[color:var(--header-chip-bg)] hover:text-[color:var(--header-text)]",
+                    ].join(" ")}
+                  >
+                    <span>{getNavItemLabel(item)}</span>
+                    <span className={isActive ? "text-[color:var(--header-progress)]" : "opacity-38"}>
+                      {item.id === "home" ? "00" : `0${navItems.indexOf(item)}`}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
       </div>
     </header>
   );

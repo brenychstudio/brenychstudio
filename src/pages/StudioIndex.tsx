@@ -16,6 +16,7 @@ import { immersiveItems } from "../data/immersive";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import LiveBuildSignal from "../ui/studio-index/LiveBuildSignal";
+import MobileChapter from "../ui/MobileChapter";
 import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
@@ -48,6 +49,7 @@ type StoryMediaAsset = {
   poster?: string;
   label: string;
   route?: string;
+  objectPosition?: string;
 };
 
 type StoryPlaneLayout = {
@@ -294,6 +296,112 @@ const practiceRows = [
   ["Immersive / XR Prototypes", "WebGL, WebXR, Quest-tested spatial demos, AR preview flows, and future-facing presentation systems."],
   ["Creative Technology Direction", "Concept, interface architecture, motion grammar, prototype systems, and production-ready delivery."],
 ];
+
+const proofSurfaceAssets: StoryMediaAsset[] = [
+  {
+    kind: "video",
+    src: media.houseVideo,
+    poster: media.house,
+    label: "Product theatre",
+    route: "/work/house-of-lune",
+    objectPosition: "center 32%",
+  },
+  {
+    kind: "video",
+    src: media.advisoryVideo,
+    poster: media.advisory,
+    label: "Advisory journey",
+    route: "/work/barcelona-private-advisory",
+    objectPosition: "center 40%",
+  },
+  {
+    kind: "video",
+    src: media.creatoropsVideo,
+    poster: media.creatoropsMechanics,
+    label: "Workflow surface",
+    route: "/work/creatorops",
+    objectPosition: "center 28%",
+  },
+];
+
+const proofSurfaceModes = [
+  ["01", "Product theatre", "Object, atmosphere, and desire staged as proof."],
+  ["02", "Advisory journey", "Trust, selection, and inquiry shaped as a calm path."],
+  ["03", "Workflow surface", "Operational logic made visible before conversion."],
+];
+
+const visualLanguageAssets: StoryMediaAsset[] = [
+  {
+    kind: "image",
+    src: media.fluid,
+    label: "FLUID Exhibition Field",
+    route: "/work/fluid-exhibition",
+    objectPosition: "center 38%",
+  },
+  {
+    kind: "image",
+    src: media.arcwave,
+    label: "ARCWAVE Signal Surface",
+    route: "/work/arcwave-integrations",
+    objectPosition: "center 34%",
+  },
+  {
+    kind: "image",
+    src: media.casa,
+    label: "Hospitality Rhythm",
+    route: "/work/casa-nube",
+    objectPosition: "center 42%",
+  },
+];
+
+const mobileCoreSystems = [
+  ["01", "WebGL Stage System", "Directed scene logic for atmosphere, reveal, and scroll states.", "stage logic"],
+  ["02", "Living Interface OS", "Route context, motion, media depth, and attention states.", "presence state"],
+  ["03", "Case System Story Engine", "Case pages structured as proof, method, media, and conversion path.", "case path"],
+];
+
+const mobileSupportingLayers = [
+  ["04", "Available Systems", "Reusable modules for premium sites, products, archives, and offers."],
+];
+
+const whisperProofAssets: StoryMediaAsset[] = [
+  {
+    kind: "image",
+    src: media.whisperPoster,
+    label: "Web exhibition",
+    route: "/immersive/whisper",
+  },
+  {
+    kind: "image",
+    src: media.whisperMobile,
+    label: "Mobile proof",
+    route: "/immersive/whisper",
+  },
+  {
+    kind: "image",
+    src: media.whisperVrWide,
+    label: "Quest capture",
+    route: "/immersive/whisper",
+  },
+  {
+    kind: "image",
+    src: media.whisperDetail,
+    label: "Print logic",
+    route: "/immersive/whisper",
+  },
+];
+
+const mobilePracticeBridgeRows = [
+  ["01", "Premium website", "A high-trust interface with editorial direction, proof, and conversion clarity."],
+  ["02", "Product surface", "A product, offer, or advisory flow staged as guided evidence."],
+  ["03", "Immersive prototype", "A spatial or cinematic prototype for archive, exhibition, or future-facing proof."],
+];
+
+const mobilePrimaryCta =
+  "inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-center text-[10px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_18px_48px_rgba(17,17,17,0.14)] transition active:translate-y-px";
+
+const mobileSecondaryCta =
+  "inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-950/12 bg-white/66 px-5 text-center text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-800 shadow-[0_12px_34px_rgba(17,17,17,0.06)] backdrop-blur transition active:translate-y-px";
 
 const storyPlaneLayouts = [
   {
@@ -560,6 +668,205 @@ function FloatingImage({
   );
 }
 
+function MobileAssetMedia({
+  asset,
+  className = "",
+  objectPosition = "center",
+}: {
+  asset: StoryMediaAsset;
+  className?: string;
+  objectPosition?: string;
+}) {
+  const classes = `h-full w-full object-cover ${className}`;
+
+  if (asset.kind === "video") {
+    return (
+      <video
+        className={classes}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={asset.poster}
+        style={{ objectPosition }}
+      >
+        <source src={asset.src} type="video/mp4" />
+      </video>
+    );
+  }
+
+  return <img src={asset.src} alt="" className={classes} style={{ objectPosition }} />;
+}
+
+function MobileSpatialStage({
+  assets,
+  onOpen,
+  className = "",
+  dark = false,
+  objectPosition = "center",
+  showSelectors = true,
+  activeIndex: controlledActiveIndex,
+  onActiveIndexChange,
+  variant = "proof",
+}: {
+  assets: StoryMediaAsset[];
+  onOpen: (path: string) => void;
+  className?: string;
+  dark?: boolean;
+  objectPosition?: string;
+  showSelectors?: boolean;
+  activeIndex?: number;
+  onActiveIndexChange?: (index: number) => void;
+  variant?: "proof" | "grammar" | "cinematic";
+}) {
+  const [internalActiveIndex, setInternalActiveIndex] = useState(0);
+  const activeIndex = controlledActiveIndex ?? internalActiveIndex;
+  const active = assets[activeIndex] ?? assets[0];
+  const ghostA = assets[(activeIndex + 1) % assets.length] ?? active;
+  const ghostB = assets[(activeIndex + 2) % assets.length] ?? active;
+  const activeObjectPosition = active?.objectPosition ?? objectPosition;
+  const ghostAObjectPosition = ghostA?.objectPosition ?? objectPosition;
+  const ghostBObjectPosition = ghostB?.objectPosition ?? objectPosition;
+  const stageHeight =
+    variant === "grammar"
+      ? "min-h-[21rem] sm:min-h-[25rem] md:min-h-[29rem]"
+      : variant === "cinematic"
+        ? "min-h-[22rem] sm:min-h-[28rem] md:min-h-[32rem]"
+        : "min-h-[21.5rem] sm:min-h-[27rem] md:min-h-[31rem]";
+  const activePlane =
+    variant === "grammar"
+      ? "left-[1%] top-[3.5rem] h-[61%] w-[94%] -rotate-[2.5deg]"
+      : variant === "cinematic"
+        ? "left-[3%] top-[3.25rem] h-[66%] w-[88%] -rotate-[3deg]"
+        : "left-[3%] top-[3.5rem] h-[65%] w-[88%] -rotate-[2deg]";
+  const ghostAPlane =
+    variant === "grammar"
+      ? "right-[-5%] top-12 h-[50%] w-[50%] rotate-[4deg] opacity-40"
+      : "right-[-2%] top-12 h-[54%] w-[54%] rotate-[4deg] opacity-48";
+  const ghostBPlane =
+    variant === "grammar"
+      ? "bottom-8 left-[12%] h-[34%] w-[52%] -rotate-[5deg] opacity-42"
+      : "bottom-8 left-6 h-[39%] w-[50%] -rotate-[5deg] opacity-50";
+
+  const setStageIndex = (nextIndex: number) => {
+    setInternalActiveIndex(nextIndex);
+    onActiveIndexChange?.(nextIndex);
+  };
+
+  const openActive = () => {
+    if (active?.route) onOpen(active.route);
+  };
+
+  return (
+    <div className={["grid gap-3", className].filter(Boolean).join(" ")} data-sound-safe-area>
+      <div className={["relative overflow-visible", stageHeight].join(" ")}>
+        <div className="absolute left-0 top-0 z-40 flex items-center gap-2 border-y border-neutral-950/10 bg-white/30 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-500 backdrop-blur-[2px]">
+          <span className="font-mono text-neutral-400">{String(activeIndex + 1).padStart(2, "0")}</span>
+          <span>{active?.label}</span>
+        </div>
+
+        <div
+          aria-hidden="true"
+          className={[
+            "absolute overflow-hidden border border-white/68 bg-white/24 shadow-[0_22px_70px_rgba(17,17,17,0.08)]",
+            ghostAPlane,
+          ].join(" ")}
+          style={{ clipPath: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)" }}
+        >
+          <MobileAssetMedia asset={ghostA} className="saturate-[0.88] contrast-[0.95] opacity-80" objectPosition={ghostAObjectPosition} />
+          <div className="absolute inset-0 bg-white/30" />
+        </div>
+
+        <div
+          aria-hidden="true"
+          className={[
+            "absolute overflow-hidden border border-white/70 bg-white/22 shadow-[0_18px_58px_rgba(17,17,17,0.075)]",
+            ghostBPlane,
+          ].join(" ")}
+          style={{ clipPath: "polygon(0 8%, 100% 0, 94% 92%, 6% 100%)" }}
+        >
+          <MobileAssetMedia asset={ghostB} className="saturate-[0.9] contrast-[0.96] opacity-78" objectPosition={ghostBObjectPosition} />
+          <div className="absolute inset-0 bg-white/34" />
+        </div>
+
+        <button
+          type="button"
+          onClick={openActive}
+          disabled={!active?.route}
+          className={[
+            "group absolute overflow-hidden border border-white/80 text-left shadow-[0_34px_104px_rgba(17,17,17,0.16)] transition active:translate-y-px",
+            activePlane,
+            active?.route ? "cursor-pointer" : "cursor-default",
+            dark ? "bg-neutral-950" : "bg-white/24",
+          ].join(" ")}
+          style={{ clipPath: "polygon(0 5%, 100% 0, 95% 91%, 7% 100%)" }}
+        >
+          <MobileAssetMedia
+            asset={active}
+            className="saturate-[1.02] contrast-[1.04] transition duration-500 group-active:scale-[1.015]"
+            objectPosition={activeObjectPosition}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.00),rgba(0,0,0,0.03)_54%,rgba(0,0,0,0.45))]" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/78">
+            <span>{active?.label}</span>
+            {active?.route ? <span>Open</span> : null}
+          </div>
+        </button>
+      </div>
+
+      {showSelectors ? (
+        <div className="grid gap-2">
+          {assets.map((asset, index) => {
+            const activeRow = index === activeIndex;
+
+            return (
+              <button
+                key={asset.label}
+                type="button"
+                onClick={() => setStageIndex(index)}
+                className={[
+                  "flex min-h-11 items-center gap-3 border px-4 text-left text-[10px] font-semibold uppercase tracking-[0.14em] transition active:translate-y-px",
+                  activeRow
+                    ? "border-neutral-950 bg-neutral-950 text-white"
+                    : "border-neutral-950/10 bg-white/64 text-neutral-500 backdrop-blur",
+                ].join(" ")}
+              >
+                <span className={activeRow ? "text-white/58" : "text-neutral-400"}>{String(index + 1).padStart(2, "0")}</span>
+                <span className="truncate">{asset.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function MobileFormulaPanel({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="relative overflow-hidden border-y border-neutral-950/16 bg-white/[0.12] py-3.5 backdrop-blur-[2px]">
+      <div aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-neutral-950/[0.045]" />
+      <div className="relative flex items-center justify-between gap-4 px-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
+        <span>Core formula</span>
+        <span className="flex items-center gap-2">
+          <span className="font-mono text-[8px] tracking-[0.12em] text-neutral-300">{compact ? "03" : "05"}</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-neutral-950/80" />
+        </span>
+      </div>
+      <div
+        className={[
+          "relative mt-3 overflow-hidden border-t border-neutral-950/10 px-1 pt-3 font-mono font-semibold uppercase text-neutral-950",
+          "whitespace-nowrap tracking-[0.08em]",
+          compact ? "text-[8px] leading-none" : "text-[8px] leading-none",
+        ].join(" ")}
+      >
+        SIGNAL / STATE / ATMOS / REVEAL / MEMORY
+      </div>
+    </div>
+  );
+}
+
 function OpeningChapter({
   onSystems,
   onWork,
@@ -575,7 +882,7 @@ function OpeningChapter({
     <Chapter
       id="opening"
       headerScene="living-threshold"
-      className="relative min-h-screen overflow-hidden px-4 pb-16 pt-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 pb-12 pt-20 sm:px-6 lg:min-h-screen lg:px-8 lg:pb-16 lg:pt-24"
     >
       <div className="absolute inset-0 z-0">
         <StudioHeroField
@@ -592,7 +899,61 @@ function OpeningChapter({
         <LiveBuildSignal readiness={78} />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center">
+      <div className="relative z-10 mx-auto grid min-h-[calc(100svh-7rem)] w-full content-center gap-8 py-10 lg:hidden">
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full border border-neutral-300/70 bg-white/62 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
+            Studio Index
+          </span>
+          <span className="rounded-full border border-neutral-300/70 bg-white/42 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
+            Living systems
+          </span>
+        </div>
+
+        <div>
+          <h1 className="max-w-[9ch] text-[clamp(4.25rem,18vw,6.9rem)] font-normal leading-[0.78] tracking-[-0.085em] text-neutral-950">
+            Living interface systems.
+          </h1>
+          <p className="mt-7 max-w-[36rem] text-[15px] leading-7 text-neutral-600">
+            Premium websites, cinematic web environments, multilingual product surfaces,
+            and spatial digital experiences built as one coherent interface system.
+          </p>
+        </div>
+
+        <div className="grid gap-3" data-sound-safe-area>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onMouseEnter={() => sound.playRole("hover")}
+              onClick={onSystems}
+              className={mobilePrimaryCta}
+            >
+              Explore systems -&gt;
+            </button>
+            <button
+              type="button"
+              onMouseEnter={() => sound.playRole("hover")}
+              onClick={onWork}
+              className={mobileSecondaryCta}
+            >
+              View work -&gt;
+            </button>
+          </div>
+          <button
+            type="button"
+            onMouseEnter={() => sound.playRole("hover")}
+            onClick={onImmersive}
+            className={mobileSecondaryCta}
+          >
+            Enter immersive -&gt;
+          </button>
+        </div>
+
+        <div className="max-w-[24rem]">
+          <LiveBuildSignal readiness={78} compact />
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto hidden min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center lg:flex">
         <div className="max-w-[56rem]">
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full border border-neutral-300/70 bg-white/56 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
@@ -620,7 +981,7 @@ function OpeningChapter({
               onClick={onSystems}
               className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
-              Explore systems →
+              Explore systems -&gt;
             </button>
             <button
               type="button"
@@ -628,7 +989,7 @@ function OpeningChapter({
               onClick={onWork}
               className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              View work →
+              View work -&gt;
             </button>
             <button
               type="button"
@@ -636,7 +997,7 @@ function OpeningChapter({
               onClick={onImmersive}
               className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              Enter immersive →
+              Enter immersive -&gt;
             </button>
           </div>
 
@@ -649,14 +1010,114 @@ function OpeningChapter({
   );
 }
 
-function SystemsChapter() {
+function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
+  const [proofModeIndex, setProofModeIndex] = useState(0);
+
   return (
     <Chapter
       id="systems"
       headerScene="living-systems"
-      className="relative overflow-x-clip overflow-y-visible px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-x-clip overflow-y-visible lg:px-8 lg:py-24"
     >
-      <div className="relative z-10 mx-auto w-[min(94vw,1640px)]">
+      <MobileChapter
+        label="02 / Proof Surfaces"
+        heading="Proof surfaces, not portfolio tiles."
+        summary="The work opens through three proof modes: product atmosphere, advisory trust, and workflow logic."
+        className="relative z-10 pt-8 lg:hidden"
+      >
+        <div className="grid gap-4">
+          <div className="border-y border-neutral-950/12 py-3">
+            {proofSurfaceModes.map(([index, title, text], modeIndex) => {
+              const active = modeIndex === proofModeIndex;
+
+              return (
+              <button
+                key={title}
+                type="button"
+                onClick={() => setProofModeIndex(modeIndex)}
+                aria-pressed={active}
+                className={[
+                  "grid w-full grid-cols-[2.4rem_1fr] gap-3 border-b py-3 text-left transition last:border-b-0 active:translate-y-px",
+                  active ? "border-neutral-950/18 text-neutral-950" : "border-neutral-950/10 text-neutral-500",
+                ].join(" ")}
+              >
+                <div className={active ? "font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-950" : "font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400"}>{index}</div>
+                <div>
+                  <div className={active ? "text-[13px] font-semibold uppercase tracking-[0.13em] text-neutral-950" : "text-[13px] font-semibold uppercase tracking-[0.13em] text-neutral-500"}>{title}</div>
+                  <p className={active ? "mt-1 text-[12px] leading-5 text-neutral-600" : "mt-1 text-[12px] leading-5 text-neutral-500"}>{text}</p>
+                </div>
+              </button>
+              );
+            })}
+          </div>
+          <MobileSpatialStage
+            assets={proofSurfaceAssets}
+            onOpen={goTo}
+            activeIndex={proofModeIndex}
+            onActiveIndexChange={setProofModeIndex}
+            showSelectors={false}
+          />
+        </div>
+      </MobileChapter>
+
+      <MobileChapter
+        label="03 / Systems Index"
+        heading="Systems, not cards."
+        summary="The work is organized as reusable interface systems. WHISPER is proof; the spine below is the operating language behind the site."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-5">
+          <MobileFormulaPanel compact />
+
+          <div className="relative overflow-hidden border-y border-neutral-950/14 py-3" data-sound-safe-area>
+            <div className="mb-3 flex items-center justify-between text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+              <span>Operating ledger</span>
+              <span className="font-mono">03 core / 01 layer</span>
+            </div>
+
+            <div className="relative">
+              <div className="pointer-events-none absolute left-[2.15rem] top-2 h-[calc(100%-1rem)] w-px bg-gradient-to-b from-neutral-950/8 via-neutral-950/34 to-neutral-950/8" />
+
+              {mobileCoreSystems.map(([index, title, text, axis]) => (
+                <div
+                  key={title}
+                  className="relative grid grid-cols-[3.25rem_1fr] gap-3 border-t border-neutral-950/10 py-3.5 first:border-t-0"
+                >
+                  <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-neutral-950/14 bg-[#f4f1eb] font-mono text-[9px] uppercase tracking-[0.1em] text-neutral-500">
+                    {index}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="mb-1 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+                      {axis}
+                    </div>
+                    <h3 className="!text-[18px] !leading-[1.02] tracking-[-0.025em] text-neutral-950">{title}</h3>
+                    <p className="mt-1.5 text-[11px] leading-5 text-neutral-600">{text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {mobileSupportingLayers.map(([index, title, text]) => (
+              <div
+                key={title}
+                className="mt-3 grid grid-cols-[3.25rem_1fr] gap-3 border-t border-neutral-950/12 pt-3 text-neutral-500"
+              >
+                <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.13em] text-neutral-600">{title}</div>
+                  <p className="mt-1 text-[11px] leading-5 text-neutral-500">{text}</p>
+                </div>
+              </div>
+            ))}
+
+            <div className="mt-4 border-t border-neutral-950/10 pt-3 font-mono text-[9px] uppercase tracking-[0.13em] text-neutral-400">
+              Next proof reference: WHISPER / spatial exhibition.
+            </div>
+          </div>
+        </div>
+      </MobileChapter>
+
+      <div className="relative z-10 mx-auto hidden w-[min(94vw,1640px)] lg:block">
         <div className="grid gap-14 xl:grid-cols-[0.34fr_0.66fr] xl:items-start">
           <div className="xl:sticky xl:top-28">
             <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface systems</div>
@@ -671,7 +1132,7 @@ function SystemsChapter() {
             <div className="mt-10 max-w-[30rem] border-y border-neutral-950/14 py-5">
               <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">Core formula</div>
               <div className="mt-4 text-[25px] leading-tight tracking-[-0.05em] text-neutral-950">
-                signal → state → atmosphere → reveal → memory
+                signal -&gt; state -&gt; atmosphere -&gt; reveal -&gt; memory
               </div>
               <FormulaSignalStrand className="mt-6 hidden h-[28rem] w-full xl:block 2xl:h-[34rem]" />
             </div>
@@ -734,6 +1195,7 @@ function SystemsChapter() {
 
 function WhisperChapter({ onOpen }: { onOpen: () => void }) {
   const target = useRef<HTMLElement | null>(null);
+  const [whisperProofIndex, setWhisperProofIndex] = useState(0);
   const { scrollYProgress } = useScroll({ target, offset: ["start end", "end start"] });
   const progress = useSpring(scrollYProgress, { stiffness: 230, damping: 32, mass: 0.18 });
 
@@ -755,8 +1217,55 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
   const railShadeOpacity = useTransform(progress, [0.08, 0.2, 0.84, 0.98], [0, 1, 1, 0]);
 
   return (
-    <section ref={target} id="whisper" data-header-scene="living-whisper" className="relative min-h-[148vh]">
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <section ref={target} id="whisper" data-header-scene="living-whisper" className="relative lg:min-h-[148vh]">
+      <MobileChapter
+        label="04 / WHISPER Preview"
+        heading="First spatial proof."
+        summary="A cinematic Web / XR exhibition where photography becomes a collector experience across web, mobile, print, AR, and spatial interface."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-4">
+          <MobileSpatialStage
+            assets={whisperProofAssets}
+            onOpen={onOpen}
+            dark
+            objectPosition="center"
+            showSelectors={false}
+            variant="cinematic"
+            activeIndex={whisperProofIndex}
+            onActiveIndexChange={setWhisperProofIndex}
+          />
+
+          <div className="grid grid-cols-2 gap-2" data-sound-safe-area>
+            {whisperProofAssets.map((asset, index) => {
+              const active = index === whisperProofIndex;
+
+              return (
+                <button
+                  key={asset.label}
+                  type="button"
+                  onClick={() => setWhisperProofIndex(index)}
+                  className={[
+                    "flex min-h-9 items-center justify-center rounded-full border px-3 text-center text-[9px] font-semibold uppercase tracking-[0.12em] backdrop-blur transition active:translate-y-px",
+                    active
+                      ? "border-neutral-950 bg-neutral-950 text-white"
+                      : "border-neutral-950/10 bg-white/62 text-neutral-500",
+                  ].join(" ")}
+                  aria-pressed={active}
+                >
+                  {asset.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <button type="button" onClick={onOpen} className={mobilePrimaryCta} data-sound-safe-area>
+            Open immersive case -&gt;
+          </button>
+        </div>
+      </MobileChapter>
+
+      <div className="sticky top-0 hidden h-screen overflow-hidden lg:block">
         <motion.div
           data-studio-whisper-media
           className="absolute left-1/2 top-1/2 z-10 w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-neutral-950"
@@ -832,7 +1341,7 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
               className="mt-8 rounded-full border border-current bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
               style={{ opacity: detailOpacity, y: detailY }}
             >
-              Open immersive case →
+              Open immersive case -&gt;
             </motion.button>
           </motion.div>
         </div>
@@ -1174,9 +1683,9 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
       ref={target}
       id="atlas"
       data-header-scene="living-atlas"
-      className="relative px-4 pb-24 pt-8 sm:px-6 lg:px-8"
+      className="relative pb-4 lg:px-8 lg:pb-24 lg:pt-8"
     >
-      <div className="relative mx-auto mb-0 grid min-h-[68vh] w-[min(94vw,1640px)] items-center gap-12 overflow-hidden border-t border-neutral-950/12 py-10 xl:grid-cols-[0.45fr_0.55fr]">
+      <div className="relative mx-auto mb-0 hidden min-h-[68vh] w-[min(94vw,1640px)] items-center gap-12 overflow-hidden border-t border-neutral-950/12 py-10 lg:grid xl:grid-cols-[0.45fr_0.55fr]">
         <motion.div style={{ y: handoffY, opacity: handoffOpacity }}>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Cinematic atlas</div>
           <h2 className="mt-5 max-w-[10ch] text-[64px] font-normal leading-[0.82] tracking-[-0.08em] text-neutral-950 sm:text-[96px] xl:text-[132px]">
@@ -1216,7 +1725,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
         </motion.div>
       </div>
 
-      <div className="relative mx-auto w-[min(94vw,1640px)]">
+      <div className="relative mx-auto hidden w-[min(94vw,1640px)] lg:block">
         <motion.div
           className="pointer-events-none absolute left-[7%] right-[7%] top-0 z-10 hidden h-px origin-left bg-gradient-to-r from-transparent via-neutral-950/32 to-transparent xl:block"
           style={{ scaleX: connectorScale, opacity: connectorOpacity }}
@@ -1257,7 +1766,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
                     onClick={() => goTo(frame.route as string)}
                     className="mt-8 rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
                   >
-                    Open related proof →
+                    Open related proof -&gt;
                   </button>
                 )}
               </motion.div>
@@ -1285,16 +1794,63 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
   );
 }
 
-function GrammarChapter() {
+function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
   const { targetRef, activeIndex } = useScrollActiveIndex(grammar.length);
 
   return (
     <Chapter
       id="grammar"
       headerScene="living-grammar"
-      className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8"
+      className="relative lg:min-h-screen lg:px-8 lg:py-24"
     >
-      <div className="mx-auto grid min-h-[calc(100vh-12rem)] w-[min(94vw,1640px)] items-center gap-14 xl:grid-cols-[0.48fr_0.52fr]">
+      <MobileChapter
+        label="05 / Core Formula"
+        heading="The interface is treated as a living field."
+        summary="Motion is grammar: it marks state, attention, distance, memory, and transition."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-5">
+          <MobileFormulaPanel />
+
+          <div className="relative border-y border-neutral-950/14 bg-white/[0.08] py-1" data-sound-safe-area>
+            <div className="pointer-events-none absolute left-[2.1rem] top-3 h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-neutral-950/8 via-neutral-950/32 to-neutral-950/8" />
+            {grammar.map(([word, note], index) => (
+              <div
+                key={word}
+                className="relative grid grid-cols-[2.55rem_minmax(5.9rem,0.48fr)_1fr] items-center gap-2 border-b border-neutral-950/10 py-3 last:border-b-0"
+              >
+                <div className="relative z-10 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-400">
+                  <span className="h-1.5 w-1.5 rounded-full border border-neutral-950/18 bg-[#f4f1eb]" />
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                </div>
+                <div className="font-mono text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-neutral-950">{word}</div>
+                <p className="text-[11px] leading-5 text-neutral-600">{note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </MobileChapter>
+
+      <MobileChapter
+        label="06 / Reusable Grammar"
+        heading="The visual language becomes repeatable across contexts."
+        summary="FLUID, ARCWAVE, FORM INDEX, Casa Nube, and the immersive work prove that the practice is a reusable grammar for atmosphere, language, motion, and structure."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-4">
+          <MobileSpatialStage assets={visualLanguageAssets} onOpen={goTo} objectPosition="center top" variant="grammar" />
+          <button
+            type="button"
+            onClick={() => goTo("/work")}
+            className={mobileSecondaryCta}
+            data-sound-safe-area
+          >
+            Open related proof -&gt;
+          </button>
+        </div>
+      </MobileChapter>
+
+      <div className="mx-auto hidden min-h-[calc(100vh-12rem)] w-[min(94vw,1640px)] items-center gap-14 lg:grid xl:grid-cols-[0.48fr_0.52fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface grammar</div>
           <h2 className="mt-7 max-w-[9.5ch] text-[62px] font-normal leading-[0.82] tracking-[-0.078em] text-neutral-950 sm:text-[94px] xl:text-[126px]">
@@ -1310,7 +1866,7 @@ function GrammarChapter() {
           <div className="mb-10 border-y border-neutral-950/14 py-8">
             <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">Core formula</div>
             <div className="mt-5 text-[42px] leading-tight tracking-[-0.07em] text-neutral-950 sm:text-[70px]">
-              signal → state → atmosphere → reveal → memory
+              signal -&gt; state -&gt; atmosphere -&gt; reveal -&gt; memory
             </div>
           </div>
 
@@ -1352,16 +1908,56 @@ function GrammarChapter() {
   );
 }
 
-function PracticeChapter({ onOpenProject }: { onOpenProject?: () => void }) {
+function PracticeChapter({
+  onOpenProject,
+  goTo,
+}: {
+  onOpenProject?: () => void;
+  goTo: (path: string) => void;
+}) {
   const { targetRef, activeIndex } = useScrollActiveIndex(practiceRows.length);
 
   return (
     <Chapter
       id="practice"
       headerScene="living-practice"
-      className="relative min-h-screen px-4 py-24 sm:px-6 lg:px-8"
+      className="relative lg:min-h-screen lg:px-8 lg:py-24"
     >
-      <div className="mx-auto grid min-h-[calc(100vh-10rem)] w-[min(94vw,1640px)] gap-12 xl:grid-cols-[0.42fr_0.58fr] xl:items-center">
+      <MobileChapter
+        label="07 / Practice Model"
+        heading="Between delivery and research."
+        summary="The research becomes commercial work through three entry points. The full format list lives in Offer."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-4" data-sound-safe-area>
+          <div className="border-y border-neutral-950/14 py-2">
+            {mobilePracticeBridgeRows.map(([index, title, text]) => (
+              <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{index}</div>
+                <div>
+                  <h3 className="!text-[21px] !leading-[1.02] tracking-[-0.035em] text-neutral-950">{title}</h3>
+                  <p className="mt-2 text-[12px] leading-5 text-neutral-600">{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <button type="button" onClick={() => goTo("/offer")} className={mobileSecondaryCta}>
+              Open Offer -&gt;
+            </button>
+            <button type="button" onClick={onOpenProject} className={mobilePrimaryCta}>
+              Start -&gt;
+            </button>
+          </div>
+
+          <div className="border-t border-neutral-950/10 pt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-400">
+            More formats continue on the Offer page.
+          </div>
+        </div>
+      </MobileChapter>
+
+      <div className="mx-auto hidden min-h-[calc(100vh-10rem)] w-[min(94vw,1640px)] gap-12 lg:grid xl:grid-cols-[0.42fr_0.58fr] xl:items-center">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Practice model</div>
           <h2 className="mt-5 max-w-[10ch] text-[58px] font-normal leading-[0.84] tracking-[-0.075em] text-neutral-950 sm:text-[90px] xl:text-[126px]">
@@ -1435,13 +2031,14 @@ function PracticeChapter({ onOpenProject }: { onOpenProject?: () => void }) {
             onClick={onOpenProject}
             className="group relative overflow-hidden rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.18)] transition hover:-translate-y-0.5 hover:bg-neutral-800"
           >
-            Start a project →
+            Start a project -&gt;
           </button>
         </div>
       </div>
     </Chapter>
   );
 }
+
 
 export default function StudioIndex({
   drawerOpen = false,
@@ -1516,15 +2113,15 @@ export default function StudioIndex({
 
           {routeContentReady ? (
             <>
-              <SystemsChapter />
+              <SystemsChapter goTo={goTo} />
 
               <WhisperChapter onOpen={() => goTo("/immersive")} />
 
               <AtlasChapter goTo={goTo} />
 
-              <GrammarChapter />
+              <GrammarChapter goTo={goTo} />
 
-              <PracticeChapter onOpenProject={onOpenProject} />
+              <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} />
             </>
           ) : (
             <div aria-hidden="true" className="min-h-[420vh]" />

@@ -44,12 +44,6 @@ function getFrameSrc(frame: CaseStoryMedia | null | undefined, fallback?: CaseSt
   return frame?.src || frame?.poster || fallback?.src || fallback?.poster || "";
 }
 
-function getObjectPositionClass(position: CaseStoryMedia["objectPosition"]) {
-  if (position === "top") return "object-top";
-  if (position === "bottom") return "object-bottom";
-  return "object-center";
-}
-
 export default function CinematicInspectReveal({
   frames,
   index,
@@ -317,8 +311,15 @@ export default function CinematicInspectReveal({
     const activeThumb = thumbnailButtonRefs.current[index];
     if (!rail || !activeThumb) return;
 
-    const animationFrame = window.requestAnimationFrame(() => {
-      const nextLeft = activeThumb.offsetLeft - rail.clientWidth / 2 + activeThumb.clientWidth / 2;
+    const centerActiveThumbnail = () => {
+      const railRect = rail.getBoundingClientRect();
+      const thumbRect = activeThumb.getBoundingClientRect();
+      const nextLeft =
+        rail.scrollLeft +
+        thumbRect.left -
+        railRect.left -
+        railRect.width / 2 +
+        thumbRect.width / 2;
       const maxLeft = Math.max(0, rail.scrollWidth - rail.clientWidth);
       const clampedLeft = Math.min(Math.max(0, nextLeft), maxLeft);
 
@@ -326,9 +327,15 @@ export default function CinematicInspectReveal({
         left: clampedLeft,
         behavior: reduceMotion ? "auto" : "smooth",
       });
-    });
+    };
 
-    return () => window.cancelAnimationFrame(animationFrame);
+    const animationFrame = window.requestAnimationFrame(centerActiveThumbnail);
+    const settleTimer = window.setTimeout(centerActiveThumbnail, reduceMotion ? 0 : 260);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.clearTimeout(settleTimer);
+    };
   }, [frames.length, index, reduceMotion]);
 
   if (typeof document === "undefined") return null;
@@ -478,7 +485,17 @@ export default function CinematicInspectReveal({
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 md:justify-end">
+              <div className="flex items-center justify-between gap-3 md:justify-end">
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  onClick={close}
+                  onMouseEnter={() => sound.playRole("hover")}
+                  className="rounded-full border border-white/14 bg-white/8 px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/72 transition hover:bg-white hover:text-neutral-950"
+                >
+                  Close
+                </button>
+                <div className="ml-auto flex items-center gap-2">
                 <button
                   type="button"
                   onClick={goPrev}
@@ -497,32 +514,25 @@ export default function CinematicInspectReveal({
                 >
                   &rarr;
                 </button>
-                <button
-                  ref={closeButtonRef}
-                  type="button"
-                  onClick={close}
-                  onMouseEnter={() => sound.playRole("hover")}
-                  className="ml-1 rounded-full border border-white/14 bg-white/8 px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/72 transition hover:bg-white hover:text-neutral-950"
-                >
-                  Close
-                </button>
+                </div>
               </div>
             </motion.header>
 
             <main
-              className="grid min-h-0 items-start px-3 py-3 md:items-center md:px-7 md:py-6"
+              className="grid min-h-0 items-center px-3 py-3 md:px-7 md:py-6"
               style={{ width: "100vw", maxWidth: "100vw", overflow: "hidden" }}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="relative mx-auto grid h-full w-full max-w-[1660px] place-items-start md:place-items-center" style={{ width: "100%", maxWidth: "100%" }}>
+              <div className="relative mx-auto grid h-full w-full max-w-[1660px] place-items-center" style={{ width: "100%", maxWidth: "100%" }}>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentFrame.id}
+                    data-inspect-media-stage="true"
                     className={`relative flex w-full items-center justify-center overflow-hidden border border-white/10 bg-black/24 p-2 shadow-[0_28px_120px_rgba(0,0,0,0.32)] md:h-full md:min-h-0 md:max-h-[calc(100dvh-15.5rem)] md:border-0 md:bg-transparent md:p-0 md:shadow-none ${
                       currentFrameIsMobileSurface
-                        ? "h-[50svh] min-h-[20rem] max-h-[34rem]"
-                        : "aspect-[16/10] min-h-[14rem] max-h-[30rem]"
+                        ? "h-[48svh] min-h-[18rem] max-h-[32rem]"
+                        : "aspect-[16/10] min-h-[14rem] max-h-[42svh]"
                     }`}
                     style={{ width: "100%", maxWidth: "100%" }}
                     initial={
@@ -567,9 +577,10 @@ export default function CinematicInspectReveal({
                     transition={{ duration: 0.86, delay: 0.12, ease: revealEase }}
                   >
                     <motion.img
+                      data-inspect-active-media="true"
                       src={activeFrameSource}
                       alt={currentFrame.alt}
-                      className={`absolute inset-0 block h-full w-full object-contain ${getObjectPositionClass(currentFrame.objectPosition)} shadow-[0_34px_140px_rgba(0,0,0,0.46)]`}
+                      className="absolute inset-0 block h-full w-full object-contain object-center shadow-[0_34px_140px_rgba(0,0,0,0.46)]"
                       loading="eager"
                       decoding="async"
                       fetchPriority="high"
@@ -615,7 +626,7 @@ export default function CinematicInspectReveal({
             </main>
 
             <motion.footer
-              className="border-t border-white/12 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:px-7 md:pb-3"
+              className="overflow-hidden border-t border-white/12 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:px-7 md:pb-3"
               initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18, clipPath: "inset(0 0 0 100%)" }}
               animate={
                 closing && !reduceMotion
@@ -627,7 +638,7 @@ export default function CinematicInspectReveal({
             >
               <div
                 ref={thumbnailRailRef}
-                className="mx-auto flex max-w-[1660px] gap-2 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="mx-auto flex w-full min-w-0 max-w-[1660px] snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth scroll-px-3 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
                 {frames.map((frame, frameIndex) => {
                   const active = frameIndex === index;
@@ -642,10 +653,11 @@ export default function CinematicInspectReveal({
                       onClick={() => goTo(frameIndex, index !== null && frameIndex < index ? -1 : 1)}
                       onMouseEnter={() => sound.playRole("hover")}
                       className={[
-                        "group relative h-16 w-28 shrink-0 overflow-hidden border bg-white/5 transition md:h-20 md:w-36",
-                        active ? "border-white/82" : "border-white/12 hover:border-white/42",
+                        "group relative h-16 w-28 shrink-0 snap-center overflow-hidden border bg-white/5 transition duration-300 md:h-20 md:w-36",
+                        active ? "scale-[1.02] border-white/82 bg-white/10" : "border-white/12 opacity-72 hover:border-white/42 hover:opacity-100",
                       ].join(" ")}
                       aria-current={active ? "true" : undefined}
+                      data-inspect-active-thumbnail={active ? "true" : undefined}
                     >
                       <img
                         src={getFrameSrc(frame, fallbackFrame)}

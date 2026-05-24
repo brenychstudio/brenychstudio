@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
 import { availableLocales } from "../i18n";
@@ -18,6 +18,14 @@ type Props = {
 type NavItem = {
   id: "home" | "work" | "immersive" | "offer" | "about";
   to: "/" | "/work" | "/immersive" | "/offer" | "/about";
+};
+
+const navItemDescriptions: Record<NavItem["id"], string> = {
+  home: "Studio signal / opening system",
+  work: "Evidence atlas / case systems",
+  immersive: "Spatial proof / Web XR field",
+  offer: "Project model / service architecture",
+  about: "Practice / studio context",
 };
 
 const navItems: NavItem[] = [
@@ -39,6 +47,7 @@ export default function Header({
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
+  const mobileMenuCloseRef = useRef<HTMLButtonElement | null>(null);
 
   const onHome = location.pathname === "/";
   const activeSceneId = useActiveHeaderScene(location.pathname);
@@ -47,7 +56,6 @@ export default function Header({
     () => resolveHeaderTheme({ routeTheme, activeSceneId }),
     [activeSceneId, routeTheme],
   );
-  const mobileMenuIsDark = headerTheme.foreground.toLowerCase() !== "#0f0f0f";
 
   useHeaderThemeMorph(headerRef, headerTheme, scrolled);
 
@@ -91,6 +99,29 @@ export default function Header({
       window.cancelAnimationFrame(frame);
     };
   }, [mobileMenuContext, mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      mobileMenuCloseRef.current?.focus();
+    });
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.cancelAnimationFrame(focusFrame);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobileMenuOpen]);
 
   const navigateWithTransition = (to: string) => {
     if (location.pathname === to) return;
@@ -235,12 +266,13 @@ export default function Header({
             onClick={() => setMobileMenuOpen((value) => !value)}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-header-menu"
+            aria-label={mobileMenuOpen ? "Close route terminal" : "Open route terminal"}
             className={[
               "inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 md:hidden",
               mobileMenuOpen ? "shadow-[0_10px_24px_rgba(0,0,0,0.07)]" : "opacity-88",
             ].join(" ")}
           >
-            Menu
+            {mobileMenuOpen ? "Close" : "Menu"}
           </button>
 
           <button
@@ -268,43 +300,120 @@ export default function Header({
           </button>
         </div>
 
-        {mobileMenuOpen ? (
-          <div
-            id="mobile-header-menu"
-            className={[
-              "absolute inset-x-0 top-[calc(100%+0.55rem)] z-50 overflow-hidden rounded-[10px] border p-2 shadow-[0_24px_70px_rgba(15,15,15,0.18)] md:hidden",
-              mobileMenuIsDark
-                ? "border-white/14 bg-[#080807] text-[#f7f3ea] shadow-[0_24px_70px_rgba(0,0,0,0.38)]"
-                : "border-neutral-950/10 bg-[#f8f6f0] text-neutral-950",
-            ].join(" ")}
-          >
-            <div className="grid gap-1">
-              {navItems.map((item) => {
-                const isActive = activePath === item.to;
+        <AnimatePresence>
+          {mobileMenuOpen ? (
+            <motion.div
+              id="mobile-header-menu"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="mobile-route-terminal-title"
+              className="fixed inset-0 z-[70] flex items-start justify-center px-4 pb-4 pt-[calc(4.75rem+env(safe-area-inset-top))] md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <button
+                type="button"
+                aria-label="Close route terminal"
+                className="absolute inset-0 cursor-default bg-neutral-950/38 backdrop-blur-[10px]"
+                onClick={() => setMobileMenuOpen(false)}
+              />
 
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => onNav(item.to)}
-                    aria-current={isActive ? "page" : undefined}
-                    className={[
-                      "flex min-h-10 items-center justify-between rounded-[6px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.16em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2",
-                      isActive
-                        ? "bg-[color:var(--header-active-chip-bg)] text-[color:var(--header-active-chip-text)]"
-                        : "text-[color:var(--header-muted)] hover:bg-[color:var(--header-chip-bg)] hover:text-[color:var(--header-text)]",
-                    ].join(" ")}
-                  >
-                    <span>{getNavItemLabel(item)}</span>
-                    <span className={isActive ? "text-[color:var(--header-progress)]" : "opacity-38"}>
-                      {item.id === "home" ? "00" : `0${navItems.indexOf(item)}`}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ) : null}
+              <motion.div
+                className="relative max-h-[calc(100svh-5.75rem)] w-full max-w-[27rem] overflow-hidden border border-white/14 bg-[#090908] text-[#f7f3ea] shadow-[0_34px_120px_rgba(0,0,0,0.34)]"
+                initial={{ opacity: 0, y: 18, scale: 0.985, clipPath: "inset(49% 0 49% 0)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, clipPath: "inset(0 0 0 0)" }}
+                exit={{ opacity: 0, y: 10, scale: 0.99, clipPath: "inset(44% 0 44% 0)" }}
+                transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:52px_52px]" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-5 top-14 h-px bg-white/10" />
+
+                <div className="relative grid max-h-[calc(100svh-5.75rem)] gap-3 overflow-y-auto overscroll-contain p-3.5">
+                  <div className="grid grid-cols-[1fr_auto] items-start gap-3">
+                    <div>
+                      <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/42">
+                        Route terminal / {String(navItems.length).padStart(2, "0")} paths
+                      </div>
+                      <h2
+                        id="mobile-route-terminal-title"
+                        className="mt-1.5 text-[22px] font-normal leading-[0.94] tracking-[-0.035em] text-white"
+                      >
+                        Select system path.
+                      </h2>
+                    </div>
+
+                    <button
+                      ref={mobileMenuCloseRef}
+                      type="button"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="inline-flex min-h-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/70 transition hover:border-white/30 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                    >
+                      Close
+                    </button>
+                  </div>
+
+                  <div className="border-y border-white/12">
+                    {navItems.map((item, index) => {
+                      const isActive = activePath === item.to;
+                      const label = getNavItemLabel(item);
+
+                      return (
+                        <motion.button
+                          key={item.id}
+                          type="button"
+                          onClick={() => onNav(item.to)}
+                          aria-current={isActive ? "page" : undefined}
+                          className={[
+                            "group grid w-full grid-cols-[2.1rem_1fr_auto] items-center gap-2.5 border-b border-white/10 px-2 py-2.5 text-left transition last:border-b-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40",
+                            isActive
+                              ? "bg-white text-neutral-950"
+                              : "text-white/72 hover:bg-white/[0.07] hover:text-white",
+                          ].join(" ")}
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.34, delay: 0.12 + index * 0.045, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <span className={isActive ? "font-mono text-[10px] text-neutral-950/55" : "font-mono text-[10px] text-white/35"}>
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block text-[13px] font-semibold uppercase tracking-[0.14em]">
+                              {label}
+                            </span>
+                            <span className={isActive ? "mt-1 block truncate text-[11px] leading-4 text-neutral-950/62" : "mt-1 block truncate text-[11px] leading-4 text-white/48"}>
+                              {navItemDescriptions[item.id]}
+                            </span>
+                          </span>
+                          <span className={isActive ? "font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-950" : "font-mono text-[9px] uppercase tracking-[0.14em] text-white/42 group-hover:text-white/70"}>
+                            {isActive ? "Now" : "Open"}
+                          </span>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="grid gap-3">
+                    <div className="grid grid-cols-[1fr_auto] gap-3 border-y border-white/10 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
+                      <span>Current / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
+                      <span>{locale} / signal ready</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={onCta}
+                      className="inline-flex min-h-11 items-center justify-between rounded-full border border-white bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-[#f7f3ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                    >
+                      <span>{drawerOpen ? "Close project panel" : "Start a project"}</span>
+                      <span className="font-mono opacity-55">-&gt;</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </header>
   );

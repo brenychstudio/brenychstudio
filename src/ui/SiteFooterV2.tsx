@@ -165,19 +165,19 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
               </p>
             </div>
 
-            <div className="border-y border-neutral-950/12 bg-white/18 px-4 py-5 backdrop-blur-sm">
-              <div className="grid gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400 sm:grid-cols-3">
-                <div>
+            <div className="border-y border-neutral-950/12 bg-white/18 py-3 backdrop-blur-sm">
+              <div className="grid grid-cols-3 divide-x divide-neutral-950/10 font-mono text-[8px] uppercase leading-4 tracking-[0.14em] text-neutral-400">
+                <div className="min-w-0 px-2 first:pl-0">
                   <span className="block text-neutral-300">Studio signal</span>
-                  <span className="mt-2 block text-neutral-950">{copy.signal}</span>
+                  <span className="mt-1 block text-[8.5px] tracking-[0.12em] text-neutral-950">{copy.signal}</span>
                 </div>
-                <div>
+                <div className="min-w-0 px-2">
                   <span className="block text-neutral-300">Project intake</span>
-                  <span className="mt-2 block text-neutral-950">{copy.intake}</span>
+                  <span className="mt-1 block text-[8.5px] tracking-[0.12em] text-neutral-950">{copy.intake}</span>
                 </div>
-                <div>
+                <div className="min-w-0 px-2 last:pr-0">
                   <span className="block text-neutral-300">Next step</span>
-                  <span className="mt-2 block text-neutral-950">{copy.nextStep}</span>
+                  <span className="mt-1 block text-[8.5px] tracking-[0.12em] text-neutral-950">{copy.nextStep}</span>
                 </div>
               </div>
             </div>

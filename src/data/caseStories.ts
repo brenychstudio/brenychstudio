@@ -77,9 +77,9 @@ const authoredCaseStories: CaseStory[] = [
     caseType: "product-system",
     label: "CASE SYSTEM / AVAILABLE FOUNDATION / PRODUCT SURFACE",
     headline: "House of Lune",
-    subheadline: "Luxury product interface system.",
+    subheadline: "A cinematic maison for luxury objects.",
     summary:
-      "A cinematic product surface for jewelry, fashion, collector objects, and premium commerce, built as a multilingual inquiry-ready interface.",
+      "Jewelry, fashion, and collector pieces are presented through controlled light, editorial pacing, multilingual product pages, and a private inquiry path instead of a checkout-first store.",
     proofClaim:
       "Luxury commerce becomes a system when atmosphere, product focus, trust, and private inquiry move as one surface.",
     evidencePoints: [

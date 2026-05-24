@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type WheelEvent } from "react";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type WheelEvent } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, type PanInfo } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
@@ -81,6 +81,9 @@ const technicalLedger = [
   "Metadata / Open Graph preparation",
   "Cloudflare Workers deployment",
 ];
+
+const MOBILE_SWIPE_DISTANCE = 42;
+const MOBILE_SWIPE_VELOCITY = 360;
 
 function getCaseNarrative(story: CaseStory) {
   if (story.slug === "creatorops") {
@@ -306,6 +309,7 @@ function mediaRoleLabel(role: CaseStoryMedia["role"]) {
 
 function getTitleLines(title: string) {
   if (title === "CreatorOps") return ["Creator", "Ops"];
+  if (title === "House of Lune") return ["House of", "Lune"];
 
   const words = title.split(" ");
   if (words.length === 3 && title.length > 18) return [words.slice(0, 2).join(" "), words[2] ?? ""];
@@ -434,6 +438,142 @@ function getSecondaryClosingLink(story: CaseStory, links: NonNullable<CaseStory[
   if (liveLink) return { label: "View live case", href: liveLink.href };
 
   return { label: "Email directly", href: getDirectMailHref(story) };
+}
+
+function getMobileReaderSteps(story: CaseStory) {
+  const labels = ["Threshold", "Watch", "Frames", "Proof"];
+
+  if (getMobileFrames(story).length > 0) labels.push("Mobile");
+  if (story.availability) labels.push("Adapt");
+
+  return labels.map((label, index) => ({
+    index: String(index + 1).padStart(2, "0"),
+    label,
+  }));
+}
+
+function getMobileSectionEyebrow(story: CaseStory, label: string) {
+  const step = getMobileReaderSteps(story).find((item) => item.label === label);
+
+  return `${step?.index ?? "00"} / ${label}`;
+}
+
+function getMobileHeroSummary(story: CaseStory) {
+  if (story.caseType === "product-system") {
+    return "Controlled light, editorial pacing, multilingual product pages, and private inquiry replace checkout-first commerce.";
+  }
+
+  if (story.caseType === "advisory") {
+    return "Curated search, district fit, shortlist logic, and private intake replace listing-portal noise.";
+  }
+
+  if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+    return "Intake, working states, review, output, and trust stay inside one focused product surface.";
+  }
+
+  if (story.caseType === "hospitality") {
+    return "Atmosphere, menu clarity, visit utility, multilingual content, and mobile action stay close to the visitor path.";
+  }
+
+  if (story.caseType === "premium-website") {
+    return "Offer clarity, technical trust, content structure, and inquiry flow become one premium service surface.";
+  }
+
+  if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+    return "Motion, image rhythm, typography, and content architecture become one reusable presentation surface.";
+  }
+
+  return story.summary;
+}
+
+function getMobileWalkthroughLine(story: CaseStory) {
+  if (story.caseType === "product-system") {
+    return "Watch the maison move from cinematic entry to product focus, editorial proof, and private inquiry.";
+  }
+
+  if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+    return "Watch the workflow move through intake, state, review, and output as one working surface.";
+  }
+
+  if (story.caseType === "advisory") {
+    return "Watch the advisory path move from position to shortlist, district fit, and private intake.";
+  }
+
+  if (story.caseType === "hospitality") {
+    return "Watch the visitor path move from atmosphere to menu clarity, visit utility, and mobile action.";
+  }
+
+  if (story.caseType === "premium-website") {
+    return "Watch the service surface move from offer clarity to trust, detail, and inquiry.";
+  }
+
+  if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+    return "Watch the presentation system move through rhythm, content, motion, and reusable structure.";
+  }
+
+  return "Watch the system move through its main proof before the still frames slow it down.";
+}
+
+function getMobileEvidenceReadout(story: CaseStory) {
+  if (story.caseType === "product-system") {
+    return "Collection, inquiry, and editorial surfaces hold the proof after the motion pass.";
+  }
+
+  if (story.caseType === "advisory") {
+    return "Curated search, district, shortlist, and showpiece frames hold the proof after motion.";
+  }
+
+  if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+    return "Working states, focused review, reports, and output surfaces become inspectable proof.";
+  }
+
+  if (story.caseType === "hospitality") {
+    return "Atmosphere, menu, visit utility, and mobile action frames make the visitor path visible.";
+  }
+
+  if (story.caseType === "premium-website") {
+    return "Offer, trust, service detail, and inquiry frames make the commercial structure visible.";
+  }
+
+  if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+    return "Threshold, rhythm, content, and mobile translation frames slow the motion into proof.";
+  }
+
+  return "The still frames slow down the proof into readable interface moments.";
+}
+
+function getMobileEvidenceFrames(story: CaseStory) {
+  const frames = getEvidenceFrames(story);
+  const preferredIds = ["threshold", "collection", "inquiry", "craft", "desktop-2", "desktop-3"];
+  const preferredFrames = preferredIds
+    .map((id) => frames.find((frame) => frame.id === id))
+    .filter((frame): frame is CaseStoryMedia => Boolean(frame));
+  const preferredSet = new Set(preferredFrames.map((frame) => frame.id));
+
+  return [...preferredFrames, ...frames.filter((frame) => !preferredSet.has(frame.id))];
+}
+
+function getMobileEvidenceInitialIndex(frames: CaseStoryMedia[]) {
+  const priorityIndex = frames.findIndex((frame) => frame.id === "collection" || frame.id === "inquiry");
+  if (priorityIndex >= 0) return priorityIndex;
+
+  const preferredIndex = frames.findIndex((frame) => frame.role !== "hero" && frame.id !== "threshold");
+
+  return Math.max(0, preferredIndex);
+}
+
+function getMobileAvailableStatement(story: CaseStory, fallback: string) {
+  if (story.caseType === "product-system") {
+    return "Adapt the maison logic into a commissioned luxury product surface.";
+  }
+
+  return fallback;
+}
+
+function getMobileSwipeDelta(info: PanInfo) {
+  if (info.offset.x <= -MOBILE_SWIPE_DISTANCE || info.velocity.x <= -MOBILE_SWIPE_VELOCITY) return 1;
+  if (info.offset.x >= MOBILE_SWIPE_DISTANCE || info.velocity.x >= MOBILE_SWIPE_VELOCITY) return -1;
+  return 0;
 }
 
 function CaseMediaView({
@@ -1642,6 +1782,554 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
   );
 }
 
+function MobileReaderSection({
+  eyebrow,
+  title,
+  children,
+  className = "",
+}: {
+  eyebrow: string;
+  title: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section data-sound-safe-area className={["relative overflow-hidden border-t border-neutral-950/12 px-4 py-7", className].join(" ")}>
+      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
+      <div className="pointer-events-none absolute right-[10%] top-8 h-56 w-56 rounded-full border border-neutral-950/[0.045]" />
+      <div className="relative">
+        <div className="mb-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+          <span className="h-px w-10 bg-neutral-950/18" />
+          <span>{eyebrow}</span>
+        </div>
+        <h2 className="max-w-[10ch] text-[clamp(2.25rem,11vw,3.45rem)] font-semibold leading-[0.92] tracking-normal text-neutral-950">
+          {title}
+        </h2>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function MobileProofSpine({ story }: { story: CaseStory }) {
+  const steps = getMobileReaderSteps(story);
+
+  return (
+    <div className="mt-7 border-y border-neutral-950/12 py-3">
+      <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-400">
+        Case proof spine
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2">
+        {steps.map((step) => (
+          <div key={step.index} className="border-t border-neutral-950/10 pt-2">
+            <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-300">
+              {step.index}
+            </div>
+            <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-600">
+              {step.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileCaseHero({
+  story,
+  liveLink,
+}: {
+  story: CaseStory;
+  liveLink?: { label: string; href: string };
+}) {
+  const titleLines = getTitleLines(story.headline);
+
+  return (
+    <section className="relative overflow-hidden px-4 pb-5 pt-24" data-sound-safe-area>
+      <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
+      <div className="pointer-events-none absolute left-[8%] top-[8rem] h-[34rem] w-[32rem] rounded-[50%] border border-neutral-950/[0.055]" />
+      <div className="relative">
+        <div className="flex max-w-[20rem] flex-wrap gap-2 sm:max-w-none">
+          {["Case system", getAvailabilitySignal(story), story.caseType.replace("-", " ")].map((item) => (
+            <span
+              key={item}
+              className="rounded-full border border-neutral-950/10 bg-white/48 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm"
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+
+        <h1 className="mt-8 text-[clamp(3.75rem,18vw,5.5rem)] font-semibold leading-[0.84] tracking-normal text-neutral-950">
+          {titleLines.map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
+        </h1>
+
+        <p className="mt-7 max-w-[13ch] text-[clamp(1.85rem,7.5vw,2.65rem)] leading-[1.04] text-neutral-800">
+          {story.subheadline}
+        </p>
+        <p className="mt-5 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+          {getMobileHeroSummary(story)}
+        </p>
+
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          {liveLink ? <SignalButton href={liveLink.href}>{liveLink.label}</SignalButton> : null}
+          <span className="inline-flex min-h-10 items-center rounded-full border border-neutral-950/10 bg-white/54 px-4 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-500 backdrop-blur-sm">
+            {getAvailabilitySignal(story)}
+          </span>
+        </div>
+
+        <MobileProofSpine story={story} />
+      </div>
+    </section>
+  );
+}
+
+function MobileWalkthroughProof({ story }: { story: CaseStory }) {
+  const walkthrough = getWalkthroughMedia(story);
+
+  return (
+    <MobileReaderSection eyebrow="02 / Watch" title="System walkthrough.">
+      <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+        {getMobileWalkthroughLine(story)}
+      </p>
+      <div data-sound-safe-area className="-mx-4 mt-5 overflow-hidden bg-neutral-950 shadow-[0_18px_54px_rgba(15,15,15,0.14)]">
+        <div className="aspect-video overflow-hidden bg-black">
+          <CaseMediaView media={walkthrough} priority fit="contain" />
+        </div>
+      </div>
+    </MobileReaderSection>
+  );
+}
+
+function MobileEvidenceReader({
+  story,
+  onInspect,
+}: {
+  story: CaseStory;
+  onInspect: (id: string) => void;
+}) {
+  const frames = useMemo(
+    () => getMobileEvidenceFrames(story).slice(0, INITIAL_EVIDENCE_FRAME_COUNT),
+    [story],
+  );
+  const initialFrameIndex = useMemo(() => getMobileEvidenceInitialIndex(frames), [frames]);
+  const sound = useSound();
+  const [activeIndex, setActiveIndex] = useState(initialFrameIndex);
+  const dragConsumedRef = useRef(false);
+
+  if (!frames.length) return null;
+
+  const activeFrame = frames[activeIndex] ?? frames[initialFrameIndex] ?? frames[0];
+  const setActive = (index: number) => {
+    const nextIndex = (index + frames.length) % frames.length;
+    if (nextIndex === activeIndex) return;
+    sound.playRole("transition");
+    setActiveIndex(nextIndex);
+  };
+  const handleDragEnd = (info: PanInfo) => {
+    const delta = getMobileSwipeDelta(info);
+    dragConsumedRef.current = Math.abs(info.offset.x) > 8;
+
+    if (delta !== 0) {
+      setActive(activeIndex + delta);
+    }
+
+    window.setTimeout(() => {
+      dragConsumedRef.current = false;
+    }, 0);
+  };
+
+  return (
+    <MobileReaderSection eyebrow="03 / Frames" title="Screens as evidence.">
+      <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+        {getMobileEvidenceReadout(story)}
+      </p>
+
+      <motion.button
+        key={activeFrame.id}
+        type="button"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.08}
+        whileDrag={{ scale: 0.985 }}
+        onDragEnd={(_event, info) => handleDragEnd(info)}
+        onClick={() => {
+          if (dragConsumedRef.current) return;
+          onInspect(activeFrame.id);
+        }}
+        data-sound-safe-area
+        className="relative mt-5 block w-full appearance-none cursor-grab overflow-hidden bg-transparent p-0 text-left [touch-action:pan-y] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 active:cursor-grabbing"
+        aria-label={`Inspect ${activeFrame.label}`}
+      >
+        <span className="block aspect-[14/9] w-full overflow-hidden bg-transparent leading-none">
+          <CaseMediaView media={activeFrame} priority fit="contain" className="block" />
+        </span>
+      </motion.button>
+
+      <div className="mt-4 border-y border-neutral-950/12 py-3">
+        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+          Frame {String(activeIndex + 1).padStart(2, "0")} / {mediaRoleLabel(activeFrame.role)}
+        </div>
+        <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
+          {activeFrame.label}
+        </h3>
+        <p className="mt-2 max-w-[36ch] text-[14px] leading-6 text-neutral-600">
+          {activeFrame.caption}
+        </p>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between gap-3">
+        <div className="flex gap-2">
+          {frames.map((frame, index) => (
+            <button
+              key={frame.id}
+              type="button"
+              onClick={() => setActive(index)}
+              className={[
+                "h-2 rounded-full border transition",
+                index === activeIndex
+                  ? "w-8 border-neutral-950 bg-neutral-950"
+                  : "w-2 border-neutral-950/18 bg-white/60",
+              ].join(" ")}
+              aria-label={`Open evidence frame ${index + 1}`}
+            />
+          ))}
+        </div>
+        <div className="flex gap-1.5">
+          <button
+            type="button"
+            onClick={() => setActive(activeIndex - 1)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
+            aria-label="Previous evidence frame"
+          >
+            &lt;
+          </button>
+          <button
+            type="button"
+            onClick={() => setActive(activeIndex + 1)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
+            aria-label="Next evidence frame"
+          >
+            &gt;
+          </button>
+        </div>
+      </div>
+    </MobileReaderSection>
+  );
+}
+
+function MobileProofSummary({ story }: { story: CaseStory }) {
+  const narrative = getCaseNarrative(story);
+  const proofNodes = proofLedger.map((item, index) => ({
+    ...item,
+    label: narrative.proofLabels[index] ?? item.label,
+    text: story.evidencePoints[index] ?? item.text,
+  }));
+  const systemSpine = story.systemLayers.slice(0, 6);
+
+  return (
+    <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system.">
+      <p className="mt-4 max-w-[19ch] text-[clamp(1.35rem,5.8vw,1.9rem)] leading-[1.08] text-neutral-950">
+        {story.proofClaim}
+      </p>
+      <div className="mt-5 border-y border-neutral-950/12">
+        {proofNodes.map((item, index) => (
+          <div key={item.label} className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
+            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
+              <span>{String(index + 1).padStart(2, "0")}</span>
+            </div>
+            <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
+              {item.label}
+            </h3>
+            <p className="mt-2 max-w-[36ch] text-[14px] leading-6 text-neutral-600">{item.text}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 border-y border-neutral-950/12 py-3">
+        <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+          System spine
+        </div>
+        <div className="mt-2 grid grid-cols-2 gap-x-3">
+          {systemSpine.map((layer, index) => (
+            <span
+              key={layer.title}
+              className="grid grid-cols-[1.35rem_1fr] gap-2 border-t border-neutral-950/8 py-2 font-mono text-[8px] uppercase leading-4 tracking-[0.13em] text-neutral-500"
+            >
+              <span className="text-neutral-300">{String(index + 1).padStart(2, "0")}</span>
+              <span>{layer.title}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </MobileReaderSection>
+  );
+}
+
+function MobileFoundationSection({
+  story,
+  liveLink,
+  onOpenProject,
+  onBackToWork,
+}: {
+  story: CaseStory;
+  liveLink?: { label: string; href: string };
+  onOpenProject?: () => void;
+  onBackToWork: () => void;
+}) {
+  if (!story.availability) return null;
+
+  const narrative = getCaseNarrative(story);
+  const ctaLabel = story.availability.ctaLabel;
+  const technicalRows = story.technicalFoundation.length > 0 ? story.technicalFoundation : technicalLedger;
+  const adaptationValue =
+    story.caseType === "advisory"
+      ? "Market structure, shortlist flow, private intake."
+      : story.caseType === "workflow-tool" || story.caseType === "tool"
+        ? "Workflow steps, state model, output logic."
+        : story.caseType === "hospitality"
+          ? "Place identity, menu structure, visitor flow."
+          : story.caseType === "premium-website"
+            ? "Offer model, content architecture, inquiry flow."
+            : story.caseType === "presentation-system" || story.caseType === "experimental"
+              ? "Content model, media rhythm, motion direction."
+        : "Brand, product structure, inquiry flow.";
+  const deployableHighlights = technicalRows.slice(0, 3).map((item) =>
+    item
+      .replace("Next.js App Router + TypeScript", "Next.js + TypeScript")
+      .replace("Metadata / Open Graph preparation", "Metadata / Open Graph")
+      .replace("Dynamic product detail pages through structured product data", "Structured product data")
+      .replace(/\.$/, ""),
+  );
+  const passportRows = [
+    {
+      label: "Fit",
+      value: story.availability.bestFor?.slice(0, 3).join(" / ") ?? "Jewelry / Fashion / Collector objects",
+    },
+    {
+      label: "Adaptation",
+      value: adaptationValue,
+    },
+    {
+      label: "Terms",
+      value: story.availability.exclusivityAvailable
+        ? "Commissioned adaptation / Exclusivity discussed"
+        : "Commissioned adaptation / Shared direction",
+    },
+  ];
+
+  return (
+    <section
+      data-footer-rail-state="closing"
+      data-sound-safe-area
+      className="relative overflow-hidden border-t border-neutral-950/12 px-4 pb-24 pt-7"
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
+      <div className="pointer-events-none absolute right-[-18%] top-12 h-72 w-72 rounded-full border border-neutral-950/[0.045]" />
+      <div className="relative">
+        <div className="mb-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+          <span className="h-px w-10 bg-neutral-950/18" />
+          <span>{getMobileSectionEyebrow(story, "Adapt")}</span>
+        </div>
+
+        <div className="border-y border-neutral-950/12 py-4">
+          <h2 className="max-w-[11ch] text-[clamp(2rem,9vw,2.9rem)] font-semibold leading-[0.94] tracking-normal text-neutral-950">
+            Available foundation.
+          </h2>
+          <p className="mt-3 max-w-[30ch] text-[15px] leading-6 text-neutral-700">
+            {getMobileAvailableStatement(story, narrative.availableStatement)}
+          </p>
+        </div>
+
+        <div className="border-b border-neutral-950/12">
+          {passportRows.map((row, index) => (
+            <div key={row.label} className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
+              <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.18em] text-neutral-400">
+                {String(index + 1).padStart(2, "0")} / {row.label}
+              </div>
+              <div className="text-[0.98rem] leading-6 text-neutral-900">{row.value}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 border-y border-neutral-950/12 py-3">
+          <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-400">
+            Deployable surface
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {deployableHighlights.map((item) => (
+              <span key={item} className="border border-neutral-950/10 bg-white/45 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.13em] text-neutral-500">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 border-t border-neutral-950/12 pt-5">
+          <p className="max-w-[25ch] text-[1.28rem] font-semibold leading-[1.08] tracking-normal text-neutral-950">
+            Use this foundation when the fit is right, or commission one with the same clarity.
+          </p>
+          <div data-sound-safe-area className="mt-5 grid gap-3">
+            <SignalButton onClick={onOpenProject}>{ctaLabel}</SignalButton>
+            {liveLink ? (
+              <SignalButton variant="secondary" href={liveLink.href}>
+                {liveLink.label}
+              </SignalButton>
+            ) : null}
+            <SignalButton variant="quiet" onClick={onBackToWork}>
+              Back to Work
+            </SignalButton>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobilePhoneCarousel({
+  story,
+  onInspect,
+}: {
+  story: CaseStory;
+  onInspect: (id: string) => void;
+}) {
+  const frames = getMobileFrames(story);
+  const narrative = getCaseNarrative(story);
+  const sound = useSound();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const dragConsumedRef = useRef(false);
+  if (!frames.length) return null;
+
+  const activeFrame = frames[activeIndex] ?? frames[0];
+  const setActive = (index: number) => {
+    const nextIndex = (index + frames.length) % frames.length;
+    if (nextIndex === activeIndex) return;
+    sound.playRole("transition");
+    setActiveIndex(nextIndex);
+  };
+  const handleDragEnd = (info: PanInfo) => {
+    const delta = getMobileSwipeDelta(info);
+    dragConsumedRef.current = Math.abs(info.offset.x) > 8;
+
+    if (delta !== 0) {
+      setActive(activeIndex + delta);
+    }
+
+    window.setTimeout(() => {
+      dragConsumedRef.current = false;
+    }, 0);
+  };
+
+  return (
+    <MobileReaderSection eyebrow={getMobileSectionEyebrow(story, "Mobile")} title={narrative.mobileTitle}>
+      <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+        {narrative.mobileIntro}
+      </p>
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="flex gap-2">
+          {frames.map((frame, index) => (
+            <button
+              key={frame.id}
+              type="button"
+              onClick={() => setActive(index)}
+              className={[
+                "h-2 rounded-full border transition",
+                index === activeIndex
+                  ? "w-8 border-neutral-950 bg-neutral-950"
+                  : "w-2 border-neutral-950/18 bg-white/60",
+              ].join(" ")}
+              aria-label={`Open mobile frame ${index + 1}`}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setActive(activeIndex - 1)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
+            aria-label="Previous mobile frame"
+          >
+            &lt;
+          </button>
+          <button
+            type="button"
+            onClick={() => setActive(activeIndex + 1)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
+            aria-label="Next mobile frame"
+          >
+            &gt;
+          </button>
+        </div>
+      </div>
+
+      <motion.button
+        key={activeFrame.id}
+        type="button"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.08}
+        whileDrag={{ scale: 0.985 }}
+        onDragEnd={(_event, info) => handleDragEnd(info)}
+        onClick={() => {
+          if (dragConsumedRef.current) return;
+          onInspect(activeFrame.id);
+        }}
+        data-sound-safe-area
+        className="mx-auto mt-5 block w-[min(76vw,18.5rem)] cursor-grab overflow-hidden bg-transparent [touch-action:pan-y] shadow-[0_18px_48px_rgba(15,15,15,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 active:cursor-grabbing"
+        aria-label={`Inspect ${activeFrame.label}`}
+      >
+        <span className="block aspect-[9/16] overflow-hidden bg-neutral-950">
+          <CaseMediaView media={activeFrame} fit="contain" priority />
+        </span>
+      </motion.button>
+
+      <div className="mt-4 border-y border-neutral-950/12 py-3 text-center">
+        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+          Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
+        </div>
+        <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
+          {activeFrame.label}
+        </h3>
+        <p className="mx-auto mt-2 max-w-[36ch] text-[14px] leading-6 text-neutral-600">{activeFrame.caption}</p>
+      </div>
+    </MobileReaderSection>
+  );
+}
+
+function MobileCaseReader({
+  story,
+  liveLink,
+  onInspect,
+  onOpenProject,
+  onBackToWork,
+}: {
+  story: CaseStory;
+  liveLink?: { label: string; href: string };
+  onInspect: (id: string) => void;
+  onOpenProject?: () => void;
+  onBackToWork: () => void;
+}) {
+  return (
+    <div className="lg:hidden">
+      <MobileCaseHero story={story} liveLink={liveLink} />
+      <MobileWalkthroughProof story={story} />
+      <MobileEvidenceReader key={`${story.slug}-mobile-evidence`} story={story} onInspect={onInspect} />
+      <MobileProofSummary story={story} />
+      <MobilePhoneCarousel story={story} onInspect={onInspect} />
+      <MobileFoundationSection
+        story={story}
+        liveLink={liveLink}
+        onOpenProject={onOpenProject}
+        onBackToWork={onBackToWork}
+      />
+    </div>
+  );
+}
+
 function LabFallback({
   drawerOpen,
   onOpenProject,
@@ -1730,6 +2418,7 @@ export default function CasePageV2({
   const narrative = getCaseNarrative(story);
   const closingMove = getClosingMove(story);
   const secondaryClosingLink = getSecondaryClosingLink(story, visibleLinks);
+  const primaryLiveLink = visibleLinks[0] ?? secondaryClosingLink;
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
   const hasAlignedHeroCards = true;
@@ -1753,6 +2442,15 @@ export default function CasePageV2({
 
       <PageSurface className="relative z-10">
         <main>
+          <MobileCaseReader
+            story={story}
+            liveLink={primaryLiveLink}
+            onInspect={openInspect}
+            onOpenProject={openProject}
+            onBackToWork={goToWork}
+          />
+
+          <div className="hidden lg:block">
           <section
             id="case-threshold"
             className="relative mx-auto min-h-screen w-[min(95vw,1680px)] overflow-hidden pb-12 pt-28 lg:min-h-[930px]"
@@ -2021,6 +2719,7 @@ export default function CasePageV2({
               </div>
             </div>
           </section>
+          </div>
         </main>
 
         <SiteFooterV2 variant="case" />

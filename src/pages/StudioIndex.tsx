@@ -721,6 +721,8 @@ function MobileSpatialStage({
   variant?: "proof" | "grammar" | "cinematic";
 }) {
   const [internalActiveIndex, setInternalActiveIndex] = useState(0);
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
+  const suppressOpenRef = useRef(false);
   const activeIndex = controlledActiveIndex ?? internalActiveIndex;
   const active = assets[activeIndex] ?? assets[0];
   const ghostA = assets[(activeIndex + 1) % assets.length] ?? active;
@@ -732,35 +734,77 @@ function MobileSpatialStage({
     variant === "grammar"
       ? "min-h-[21rem] sm:min-h-[25rem] md:min-h-[29rem]"
       : variant === "cinematic"
-        ? "min-h-[22rem] sm:min-h-[28rem] md:min-h-[32rem]"
+        ? "min-h-[24rem] sm:min-h-[29rem] md:min-h-[33rem]"
         : "min-h-[21.5rem] sm:min-h-[27rem] md:min-h-[31rem]";
   const activePlane =
     variant === "grammar"
       ? "left-[1%] top-[3.5rem] h-[61%] w-[94%] -rotate-[2.5deg]"
       : variant === "cinematic"
-        ? "left-[3%] top-[3.25rem] h-[66%] w-[88%] -rotate-[3deg]"
-        : "left-[3%] top-[3.5rem] h-[65%] w-[88%] -rotate-[2deg]";
+        ? "left-[0%] top-[4.6rem] h-[68%] w-[96%] -rotate-[3deg]"
+        : "left-[3%] top-[4.65rem] h-[59%] w-[88%] -rotate-[2deg]";
   const ghostAPlane =
     variant === "grammar"
       ? "right-[-5%] top-12 h-[50%] w-[50%] rotate-[4deg] opacity-40"
-      : "right-[-2%] top-12 h-[54%] w-[54%] rotate-[4deg] opacity-48";
+      : variant === "cinematic"
+        ? "right-[-8%] top-[4.95rem] h-[58%] w-[58%] rotate-[5deg] opacity-42"
+        : "right-[-2%] top-[4.35rem] h-[50%] w-[54%] rotate-[4deg] opacity-48";
   const ghostBPlane =
     variant === "grammar"
       ? "bottom-8 left-[12%] h-[34%] w-[52%] -rotate-[5deg] opacity-42"
-      : "bottom-8 left-6 h-[39%] w-[50%] -rotate-[5deg] opacity-50";
+      : variant === "cinematic"
+        ? "bottom-6 left-[5%] h-[38%] w-[54%] -rotate-[5deg] opacity-45"
+        : "bottom-7 left-6 h-[36%] w-[50%] -rotate-[5deg] opacity-50";
 
   const setStageIndex = (nextIndex: number) => {
     setInternalActiveIndex(nextIndex);
     onActiveIndexChange?.(nextIndex);
   };
 
+  const stepStageIndex = (direction: 1 | -1) => {
+    if (assets.length < 2) return;
+    setStageIndex((activeIndex + direction + assets.length) % assets.length);
+  };
+
   const openActive = () => {
+    if (suppressOpenRef.current) {
+      suppressOpenRef.current = false;
+      return;
+    }
     if (active?.route) onOpen(active.route);
+  };
+
+  const handleStagePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    swipeStartRef.current = { x: event.clientX, y: event.clientY };
+  };
+
+  const handleStagePointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    const start = swipeStartRef.current;
+    swipeStartRef.current = null;
+    if (!start) return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    const isHorizontalSwipe = Math.abs(deltaX) > 44 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
+
+    if (!isHorizontalSwipe) return;
+
+    suppressOpenRef.current = true;
+    stepStageIndex(deltaX < 0 ? 1 : -1);
+    window.setTimeout(() => {
+      suppressOpenRef.current = false;
+    }, 360);
   };
 
   return (
     <div className={["grid gap-3", className].filter(Boolean).join(" ")} data-sound-safe-area>
-      <div className={["relative overflow-visible", stageHeight].join(" ")}>
+      <div
+        className={["relative overflow-visible [touch-action:pan-y]", stageHeight].join(" ")}
+        onPointerDown={handleStagePointerDown}
+        onPointerUp={handleStagePointerUp}
+        onPointerCancel={() => {
+          swipeStartRef.current = null;
+        }}
+      >
         <div className="absolute left-0 top-0 z-40 flex items-center gap-2 border-y border-neutral-950/10 bg-white/30 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-500 backdrop-blur-[2px]">
           <span className="font-mono text-neutral-400">{String(activeIndex + 1).padStart(2, "0")}</span>
           <span>{active?.label}</span>
@@ -1053,6 +1097,7 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
           <MobileSpatialStage
             assets={proofSurfaceAssets}
             onOpen={goTo}
+            className="mt-2"
             activeIndex={proofModeIndex}
             onActiveIndexChange={setProofModeIndex}
             showSelectors={false}
@@ -1228,6 +1273,7 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
           <MobileSpatialStage
             assets={whisperProofAssets}
             onOpen={onOpen}
+            className="mt-2"
             dark
             objectPosition="center"
             showSelectors={false}
@@ -1235,29 +1281,6 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
             activeIndex={whisperProofIndex}
             onActiveIndexChange={setWhisperProofIndex}
           />
-
-          <div className="grid grid-cols-2 gap-2" data-sound-safe-area>
-            {whisperProofAssets.map((asset, index) => {
-              const active = index === whisperProofIndex;
-
-              return (
-                <button
-                  key={asset.label}
-                  type="button"
-                  onClick={() => setWhisperProofIndex(index)}
-                  className={[
-                    "flex min-h-9 items-center justify-center rounded-full border px-3 text-center text-[9px] font-semibold uppercase tracking-[0.12em] backdrop-blur transition active:translate-y-px",
-                    active
-                      ? "border-neutral-950 bg-neutral-950 text-white"
-                      : "border-neutral-950/10 bg-white/62 text-neutral-500",
-                  ].join(" ")}
-                  aria-pressed={active}
-                >
-                  {asset.label}
-                </button>
-              );
-            })}
-          </div>
 
           <button type="button" onClick={onOpen} className={mobilePrimaryCta} data-sound-safe-area>
             Open immersive case -&gt;

@@ -60,6 +60,119 @@ Currently focused on:
 
 ## Current project brief
 
+### 2026-05-24 mobile interface and drawer handoff
+
+Current active branch status:
+
+- Branch: `main`
+- Remote: `origin/main`
+- Latest pushed commit: `978e0df Refine project drawer intake`
+- Previous mobile system commit: `f79f68c Add mobile interface system`
+- Working tree was clean after the latest push.
+
+#### Mobile Interface System
+
+The mobile adaptation is now treated as a separate interface system, not as a responsive shrink of desktop.
+
+Current mobile direction:
+
+- Desktop remains the spatial studio site.
+- Mobile should feel like a compact premium interface app.
+- Desktop layout and route structure should not be redesigned while continuing mobile work.
+- Page-by-page mobile work should preserve the Brenych Studio spatial/conceptual language instead of converting everything into generic cards.
+
+Shared mobile foundation already completed:
+
+- compact mobile header and menu behavior;
+- mobile-safe typography scale and section rhythm;
+- right rail/sound dock collision mitigation;
+- `ProjectDrawerV2` mobile sheet foundation;
+- global overflow prevention and safer mobile media behavior;
+- reusable mobile chapter logic prepared for long public pages.
+
+Validation status:
+
+- `npm run lint` passes with 0 errors and the same 8 known non-blocking warnings.
+- `npm run build` passes.
+- Vite still reports the expected large chunk warning for the main/Three.js runtime.
+
+#### Home mobile status
+
+Home mobile was reconstructed as a compact chapter flow while preserving the authored spatial identity.
+
+Current mobile chapter order:
+
+1. Opening / Studio Signal
+2. Proof Surfaces
+3. Systems Index
+4. WHISPER Preview
+5. Interface Grammar / Core Formula
+6. Reusable Grammar / Visual Language
+7. Practice Model / Offer Bridge
+8. Closing Signal
+
+Important decisions:
+
+- The first reverted pass made mobile clearer but too generic; the current pass restores spatial stage language.
+- Proof visuals should remain controlled spatial stages, not square portfolio cards.
+- Systems Index should read as a systems spine, not a portfolio grid.
+- Formula blocks should use compact terminal/ledger-style wording where possible.
+- Sound-aware development is no longer highlighted as a Home/Systems selling point for now.
+- WHISPER preview and Reusable Grammar badges now switch active visuals.
+- Mobile menu overlay was fixed so it no longer looks transparent over page content.
+
+Current Home mobile quality note:
+
+- Hero, WHISPER preview, Practice bridge, and Closing are in a strong state.
+- Proof Surfaces, Systems Index, Core Formula, and Reusable Grammar are improved but should still get one final taste pass on a real phone.
+- Watch for overly large spatial screenshots, section-to-section spacing, and text hierarchy at 390px and 430px.
+
+#### Project drawer status
+
+`src/ui/ProjectDrawerV2.tsx` is now the active drawer surface for both mobile and desktop.
+
+Mobile drawer changes:
+
+- Rebuilt as a compact bottom sheet.
+- Removed the redundant top `Direction` / `Need` summary badges.
+- Direction is selected through compact cards.
+- Current need is selected through short chips.
+- Name, email, note, send, email-direct, and copy-email actions are always easier to reach.
+- Drawer open, close, option select, hover, submit success/blocked, email-direct, and copy-email sounds are wired through `playRole`.
+- Sound still respects the global sound preference; if the dock is `OFF`, drawer interaction is intentionally silent.
+
+Desktop drawer changes:
+
+- Rebuilt from a long ledger-like intake into a shorter premium intake flow.
+- Direction selection now uses compact desktop tiles instead of a long full-width list.
+- Current need now uses compact chips instead of another long list.
+- Large `Selected signal` readout was replaced by a short `Route preview`.
+- Name/email/note inputs now match the simpler mobile intake pattern.
+- Sticky action footer remains, but with softer rounded premium controls.
+
+Important drawer follow-up:
+
+- Do a manual open/close/select/send pass with sound enabled.
+- Check desktop drawer at common widths around 1024, 1366, and wide desktop.
+- Check mobile drawer on 360, 390, and 430 widths with the virtual keyboard open.
+- If needed, reduce desktop direction tile copy further, but do not return to the long list pattern.
+
+#### Next recommended development pass
+
+Recommended order for tomorrow:
+
+1. Real-phone QA for Home mobile at 390/430 and actual browser chrome.
+2. Drawer QA with keyboard, sound enabled, and copy/email actions.
+3. Start page-by-page mobile adaptation after Home: `Work + Case pages`, then `Offer + About`.
+4. Keep desktop as stable unless a drawer-specific issue appears.
+
+Do not do next:
+
+- Do not simplify spatial stages into generic cards.
+- Do not reintroduce sound-aware interface as a main offer unless the product direction changes.
+- Do not make Home a full Offer duplicate.
+- Do not touch SEO/meta/routes for mobile-only layout polish.
+
 ### 2026-05-21 handoff brief
 
 Current active pass focused on two public surfaces: Offer section 03 and Immersive section Proof.

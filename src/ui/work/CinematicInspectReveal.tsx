@@ -40,6 +40,16 @@ function getRoleLabel(role: CaseStoryMedia["role"]) {
   return "proof";
 }
 
+function getFrameSrc(frame: CaseStoryMedia | null | undefined, fallback?: CaseStoryMedia | null) {
+  return frame?.src || frame?.poster || fallback?.src || fallback?.poster || "";
+}
+
+function getObjectPositionClass(position: CaseStoryMedia["objectPosition"]) {
+  if (position === "top") return "object-top";
+  if (position === "bottom") return "object-bottom";
+  return "object-center";
+}
+
 export default function CinematicInspectReveal({
   frames,
   index,
@@ -63,8 +73,20 @@ export default function CinematicInspectReveal({
   const dialogDescriptionId = useId();
   const [closing, setClosing] = useState(false);
   const [frameDirection, setFrameDirection] = useState<1 | -1>(1);
+  const [failedMediaSources, setFailedMediaSources] = useState<Set<string>>(() => new Set());
   const currentFrame = index !== null ? frames[index] ?? null : null;
   const isOpen = index !== null;
+  const fallbackFrame =
+    frames.find((frame) => frame.kind !== "video" && Boolean(getFrameSrc(frame))) ??
+    frames.find((frame) => Boolean(getFrameSrc(frame))) ??
+    null;
+  const activeFrameSource =
+    currentFrame && failedMediaSources.has(getFrameSrc(currentFrame))
+      ? getFrameSrc(fallbackFrame)
+      : getFrameSrc(currentFrame, fallbackFrame);
+  const currentFrameIsMobileSurface = Boolean(
+    currentFrame && (currentFrame.role === "mobile" || currentFrame.src.includes("/mobile/")),
+  );
   const previousFrame = index !== null && frames.length > 1
     ? frames[(index - 1 + frames.length) % frames.length]
     : null;
@@ -276,6 +298,19 @@ export default function CinematicInspectReveal({
   }, [frames.length]);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    [currentFrame, previousFrame, nextFrame, fallbackFrame].forEach((frame) => {
+      const src = getFrameSrc(frame, fallbackFrame);
+      if (!src) return;
+
+      const image = new Image();
+      image.decoding = "async";
+      image.src = src;
+    });
+  }, [currentFrame, fallbackFrame, isOpen, nextFrame, previousFrame]);
+
+  useEffect(() => {
     if (index === null) return;
 
     const rail = thumbnailRailRef.current;
@@ -341,7 +376,7 @@ export default function CinematicInspectReveal({
           <AnimatePresence mode="wait">
             <motion.img
               key={`${currentFrame.id}-inspect-atmosphere`}
-              src={currentFrame.src}
+              src={activeFrameSource}
               alt=""
               className="pointer-events-none absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-24 blur-2xl saturate-[1.06] contrast-[1.08]"
               initial={reduceMotion ? { opacity: 0.18 } : { opacity: 0, scale: 1.08, filter: "blur(34px)" }}
@@ -390,7 +425,7 @@ export default function CinematicInspectReveal({
               exit={{ opacity: 0, y: -12, rotate: -12, scale: 0.94 }}
               transition={{ duration: 0.78, delay: 0.16, ease: revealEase }}
             >
-              <img src={previousFrame.src} alt="" className="h-full w-full object-cover saturate-[1.08] brightness-[1.08]" />
+              <img src={getFrameSrc(previousFrame, fallbackFrame)} alt="" className="h-full w-full object-cover saturate-[1.08] brightness-[1.08]" />
               <div className="absolute inset-0 bg-black/28" />
             </motion.div>
           ) : null}
@@ -409,14 +444,17 @@ export default function CinematicInspectReveal({
               exit={{ opacity: 0, y: 12, rotate: 12, scale: 0.94 }}
               transition={{ duration: 0.78, delay: 0.22, ease: revealEase }}
             >
-              <img src={nextFrame.src} alt="" className="h-full w-full object-cover saturate-[1.08] brightness-[1.08]" />
+              <img src={getFrameSrc(nextFrame, fallbackFrame)} alt="" className="h-full w-full object-cover saturate-[1.08] brightness-[1.08]" />
               <div className="absolute inset-0 bg-black/30" />
             </motion.div>
           ) : null}
 
-          <div className="relative z-[93] grid h-dvh grid-rows-[auto_minmax(0,1fr)_auto]">
+          <div className="relative z-[93] grid h-[100svh] grid-rows-[auto_minmax(0,1fr)_auto] md:h-dvh">
+            <p id={dialogDescriptionId} className="sr-only">
+              {currentFrame.caption}
+            </p>
             <motion.header
-              className="grid gap-4 border-b border-white/12 px-4 py-4 backdrop-blur-md md:grid-cols-[1fr_auto] md:px-7"
+              className="sticky top-0 z-10 grid gap-3 border-b border-white/12 px-4 py-4 backdrop-blur-md md:static md:grid-cols-[1fr_auto] md:gap-4 md:px-7"
               initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -16, clipPath: "inset(0 100% 0 0)" }}
               animate={
                 closing && !reduceMotion
@@ -472,15 +510,21 @@ export default function CinematicInspectReveal({
             </motion.header>
 
             <main
-              className="grid min-h-0 items-center px-3 py-4 md:px-7 md:py-6"
+              className="grid min-h-0 items-start px-3 py-3 md:items-center md:px-7 md:py-6"
+              style={{ width: "100vw", maxWidth: "100vw", overflow: "hidden" }}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="relative mx-auto grid h-full w-full max-w-[1660px] place-items-center">
+              <div className="relative mx-auto grid h-full w-full max-w-[1660px] place-items-start md:place-items-center" style={{ width: "100%", maxWidth: "100%" }}>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentFrame.id}
-                    className="relative flex h-full max-h-[calc(100dvh-15.5rem)] w-full items-center justify-center"
+                    className={`relative flex w-full items-center justify-center overflow-hidden border border-white/10 bg-black/24 p-2 shadow-[0_28px_120px_rgba(0,0,0,0.32)] md:h-full md:min-h-0 md:max-h-[calc(100dvh-15.5rem)] md:border-0 md:bg-transparent md:p-0 md:shadow-none ${
+                      currentFrameIsMobileSurface
+                        ? "h-[50svh] min-h-[20rem] max-h-[34rem]"
+                        : "aspect-[16/10] min-h-[14rem] max-h-[30rem]"
+                    }`}
+                    style={{ width: "100%", maxWidth: "100%" }}
                     initial={
                       reduceMotion
                         ? { opacity: 1 }
@@ -523,9 +567,20 @@ export default function CinematicInspectReveal({
                     transition={{ duration: 0.86, delay: 0.12, ease: revealEase }}
                   >
                     <motion.img
-                      src={currentFrame.src}
+                      src={activeFrameSource}
                       alt={currentFrame.alt}
-                      className="max-h-full max-w-full object-contain shadow-[0_34px_140px_rgba(0,0,0,0.46)]"
+                      className={`absolute inset-0 block h-full w-full object-contain ${getObjectPositionClass(currentFrame.objectPosition)} shadow-[0_34px_140px_rgba(0,0,0,0.46)]`}
+                      loading="eager"
+                      decoding="async"
+                      fetchPriority="high"
+                      onError={() => {
+                        if (!activeFrameSource) return;
+                        setFailedMediaSources((previous) => {
+                          const next = new Set(previous);
+                          next.add(activeFrameSource);
+                          return next;
+                        });
+                      }}
                       initial={reduceMotion ? undefined : { scale: 1.025 }}
                       animate={reduceMotion ? undefined : { scale: closing ? 0.985 : 1 }}
                       transition={{ duration: 1.05, ease: revealEase }}
@@ -533,7 +588,7 @@ export default function CinematicInspectReveal({
                   </motion.div>
                 </AnimatePresence>
 
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto max-w-[72rem] px-2">
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto hidden max-w-[72rem] px-2 md:block">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`${currentFrame.id}-caption`}
@@ -550,7 +605,7 @@ export default function CinematicInspectReveal({
                       <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/38">
                         What this frame proves
                       </div>
-                      <p id={dialogDescriptionId} className="mt-2 max-w-3xl text-sm leading-6 md:mt-0 md:text-[15px]">
+                      <p className="mt-2 max-w-3xl text-sm leading-6 md:mt-0 md:text-[15px]">
                         {currentFrame.caption}
                       </p>
                     </motion.div>
@@ -560,7 +615,7 @@ export default function CinematicInspectReveal({
             </main>
 
             <motion.footer
-              className="border-t border-white/12 px-3 py-3 backdrop-blur-md md:px-7"
+              className="border-t border-white/12 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:px-7 md:pb-3"
               initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18, clipPath: "inset(0 0 0 100%)" }}
               animate={
                 closing && !reduceMotion
@@ -593,8 +648,10 @@ export default function CinematicInspectReveal({
                       aria-current={active ? "true" : undefined}
                     >
                       <img
-                        src={frame.src}
+                        src={getFrameSrc(frame, fallbackFrame)}
                         alt=""
+                        loading={active ? "eager" : "lazy"}
+                        decoding="async"
                         className="h-full w-full object-cover opacity-70 transition group-hover:opacity-100"
                       />
                       <span className="absolute bottom-1 left-1 font-mono text-[8px] uppercase tracking-[0.16em] text-white/70">
@@ -604,6 +661,27 @@ export default function CinematicInspectReveal({
                   );
                 })}
               </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${currentFrame.id}-mobile-caption`}
+                  className="mx-auto mt-2 max-w-[1660px] border-y border-white/14 bg-black/42 px-3 py-2 text-white/62 backdrop-blur-md md:hidden"
+                  initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 10, clipPath: "inset(0 100% 0 0)" }}
+                  animate={
+                    closing && !reduceMotion
+                      ? { opacity: 0, y: 8, clipPath: "inset(0 100% 0 0)" }
+                      : { opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }
+                  }
+                  exit={{ opacity: 0, y: 8, clipPath: "inset(0 100% 0 0)" }}
+                  transition={{ duration: 0.5, delay: 0.12, ease: revealEase }}
+                >
+                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/38">
+                    What this frame proves
+                  </div>
+                  <p className="mt-1 max-h-12 overflow-hidden text-[12px] leading-5 text-white/66">
+                    {currentFrame.caption}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
             </motion.footer>
           </div>
         </motion.div>

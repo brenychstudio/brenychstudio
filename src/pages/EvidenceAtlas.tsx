@@ -48,6 +48,8 @@ const featuredSystemSlugs = [
   "casa-nube",
 ] as const;
 
+const mobileFieldSystemSlugs = ["bcn-advisory", "creatorops", "fluid-exhibition"] as const;
+
 const capabilityLayer = [
   {
     label: "Commercial surfaces",
@@ -74,6 +76,26 @@ const capabilityLayer = [
     summary: "Presentation surfaces, product flows, and experimental interfaces that carry real interaction logic.",
   },
 ];
+
+const capabilityProofMatrix = [
+  {
+    index: "01",
+    label: "Commercial proof",
+    summary: "Commercial surfaces / Multilingual systems",
+  },
+  {
+    index: "02",
+    label: "Product proof",
+    summary: "Workflow products / Interactive systems",
+  },
+  {
+    index: "03",
+    label: "System proof",
+    summary: "Cinematic proof / Available foundations",
+  },
+];
+
+const mobileEvidenceFilters: EvidenceFilter[] = ["All", "Premium websites", "Product systems", "Advisory", "Tools"];
 
 const evidenceRailItems: SectionRailItem[] = [
   { index: "01", label: "Atlas", id: "evidence-threshold" },
@@ -151,6 +173,12 @@ function getAvailabilityView(system: AvailableSystem): AvailabilityView {
     tone: "text-neutral-400",
     primaryCta: "Open case",
   };
+}
+
+function getAvailabilityStatusLabel(system: AvailableSystem) {
+  if (system.status === "available") return "Ready to adapt";
+  if (system.status === "custom-only" || system.status === "concept-reference") return "Direction available";
+  return "Case only";
 }
 
 function getPreviewFrame(item: EvidenceCase) {
@@ -253,10 +281,10 @@ function SectionIntro({
   return (
     <div>
       <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">{label}</div>
-      <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.9] tracking-[-0.055em] text-neutral-950 sm:text-[76px]">
+      <h2 className="mt-5 max-w-[11ch] text-[46px] font-normal leading-[0.94] tracking-[-0.04em] text-neutral-950 sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.055em]">
         {title}
       </h2>
-      {description ? <p className="mt-7 max-w-[34rem] text-[15px] leading-7 text-neutral-600">{description}</p> : null}
+      {description ? <p className="mt-6 max-w-[34rem] text-[14px] leading-6 text-neutral-600 sm:mt-7 sm:text-[15px] sm:leading-7">{description}</p> : null}
     </div>
   );
 }
@@ -276,7 +304,7 @@ function FilterButton({
     <motion.button
       type="button"
       onClick={onClick}
-      className={`group relative grid min-h-11 shrink-0 grid-cols-[1fr_auto] items-center gap-4 overflow-hidden border px-3.5 text-left font-mono text-[10px] uppercase tracking-[0.14em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 ${
+      className={`group relative grid min-h-9 shrink-0 grid-cols-[1fr_auto] items-center gap-3 overflow-hidden border px-3 text-left font-mono text-[9px] uppercase tracking-[0.13em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:min-h-11 sm:gap-4 sm:px-3.5 sm:text-[10px] sm:tracking-[0.14em] ${
         active
           ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_18px_48px_var(--evidence-shadow)]"
           : "border-neutral-950/10 bg-white/30 text-neutral-500 hover:border-neutral-950/28 hover:bg-white/64 hover:text-neutral-950"
@@ -316,6 +344,7 @@ function FeaturedFlowItem({
   const visuals = getVisualFrames(item);
   const availability = getAvailableSystem(item.slug);
   const availabilityView = getAvailabilityView(availability);
+  const availabilityStatusLabel = getAvailabilityStatusLabel(availability);
   const canRequest =
     availability.status === "available" ||
     availability.status === "custom-only" ||
@@ -328,35 +357,43 @@ function FeaturedFlowItem({
     target: chapterRef,
     offset: ["start 92%", "end 8%"],
   });
-  const imageX = useTransform(scrollYProgress, [0, 0.5, 1], [34 * direction, 0, -34 * direction]);
-  const imageY = useTransform(scrollYProgress, [0, 0.5, 1], [82, 0, -78]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.48, 1], [0.955, 1.035, 0.985]);
-  const imageRotate = useTransform(scrollYProgress, [0, 0.5, 1], [direction * -1.8, 0, direction * 1.4]);
-  const copyX = useTransform(scrollYProgress, [0, 0.5, 1], [-18 * direction, 0, 18 * direction]);
-  const copyY = useTransform(scrollYProgress, [0, 0.5, 1], [36, 0, -32]);
+  const imageX = useTransform(scrollYProgress, [0, 0.5, 1], [24 * direction, 0, -24 * direction]);
+  const imageY = useTransform(scrollYProgress, [0, 0.5, 1], [46, 0, -42]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.48, 1], [0.97, 1.022, 0.99]);
+  const imageRotate = useTransform(scrollYProgress, [0, 0.5, 1], [direction * -1.2, 0, direction * 1]);
+  const copyX = useTransform(scrollYProgress, [0, 0.5, 1], [-12 * direction, 0, 12 * direction]);
+  const copyY = useTransform(scrollYProgress, [0, 0.5, 1], [18, 0, -18]);
   const shadowOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.08, 0.32, 0.12]);
   const shadowScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.72, 1, 0.8]);
   const supportingVisuals = visuals.length > 1 ? visuals.slice(1, 4) : visuals.slice(0, 1);
   const fragmentMotion = [
     {
-      x: useTransform(scrollYProgress, [0, 0.5, 1], [-24 * direction, 0, 20 * direction]),
-      y: useTransform(scrollYProgress, [0, 0.5, 1], [44, 0, -42]),
-      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1.04, 0.96]),
+      x: useTransform(scrollYProgress, [0, 0.5, 1], [-16 * direction, 0, 14 * direction]),
+      y: useTransform(scrollYProgress, [0, 0.5, 1], [26, 0, -24]),
+      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.94, 1.025, 0.97]),
     },
     {
-      x: useTransform(scrollYProgress, [0, 0.5, 1], [-48 * direction, 0, 40 * direction]),
-      y: useTransform(scrollYProgress, [0, 0.5, 1], [56, 0, -52]),
-      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.035, 0.955]),
+      x: useTransform(scrollYProgress, [0, 0.5, 1], [-24 * direction, 0, 22 * direction]),
+      y: useTransform(scrollYProgress, [0, 0.5, 1], [30, 0, -28]),
+      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.93, 1.02, 0.97]),
     },
     {
-      x: useTransform(scrollYProgress, [0, 0.5, 1], [-72 * direction, 0, 60 * direction]),
-      y: useTransform(scrollYProgress, [0, 0.5, 1], [68, 0, -62]),
-      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.88, 1.025, 0.95]),
+      x: useTransform(scrollYProgress, [0, 0.5, 1], [-32 * direction, 0, 30 * direction]),
+      y: useTransform(scrollYProgress, [0, 0.5, 1], [34, 0, -30]),
+      scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1.016, 0.965]),
     },
   ];
   const fragmentPositions = alignRight
-    ? ["left-[2%] top-[16%] h-[28%] w-[28%]", "left-[18%] bottom-[18%] h-[24%] w-[24%]", "right-[4%] top-[4%] h-[18%] w-[24%]"]
-    : ["right-[2%] top-[16%] h-[28%] w-[28%]", "right-[18%] bottom-[18%] h-[24%] w-[24%]", "left-[4%] top-[4%] h-[18%] w-[24%]"];
+    ? [
+        "left-[2%] top-[19%] h-[18%] w-[24%] sm:left-[2%] sm:top-[16%] sm:h-[24%] sm:w-[25%] xl:h-[28%] xl:w-[28%]",
+        "right-[6%] top-[37%] h-[19%] w-[25%] sm:left-[18%] sm:right-auto sm:top-auto sm:bottom-[18%] sm:h-[22%] sm:w-[23%] xl:h-[24%] xl:w-[24%]",
+        "right-[4%] top-[8%] h-[15%] w-[22%] sm:right-[4%] sm:top-[4%] sm:h-[18%] sm:w-[24%]",
+      ]
+    : [
+        "right-[2%] top-[19%] h-[18%] w-[24%] sm:right-[2%] sm:top-[16%] sm:h-[24%] sm:w-[25%] xl:h-[28%] xl:w-[28%]",
+        "left-[6%] top-[37%] h-[19%] w-[25%] sm:right-[18%] sm:left-auto sm:top-auto sm:bottom-[18%] sm:h-[22%] sm:w-[23%] xl:h-[24%] xl:w-[24%]",
+        "left-[4%] top-[8%] h-[15%] w-[22%] sm:left-[4%] sm:top-[4%] sm:h-[18%] sm:w-[24%]",
+      ];
   const fragmentRotations = alignRight ? [2.4, -1.8, 1.2] : [-2.4, 1.8, -1.2];
 
   return (
@@ -366,8 +403,8 @@ function FeaturedFlowItem({
       data-archive-depth={depth}
       className={`group relative overflow-hidden border-neutral-950/12 ${
         selected
-          ? "min-h-[660px] border-y py-7 sm:min-h-[760px] sm:py-9 xl:min-h-[840px]"
-          : "min-h-[600px] border-t py-8 sm:min-h-[740px] sm:py-10 xl:min-h-[790px]"
+          ? "min-h-[min(72svh,610px)] border-y py-4 sm:min-h-[680px] sm:py-7 xl:min-h-[840px] xl:py-9"
+          : "min-h-[min(66svh,560px)] border-t py-4 sm:min-h-[640px] sm:py-7 xl:min-h-[790px] xl:py-10"
       }`}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -375,9 +412,12 @@ function FeaturedFlowItem({
       transition={{ duration: 0.5, ease }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
-      <div className={`relative overflow-hidden text-left ${selected ? "min-h-[600px] sm:min-h-[700px] xl:min-h-[780px]" : "min-h-[540px] sm:min-h-[660px] xl:min-h-[710px]"}`}>
+      <div className={`relative overflow-hidden text-left ${selected ? "min-h-[min(68svh,580px)] sm:min-h-[620px] xl:min-h-[780px]" : "min-h-[min(62svh,530px)] sm:min-h-[590px] xl:min-h-[710px]"}`}>
         <div className="absolute inset-x-3 top-3 z-40 flex flex-wrap items-center gap-2 sm:inset-x-5 sm:top-5">
-          <span className="border-y border-neutral-950/14 bg-[#f8f6f0]/76 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm">
+          <span className="border-y border-neutral-950/14 bg-[#f8f6f0]/76 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm xl:hidden">
+            {availabilityStatusLabel}
+          </span>
+          <span className="hidden border-y border-neutral-950/14 bg-[#f8f6f0]/76 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm xl:inline-flex">
             {selected ? "Selected system" : availabilityView.shortLabel}
           </span>
           <span className="border-y border-neutral-950/12 bg-[#f8f6f0]/66 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur-sm">
@@ -388,12 +428,12 @@ function FeaturedFlowItem({
           </span>
         </div>
 
-        <div className="absolute bottom-4 left-3 right-3 z-50 flex flex-wrap gap-2 sm:bottom-5 sm:left-5 sm:right-5">
-          <button type="button" onClick={() => onOpenCase(item)} className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
+        <div className="absolute bottom-5 left-3 right-3 z-50 flex items-center justify-end gap-2 sm:bottom-9 sm:left-5 sm:right-5 xl:bottom-5 xl:justify-start xl:flex-wrap" data-sound-safe-area>
+          <button type="button" onClick={() => onOpenCase(item)} className="inline-flex min-h-10 max-w-full items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-4 text-[10px] uppercase tracking-[0.13em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 sm:px-5 sm:text-[11px] sm:tracking-[0.14em]">
             View case -&gt;
           </button>
           {canRequest ? (
-            <button type="button" onClick={onRequestSystem} className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/72 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white">
+            <button type="button" onClick={onRequestSystem} className="hidden min-h-10 max-w-full items-center justify-center rounded-full border border-neutral-300 bg-white/72 px-4 text-[10px] uppercase tracking-[0.13em] text-neutral-700 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white sm:px-5 sm:text-[11px] sm:tracking-[0.14em] xl:inline-flex">
               {availabilityView.primaryCta} -&gt;
             </button>
           ) : null}
@@ -412,10 +452,10 @@ function FeaturedFlowItem({
           />
 
           <motion.span
-            className={`absolute top-[7%] overflow-hidden border border-neutral-950/10 bg-neutral-950 shadow-[0_42px_120px_rgba(10,10,10,0.2)] ${
+            className={`absolute overflow-hidden border border-neutral-950/10 bg-neutral-950 shadow-[0_42px_120px_rgba(10,10,10,0.2)] ${
               selected
-                ? `h-[62%] w-[88%] sm:top-[10%] sm:h-[66%] sm:w-[76%] ${alignRight ? "right-[5%] sm:right-[6%]" : "left-[5%] sm:left-[6%]"}`
-                : `h-[55%] w-[80%] sm:top-[13%] sm:h-[60%] sm:w-[68%] ${alignRight ? "right-[5%] sm:right-[8%]" : "left-[5%] sm:left-[8%]"}`
+                ? `top-[5.1rem] h-[42%] w-[88%] sm:top-[5.5rem] sm:h-[48%] sm:w-[82%] xl:top-[10%] xl:h-[66%] xl:w-[76%] ${alignRight ? "right-[4%] xl:right-[6%]" : "left-[4%] xl:left-[6%]"}`
+                : `top-[5.1rem] h-[40%] w-[86%] sm:top-[5.5rem] sm:h-[46%] sm:w-[80%] xl:top-[13%] xl:h-[60%] xl:w-[68%] ${alignRight ? "right-[4%] xl:right-[8%]" : "left-[4%] xl:left-[8%]"}`
             }`}
             style={reducedMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, rotate: imageRotate }}
           >
@@ -433,7 +473,7 @@ function FeaturedFlowItem({
             return (
               <motion.span
                 key={`${item.slug}-${visual}-${visualIndex}`}
-                className={`absolute ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
+                className={`absolute ${visualIndex === 2 ? "hidden sm:block" : ""} ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
                 style={reducedMotion ? undefined : { x: motionStyle.x, y: motionStyle.y, scale: motionStyle.scale, rotate: fragmentRotations[visualIndex] ?? 0 }}
               >
                 <img src={visual} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(item)}`} />
@@ -443,15 +483,19 @@ function FeaturedFlowItem({
           })}
 
           <motion.span
-            className={`absolute z-30 ${alignRight ? "left-[4%] text-left" : "right-[4%] text-right"} ${selected ? "bottom-[7%] max-w-[38rem]" : "bottom-[8%] max-w-[27rem]"}`}
+            className={`absolute bottom-[5.75rem] left-[4%] right-[4%] z-30 max-w-[calc(100%-2rem)] text-left sm:bottom-[6.9rem] ${
+              alignRight
+                ? "xl:left-[4%] xl:right-auto xl:text-left"
+                : "xl:left-auto xl:right-[4%] xl:text-right"
+            } ${selected ? "xl:bottom-[7%] xl:max-w-[38rem]" : "xl:bottom-[8%] xl:max-w-[27rem]"}`}
             style={reducedMotion ? undefined : { x: copyX, y: copyY }}
           >
             <span aria-hidden="true" className="absolute -inset-x-4 -inset-y-3 -z-10 bg-[radial-gradient(circle_at_center,rgba(248,246,240,0.9),rgba(248,246,240,0.58)_44%,transparent_72%)] blur-sm" />
             <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">{item.evidence.workType}</span>
-            <span className={`mt-3 block font-normal leading-[0.88] tracking-[-0.055em] text-neutral-950 ${selected ? "text-[50px] sm:text-[82px] lg:text-[98px]" : "text-[38px] sm:text-[56px] lg:text-[64px]"}`}>
+            <span className={`mt-2 block font-normal leading-[0.9] tracking-[-0.04em] text-neutral-950 sm:mt-3 sm:tracking-[-0.055em] ${selected ? "text-[50px] sm:text-[62px] xl:text-[98px]" : "text-[42px] sm:text-[54px] xl:text-[64px]"}`}>
               {item.title}
             </span>
-            <span className="mt-4 block max-w-[27rem] text-[13px] leading-6 text-neutral-500">
+            <span className="mt-3 block max-h-10 max-w-[27rem] overflow-hidden text-[12px] leading-5 text-neutral-500 sm:mt-4 sm:max-h-none sm:text-[13px] sm:leading-6">
               {item.evidence.proofLabel}
             </span>
           </motion.span>
@@ -527,9 +571,75 @@ function WorkIndexTransformList({
   onFocusCase: (slug: string) => void;
 }) {
   return (
+    <>
+      <motion.div
+        key="work-index-compact-list"
+        className="relative overflow-hidden border-y border-neutral-950/14 bg-white/20 pb-3 backdrop-blur-sm xl:hidden"
+        data-sound-safe-area
+        initial={{ opacity: 0, y: 24, filter: "blur(8px)", clipPath: "inset(0 0 100% 0)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0 0 0% 0)" }}
+        exit={{ opacity: 0, y: -18, filter: "blur(7px)", clipPath: "inset(0 0 100% 0)" }}
+        transition={{ duration: 0.62, ease }}
+      >
+        <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:64px_64px]" />
+        <div className="relative grid min-h-10 grid-cols-[1fr_auto] items-center gap-3 border-b border-neutral-950/10 px-3">
+          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400">Evidence index / compact scan</div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-300">{String(items.length).padStart(2, "0")}</div>
+        </div>
+
+        <div className="relative">
+          {items.map((item, index) => {
+            const availability = getAvailableSystem(item.slug);
+            const availabilityView = getAvailabilityView(availability);
+
+            return (
+              <motion.article
+                key={item.slug}
+                data-work-index-row
+                className="group grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-3 border-b border-neutral-950/10 px-3 py-3 last:border-b-0"
+                initial={{ opacity: 0, y: 14, filter: "blur(5px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.44, delay: index * 0.035, ease }}
+                onMouseEnter={() => onFocusCase(item.slug)}
+                onFocus={() => onFocusCase(item.slug)}
+              >
+                <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-300">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onOpenCase(item)}
+                  className="min-w-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+                >
+                  <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[8px] uppercase tracking-[0.13em] text-neutral-400">
+                    <span className="truncate">{item.evidence.workType}</span>
+                    <span className="text-neutral-300">/</span>
+                    <span className={availabilityView.tone}>{availabilityView.shortLabel}</span>
+                  </div>
+                  <div className="mt-1 truncate text-[24px] font-normal leading-none tracking-[-0.04em] text-neutral-950 sm:text-[30px]">
+                    {item.title}
+                  </div>
+                  <p className="mt-1 truncate text-[12px] leading-5 text-neutral-500 sm:text-[13px]">
+                    Proof: {item.evidence.proofLabel}
+                  </p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenCase(item)}
+                  className="inline-flex min-h-9 items-center rounded-full border border-neutral-950 bg-neutral-950 px-3 font-mono text-[9px] uppercase tracking-[0.12em] text-white transition group-hover:-translate-y-0.5 group-hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+                  aria-label={`Open ${item.title}`}
+                >
+                  Open -&gt;
+                </button>
+              </motion.article>
+            );
+          })}
+        </div>
+      </motion.div>
+
     <motion.div
       key="work-index-transform-list"
-      className="relative overflow-hidden border-y border-neutral-950/14 bg-white/18 backdrop-blur-sm"
+      className="relative hidden overflow-hidden border-y border-neutral-950/14 bg-white/18 backdrop-blur-sm xl:block"
       initial={{ opacity: 0, y: 34, filter: "blur(10px)", clipPath: "inset(0 0 100% 0)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0 0 0% 0)" }}
       exit={{ opacity: 0, y: -24, filter: "blur(8px)", clipPath: "inset(0 0 100% 0)" }}
@@ -641,6 +751,7 @@ function WorkIndexTransformList({
         })}
       </div>
     </motion.div>
+    </>
   );
 }
 
@@ -685,6 +796,12 @@ export default function EvidenceAtlas({
     () => filteredCases.filter((item) => item.slug !== selectedFeaturedCase?.slug),
     [filteredCases, selectedFeaturedCase?.slug],
   );
+  const mobileSupportingFeaturedCases = useMemo(() => {
+    const priority = new Map<string, number>(mobileFieldSystemSlugs.map((slug, index) => [slug, index]));
+    return supportingFeaturedCases
+      .filter((item) => priority.has(item.slug))
+      .sort((a, b) => (priority.get(a.slug) ?? 0) - (priority.get(b.slug) ?? 0));
+  }, [supportingFeaturedCases]);
 
   const filteredSupportingFeaturedCases = useMemo(() => {
     const cases = supportingFeaturedCases.filter((item) => item.slug !== selectedFeaturedCase?.slug);
@@ -692,12 +809,26 @@ export default function EvidenceAtlas({
     if (activeFilter === "Available Systems") return cases.filter((item) => isAvailableSystem(item.slug));
     return cases.filter((item) => item.evidence.filters.includes(activeFilter));
   }, [activeFilter, selectedFeaturedCase?.slug, supportingFeaturedCases]);
+  const filteredMobileSupportingFeaturedCases = useMemo(() => {
+    if (activeFilter === "All") return mobileSupportingFeaturedCases;
+    if (activeFilter === "Available Systems") return mobileSupportingFeaturedCases.filter((item) => isAvailableSystem(item.slug));
+    return mobileSupportingFeaturedCases.filter((item) => item.evidence.filters.includes(activeFilter));
+  }, [activeFilter, mobileSupportingFeaturedCases]);
+  const fieldVisibleCount = (selectedFeaturedCase ? 1 : 0) + filteredMobileSupportingFeaturedCases.length;
 
   const filteredExpandedCases = useMemo(() => {
     if (activeFilter === "All") return expandedFeaturedCases;
     if (activeFilter === "Available Systems") return expandedFeaturedCases.filter((item) => isAvailableSystem(item.slug));
     return expandedFeaturedCases.filter((item) => item.evidence.filters.includes(activeFilter));
   }, [activeFilter, expandedFeaturedCases]);
+  const filteredMobileExtendedCases = useMemo(() => {
+    const visibleSlugs = new Set([
+      selectedFeaturedCase?.slug,
+      ...filteredMobileSupportingFeaturedCases.map((item) => item.slug),
+    ].filter(Boolean));
+    const remainingFeatured = filteredSupportingFeaturedCases.filter((item) => !visibleSlugs.has(item.slug));
+    return [...remainingFeatured, ...filteredExpandedCases];
+  }, [filteredExpandedCases, filteredMobileSupportingFeaturedCases, filteredSupportingFeaturedCases, selectedFeaturedCase?.slug]);
 
   const filteredSupportingFeaturedColumns = useMemo(
     () => ({
@@ -774,8 +905,9 @@ export default function EvidenceAtlas({
     if (!archiveExpanded) return;
 
     const collapseWhenReturning = () => {
-      const expandedTop = expandedArchiveRef.current?.offsetTop;
-      if (!expandedTop) return;
+      const expandedElement = expandedArchiveRef.current;
+      if (!expandedElement) return;
+      const expandedTop = expandedElement.getBoundingClientRect().top + window.scrollY;
       if (window.scrollY >= expandedTop - window.innerHeight * 0.35) {
         expandedArchiveSeenRef.current = true;
       }
@@ -788,17 +920,43 @@ export default function EvidenceAtlas({
     return () => window.removeEventListener("scroll", collapseWhenReturning);
   }, [archiveExpanded]);
 
+  useEffect(() => {
+    if (!archiveExpanded) return;
+
+    const scrollToExpandedArchive = () => {
+      const expandedElement = expandedArchiveRef.current;
+      if (!expandedElement) return;
+
+      const headerOffset = window.matchMedia("(max-width: 1279px)").matches ? 18 : 108;
+      const top = expandedElement.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
+    };
+
+    const firstFrame = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(scrollToExpandedArchive);
+    });
+    const afterLayout = window.setTimeout(scrollToExpandedArchive, 360);
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.clearTimeout(afterLayout);
+    };
+  }, [archiveExpanded]);
+
   const expandArchive = () => {
     playRole("transition");
     expandedArchiveSeenRef.current = false;
     setArchiveExpanded(true);
-    window.setTimeout(() => {
-      expandedArchiveRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
   };
 
   const heroFragments = featuredCases.slice(0, 6);
   const focusedHeroCase = heroFragments.find((item) => item.slug === focusedHeroSlug) ?? null;
+  const activeHeroCase = heroFragments.find((item) => item.slug === activeCase.slug) ?? heroFragments[0] ?? activeCase;
+  const activeHeroIndex = Math.max(0, heroFragments.findIndex((item) => item.slug === activeHeroCase.slug));
 
   const focusHeroCase = (item: EvidenceCase) => {
     playRole("transition");
@@ -826,31 +984,31 @@ export default function EvidenceAtlas({
         <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
 
         <main className="relative pt-24" style={surfaceStyle}>
-          <section id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] py-10 lg:py-12">
-            <div className="grid min-h-[calc(100vh-10rem)] gap-10 border-y border-neutral-950/14 py-10 xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
+          <section id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
+            <div className="grid gap-8 border-y border-neutral-950/14 py-7 sm:gap-10 sm:py-10 lg:min-h-[calc(100vh-10rem)] xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
               <div className="min-w-0">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
-                <h1 className="mt-6 max-w-[10.5ch] text-[52px] font-normal leading-[0.9] tracking-[-0.06em] text-neutral-950 sm:text-[92px] xl:text-[124px]">
+                <h1 className="mt-6 max-w-[10.5ch] text-[50px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[92px] sm:leading-[0.9] sm:tracking-[-0.06em] xl:text-[124px]">
                   Selected work, built as interface systems.
                 </h1>
-                <p className="mt-8 max-w-[44rem] text-[17px] leading-8 text-neutral-600">
+                <p className="mt-7 max-w-[44rem] text-[15px] leading-7 text-neutral-600 sm:mt-8 sm:text-[17px] sm:leading-8">
                   A curated atlas of premium websites, product systems, tools, multilingual surfaces, and immersive
                   interface experiments, presented as visual systems, available foundations, and proof layers.
                 </p>
-                <div className="mt-10 flex flex-wrap gap-3">
+                <div className="mt-8 flex flex-wrap gap-3 sm:mt-10" data-sound-safe-area>
                   <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800" href="#evidence-featured">
                     Explore featured systems -&gt;
                   </a>
                   <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white" href="#work-lens">
                     View archive lens -&gt;
                   </a>
-                  <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white" href="#work-lens">
+                  <a className="hidden min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white sm:inline-flex" href="#work-lens">
                     Switch archive view -&gt;
                   </a>
                 </div>
               </div>
 
-              <div className="relative min-h-[560px] overflow-hidden border border-neutral-950/10 bg-[#f8f6f0]/52 shadow-[0_24px_90px_rgba(10,10,10,0.08)] backdrop-blur-sm sm:min-h-[660px] xl:-ml-14 xl:mr-8 xl:w-[calc(100%+3.5rem)] 2xl:-ml-20 2xl:mr-0 2xl:w-[calc(100%+5rem)]">
+              <div className="relative min-h-[420px] overflow-hidden border border-neutral-950/10 bg-[#f8f6f0]/52 shadow-[0_24px_90px_rgba(10,10,10,0.08)] backdrop-blur-sm sm:min-h-[560px] xl:-ml-14 xl:mr-8 xl:min-h-[660px] xl:w-[calc(100%+3.5rem)] 2xl:-ml-20 2xl:mr-0 2xl:w-[calc(100%+5rem)]">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,var(--evidence-glow),transparent_38%),linear-gradient(135deg,var(--evidence-wash),transparent_58%)] opacity-70" />
                 <div className="pointer-events-none absolute inset-0 opacity-[0.055] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:64px_64px]" />
                 <div className="relative grid min-h-12 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/12 px-4">
@@ -858,7 +1016,7 @@ export default function EvidenceAtlas({
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(heroFragments.length).padStart(2, "0")} systems</div>
                 </div>
 
-                <div className="relative h-[calc(100%-3rem)] min-h-[510px] sm:min-h-[610px]">
+                <div className="relative min-h-[430px] sm:min-h-[520px] xl:h-[calc(100%-3rem)] xl:min-h-[610px]">
                   <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-45" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                     <path d="M 7 70 C 28 28, 55 74, 92 22" fill="none" stroke="rgba(15,15,15,0.18)" strokeWidth="0.12" strokeDasharray="1.2 1.8" />
                     <path d="M 16 20 C 33 46, 58 34, 86 72" fill="none" stroke="rgba(15,15,15,0.12)" strokeWidth="0.1" strokeDasharray="0.8 2.2" />
@@ -892,8 +1050,11 @@ export default function EvidenceAtlas({
                         aria-label={`Open ${item.title}`}
                       >
                         <img src={getPreviewFrame(item)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04] ${getCoverImageTreatment(item, "hero")}`} />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.28))]" />
-                        <div className="absolute inset-x-3 bottom-3">
+                        <div className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.28))] xl:block" />
+                        <div className="absolute left-2 top-2 border-y border-neutral-950/10 bg-[#f8f6f0]/78 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-600 backdrop-blur-sm xl:hidden">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <div className="absolute inset-x-3 bottom-3 hidden xl:block">
                           <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/62">{String(index + 1).padStart(2, "0")} / {getAvailableSystem(item.slug).shortLabel}</div>
                           <div className="mt-1 truncate text-[20px] leading-none tracking-[-0.04em] text-white sm:text-[28px]">{item.title}</div>
                         </div>
@@ -920,28 +1081,89 @@ export default function EvidenceAtlas({
                           }}
                         />
 
+                        <div
+                          className="absolute inset-0 z-10 grid grid-rows-[minmax(0,1fr)_auto] gap-3 p-4 xl:hidden"
+                          onClick={() => {
+                            playRole("close");
+                            setFocusedHeroSlug(null);
+                          }}
+                        >
+                          <button
+                            type="button"
+                            aria-label="Close focused work preview"
+                            className="absolute right-4 top-4 z-20 rounded-full border border-neutral-950/10 bg-[#f8f6f0]/90 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-600 shadow-[0_12px_34px_rgba(10,10,10,0.1)] backdrop-blur-md transition hover:border-neutral-950 hover:text-neutral-950"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              playRole("close");
+                              setFocusedHeroSlug(null);
+                            }}
+                          >
+                            Close -&gt;
+                          </button>
+                          <motion.button
+                            type="button"
+                            onClick={(event) => event.stopPropagation()}
+                            onDoubleClick={() => openCase(focusedHeroCase)}
+                            className="relative min-h-0 overflow-hidden border border-neutral-950/18 bg-neutral-950 text-left shadow-[0_36px_110px_rgba(10,10,10,0.22)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+                            initial={{ opacity: 0, scale: 0.84, y: 22, filter: "blur(8px)" }}
+                            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+                            exit={{ opacity: 0, scale: 0.92, y: 14, filter: "blur(7px)" }}
+                            transition={{ duration: 0.62, ease }}
+                          >
+                            <img src={getPreviewFrame(focusedHeroCase)} alt="" className={`absolute inset-0 h-full w-full object-contain object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`} />
+                          </motion.button>
+
+                          <motion.div
+                            className="relative border-y border-neutral-950/12 bg-[#f8f6f0]/90 px-4 py-3 backdrop-blur-md"
+                            onClick={(event) => event.stopPropagation()}
+                            initial={{ opacity: 0, y: 16, clipPath: "inset(0 100% 0 0)" }}
+                            animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
+                            exit={{ opacity: 0, y: 10, clipPath: "inset(0 100% 0 0)" }}
+                            transition={{ duration: 0.62, delay: 0.14, ease }}
+                          >
+                            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">Terminal signal</div>
+                            <div className="mt-2 text-[24px] leading-none tracking-[-0.04em] text-neutral-950">
+                              {focusedHeroCase.title}
+                            </div>
+                            <p className="mt-2 max-h-10 overflow-hidden font-mono text-[9px] uppercase leading-5 tracking-[0.12em] text-neutral-600">
+                              {focusedHeroCase.evidence.proofLabel} / {focusedHeroCase.evidence.capability}
+                            </p>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              <button type="button" onClick={() => moveFocusedHero(-1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
+                                Prev
+                              </button>
+                              <button type="button" onClick={() => moveFocusedHero(1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
+                                Next
+                              </button>
+                              <button type="button" onClick={() => openCase(focusedHeroCase)} className="rounded-full border border-neutral-950 bg-neutral-950 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
+                                Open case -&gt;
+                              </button>
+                            </div>
+                          </motion.div>
+                        </div>
+
                         <motion.button
                           type="button"
                           onClick={(event) => event.stopPropagation()}
                           onDoubleClick={() => openCase(focusedHeroCase)}
-                          className="absolute left-1/2 top-[43%] h-[52%] w-[82%] -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-neutral-950/18 bg-neutral-950 text-left shadow-[0_52px_150px_rgba(10,10,10,0.24)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:w-[76%]"
+                          className="absolute left-1/2 top-[43%] hidden h-[52%] w-[76%] -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-neutral-950/18 bg-neutral-950 text-left shadow-[0_52px_150px_rgba(10,10,10,0.24)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 xl:block"
                           initial={{ opacity: 0, scale: 0.74, y: 58, rotate: -1.8, filter: "blur(8px)" }}
                           animate={{ opacity: 1, scale: 1, y: 0, rotate: 0, filter: "blur(0px)" }}
                           exit={{ opacity: 0, scale: 0.86, y: 24, rotate: 1.2, filter: "blur(7px)" }}
                           transition={{ duration: 0.72, ease }}
                         >
                           <img src={getPreviewFrame(focusedHeroCase)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`} />
-                          <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.3))]" />
-                          <span className="absolute left-5 top-5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/62">
+                          <span className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.3))] xl:block" />
+                          <span className="absolute left-5 top-5 hidden font-mono text-[10px] uppercase tracking-[0.18em] text-white/62 xl:block">
                             Focused system / double click enters
                           </span>
-                          <span className="absolute bottom-5 left-5 max-w-[13ch] text-[42px] leading-[0.88] tracking-[-0.055em] text-white drop-shadow-[0_8px_34px_rgba(0,0,0,0.42)] sm:text-[64px]">
+                          <span className="absolute bottom-5 left-5 hidden max-w-[13ch] text-[42px] leading-[0.88] tracking-[-0.055em] text-white drop-shadow-[0_8px_34px_rgba(0,0,0,0.42)] sm:text-[64px] xl:block">
                             {focusedHeroCase.title}
                           </span>
                         </motion.button>
 
                         <motion.div
-                          className="absolute bottom-4 left-4 right-4 z-10 border-y border-neutral-950/12 bg-[#f8f6f0]/82 px-4 py-3 backdrop-blur-md"
+                          className="absolute bottom-4 left-4 right-4 z-10 hidden border-y border-neutral-950/12 bg-[#f8f6f0]/88 px-4 py-3 backdrop-blur-md xl:block"
                           initial={{ opacity: 0, y: 18, clipPath: "inset(0 100% 0 0)" }}
                           animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
                           exit={{ opacity: 0, y: 10, clipPath: "inset(0 100% 0 0)" }}
@@ -950,6 +1172,9 @@ export default function EvidenceAtlas({
                           <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
                             <div>
                               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">Terminal signal</div>
+                              <div className="mt-2 text-[24px] leading-none tracking-[-0.04em] text-neutral-950 xl:hidden">
+                                {focusedHeroCase.title}
+                              </div>
                               <p className="mt-2 max-w-[42rem] font-mono text-[10px] uppercase leading-5 tracking-[0.12em] text-neutral-600">
                                 {focusedHeroCase.evidence.proofLabel} / {focusedHeroCase.evidence.capability}
                               </p>
@@ -975,6 +1200,16 @@ export default function EvidenceAtlas({
                     Desire / systems / availability / proof
                   </div>
                 </div>
+                {!focusedHeroCase ? (
+                  <div className="relative border-t border-neutral-950/10 bg-[#f8f6f0]/70 px-4 py-3 xl:hidden">
+                    <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.16em] text-neutral-400">
+                      Selected signal / {String(activeHeroIndex + 1).padStart(2, "0")} / {getAvailableSystem(activeHeroCase.slug).shortLabel}
+                    </div>
+                    <div className="mt-1 truncate text-[24px] leading-none tracking-[-0.04em] text-neutral-950">
+                      {activeHeroCase.title}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           </section>
@@ -1007,22 +1242,31 @@ export default function EvidenceAtlas({
                   </div>
                 ) : null}
 
-                <div id="work-lens" className="mt-6 overflow-hidden border-y border-neutral-950/12 bg-white/22 backdrop-blur-sm">
-                  <div className="grid gap-3 border-b border-neutral-950/10 px-3 py-2 sm:grid-cols-[1fr_auto] sm:items-center">
+                <div id="work-lens" className="mt-5 overflow-hidden border-y border-neutral-950/12 bg-white/22 backdrop-blur-sm sm:mt-6">
+                  <div className="grid gap-2 border-b border-neutral-950/10 px-3 py-2 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-3">
                     <div>
                       <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Archive lens / compact filters</div>
-                      <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-300">{String(archiveVisibleCases.length).padStart(2, "0")} below flagship / {archiveViewMode === "field" ? "spatial field" : "visual index"}</div>
+                      <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-300">
+                        {archiveViewMode === "field"
+                          ? `${String(fieldVisibleCount).padStart(2, "0")} featured systems / visual field`
+                          : `${String(archiveVisibleCases.length).padStart(2, "0")} archive rows / visual index`}
+                      </div>
                     </div>
                     <ArchiveViewToggle mode={archiveViewMode} onChange={changeArchiveViewMode} />
                   </div>
-                  <div className="grid gap-3 p-2 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-stretch">
-                    <div className="grid grid-flow-col auto-cols-[minmax(9.5rem,auto)] gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:grid-flow-row sm:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:pb-0 [&::-webkit-scrollbar]:hidden">
+                  <div className="grid gap-2 p-2 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-stretch">
+                    <div className="grid grid-flow-col auto-cols-[minmax(8rem,auto)] gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:grid-flow-row sm:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:pb-0 xl:hidden [&::-webkit-scrollbar]:hidden">
+                      {mobileEvidenceFilters.map((filter) => (
+                        <FilterButton key={filter} filter={filter} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
+                      ))}
+                    </div>
+                    <div className="hidden gap-2 xl:grid xl:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))]">
                       {evidenceFilters.map((filter) => (
                         <FilterButton key={filter} filter={filter} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
                       ))}
                     </div>
-                    <div className="border-y border-neutral-950/10 bg-[#f8f6f0]/62 px-3 py-3 font-mono text-[9px] uppercase leading-5 tracking-[0.15em] text-neutral-400">
-                      Availability lives on the case objects. Adaptation details stay inside each full case.
+                    <div className="border-y border-neutral-950/10 bg-[#f8f6f0]/62 px-3 py-2 font-mono text-[8px] uppercase leading-4 tracking-[0.13em] text-neutral-400 sm:py-3 sm:text-[9px] sm:leading-5 sm:tracking-[0.15em]">
+                      Availability and adaptation details live inside each case.
                     </div>
                   </div>
                 </div>
@@ -1049,8 +1293,21 @@ export default function EvidenceAtlas({
                   >
               <div className="relative overflow-hidden border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm">
                 <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
-                <div className="relative mx-auto grid max-w-[1480px] gap-16 md:grid-cols-2 md:gap-x-24 lg:gap-x-32">
-                  <div className="grid gap-16 md:gap-36 lg:gap-44">
+                <div className="relative mx-auto grid max-w-[1480px] gap-10 xl:hidden">
+                  {filteredMobileSupportingFeaturedCases.map((item, index) => (
+                    <div key={item.slug} className="relative">
+                      <FeaturedFlowItem
+                        item={item}
+                        index={index + 1}
+                        onOpenCase={openCase}
+                        onRequestSystem={requestSystem}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="relative mx-auto hidden max-w-[1480px] gap-16 lg:gap-x-32 xl:grid xl:grid-cols-2">
+                  <div className="grid gap-16 lg:gap-44">
                     {filteredSupportingFeaturedColumns.left.map((item, index) => (
                       <div key={item.slug} className="relative">
                         <FeaturedFlowItem
@@ -1063,7 +1320,7 @@ export default function EvidenceAtlas({
                     ))}
                   </div>
 
-                  <div className="grid gap-16 md:gap-36 md:pt-44 lg:gap-44 lg:pt-56">
+                  <div className="grid gap-16 lg:gap-44 lg:pt-56">
                     {filteredSupportingFeaturedColumns.right.map((item, index) => (
                       <div key={item.slug} className="relative">
                         <FeaturedFlowItem
@@ -1077,23 +1334,25 @@ export default function EvidenceAtlas({
                   </div>
                 </div>
 
-                <div className="relative mx-auto grid max-w-[1480px] gap-6 border-t border-neutral-950/10 px-4 py-8 md:grid-cols-2 md:py-10">
-                  <div className="hidden md:block" />
-                  <div className="max-w-[28rem] md:justify-self-end">
+                <div className="relative mx-auto grid max-w-[1480px] gap-4 border-t border-neutral-950/10 px-4 py-6 sm:py-8 lg:grid-cols-2 lg:py-10">
+                  <div className="hidden lg:block" />
+                  <div className="max-w-[28rem] lg:justify-self-end" data-sound-safe-area>
                     <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
-                      Extended field / {String(filteredExpandedCases.length).padStart(2, "0")} more case objects
+                      <span className="xl:hidden">More cases / {String(filteredMobileExtendedCases.length).padStart(2, "0")} objects</span>
+                      <span className="hidden xl:inline">Extended field / {String(filteredExpandedCases.length).padStart(2, "0")} more case objects</span>
                     </div>
-                    <p className="mt-3 text-[14px] leading-7 text-neutral-600">
+                    <p className="mt-3 hidden text-[14px] leading-7 text-neutral-600 xl:block">
                       When the archive grows, this surface can unfold more systems without turning the page into a heavy
                       catalogue.
                     </p>
                     <button
                       type="button"
                       onClick={expandArchive}
-                      disabled={filteredExpandedCases.length === 0}
-                      className="mt-5 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 disabled:pointer-events-none disabled:border-neutral-300 disabled:bg-white/50 disabled:text-neutral-300"
+                      disabled={filteredMobileExtendedCases.length === 0 && filteredExpandedCases.length === 0}
+                      className="mt-4 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 disabled:pointer-events-none disabled:border-neutral-300 disabled:bg-white/50 disabled:text-neutral-300 xl:mt-5"
                     >
-                      Open extended field -&gt;
+                      <span className="xl:hidden">More cases -&gt;</span>
+                      <span className="hidden xl:inline">Open extended field -&gt;</span>
                     </button>
                   </div>
                 </div>
@@ -1109,7 +1368,7 @@ export default function EvidenceAtlas({
                       exit={{ opacity: 0, height: 0, y: 18 }}
                       transition={{ duration: 0.72, ease }}
                     >
-                      <div className="mx-auto mb-10 grid max-w-[1480px] gap-3 px-4 md:grid-cols-[1fr_auto] md:items-center">
+                      <div className="mx-auto mb-10 grid max-w-[1480px] gap-3 px-4 lg:grid-cols-[1fr_auto] lg:items-center">
                         <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
                           Expanded archive field / filtered by {activeFilter}
                         </div>
@@ -1119,14 +1378,27 @@ export default function EvidenceAtlas({
                             playRole("close");
                             setArchiveExpanded(false);
                           }}
-                          className="justify-self-start border-y border-neutral-950/14 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950 md:justify-self-end"
+                          className="justify-self-start border-y border-neutral-950/14 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950 lg:justify-self-end"
                         >
-                          Close field -&gt;
+                          <span className="xl:hidden">Close -&gt;</span>
+                          <span className="hidden xl:inline">Close field -&gt;</span>
                         </button>
                       </div>
 
-                      <div className="relative mx-auto grid max-w-[1480px] gap-16 md:grid-cols-2 md:gap-x-24 lg:gap-x-32">
-                        <div className="grid gap-16 md:gap-36 lg:gap-44">
+                      <div className="relative mx-auto grid max-w-[1480px] gap-10 xl:hidden">
+                        {filteredMobileExtendedCases.map((item, index) => (
+                          <FeaturedFlowItem
+                            key={item.slug}
+                            item={item}
+                            index={featuredCases.length + index}
+                            onOpenCase={openCase}
+                            onRequestSystem={requestSystem}
+                          />
+                        ))}
+                      </div>
+
+                      <div className="relative mx-auto hidden max-w-[1480px] gap-16 lg:grid-cols-2 lg:gap-x-32 xl:grid">
+                        <div className="grid gap-16 lg:gap-44">
                           {expandedFeaturedColumns.left.map((item, index) => (
                             <FeaturedFlowItem
                               key={item.slug}
@@ -1138,7 +1410,7 @@ export default function EvidenceAtlas({
                           ))}
                         </div>
 
-                        <div className="grid gap-16 md:gap-36 md:pt-36 lg:gap-44 lg:pt-48">
+                        <div className="grid gap-16 lg:gap-44 lg:pt-48">
                           {expandedFeaturedColumns.right.map((item, index) => (
                             <FeaturedFlowItem
                               key={item.slug}
@@ -1160,9 +1432,27 @@ export default function EvidenceAtlas({
             </div>
           </section>
 
-          <section id="evidence-capability" data-header-scene="evidence-capability" className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
+          <section id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
             <SectionIntro label="Capability Layer" title="What the archive proves." />
-            <div className="grid gap-0 border-y border-neutral-950/14 md:grid-cols-2 xl:grid-cols-3">
+            <div className="border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm xl:hidden">
+              {capabilityProofMatrix.map((capability) => (
+                <div key={capability.index} data-capability-proof-row className="grid grid-cols-[2.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 px-3 py-5 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] sm:px-5 sm:py-6">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{capability.index}</div>
+                  <div>
+                    <div className="text-[26px] font-normal leading-none tracking-[-0.04em] text-neutral-950 sm:text-[34px]">
+                      {capability.label}
+                    </div>
+                    <p className="mt-3 font-mono text-[9px] uppercase leading-5 tracking-[0.13em] text-neutral-500 sm:text-[10px] sm:leading-6 sm:tracking-[0.15em]">
+                      {capability.summary}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              <p className="border-t border-neutral-950/10 px-3 py-4 text-[13px] leading-6 text-neutral-600 sm:px-5 sm:text-[14px] sm:leading-7">
+                The archive shows how visual systems become commercial surfaces, tools, multilingual products, and adaptable foundations.
+              </p>
+            </div>
+            <div className="hidden gap-0 border-y border-neutral-950/14 xl:grid xl:grid-cols-3">
               {capabilityLayer.map((capability, index) => (
                 <div key={capability.label} className="border-b border-neutral-950/10 p-6 md:border-r md:even:border-r-0 xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-child(even)]:border-r">
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(index + 1).padStart(2, "0")}</div>

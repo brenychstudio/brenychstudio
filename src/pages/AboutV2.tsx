@@ -83,6 +83,21 @@ const technicalLedger = [
   ["Documentation / handoff", "Clear notes and reusable logic so the system remains understandable."],
 ];
 
+const mobileMethodLedger = [
+  ["01", "Signal", "Define what must be communicated."],
+  ["02", "Structure", "Organize route, content, hierarchy, and interaction logic."],
+  ["03", "Atmosphere", "Shape visual climate, motion rhythm, media behavior, and tone."],
+  ["04", "Interface", "Build the responsive surface with clear interaction states."],
+  ["05", "Memory", "Leave proof, continuity, reusable logic, and project trace."],
+];
+
+const mobileTechnicalLedger = [
+  ["01", "Front-end architecture", "Reusable structure that can carry content, motion, routes, and future growth."],
+  ["02", "Motion system", "Staged transitions and reveals that mark behavior instead of decorating it."],
+  ["03", "Responsive + accessibility", "Readable layouts, controls, contrast, and states across real viewports."],
+  ["04", "Production QA", "Build checks, route sanity, deployment readiness, and handoff clarity."],
+];
+
 const principles = [
   "Motion is not decoration. It marks state.",
   "Media is not filler. It acts as proof.",
@@ -252,6 +267,222 @@ function MethodSignalSpine() {
   );
 }
 
+function useDesktopAboutLayout() {
+  const [desktopLayout, setDesktopLayout] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.matchMedia("(min-width: 1024px)").matches;
+  });
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setDesktopLayout(query.matches);
+
+    update();
+    query.addEventListener("change", update);
+
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return desktopLayout;
+}
+
+function MobileAboutHero({
+  onOpenProject,
+  onViewWork,
+  onExploreImmersive,
+}: {
+  onOpenProject: () => void;
+  onViewWork: () => void;
+  onExploreImmersive: () => void;
+}) {
+  return (
+    <section
+      id="about-threshold"
+      data-header-scene="about-threshold"
+      data-sound-safe-area
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-y border-neutral-950/12 px-[var(--mobile-page-x)] pb-9 pt-8"
+    >
+      <SectionLabel>01 / Studio position</SectionLabel>
+      <h1 className="mt-7 max-w-[10ch] text-[58px] font-normal leading-[0.9] tracking-[-0.055em] text-neutral-950">
+        I build premium interface systems.
+      </h1>
+      <p className="mt-7 max-w-[21rem] text-[17px] leading-7 text-neutral-600">
+        Websites, product surfaces, multilingual systems, and immersive digital experiences shaped as one coherent
+        interface.
+      </p>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={onViewWork}
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white"
+        >
+          View work -&gt;
+        </button>
+        <button
+          type="button"
+          onClick={onExploreImmersive}
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-300 bg-white/54 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700"
+        >
+          Explore immersive -&gt;
+        </button>
+        <button
+          type="button"
+          onClick={onOpenProject}
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-300 bg-white/24 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700"
+        >
+          Start a project
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function MobileAboutMethod() {
+  return (
+    <section
+      id="about-method"
+      data-header-scene="about-method"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
+    >
+      <SectionLabel>02 / Method</SectionLabel>
+      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+        Structure first. Atmosphere after.
+      </h2>
+      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+        Signal -&gt; structure -&gt; atmosphere -&gt; interface -&gt; memory.
+      </p>
+
+      <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
+        {mobileMethodLedger.map(([index, title, text]) => (
+          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
+            <div>
+              <div className="text-[22px] leading-none text-neutral-950">{title}</div>
+              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileAboutTechnical() {
+  return (
+    <section
+      id="about-technical"
+      data-header-scene="about-technical"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
+    >
+      <SectionLabel>03 / Technical foundation</SectionLabel>
+      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+        The surface has to hold up.
+      </h2>
+      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+        The system has to carry clarity, motion, routes, and launch-ready delivery without collapsing.
+      </p>
+
+      <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
+        {mobileTechnicalLedger.map(([index, title, text]) => (
+          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
+            <div>
+              <div className="max-w-[18rem] text-[16px] uppercase leading-6 tracking-[0.1em] text-neutral-950">{title}</div>
+              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-5 max-w-[21rem] border-b border-neutral-950/10 pb-5 text-[14px] leading-6 text-neutral-500">
+        Multilingual and immersive layers are added only when they strengthen the project.
+      </p>
+    </section>
+  );
+}
+
+function MobileAboutPracticePosition() {
+  return (
+    <section
+      id="about-authorial"
+      data-header-scene="about-closing"
+      data-sound-safe-area
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
+    >
+      <SectionLabel>04 / Practice position</SectionLabel>
+      <h2 className="mt-5 max-w-[11ch] text-[50px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+        Engineering, image, and interface research.
+      </h2>
+      <div className="mt-8 border-l border-neutral-950/24 bg-white/24 py-6 pl-5">
+        <div className="mb-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
+          <span>Human signal / practice position</span>
+        </div>
+        <p className="max-w-[22rem] text-[18px] leading-8 text-neutral-700">
+          My work sits between front-end engineering, visual direction, cinematic media, and experimental interface
+          research. The goal is not decoration, but a system that can hold proof, motion, language, and production
+          quality together.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function MobileAboutPrinciples() {
+  return (
+    <section
+      id="about-principles"
+      data-header-scene="about-principles"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] px-[var(--mobile-page-x)] pb-11 pt-9"
+    >
+      <div className="relative overflow-hidden bg-[rgb(12,12,12)] px-5 py-7 text-white shadow-[0_36px_120px_rgba(0,0,0,0.2)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_48%)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
+        <div className="pointer-events-none absolute -right-[36%] top-[4%] h-[28rem] w-[28rem] rounded-full border border-white/[0.07]" />
+        <div className="relative">
+          <SectionLabel light>05 / Principles</SectionLabel>
+          <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] tracking-[-0.055em]">
+            Calm rules for expressive systems.
+          </h2>
+
+          <div data-sound-safe-area className="mt-7 border-y border-white/14 pb-5">
+            {principles.map((principle, index) => (
+              <div key={principle} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0">
+                <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/34">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/26" />
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                </div>
+                <div className="text-[22px] leading-[1.15] tracking-[-0.025em] text-white/86">{principle}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileAboutLayout({
+  onOpenProject,
+  onViewWork,
+  onExploreImmersive,
+}: {
+  onOpenProject: () => void;
+  onViewWork: () => void;
+  onExploreImmersive: () => void;
+}) {
+  return (
+    <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
+      <MobileAboutHero onOpenProject={onOpenProject} onViewWork={onViewWork} onExploreImmersive={onExploreImmersive} />
+      <MobileAboutMethod />
+      <MobileAboutTechnical />
+      <MobileAboutPracticePosition />
+      <MobileAboutPrinciples />
+    </div>
+  );
+}
+
 export default function AboutV2({
   drawerOpen = false,
   onOpenProject,
@@ -261,6 +492,7 @@ export default function AboutV2({
   const navigate = useNavigate();
   const activeSectionId = useSectionRailActive(aboutRailItems);
   const { playRole, setScene, stopAmbient } = useSound();
+  const desktopLayout = useDesktopAboutLayout();
 
   useEffect(() => {
     setScene("studio");
@@ -293,7 +525,9 @@ export default function AboutV2({
           label="About sections"
         />
 
-        <main className="relative z-10 pt-24">
+        <main className="relative z-10 pt-20 lg:pt-24">
+          {desktopLayout ? (
+            <>
           <section
             id="about-threshold"
             data-header-scene="about-threshold"
@@ -511,7 +745,14 @@ export default function AboutV2({
               </div>
             </div>
           </section>
-
+            </>
+          ) : (
+            <MobileAboutLayout
+              onOpenProject={openProjectWithSound}
+              onViewWork={() => goTo("/work")}
+              onExploreImmersive={() => goTo("/immersive")}
+            />
+          )}
         </main>
 
         <SiteFooterV2 onOpenProject={onOpenProject} variant="studio" />

@@ -212,6 +212,31 @@ const formatGroups = [
   { label: "Secondary directions", note: "Specialized proof, prototype, or direction work.", items: formats.slice(3) },
 ];
 
+type MobileRoute = Format & {
+  routeIndex: string;
+};
+
+const mobileThesisPoints = [
+  ["01", "Strategy", "Offer shape, audience pressure, and proof hierarchy."],
+  ["02", "Interface architecture", "Route, section logic, decisions, and CTA flow."],
+  ["03", "Production delivery", "Responsive front-end, motion states, QA, and handoff."],
+];
+
+const mobileDeliverySpine = [
+  ["01", "Direction", "Commercial thesis locked."],
+  ["02", "Visual system", "Interface language defined."],
+  ["03", "Build", "Responsive front-end assembled."],
+  ["04", "Launch", "QA, handoff, and next-step clarity."],
+];
+
+const mobileReceiveLedger = [
+  ["01", "Front-end surface", "Production-ready responsive interface."],
+  ["02", "Content structure", "Section logic, hierarchy, and route clarity."],
+  ["03", "Mobile / desktop system", "Responsive presentation across key screens."],
+  ["04", "Motion states", "Transitions, reveals, feedback, and interaction states."],
+  ["05", "Launch handoff", "QA pass, metadata basics, and delivery notes."],
+];
+
 const deliverables = [
   "Production-ready front-end",
   "Structured content and section logic",
@@ -219,6 +244,23 @@ const deliverables = [
   "Motion language and interaction states",
   "QA, launch support, and handoff notes",
 ];
+
+const mobileRouteOrder = [
+  "Landing Sprint",
+  "Micro-site",
+  "Product / Founder Demo",
+  "Immersive Prototype",
+  "Available System Adaptation",
+  "Creative Technology Direction",
+];
+
+const mobileRoutes: MobileRoute[] = mobileRouteOrder.map((title, index) => ({
+  ...(formats.find((item) => item.title === title) ?? formats[index] ?? formats[0]),
+  routeIndex: String(index + 1).padStart(2, "0"),
+}));
+
+const mobilePrimaryRoutes = mobileRoutes.slice(0, 3);
+const mobileSecondaryRoutes = mobileRoutes.slice(3);
 
 const offerRailItems: SectionRailItem[] = [
   { index: "01", label: "Threshold", id: "offer-threshold" },
@@ -670,6 +712,298 @@ function DeliveryModelEngine({
   );
 }
 
+function useDesktopOfferLayout() {
+  const [desktopLayout, setDesktopLayout] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.matchMedia("(min-width: 1024px)").matches;
+  });
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setDesktopLayout(query.matches);
+
+    update();
+    query.addEventListener("change", update);
+
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return desktopLayout;
+}
+
+function MobileOfferHero({
+  onOpenProject,
+  onViewWork,
+}: {
+  onOpenProject: () => void;
+  onViewWork: () => void;
+}) {
+  return (
+    <section
+      id="offer-threshold"
+      data-header-scene="practice-threshold"
+      data-sound-safe-area
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-y border-neutral-950/12 px-[var(--mobile-page-x)] pb-9 pt-8"
+    >
+      <SectionLabel>Commercial Threshold / Offer V2</SectionLabel>
+      <h1 className="mt-7 max-w-[11ch] text-[58px] font-normal leading-[0.9] text-neutral-950">
+        Premium interface systems for real projects.
+      </h1>
+      <p className="mt-7 max-w-[21rem] text-[17px] leading-7 text-neutral-600">
+        Premium websites, product surfaces, multilingual systems, and focused prototypes shaped around strategy,
+        proof, motion, and production-ready front-end delivery.
+      </p>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={onOpenProject}
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white"
+        >
+          Start a project -&gt;
+        </button>
+        <button
+          type="button"
+          onClick={onViewWork}
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-300 bg-white/54 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700"
+        >
+          View work -&gt;
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function MobileOfferThesis() {
+  return (
+    <section
+      id="offer-systems"
+      data-header-scene="practice-build"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] py-12"
+    >
+      <SectionLabel>01 / What I build</SectionLabel>
+      <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+        Commercial system surface.
+      </h2>
+      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+        Not generic services. Each format is a commercial interface system with a clear role, audience, and result.
+      </p>
+
+      <div className="mt-8 border-y border-neutral-950/12">
+        {mobileThesisPoints.map(([index, title, text]) => (
+          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
+            <div>
+              <div className="text-[15px] uppercase tracking-[0.1em] text-neutral-950">{title}</div>
+              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileRouteSelector() {
+  const { playRole } = useSound();
+  const [activeRouteIndex, setActiveRouteIndex] = useState(0);
+  const [secondaryOpen, setSecondaryOpen] = useState(false);
+
+  const activateRoute = (index: number) => {
+    if (index !== activeRouteIndex) playRole("select");
+    setActiveRouteIndex(index);
+  };
+
+  const renderRoute = (route: MobileRoute, index: number, secondary = false) => {
+    const isActive = index === activeRouteIndex;
+
+    return (
+      <article
+        key={route.title}
+        className={`border-b border-neutral-950/10 last:border-b-0 ${secondary ? "text-neutral-700" : "text-neutral-950"}`}
+      >
+        <button
+          type="button"
+          aria-expanded={isActive}
+          onMouseEnter={() => playRole("hover")}
+          onClick={() => activateRoute(index)}
+          className={`grid w-full grid-cols-[3.2rem_1fr_auto] items-start gap-3 py-5 text-left transition ${
+            isActive ? "bg-white/56" : "hover:bg-white/30"
+          }`}
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{route.routeIndex}</span>
+          <span className="min-w-0">
+            <span className="block text-[24px] font-normal leading-[1.02] text-neutral-950">{route.title}</span>
+            <span className="mt-3 block max-w-[17.5rem] text-[14px] leading-6 text-neutral-500">{route.description}</span>
+          </span>
+          <span className={`mt-1 h-2 w-2 rounded-full border ${isActive ? "border-neutral-950 bg-neutral-950" : "border-neutral-950/24"}`} />
+        </button>
+
+        {isActive ? (
+          <div data-sound-safe-area className="grid gap-4 border-t border-neutral-950/10 bg-white/42 px-4 py-4">
+            <div className="grid gap-2">
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">Best</div>
+              <p className="max-w-[20rem] text-[14px] leading-6 text-neutral-600">{route.bestFor}</p>
+            </div>
+            <div className="grid gap-2">
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">Output</div>
+              <p className="max-w-[20rem] text-[14px] leading-6 text-neutral-700">{route.output}</p>
+            </div>
+          </div>
+        ) : null}
+      </article>
+    );
+  };
+
+  return (
+    <section
+      id="offer-formats"
+      data-header-scene="practice-formats"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] py-12"
+    >
+      <SectionLabel>02 / Route selector</SectionLabel>
+      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+        Choose the right entry point.
+      </h2>
+      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+        Most projects start from one of these routes. Open only the route that feels closest to the need.
+      </p>
+
+      <div className="mt-8 border-y border-neutral-950/12">
+        {mobilePrimaryRoutes.map((route, index) => renderRoute(route, index))}
+      </div>
+
+      <div className="mt-6 border-y border-neutral-950/10">
+        <button
+          type="button"
+          onMouseEnter={() => playRole("hover")}
+          onClick={() => {
+            playRole("select");
+            setSecondaryOpen((current) => {
+              const next = !current;
+              if (!next && activeRouteIndex > 2) setActiveRouteIndex(0);
+              return next;
+            });
+          }}
+          className="grid min-h-12 w-full grid-cols-[1fr_auto] items-center gap-4 py-4 text-left"
+        >
+          <span className="min-w-0">
+            <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Secondary routes</span>
+            <span className="mt-2 block truncate font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-300">
+              Immersive / Adaptation / Direction
+            </span>
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">
+            {secondaryOpen ? "Hide routes" : "Show 03 ->"}
+          </span>
+        </button>
+
+        {secondaryOpen ? (
+          <div className="border-t border-neutral-950/10">
+            {mobileSecondaryRoutes.map((route, index) => renderRoute(route, index + mobilePrimaryRoutes.length, true))}
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function MobileDeliverySpine() {
+  return (
+    <section
+      id="offer-delivery"
+      data-header-scene="practice-delivery"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] py-12"
+    >
+      <SectionLabel>03 / How the project moves</SectionLabel>
+      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+        Built through clear stages.
+      </h2>
+      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+        The route moves from commercial direction into a visible interface system, then into production and launch.
+      </p>
+
+      <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12 pb-2">
+        {mobileDeliverySpine.map(([index, title, text], itemIndex) => (
+          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
+            <div className="relative font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+              <span className="relative z-10 inline-flex h-5 items-center bg-[#f7f5f0]/80 pr-2">{index}</span>
+              {itemIndex < mobileDeliverySpine.length - 1 ? (
+                <span className="absolute left-[0.2rem] top-5 h-[calc(100%+1rem)] w-px bg-neutral-950/10" aria-hidden="true" />
+              ) : null}
+            </div>
+            <div className="flex min-w-0 items-baseline justify-between gap-4">
+              <div>
+                <div className="text-[22px] leading-none text-neutral-950">{title}</div>
+                <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+              </div>
+              <span className="mt-2 h-2 w-2 shrink-0 rounded-full border border-neutral-950/18" aria-hidden="true" />
+            </div>
+          </div>
+        ))}
+
+        <div className="grid grid-cols-[3.5rem_1fr] gap-4 py-4">
+          <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">Output</div>
+          <div className="max-w-[18rem] text-[15px] leading-6 text-neutral-800">Production-ready commercial interface.</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileOutputLedger() {
+  return (
+    <section
+      id="offer-output"
+      data-header-scene="practice-output"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] px-[var(--mobile-page-x)] py-12"
+    >
+      <SectionLabel>04 / What you receive</SectionLabel>
+      <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+        A usable commercial system.
+      </h2>
+
+      <div className="mt-8 flex items-center justify-between gap-4 border-y border-neutral-950/12 py-3">
+        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Included in every route</div>
+        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">05 items</div>
+      </div>
+
+      <div data-sound-safe-area className="border-b border-neutral-950/12 pb-6">
+        {mobileReceiveLedger.map(([index, title, text]) => (
+          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
+            <div>
+              <div className="max-w-[18rem] text-[19px] leading-[1.1] text-neutral-900">{title}</div>
+              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileOfferLayout({
+  onOpenProject,
+  onViewWork,
+}: {
+  onOpenProject: () => void;
+  onViewWork: () => void;
+}) {
+  return (
+    <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
+      <MobileOfferHero onOpenProject={onOpenProject} onViewWork={onViewWork} />
+      <div className="py-7">
+        <OfferScrollArtifactHero compact />
+      </div>
+      <MobileOfferThesis />
+      <MobileRouteSelector />
+      <MobileDeliverySpine />
+      <MobileOutputLedger />
+    </div>
+  );
+}
+
 export default function OfferV2({
   drawerOpen = false,
   onOpenProject,
@@ -682,6 +1016,7 @@ export default function OfferV2({
   const [activeStage, setActiveStage] = useState(0);
   const [deliveryInterfaceOpen, setDeliveryInterfaceOpen] = useState(false);
   const activeSectionId = useSectionRailActive(offerRailItems);
+  const desktopLayout = useDesktopOfferLayout();
 
   useEffect(() => {
     setScene("practice");
@@ -724,7 +1059,7 @@ export default function OfferV2({
       {noIndex ? <OfferV2Meta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-clip bg-transparent text-neutral-950">
+      <PageSurface className="mobile-interface-surface relative min-h-screen overflow-x-clip bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="practice" />
         <SectionRail
           items={offerRailItems}
@@ -732,7 +1067,9 @@ export default function OfferV2({
           onSelect={scrollToRailSection}
           label="Offer sections"
         />
-        <main className="relative pt-24">
+        <main className="relative pt-20 lg:pt-24">
+          {desktopLayout ? (
+            <>
           <section id="offer-threshold" data-header-scene="practice-threshold" data-sound-safe-area className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-center lg:py-12 xl:pr-36">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
@@ -947,7 +1284,10 @@ export default function OfferV2({
               </div>
             </div>
           </section>
-
+            </>
+          ) : (
+            <MobileOfferLayout onOpenProject={openProjectWithSound} onViewWork={viewWork} />
+          )}
         </main>
 
         <SiteFooterV2 onOpenProject={onOpenProject} variant="practice" />

@@ -411,10 +411,12 @@ function ArtifactScene({
   progress,
   pointer,
   reducedMotion,
+  autoSignal = false,
 }: {
   progress: number;
   pointer: Pointer;
   reducedMotion: boolean;
+  autoSignal?: boolean;
 }) {
   const rootRef = useRef<THREE.Group>(null);
   const stablePrimaryRef = useRef<THREE.LineSegments>(null);
@@ -442,8 +444,9 @@ function ArtifactScene({
     };
   }, [fragments, stableGeometries]);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const targetProgress = reducedMotion ? 0 : progress;
+    const autoTime = autoSignal && !reducedMotion ? state.clock.elapsedTime : 0;
     const progressDelta = targetProgress - previousProgressRef.current;
     previousProgressRef.current = targetProgress;
 
@@ -461,8 +464,9 @@ function ArtifactScene({
 
     if (rootRef.current) {
       rootRef.current.rotation.x = 0.3 + pointerRef.current.y * -0.16 + disassemble * 0.22;
-      rootRef.current.rotation.y = p * 4.6 + pointerRef.current.x * 0.18 + scrollSpin * 0.09;
-      rootRef.current.rotation.z = -0.16 + Math.sin(p * Math.PI * 2) * 0.05 + pointerRef.current.x * 0.08;
+      rootRef.current.rotation.y = p * 4.6 + pointerRef.current.x * 0.18 + scrollSpin * 0.09 + autoTime * 0.18;
+      rootRef.current.rotation.z =
+        -0.16 + Math.sin(p * Math.PI * 2) * 0.05 + pointerRef.current.x * 0.08 + Math.sin(autoTime * 0.72) * 0.025;
       rootRef.current.scale.setScalar(0.58 + entrance * 0.07 - preTension - disassemble * 0.005);
     }
 
@@ -607,16 +611,19 @@ function useScrollProgress(sectionRef: React.RefObject<HTMLElement | null>) {
   return progress;
 }
 
-export default function OfferScrollArtifactHero() {
+export default function OfferScrollArtifactHero({ compact = false }: { compact?: boolean } = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const progress = useScrollProgress(sectionRef);
+  const scrollProgress = useScrollProgress(sectionRef);
   const reducedMotion = useReducedMotion() ?? false;
   const sound = useSound();
   const [pointer, setPointer] = useState<Pointer>({ x: 0, y: 0 });
   const soundPhaseRef = useRef<number | null>(null);
+  const progress = scrollProgress;
   const disassemble = smoothstep(0.48, 0.96, progress);
 
   useEffect(() => {
+    if (compact) return;
+
     const nextPhase = scrollSoundPhase(reducedMotion ? 0 : progress);
     const previousPhase = soundPhaseRef.current;
 
@@ -637,7 +644,69 @@ export default function OfferScrollArtifactHero() {
     }
 
     soundPhaseRef.current = nextPhase;
-  }, [progress, reducedMotion, sound]);
+  }, [compact, progress, reducedMotion, sound]);
+
+  if (compact) {
+    return (
+      <section
+        ref={sectionRef}
+        className="relative z-10 h-[190svh] w-screen max-w-none overflow-visible px-0 lg:hidden"
+        onPointerMove={(event) => {
+          const rect = event.currentTarget.getBoundingClientRect();
+          setPointer({
+            x: ((event.clientX - rect.left) / rect.width) * 2 - 1,
+            y: ((event.clientY - rect.top) / Math.max(rect.height, 1)) * 2 - 1,
+          });
+        }}
+        onPointerLeave={() => setPointer({ x: 0, y: 0 })}
+      >
+        <div className="sticky top-[calc(var(--mobile-header-height)+0.25rem)] flex h-[calc(100svh-var(--mobile-header-height)-0.5rem)] min-h-[34rem] items-center overflow-visible">
+          <div className="relative h-[min(38rem,calc(100svh-var(--mobile-header-height)-1rem))] min-h-[32rem] w-full overflow-visible">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,255,255,0.78)_0%,rgba(255,255,255,0.46)_34%,rgba(244,241,234,0.12)_60%,rgba(255,255,255,0)_86%)]" />
+            <div className="pointer-events-none absolute inset-0 opacity-[0.02] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:56px_56px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.045]" />
+            <div
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[25rem] w-[25rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.024]"
+              style={{ transform: `translate(-50%, -50%) scale(${1 + disassemble * 0.08})` }}
+            />
+            <div className="pointer-events-none absolute inset-x-[var(--mobile-page-x)] top-5 z-20 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.16em]">
+              <span className="text-neutral-500">Live offer signal</span>
+              <span className="text-neutral-300">{disassemble > 0.62 ? "system released" : "scroll core"}</span>
+            </div>
+
+            <div className="absolute -inset-x-[28vw] -inset-y-[22svh]">
+              <Canvas
+                camera={{ position: [0, 0, 8.25], fov: 56, near: 0.1, far: 100 }}
+                dpr={[1, 1.55]}
+                gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+              >
+                <ArtifactScene progress={progress} pointer={pointer} reducedMotion={reducedMotion} />
+              </Canvas>
+            </div>
+
+            <div
+              className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-full w-[92%] -translate-x-1/2 -translate-y-1/2 bg-white/18 blur-3xl transition-opacity duration-500"
+              style={{ opacity: 0.42 - disassemble * 0.14 }}
+            />
+
+            <div className="pointer-events-none absolute inset-x-[var(--mobile-page-x)] bottom-5 z-20 grid gap-2">
+              <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400">
+                <span>Audience</span>
+                <span>Proof</span>
+                <span>Route</span>
+              </div>
+              <div className="h-px max-w-[8.5rem] bg-neutral-950/12">
+                <div
+                  className="h-px bg-neutral-950 transition-[width] duration-150"
+                  style={{ width: `${Math.max(18, Math.round(progress * 100))}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section

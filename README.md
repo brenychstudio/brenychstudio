@@ -60,6 +60,59 @@ Currently focused on:
 
 ## Current project brief
 
+### 2026-05-26 WHISPER Immersive case V1 canon
+
+WHISPER is now fixed as the V1 canonical Immersive case page for future Immersive work.
+
+Reference route and files:
+
+- Public route: `/immersive/whisper`
+- Main renderer: `src/ui/immersive/WhisperCaseLayout.tsx`
+- Route shell: `src/pages/ImmersiveCasePage.tsx`
+- Case data: `src/data/immersive.ts`
+- Copy / frame labels: `src/data/whisperCaseI18n.ts`
+- Engine data: `src/data/immersiveSystems.ts`
+- Canon doc: `docs/immersive-whisper-reference-pattern.md`
+
+Canonical mobile page order:
+
+1. Threshold / flagship hero
+2. Spatial atlas
+3. Desktop web proof
+4. Spatial evidence field
+5. Quest XR proof
+6. Collector handoff
+7. Mobile proof
+8. Engine ledger
+9. Compact Immersive case footer
+
+Mobile V1 decisions:
+
+- Mobile is treated as its own compact Immersive interface, not as a desktop shrink.
+- Each section now has one primary proof job, short copy, and a stronger media hierarchy.
+- Section 02 uses a swipe atlas for Web / Quest / Collector / Mobile surfaces.
+- Section 03 uses full-width video proof on mobile.
+- Section 03.1 and 04 use swipe/orbit proof mechanics instead of old stacked screenshot behavior.
+- Section 05 is kept, but compressed into a collector handoff chamber instead of repeating the atlas.
+- Section 06 uses a phone-body swipe orbit for the handheld route; mobile screenshots no longer stretch vertically down the page.
+- Section 07 is a compact canon ledger, not a long report.
+- The Immersive case footer has a mobile-only compact closing signal and no longer behaves like a full second landing page.
+
+Implementation rules for future Immersive cases:
+
+- Inherit WHISPER's structure and interaction grammar, not its exact artwork.
+- Prefer swipe/orbit systems over long vertical screenshot stacks on mobile.
+- Keep active media dominant; side previews can enter the scene but should not compete with the selected proof.
+- Keep text compact, surface-specific, and proof-oriented.
+- Use `CinematicInspectReveal` for inspectable evidence instead of building one-off lightboxes.
+- Keep mobile footer short: one closing signal, one CTA, brand, routes, and essential links.
+
+Validation status:
+
+- `npm run build` passes.
+- Mobile checks at 430px showed no horizontal overflow for the updated WHISPER sections and footer.
+- Vite still reports the expected large chunk warning for the main / Three.js runtime.
+
 ### 2026-05-24 mobile interface and drawer handoff
 
 Current active branch status:

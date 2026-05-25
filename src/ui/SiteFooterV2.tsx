@@ -246,7 +246,86 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
         <div className="pointer-events-none absolute right-[6vw] top-24 h-[26rem] w-[26rem] rounded-full border border-white/18" />
         <div className="pointer-events-none absolute bottom-16 right-[8vw] h-px w-[52vw] -rotate-[6deg] bg-gradient-to-r from-transparent via-neutral-950/24 to-transparent" />
 
-        <div className="relative mx-auto w-[min(92vw,1640px)] py-14 sm:py-16 lg:w-[min(94vw,1640px)] lg:py-18">
+        <div className="relative mx-auto w-[min(92vw,1640px)] py-8 lg:hidden">
+          <div className="border-b border-neutral-950/14 pb-7">
+            <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-700">
+              <span>Closing signal</span>
+              <motion.span
+                className="h-1.5 w-1.5 rounded-full bg-neutral-950"
+                animate={reduceMotion ? undefined : { opacity: [0.45, 1, 0.45], scale: [1, 1.24, 1] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </div>
+            <h2 className="mt-5 max-w-[9ch] text-[40px] font-normal leading-[0.9] tracking-normal text-neutral-950">
+              Build the next room.
+            </h2>
+            <p className="mt-5 text-[14px] leading-7 text-neutral-700">
+              WHISPER closes as a compact pattern for spatial proof, media playback, and project intake.
+            </p>
+
+            <div className="mt-6 border border-white/24 bg-neutral-950/[0.035] p-4 backdrop-blur-xl">
+              <div className="grid gap-3 font-mono text-[9px] uppercase tracking-[0.18em]">
+                <div className="flex items-center justify-between gap-4 border-b border-neutral-950/12 pb-3">
+                  <span className="text-neutral-600">Signal</span>
+                  <span className="text-right font-semibold text-neutral-950">{copy.signal}</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-neutral-600">Next</span>
+                  <span className="text-right font-semibold text-neutral-950">{copy.nextStep}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => onOpenProject?.()}
+                className="group mt-5 inline-flex min-h-12 w-full items-center justify-between border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.2)] transition duration-300 hover:bg-[#141414] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-100 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+              >
+                <span>Start a project</span>
+                <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid gap-5 py-6">
+            <div>
+              <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
+              <div className="mt-3 flex items-center gap-2 font-mono text-[8.5px] uppercase tracking-[0.16em] text-neutral-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
+                <span>{copy.bottomLine}</span>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              {routeLinks.map((link) => (
+                <Link
+                  key={`immersive-case-mobile-route-${link.to}-${link.label}`}
+                  to={link.to}
+                  className="text-[11px] uppercase tracking-[0.13em] text-neutral-800 transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-t border-neutral-950/14 pt-5 text-[9px] uppercase tracking-[0.15em] text-neutral-700">
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              {profileLinks.slice(0, 3).map((link) => (
+                <a
+                  key={`immersive-case-mobile-profile-${link.href}`}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <div>&copy; 2026</div>
+          </div>
+        </div>
+
+        <div className="relative mx-auto hidden w-[min(92vw,1640px)] py-14 sm:py-16 lg:block lg:w-[min(94vw,1640px)] lg:py-18">
           <div className="grid gap-10 border-b border-neutral-950/14 pb-11 lg:grid-cols-[minmax(0,0.58fr)_minmax(26rem,0.42fr)] lg:items-end">
             <div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-700">

@@ -158,61 +158,55 @@ export const whisperCaseI18n = {
 
       vr: [
         {
-          label: "Quest VR 01",
+          label: "Room view",
           alt: "WHISPER Quest VR spatial view",
           caption:
-            "Quest VR exhibition view showing spatial image staging inside the immersive environment.",
+            "Headset capture shows the exhibition opening as a quiet room-scale field.",
         },
         {
-          label: "Quest VR 02",
+          label: "Gallery planes",
           alt: "WHISPER Quest VR gallery moment",
           caption:
-            "Spatial gallery moment where Sea and Forest materials become navigable exhibition fragments.",
+            "Sea and Forest materials become navigable image planes inside the spatial gallery.",
         },
         {
-          label: "Quest VR 03",
+          label: "Hand route",
           alt: "WHISPER Quest VR navigation proof",
           caption:
-            "VR navigation proof with controlled spatial layout, teleport marker logic, and calm immersive pacing.",
+            "Hand navigation and teleport markers keep the immersive route calm and readable.",
         },
       ],
 
       mobile: [
         {
-          label: "Mobile 01",
+          label: "Landing",
           alt: "WHISPER mobile landing",
-          caption:
-            "Mobile landing surface preserving the cinematic art direction and exhibition-first framing.",
+          caption: "The mobile route opens with the same forest threshold and cinematic pacing.",
         },
         {
-          label: "Mobile 02",
+          label: "Series entry",
           alt: "WHISPER mobile series entry",
-          caption:
-            "Mobile series entry combining Sea and Forest materials in a compact editorial flow.",
+          caption: "Sea and Forest materials stay readable as a compact editorial entrance.",
         },
         {
-          label: "Mobile 03",
+          label: "Series index",
           alt: "WHISPER mobile series index",
-          caption:
-            "Mobile series index translated into a quiet, artwork-first browsing structure.",
+          caption: "The index keeps browsing quiet, direct, and artwork-first.",
         },
         {
-          label: "Mobile 04",
+          label: "Menu drawer",
           alt: "WHISPER mobile drawer",
-          caption:
-            "Premium mobile drawer designed to avoid covering the artwork while keeping navigation close.",
+          caption: "Navigation stays close without swallowing the image surface.",
         },
         {
-          label: "Mobile 05",
+          label: "Work detail",
           alt: "WHISPER mobile work detail",
-          caption:
-            "Mobile work-detail surface connecting artwork, edition information, and collector continuation.",
+          caption: "Artwork, edition context, and collector continuation meet in one frame.",
         },
         {
-          label: "Mobile 06",
+          label: "Print / AR",
           alt: "WHISPER mobile print detail",
-          caption:
-            "Mobile print detail flow with edition data, AR preview entry, and collector-facing actions.",
+          caption: "Print detail and AR entry remain part of the handheld exhibition route.",
         },
       ],
     },

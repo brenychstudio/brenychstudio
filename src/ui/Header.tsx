@@ -331,7 +331,7 @@ export default function Header({
         "site-header fixed inset-x-0 top-0 z-50 border-b",
       ].join(" ")}
     >
-      <div className="relative mx-auto grid min-h-[56px] w-[min(94vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-2 py-2 sm:h-[60px] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:gap-3 sm:py-0">
+      <div className="relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:gap-3 sm:py-0">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
         <div className="flex min-w-0 items-center gap-4">
           <button
@@ -339,7 +339,7 @@ export default function Header({
             onClick={onLogo}
             className="group min-w-0 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
           >
-            <span className="block truncate text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--header-text)]">
+            <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] min-[420px]:text-[11px] min-[420px]:tracking-[0.18em]">
               BRENYCH STUDIO
             </span>
             <span className="mt-1 hidden text-[9px] uppercase tracking-[0.22em] text-[color:var(--header-muted)] transition group-hover:text-[color:var(--header-text)] lg:block">
@@ -388,7 +388,7 @@ export default function Header({
           })}
         </nav>
 
-        <div className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
+        <div className="flex min-w-0 items-center justify-end gap-1 sm:gap-3">
           <div className="hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 lg:flex">
             <span className="relative h-1.5 w-1.5 rounded-full bg-[color:var(--header-progress)]" />
             <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
@@ -396,7 +396,7 @@ export default function Header({
             </span>
           </div>
 
-          <div className="flex min-w-0 items-center justify-center gap-1 rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-1.5 py-1 text-[10px] uppercase tracking-[0.14em] text-[color:var(--header-muted)] shadow-[0_4px_14px_rgba(0,0,0,0.018)] transition-colors duration-[420ms] sm:text-[11px]">
+          <div className="flex min-w-0 items-center justify-center gap-1 rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-1 py-1 text-[9px] uppercase tracking-[0.12em] text-[color:var(--header-muted)] shadow-[0_4px_14px_rgba(0,0,0,0.018)] transition-colors duration-[420ms] min-[420px]:px-1.5 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:text-[11px]">
             {availableLocales.map((language) => {
               const isActive = locale === language;
 
@@ -406,7 +406,7 @@ export default function Header({
                   type="button"
                   onClick={() => setLocale(language)}
                   className={[
-                    "min-w-0 items-center whitespace-nowrap rounded-full px-2 py-1 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2",
+                    "min-w-0 items-center whitespace-nowrap rounded-full px-1.5 py-1 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:px-2",
                     isActive ? "inline-flex" : "hidden sm:inline-flex",
                     isActive
                       ? "bg-[color:var(--header-active-chip-bg)] text-[color:var(--header-active-chip-text)] opacity-100"
@@ -427,7 +427,7 @@ export default function Header({
             aria-controls="mobile-header-menu"
             aria-label={mobileMenuOpen ? "Close route terminal" : "Open route terminal"}
             className={[
-              "inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 md:hidden",
+              "inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:h-9 min-[420px]:px-3 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] md:hidden",
               mobileMenuOpen ? "shadow-[0_10px_24px_rgba(0,0,0,0.07)]" : "opacity-88",
             ].join(" ")}
           >
@@ -440,13 +440,13 @@ export default function Header({
             aria-expanded={drawerOpen}
             aria-label={drawerOpen ? "Close project drawer" : navLabels.start}
             className={[
-              "inline-flex min-w-[4.8rem] shrink-0 items-center justify-center gap-1.5 rounded-full px-3 py-[9px] text-[10px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] sm:min-w-[12.2rem] sm:gap-2 sm:px-4 sm:text-[11px] sm:tracking-[0.16em]",
+              "inline-flex min-w-10 shrink-0 items-center justify-center gap-1 rounded-full px-2.5 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] min-[420px]:min-w-[4.8rem] min-[420px]:gap-1.5 min-[420px]:px-3 min-[420px]:py-[9px] min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:min-w-[12.2rem] sm:gap-2 sm:px-4 sm:text-[11px] sm:tracking-[0.16em]",
               drawerOpen
                 ? "border border-[color:var(--header-progress)] bg-[color:var(--header-chip-bg)] text-[color:var(--header-text)] shadow-[0_10px_26px_rgba(0,0,0,0.07)]"
                 : "border border-[color:var(--header-action-border)] bg-[color:var(--header-action-bg)] text-[color:var(--header-action-text)] hover:opacity-85",
             ].join(" ")}
           >
-            <span className="inline sm:hidden">{navLabels.startShort}</span>
+            <span className="hidden min-[420px]:inline sm:hidden">{navLabels.startShort}</span>
             <span className="hidden sm:inline">{navLabels.start}</span>
             <span
               className={[

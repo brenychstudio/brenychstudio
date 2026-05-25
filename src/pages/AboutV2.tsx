@@ -434,9 +434,12 @@ function MobileAboutPrinciples() {
     <section
       id="about-principles"
       data-header-scene="about-principles"
-      className="relative z-10 mx-auto w-[min(100%,44rem)] px-[var(--mobile-page-x)] pb-11 pt-9"
+      className="relative z-10 mx-auto w-[min(100%,44rem)] px-[var(--mobile-page-x)] pb-12 pt-12"
     >
-      <div className="relative overflow-hidden bg-[rgb(12,12,12)] px-5 py-7 text-white shadow-[0_36px_120px_rgba(0,0,0,0.2)]">
+      <div
+        data-sound-safe-area
+        className="relative overflow-hidden bg-[rgb(12,12,12)] px-5 py-7 text-white shadow-[0_36px_120px_rgba(0,0,0,0.2)]"
+      >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.14),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
         <div className="pointer-events-none absolute -right-[36%] top-[4%] h-[28rem] w-[28rem] rounded-full border border-white/[0.07]" />

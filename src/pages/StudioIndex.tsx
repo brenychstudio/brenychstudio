@@ -8,6 +8,7 @@ import {
   useScroll,
   useSpring,
   useTransform,
+  type PanInfo,
 } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -735,25 +736,25 @@ function MobileSpatialStage({
       ? "min-h-[21rem] sm:min-h-[25rem] md:min-h-[29rem]"
       : variant === "cinematic"
         ? "min-h-[24rem] sm:min-h-[29rem] md:min-h-[33rem]"
-        : "min-h-[21.5rem] sm:min-h-[27rem] md:min-h-[31rem]";
+        : "min-h-[28.5rem] sm:min-h-[34rem] md:min-h-[38rem]";
   const activePlane =
     variant === "grammar"
       ? "left-[1%] top-[3.5rem] h-[61%] w-[94%] -rotate-[2.5deg]"
       : variant === "cinematic"
         ? "left-[0%] top-[4.6rem] h-[68%] w-[96%] -rotate-[3deg]"
-        : "left-[3%] top-[4.65rem] h-[59%] w-[88%] -rotate-[2deg]";
+        : "left-[-2%] top-[5.1rem] h-[64%] w-[101%] -rotate-[4deg]";
   const ghostAPlane =
     variant === "grammar"
       ? "right-[-5%] top-12 h-[50%] w-[50%] rotate-[4deg] opacity-40"
       : variant === "cinematic"
         ? "right-[-8%] top-[4.95rem] h-[58%] w-[58%] rotate-[5deg] opacity-42"
-        : "right-[-2%] top-[4.35rem] h-[50%] w-[54%] rotate-[4deg] opacity-48";
+        : "right-[-14%] top-[4.55rem] h-[54%] w-[58%] rotate-[6deg] opacity-45";
   const ghostBPlane =
     variant === "grammar"
       ? "bottom-8 left-[12%] h-[34%] w-[52%] -rotate-[5deg] opacity-42"
       : variant === "cinematic"
         ? "bottom-6 left-[5%] h-[38%] w-[54%] -rotate-[5deg] opacity-45"
-        : "bottom-7 left-6 h-[36%] w-[50%] -rotate-[5deg] opacity-50";
+        : "bottom-8 left-[-2%] h-[38%] w-[58%] -rotate-[7deg] opacity-46";
 
   const setStageIndex = (nextIndex: number) => {
     setInternalActiveIndex(nextIndex);
@@ -794,6 +795,431 @@ function MobileSpatialStage({
       suppressOpenRef.current = false;
     }, 360);
   };
+
+  const handleDeckDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipePower = Math.abs(info.offset.x) + Math.abs(info.velocity.x) * 0.18;
+    if (swipePower < 72) return;
+
+    suppressOpenRef.current = true;
+    stepStageIndex(info.offset.x < 0 ? 1 : -1);
+    window.setTimeout(() => {
+      suppressOpenRef.current = false;
+    }, 360);
+  };
+
+  if (variant === "proof") {
+    return (
+      <div className={["grid gap-4", className].filter(Boolean).join(" ")} data-sound-safe-area>
+        <div
+          className="relative mx-[-1rem] min-h-[30rem] touch-pan-y overflow-hidden px-4 sm:min-h-[35rem] md:min-h-[39rem]"
+          style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
+        >
+          <div className="pointer-events-none absolute left-[5%] top-[12%] h-[76%] w-[90%] rounded-[50%] border border-neutral-950/[0.06]" />
+          <div className="pointer-events-none absolute left-[-8%] top-[54%] h-px w-[118%] rotate-[-9deg] bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
+          <div className="pointer-events-none absolute right-[3%] top-2 z-40 border-y border-neutral-950/12 bg-white/62 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 shadow-[0_10px_28px_rgba(0,0,0,0.05)] backdrop-blur">
+            Swipe proof
+          </div>
+
+          <motion.div
+            className="absolute inset-0 cursor-grab active:cursor-grabbing"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.18}
+            dragMomentum={false}
+            onDragEnd={handleDeckDragEnd}
+            style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+          >
+            {assets.map((asset, index) => {
+              let offset = index - activeIndex;
+              while (offset > assets.length / 2) offset -= assets.length;
+              while (offset < -assets.length / 2) offset += assets.length;
+
+              if (Math.abs(offset) > 1.8) return null;
+
+              const activePlane = offset === 0;
+              const x = offset * 66;
+              const y = activePlane ? 0 : offset < 0 ? 31 : 20;
+              const rotateZ = activePlane ? -4 : offset < 0 ? -11 : 9;
+              const rotateY = activePlane ? 0 : offset < 0 ? 18 : -18;
+              const scale = activePlane ? 1 : 0.76;
+              const opacity = activePlane ? 1 : 0.42;
+              const shape = activePlane
+                ? "polygon(0 5%, 100% 0, 95% 91%, 7% 100%)"
+                : offset < 0
+                  ? "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)"
+                  : "polygon(0 8%, 100% 0, 94% 92%, 6% 100%)";
+
+              return (
+                <motion.button
+                  key={asset.label}
+                  type="button"
+                  aria-label={`Open ${asset.label}`}
+                  aria-pressed={activePlane}
+                  disabled={activePlane && !asset.route}
+                  onClick={() => {
+                    if (!activePlane) {
+                      setStageIndex(index);
+                      return;
+                    }
+
+                    openActive();
+                  }}
+                  className={[
+                    "group absolute left-1/2 top-[53%] h-[21.5rem] w-[96%] max-w-[32rem] overflow-hidden border border-white/80 text-left shadow-[0_36px_118px_rgba(17,17,17,0.18)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 sm:h-[25rem] md:h-[28rem]",
+                    activePlane ? "bg-neutral-950" : "bg-white/22",
+                    asset.route ? "cursor-pointer" : "cursor-default",
+                  ].join(" ")}
+                  style={{
+                    clipPath: shape,
+                    zIndex: 30 - Math.abs(offset) * 5,
+                    transformStyle: "preserve-3d",
+                  }}
+                  initial={false}
+                  animate={{
+                    opacity,
+                    x: `calc(-50% + ${x}%)`,
+                    y: `calc(-50% + ${y}px)`,
+                    rotateZ,
+                    rotateY,
+                    scale,
+                    filter: `blur(${activePlane ? 0 : 0.7}px)`,
+                  }}
+                  transition={{ duration: 0.64, ease }}
+                >
+                  <MobileAssetMedia
+                    asset={asset}
+                    className={`saturate-[1.03] contrast-[1.04] transition duration-700 group-active:scale-[1.018] ${
+                      activePlane ? "opacity-100" : "opacity-76 grayscale-[0.08]"
+                    }`}
+                    objectPosition={asset.objectPosition ?? objectPosition}
+                  />
+                  <span className="absolute inset-0 bg-[radial-gradient(circle_at_52%_28%,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.04)_52%,rgba(0,0,0,0.58))]" />
+                  <span className="pointer-events-none absolute left-4 top-4 border-y border-white/16 bg-black/10 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/62 backdrop-blur-sm">
+                    {String(index + 1).padStart(2, "0")} / {asset.label}
+                  </span>
+                  <span className="pointer-events-none absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 font-semibold uppercase tracking-[0.16em] text-white/80">
+                    <span className="max-w-[13ch] text-[14px] leading-[1.05]">{asset.label}</span>
+                    {asset.route ? <span className="text-[9px]">Open</span> : null}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        </div>
+
+        <div className="grid gap-4 border-t border-neutral-950/10 pt-4">
+          <div className="flex items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => stepStageIndex(-1)}
+              className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+            >
+              Prev
+            </button>
+            <div className="flex items-center gap-2">
+              {assets.map((asset, index) => (
+                <button
+                  key={asset.label}
+                  type="button"
+                  aria-label={`Show ${asset.label}`}
+                  aria-pressed={index === activeIndex}
+                  onClick={() => setStageIndex(index)}
+                  className={`h-1.5 rounded-full transition-all ${
+                    index === activeIndex ? "w-8 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => stepStageIndex(1)}
+              className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "cinematic") {
+    return (
+      <div className={["grid gap-4", className].filter(Boolean).join(" ")} data-sound-safe-area>
+        <div
+          className="relative mx-[-1rem] min-h-[32rem] touch-pan-y overflow-hidden px-4 sm:min-h-[38rem] md:min-h-[42rem]"
+          style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
+        >
+          <div className="pointer-events-none absolute inset-x-4 top-[13%] h-[76%] rounded-[50%] border border-neutral-950/[0.07]" />
+          <div className="pointer-events-none absolute left-[-8%] top-[54%] h-px w-[118%] rotate-[7deg] bg-gradient-to-r from-transparent via-neutral-950/18 to-transparent" />
+          <div className="pointer-events-none absolute right-[4%] top-[6.5%] border-y border-neutral-950/12 bg-white/34 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
+            Swipe spatial proof
+          </div>
+
+          <motion.div
+            className="absolute inset-0 cursor-grab active:cursor-grabbing"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.18}
+            dragMomentum={false}
+            onDragEnd={handleDeckDragEnd}
+            style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+          >
+            {assets.map((asset, index) => {
+              let offset = index - activeIndex;
+              while (offset > assets.length / 2) offset -= assets.length;
+              while (offset < -assets.length / 2) offset += assets.length;
+
+              if (Math.abs(offset) > 1.8) return null;
+
+              const activePlane = offset === 0;
+              const x = offset * 63;
+              const y = activePlane ? 0 : offset < 0 ? 30 : 22;
+              const rotateZ = activePlane ? -3.5 : offset < 0 ? -10 : 8;
+              const rotateY = activePlane ? 0 : offset < 0 ? 18 : -18;
+              const scale = activePlane ? 1 : 0.74;
+              const opacity = activePlane ? 1 : 0.43;
+              const shape = activePlane
+                ? "polygon(3% 0, 100% 5%, 94% 94%, 0 100%)"
+                : offset < 0
+                  ? "polygon(8% 0, 100% 9%, 90% 100%, 0 88%)"
+                  : "polygon(0 9%, 95% 0, 100% 88%, 8% 100%)";
+
+              return (
+                <motion.button
+                  key={asset.label}
+                  type="button"
+                  aria-label={`Open ${asset.label}`}
+                  aria-pressed={activePlane}
+                  disabled={activePlane && !asset.route}
+                  onClick={() => {
+                    if (!activePlane) {
+                      setStageIndex(index);
+                      return;
+                    }
+
+                    openActive();
+                  }}
+                  className={[
+                    "group absolute left-1/2 top-[50%] h-[23rem] w-[92%] max-w-[31rem] overflow-hidden border text-left shadow-[0_42px_132px_rgba(10,10,10,0.24)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 sm:h-[27rem] md:h-[30rem]",
+                    activePlane ? "border-white/74 bg-neutral-950" : "border-white/28 bg-neutral-950/80",
+                    asset.route ? "cursor-pointer" : "cursor-default",
+                  ].join(" ")}
+                  style={{
+                    clipPath: shape,
+                    zIndex: 30 - Math.abs(offset) * 5,
+                    transformStyle: "preserve-3d",
+                  }}
+                  initial={false}
+                  animate={{
+                    opacity,
+                    x: `calc(-50% + ${x}%)`,
+                    y: `calc(-50% + ${y}px)`,
+                    rotateZ,
+                    rotateY,
+                    scale,
+                    filter: `blur(${activePlane ? 0 : 0.7}px)`,
+                  }}
+                  transition={{ duration: 0.66, ease }}
+                >
+                  <MobileAssetMedia
+                    asset={asset}
+                    className={`saturate-[1.08] contrast-[1.08] brightness-[1.03] transition duration-700 group-active:scale-[1.018] ${
+                      activePlane ? "opacity-100" : "opacity-74 grayscale-[0.1]"
+                    }`}
+                    objectPosition={asset.objectPosition ?? objectPosition}
+                  />
+                  <span className="absolute inset-0 bg-[radial-gradient(circle_at_48%_30%,rgba(255,255,255,0.09),transparent_33%),linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.14)_52%,rgba(0,0,0,0.72))]" />
+                  <span className="pointer-events-none absolute inset-x-4 top-4 flex items-center justify-between border-y border-white/15 py-2 font-mono text-[8px] uppercase tracking-[0.17em] text-white/58">
+                    <span>WHISPER surface</span>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                  </span>
+                  <span className="pointer-events-none absolute bottom-5 left-5 right-5">
+                    <span className="block max-w-[13ch] text-[42px] leading-[0.86] tracking-[-0.055em] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.5)]">
+                      {asset.label}
+                    </span>
+                    {asset.route ? (
+                      <span className="mt-4 inline-flex border-y border-white/18 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/62">
+                        Open spatial case
+                      </span>
+                    ) : null}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        </div>
+
+        <div className="grid gap-4 border-t border-neutral-950/10 pt-4">
+          <div className="flex items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => stepStageIndex(-1)}
+              className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+            >
+              Prev
+            </button>
+            <div className="flex items-center gap-2">
+              {assets.map((asset, index) => (
+                <button
+                  key={asset.label}
+                  type="button"
+                  aria-label={`Show ${asset.label}`}
+                  aria-pressed={index === activeIndex}
+                  onClick={() => setStageIndex(index)}
+                  className={`h-1.5 rounded-full transition-all ${
+                    index === activeIndex ? "w-8 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => stepStageIndex(1)}
+              className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "grammar") {
+    return (
+      <div className={["grid gap-4", className].filter(Boolean).join(" ")} data-sound-safe-area>
+        <div
+          className="relative mx-[-1rem] min-h-[29rem] touch-pan-y overflow-hidden px-4 sm:min-h-[34rem] md:min-h-[38rem]"
+          style={{ perspective: "1420px", transformStyle: "preserve-3d" }}
+        >
+          <div className="pointer-events-none absolute left-[6%] top-[12%] h-[74%] w-[88%] rounded-[50%] border border-neutral-950/[0.06]" />
+          <div className="pointer-events-none absolute left-[-8%] top-[54%] h-px w-[118%] rotate-[-8deg] bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
+          <div className="pointer-events-none absolute right-[4%] top-2 z-40 border-y border-neutral-950/12 bg-white/62 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 shadow-[0_10px_28px_rgba(0,0,0,0.05)] backdrop-blur">
+            Swipe grammar
+          </div>
+
+          <motion.div
+            className="absolute inset-0 cursor-grab active:cursor-grabbing"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.18}
+            dragMomentum={false}
+            onDragEnd={handleDeckDragEnd}
+            style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+          >
+            {assets.map((asset, index) => {
+              let offset = index - activeIndex;
+              while (offset > assets.length / 2) offset -= assets.length;
+              while (offset < -assets.length / 2) offset += assets.length;
+
+              if (Math.abs(offset) > 1.8) return null;
+
+              const activePlane = offset === 0;
+              const x = offset * 66;
+              const y = activePlane ? 0 : offset < 0 ? 30 : 20;
+              const rotateZ = activePlane ? -4 : offset < 0 ? -11 : 9;
+              const rotateY = activePlane ? 0 : offset < 0 ? 18 : -18;
+              const scale = activePlane ? 1 : 0.76;
+              const opacity = activePlane ? 1 : 0.42;
+              const shape = activePlane
+                ? "polygon(0 5%, 100% 0, 95% 91%, 7% 100%)"
+                : offset < 0
+                  ? "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)"
+                  : "polygon(0 8%, 100% 0, 94% 92%, 6% 100%)";
+
+              return (
+                <motion.button
+                  key={asset.label}
+                  type="button"
+                  aria-label={`Open ${asset.label}`}
+                  aria-pressed={activePlane}
+                  disabled={activePlane && !asset.route}
+                  onClick={() => {
+                    if (!activePlane) {
+                      setStageIndex(index);
+                      return;
+                    }
+
+                    openActive();
+                  }}
+                  className={[
+                    "group absolute left-1/2 top-[53%] h-[21rem] w-[96%] max-w-[32rem] overflow-hidden border border-white/80 bg-white/24 text-left shadow-[0_36px_112px_rgba(17,17,17,0.16)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 sm:h-[25rem] md:h-[28rem]",
+                    asset.route ? "cursor-pointer" : "cursor-default",
+                  ].join(" ")}
+                  style={{
+                    clipPath: shape,
+                    zIndex: 30 - Math.abs(offset) * 5,
+                    transformStyle: "preserve-3d",
+                  }}
+                  initial={false}
+                  animate={{
+                    opacity,
+                    x: `calc(-50% + ${x}%)`,
+                    y: `calc(-50% + ${y}px)`,
+                    rotateZ,
+                    rotateY,
+                    scale,
+                    filter: `blur(${activePlane ? 0 : 0.7}px)`,
+                  }}
+                  transition={{ duration: 0.64, ease }}
+                >
+                  <MobileAssetMedia
+                    asset={asset}
+                    className={`saturate-[1.02] contrast-[1.03] transition duration-700 group-active:scale-[1.018] ${
+                      activePlane ? "opacity-100" : "opacity-74 grayscale-[0.08]"
+                    }`}
+                    objectPosition={asset.objectPosition ?? objectPosition}
+                  />
+                  <span className="absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(255,255,255,0.12),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.03)_52%,rgba(0,0,0,0.48))]" />
+                  <span className="pointer-events-none absolute left-4 top-4 border-y border-white/18 bg-black/10 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/68 backdrop-blur-sm">
+                    {String(index + 1).padStart(2, "0")} / visual field
+                  </span>
+                  <span className="pointer-events-none absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 font-semibold uppercase tracking-[0.16em] text-white/80">
+                    <span className="max-w-[13ch] text-[14px] leading-[1.05]">{asset.label}</span>
+                    {asset.route ? <span className="text-[9px]">Open</span> : null}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        </div>
+
+        <div className="grid gap-4 border-t border-neutral-950/10 pt-4">
+          <div className="flex items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => stepStageIndex(-1)}
+              className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+            >
+              Prev
+            </button>
+            <div className="flex items-center gap-2">
+              {assets.map((asset, index) => (
+                <button
+                  key={asset.label}
+                  type="button"
+                  aria-label={`Show ${asset.label}`}
+                  aria-pressed={index === activeIndex}
+                  onClick={() => setStageIndex(index)}
+                  className={`h-1.5 rounded-full transition-all ${
+                    index === activeIndex ? "w-8 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => stepStageIndex(1)}
+              className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={["grid gap-3", className].filter(Boolean).join(" ")} data-sound-safe-area>
@@ -1112,8 +1538,6 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-5">
-          <MobileFormulaPanel compact />
-
           <div className="relative overflow-hidden border-y border-neutral-950/14 py-3" data-sound-safe-area>
             <div className="mb-3 flex items-center justify-between text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
               <span>Operating ledger</span>
@@ -1856,8 +2280,8 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
 
       <MobileChapter
         label="06 / Reusable Grammar"
-        heading="The visual language becomes repeatable across contexts."
-        summary="FLUID, ARCWAVE, FORM INDEX, Casa Nube, and the immersive work prove that the practice is a reusable grammar for atmosphere, language, motion, and structure."
+        heading="Reusable visual grammar."
+        summary="FLUID, ARCWAVE, FORM INDEX, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-4">

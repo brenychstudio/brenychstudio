@@ -5,6 +5,7 @@ import { externalProfiles } from "./profile/ExternalProfileLinks";
 type SiteFooterV2Props = {
   onOpenProject?: () => void;
   variant?: FooterVariant;
+  hideClosingSignal?: boolean;
 };
 
 type FooterLink = {
@@ -131,7 +132,7 @@ function FooterLedgerLinks({
   );
 }
 
-export default function SiteFooterV2({ onOpenProject, variant = "living" }: SiteFooterV2Props) {
+export default function SiteFooterV2({ onOpenProject, variant = "living", hideClosingSignal = false }: SiteFooterV2Props) {
   const reduceMotion = useReducedMotion();
   const copy = footerCopyByVariant[variant];
   const isCase = variant === "case";
@@ -387,47 +388,49 @@ export default function SiteFooterV2({ onOpenProject, variant = "living" }: Site
       <div className="pointer-events-none absolute bottom-12 right-[8vw] h-px w-[46vw] rotate-[-6deg] bg-gradient-to-r from-transparent via-neutral-950/20 to-transparent" />
 
       <div className="relative mx-auto w-[min(92vw,1640px)] py-10 sm:py-12 lg:w-[min(94vw,1640px)] lg:py-14">
-        <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-[minmax(0,0.62fr)_minmax(20rem,0.38fr)] lg:items-end">
-          <div>
-            <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-500">
-              <span>Closing signal</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
-            </div>
-            <h2 className="mt-5 max-w-[12ch] text-[48px] font-normal leading-[0.9] tracking-[-0.06em] text-neutral-950 sm:text-[72px] lg:text-[92px]">
-              {copy.headline}
-            </h2>
-          </div>
-
-          <div className="border-y border-neutral-950/14 bg-white/20 py-5 backdrop-blur-sm">
-            <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
-              <div className="flex items-center justify-between gap-5">
-                <span>Studio signal</span>
-                <span className="text-neutral-950">{copy.signal}</span>
+        {!hideClosingSignal ? (
+          <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-[minmax(0,0.62fr)_minmax(20rem,0.38fr)] lg:items-end">
+            <div>
+              <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-500">
+                <span>Closing signal</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
               </div>
-              <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
-              <div className="flex items-center justify-between gap-5">
-                <span>Project intake</span>
-                <span className="text-neutral-950">{copy.intake}</span>
-              </div>
-              <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
-              <div className="flex items-center justify-between gap-5">
-                <span>Next step</span>
-                <span className="text-neutral-950">{copy.nextStep}</span>
-              </div>
+              <h2 className="mt-5 max-w-[12ch] text-[48px] font-normal leading-[0.9] tracking-[-0.06em] text-neutral-950 sm:text-[72px] lg:text-[92px]">
+                {copy.headline}
+              </h2>
             </div>
 
-            <button
-              type="button"
-              onClick={onOpenProject}
-              className="group mt-6 inline-flex min-h-12 w-full items-center justify-between rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.14)] transition duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
-            >
-              <span>Start a project</span>
-              <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
-            </button>
-          </div>
-        </div>
+            <div className="border-y border-neutral-950/14 bg-white/20 py-5 backdrop-blur-sm">
+              <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
+                <div className="flex items-center justify-between gap-5">
+                  <span>Studio signal</span>
+                  <span className="text-neutral-950">{copy.signal}</span>
+                </div>
+                <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
+                <div className="flex items-center justify-between gap-5">
+                  <span>Project intake</span>
+                  <span className="text-neutral-950">{copy.intake}</span>
+                </div>
+                <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
+                <div className="flex items-center justify-between gap-5">
+                  <span>Next step</span>
+                  <span className="text-neutral-950">{copy.nextStep}</span>
+                </div>
+              </div>
 
-        <div className="grid gap-6 border-b border-neutral-950/[0.08] py-7 lg:grid-cols-[0.95fr_1.2fr_1fr] lg:items-start">
+              <button
+                type="button"
+                onClick={onOpenProject}
+                className="group mt-6 inline-flex min-h-12 w-full items-center justify-between rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.14)] transition duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
+              >
+                <span>Start a project</span>
+                <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[0.95fr_1.2fr_1fr] lg:items-start ${hideClosingSignal ? "pb-7" : "py-7"}`}>
           <div>
             <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
             <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
 import { availableLocales } from "../i18n";
@@ -165,7 +166,165 @@ export default function Header({
   const getNavItemLabel = (item: NavItem) =>
     item.id === "home" ? "Home" : navLabels[item.id];
 
+  const mobileRouteTerminal =
+    typeof document === "undefined"
+      ? null
+      : createPortal(
+          <AnimatePresence mode="wait">
+            {mobileMenuOpen ? (
+              <motion.div
+                id="mobile-header-menu"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="mobile-route-terminal-title"
+                className="fixed inset-0 z-[90] flex items-center justify-center px-4 pb-4 pt-[calc(4.25rem+env(safe-area-inset-top))] md:hidden"
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={{
+                  closed: { opacity: 0 },
+                  open: { opacity: 1 },
+                }}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <motion.button
+                  type="button"
+                  aria-label="Close route terminal"
+                  className="absolute inset-0 cursor-default"
+                  onClick={() => setMobileMenuOpen(false)}
+                  variants={{
+                    closed: {
+                      backgroundColor: "rgba(243, 240, 232, 0)",
+                      backdropFilter: "blur(0px)",
+                    },
+                    open: {
+                      backgroundColor: "rgba(243, 240, 232, 0.42)",
+                      backdropFilter: "blur(1.5px)",
+                    },
+                  }}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <motion.span
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.16),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(18,17,15,0.025))]"
+                    variants={{
+                      closed: { opacity: 0 },
+                      open: { opacity: 1 },
+                    }}
+                    transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                </motion.button>
+
+                <motion.div
+                  className="relative max-h-[calc(100dvh-5.75rem)] w-full max-w-[27rem] overflow-hidden border border-white/14 bg-[#090908] text-[#f7f3ea] shadow-[0_34px_120px_rgba(18,17,15,0.28)]"
+                  variants={{
+                    closed: {
+                      opacity: 0,
+                      y: 16,
+                      scale: 0.985,
+                      clipPath: "inset(49% 0 49% 0)",
+                    },
+                    open: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      clipPath: "inset(0 0 0 0)",
+                    },
+                  }}
+                  transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:52px_52px]" />
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                  <div className="pointer-events-none absolute inset-x-5 top-14 h-px bg-white/10" />
+
+                  <div className="relative grid max-h-[calc(100dvh-5.75rem)] gap-3 overflow-y-auto overscroll-contain p-3.5">
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-3">
+                      <div>
+                        <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/42">
+                          Route terminal / {String(navItems.length).padStart(2, "0")} paths
+                        </div>
+                        <h2
+                          id="mobile-route-terminal-title"
+                          className="mt-1.5 text-[22px] font-normal leading-[0.94] tracking-[-0.035em] text-white"
+                        >
+                          Select system path.
+                        </h2>
+                      </div>
+
+                      <button
+                        ref={mobileMenuCloseRef}
+                        type="button"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="inline-flex min-h-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/70 transition hover:border-white/30 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                      >
+                        Close
+                      </button>
+                    </div>
+
+                    <div className="border-y border-white/12">
+                      {navItems.map((item, index) => {
+                        const isActive = activePath === item.to;
+                        const label = getNavItemLabel(item);
+
+                        return (
+                          <motion.button
+                            key={item.id}
+                            type="button"
+                            onClick={() => onNav(item.to)}
+                            aria-current={isActive ? "page" : undefined}
+                            className={[
+                              "group grid w-full grid-cols-[2.1rem_1fr_auto] items-center gap-2.5 border-b border-white/10 px-2 py-2.5 text-left transition last:border-b-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40",
+                              isActive
+                                ? "bg-white text-neutral-950"
+                                : "text-white/72 hover:bg-white/[0.07] hover:text-white",
+                            ].join(" ")}
+                            initial={{ opacity: 0, x: -12 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.34, delay: 0.12 + index * 0.045, ease: [0.22, 1, 0.36, 1] }}
+                          >
+                            <span className={isActive ? "font-mono text-[10px] text-neutral-950/55" : "font-mono text-[10px] text-white/35"}>
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="min-w-0">
+                              <span className="block text-[13px] font-semibold uppercase tracking-[0.14em]">
+                                {label}
+                              </span>
+                              <span className={isActive ? "mt-1 block truncate text-[11px] leading-4 text-neutral-950/62" : "mt-1 block truncate text-[11px] leading-4 text-white/48"}>
+                                {navItemDescriptions[item.id]}
+                              </span>
+                            </span>
+                            <span className={isActive ? "font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-950" : "font-mono text-[9px] uppercase tracking-[0.14em] text-white/42 group-hover:text-white/70"}>
+                              {isActive ? "Now" : "Open"}
+                            </span>
+                          </motion.button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="grid gap-3">
+                      <div className="grid grid-cols-[1fr_auto] gap-3 border-y border-white/10 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
+                        <span>Current / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
+                        <span>{locale} / signal ready</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={onCta}
+                        className="inline-flex min-h-11 items-center justify-between rounded-full border border-white bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-[#f7f3ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                      >
+                        <span>{drawerOpen ? "Close project panel" : "Start a project"}</span>
+                        <span className="font-mono opacity-55">-&gt;</span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>,
+          document.body,
+        );
+
   return (
+    <>
     <header
       ref={headerRef}
       className={[
@@ -300,121 +459,9 @@ export default function Header({
           </button>
         </div>
 
-        <AnimatePresence>
-          {mobileMenuOpen ? (
-            <motion.div
-              id="mobile-header-menu"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="mobile-route-terminal-title"
-              className="fixed inset-0 z-[70] flex items-start justify-center px-4 pb-4 pt-[calc(4.75rem+env(safe-area-inset-top))] md:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <button
-                type="button"
-                aria-label="Close route terminal"
-                className="absolute inset-0 cursor-default bg-neutral-950/38 backdrop-blur-[10px]"
-                onClick={() => setMobileMenuOpen(false)}
-              />
-
-              <motion.div
-                className="relative max-h-[calc(100svh-5.75rem)] w-full max-w-[27rem] overflow-hidden border border-white/14 bg-[#090908] text-[#f7f3ea] shadow-[0_34px_120px_rgba(0,0,0,0.34)]"
-                initial={{ opacity: 0, y: 18, scale: 0.985, clipPath: "inset(49% 0 49% 0)" }}
-                animate={{ opacity: 1, y: 0, scale: 1, clipPath: "inset(0 0 0 0)" }}
-                exit={{ opacity: 0, y: 10, scale: 0.99, clipPath: "inset(44% 0 44% 0)" }}
-                transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:52px_52px]" />
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-                <div className="pointer-events-none absolute inset-x-5 top-14 h-px bg-white/10" />
-
-                <div className="relative grid max-h-[calc(100svh-5.75rem)] gap-3 overflow-y-auto overscroll-contain p-3.5">
-                  <div className="grid grid-cols-[1fr_auto] items-start gap-3">
-                    <div>
-                      <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/42">
-                        Route terminal / {String(navItems.length).padStart(2, "0")} paths
-                      </div>
-                      <h2
-                        id="mobile-route-terminal-title"
-                        className="mt-1.5 text-[22px] font-normal leading-[0.94] tracking-[-0.035em] text-white"
-                      >
-                        Select system path.
-                      </h2>
-                    </div>
-
-                    <button
-                      ref={mobileMenuCloseRef}
-                      type="button"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="inline-flex min-h-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/70 transition hover:border-white/30 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-                    >
-                      Close
-                    </button>
-                  </div>
-
-                  <div className="border-y border-white/12">
-                    {navItems.map((item, index) => {
-                      const isActive = activePath === item.to;
-                      const label = getNavItemLabel(item);
-
-                      return (
-                        <motion.button
-                          key={item.id}
-                          type="button"
-                          onClick={() => onNav(item.to)}
-                          aria-current={isActive ? "page" : undefined}
-                          className={[
-                            "group grid w-full grid-cols-[2.1rem_1fr_auto] items-center gap-2.5 border-b border-white/10 px-2 py-2.5 text-left transition last:border-b-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40",
-                            isActive
-                              ? "bg-white text-neutral-950"
-                              : "text-white/72 hover:bg-white/[0.07] hover:text-white",
-                          ].join(" ")}
-                          initial={{ opacity: 0, x: -12 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.34, delay: 0.12 + index * 0.045, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                          <span className={isActive ? "font-mono text-[10px] text-neutral-950/55" : "font-mono text-[10px] text-white/35"}>
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block text-[13px] font-semibold uppercase tracking-[0.14em]">
-                              {label}
-                            </span>
-                            <span className={isActive ? "mt-1 block truncate text-[11px] leading-4 text-neutral-950/62" : "mt-1 block truncate text-[11px] leading-4 text-white/48"}>
-                              {navItemDescriptions[item.id]}
-                            </span>
-                          </span>
-                          <span className={isActive ? "font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-950" : "font-mono text-[9px] uppercase tracking-[0.14em] text-white/42 group-hover:text-white/70"}>
-                            {isActive ? "Now" : "Open"}
-                          </span>
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="grid gap-3">
-                    <div className="grid grid-cols-[1fr_auto] gap-3 border-y border-white/10 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
-                      <span>Current / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
-                      <span>{locale} / signal ready</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={onCta}
-                      className="inline-flex min-h-11 items-center justify-between rounded-full border border-white bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-[#f7f3ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-                    >
-                      <span>{drawerOpen ? "Close project panel" : "Start a project"}</span>
-                      <span className="font-mono opacity-55">-&gt;</span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
       </div>
     </header>
+    {mobileRouteTerminal}
+    </>
   );
 }

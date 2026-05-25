@@ -300,6 +300,80 @@ const whisperProofStates: WhisperProofState[] = [
   },
 ];
 
+const mobileSurfaceReadouts: Record<WhisperProofId, string> = {
+  web: "The public website becomes the first threshold: image, motion, text, and navigation behave as one exhibition field.",
+  mobile: "The handheld surface keeps the archive present without flattening the atmosphere.",
+  print: "Edition logic extends the digital work into collectible object form.",
+  ar: "The work can continue as a screen-to-object preview.",
+  quest: "The archive becomes a spatial room with photographic memory around the viewer.",
+};
+
+const mobileApplicationPaths = [
+  "Exhibition microsites",
+  "Premium product worlds",
+  "Collector / print / AR systems",
+  "Interactive archives",
+  "Spatial pitch pages",
+  "Installation-ready web layers",
+  "WebXR prototypes",
+];
+
+type MobileChamberFieldId = "whisper" | FutureChamberId;
+type MobileChamberFieldMode = "field" | "index";
+
+type MobileChamberFieldEntry = {
+  id: MobileChamberFieldId;
+  index: string;
+  title: string;
+  status: string;
+  role: string;
+  cta: string;
+  mediaSrc: string;
+  preparedId?: FutureChamberId;
+};
+
+const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
+  {
+    id: "whisper",
+    index: "01",
+    title: "WHISPER",
+    status: "Completed spatial proof",
+    role: "Photographic archive -> web / mobile / print / AR / room-scale proof",
+    cta: "Open WHISPER",
+    mediaSrc: "/immersive/Whisper/desktop/whisper-hero.jpg",
+  },
+  {
+    id: "product-world",
+    index: "02",
+    title: "Product World",
+    status: "Prepared direction",
+    role: "Product or service becomes a navigable world",
+    cta: "View direction",
+    mediaSrc: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
+    preparedId: "product-world",
+  },
+  {
+    id: "presence-archive",
+    index: "03",
+    title: "Presence Archive",
+    status: "Research chamber",
+    role: "Archive reacts to attention, memory, return, and media fragments",
+    cta: "View traces",
+    mediaSrc: "/immersive/Whisper/desktop/whisper-8.jpg",
+    preparedId: "presence-archive",
+  },
+  {
+    id: "collector-continuation",
+    index: "04",
+    title: "Collector Continuation",
+    status: "Prepared continuation",
+    role: "Print, edition, AR preview, and collector logic extend the digital surface",
+    cta: "View traces",
+    mediaSrc: "/immersive/Whisper/desktop/whisper-7.jpg",
+    preparedId: "collector-continuation",
+  },
+];
+
 function WhisperProofMedia({
   proof,
   className,
@@ -2793,6 +2867,1064 @@ function ApplicationLayerScene() {
   );
 }
 
+function useDesktopImmersiveLayout() {
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.matchMedia("(min-width: 1024px)").matches;
+  });
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(query.matches);
+
+    update();
+    query.addEventListener("change", update);
+
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return isDesktop;
+}
+
+function MobileSectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <div className="font-mono text-[9px] uppercase tracking-[0.24em] text-neutral-500">
+      {children}
+    </div>
+  );
+}
+
+function MobileAction({
+  children,
+  onClick,
+  variant = "light",
+  className = "",
+}: {
+  children: ReactNode;
+  onClick?: () => void;
+  variant?: "dark" | "light" | "line";
+  className?: string;
+}) {
+  const sound = useSound();
+  const classes =
+    variant === "dark"
+      ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_18px_52px_rgba(0,0,0,0.16)]"
+      : variant === "line"
+        ? "border-transparent border-b-neutral-950/28 bg-transparent text-neutral-700 rounded-none px-0"
+        : "border-neutral-300 bg-white/54 text-neutral-700 backdrop-blur";
+
+  return (
+    <button
+      type="button"
+      onMouseEnter={() => sound.playRole("hover")}
+      onClick={() => {
+        sound.playRole(variant === "dark" ? "open" : "select");
+        onClick?.();
+      }}
+      className={[
+        "inline-flex min-h-11 items-center justify-center rounded-full border px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] transition active:scale-[0.99]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/50",
+        classes,
+        className,
+      ].join(" ")}
+    >
+      {children}
+    </button>
+  );
+}
+
+function MobileImmersiveHero({
+  onExploreChambers,
+  onOpenWhisper,
+  onOpenProject,
+}: {
+  onExploreChambers: () => void;
+  onOpenWhisper: () => void;
+  onOpenProject?: () => void;
+}) {
+  return (
+    <section
+      id="threshold"
+      data-header-scene={immersiveHeaderScenes.threshold}
+      className="relative overflow-hidden px-5 pb-14 pt-24 sm:px-8"
+    >
+      <div className="pointer-events-none absolute left-[9%] top-[11%] h-[31rem] w-[31rem] rounded-full border border-neutral-950/[0.045]" />
+      <div className="pointer-events-none absolute right-[-22%] top-[27%] h-[24rem] w-[24rem] rotate-[-14deg] rounded-[50%] border border-neutral-950/[0.05]" />
+      <div className="pointer-events-none absolute left-[-10%] top-[52%] h-px w-[125%] -rotate-[13deg] bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
+
+      <div className="relative z-10 mx-auto max-w-[42rem]">
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full border border-neutral-300/70 bg-white/56 px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
+            Immersive interface systems hub
+          </span>
+          <span className="rounded-full border border-neutral-300/70 bg-white/38 px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
+            Chamber map
+          </span>
+        </div>
+
+        <h1 className="mt-9 max-w-[8.6ch] text-[clamp(4.7rem,17.4vw,8.7rem)] font-normal leading-[0.8] tracking-[-0.08em] text-neutral-950">
+          Immersive interface systems.
+        </h1>
+
+        <p className="mt-8 max-w-[36rem] text-[18px] leading-[1.7] text-neutral-600 sm:text-[20px]">
+          Cinematic web environments, spatial archives, product worlds, AR continuations, presence-based interfaces,
+          and WebXR-ready prototypes.
+        </p>
+
+        <p className="mt-5 max-w-[34rem] text-[15px] leading-7 text-neutral-500">
+          Websites as scenes, archives as rooms, products as worlds, interfaces as living fields.
+        </p>
+
+        <div className="mt-9 flex flex-wrap gap-3">
+          <MobileAction variant="dark" onClick={onExploreChambers}>
+            Explore chambers -&gt;
+          </MobileAction>
+          <MobileAction onClick={onOpenWhisper}>Open WHISPER -&gt;</MobileAction>
+          <MobileAction onClick={onOpenProject} className="min-w-[16rem]">
+            Start immersive prototype -&gt;
+          </MobileAction>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileChamberField({
+  onOpenWhisper,
+  onShowPreparedChamber,
+}: {
+  onOpenWhisper: () => void;
+  onShowPreparedChamber: (id: FutureChamberId) => void;
+}) {
+  const sound = useSound();
+  const [mode, setMode] = useState<MobileChamberFieldMode>("field");
+  const [activeId, setActiveId] = useState<MobileChamberFieldId>("whisper");
+  const activeEntry =
+    mobileChamberFieldEntries.find((entry) => entry.id === activeId) ?? mobileChamberFieldEntries[0];
+  const activeIndex = Math.max(0, mobileChamberFieldEntries.findIndex((entry) => entry.id === activeId));
+  const fieldCount = mobileChamberFieldEntries.length;
+
+  const selectEntry = (entry: MobileChamberFieldEntry, nextMode: MobileChamberFieldMode = "field") => {
+    if (entry.id !== activeId) sound.playRole("select");
+    setActiveId(entry.id);
+    setMode(nextMode);
+  };
+
+  const selectEntryByOffset = (offset: number) => {
+    const nextIndex = (activeIndex + offset + fieldCount) % fieldCount;
+    const nextEntry = mobileChamberFieldEntries[nextIndex];
+    if (!nextEntry) return;
+    selectEntry(nextEntry, "field");
+  };
+
+  const handleFieldDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipePower = Math.abs(info.offset.x) + Math.abs(info.velocity.x) * 0.18;
+    if (swipePower < 72) return;
+    selectEntryByOffset(info.offset.x < 0 ? 1 : -1);
+  };
+
+  const runActiveAction = () => {
+    if (activeEntry.preparedId) {
+      onShowPreparedChamber(activeEntry.preparedId);
+      return;
+    }
+
+    onOpenWhisper();
+  };
+
+  return (
+    <section
+      id="map"
+      data-header-scene={immersiveHeaderScenes.map}
+      data-sound-safe-area
+      className="relative px-5 py-12 sm:px-8"
+    >
+      <div className="pointer-events-none absolute left-[-18%] top-[8%] h-[31rem] w-[31rem] rounded-[50%] border border-neutral-950/[0.045]" />
+      <div className="pointer-events-none absolute right-[-24%] top-[26%] h-[24rem] w-[24rem] rotate-[16deg] rounded-[50%] border border-neutral-950/[0.05]" />
+
+      <div className="relative z-10 mx-auto max-w-[42rem]">
+        <div className="flex items-center justify-between gap-4">
+          <MobileSectionLabel>02 / Chamber field</MobileSectionLabel>
+          <div className="grid grid-cols-2 overflow-hidden rounded-full border border-neutral-950/12 bg-white/42 p-1 text-[8px] uppercase tracking-[0.14em] text-neutral-500 backdrop-blur">
+            {(["field", "index"] as const).map((item) => (
+              <button
+                key={item}
+                type="button"
+                aria-pressed={mode === item}
+                onMouseEnter={() => sound.playRole("hover")}
+                onClick={() => {
+                  if (mode !== item) sound.playRole("select");
+                  setMode(item);
+                }}
+                className={`rounded-full px-3 py-1.5 transition ${
+                  mode === item ? "bg-neutral-950 text-white" : "text-neutral-500"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <h2 className="mt-6 max-w-[8.8ch] text-[clamp(4.05rem,13.8vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
+          Immersive project atlas.
+        </h2>
+        <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600">
+          One completed chamber anchors the system. The next directions are prepared as product, archive, and collector
+          interfaces rather than generic case cards.
+        </p>
+
+        <AnimatePresence mode="wait" initial={false}>
+          {mode === "field" ? (
+            <motion.div
+              key="field"
+              initial={{ opacity: 0, y: 18, scale: 0.985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.99 }}
+              transition={{ duration: 0.34, ease }}
+              className="mt-8 overflow-hidden border-y border-neutral-950/12 py-6"
+            >
+              <div
+                className="relative mx-[-1rem] min-h-[27.5rem] touch-pan-y overflow-hidden px-4"
+                style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
+              >
+                <div className="pointer-events-none absolute left-[7%] top-[12%] h-[76%] w-[86%] rounded-[50%] border border-neutral-950/[0.07]" />
+                <div className="pointer-events-none absolute left-[-4%] top-[50%] h-px w-[108%] rotate-[-10deg] bg-gradient-to-r from-transparent via-neutral-950/18 to-transparent" />
+                <div className="pointer-events-none absolute right-[6%] top-2 z-40 border-y border-neutral-950/12 bg-white/62 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 shadow-[0_10px_28px_rgba(0,0,0,0.05)] backdrop-blur">
+                  Swipe orbit
+                </div>
+
+                <motion.div
+                  className="absolute inset-0 cursor-grab active:cursor-grabbing"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.18}
+                  dragMomentum={false}
+                  onDragEnd={handleFieldDragEnd}
+                  style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+                >
+                  {mobileChamberFieldEntries.map((entry, index) => {
+                    let offset = index - activeIndex;
+                    while (offset > fieldCount / 2) offset -= fieldCount;
+                    while (offset < -fieldCount / 2) offset += fieldCount;
+
+                    const active = offset === 0;
+                    const hidden = Math.abs(offset) > 1.8;
+                    const x = offset * 62;
+                    const y = active ? 0 : offset < 0 ? 28 : 18;
+                    const rotateZ = active ? -2.5 : offset < 0 ? -10 : 9;
+                    const rotateY = active ? 0 : offset < 0 ? 17 : -17;
+                    const scale = active ? 1 : 0.76;
+                    const opacity = hidden ? 0 : active ? 1 : 0.42;
+                    const posterOffset = active ? "inset-[-3%]" : "inset-[-7%]";
+
+                    return (
+                      <motion.button
+                        key={entry.id}
+                        type="button"
+                        aria-label={`${entry.index} ${entry.title}`}
+                        aria-pressed={active}
+                        onClick={() => {
+                          if (!active) {
+                            selectEntry(entry, "field");
+                            return;
+                          }
+
+                          runActiveAction();
+                        }}
+                        onMouseEnter={() => sound.playRole("hover")}
+                        className={`absolute left-1/2 top-[51%] h-[22rem] w-[86%] max-w-[28rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
+                          active ? "border-white/70 shadow-[0_36px_115px_rgba(0,0,0,0.26)]" : "border-white/24 shadow-[0_26px_90px_rgba(0,0,0,0.18)]"
+                        }`}
+                        style={{
+                          clipPath: active
+                            ? "polygon(3% 0, 100% 6%, 94% 94%, 0 100%)"
+                            : offset < 0
+                              ? "polygon(7% 0, 100% 9%, 90% 100%, 0 88%)"
+                              : "polygon(0 9%, 95% 0, 100% 88%, 8% 100%)",
+                          zIndex: 30 - Math.abs(offset) * 5,
+                          transformStyle: "preserve-3d",
+                        }}
+                        initial={false}
+                        animate={{
+                          opacity,
+                          x: `calc(-50% + ${x}%)`,
+                          y: `calc(-50% + ${y}px)`,
+                          rotateZ,
+                          rotateY,
+                          scale,
+                          filter: `blur(${active ? 0 : 0.75}px)`,
+                        }}
+                        transition={{ duration: 0.64, ease }}
+                      >
+                        <img
+                          src={entry.mediaSrc}
+                          alt=""
+                          className={`absolute ${posterOffset} h-[110%] w-[110%] object-cover saturate-[1.08] contrast-[1.06] brightness-[1.03] transition duration-700 ${
+                            active ? "opacity-95" : "opacity-72 grayscale-[0.12]"
+                          }`}
+                          loading="lazy"
+                          draggable={false}
+                        />
+                        <span className="absolute inset-0 bg-[radial-gradient(circle_at_52%_32%,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.18)_52%,rgba(0,0,0,0.72))]" />
+                        <span className="pointer-events-none absolute inset-x-4 top-4 flex items-center justify-between border-y border-white/15 py-2 font-mono text-[8px] uppercase tracking-[0.17em] text-white/58">
+                          <span>{active ? "Active chamber" : "Prepared plane"}</span>
+                          <span>{entry.index}</span>
+                        </span>
+                        <span className="pointer-events-none absolute bottom-5 left-5 right-5">
+                          <span className="block font-mono text-[9px] uppercase tracking-[0.18em] text-white/54">
+                            {entry.status}
+                          </span>
+                          <span className="mt-2 block max-w-[9ch] text-[42px] leading-[0.86] tracking-[-0.055em] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.48)]">
+                            {entry.title}
+                          </span>
+                          {active ? (
+                            <span className="mt-4 block max-w-[21rem] text-[13px] leading-6 text-white/66">
+                              {entry.role}
+                            </span>
+                          ) : null}
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </motion.div>
+              </div>
+
+              <div className="mt-5 grid gap-5 border-t border-neutral-950/10 pt-5">
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    type="button"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectEntryByOffset(-1)}
+                    className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+                  >
+                    Prev
+                  </button>
+                  <div className="flex items-center gap-2">
+                    {mobileChamberFieldEntries.map((entry) => (
+                      <button
+                        key={entry.id}
+                        type="button"
+                        aria-label={`Show ${entry.title}`}
+                        aria-pressed={entry.id === activeId}
+                        onClick={() => selectEntry(entry, "field")}
+                        className={`h-1.5 rounded-full transition-all ${
+                          entry.id === activeId ? "w-8 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectEntryByOffset(1)}
+                    className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+                  >
+                    Next
+                  </button>
+                </div>
+
+                <div className="grid gap-3">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+                    {activeEntry.index} / {activeEntry.status}
+                  </div>
+                  <p className="text-[16px] leading-7 text-neutral-600">{activeEntry.role}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {mobileChamberFieldEntries.map((entry) => {
+                      const active = entry.id === activeId;
+                      return (
+                        <button
+                          key={entry.id}
+                          type="button"
+                          aria-pressed={active}
+                          onMouseEnter={() => sound.playRole("hover")}
+                          onClick={() => selectEntry(entry, "field")}
+                          className={`border px-2.5 py-1.5 font-mono text-[7px] uppercase tracking-[0.14em] transition ${
+                            active
+                              ? "border-neutral-950 bg-neutral-950 text-white"
+                              : "border-neutral-950/12 bg-white/24 text-neutral-500"
+                          }`}
+                        >
+                          {entry.index} {entry.title}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <MobileAction variant={activeEntry.id === "whisper" ? "dark" : "line"} onClick={runActiveAction}>
+                  {activeEntry.cta} -&gt;
+                </MobileAction>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="index"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.26, ease }}
+              className="mt-8 border-y border-neutral-950/12"
+            >
+              {mobileChamberFieldEntries.map((entry) => (
+                <button
+                  key={entry.id}
+                  type="button"
+                  onMouseEnter={() => sound.playRole("hover")}
+                  onClick={() => selectEntry(entry)}
+                  className="grid w-full grid-cols-[3.2rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 text-left last:border-b-0"
+                >
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-300">{entry.index}</span>
+                  <span>
+                    <span className="block text-[24px] leading-none tracking-[-0.02em] text-neutral-950">
+                      {entry.title}
+                    </span>
+                    <span className="mt-2 block font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-400">
+                      {entry.status}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}
+
+function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
+  const sound = useSound();
+  const [activeId, setActiveId] = useState<WhisperProofId>("web");
+  const activeSurface = whisperProofStates.find((surface) => surface.id === activeId) ?? whisperProofStates[0];
+  const activeIndex = Math.max(0, whisperProofStates.findIndex((surface) => surface.id === activeSurface.id));
+  const surfaceCount = whisperProofStates.length;
+
+  const selectSurface = (surface: WhisperProofState) => {
+    if (surface.id !== activeSurface.id) sound.playRole("transition");
+    setActiveId(surface.id);
+  };
+
+  const selectSurfaceByOffset = (offset: number) => {
+    const nextIndex = (activeIndex + offset + surfaceCount) % surfaceCount;
+    const nextSurface = whisperProofStates[nextIndex];
+    if (!nextSurface) return;
+    selectSurface(nextSurface);
+  };
+
+  const handleSurfaceDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipePower = Math.abs(info.offset.x) + Math.abs(info.velocity.x) * 0.18;
+    if (swipePower < 66) return;
+    selectSurfaceByOffset(info.offset.x < 0 ? 1 : -1);
+  };
+
+  return (
+    <section
+      id="proof"
+      data-header-scene={immersiveHeaderScenes.proof}
+      data-sound-safe-area
+      className="relative px-5 pb-16 pt-12 sm:px-8"
+    >
+      <div className="pointer-events-none absolute left-[7%] top-[8%] h-[26rem] w-[26rem] rotate-[-11deg] rounded-[50%] border border-neutral-950/[0.05]" />
+      <div className="relative z-10 mx-auto max-w-[42rem]">
+        <MobileSectionLabel>03 / Featured proof / WHISPER</MobileSectionLabel>
+        <h2 className="mt-6 max-w-[8.5ch] text-[clamp(4.2rem,14vw,7.2rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
+          The first completed spatial proof.
+        </h2>
+        <p className="mt-7 max-w-[35rem] text-[17px] leading-[1.75] text-neutral-600">
+          WHISPER proves that one photographic archive can move across web, mobile, print, AR, and room-scale presence
+          without losing atmosphere.
+        </p>
+
+        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5">
+          <div
+            className="relative mx-[-1.05rem] min-h-[21.5rem] touch-pan-y overflow-hidden px-4"
+            style={{ perspective: "1350px", transformStyle: "preserve-3d" }}
+          >
+            <div className="pointer-events-none absolute left-[6%] top-[12%] h-[72%] w-[88%] rounded-[50%] border border-neutral-950/[0.055]" />
+            <div className="pointer-events-none absolute left-[-5%] top-[50%] h-px w-[112%] rotate-[-8deg] bg-gradient-to-r from-transparent via-neutral-950/14 to-transparent" />
+            <div className="pointer-events-none absolute right-5 top-0 border-y border-neutral-950/12 bg-white/44 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
+              Surface viewer
+            </div>
+
+            <motion.div
+              className="absolute inset-0 cursor-grab active:cursor-grabbing"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.18}
+              dragMomentum={false}
+              onDragEnd={handleSurfaceDragEnd}
+              style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+            >
+              {whisperProofStates.map((surface) => {
+                let offset = whisperProofStates.findIndex((item) => item.id === surface.id) - activeIndex;
+                while (offset > surfaceCount / 2) offset -= surfaceCount;
+                while (offset < -surfaceCount / 2) offset += surfaceCount;
+
+                const active = offset === 0;
+                const hidden = Math.abs(offset) > 1.7;
+                const x = offset * 74;
+                const y = active ? 0 : offset < 0 ? 18 : 12;
+                const rotateZ = active ? -1.5 : offset < 0 ? -8 : 8;
+                const rotateY = active ? 0 : offset < 0 ? 15 : -15;
+                const scale = active ? 1 : 0.78;
+                const opacity = hidden ? 0 : active ? 1 : 0.38;
+
+                return (
+                  <motion.button
+                    key={surface.id}
+                    type="button"
+                    aria-label={`${surface.index} ${surface.railLabel}`}
+                    aria-pressed={active}
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => {
+                      if (!active) selectSurface(surface);
+                    }}
+                    className={`absolute left-1/2 top-[48%] h-[16.75rem] w-[88%] max-w-[34rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
+                      hidden ? "pointer-events-none" : ""
+                    } ${
+                      active ? "border-white/70 shadow-[0_34px_105px_rgba(0,0,0,0.24)]" : "border-white/24 shadow-[0_24px_80px_rgba(0,0,0,0.16)]"
+                    }`}
+                    style={{
+                      zIndex: 30 - Math.abs(offset) * 5,
+                      transformStyle: "preserve-3d",
+                    }}
+                    initial={false}
+                    animate={{
+                      opacity,
+                      x: `calc(-50% + ${x}%)`,
+                      y: `calc(-50% + ${y}px)`,
+                      rotateZ,
+                      rotateY,
+                      scale,
+                      filter: `blur(${active ? 0 : 0.7}px)`,
+                    }}
+                    transition={{ duration: 0.58, ease }}
+                  >
+                    <WhisperProofMedia
+                      proof={surface}
+                      fit="contain"
+                      className={`absolute inset-0 h-full w-full transition duration-500 ${
+                        active ? "opacity-100 saturate-[1.08] contrast-[1.05]" : "opacity-74 saturate-[0.9] contrast-[0.95]"
+                      }`}
+                    />
+                    <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_26%,rgba(255,255,255,0.05),transparent_32%),linear-gradient(180deg,rgba(0,0,0,0.03),rgba(0,0,0,0.18)_78%,rgba(0,0,0,0.38))]" />
+                    <span className="pointer-events-none absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+                      <span>
+                        <span className="block font-mono text-[8px] uppercase tracking-[0.18em] text-white/54">
+                          Surface {surface.index}
+                        </span>
+                        <span className="mt-1 block text-[26px] leading-none tracking-[-0.03em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)]">
+                          {surface.railLabel}
+                        </span>
+                      </span>
+                      <span className="border border-white/20 bg-black/22 px-2.5 py-1.5 font-mono text-[7px] uppercase tracking-[0.14em] text-white/60">
+                        {active ? "Active" : "Preview"}
+                      </span>
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </motion.div>
+          </div>
+
+          <div className="px-4 pb-2 pt-1">
+            <div className="flex items-center justify-between gap-4 border-y border-neutral-950/10 py-4">
+              <button
+                type="button"
+                onMouseEnter={() => sound.playRole("hover")}
+                onClick={() => selectSurfaceByOffset(-1)}
+                className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+              >
+                Prev
+              </button>
+              <div className="flex items-center gap-2">
+                {whisperProofStates.map((surface) => (
+                  <button
+                    key={surface.id}
+                    type="button"
+                    aria-label={`Show ${surface.railLabel}`}
+                    aria-pressed={surface.id === activeSurface.id}
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectSurface(surface)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      surface.id === activeSurface.id ? "w-8 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onMouseEnter={() => sound.playRole("hover")}
+                onClick={() => selectSurfaceByOffset(1)}
+                className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+              >
+                Next
+              </button>
+            </div>
+
+            <div className="mt-5">
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+                Surface {activeSurface.index} / {activeSurface.signal}
+              </div>
+              <h3 className="mt-2 text-[32px] leading-none tracking-[-0.02em] text-neutral-950">{activeSurface.label}</h3>
+              <p className="mt-3 text-[14px] leading-7 text-neutral-600">
+                {mobileSurfaceReadouts[activeSurface.id]}
+              </p>
+            </div>
+
+            <MobileAction variant="line" onClick={onOpenWhisper} className="mt-6">
+              Open WHISPER -&gt;
+            </MobileAction>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileChamberAtlas({
+  activeId,
+  onActiveChange,
+}: {
+  activeId: FutureChamberId;
+  onActiveChange: (id: FutureChamberId) => void;
+}) {
+  const sound = useSound();
+  const [activeTraceIndex, setActiveTraceIndex] = useState(0);
+  const activeChamber = futureChambers.find((chamber) => chamber.id === activeId) ?? futureChambers[0];
+  const activeChamberIndex = Math.max(0, futureChambers.findIndex((chamber) => chamber.id === activeChamber.id));
+  const activeDetails = futureChamberDetails[activeChamber.id];
+  const activeTraces = activeDetails.traces;
+  const safeTraceIndex = activeTraceIndex % activeTraces.length;
+  const activeTrace = activeTraces[safeTraceIndex] ?? activeTraces[0];
+
+  const selectChamber = (id: FutureChamberId) => {
+    if (id !== activeId) sound.playRole("select");
+    setActiveTraceIndex(0);
+    onActiveChange(id);
+  };
+
+  const selectChamberByOffset = (offset: number) => {
+    const nextIndex = (activeChamberIndex + offset + futureChambers.length) % futureChambers.length;
+    const nextChamber = futureChambers[nextIndex];
+    if (!nextChamber) return;
+    selectChamber(nextChamber.id);
+  };
+
+  const selectTraceByOffset = (offset: number) => {
+    sound.playRole("transition");
+    setActiveTraceIndex((index) => (index + offset + activeTraces.length) % activeTraces.length);
+  };
+
+  const handleTraceDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipePower = Math.abs(info.offset.x) + Math.abs(info.velocity.x) * 0.18;
+    if (swipePower < 64) return;
+    selectTraceByOffset(info.offset.x < 0 ? 1 : -1);
+  };
+
+  return (
+    <section
+      id="future"
+      data-header-scene={immersiveHeaderScenes.future}
+      data-sound-safe-area
+      className="relative px-5 py-12 sm:px-8"
+    >
+      <div className="mx-auto max-w-[42rem]">
+        <MobileSectionLabel>04 / Chamber atlas</MobileSectionLabel>
+        <h2 className="mt-6 text-[clamp(4.15rem,14vw,7.2rem)] font-normal leading-[0.86] tracking-[-0.06em] text-neutral-950">
+          Next rooms in development.
+        </h2>
+        <p className="mt-7 max-w-[35rem] text-[17px] leading-[1.75] text-neutral-600">
+          These are not public cases yet. They are prepared spatial directions for product, archive, collector, and
+          installation systems.
+        </p>
+
+        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.article
+              key={activeChamber.id}
+              initial={{ opacity: 0, y: 18, scale: 0.985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.99 }}
+              transition={{ duration: 0.32, ease }}
+              className="pt-3"
+            >
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 px-1">
+                <div>
+                  <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-400">
+                    {String(activeChamberIndex + 1).padStart(2, "0")} /{" "}
+                    {activeDetails.state}
+                  </div>
+                  <h3 className="mt-2 text-[34px] leading-none tracking-[-0.03em] text-neutral-950">
+                    {activeChamber.title}
+                  </h3>
+                </div>
+                <div className="flex shrink-0 gap-1.5 pt-1">
+                  <button
+                    type="button"
+                    aria-label="Previous chamber"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectChamberByOffset(-1)}
+                    className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/34 text-[13px] text-neutral-500 transition hover:border-neutral-950/40 hover:text-neutral-950"
+                  >
+                    {"<"}
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next chamber"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectChamberByOffset(1)}
+                    className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/34 text-[13px] text-neutral-500 transition hover:border-neutral-950/40 hover:text-neutral-950"
+                  >
+                    {">"}
+                  </button>
+                </div>
+              </div>
+
+              <p className="mt-5 px-1 text-[15px] leading-7 text-neutral-600">
+                {activeDetails.role}
+              </p>
+
+              <div className="mt-5 flex items-center justify-between gap-4 border-y border-neutral-950/10 px-1 py-3">
+                <div className="flex items-center gap-2">
+                  {futureChambers.map((chamber, index) => (
+                    <button
+                      key={chamber.id}
+                      type="button"
+                      aria-label={`Show ${chamber.title}`}
+                      aria-pressed={chamber.id === activeId}
+                      onMouseEnter={() => sound.playRole("hover")}
+                      onClick={() => selectChamber(chamber.id)}
+                      className={`h-1.5 rounded-full transition-all ${
+                        chamber.id === activeId ? "w-9 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                      }`}
+                    >
+                      <span className="sr-only">{String(index + 1).padStart(2, "0")}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-400">
+                  {activeChamberIndex + 1} / {futureChambers.length} chamber
+                </div>
+              </div>
+
+              <div
+                className="relative mx-[-1.05rem] mt-5 min-h-[18.75rem] touch-pan-y overflow-hidden px-4"
+                style={{ perspective: "1300px", transformStyle: "preserve-3d" }}
+              >
+                <div className="pointer-events-none absolute left-[7%] top-[13%] h-[70%] w-[86%] rounded-[50%] border border-neutral-950/[0.055]" />
+                <div className="pointer-events-none absolute right-5 top-0 border-y border-neutral-950/12 bg-white/44 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
+                  Tap / swipe material
+                </div>
+
+                <motion.div
+                  className="absolute inset-0 cursor-grab active:cursor-grabbing"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.18}
+                  dragMomentum={false}
+                  onDragEnd={handleTraceDragEnd}
+                  style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+                >
+                  {activeTraces.map((trace, index) => {
+                    const offset = index - safeTraceIndex;
+                    const active = offset === 0;
+                    const hidden = Math.abs(offset) > 1;
+                    const x = offset * 76;
+                    const rotateZ = active ? -1 : offset < 0 ? -7 : 7;
+                    const rotateY = active ? 0 : offset < 0 ? 14 : -14;
+                    const scale = active ? 1 : 0.78;
+                    const opacity = hidden ? 0 : active ? 1 : 0.34;
+
+                    return (
+                      <motion.button
+                        key={trace.src}
+                        type="button"
+                        aria-label={trace.label}
+                        aria-pressed={active}
+                        onMouseEnter={() => sound.playRole("hover")}
+                        onClick={() => {
+                          if (active) {
+                            selectTraceByOffset(1);
+                            return;
+                          }
+
+                          sound.playRole("transition");
+                          setActiveTraceIndex(index);
+                        }}
+                        className={`absolute left-1/2 top-[50%] h-[13.9rem] w-[88%] max-w-[34rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
+                          hidden ? "pointer-events-none" : ""
+                        } ${
+                          active ? "border-white/70 shadow-[0_30px_90px_rgba(0,0,0,0.22)]" : "border-white/22 shadow-[0_20px_70px_rgba(0,0,0,0.14)]"
+                        }`}
+                        style={{
+                          zIndex: 20 - Math.abs(offset) * 4,
+                          transformStyle: "preserve-3d",
+                        }}
+                        initial={false}
+                        animate={{
+                          opacity,
+                          x: `calc(-50% + ${x}%)`,
+                          y: "calc(-50%)",
+                          rotateZ,
+                          rotateY,
+                          scale,
+                          filter: `blur(${active ? 0 : 0.7}px)`,
+                        }}
+                        transition={{ duration: 0.5, ease }}
+                      >
+                        <img
+                          src={trace.src}
+                          alt=""
+                          className={`absolute inset-0 h-full w-full object-cover transition duration-500 ${
+                            active ? "opacity-95 saturate-[1.04] contrast-[1.04]" : "opacity-70 saturate-[0.9]"
+                          }`}
+                          loading="lazy"
+                          draggable={false}
+                        />
+                        <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.46))]" />
+                        <span className="pointer-events-none absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+                          <span>
+                            <span className="block font-mono text-[8px] uppercase tracking-[0.18em] text-white/56">
+                              Material {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="mt-1 block max-w-[15rem] text-[18px] leading-tight text-white/88">
+                              {trace.label}
+                            </span>
+                          </span>
+                          <span className="border border-white/20 bg-black/24 px-2.5 py-1.5 font-mono text-[7px] uppercase tracking-[0.14em] text-white/62">
+                            {active ? "Open" : "Next"}
+                          </span>
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </motion.div>
+              </div>
+
+              <div className="px-1">
+                <div className="flex items-center justify-between gap-4 border-y border-neutral-950/10 py-4">
+                  <button
+                    type="button"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectTraceByOffset(-1)}
+                    className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+                  >
+                    Prev
+                  </button>
+                  <div className="flex items-center gap-2">
+                    {activeTraces.map((trace, index) => (
+                      <button
+                        key={trace.src}
+                        type="button"
+                        aria-label={`Show ${trace.label}`}
+                        aria-pressed={index === safeTraceIndex}
+                        onMouseEnter={() => sound.playRole("hover")}
+                        onClick={() => {
+                          sound.playRole("transition");
+                          setActiveTraceIndex(index);
+                        }}
+                        className={`h-1.5 rounded-full transition-all ${
+                          index === safeTraceIndex ? "w-8 bg-neutral-950" : "w-1.5 bg-neutral-950/20"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onMouseEnter={() => sound.playRole("hover")}
+                    onClick={() => selectTraceByOffset(1)}
+                    className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
+                  >
+                    Next
+                  </button>
+                </div>
+
+                <div className="mt-4">
+                  <div>
+                    <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-400">
+                      Working material / not public case
+                    </div>
+                    <p className="mt-2 text-[13px] leading-6 text-neutral-500">{activeTrace.caption}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileInterfaceEngines() {
+  const engineOrder = [
+    "webgl-stage",
+    "living-atmosphere",
+    "cinematic-frame-field",
+    "cinematic-inspect",
+    "presence-os",
+    "ar-collector",
+  ];
+  const engines = engineOrder
+    .map((id) => immersiveEngineStack.find((engine) => engine.id === id))
+    .filter((engine): engine is (typeof immersiveEngineStack)[number] => Boolean(engine));
+
+  return (
+    <section
+      id="engines"
+      data-header-scene={immersiveHeaderScenes.engines}
+      data-sound-safe-area
+      className="relative px-5 py-12 sm:px-8"
+    >
+      <div className="mx-auto max-w-[42rem]">
+        <MobileSectionLabel>05 / Interface engines</MobileSectionLabel>
+        <h2 className="mt-6 max-w-[9.2ch] text-[clamp(4.05rem,13.5vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
+          Systems beneath the spatial surface.
+        </h2>
+        <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600">
+          The immersive direction is built from reusable engines: atmosphere, reveal, inspection, orbit, presence, and
+          collector continuation.
+        </p>
+
+        <div className="mt-8 border-y border-neutral-950/12">
+          {engines.map((engine, index) => (
+            <div key={engine.id} className="grid grid-cols-[3.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-300">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 className="text-[27px] leading-none tracking-[-0.015em] text-neutral-950">{engine.title}</h3>
+                <p className="mt-2 text-[13px] leading-6 text-neutral-500">{engine.summary}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileApplicationPaths() {
+  return (
+    <section
+      id="applications"
+      data-header-scene={immersiveHeaderScenes.applications}
+      data-sound-safe-area
+      className="relative px-5 py-12 sm:px-8"
+    >
+      <div className="mx-auto max-w-[42rem]">
+        <MobileSectionLabel>06 / Application layer</MobileSectionLabel>
+        <h2 className="mt-6 max-w-[8.5ch] text-[clamp(4.1rem,13.8vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
+          Where chamber logic becomes practical.
+        </h2>
+        <div className="mt-8 border-y border-neutral-950/12">
+          {mobileApplicationPaths.map((path, index) => (
+            <div key={path} className="grid grid-cols-[3.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-300">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="text-[29px] leading-[1.03] tracking-[-0.02em] text-neutral-950">{path}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileImmersiveClosing({
+  onOpenProject,
+  onOpenWhisper,
+}: {
+  onOpenProject?: () => void;
+  onOpenWhisper: () => void;
+}) {
+  return (
+    <section
+      data-header-scene={immersiveHeaderScenes.applications}
+      data-sound-safe-area
+      className="relative px-5 pb-12 pt-10 sm:px-8"
+    >
+      <div className="pointer-events-none absolute right-[-18%] top-[10%] h-[25rem] w-[25rem] rounded-full border border-neutral-950/[0.05]" />
+      <div className="relative z-10 mx-auto max-w-[42rem]">
+        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
+          <span>07 / Closing signal</span>
+          <span className="h-2 w-2 rounded-full bg-neutral-950" />
+        </div>
+        <h2 className="mt-6 max-w-[8.7ch] text-[clamp(4.25rem,14.4vw,7.4rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
+          Build the next room as an interface.
+        </h2>
+        <p className="mt-6 max-w-[34rem] text-[16px] leading-7 text-neutral-600">
+          Start with a focused chamber, proof layer, or spatial prototype. The system can stay small, but it should
+          behave with clarity.
+        </p>
+
+        <div className="mt-8 border-y border-neutral-950/12">
+          {[
+            ["Studio signal", "Spatial systems"],
+            ["Project intake", "Available"],
+            ["Next step", "Start a project"],
+          ].map(([label, value]) => (
+            <div key={label} className="grid grid-cols-[1fr_auto] gap-4 border-b border-neutral-950/12 py-3 last:border-b-0">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">{label}</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-950">{value}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-7 grid gap-3">
+          <MobileAction variant="dark" onClick={onOpenProject} className="w-full justify-between px-6">
+            Start a project <span aria-hidden="true">-&gt;</span>
+          </MobileAction>
+          <MobileAction onClick={onOpenWhisper} className="w-full">
+            Open WHISPER -&gt;
+          </MobileAction>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileImmersiveHub({
+  onOpenProject,
+  onOpenWhisper,
+  onExploreChambers,
+}: {
+  onOpenProject?: () => void;
+  onOpenWhisper: () => void;
+  onExploreChambers: () => void;
+}) {
+  const [preparedFocus, setPreparedFocus] = useState<FutureChamberId>("product-world");
+
+  const showPreparedChamber = (id: FutureChamberId) => {
+    setPreparedFocus(id);
+    window.requestAnimationFrame(() => {
+      document.getElementById("future")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  };
+
+  return (
+    <main className="relative z-10 lg:hidden" data-mobile-immersive-hub>
+      <MobileImmersiveHero
+        onExploreChambers={onExploreChambers}
+        onOpenWhisper={onOpenWhisper}
+        onOpenProject={onOpenProject}
+      />
+      <MobileChamberField onOpenWhisper={onOpenWhisper} onShowPreparedChamber={showPreparedChamber} />
+      <MobileSurfaceRelay onOpenWhisper={onOpenWhisper} />
+      <MobileChamberAtlas key={preparedFocus} activeId={preparedFocus} onActiveChange={setPreparedFocus} />
+      <MobileInterfaceEngines />
+      <MobileApplicationPaths />
+      <MobileImmersiveClosing onOpenProject={onOpenProject} onOpenWhisper={onOpenWhisper} />
+    </main>
+  );
+}
+
 export default function ImmersiveV2({
   drawerOpen = false,
   onOpenProject,
@@ -2806,6 +3938,7 @@ export default function ImmersiveV2({
   const proofChromeActive = useImmersiveProofChromeActive();
   const railActiveId = proofChromeActive ? "proof" : activeId;
   const { playRole, setScene, setAmbientSceneLevel, startSceneAmbient, stopAmbient } = useSound();
+  const isDesktopLayout = useDesktopImmersiveLayout();
 
   useEffect(() => {
     setScene("immersive", immersiveHeaderScenes[activeId]);
@@ -2858,42 +3991,62 @@ export default function ImmersiveV2({
 
       <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="immersive" />
-        <SectionRail
-          items={sectionItems}
-          activeId={railActiveId}
-          onSelect={(id) => scrollTo(id as SectionId)}
-          label="Immersive sections"
-          tone="light"
-        />
-
-        <main
-          className="relative z-10"
-          data-active-chamber={chamberState.activeChamberId}
-          data-active-mood={chamberState.activeChamber.mood}
-        >
-          <ChamberEntryField
-            activeChamber={chamberState.activeChamber}
-            activeChamberId={chamberState.activeChamberId}
-            activeChamberEngines={chamberState.activeChamberEngines}
-            selectChamber={chamberState.selectChamber}
-            openChamber={openChamber}
-            onExplore={() => scrollTo("map")}
-            onOpenProject={onOpenProject}
+        {isDesktopLayout ? (
+          <SectionRail
+            items={sectionItems}
+            activeId={railActiveId}
+            onSelect={(id) => scrollTo(id as SectionId)}
+            label="Immersive sections"
+            tone="light"
           />
-          {routeContentReady ? (
-            <>
-              <PracticeMapScene chamberState={chamberState} openChamber={openChamber} />
-              <CompletedProofScene onOpenWhisper={() => goTo("/immersive/whisper")} />
-              <EngineStackScene />
-              <FutureChambersScene />
-              <ApplicationLayerScene />
-            </>
-          ) : (
-            <div aria-hidden="true" className="min-h-[500vh]" />
-          )}
-        </main>
+        ) : null}
 
-        {routeContentReady ? <SiteFooterV2 onOpenProject={onOpenProject} variant="immersive" /> : null}
+        {isDesktopLayout ? (
+          <main
+            className="relative z-10"
+            data-active-chamber={chamberState.activeChamberId}
+            data-active-mood={chamberState.activeChamber.mood}
+          >
+            <ChamberEntryField
+              activeChamber={chamberState.activeChamber}
+              activeChamberId={chamberState.activeChamberId}
+              activeChamberEngines={chamberState.activeChamberEngines}
+              selectChamber={chamberState.selectChamber}
+              openChamber={openChamber}
+              onExplore={() => scrollTo("map")}
+              onOpenProject={onOpenProject}
+            />
+            {routeContentReady ? (
+              <>
+                <PracticeMapScene chamberState={chamberState} openChamber={openChamber} />
+                <CompletedProofScene onOpenWhisper={() => goTo("/immersive/whisper")} />
+                <EngineStackScene />
+                <FutureChambersScene />
+                <ApplicationLayerScene />
+              </>
+            ) : (
+              <div aria-hidden="true" className="min-h-[500vh]" />
+            )}
+          </main>
+        ) : routeContentReady ? (
+          <MobileImmersiveHub
+            onOpenProject={onOpenProject}
+            onOpenWhisper={() => goTo("/immersive/whisper")}
+            onExploreChambers={() => scrollTo("map")}
+          />
+        ) : (
+          <main className="relative z-10 lg:hidden">
+            <div aria-hidden="true" className="min-h-[160vh]" />
+          </main>
+        )}
+
+        {routeContentReady ? (
+          <SiteFooterV2
+            onOpenProject={onOpenProject}
+            variant="immersive"
+            hideClosingSignal={!isDesktopLayout}
+          />
+        ) : null}
       </PageSurface>
     </>
   );

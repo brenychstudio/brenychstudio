@@ -1917,26 +1917,40 @@ function MobileEvidenceReader({
     [story],
   );
   const initialFrameIndex = useMemo(() => getMobileEvidenceInitialIndex(frames), [frames]);
-  const sound = useSound();
-  const [activeIndex, setActiveIndex] = useState(initialFrameIndex);
-  const dragConsumedRef = useRef(false);
 
   if (!frames.length) return null;
 
-  const activeFrame = frames[activeIndex] ?? frames[initialFrameIndex] ?? frames[0];
+  return <MobileEvidenceDeck story={story} frames={frames} initialIndex={initialFrameIndex} onInspect={onInspect} />;
+}
+
+function MobileEvidenceDeck({
+  story,
+  frames,
+  initialIndex,
+  onInspect,
+}: {
+  story: CaseStory;
+  frames: CaseStoryMedia[];
+  initialIndex: number;
+  onInspect: (id: string) => void;
+}) {
+  const sound = useSound();
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const dragConsumedRef = useRef(false);
+  const activeFrame = frames[activeIndex] ?? frames[initialIndex] ?? frames[0];
+
   const setActive = (index: number) => {
     const nextIndex = (index + frames.length) % frames.length;
     if (nextIndex === activeIndex) return;
     sound.playRole("transition");
     setActiveIndex(nextIndex);
   };
+
   const handleDragEnd = (info: PanInfo) => {
     const delta = getMobileSwipeDelta(info);
     dragConsumedRef.current = Math.abs(info.offset.x) > 8;
 
-    if (delta !== 0) {
-      setActive(activeIndex + delta);
-    }
+    if (delta !== 0) setActive(activeIndex + delta);
 
     window.setTimeout(() => {
       dragConsumedRef.current = false;
@@ -1949,26 +1963,80 @@ function MobileEvidenceReader({
         {getMobileEvidenceReadout(story)}
       </p>
 
-      <motion.button
-        key={activeFrame.id}
-        type="button"
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.08}
-        whileDrag={{ scale: 0.985 }}
-        onDragEnd={(_event, info) => handleDragEnd(info)}
-        onClick={() => {
-          if (dragConsumedRef.current) return;
-          onInspect(activeFrame.id);
-        }}
+      <div
+        className="relative mx-[-1.75rem] mt-5 min-h-[19.75rem] touch-pan-y overflow-hidden sm:min-h-[23.5rem]"
+        style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
         data-sound-safe-area
-        className="relative mt-5 block w-full appearance-none cursor-grab overflow-hidden bg-transparent p-0 text-left [touch-action:pan-y] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 active:cursor-grabbing"
-        aria-label={`Inspect ${activeFrame.label}`}
       >
-        <span className="block aspect-[14/9] w-full overflow-hidden bg-transparent leading-none">
-          <CaseMediaView media={activeFrame} priority fit="contain" className="block" />
-        </span>
-      </motion.button>
+        <div className="pointer-events-none absolute left-[7%] top-[5%] h-[88%] w-[86%] rounded-[50%] border border-neutral-950/[0.055]" />
+        <div className="pointer-events-none absolute left-[-6%] top-[49%] h-px w-[112%] rotate-[-6deg] bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
+
+        <motion.div
+          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.12}
+          dragMomentum={false}
+          onDragEnd={(_event, info) => handleDragEnd(info)}
+          style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+        >
+          {frames.map((frame, index) => {
+            let offset = index - activeIndex;
+            while (offset > frames.length / 2) offset -= frames.length;
+            while (offset < -frames.length / 2) offset += frames.length;
+
+            if (Math.abs(offset) > 1.8) return null;
+
+            const activePlane = offset === 0;
+            const x = activePlane ? 0 : offset * 76;
+            const y = activePlane ? 0 : offset < 0 ? 14 : 10;
+            const rotateZ = activePlane ? 0 : offset < 0 ? -5 : 5;
+            const rotateY = activePlane ? 0 : offset < 0 ? 14 : -14;
+            const scale = activePlane ? 1 : 0.72;
+            const opacity = activePlane ? 1 : 0.24;
+
+            return (
+              <motion.button
+                key={frame.id}
+                type="button"
+                aria-label={`Inspect ${frame.label}`}
+                aria-pressed={activePlane}
+                onClick={() => {
+                  if (!activePlane) {
+                    setActive(index);
+                    return;
+                  }
+
+                  if (dragConsumedRef.current) return;
+                  onInspect(frame.id);
+                }}
+                className={[
+                  "absolute left-1/2 top-1/2 w-[calc(100%+0.75rem)] max-w-[44rem] overflow-hidden bg-transparent p-0 text-left shadow-[0_26px_82px_rgba(15,15,15,0.14)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/35",
+                ].join(" ")}
+                style={{
+                  zIndex: 30 - Math.abs(offset) * 5,
+                  transformStyle: "preserve-3d",
+                }}
+                initial={false}
+                animate={{
+                  opacity,
+                  x: `calc(-50% + ${x}%)`,
+                  y: `calc(-50% + ${y}px)`,
+                  rotateZ,
+                  rotateY,
+                  scale,
+                  filter: `blur(${activePlane ? 0 : 0.6}px)`,
+                }}
+                transition={{ duration: 0.58, ease }}
+              >
+                <span className="relative block aspect-video overflow-hidden bg-transparent">
+                  <CaseMediaView media={frame} priority={activePlane || index < 2} fit="contain" className="p-0" />
+                </span>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      </div>
 
       <div className="mt-4 border-y border-neutral-950/12 py-3">
         <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
@@ -1986,7 +2054,7 @@ function MobileEvidenceReader({
         <div className="flex gap-2">
           {frames.map((frame, index) => (
             <button
-              key={frame.id}
+              key={`${frame.id}-desktop-evidence-dot`}
               type="button"
               onClick={() => setActive(index)}
               className={[

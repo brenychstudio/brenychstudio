@@ -357,7 +357,7 @@ function MobileAboutMethod() {
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
         {mobileMethodLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="text-[22px] leading-none text-neutral-950">{title}</div>
@@ -387,7 +387,7 @@ function MobileAboutTechnical() {
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
         {mobileTechnicalLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="max-w-[18rem] text-[16px] uppercase leading-6 tracking-[0.1em] text-neutral-950">{title}</div>
@@ -453,7 +453,7 @@ function MobileAboutPrinciples() {
 
           <div data-sound-safe-area className="mt-7 border-y border-white/14 pb-5">
             {principles.map((principle, index) => (
-              <MobileMotionLedgerRow key={principle} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0">
+              <MobileMotionLedgerRow key={principle} signature="dark-chamber" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0">
                 <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/34">
                   <span className="h-1.5 w-1.5 rounded-full bg-white/26" />
                   <span>{String(index + 1).padStart(2, "0")}</span>
@@ -479,19 +479,19 @@ function MobileAboutLayout({
 }) {
   return (
     <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
-      <MobileMotionSection variant="threshold">
+      <MobileMotionSection variant="threshold" signature="hero-lock">
         <MobileAboutHero onOpenProject={onOpenProject} onViewWork={onViewWork} onExploreImmersive={onExploreImmersive} />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileAboutMethod />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileAboutTechnical />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft">
+      <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
         <MobileAboutPracticePosition />
       </MobileMotionSection>
-      <MobileMotionSection variant="dark" delay="soft">
+      <MobileMotionSection variant="dark" delay="soft" signature="dark-chamber">
         <MobileAboutPrinciples />
       </MobileMotionSection>
     </div>

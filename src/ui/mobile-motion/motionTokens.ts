@@ -8,6 +8,23 @@ export const mobileMotionDurations = {
 
 export const mobileMotionEasing = "cubic-bezier(0.22, 1, 0.36, 1)";
 
+export type MobileMotionSignature =
+  | "hero-lock"
+  | "proof-field"
+  | "media-orbit"
+  | "ledger-scan"
+  | "dark-chamber"
+  | "closing-signal";
+
+export const mobileMotionSignatures: MobileMotionSignature[] = [
+  "hero-lock",
+  "proof-field",
+  "media-orbit",
+  "ledger-scan",
+  "dark-chamber",
+  "closing-signal",
+];
+
 export const mobileMotionObserver = {
   section: {
     rootMargin: "0px 0px 18% 0px",

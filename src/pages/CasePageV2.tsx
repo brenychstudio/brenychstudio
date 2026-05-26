@@ -7,6 +7,7 @@ import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
 import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
+import type { MobileMotionSignature } from "../ui/mobile-motion/motionTokens";
 import PageSurface from "../ui/PageSurface";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
@@ -1789,17 +1790,20 @@ function MobileReaderSection({
   title,
   children,
   className = "",
+  signature = "proof-field",
 }: {
   eyebrow: string;
   title: string;
   children: ReactNode;
   className?: string;
+  signature?: MobileMotionSignature;
 }) {
   return (
     <MobileMotionSection
       as="section"
       variant="media"
       delay="soft"
+      signature={signature}
       data-sound-safe-area
       className={["relative overflow-hidden border-t border-neutral-950/12 px-4 py-7", className].join(" ")}
     >
@@ -1853,7 +1857,7 @@ function MobileCaseHero({
   const titleLines = getTitleLines(story.headline);
 
   return (
-    <MobileMotionSection as="section" variant="threshold" className="relative overflow-hidden px-4 pb-5 pt-24" data-sound-safe-area>
+    <MobileMotionSection as="section" variant="threshold" signature="hero-lock" className="relative overflow-hidden px-4 pb-5 pt-24" data-sound-safe-area>
       <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
       <div className="pointer-events-none absolute left-[8%] top-[8rem] h-[34rem] w-[32rem] rounded-[50%] border border-neutral-950/[0.055]" />
       <div className="relative">
@@ -1900,7 +1904,7 @@ function MobileWalkthroughProof({ story }: { story: CaseStory }) {
   const walkthrough = getWalkthroughMedia(story);
 
   return (
-    <MobileReaderSection eyebrow="02 / Watch" title="System walkthrough.">
+    <MobileReaderSection eyebrow="02 / Watch" title="System walkthrough." signature="media-orbit">
       <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {getMobileWalkthroughLine(story)}
       </p>
@@ -1966,7 +1970,7 @@ function MobileEvidenceDeck({
   };
 
   return (
-    <MobileReaderSection eyebrow="03 / Frames" title="Screens as evidence.">
+    <MobileReaderSection eyebrow="03 / Frames" title="Screens as evidence." signature="proof-field">
       <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {getMobileEvidenceReadout(story)}
       </p>
@@ -2108,13 +2112,13 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
   const systemSpine = story.systemLayers.slice(0, 6);
 
   return (
-    <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system.">
+    <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system." signature="ledger-scan">
       <p className="mt-4 max-w-[19ch] text-[clamp(1.35rem,5.8vw,1.9rem)] leading-[1.08] text-neutral-950">
         {story.proofClaim}
       </p>
       <div className="mt-5 border-y border-neutral-950/12">
         {proofNodes.map((item, index) => (
-          <MobileMotionLedgerRow key={item.label} className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
+          <MobileMotionLedgerRow key={item.label} signature="ledger-scan" className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
             <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
               <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -2203,6 +2207,7 @@ function MobileFoundationSection({
       as="section"
       variant="closing"
       delay="soft"
+      signature="closing-signal"
       data-footer-rail-state="closing"
       data-sound-safe-area
       className="relative overflow-hidden border-t border-neutral-950/12 px-4 pb-24 pt-7"
@@ -2226,7 +2231,7 @@ function MobileFoundationSection({
 
         <div className="border-b border-neutral-950/12">
           {passportRows.map((row, index) => (
-            <MobileMotionLedgerRow key={row.label} className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
+            <MobileMotionLedgerRow key={row.label} signature="ledger-scan" className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
               <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.18em] text-neutral-400">
                 {String(index + 1).padStart(2, "0")} / {row.label}
               </div>
@@ -2304,7 +2309,7 @@ function MobilePhoneCarousel({
   };
 
   return (
-    <MobileReaderSection eyebrow={getMobileSectionEyebrow(story, "Mobile")} title={narrative.mobileTitle}>
+    <MobileReaderSection eyebrow={getMobileSectionEyebrow(story, "Mobile")} title={narrative.mobileTitle} signature="media-orbit">
       <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {narrative.mobileIntro}
       </p>

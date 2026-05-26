@@ -2553,7 +2553,7 @@ export default function StudioIndex({
         />
 
         <main className="relative z-10">
-          <MobileMotionSection variant="threshold">
+          <MobileMotionSection variant="threshold" signature="hero-lock">
             <OpeningChapter
               onSystems={() => scrollTo("systems")}
               onWork={() => goTo("/work")}
@@ -2563,23 +2563,23 @@ export default function StudioIndex({
 
           {routeContentReady ? (
             <>
-              <MobileMotionSection variant="ledger" delay="soft">
+              <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
                 <SystemsChapter goTo={goTo} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="media" delay="soft">
+              <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
                 <WhisperChapter onOpen={() => goTo("/immersive")} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="media" delay="soft">
+              <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
                 <AtlasChapter goTo={goTo} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="ledger" delay="soft">
+              <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
                 <GrammarChapter goTo={goTo} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="closing" delay="soft">
+              <MobileMotionSection variant="closing" delay="soft" signature="closing-signal">
                 <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} />
               </MobileMotionSection>
             </>

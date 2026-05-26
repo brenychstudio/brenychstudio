@@ -793,7 +793,7 @@ function MobileOfferThesis() {
 
       <div className="mt-8 border-y border-neutral-950/12">
         {mobileThesisPoints.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="text-[15px] uppercase tracking-[0.1em] text-neutral-950">{title}</div>
@@ -927,7 +927,7 @@ function MobileDeliverySpine() {
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12 pb-2">
         {mobileDeliverySpine.map(([index, title, text], itemIndex) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
+          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
             <div className="relative font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
               <span className="relative z-10 inline-flex h-5 items-center bg-[#f7f5f0]/80 pr-2">{index}</span>
               {itemIndex < mobileDeliverySpine.length - 1 ? (
@@ -972,7 +972,7 @@ function MobileOutputLedger() {
 
       <div data-sound-safe-area className="border-b border-neutral-950/12 pb-6">
         {mobileReceiveLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="max-w-[18rem] text-[19px] leading-[1.1] text-neutral-900">{title}</div>
@@ -994,24 +994,24 @@ function MobileOfferLayout({
 }) {
   return (
     <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
-      <MobileMotionSection variant="threshold">
+      <MobileMotionSection variant="threshold" signature="hero-lock">
         <MobileOfferHero onOpenProject={onOpenProject} onViewWork={onViewWork} />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft">
+      <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
         <div className="py-7">
           <OfferScrollArtifactHero compact />
         </div>
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileOfferThesis />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileRouteSelector />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileDeliverySpine />
       </MobileMotionSection>
-      <MobileMotionSection variant="closing" delay="soft">
+      <MobileMotionSection variant="closing" delay="soft" signature="closing-signal">
         <MobileOutputLedger />
       </MobileMotionSection>
     </div>

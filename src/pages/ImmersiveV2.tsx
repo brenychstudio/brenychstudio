@@ -3911,29 +3911,29 @@ function MobileImmersiveHub({
 
   return (
     <main className="relative z-10 lg:hidden" data-mobile-immersive-hub>
-      <MobileMotionSection variant="threshold">
+      <MobileMotionSection variant="threshold" signature="hero-lock">
         <MobileImmersiveHero
           onExploreChambers={onExploreChambers}
           onOpenWhisper={onOpenWhisper}
           onOpenProject={onOpenProject}
         />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft">
+      <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
         <MobileChamberField onOpenWhisper={onOpenWhisper} onShowPreparedChamber={showPreparedChamber} />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft">
+      <MobileMotionSection variant="media" delay="soft" signature="dark-chamber">
         <MobileSurfaceRelay onOpenWhisper={onOpenWhisper} />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft">
+      <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
         <MobileChamberAtlas key={preparedFocus} activeId={preparedFocus} onActiveChange={setPreparedFocus} />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileInterfaceEngines />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft">
+      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
         <MobileApplicationPaths />
       </MobileMotionSection>
-      <MobileMotionSection variant="closing" delay="soft">
+      <MobileMotionSection variant="closing" delay="soft" signature="closing-signal">
         <MobileImmersiveClosing onOpenProject={onOpenProject} onOpenWhisper={onOpenWhisper} />
       </MobileMotionSection>
     </main>

@@ -985,7 +985,7 @@ export default function EvidenceAtlas({
         <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
 
         <main className="relative pt-24" style={surfaceStyle}>
-          <MobileMotionSection as="section" variant="threshold" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
+          <MobileMotionSection as="section" variant="threshold" signature="hero-lock" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
             <div className="grid gap-8 border-y border-neutral-950/14 py-7 sm:gap-10 sm:py-10 lg:min-h-[calc(100vh-10rem)] xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
               <div className="min-w-0">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
@@ -1220,7 +1220,7 @@ export default function EvidenceAtlas({
 
           {routeContentReady ? (
             <>
-          <MobileMotionSection as="section" variant="media" delay="soft" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
+          <MobileMotionSection as="section" variant="media" delay="soft" signature="media-orbit" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionIntro

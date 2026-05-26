@@ -151,7 +151,7 @@ function AboutV2Meta({ noIndex }: { noIndex: boolean }) {
 
 function SectionLabel({ children, light = false }: { children: string; light?: boolean }) {
   return (
-    <div className={`font-mono text-[10px] uppercase tracking-[0.2em] ${light ? "text-white/48" : "text-neutral-500"}`}>
+    <div data-mobile-motion-child="label" className={`font-mono text-[10px] uppercase tracking-[0.2em] ${light ? "text-white/48" : "text-neutral-500"}`}>
       {children}
     </div>
   );
@@ -348,16 +348,16 @@ function MobileAboutMethod() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
       <SectionLabel>02 / Method</SectionLabel>
-      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
         Structure first. Atmosphere after.
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p data-mobile-motion-child="copy" className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         Signal -&gt; structure -&gt; atmosphere -&gt; interface -&gt; memory.
       </p>
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
         {mobileMethodLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="method-signal" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="text-[22px] leading-none text-neutral-950">{title}</div>
@@ -378,16 +378,16 @@ function MobileAboutTechnical() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
       <SectionLabel>03 / Technical foundation</SectionLabel>
-      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
         The surface has to hold up.
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p data-mobile-motion-child="copy" className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         The system has to carry clarity, motion, routes, and launch-ready delivery without collapsing.
       </p>
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
         {mobileTechnicalLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="method-signal" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="max-w-[18rem] text-[16px] uppercase leading-6 tracking-[0.1em] text-neutral-950">{title}</div>
@@ -397,7 +397,7 @@ function MobileAboutTechnical() {
         ))}
       </div>
 
-      <p className="mt-5 max-w-[21rem] border-b border-neutral-950/10 pb-5 text-[14px] leading-6 text-neutral-500">
+      <p data-mobile-motion-child="cta" className="mt-5 max-w-[21rem] border-b border-neutral-950/10 pb-5 text-[14px] leading-6 text-neutral-500">
         Multilingual and immersive layers are added only when they strengthen the project.
       </p>
     </section>
@@ -413,10 +413,10 @@ function MobileAboutPracticePosition() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
       <SectionLabel>04 / Practice position</SectionLabel>
-      <h2 className="mt-5 max-w-[11ch] text-[50px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[11ch] text-[50px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
         Engineering, image, and interface research.
       </h2>
-      <div className="mt-8 border-l border-neutral-950/24 bg-white/24 py-6 pl-5">
+      <div data-mobile-motion-child="copy" className="mt-8 border-l border-neutral-950/24 bg-white/24 py-6 pl-5">
         <div className="mb-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
           <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
           <span>Human signal / practice position</span>
@@ -447,7 +447,7 @@ function MobileAboutPrinciples() {
         <div className="pointer-events-none absolute -right-[36%] top-[4%] h-[28rem] w-[28rem] rounded-full border border-white/[0.07]" />
         <div className="relative">
           <SectionLabel light>05 / Principles</SectionLabel>
-          <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] tracking-[-0.055em]">
+          <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] tracking-[-0.055em]">
             Calm rules for expressive systems.
           </h2>
 
@@ -482,16 +482,16 @@ function MobileAboutLayout({
       <MobileMotionSection variant="threshold" signature="hero-lock">
         <MobileAboutHero onOpenProject={onOpenProject} onViewWork={onViewWork} onExploreImmersive={onExploreImmersive} />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
+      <MobileMotionSection variant="ledger" delay="soft" signature="method-signal">
         <MobileAboutMethod />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
+      <MobileMotionSection variant="ledger" delay="soft" signature="method-signal">
         <MobileAboutTechnical />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
+      <MobileMotionSection variant="media" delay="soft" signature="method-signal">
         <MobileAboutPracticePosition />
       </MobileMotionSection>
-      <MobileMotionSection variant="dark" delay="soft" signature="dark-chamber">
+      <MobileMotionSection variant="dark" delay="soft" signature="method-signal">
         <MobileAboutPrinciples />
       </MobileMotionSection>
     </div>

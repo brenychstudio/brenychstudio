@@ -281,11 +281,11 @@ function SectionIntro({
 }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">{label}</div>
-      <h2 className="mt-5 max-w-[11ch] text-[46px] font-normal leading-[0.94] tracking-[-0.04em] text-neutral-950 sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.055em]">
+      <div data-mobile-motion-child="label" className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">{label}</div>
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[11ch] text-[46px] font-normal leading-[0.94] tracking-[-0.04em] text-neutral-950 sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.055em]">
         {title}
       </h2>
-      {description ? <p className="mt-6 max-w-[34rem] text-[14px] leading-6 text-neutral-600 sm:mt-7 sm:text-[15px] sm:leading-7">{description}</p> : null}
+      {description ? <p data-mobile-motion-child="copy" className="mt-6 max-w-[34rem] text-[14px] leading-6 text-neutral-600 sm:mt-7 sm:text-[15px] sm:leading-7">{description}</p> : null}
     </div>
   );
 }
@@ -1220,7 +1220,7 @@ export default function EvidenceAtlas({
 
           {routeContentReady ? (
             <>
-          <MobileMotionSection as="section" variant="media" delay="soft" signature="media-orbit" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
+          <MobileMotionSection as="section" variant="media" delay="soft" signature="evidence-scan" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionIntro
@@ -1247,7 +1247,7 @@ export default function EvidenceAtlas({
                 ) : null}
 
                 <div id="work-lens" className="mt-5 overflow-hidden border-y border-neutral-950/12 bg-white/22 backdrop-blur-sm sm:mt-6">
-                  <div className="grid gap-2 border-b border-neutral-950/10 px-3 py-2 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-3">
+                    <div data-mobile-motion-child="row" className="grid gap-2 border-b border-neutral-950/10 px-3 py-2 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-3">
                     <div>
                       <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Archive lens / compact filters</div>
                       <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-300">
@@ -1258,7 +1258,7 @@ export default function EvidenceAtlas({
                     </div>
                     <ArchiveViewToggle mode={archiveViewMode} onChange={changeArchiveViewMode} />
                   </div>
-                  <div className="grid gap-2 p-2 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-stretch">
+                  <div data-mobile-motion-child="row" className="grid gap-2 p-2 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-stretch">
                     <div className="grid grid-flow-col auto-cols-[minmax(8rem,auto)] gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:grid-flow-row sm:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:pb-0 xl:hidden [&::-webkit-scrollbar]:hidden">
                       {mobileEvidenceFilters.map((filter) => (
                         <FilterButton key={filter} filter={filter} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
@@ -1436,11 +1436,11 @@ export default function EvidenceAtlas({
             </div>
           </MobileMotionSection>
 
-          <MobileMotionSection as="section" variant="ledger" delay="soft" id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
+          <MobileMotionSection as="section" variant="ledger" delay="soft" signature="evidence-scan" id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
             <SectionIntro label="Capability Layer" title="What the archive proves." />
             <div className="border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm xl:hidden">
               {capabilityProofMatrix.map((capability) => (
-                <div key={capability.index} data-capability-proof-row className="grid grid-cols-[2.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 px-3 py-5 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] sm:px-5 sm:py-6">
+                <div key={capability.index} data-capability-proof-row data-mobile-motion-child="row" className="grid grid-cols-[2.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 px-3 py-5 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] sm:px-5 sm:py-6">
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{capability.index}</div>
                   <div>
                     <div className="text-[26px] font-normal leading-none tracking-[-0.04em] text-neutral-950 sm:text-[34px]">

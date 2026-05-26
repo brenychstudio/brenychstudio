@@ -1790,7 +1790,7 @@ function MobileReaderSection({
   title,
   children,
   className = "",
-  signature = "proof-field",
+  signature = "proof-reader",
 }: {
   eyebrow: string;
   title: string;
@@ -1810,11 +1810,11 @@ function MobileReaderSection({
       <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
       <div className="pointer-events-none absolute right-[10%] top-8 h-56 w-56 rounded-full border border-neutral-950/[0.045]" />
       <div className="relative">
-        <div className="mb-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+        <div data-mobile-motion-child="label" className="mb-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
           <span className="h-px w-10 bg-neutral-950/18" />
           <span>{eyebrow}</span>
         </div>
-        <h2 className="max-w-[10ch] text-[clamp(2.25rem,11vw,3.45rem)] font-semibold leading-[0.92] tracking-normal text-neutral-950">
+        <h2 data-mobile-motion-child="heading" className="max-w-[10ch] text-[clamp(2.25rem,11vw,3.45rem)] font-semibold leading-[0.92] tracking-normal text-neutral-950">
           {title}
         </h2>
         {children}
@@ -1904,11 +1904,11 @@ function MobileWalkthroughProof({ story }: { story: CaseStory }) {
   const walkthrough = getWalkthroughMedia(story);
 
   return (
-    <MobileReaderSection eyebrow="02 / Watch" title="System walkthrough." signature="media-orbit">
-      <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+    <MobileReaderSection eyebrow="02 / Watch" title="System walkthrough." signature="proof-reader">
+      <p data-mobile-motion-child="copy" className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {getMobileWalkthroughLine(story)}
       </p>
-      <div data-sound-safe-area className="-mx-4 mt-5 overflow-hidden bg-neutral-950 shadow-[0_18px_54px_rgba(15,15,15,0.14)]">
+      <div data-mobile-motion-child="media" data-sound-safe-area className="-mx-4 mt-5 overflow-hidden bg-neutral-950 shadow-[0_18px_54px_rgba(15,15,15,0.14)]">
         <div className="aspect-video overflow-hidden bg-black">
           <CaseMediaView media={walkthrough} priority fit="contain" />
         </div>
@@ -1970,12 +1970,13 @@ function MobileEvidenceDeck({
   };
 
   return (
-    <MobileReaderSection eyebrow="03 / Frames" title="Screens as evidence." signature="proof-field">
-      <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+    <MobileReaderSection eyebrow="03 / Frames" title="Screens as evidence." signature="proof-reader">
+      <p data-mobile-motion-child="copy" className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {getMobileEvidenceReadout(story)}
       </p>
 
       <div
+        data-mobile-motion-child="media"
         className="relative mx-[-1.75rem] mt-5 min-h-[19.75rem] touch-pan-y overflow-hidden sm:min-h-[23.5rem]"
         style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
         data-sound-safe-area
@@ -2050,7 +2051,7 @@ function MobileEvidenceDeck({
         </motion.div>
       </div>
 
-      <div className="mt-4 border-y border-neutral-950/12 py-3">
+      <div data-mobile-motion-child="row" className="mt-4 border-y border-neutral-950/12 py-3">
         <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
           Frame {String(activeIndex + 1).padStart(2, "0")} / {mediaRoleLabel(activeFrame.role)}
         </div>
@@ -2112,13 +2113,13 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
   const systemSpine = story.systemLayers.slice(0, 6);
 
   return (
-    <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system." signature="ledger-scan">
-      <p className="mt-4 max-w-[19ch] text-[clamp(1.35rem,5.8vw,1.9rem)] leading-[1.08] text-neutral-950">
+    <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system." signature="proof-reader">
+      <p data-mobile-motion-child="copy" className="mt-4 max-w-[19ch] text-[clamp(1.35rem,5.8vw,1.9rem)] leading-[1.08] text-neutral-950">
         {story.proofClaim}
       </p>
       <div className="mt-5 border-y border-neutral-950/12">
         {proofNodes.map((item, index) => (
-          <MobileMotionLedgerRow key={item.label} signature="ledger-scan" className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
+          <MobileMotionLedgerRow key={item.label} signature="proof-reader" className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
             <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
               <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -2207,7 +2208,7 @@ function MobileFoundationSection({
       as="section"
       variant="closing"
       delay="soft"
-      signature="closing-signal"
+      signature="proof-reader"
       data-footer-rail-state="closing"
       data-sound-safe-area
       className="relative overflow-hidden border-t border-neutral-950/12 px-4 pb-24 pt-7"
@@ -2215,23 +2216,23 @@ function MobileFoundationSection({
       <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
       <div className="pointer-events-none absolute right-[-18%] top-12 h-72 w-72 rounded-full border border-neutral-950/[0.045]" />
       <div className="relative">
-        <div className="mb-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+        <div data-mobile-motion-child="label" className="mb-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
           <span className="h-px w-10 bg-neutral-950/18" />
           <span>{getMobileSectionEyebrow(story, "Adapt")}</span>
         </div>
 
         <div className="border-y border-neutral-950/12 py-4">
-          <h2 className="max-w-[11ch] text-[clamp(2rem,9vw,2.9rem)] font-semibold leading-[0.94] tracking-normal text-neutral-950">
+          <h2 data-mobile-motion-child="heading" className="max-w-[11ch] text-[clamp(2rem,9vw,2.9rem)] font-semibold leading-[0.94] tracking-normal text-neutral-950">
             Available foundation.
           </h2>
-          <p className="mt-3 max-w-[30ch] text-[15px] leading-6 text-neutral-700">
+          <p data-mobile-motion-child="copy" className="mt-3 max-w-[30ch] text-[15px] leading-6 text-neutral-700">
             {getMobileAvailableStatement(story, narrative.availableStatement)}
           </p>
         </div>
 
         <div className="border-b border-neutral-950/12">
           {passportRows.map((row, index) => (
-            <MobileMotionLedgerRow key={row.label} signature="ledger-scan" className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
+            <MobileMotionLedgerRow key={row.label} signature="proof-reader" className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
               <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.18em] text-neutral-400">
                 {String(index + 1).padStart(2, "0")} / {row.label}
               </div>
@@ -2254,10 +2255,10 @@ function MobileFoundationSection({
         </div>
 
         <div className="mt-5 border-t border-neutral-950/12 pt-5">
-          <p className="max-w-[25ch] text-[1.28rem] font-semibold leading-[1.08] tracking-normal text-neutral-950">
+          <p data-mobile-motion-child="copy" className="max-w-[25ch] text-[1.28rem] font-semibold leading-[1.08] tracking-normal text-neutral-950">
             Use this foundation when the fit is right, or commission one with the same clarity.
           </p>
-          <div data-sound-safe-area className="mt-5 grid gap-3">
+          <div data-mobile-motion-child="cta" data-sound-safe-area className="mt-5 grid gap-3">
             <SignalButton onClick={onOpenProject}>{ctaLabel}</SignalButton>
             {liveLink ? (
               <SignalButton variant="secondary" href={liveLink.href}>
@@ -2309,11 +2310,11 @@ function MobilePhoneCarousel({
   };
 
   return (
-    <MobileReaderSection eyebrow={getMobileSectionEyebrow(story, "Mobile")} title={narrative.mobileTitle} signature="media-orbit">
-      <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
+    <MobileReaderSection eyebrow={getMobileSectionEyebrow(story, "Mobile")} title={narrative.mobileTitle} signature="proof-reader">
+      <p data-mobile-motion-child="copy" className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {narrative.mobileIntro}
       </p>
-      <div className="mt-5 flex items-center justify-between gap-3">
+      <div data-mobile-motion-child="row" className="mt-5 flex items-center justify-between gap-3">
         <div className="flex gap-2">
           {frames.map((frame, index) => (
             <button
@@ -2362,6 +2363,7 @@ function MobilePhoneCarousel({
           if (dragConsumedRef.current) return;
           onInspect(activeFrame.id);
         }}
+        data-mobile-motion-child="media"
         data-sound-safe-area
         className="mx-auto mt-5 block w-[min(76vw,18.5rem)] cursor-grab overflow-hidden bg-transparent [touch-action:pan-y] shadow-[0_18px_48px_rgba(15,15,15,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 active:cursor-grabbing"
         aria-label={`Inspect ${activeFrame.label}`}
@@ -2371,7 +2373,7 @@ function MobilePhoneCarousel({
         </span>
       </motion.button>
 
-      <div className="mt-4 border-y border-neutral-950/12 py-3 text-center">
+      <div data-mobile-motion-child="row" className="mt-4 border-y border-neutral-950/12 py-3 text-center">
         <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
           Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
         </div>

@@ -1,12 +1,15 @@
 export const MOBILE_MOTION_BREAKPOINT = 1024;
 
 export const mobileMotionDurations = {
-  section: 520,
-  media: 680,
-  row: 320,
+  section: 640,
+  media: 780,
+  row: 420,
+  child: 520,
 };
 
 export const mobileMotionEasing = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+export type MobileMotionChild = "label" | "heading" | "copy" | "row" | "media" | "cta";
 
 export type MobileMotionSignature =
   | "hero-lock"
@@ -14,7 +17,13 @@ export type MobileMotionSignature =
   | "media-orbit"
   | "ledger-scan"
   | "dark-chamber"
-  | "closing-signal";
+  | "closing-signal"
+  | "studio-os"
+  | "evidence-scan"
+  | "route-selector"
+  | "method-signal"
+  | "chamber-signal"
+  | "proof-reader";
 
 export const mobileMotionSignatures: MobileMotionSignature[] = [
   "hero-lock",
@@ -23,16 +32,24 @@ export const mobileMotionSignatures: MobileMotionSignature[] = [
   "ledger-scan",
   "dark-chamber",
   "closing-signal",
+  "studio-os",
+  "evidence-scan",
+  "route-selector",
+  "method-signal",
+  "chamber-signal",
+  "proof-reader",
 ];
+
+export const mobileMotionChildren: MobileMotionChild[] = ["label", "heading", "copy", "row", "media", "cta"];
 
 export const mobileMotionObserver = {
   section: {
-    rootMargin: "0px 0px 18% 0px",
-    threshold: 0.08,
+    rootMargin: "0px 0px 28% 0px",
+    threshold: 0.01,
   },
   media: {
-    rootMargin: "0px 0px 12% 0px",
-    threshold: 0.1,
+    rootMargin: "0px 0px 22% 0px",
+    threshold: 0.01,
   },
   ledger: {
     rootMargin: "-24% 0px -34% 0px",

@@ -304,7 +304,7 @@ function OfferV2Meta() {
 
 function SectionLabel({ children, light = false }: { children: string; light?: boolean }) {
   return (
-    <div className={`font-mono text-[10px] uppercase tracking-[0.18em] ${light ? "text-white/48" : "text-neutral-500"}`}>
+    <div data-mobile-motion-child="label" className={`font-mono text-[10px] uppercase tracking-[0.18em] ${light ? "text-white/48" : "text-neutral-500"}`}>
       {children}
     </div>
   );
@@ -784,16 +784,16 @@ function MobileOfferThesis() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] py-12"
     >
       <SectionLabel>01 / What I build</SectionLabel>
-      <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
         Commercial system surface.
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p data-mobile-motion-child="copy" className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         Not generic services. Each format is a commercial interface system with a clear role, audience, and result.
       </p>
 
       <div className="mt-8 border-y border-neutral-950/12">
         {mobileThesisPoints.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="route-selector" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="text-[15px] uppercase tracking-[0.1em] text-neutral-950">{title}</div>
@@ -822,6 +822,7 @@ function MobileRouteSelector() {
     return (
       <article
         key={route.title}
+        data-mobile-motion-child="row"
         className={`border-b border-neutral-950/10 last:border-b-0 ${secondary ? "text-neutral-700" : "text-neutral-950"}`}
       >
         <button
@@ -864,10 +865,10 @@ function MobileRouteSelector() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] py-12"
     >
       <SectionLabel>02 / Route selector</SectionLabel>
-      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
         Choose the right entry point.
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p data-mobile-motion-child="copy" className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         Most projects start from one of these routes. Open only the route that feels closest to the need.
       </p>
 
@@ -878,6 +879,7 @@ function MobileRouteSelector() {
       <div className="mt-6 border-y border-neutral-950/10">
         <button
           type="button"
+          data-mobile-motion-child="cta"
           onMouseEnter={() => playRole("hover")}
           onClick={() => {
             playRole("select");
@@ -918,16 +920,16 @@ function MobileDeliverySpine() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] py-12"
     >
       <SectionLabel>03 / How the project moves</SectionLabel>
-      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
         Built through clear stages.
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p data-mobile-motion-child="copy" className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         The route moves from commercial direction into a visible interface system, then into production and launch.
       </p>
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12 pb-2">
         {mobileDeliverySpine.map(([index, title, text], itemIndex) => (
-          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
+          <MobileMotionLedgerRow key={title} signature="route-selector" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
             <div className="relative font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
               <span className="relative z-10 inline-flex h-5 items-center bg-[#f7f5f0]/80 pr-2">{index}</span>
               {itemIndex < mobileDeliverySpine.length - 1 ? (
@@ -961,18 +963,18 @@ function MobileOutputLedger() {
       className="relative z-10 mx-auto w-[min(100%,44rem)] px-[var(--mobile-page-x)] py-12"
     >
       <SectionLabel>04 / What you receive</SectionLabel>
-      <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
+      <h2 data-mobile-motion-child="heading" className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.95] text-neutral-950">
         A usable commercial system.
       </h2>
 
-      <div className="mt-8 flex items-center justify-between gap-4 border-y border-neutral-950/12 py-3">
+      <div data-mobile-motion-child="row" className="mt-8 flex items-center justify-between gap-4 border-y border-neutral-950/12 py-3">
         <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Included in every route</div>
         <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">05 items</div>
       </div>
 
       <div data-sound-safe-area className="border-b border-neutral-950/12 pb-6">
         {mobileReceiveLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} signature="ledger-scan" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} signature="route-selector" className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="max-w-[18rem] text-[19px] leading-[1.1] text-neutral-900">{title}</div>
@@ -997,21 +999,21 @@ function MobileOfferLayout({
       <MobileMotionSection variant="threshold" signature="hero-lock">
         <MobileOfferHero onOpenProject={onOpenProject} onViewWork={onViewWork} />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
-        <div className="py-7">
+      <MobileMotionSection variant="media" delay="soft" signature="route-selector">
+        <div data-mobile-motion-child="media" className="py-7">
           <OfferScrollArtifactHero compact />
         </div>
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
+      <MobileMotionSection variant="ledger" delay="soft" signature="route-selector">
         <MobileOfferThesis />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
+      <MobileMotionSection variant="ledger" delay="soft" signature="route-selector">
         <MobileRouteSelector />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="ledger-scan">
+      <MobileMotionSection variant="ledger" delay="soft" signature="route-selector">
         <MobileDeliverySpine />
       </MobileMotionSection>
-      <MobileMotionSection variant="closing" delay="soft" signature="closing-signal">
+      <MobileMotionSection variant="closing" delay="soft" signature="route-selector">
         <MobileOutputLedger />
       </MobileMotionSection>
     </div>

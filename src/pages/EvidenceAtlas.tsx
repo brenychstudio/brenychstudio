@@ -13,6 +13,7 @@ import {
 } from "../data/workEvidence";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
@@ -984,12 +985,15 @@ export default function EvidenceAtlas({
         <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
 
         <main className="relative pt-24" style={surfaceStyle}>
-          <section id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
+          <MobileMotionSection as="section" variant="threshold" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
             <div className="grid gap-8 border-y border-neutral-950/14 py-7 sm:gap-10 sm:py-10 lg:min-h-[calc(100vh-10rem)] xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
               <div className="min-w-0">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
-                <h1 className="mt-6 max-w-[10.5ch] text-[50px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[92px] sm:leading-[0.9] sm:tracking-[-0.06em] xl:text-[124px]">
-                  Selected work, built as interface systems.
+                <h1 className="mt-6 max-w-[10.5ch] text-[50px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 [overflow-wrap:anywhere] sm:text-[92px] sm:leading-[0.9] sm:tracking-[-0.06em] xl:text-[124px]">
+                  <span className="block sm:inline">Selected work, </span>
+                  <span className="block sm:inline">built as </span>
+                  <span className="block sm:inline">interface </span>
+                  <span className="block sm:inline">systems.</span>
                 </h1>
                 <p className="mt-7 max-w-[44rem] text-[15px] leading-7 text-neutral-600 sm:mt-8 sm:text-[17px] sm:leading-8">
                   A curated atlas of premium websites, product systems, tools, multilingual surfaces, and immersive
@@ -1212,11 +1216,11 @@ export default function EvidenceAtlas({
                 ) : null}
               </div>
             </div>
-          </section>
+          </MobileMotionSection>
 
           {routeContentReady ? (
             <>
-          <section id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
+          <MobileMotionSection as="section" variant="media" delay="soft" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionIntro
@@ -1430,9 +1434,9 @@ export default function EvidenceAtlas({
                 )}
               </AnimatePresence>
             </div>
-          </section>
+          </MobileMotionSection>
 
-          <section id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
+          <MobileMotionSection as="section" variant="ledger" delay="soft" id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
             <SectionIntro label="Capability Layer" title="What the archive proves." />
             <div className="border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm xl:hidden">
               {capabilityProofMatrix.map((capability) => (
@@ -1461,7 +1465,7 @@ export default function EvidenceAtlas({
                 </div>
               ))}
             </div>
-          </section>
+          </MobileMotionSection>
             </>
           ) : (
             <div aria-hidden="true" className="min-h-[260vh]" />

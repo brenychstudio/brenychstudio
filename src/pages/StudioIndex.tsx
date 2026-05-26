@@ -18,6 +18,7 @@ import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import LiveBuildSignal from "../ui/studio-index/LiveBuildSignal";
 import MobileChapter from "../ui/MobileChapter";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
@@ -2552,23 +2553,35 @@ export default function StudioIndex({
         />
 
         <main className="relative z-10">
-          <OpeningChapter
-            onSystems={() => scrollTo("systems")}
-            onWork={() => goTo("/work")}
-            onImmersive={() => goTo("/immersive")}
-          />
+          <MobileMotionSection variant="threshold">
+            <OpeningChapter
+              onSystems={() => scrollTo("systems")}
+              onWork={() => goTo("/work")}
+              onImmersive={() => goTo("/immersive")}
+            />
+          </MobileMotionSection>
 
           {routeContentReady ? (
             <>
-              <SystemsChapter goTo={goTo} />
+              <MobileMotionSection variant="ledger" delay="soft">
+                <SystemsChapter goTo={goTo} />
+              </MobileMotionSection>
 
-              <WhisperChapter onOpen={() => goTo("/immersive")} />
+              <MobileMotionSection variant="media" delay="soft">
+                <WhisperChapter onOpen={() => goTo("/immersive")} />
+              </MobileMotionSection>
 
-              <AtlasChapter goTo={goTo} />
+              <MobileMotionSection variant="media" delay="soft">
+                <AtlasChapter goTo={goTo} />
+              </MobileMotionSection>
 
-              <GrammarChapter goTo={goTo} />
+              <MobileMotionSection variant="ledger" delay="soft">
+                <GrammarChapter goTo={goTo} />
+              </MobileMotionSection>
 
-              <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} />
+              <MobileMotionSection variant="closing" delay="soft">
+                <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} />
+              </MobileMotionSection>
             </>
           ) : (
             <div aria-hidden="true" className="min-h-[420vh]" />

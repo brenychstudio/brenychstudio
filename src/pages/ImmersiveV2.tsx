@@ -29,6 +29,7 @@ import {
 } from "../data/immersiveSystems";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
@@ -3910,17 +3911,31 @@ function MobileImmersiveHub({
 
   return (
     <main className="relative z-10 lg:hidden" data-mobile-immersive-hub>
-      <MobileImmersiveHero
-        onExploreChambers={onExploreChambers}
-        onOpenWhisper={onOpenWhisper}
-        onOpenProject={onOpenProject}
-      />
-      <MobileChamberField onOpenWhisper={onOpenWhisper} onShowPreparedChamber={showPreparedChamber} />
-      <MobileSurfaceRelay onOpenWhisper={onOpenWhisper} />
-      <MobileChamberAtlas key={preparedFocus} activeId={preparedFocus} onActiveChange={setPreparedFocus} />
-      <MobileInterfaceEngines />
-      <MobileApplicationPaths />
-      <MobileImmersiveClosing onOpenProject={onOpenProject} onOpenWhisper={onOpenWhisper} />
+      <MobileMotionSection variant="threshold">
+        <MobileImmersiveHero
+          onExploreChambers={onExploreChambers}
+          onOpenWhisper={onOpenWhisper}
+          onOpenProject={onOpenProject}
+        />
+      </MobileMotionSection>
+      <MobileMotionSection variant="media" delay="soft">
+        <MobileChamberField onOpenWhisper={onOpenWhisper} onShowPreparedChamber={showPreparedChamber} />
+      </MobileMotionSection>
+      <MobileMotionSection variant="media" delay="soft">
+        <MobileSurfaceRelay onOpenWhisper={onOpenWhisper} />
+      </MobileMotionSection>
+      <MobileMotionSection variant="media" delay="soft">
+        <MobileChamberAtlas key={preparedFocus} activeId={preparedFocus} onActiveChange={setPreparedFocus} />
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileInterfaceEngines />
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileApplicationPaths />
+      </MobileMotionSection>
+      <MobileMotionSection variant="closing" delay="soft">
+        <MobileImmersiveClosing onOpenProject={onOpenProject} onOpenWhisper={onOpenWhisper} />
+      </MobileMotionSection>
     </main>
   );
 }

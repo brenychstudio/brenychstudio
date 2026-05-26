@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
+import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import OfferDeliveryModelEngine, { OfferDeliveryInterfaceOverlay } from "../ui/OfferDeliveryModelEngine";
 import OfferScrollArtifactHero from "../ui/OfferScrollArtifactHero";
 import PageSurface from "../ui/PageSurface";
@@ -791,13 +793,13 @@ function MobileOfferThesis() {
 
       <div className="mt-8 border-y border-neutral-950/12">
         {mobileThesisPoints.map(([index, title, text]) => (
-          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="text-[15px] uppercase tracking-[0.1em] text-neutral-950">{title}</div>
               <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
             </div>
-          </div>
+          </MobileMotionLedgerRow>
         ))}
       </div>
     </section>
@@ -925,7 +927,7 @@ function MobileDeliverySpine() {
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12 pb-2">
         {mobileDeliverySpine.map(([index, title, text], itemIndex) => (
-          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
+          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4">
             <div className="relative font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
               <span className="relative z-10 inline-flex h-5 items-center bg-[#f7f5f0]/80 pr-2">{index}</span>
               {itemIndex < mobileDeliverySpine.length - 1 ? (
@@ -935,11 +937,11 @@ function MobileDeliverySpine() {
             <div className="flex min-w-0 items-baseline justify-between gap-4">
               <div>
                 <div className="text-[22px] leading-none text-neutral-950">{title}</div>
-                <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
               </div>
               <span className="mt-2 h-2 w-2 shrink-0 rounded-full border border-neutral-950/18" aria-hidden="true" />
             </div>
-          </div>
+          </MobileMotionLedgerRow>
         ))}
 
         <div className="grid grid-cols-[3.5rem_1fr] gap-4 py-4">
@@ -970,13 +972,13 @@ function MobileOutputLedger() {
 
       <div data-sound-safe-area className="border-b border-neutral-950/12 pb-6">
         {mobileReceiveLedger.map(([index, title, text]) => (
-          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="max-w-[18rem] text-[19px] leading-[1.1] text-neutral-900">{title}</div>
               <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
             </div>
-          </div>
+          </MobileMotionLedgerRow>
         ))}
       </div>
     </section>
@@ -992,14 +994,26 @@ function MobileOfferLayout({
 }) {
   return (
     <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
-      <MobileOfferHero onOpenProject={onOpenProject} onViewWork={onViewWork} />
-      <div className="py-7">
-        <OfferScrollArtifactHero compact />
-      </div>
-      <MobileOfferThesis />
-      <MobileRouteSelector />
-      <MobileDeliverySpine />
-      <MobileOutputLedger />
+      <MobileMotionSection variant="threshold">
+        <MobileOfferHero onOpenProject={onOpenProject} onViewWork={onViewWork} />
+      </MobileMotionSection>
+      <MobileMotionSection variant="media" delay="soft">
+        <div className="py-7">
+          <OfferScrollArtifactHero compact />
+        </div>
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileOfferThesis />
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileRouteSelector />
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileDeliverySpine />
+      </MobileMotionSection>
+      <MobileMotionSection variant="closing" delay="soft">
+        <MobileOutputLedger />
+      </MobileMotionSection>
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
+import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
@@ -1794,7 +1796,13 @@ function MobileReaderSection({
   className?: string;
 }) {
   return (
-    <section data-sound-safe-area className={["relative overflow-hidden border-t border-neutral-950/12 px-4 py-7", className].join(" ")}>
+    <MobileMotionSection
+      as="section"
+      variant="media"
+      delay="soft"
+      data-sound-safe-area
+      className={["relative overflow-hidden border-t border-neutral-950/12 px-4 py-7", className].join(" ")}
+    >
       <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
       <div className="pointer-events-none absolute right-[10%] top-8 h-56 w-56 rounded-full border border-neutral-950/[0.045]" />
       <div className="relative">
@@ -1807,7 +1815,7 @@ function MobileReaderSection({
         </h2>
         {children}
       </div>
-    </section>
+    </MobileMotionSection>
   );
 }
 
@@ -1845,7 +1853,7 @@ function MobileCaseHero({
   const titleLines = getTitleLines(story.headline);
 
   return (
-    <section className="relative overflow-hidden px-4 pb-5 pt-24" data-sound-safe-area>
+    <MobileMotionSection as="section" variant="threshold" className="relative overflow-hidden px-4 pb-5 pt-24" data-sound-safe-area>
       <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:58px_58px]" />
       <div className="pointer-events-none absolute left-[8%] top-[8rem] h-[34rem] w-[32rem] rounded-[50%] border border-neutral-950/[0.055]" />
       <div className="relative">
@@ -1884,7 +1892,7 @@ function MobileCaseHero({
 
         <MobileProofSpine story={story} />
       </div>
-    </section>
+    </MobileMotionSection>
   );
 }
 
@@ -2106,7 +2114,7 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
       </p>
       <div className="mt-5 border-y border-neutral-950/12">
         {proofNodes.map((item, index) => (
-          <div key={item.label} className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
+          <MobileMotionLedgerRow key={item.label} className="border-b border-neutral-950/10 py-3.5 last:border-b-0">
             <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
               <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -2115,7 +2123,7 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
               {item.label}
             </h3>
             <p className="mt-2 max-w-[36ch] text-[14px] leading-6 text-neutral-600">{item.text}</p>
-          </div>
+          </MobileMotionLedgerRow>
         ))}
       </div>
       <div className="mt-5 border-y border-neutral-950/12 py-3">
@@ -2191,7 +2199,10 @@ function MobileFoundationSection({
   ];
 
   return (
-    <section
+    <MobileMotionSection
+      as="section"
+      variant="closing"
+      delay="soft"
       data-footer-rail-state="closing"
       data-sound-safe-area
       className="relative overflow-hidden border-t border-neutral-950/12 px-4 pb-24 pt-7"
@@ -2215,12 +2226,12 @@ function MobileFoundationSection({
 
         <div className="border-b border-neutral-950/12">
           {passportRows.map((row, index) => (
-            <div key={row.label} className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
+            <MobileMotionLedgerRow key={row.label} className="grid grid-cols-[4.6rem_1fr] gap-3 border-b border-neutral-950/10 py-3 last:border-b-0">
               <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.18em] text-neutral-400">
                 {String(index + 1).padStart(2, "0")} / {row.label}
               </div>
               <div className="text-[0.98rem] leading-6 text-neutral-900">{row.value}</div>
-            </div>
+            </MobileMotionLedgerRow>
           ))}
         </div>
 
@@ -2254,7 +2265,7 @@ function MobileFoundationSection({
           </div>
         </div>
       </div>
-    </section>
+    </MobileMotionSection>
   );
 }
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import Header from "../ui/Header";
 import Container from "../ui/Container";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import CaseStatusPill from "../ui/status/CaseStatusPill";
 import CaseCover from "../ui/work/CaseCover";
@@ -890,7 +891,7 @@ export default function WorkArchive({
       <main className="pb-20 pt-24 md:pb-24 md:pt-28">
         <PageSurface>
           <Container>
-            <section className="pb-8 md:pb-10">
+            <MobileMotionSection as="section" variant="threshold" className="pb-8 md:pb-10">
               <div className="max-w-[780px]">
                 <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-500">
                   {t.work.hero.label} &middot; {t.work.archive.label}
@@ -992,10 +993,10 @@ export default function WorkArchive({
                   </div>
                 </div>
               </div>
-            </section>
+            </MobileMotionSection>
 
             {view === "cards" ? (
-              <section className="mt-2 border-t border-neutral-100 pt-6">
+              <MobileMotionSection as="section" variant="media" delay="soft" className="mt-2 border-t border-neutral-100 pt-6">
 <motion.div
   className="grid gap-4 lg:grid-cols-2"
   initial={prefersReducedMotion ? undefined : "hidden"}
@@ -1116,9 +1117,9 @@ export default function WorkArchive({
                     </motion.button>
                   ))}
                 </motion.div>
-              </section>
+              </MobileMotionSection>
             ) : (
-              <section className="mt-2 border-t border-neutral-100 pt-6">
+              <MobileMotionSection as="section" variant="media" delay="soft" className="mt-2 border-t border-neutral-100 pt-6">
 <motion.div
   className="space-y-4"
   initial={prefersReducedMotion ? undefined : "hidden"}
@@ -1206,10 +1207,10 @@ export default function WorkArchive({
                     </motion.button>
                   ))}
                 </motion.div>
-              </section>
+              </MobileMotionSection>
             )}
 
-            <section className="mt-12 border-t border-neutral-100 pt-5 md:mt-14">
+            <MobileMotionSection as="section" variant="closing" delay="soft" className="mt-12 border-t border-neutral-100 pt-5 md:mt-14">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <div className="text-[11px] tracking-[0.14em] uppercase text-neutral-400">
@@ -1230,7 +1231,7 @@ export default function WorkArchive({
                   {t.work.archive.backToHome} <span className="text-neutral-400">&rarr;</span>
                 </button>
               </div>
-            </section>
+            </MobileMotionSection>
           </Container>
         </PageSurface>
       </main>

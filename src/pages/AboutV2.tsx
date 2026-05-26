@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import AboutPracticeField from "../ui/about/AboutPracticeField";
 import Header from "../ui/Header";
+import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
+import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
@@ -355,13 +357,13 @@ function MobileAboutMethod() {
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
         {mobileMethodLedger.map(([index, title, text]) => (
-          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="text-[22px] leading-none text-neutral-950">{title}</div>
               <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
             </div>
-          </div>
+          </MobileMotionLedgerRow>
         ))}
       </div>
     </section>
@@ -385,13 +387,13 @@ function MobileAboutTechnical() {
 
       <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
         {mobileTechnicalLedger.map(([index, title, text]) => (
-          <div key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
+          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
             <div>
               <div className="max-w-[18rem] text-[16px] uppercase leading-6 tracking-[0.1em] text-neutral-950">{title}</div>
               <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
             </div>
-          </div>
+          </MobileMotionLedgerRow>
         ))}
       </div>
 
@@ -451,13 +453,13 @@ function MobileAboutPrinciples() {
 
           <div data-sound-safe-area className="mt-7 border-y border-white/14 pb-5">
             {principles.map((principle, index) => (
-              <div key={principle} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0">
+              <MobileMotionLedgerRow key={principle} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0">
                 <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/34">
                   <span className="h-1.5 w-1.5 rounded-full bg-white/26" />
                   <span>{String(index + 1).padStart(2, "0")}</span>
                 </div>
                 <div className="text-[22px] leading-[1.15] tracking-[-0.025em] text-white/86">{principle}</div>
-              </div>
+              </MobileMotionLedgerRow>
             ))}
           </div>
         </div>
@@ -477,11 +479,21 @@ function MobileAboutLayout({
 }) {
   return (
     <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
-      <MobileAboutHero onOpenProject={onOpenProject} onViewWork={onViewWork} onExploreImmersive={onExploreImmersive} />
-      <MobileAboutMethod />
-      <MobileAboutTechnical />
-      <MobileAboutPracticePosition />
-      <MobileAboutPrinciples />
+      <MobileMotionSection variant="threshold">
+        <MobileAboutHero onOpenProject={onOpenProject} onViewWork={onViewWork} onExploreImmersive={onExploreImmersive} />
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileAboutMethod />
+      </MobileMotionSection>
+      <MobileMotionSection variant="ledger" delay="soft">
+        <MobileAboutTechnical />
+      </MobileMotionSection>
+      <MobileMotionSection variant="media" delay="soft">
+        <MobileAboutPracticePosition />
+      </MobileMotionSection>
+      <MobileMotionSection variant="dark" delay="soft">
+        <MobileAboutPrinciples />
+      </MobileMotionSection>
     </div>
   );
 }

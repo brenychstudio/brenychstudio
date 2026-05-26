@@ -67,13 +67,19 @@ const immersiveHeaderScenes: Record<SectionId, string> = {
   applications: "immersive-layer",
 };
 
-type FutureChamberId = Exclude<ImmersiveChamberId, "whisper">;
+type FutureChamberId = "product-world" | "presence-archive" | "collector-continuation";
 
 const futureChamberIds: FutureChamberId[] = [
   "product-world",
   "presence-archive",
   "collector-continuation",
 ];
+
+const immersiveHubChamberIds: ImmersiveChamberId[] = ["whisper", ...futureChamberIds];
+
+const immersiveHubChambers = immersiveChambers.filter((chamber) =>
+  immersiveHubChamberIds.includes(chamber.id),
+);
 
 const futureChambers = immersiveChambers.filter((chamber): chamber is ImmersiveSystemItem & { id: FutureChamberId } =>
   futureChamberIds.includes(chamber.id as FutureChamberId),
@@ -164,31 +170,6 @@ const futureChamberDetails: Record<FutureChamberId, {
         src: "/cases/print-border-studio/desktop/psb-3.webp",
         label: "Working trace",
         caption: "Private viewing trace.",
-      },
-    ],
-  },
-  "installation-field": {
-    role: "A web-born interface becomes projection, camera, kiosk, and room-scale presentation.",
-    proof: "The same interface grammar can move from screen to exhibition environment.",
-    state: "Future exhibition mode",
-    application: "Installations / gallery walls / projected interfaces / room-scale experiences",
-    tags: ["projection", "installation", "room-scale"],
-    readout: ["Projection grammar", "Kiosk mode", "Room scale"],
-    traces: [
-      {
-        src: "/immersive/Whisper/desktop/whisper-vr-1.jpg",
-        label: "Research frame",
-        caption: "Room-scale material.",
-      },
-      {
-        src: "/immersive/Whisper/desktop/whisper-vr-2.jpg",
-        label: "Projection note",
-        caption: "Projection grammar trace.",
-      },
-      {
-        src: "/immersive/Whisper/desktop/whisper-10.jpg",
-        label: "Working trace",
-        caption: "Screen-to-space study.",
       },
     ],
   },
@@ -728,12 +709,12 @@ function SpatialChamberOrbit({
   };
   const reduceMotion = useReducedMotion();
   const sound = useSound();
-  const initialIndex = Math.max(0, immersiveChambers.findIndex((item) => item.id === activeChamberId));
+  const initialIndex = Math.max(0, immersiveHubChambers.findIndex((item) => item.id === activeChamberId));
   const orbitRef = useRef<HTMLDivElement | null>(null);
   const lastWheelRef = useRef(0);
   const [activeOrbitIndex, setActiveOrbitIndex] = useState(initialIndex);
   const [hoveredId, setHoveredId] = useState<ImmersiveChamberId | null>(null);
-  const activeIndex = Math.max(0, immersiveChambers.findIndex((item) => item.id === activeChamberId));
+  const activeIndex = Math.max(0, immersiveHubChambers.findIndex((item) => item.id === activeChamberId));
 
   useEffect(() => {
     if (activeIndex < 0) return;
@@ -746,8 +727,8 @@ function SpatialChamberOrbit({
 
   const moveOrbit = useCallback((direction: 1 | -1, feedback: "transition" | "select" | "none" = "transition") => {
     setActiveOrbitIndex((current) => {
-      const nextIndex = (current + direction + immersiveChambers.length) % immersiveChambers.length;
-      const nextChamber = immersiveChambers[nextIndex];
+      const nextIndex = (current + direction + immersiveHubChambers.length) % immersiveHubChambers.length;
+      const nextChamber = immersiveHubChambers[nextIndex];
 
       if (nextChamber) selectChamber(nextChamber.id, feedback);
 
@@ -823,9 +804,9 @@ function SpatialChamberOrbit({
       >
         <div className="pointer-events-none absolute left-[8%] top-[10%] h-[74%] w-[82%] rounded-[50%] border border-neutral-950/[0.055]" />
 
-        {immersiveChambers.map((chamber, index) => {
+        {immersiveHubChambers.map((chamber, index) => {
           const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
-          const offset = circularOrbitOffset(index, activeOrbitIndex, immersiveChambers.length);
+          const offset = circularOrbitOffset(index, activeOrbitIndex, immersiveHubChambers.length);
           const abs = Math.abs(offset);
           const visible = abs <= 2.05;
           const active = index === activeOrbitIndex;
@@ -937,7 +918,7 @@ function SpatialChamberOrbit({
         </div>
 
         <div className="flex gap-3 overflow-x-auto pb-2">
-          {immersiveChambers.map((chamber, index) => (
+          {immersiveHubChambers.map((chamber, index) => (
             <button
               key={chamber.id}
               type="button"
@@ -1336,9 +1317,9 @@ function PracticeMapScene({
   };
 
   const selectChamberByOffset = useCallback((offset: number) => {
-    const currentIndex = immersiveChambers.findIndex((chamber) => chamber.id === atlasActiveChamberId);
-    const nextIndex = (currentIndex + offset + immersiveChambers.length) % immersiveChambers.length;
-    const nextId = immersiveChambers[nextIndex].id;
+    const currentIndex = immersiveHubChambers.findIndex((chamber) => chamber.id === atlasActiveChamberId);
+    const nextIndex = (currentIndex + offset + immersiveHubChambers.length) % immersiveHubChambers.length;
+    const nextId = immersiveHubChambers[nextIndex].id;
     selectAtlasChamber(nextId);
     if (atlasOpen) setInspectedChamberId(nextId);
   }, [atlasActiveChamberId, atlasOpen, selectAtlasChamber]);
@@ -1551,7 +1532,7 @@ function PracticeMapScene({
             <div className="absolute inset-0 bg-black/16" />
           </div>
 
-          {immersiveChambers.map((chamber) => {
+          {immersiveHubChambers.map((chamber) => {
             const active = chamberState.activeChamberId === chamber.id;
             const slot = chamberSlots[chamber.id];
             const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
@@ -1788,7 +1769,7 @@ function PracticeMapScene({
                 );
               })}
 
-              {immersiveChambers.map((chamber, index) => {
+              {immersiveHubChambers.map((chamber, index) => {
                 const slot = inspectSlots[chamber.id];
                 const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
                 const trace = chamber.media?.stills?.[0] ?? poster;
@@ -1945,7 +1926,7 @@ function PracticeMapScene({
                 </motion.div>
 
                 <div className="mt-5 grid">
-                  {immersiveChambers.map((chamber, index) => {
+                  {immersiveHubChambers.map((chamber, index) => {
                     const selected = inspectedChamberId === chamber.id;
 
                     return (
@@ -2020,7 +2001,7 @@ function PracticeMapScene({
                   </div>
 
                   <div className="grid gap-8 lg:grid-cols-2">
-                    {immersiveChambers.map((chamber, index) => {
+                    {immersiveHubChambers.map((chamber, index) => {
                       const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
                       const trace = chamber.media?.stills?.[0] ?? poster;
                       const engines = getChamberEngines(chamber.id).slice(0, 3);

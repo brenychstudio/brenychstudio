@@ -2889,7 +2889,7 @@ function useDesktopImmersiveLayout() {
 
 function MobileSectionLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="font-mono text-[9px] uppercase tracking-[0.24em] text-neutral-500" data-mobile-motion-child="label">
+    <div className="font-mono text-[9px] uppercase tracking-[0.24em] text-neutral-500">
       {children}
     </div>
   );
@@ -2909,7 +2909,7 @@ function MobileAction({
   const sound = useSound();
   const classes =
     variant === "dark"
-      ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_18px_52px_rgba(0,0,0,0.16)]"
+      ? "border-neutral-950 bg-neutral-950 text-white shadow-none"
       : variant === "line"
         ? "border-transparent border-b-neutral-950/28 bg-transparent text-neutral-700 rounded-none px-0"
         : "border-neutral-300 bg-white/54 text-neutral-700 backdrop-blur";
@@ -3046,7 +3046,7 @@ function MobileChamberField({
       <div className="relative z-10 mx-auto max-w-[42rem]">
         <div className="flex items-center justify-between gap-4">
           <MobileSectionLabel>02 / Chamber field</MobileSectionLabel>
-          <div className="grid grid-cols-2 overflow-hidden rounded-full border border-neutral-950/12 bg-white/42 p-1 text-[8px] uppercase tracking-[0.14em] text-neutral-500 backdrop-blur" data-mobile-motion-child="row">
+          <div className="grid grid-cols-2 overflow-hidden rounded-full border border-neutral-950/12 bg-white/42 p-1 text-[8px] uppercase tracking-[0.14em] text-neutral-500 backdrop-blur">
             {(["field", "index"] as const).map((item) => (
               <button
                 key={item}
@@ -3067,10 +3067,10 @@ function MobileChamberField({
           </div>
         </div>
 
-        <h2 className="mt-6 max-w-[8.8ch] text-[clamp(4.05rem,13.8vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950" data-mobile-motion-child="heading">
+        <h2 className="mt-6 max-w-[8.8ch] text-[clamp(4.05rem,13.8vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
           Immersive project atlas.
         </h2>
-        <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600" data-mobile-motion-child="copy">
+        <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600">
           One completed chamber anchors the system. The next directions are prepared as product, archive, and collector
           interfaces rather than generic case cards.
         </p>
@@ -3084,7 +3084,6 @@ function MobileChamberField({
               exit={{ opacity: 0, y: -12, scale: 0.99 }}
               transition={{ duration: 0.34, ease }}
               className="mt-8 overflow-hidden border-y border-neutral-950/12 py-6"
-              data-mobile-motion-child="media"
             >
               <div
                 className="relative mx-[-1rem] min-h-[27.5rem] touch-pan-y overflow-hidden px-4"
@@ -3136,7 +3135,7 @@ function MobileChamberField({
                         }}
                         onMouseEnter={() => sound.playRole("hover")}
                         className={`absolute left-1/2 top-[51%] h-[22rem] w-[86%] max-w-[28rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
-                          active ? "border-white/70 shadow-[0_36px_115px_rgba(0,0,0,0.26)]" : "border-white/24 shadow-[0_26px_90px_rgba(0,0,0,0.18)]"
+                          active ? "border-white/70 shadow-[0_12px_34px_rgba(0,0,0,0.14)]" : "border-white/24 shadow-[0_10px_28px_rgba(0,0,0,0.08)]"
                         }`}
                         style={{
                           clipPath: active
@@ -3226,7 +3225,7 @@ function MobileChamberField({
                   </button>
                 </div>
 
-                <div className="grid gap-3" data-mobile-motion-child="row">
+                <div className="grid gap-3">
                   <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
                     {activeEntry.index} / {activeEntry.status}
                   </div>
@@ -3254,11 +3253,9 @@ function MobileChamberField({
                   </div>
                 </div>
 
-                <div data-mobile-motion-child="cta">
-                  <MobileAction variant={activeEntry.id === "whisper" ? "dark" : "line"} onClick={runActiveAction} className="w-full">
-                    {activeEntry.cta} -&gt;
-                  </MobileAction>
-                </div>
+                <MobileAction variant={activeEntry.id === "whisper" ? "dark" : "line"} onClick={runActiveAction}>
+                  {activeEntry.cta} -&gt;
+                </MobileAction>
               </div>
             </motion.div>
           ) : (
@@ -3274,7 +3271,6 @@ function MobileChamberField({
                 <button
                   key={entry.id}
                   type="button"
-                  data-mobile-motion-child="row"
                   onMouseEnter={() => sound.playRole("hover")}
                   onClick={() => selectEntry(entry)}
                   className="grid w-full grid-cols-[3.2rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 text-left last:border-b-0"
@@ -3333,15 +3329,15 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
       <div className="pointer-events-none absolute left-[7%] top-[8%] h-[26rem] w-[26rem] rotate-[-11deg] rounded-[50%] border border-neutral-950/[0.05]" />
       <div className="relative z-10 mx-auto max-w-[42rem]">
         <MobileSectionLabel>03 / Featured proof / WHISPER</MobileSectionLabel>
-        <h2 className="mt-6 max-w-[8.5ch] text-[clamp(4.2rem,14vw,7.2rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950" data-mobile-motion-child="heading">
+        <h2 className="mt-6 max-w-[8.5ch] text-[clamp(4.2rem,14vw,7.2rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
           The first completed spatial proof.
         </h2>
-        <p className="mt-7 max-w-[35rem] text-[17px] leading-[1.75] text-neutral-600" data-mobile-motion-child="copy">
+        <p className="mt-7 max-w-[35rem] text-[17px] leading-[1.75] text-neutral-600">
           WHISPER proves that one photographic archive can move across web, mobile, print, AR, and room-scale presence
           without losing atmosphere.
         </p>
 
-        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5" data-mobile-motion-child="media">
+        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5">
           <div
             className="relative mx-[-1.05rem] min-h-[21.5rem] touch-pan-y overflow-hidden px-4"
             style={{ perspective: "1350px", transformStyle: "preserve-3d" }}
@@ -3388,7 +3384,7 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
                     className={`absolute left-1/2 top-[48%] h-[16.75rem] w-[88%] max-w-[34rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
                       hidden ? "pointer-events-none" : ""
                     } ${
-                      active ? "border-white/70 shadow-[0_34px_105px_rgba(0,0,0,0.24)]" : "border-white/24 shadow-[0_24px_80px_rgba(0,0,0,0.16)]"
+                      active ? "border-white/70 shadow-[0_12px_32px_rgba(0,0,0,0.13)]" : "border-white/24 shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
                     }`}
                     style={{
                       zIndex: 30 - Math.abs(offset) * 5,
@@ -3468,7 +3464,7 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
               </button>
             </div>
 
-            <div className="mt-5" data-mobile-motion-child="row">
+            <div className="mt-5">
               <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
                 Surface {activeSurface.index} / {activeSurface.signal}
               </div>
@@ -3478,11 +3474,9 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
               </p>
             </div>
 
-            <div data-mobile-motion-child="cta">
-              <MobileAction variant="line" onClick={onOpenWhisper} className="mt-6">
-                Open WHISPER -&gt;
-              </MobileAction>
-            </div>
+            <MobileAction variant="line" onClick={onOpenWhisper} className="mt-6">
+              Open WHISPER -&gt;
+            </MobileAction>
           </div>
         </div>
       </div>
@@ -3539,15 +3533,15 @@ function MobileChamberAtlas({
     >
       <div className="mx-auto max-w-[42rem]">
         <MobileSectionLabel>04 / Chamber atlas</MobileSectionLabel>
-        <h2 className="mt-6 text-[clamp(4.15rem,14vw,7.2rem)] font-normal leading-[0.86] tracking-[-0.06em] text-neutral-950" data-mobile-motion-child="heading">
+        <h2 className="mt-6 text-[clamp(4.15rem,14vw,7.2rem)] font-normal leading-[0.86] tracking-[-0.06em] text-neutral-950">
           Next rooms in development.
         </h2>
-        <p className="mt-7 max-w-[35rem] text-[17px] leading-[1.75] text-neutral-600" data-mobile-motion-child="copy">
+        <p className="mt-7 max-w-[35rem] text-[17px] leading-[1.75] text-neutral-600">
           These are not public cases yet. They are prepared spatial directions for product, archive, collector, and
           installation systems.
         </p>
 
-        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5" data-mobile-motion-child="media">
+        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5">
           <AnimatePresence mode="wait" initial={false}>
             <motion.article
               key={activeChamber.id}
@@ -3663,7 +3657,7 @@ function MobileChamberAtlas({
                         className={`absolute left-1/2 top-[50%] h-[13.9rem] w-[88%] max-w-[34rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
                           hidden ? "pointer-events-none" : ""
                         } ${
-                          active ? "border-white/70 shadow-[0_30px_90px_rgba(0,0,0,0.22)]" : "border-white/22 shadow-[0_20px_70px_rgba(0,0,0,0.14)]"
+                          active ? "border-white/70 shadow-[0_12px_34px_rgba(0,0,0,0.14)]" : "border-white/22 shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
                         }`}
                         style={{
                           zIndex: 20 - Math.abs(offset) * 4,
@@ -3787,17 +3781,17 @@ function MobileInterfaceEngines() {
     >
       <div className="mx-auto max-w-[42rem]">
         <MobileSectionLabel>05 / Interface engines</MobileSectionLabel>
-        <h2 className="mt-6 max-w-[9.2ch] text-[clamp(4.05rem,13.5vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950" data-mobile-motion-child="heading">
+        <h2 className="mt-6 max-w-[9.2ch] text-[clamp(4.05rem,13.5vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
           Systems beneath the spatial surface.
         </h2>
-        <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600" data-mobile-motion-child="copy">
+        <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600">
           The immersive direction is built from reusable engines: atmosphere, reveal, inspection, orbit, presence, and
           collector continuation.
         </p>
 
         <div className="mt-8 border-y border-neutral-950/12">
           {engines.map((engine, index) => (
-            <div key={engine.id} data-mobile-motion-child="row" className="grid grid-cols-[3.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
+            <div key={engine.id} className="grid grid-cols-[3.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-300">
                 {String(index + 1).padStart(2, "0")}
               </span>
@@ -3823,12 +3817,12 @@ function MobileApplicationPaths() {
     >
       <div className="mx-auto max-w-[42rem]">
         <MobileSectionLabel>06 / Application layer</MobileSectionLabel>
-        <h2 className="mt-6 max-w-[8.5ch] text-[clamp(4.1rem,13.8vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950" data-mobile-motion-child="heading">
+        <h2 className="mt-6 max-w-[8.5ch] text-[clamp(4.1rem,13.8vw,7rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
           Where chamber logic becomes practical.
         </h2>
         <div className="mt-8 border-y border-neutral-950/12">
           {mobileApplicationPaths.map((path, index) => (
-            <div key={path} data-mobile-motion-child="row" className="grid grid-cols-[3.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
+            <div key={path} className="grid grid-cols-[3.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-300">
                 {String(index + 1).padStart(2, "0")}
               </span>
@@ -3856,14 +3850,14 @@ function MobileImmersiveClosing({
     >
       <div className="pointer-events-none absolute right-[-18%] top-[10%] h-[25rem] w-[25rem] rounded-full border border-neutral-950/[0.05]" />
       <div className="relative z-10 mx-auto max-w-[42rem]">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500" data-mobile-motion-child="label">
+        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
           <span>07 / Closing signal</span>
           <span className="h-2 w-2 rounded-full bg-neutral-950" />
         </div>
-        <h2 className="mt-6 max-w-[8.7ch] text-[clamp(4.25rem,14.4vw,7.4rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950" data-mobile-motion-child="heading">
+        <h2 className="mt-6 max-w-[8.7ch] text-[clamp(4.25rem,14.4vw,7.4rem)] font-normal leading-[0.86] tracking-[-0.055em] text-neutral-950">
           Build the next room as an interface.
         </h2>
-        <p className="mt-6 max-w-[34rem] text-[16px] leading-7 text-neutral-600" data-mobile-motion-child="copy">
+        <p className="mt-6 max-w-[34rem] text-[16px] leading-7 text-neutral-600">
           Start with a focused chamber, proof layer, or spatial prototype. The system can stay small, but it should
           behave with clarity.
         </p>
@@ -3874,14 +3868,14 @@ function MobileImmersiveClosing({
             ["Project intake", "Available"],
             ["Next step", "Start a project"],
           ].map(([label, value]) => (
-            <div key={label} data-mobile-motion-child="row" className="grid grid-cols-[1fr_auto] gap-4 border-b border-neutral-950/12 py-3 last:border-b-0">
+            <div key={label} className="grid grid-cols-[1fr_auto] gap-4 border-b border-neutral-950/12 py-3 last:border-b-0">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">{label}</span>
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-950">{value}</span>
             </div>
           ))}
         </div>
 
-        <div className="mt-7 grid gap-3" data-mobile-motion-child="cta">
+        <div className="mt-7 grid gap-3">
           <MobileAction variant="dark" onClick={onOpenProject} className="w-full justify-between px-6">
             Start a project <span aria-hidden="true">-&gt;</span>
           </MobileAction>
@@ -3917,29 +3911,29 @@ function MobileImmersiveHub({
 
   return (
     <main className="relative z-10 lg:hidden" data-mobile-immersive-hub>
-      <MobileMotionSection variant="threshold" signature="hero-lock">
+      <MobileMotionSection variant="threshold">
         <MobileImmersiveHero
           onExploreChambers={onExploreChambers}
           onOpenWhisper={onOpenWhisper}
           onOpenProject={onOpenProject}
         />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft" signature="chamber-signal">
+      <MobileMotionSection variant="media" delay="soft">
         <MobileChamberField onOpenWhisper={onOpenWhisper} onShowPreparedChamber={showPreparedChamber} />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft" signature="chamber-signal">
+      <MobileMotionSection variant="media" delay="soft">
         <MobileSurfaceRelay onOpenWhisper={onOpenWhisper} />
       </MobileMotionSection>
-      <MobileMotionSection variant="media" delay="soft" signature="chamber-signal">
+      <MobileMotionSection variant="media" delay="soft">
         <MobileChamberAtlas key={preparedFocus} activeId={preparedFocus} onActiveChange={setPreparedFocus} />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="chamber-signal">
+      <MobileMotionSection variant="ledger" delay="soft">
         <MobileInterfaceEngines />
       </MobileMotionSection>
-      <MobileMotionSection variant="ledger" delay="soft" signature="chamber-signal">
+      <MobileMotionSection variant="ledger" delay="soft">
         <MobileApplicationPaths />
       </MobileMotionSection>
-      <MobileMotionSection variant="closing" delay="soft" signature="chamber-signal">
+      <MobileMotionSection variant="closing" delay="soft">
         <MobileImmersiveClosing onOpenProject={onOpenProject} onOpenWhisper={onOpenWhisper} />
       </MobileMotionSection>
     </main>

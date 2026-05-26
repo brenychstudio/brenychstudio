@@ -1,6 +1,6 @@
 import { createElement, type HTMLAttributes, type ReactNode } from "react";
 
-import { mobileMotionObserver, type MobileMotionSignature } from "./motionTokens";
+import { mobileMotionObserver } from "./motionTokens";
 import { useMobileMotion } from "./useMobileMotion";
 
 type MobileMotionTag = "div" | "section" | "article" | "aside" | "header" | "footer" | "main";
@@ -12,7 +12,6 @@ type MobileMotionSectionProps = HTMLAttributes<HTMLElement> & {
   children: ReactNode;
   delay?: MobileMotionDelay;
   index?: number;
-  signature?: MobileMotionSignature;
   variant?: MobileMotionVariant;
 };
 
@@ -26,7 +25,6 @@ export default function MobileMotionSection({
   className,
   delay = "none",
   index,
-  signature,
   variant = "default",
   ...props
 }: MobileMotionSectionProps) {
@@ -49,7 +47,6 @@ export default function MobileMotionSection({
       "data-motion-in-view": inView ? "true" : "false",
       "data-motion-index": index,
       "data-motion-ready": motionEnabled ? "true" : "false",
-      "data-motion-signature": signature,
       "data-motion-variant": variant,
     },
     children,

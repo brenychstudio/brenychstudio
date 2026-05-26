@@ -494,24 +494,8 @@ function Chapter({
   headerScene?: string;
 }) {
   const reduceMotion = useReducedMotion();
-  const [isDesktop, setIsDesktop] = useState(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return true;
-    return window.matchMedia("(min-width: 1024px)").matches;
-  });
 
-  useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
-
-    const query = window.matchMedia("(min-width: 1024px)");
-    const update = () => setIsDesktop(query.matches);
-
-    update();
-    query.addEventListener("change", update);
-
-    return () => query.removeEventListener("change", update);
-  }, []);
-
-  if (reduceMotion || !isDesktop) {
+  if (reduceMotion) {
     return (
       <section id={id} data-header-scene={headerScene} className={className}>
         {children}
@@ -1520,7 +1504,6 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
               return (
               <button
                 key={title}
-                data-mobile-motion-child="row"
                 type="button"
                 onClick={() => setProofModeIndex(modeIndex)}
                 aria-pressed={active}
@@ -1538,16 +1521,14 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
               );
             })}
           </div>
-          <div data-mobile-motion-child="media">
-            <MobileSpatialStage
-              assets={proofSurfaceAssets}
-              onOpen={goTo}
-              className="mt-2"
-              activeIndex={proofModeIndex}
-              onActiveIndexChange={setProofModeIndex}
-              showSelectors={false}
-            />
-          </div>
+          <MobileSpatialStage
+            assets={proofSurfaceAssets}
+            onOpen={goTo}
+            className="mt-2"
+            activeIndex={proofModeIndex}
+            onActiveIndexChange={setProofModeIndex}
+            showSelectors={false}
+          />
         </div>
       </MobileChapter>
 
@@ -1570,7 +1551,6 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
               {mobileCoreSystems.map(([index, title, text, axis]) => (
                 <div
                   key={title}
-                  data-mobile-motion-child="row"
                   className="relative grid grid-cols-[3.25rem_1fr] gap-3 border-t border-neutral-950/10 py-3.5 first:border-t-0"
                 >
                   <div className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-neutral-950/14 bg-[#f4f1eb] font-mono text-[9px] uppercase tracking-[0.1em] text-neutral-500">
@@ -1590,7 +1570,6 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
             {mobileSupportingLayers.map(([index, title, text]) => (
               <div
                 key={title}
-                data-mobile-motion-child="row"
                 className="mt-3 grid grid-cols-[3.25rem_1fr] gap-3 border-t border-neutral-950/12 pt-3 text-neutral-500"
               >
                 <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
@@ -1601,7 +1580,7 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
               </div>
             ))}
 
-            <div className="mt-4 border-t border-neutral-950/10 pt-3 font-mono text-[9px] uppercase tracking-[0.13em] text-neutral-400" data-mobile-motion-child="cta">
+            <div className="mt-4 border-t border-neutral-950/10 pt-3 font-mono text-[9px] uppercase tracking-[0.13em] text-neutral-400">
               Next proof reference: WHISPER / spatial exhibition.
             </div>
           </div>
@@ -2272,62 +2251,52 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
       headerScene="living-grammar"
       className="relative lg:min-h-screen lg:px-8 lg:py-24"
     >
-      <MobileMotionSection variant="ledger" delay="soft" signature="studio-os">
-        <MobileChapter
-          label="05 / Core Formula"
-          heading="The interface is treated as a living field."
-          summary="Motion is grammar: it marks state, attention, distance, memory, and transition."
-          className="relative z-10 lg:hidden"
-        >
-          <div className="grid gap-5">
-            <div data-mobile-motion-child="media">
-              <MobileFormulaPanel />
-            </div>
+      <MobileChapter
+        label="05 / Core Formula"
+        heading="The interface is treated as a living field."
+        summary="Motion is grammar: it marks state, attention, distance, memory, and transition."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-5">
+          <MobileFormulaPanel />
 
-            <div className="relative border-y border-neutral-950/14 bg-white/[0.08] py-1" data-sound-safe-area>
-              <div className="pointer-events-none absolute left-[2.1rem] top-3 h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-neutral-950/8 via-neutral-950/32 to-neutral-950/8" />
-              {grammar.map(([word, note], index) => (
-                <div
-                  key={word}
-                  data-mobile-motion-child="row"
-                  className="relative grid grid-cols-[2.55rem_minmax(5.9rem,0.48fr)_1fr] items-center gap-2 border-b border-neutral-950/10 py-3 last:border-b-0"
-                >
-                  <div className="relative z-10 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-400">
-                    <span className="h-1.5 w-1.5 rounded-full border border-neutral-950/18 bg-[#f4f1eb]" />
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                  </div>
-                  <div className="font-mono text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-neutral-950">{word}</div>
-                  <p className="text-[11px] leading-5 text-neutral-600">{note}</p>
+          <div className="relative border-y border-neutral-950/14 bg-white/[0.08] py-1" data-sound-safe-area>
+            <div className="pointer-events-none absolute left-[2.1rem] top-3 h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-neutral-950/8 via-neutral-950/32 to-neutral-950/8" />
+            {grammar.map(([word, note], index) => (
+              <div
+                key={word}
+                className="relative grid grid-cols-[2.55rem_minmax(5.9rem,0.48fr)_1fr] items-center gap-2 border-b border-neutral-950/10 py-3 last:border-b-0"
+              >
+                <div className="relative z-10 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-400">
+                  <span className="h-1.5 w-1.5 rounded-full border border-neutral-950/18 bg-[#f4f1eb]" />
+                  <span>{String(index + 1).padStart(2, "0")}</span>
                 </div>
-              ))}
-            </div>
+                <div className="font-mono text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-neutral-950">{word}</div>
+                <p className="text-[11px] leading-5 text-neutral-600">{note}</p>
+              </div>
+            ))}
           </div>
-        </MobileChapter>
-      </MobileMotionSection>
+        </div>
+      </MobileChapter>
 
-      <MobileMotionSection variant="media" delay="soft" signature="studio-os">
-        <MobileChapter
-          label="06 / Reusable Grammar"
-          heading="Reusable visual grammar."
-          summary="FLUID, ARCWAVE, FORM INDEX, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."
-          className="relative z-10 lg:hidden"
-        >
-          <div className="grid gap-4">
-            <div data-mobile-motion-child="media">
-              <MobileSpatialStage assets={visualLanguageAssets} onOpen={goTo} objectPosition="center top" variant="grammar" />
-            </div>
-            <button
-              type="button"
-              onClick={() => goTo("/work")}
-              className={mobileSecondaryCta}
-              data-sound-safe-area
-              data-mobile-motion-child="cta"
-            >
-              Open related proof -&gt;
-            </button>
-          </div>
-        </MobileChapter>
-      </MobileMotionSection>
+      <MobileChapter
+        label="06 / Reusable Grammar"
+        heading="Reusable visual grammar."
+        summary="FLUID, ARCWAVE, FORM INDEX, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."
+        className="relative z-10 lg:hidden"
+      >
+        <div className="grid gap-4">
+          <MobileSpatialStage assets={visualLanguageAssets} onOpen={goTo} objectPosition="center top" variant="grammar" />
+          <button
+            type="button"
+            onClick={() => goTo("/work")}
+            className={mobileSecondaryCta}
+            data-sound-safe-area
+          >
+            Open related proof -&gt;
+          </button>
+        </div>
+      </MobileChapter>
 
       <div className="mx-auto hidden min-h-[calc(100vh-12rem)] w-[min(94vw,1640px)] items-center gap-14 lg:grid xl:grid-cols-[0.48fr_0.52fr]">
         <div>
@@ -2411,7 +2380,7 @@ function PracticeChapter({
         <div className="grid gap-4" data-sound-safe-area>
           <div className="border-y border-neutral-950/14 py-2">
             {mobilePracticeBridgeRows.map(([index, title, text]) => (
-              <div key={title} data-mobile-motion-child="row" className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
+              <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
                 <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{index}</div>
                 <div>
                   <h3 className="!text-[21px] !leading-[1.02] tracking-[-0.035em] text-neutral-950">{title}</h3>
@@ -2421,7 +2390,7 @@ function PracticeChapter({
             ))}
           </div>
 
-          <div className="grid grid-cols-2 gap-2" data-mobile-motion-child="cta">
+          <div className="grid grid-cols-2 gap-2">
             <button type="button" onClick={() => goTo("/offer")} className={mobileSecondaryCta}>
               Open Offer -&gt;
             </button>
@@ -2430,7 +2399,7 @@ function PracticeChapter({
             </button>
           </div>
 
-          <div className="border-t border-neutral-950/10 pt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-400" data-mobile-motion-child="cta">
+          <div className="border-t border-neutral-950/10 pt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-400">
             More formats continue on the Offer page.
           </div>
         </div>
@@ -2584,7 +2553,7 @@ export default function StudioIndex({
         />
 
         <main className="relative z-10">
-          <MobileMotionSection variant="threshold" signature="hero-lock">
+          <MobileMotionSection variant="threshold">
             <OpeningChapter
               onSystems={() => scrollTo("systems")}
               onWork={() => goTo("/work")}
@@ -2594,23 +2563,23 @@ export default function StudioIndex({
 
           {routeContentReady ? (
             <>
-              <MobileMotionSection variant="ledger" delay="soft" signature="studio-os">
+              <MobileMotionSection variant="ledger" delay="soft">
                 <SystemsChapter goTo={goTo} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="media" delay="soft" signature="studio-os">
+              <MobileMotionSection variant="media" delay="soft">
                 <WhisperChapter onOpen={() => goTo("/immersive")} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="media" delay="soft" signature="media-orbit">
+              <MobileMotionSection variant="media" delay="soft">
                 <AtlasChapter goTo={goTo} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="ledger" delay="soft" signature="studio-os">
+              <MobileMotionSection variant="ledger" delay="soft">
                 <GrammarChapter goTo={goTo} />
               </MobileMotionSection>
 
-              <MobileMotionSection variant="closing" delay="soft" signature="closing-signal">
+              <MobileMotionSection variant="closing" delay="soft">
                 <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} />
               </MobileMotionSection>
             </>

@@ -27,23 +27,17 @@ export default function MobileChapter({
         .join(" ")}
     >
       <div>
-        <div className="mobile-chapter__label text-neutral-500" data-mobile-motion-child="label">
-          {label}
-        </div>
-        <h2 className="mobile-chapter__heading mt-3 text-neutral-950" data-mobile-motion-child="heading">
-          {heading}
-        </h2>
+        <div className="mobile-chapter__label text-neutral-500">{label}</div>
+        <h2 className="mobile-chapter__heading mt-3 text-neutral-950">{heading}</h2>
         {summary ? (
-          <p className="mobile-chapter__summary mt-4 text-neutral-600" data-mobile-motion-child="copy">
-            {summary}
-          </p>
+          <p className="mobile-chapter__summary mt-4 text-neutral-600">{summary}</p>
         ) : null}
       </div>
 
       {children ? <div className="min-w-0">{children}</div> : null}
 
       {detail ? (
-        <details className="group border-y border-neutral-950/12 py-3" data-mobile-motion-child="cta">
+        <details className="group border-y border-neutral-950/12 py-3">
           <summary className="cursor-pointer list-none text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-600">
             More detail
           </summary>

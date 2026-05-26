@@ -7,6 +7,7 @@ import ImmersiveCasePage from "./pages/ImmersiveCasePage";
 import AboutV2 from "./pages/AboutV2";
 import StudioIndex from "./pages/StudioIndex";
 import EvidenceAtlas from "./pages/EvidenceAtlas";
+import CasePageV2 from "./pages/CasePageV2";
 import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
@@ -15,7 +16,6 @@ import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import { LocaleProvider } from "./store/useLocale";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
-const CasePageV2 = lazy(() => import("./pages/CasePageV2"));
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
 const PrivacyV2 = lazy(() => import("./pages/PrivacyV2"));
 const LegalV2 = lazy(() => import("./pages/LegalV2"));

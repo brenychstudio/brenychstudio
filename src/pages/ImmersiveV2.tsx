@@ -3083,10 +3083,10 @@ function MobileChamberField({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.99 }}
               transition={{ duration: 0.34, ease }}
-              className="mt-8 overflow-hidden border-y border-neutral-950/12 py-6"
+              className="mt-8 overflow-visible py-1"
             >
               <div
-                className="relative mx-[-1rem] min-h-[27.5rem] touch-pan-y overflow-hidden px-4"
+                className="relative mx-[-1rem] min-h-[27.5rem] touch-pan-y overflow-visible px-4"
                 style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
               >
                 <div className="pointer-events-none absolute left-[7%] top-[12%] h-[76%] w-[86%] rounded-[50%] border border-neutral-950/[0.07]" />
@@ -3337,9 +3337,9 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
           without losing atmosphere.
         </p>
 
-        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5">
+        <div className="mt-8 overflow-visible py-1">
           <div
-            className="relative mx-[-1.05rem] min-h-[21.5rem] touch-pan-y overflow-hidden px-4"
+            className="relative mx-[-1.05rem] min-h-[21.5rem] touch-pan-y overflow-visible px-4"
             style={{ perspective: "1350px", transformStyle: "preserve-3d" }}
           >
             <div className="pointer-events-none absolute left-[6%] top-[12%] h-[72%] w-[88%] rounded-[50%] border border-neutral-950/[0.055]" />
@@ -3541,7 +3541,7 @@ function MobileChamberAtlas({
           installation systems.
         </p>
 
-        <div className="mt-8 overflow-hidden border-y border-neutral-950/12 bg-white/[0.1] py-5">
+        <div className="mt-8 overflow-visible py-1">
           <AnimatePresence mode="wait" initial={false}>
             <motion.article
               key={activeChamber.id}
@@ -3611,7 +3611,7 @@ function MobileChamberAtlas({
               </div>
 
               <div
-                className="relative mx-[-1.05rem] mt-5 min-h-[18.75rem] touch-pan-y overflow-hidden px-4"
+                className="relative mx-[-1.05rem] mt-5 min-h-[18.75rem] touch-pan-y overflow-visible px-4"
                 style={{ perspective: "1300px", transformStyle: "preserve-3d" }}
               >
                 <div className="pointer-events-none absolute left-[7%] top-[13%] h-[70%] w-[86%] rounded-[50%] border border-neutral-950/[0.055]" />

@@ -111,17 +111,17 @@
   .mobile-motion-ledger-row {
     --mobile-motion-delay: 0ms;
     --mobile-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --mobile-motion-section-duration: 640ms;
-    --mobile-motion-media-duration: 780ms;
-    --mobile-motion-row-duration: 420ms;
-    --mobile-motion-child-duration: 520ms;
-    --mobile-motion-section-y: 22px;
-    --mobile-motion-media-y: 20px;
-    --mobile-motion-media-scale: 0.965;
-    --mobile-motion-section-opacity: 0.01;
-    --mobile-motion-media-opacity: 0.55;
-    --mobile-motion-row-opacity: 0.28;
-    --mobile-motion-row-read-opacity: 0.9;
+    --mobile-motion-section-duration: 560ms;
+    --mobile-motion-media-duration: 740ms;
+    --mobile-motion-row-duration: 360ms;
+    --mobile-motion-child-duration: 420ms;
+    --mobile-motion-section-y: 14px;
+    --mobile-motion-media-y: 18px;
+    --mobile-motion-media-scale: 0.985;
+    --mobile-motion-section-opacity: 0.88;
+    --mobile-motion-media-opacity: 0.82;
+    --mobile-motion-row-opacity: 0.88;
+    --mobile-motion-row-read-opacity: 0.94;
     --mobile-motion-progress: 0;
   }
 
@@ -689,6 +689,162 @@
 
     .mobile-motion-section[data-motion-active="true"] [data-mobile-motion-child="row"]:nth-of-type(4n) {
       transition-delay: 265ms;
+    }
+
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-variant="threshold"]):not([data-motion-signature="hero-lock"]) {
+      --mobile-motion-section-duration: 560ms;
+      --mobile-motion-section-y: 14px;
+      --mobile-motion-section-opacity: 0.88;
+      filter: none;
+    }
+
+    .mobile-motion-section[data-motion-variant="dark"][data-motion-ready="true"] {
+      --mobile-motion-section-opacity: 0.96;
+    }
+
+    .mobile-motion-section[data-motion-signature][data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) {
+      --mobile-motion-section-y: 14px;
+      --mobile-motion-section-opacity: 0.88;
+      filter: none;
+    }
+
+    .mobile-motion-section[data-motion-signature="dark-chamber"][data-motion-ready="true"],
+    .mobile-motion-section[data-motion-variant="dark"][data-motion-ready="true"] {
+      --mobile-motion-section-opacity: 0.96;
+    }
+
+    .mobile-motion-media[data-motion-ready="true"],
+    .mobile-motion-media[data-motion-signature][data-motion-ready="true"],
+    .mobile-motion-section[data-motion-signature] .mobile-motion-media[data-motion-ready="true"] {
+      --mobile-motion-media-duration: 740ms;
+      --mobile-motion-media-y: 18px;
+      --mobile-motion-media-opacity: 0.82;
+      --mobile-motion-media-scale: 0.985;
+    }
+
+    .mobile-motion-ledger-row[data-motion-ready="true"],
+    .mobile-motion-ledger-row[data-motion-signature][data-motion-ready="true"],
+    .mobile-motion-section[data-motion-signature] .mobile-motion-ledger-row[data-motion-ready="true"],
+    .mobile-motion-ledger[data-motion-signature] .mobile-motion-ledger-row[data-motion-ready="true"] {
+      --mobile-motion-row-opacity: 0.88;
+      --mobile-motion-row-read-opacity: 0.94;
+      opacity: var(--mobile-motion-row-opacity);
+      transform: translate3d(0, 8px, 0);
+      background-color: transparent;
+      box-shadow: none;
+      transition:
+        opacity var(--mobile-motion-row-duration) var(--mobile-motion-ease),
+        transform var(--mobile-motion-row-duration) var(--mobile-motion-ease),
+        color var(--mobile-motion-row-duration) var(--mobile-motion-ease);
+    }
+
+    .mobile-motion-ledger-row[data-motion-ready="true"]::before,
+    .mobile-motion-section[data-motion-ready="true"] [data-mobile-motion-child="row"]::before {
+      content: none;
+      display: none;
+    }
+
+    .mobile-motion-ledger-row[data-motion-ready="true"] > :first-child {
+      opacity: 0.78;
+      transform: none;
+    }
+
+    .mobile-motion-ledger-row[data-motion-entered="true"] {
+      opacity: var(--mobile-motion-row-read-opacity);
+      transform: translate3d(0, 0, 0);
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    .mobile-motion-ledger-row[data-motion-active="true"],
+    .mobile-motion-section[data-motion-signature] .mobile-motion-ledger-row[data-motion-active="true"],
+    .mobile-motion-ledger[data-motion-signature] .mobile-motion-ledger-row[data-motion-active="true"],
+    .mobile-motion-ledger-row[data-motion-signature][data-motion-active="true"] {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    .mobile-motion-ledger-row[data-motion-entered="true"] > :first-child,
+    .mobile-motion-ledger-row[data-motion-active="true"] > :first-child {
+      opacity: 0.9;
+      transform: none;
+    }
+
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child] {
+      opacity: 0.9;
+      transform: translate3d(0, 8px, 0);
+      filter: none;
+      transition:
+        opacity var(--mobile-motion-child-duration) var(--mobile-motion-ease),
+        transform var(--mobile-motion-child-duration) var(--mobile-motion-ease);
+      will-change: opacity, transform;
+    }
+
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="label"] {
+      opacity: 0.82;
+      transform: translate3d(0, 6px, 0);
+      transition-delay: 0ms;
+      transition-duration: 360ms;
+    }
+
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="heading"],
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="copy"],
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="cta"] {
+      transform: translate3d(0, 8px, 0);
+      transition-delay: 40ms;
+      transition-duration: 420ms;
+    }
+
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="media"] {
+      opacity: 0.82;
+      transform: translate3d(0, 18px, 0) scale(0.985);
+      transition-delay: 70ms;
+      transition-duration: 740ms;
+    }
+
+    .mobile-motion-section[data-motion-ready="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="row"] {
+      opacity: 0.88;
+      transform: translate3d(0, 8px, 0);
+      transition-delay: 55ms;
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    .mobile-motion-section[data-motion-active="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child],
+    .mobile-motion-section[data-motion-active="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="row"] {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      filter: none;
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    .mobile-motion-section[data-motion-active="true"]:not([data-motion-signature="hero-lock"]) [data-mobile-motion-child="media"] {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .mobile-motion-section[data-motion-signature][data-motion-active="true"] [data-mobile-motion-child="row"],
+    .mobile-motion-section[data-motion-signature][data-motion-active="true"] [aria-expanded="true"],
+    .mobile-motion-section[data-motion-signature][data-motion-active="true"] [aria-pressed="true"] {
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    .mobile-motion-section[data-motion-signature]:not([data-motion-signature="hero-lock"]):not([data-motion-signature="dark-chamber"]):not([data-motion-variant="dark"])
+      :is([class*="border-y"], [class*="border-t"], [class*="border-b"], [class*="border-l"], [class*="border-r"]) {
+      border-color: rgba(10, 10, 10, 0.045);
+    }
+
+    .mobile-motion-section[data-motion-signature]:not([data-motion-signature="hero-lock"]):not([data-motion-signature="dark-chamber"]):not([data-motion-variant="dark"])
+      :is([class*="border-y"], [class*="border-t"], [class*="border-b"]) {
+      box-shadow: none;
+    }
+
+    .mobile-motion-section[data-motion-variant="dark"] :is([class*="border-y"], [class*="border-t"], [class*="border-b"], [class*="border-l"], [class*="border-r"]),
+    .mobile-motion-section[data-motion-signature="dark-chamber"] :is([class*="border-y"], [class*="border-t"], [class*="border-b"], [class*="border-l"], [class*="border-r"]) {
+      border-color: rgba(255, 255, 255, 0.07);
     }
   }
 

@@ -1,10 +1,10 @@
 export const MOBILE_MOTION_BREAKPOINT = 1024;
 
 export const mobileMotionDurations = {
-  section: 640,
-  media: 780,
-  row: 420,
-  child: 520,
+  section: 560,
+  media: 740,
+  row: 360,
+  child: 420,
 };
 
 export const mobileMotionEasing = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -44,12 +44,12 @@ export const mobileMotionChildren: MobileMotionChild[] = ["label", "heading", "c
 
 export const mobileMotionObserver = {
   section: {
-    rootMargin: "0px 0px 28% 0px",
-    threshold: 0.01,
+    rootMargin: "0px 0px 22% 0px",
+    threshold: 0.04,
   },
   media: {
-    rootMargin: "0px 0px 22% 0px",
-    threshold: 0.01,
+    rootMargin: "0px 0px 18% 0px",
+    threshold: 0.06,
   },
   ledger: {
     rootMargin: "-24% 0px -34% 0px",

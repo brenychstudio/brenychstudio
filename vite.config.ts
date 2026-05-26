@@ -1,9 +1,49 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import type { OutputAsset, OutputBundle } from "rollup";
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function inlineBuiltCss() {
+  return {
+    name: "inline-built-css",
+    apply: "build" as const,
+    enforce: "post" as const,
+    generateBundle(_options: unknown, bundle: OutputBundle) {
+      const htmlAsset = Object.values(bundle).find(
+        (asset) => asset.type === "asset" && asset.fileName === "index.html",
+      ) as OutputAsset | undefined;
+      const cssAssets = Object.values(bundle).filter(
+        (asset) => asset.type === "asset" && asset.fileName.endsWith(".css"),
+      ) as OutputAsset[];
+
+      if (!htmlAsset || cssAssets.length === 0) return;
+
+      let html = String(htmlAsset.source);
+      const css = cssAssets.map((asset) => String(asset.source)).join("\n");
+
+      cssAssets.forEach((asset) => {
+        const href = `/${asset.fileName}`;
+        html = html.replace(
+          new RegExp(`\\s*<link[^>]+href="${escapeRegExp(href)}"[^>]*>`, "g"),
+          "",
+        );
+        delete bundle[asset.fileName];
+      });
+
+      htmlAsset.source = html.replace(
+        "</head>",
+        `    <style data-inline-build-css>${css}</style>\n  </head>`,
+      );
+    },
+  };
+}
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), inlineBuiltCss()],
   build: {
     rollupOptions: {
       output: {

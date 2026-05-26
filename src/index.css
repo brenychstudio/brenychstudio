@@ -214,6 +214,312 @@
     .mobile-motion-ledger-row[data-motion-active="true"] {
       opacity: 1;
     }
+
+    .mobile-about-method__heading span {
+      display: block;
+      opacity: 0.9;
+      transform: translate3d(0, 6px, 0);
+      transition:
+        opacity 540ms var(--mobile-motion-ease),
+        transform 540ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-method__heading span + span {
+      transition-delay: 80ms;
+    }
+
+    .mobile-about-method__summary {
+      opacity: 0.86;
+      transform: translate3d(0, 6px, 0);
+      transition:
+        opacity 500ms var(--mobile-motion-ease) 110ms,
+        transform 500ms var(--mobile-motion-ease) 110ms;
+    }
+
+    .mobile-motion-section[data-motion-active="true"] .mobile-about-method__heading span,
+    .mobile-motion-section[data-motion-active="true"] .mobile-about-method__summary {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .mobile-about-method__spine {
+      position: relative;
+    }
+
+    .mobile-about-method__spine::before {
+      content: "";
+      position: absolute;
+      inset-block: 0.25rem;
+      left: 1.42rem;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgb(10 10 10 / 0.18) 12%, rgb(10 10 10 / 0.12) 88%, transparent);
+      opacity: calc(0.25 + (var(--mobile-motion-progress, 0) * 0.55));
+      transform: scaleY(calc(0.18 + (var(--mobile-motion-progress, 0) * 0.82)));
+      transform-origin: top;
+      transition:
+        opacity 640ms var(--mobile-motion-ease),
+        transform 760ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-method__row {
+      --method-row-index: 0;
+      border: 0;
+    }
+
+    .mobile-about-method__line {
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgb(10 10 10 / 0.2), rgb(10 10 10 / 0.06), transparent);
+      opacity: 0.16;
+      transform: scaleX(0.12);
+      transform-origin: left;
+      transition:
+        opacity 520ms var(--mobile-motion-ease),
+        transform 620ms var(--mobile-motion-ease);
+      transition-delay: calc(var(--method-row-index) * 46ms);
+    }
+
+    .mobile-about-method__index {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      opacity: 0.52;
+      transform: translate3d(-5px, 0, 0);
+      transition:
+        opacity 420ms var(--mobile-motion-ease),
+        transform 420ms var(--mobile-motion-ease);
+      transition-delay: calc(var(--method-row-index) * 46ms);
+    }
+
+    .mobile-about-method__dot {
+      width: 0.36rem;
+      height: 0.36rem;
+      border: 1px solid rgb(10 10 10 / 0.34);
+      border-radius: 9999px;
+      background: rgb(243 240 233 / 0.9);
+      transform: scale(0.72);
+      transition:
+        background-color 420ms var(--mobile-motion-ease),
+        border-color 420ms var(--mobile-motion-ease),
+        transform 420ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-method__copy {
+      opacity: 0.84;
+      transform: translate3d(0, 9px, 0);
+      transition:
+        opacity 520ms var(--mobile-motion-ease),
+        transform 520ms var(--mobile-motion-ease);
+      transition-delay: calc((var(--method-row-index) * 46ms) + 35ms);
+    }
+
+    .mobile-about-method__title {
+      letter-spacing: -0.03em;
+    }
+
+    .mobile-about-method__text {
+      transition: color 420ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-method__row[data-motion-entered="true"] .mobile-about-method__line {
+      opacity: 0.28;
+      transform: scaleX(1);
+    }
+
+    .mobile-about-method__row[data-motion-entered="true"] .mobile-about-method__index,
+    .mobile-about-method__row[data-motion-entered="true"] .mobile-about-method__copy {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .mobile-about-method__row[data-motion-entered="true"] .mobile-about-method__dot {
+      transform: scale(1);
+    }
+
+    .mobile-about-method__row[data-motion-active="true"] .mobile-about-method__dot {
+      border-color: rgb(10 10 10 / 0.86);
+      background: rgb(10 10 10);
+      transform: scale(1.08);
+    }
+
+    .mobile-about-method__row[data-motion-active="true"] .mobile-about-method__text {
+      color: rgb(64 64 64 / 0.98);
+    }
+
+    .mobile-about-technical__heading span {
+      display: block;
+      opacity: 0.92;
+      transform: translate3d(-4px, 7px, 0);
+      transition:
+        opacity 560ms var(--mobile-motion-ease),
+        transform 560ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-technical__heading span:nth-child(2) {
+      transition-delay: 55ms;
+    }
+
+    .mobile-about-technical__heading span:nth-child(3) {
+      transition-delay: 110ms;
+    }
+
+    .mobile-about-technical__summary {
+      opacity: 0.84;
+      transform: translate3d(0, 8px, 0);
+      transition:
+        opacity 520ms var(--mobile-motion-ease) 130ms,
+        transform 520ms var(--mobile-motion-ease) 130ms;
+    }
+
+    .mobile-motion-section[data-motion-active="true"] .mobile-about-technical__heading span,
+    .mobile-motion-section[data-motion-active="true"] .mobile-about-technical__summary {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .mobile-about-technical__stack {
+      position: relative;
+      padding-block: 0.2rem;
+    }
+
+    .mobile-about-technical__stack::before {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgb(10 10 10 / 0.18), rgb(10 10 10 / 0.05), transparent);
+      opacity: calc(0.2 + (var(--mobile-motion-progress, 0) * 0.35));
+      transform: scaleX(calc(0.25 + (var(--mobile-motion-progress, 0) * 0.75)));
+      transform-origin: left;
+      transition:
+        opacity 620ms var(--mobile-motion-ease),
+        transform 720ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-technical__row {
+      --technical-row-index: 0;
+      border: 0;
+      min-height: 6.75rem;
+    }
+
+    .mobile-about-technical__beam {
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgb(10 10 10 / 0.14), rgb(10 10 10 / 0.08) 68%, transparent);
+      opacity: 0.2;
+      transform: scaleX(0.18);
+      transform-origin: left;
+      transition:
+        opacity 540ms var(--mobile-motion-ease),
+        transform 680ms var(--mobile-motion-ease);
+      transition-delay: calc(var(--technical-row-index) * 54ms);
+    }
+
+    .mobile-about-technical__index {
+      opacity: 0.46;
+      transform: translate3d(0, -4px, 0);
+      transition:
+        opacity 430ms var(--mobile-motion-ease),
+        transform 430ms var(--mobile-motion-ease);
+      transition-delay: calc(var(--technical-row-index) * 54ms);
+    }
+
+    .mobile-about-technical__copy {
+      opacity: 0.82;
+      transform: translate3d(0, 10px, 0);
+      transition:
+        opacity 540ms var(--mobile-motion-ease),
+        transform 540ms var(--mobile-motion-ease);
+      transition-delay: calc((var(--technical-row-index) * 54ms) + 40ms);
+    }
+
+    .mobile-about-technical__title {
+      text-wrap: balance;
+    }
+
+    .mobile-about-technical__text {
+      transition: color 420ms var(--mobile-motion-ease);
+    }
+
+    .mobile-about-technical__load {
+      position: absolute;
+      right: 0.08rem;
+      top: 1.25rem;
+      width: 0.42rem;
+      height: 0.42rem;
+      border: 1px solid rgb(10 10 10 / 0.22);
+      border-radius: 9999px;
+      opacity: 0.52;
+      transform: scale(0.72);
+      transition:
+        background-color 420ms var(--mobile-motion-ease),
+        border-color 420ms var(--mobile-motion-ease),
+        opacity 420ms var(--mobile-motion-ease),
+        transform 420ms var(--mobile-motion-ease);
+      transition-delay: calc((var(--technical-row-index) * 54ms) + 70ms);
+    }
+
+    .mobile-about-technical__row[data-motion-entered="true"] .mobile-about-technical__beam {
+      opacity: 0.34;
+      transform: scaleX(1);
+    }
+
+    .mobile-about-technical__row[data-motion-entered="true"] .mobile-about-technical__index,
+    .mobile-about-technical__row[data-motion-entered="true"] .mobile-about-technical__copy {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .mobile-about-technical__row[data-motion-entered="true"] .mobile-about-technical__load {
+      opacity: 0.82;
+      transform: scale(1);
+    }
+
+    .mobile-about-technical__row[data-motion-active="true"] .mobile-about-technical__load {
+      border-color: rgb(10 10 10 / 0.82);
+      background: rgb(10 10 10);
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    .mobile-about-technical__row[data-motion-active="true"] .mobile-about-technical__text {
+      color: rgb(64 64 64 / 0.98);
+    }
+
+    .mobile-about-technical__note {
+      position: relative;
+      opacity: 0.82;
+      transform: translate3d(0, 8px, 0);
+      transition:
+        opacity 520ms var(--mobile-motion-ease) 150ms,
+        transform 520ms var(--mobile-motion-ease) 150ms;
+    }
+
+    .mobile-about-technical__note::before {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgb(10 10 10 / 0.14), transparent);
+      transform: scaleX(0.22);
+      transform-origin: left;
+      transition: transform 660ms var(--mobile-motion-ease) 170ms;
+    }
+
+    .mobile-motion-section[data-motion-active="true"] .mobile-about-technical__note {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .mobile-motion-section[data-motion-active="true"] .mobile-about-technical__note::before {
+      transform: scaleX(1);
+    }
   }
 
   @media (max-width: 767px) {
@@ -369,12 +675,33 @@
   @media (prefers-reduced-motion: reduce) {
     .mobile-motion-section,
     .mobile-motion-media,
-    .mobile-motion-ledger-row {
+    .mobile-motion-ledger-row,
+    .mobile-about-method__heading span,
+    .mobile-about-method__summary,
+    .mobile-about-method__line,
+    .mobile-about-method__index,
+    .mobile-about-method__dot,
+    .mobile-about-method__copy,
+    .mobile-about-technical__heading span,
+    .mobile-about-technical__summary,
+    .mobile-about-technical__beam,
+    .mobile-about-technical__index,
+    .mobile-about-technical__copy,
+    .mobile-about-technical__load,
+    .mobile-about-technical__note {
       opacity: 1 !important;
       transform: none !important;
       filter: none !important;
       transition: none !important;
       will-change: auto !important;
+    }
+
+    .mobile-about-method__spine::before,
+    .mobile-about-technical__stack::before,
+    .mobile-about-technical__note::before {
+      opacity: 0.28 !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 }

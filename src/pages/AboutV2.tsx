@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -345,23 +345,32 @@ function MobileAboutMethod() {
     <section
       id="about-method"
       data-header-scene="about-method"
-      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
+      className="mobile-about-method relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
       <SectionLabel>02 / Method</SectionLabel>
-      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
-        Structure first. Atmosphere after.
+      <h2 className="mobile-about-method__heading mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+        <span>Structure first.</span>
+        <span>Atmosphere after.</span>
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p className="mobile-about-method__summary mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         Signal -&gt; structure -&gt; atmosphere -&gt; interface -&gt; memory.
       </p>
 
-      <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
-        {mobileMethodLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
-            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
-            <div>
-              <div className="text-[22px] leading-none text-neutral-950">{title}</div>
-              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+      <div data-sound-safe-area className="mobile-about-method__spine mt-8">
+        {mobileMethodLedger.map(([index, title, text], itemIndex) => (
+          <MobileMotionLedgerRow
+            key={title}
+            className="mobile-about-method__row relative grid grid-cols-[3.5rem_1fr] gap-4 py-4"
+            style={{ "--method-row-index": itemIndex } as CSSProperties}
+          >
+            <span aria-hidden="true" className="mobile-about-method__line" />
+            <div className="mobile-about-method__index font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+              <span aria-hidden="true" className="mobile-about-method__dot" />
+              <span>{index}</span>
+            </div>
+            <div className="mobile-about-method__copy">
+              <div className="mobile-about-method__title text-[22px] leading-none text-neutral-950">{title}</div>
+              <p className="mobile-about-method__text mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
             </div>
           </MobileMotionLedgerRow>
         ))}
@@ -375,29 +384,41 @@ function MobileAboutTechnical() {
     <section
       id="about-technical"
       data-header-scene="about-technical"
-      className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
+      className="mobile-about-technical relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
       <SectionLabel>03 / Technical foundation</SectionLabel>
-      <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
-        The surface has to hold up.
+      <h2 className="mobile-about-technical__heading mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
+        <span>The surface</span>
+        <span>has to</span>
+        <span>hold up.</span>
       </h2>
-      <p className="mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
+      <p className="mobile-about-technical__summary mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
         The system has to carry clarity, motion, routes, and launch-ready delivery without collapsing.
       </p>
 
-      <div data-sound-safe-area className="mt-8 border-y border-neutral-950/12">
-        {mobileTechnicalLedger.map(([index, title, text]) => (
-          <MobileMotionLedgerRow key={title} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-neutral-950/10 py-4 last:border-b-0">
-            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{index}</div>
-            <div>
-              <div className="max-w-[18rem] text-[16px] uppercase leading-6 tracking-[0.1em] text-neutral-950">{title}</div>
-              <p className="mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+      <div data-sound-safe-area className="mobile-about-technical__stack mt-8">
+        {mobileTechnicalLedger.map(([index, title, text], itemIndex) => (
+          <MobileMotionLedgerRow
+            key={title}
+            className="mobile-about-technical__row relative grid grid-cols-[3.5rem_1fr] gap-4 py-4"
+            style={{ "--technical-row-index": itemIndex } as CSSProperties}
+          >
+            <span aria-hidden="true" className="mobile-about-technical__beam" />
+            <div className="mobile-about-technical__index font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
+              {index}
             </div>
+            <div className="mobile-about-technical__copy">
+              <div className="mobile-about-technical__title max-w-[18rem] text-[16px] uppercase leading-6 tracking-[0.1em] text-neutral-950">
+                {title}
+              </div>
+              <p className="mobile-about-technical__text mt-2 max-w-[18rem] text-[14px] leading-6 text-neutral-500">{text}</p>
+            </div>
+            <span aria-hidden="true" className="mobile-about-technical__load" />
           </MobileMotionLedgerRow>
         ))}
       </div>
 
-      <p className="mt-5 max-w-[21rem] border-b border-neutral-950/10 pb-5 text-[14px] leading-6 text-neutral-500">
+      <p className="mobile-about-technical__note mt-5 max-w-[21rem] pb-5 text-[14px] leading-6 text-neutral-500">
         Multilingual and immersive layers are added only when they strengthen the project.
       </p>
     </section>

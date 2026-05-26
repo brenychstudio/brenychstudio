@@ -2279,6 +2279,7 @@ function MobilePhoneCarousel({
   const frames = getMobileFrames(story);
   const narrative = getCaseNarrative(story);
   const sound = useSound();
+  const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const dragConsumedRef = useRef(false);
   if (!frames.length) return null;
@@ -2308,11 +2309,93 @@ function MobilePhoneCarousel({
       <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600">
         {narrative.mobileIntro}
       </p>
-      <div className="mt-5 flex items-center justify-between gap-3">
+
+      <div
+        className="relative mx-[-1.75rem] mt-9 min-h-[31rem] touch-pan-y overflow-visible sm:min-h-[36rem]"
+        style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
+        data-sound-safe-area
+      >
+        <div className="pointer-events-none absolute left-[8%] top-[4%] h-[92%] w-[84%] rounded-[50%] border border-neutral-950/[0.05]" />
+        <div className="pointer-events-none absolute left-[-8%] top-[52%] h-px w-[116%] rotate-[-5deg] bg-gradient-to-r from-transparent via-neutral-950/12 to-transparent" />
+        <div className="pointer-events-none absolute bottom-[11%] left-[8%] h-20 w-[84%] bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.1),transparent_68%)] blur-xl" />
+
+        <motion.div
+          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={prefersReducedMotion ? 0 : 0.12}
+          dragMomentum={false}
+          onDragEnd={(_event, info) => handleDragEnd(info)}
+          style={{ touchAction: "pan-y", transformStyle: "preserve-3d" }}
+        >
+          {frames.map((frame, index) => {
+            let offset = index - activeIndex;
+            while (offset > frames.length / 2) offset -= frames.length;
+            while (offset < -frames.length / 2) offset += frames.length;
+
+            if (Math.abs(offset) > 1.8) return null;
+
+            const activePlane = offset === 0;
+            const x = activePlane ? 0 : offset * 54;
+            const y = activePlane ? 0 : offset < 0 ? 18 : 12;
+            const rotateZ = activePlane ? 0 : offset < 0 ? -5.5 : 5.5;
+            const rotateY = activePlane ? 0 : offset < 0 ? 18 : -18;
+            const scale = activePlane ? 1 : 0.78;
+            const opacity = activePlane ? 1 : 0.3;
+
+            return (
+              <motion.button
+                key={frame.id}
+                type="button"
+                aria-label={`Inspect ${frame.label}`}
+                aria-pressed={activePlane}
+                onClick={() => {
+                  if (!activePlane) {
+                    setActive(index);
+                    return;
+                  }
+
+                  if (dragConsumedRef.current) return;
+                  onInspect(frame.id);
+                }}
+                className="absolute left-1/2 top-1/2 w-[min(74vw,18.25rem)] overflow-visible bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/35"
+                style={{
+                  zIndex: 30 - Math.abs(offset) * 5,
+                  transformStyle: "preserve-3d",
+                }}
+                initial={false}
+                animate={{
+                  opacity,
+                  x: `calc(-50% + ${x}%)`,
+                  y: `calc(-50% + ${y}px)`,
+                  rotateZ,
+                  rotateY,
+                  scale,
+                  filter: `blur(${activePlane ? 0 : 0.7}px)`,
+                }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.62, ease }}
+              >
+                <span
+                  className={[
+                    "relative block aspect-[9/16] overflow-hidden bg-neutral-950",
+                    activePlane
+                      ? "shadow-[0_28px_80px_rgba(15,15,15,0.16)]"
+                      : "shadow-[0_18px_54px_rgba(15,15,15,0.12)]",
+                  ].join(" ")}
+                >
+                  <CaseMediaView media={frame} fit="contain" priority={activePlane || index < 2} />
+                </span>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between gap-3 border-t border-neutral-950/12 pt-4">
         <div className="flex gap-2">
           {frames.map((frame, index) => (
             <button
-              key={frame.id}
+              key={`${frame.id}-mobile-orbit-dot`}
               type="button"
               onClick={() => setActive(index)}
               className={[
@@ -2345,35 +2428,24 @@ function MobilePhoneCarousel({
         </div>
       </div>
 
-      <motion.button
-        key={activeFrame.id}
-        type="button"
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.08}
-        whileDrag={{ scale: 0.985 }}
-        onDragEnd={(_event, info) => handleDragEnd(info)}
-        onClick={() => {
-          if (dragConsumedRef.current) return;
-          onInspect(activeFrame.id);
-        }}
-        data-sound-safe-area
-        className="mx-auto mt-5 block w-[min(76vw,18.5rem)] cursor-grab overflow-hidden bg-transparent [touch-action:pan-y] shadow-[0_18px_48px_rgba(15,15,15,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 active:cursor-grabbing"
-        aria-label={`Inspect ${activeFrame.label}`}
-      >
-        <span className="block aspect-[9/16] overflow-hidden bg-neutral-950">
-          <CaseMediaView media={activeFrame} fit="contain" priority />
-        </span>
-      </motion.button>
-
-      <div className="mt-4 border-y border-neutral-950/12 py-3 text-center">
-        <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-          Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
-        </div>
-        <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
-          {activeFrame.label}
-        </h3>
-        <p className="mx-auto mt-2 max-w-[36ch] text-[14px] leading-6 text-neutral-600">{activeFrame.caption}</p>
+      <div className="mt-4 border-b border-neutral-950/12 pb-4">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={activeFrame.id}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -6 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.36, ease }}
+          >
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+              Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
+            </div>
+            <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
+              {activeFrame.label}
+            </h3>
+            <p className="mt-2 max-w-[36ch] text-[14px] leading-6 text-neutral-600">{activeFrame.caption}</p>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </MobileReaderSection>
   );

@@ -124,13 +124,6 @@
     --mobile-motion-progress: 0;
   }
 
-  @media (min-width: 1024px) {
-    .mobile-motion-section,
-    .mobile-motion-media {
-      display: contents;
-    }
-  }
-
   @media (max-width: 1023px) {
     .mobile-motion-section,
     .mobile-motion-media {

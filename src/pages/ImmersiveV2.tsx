@@ -3532,7 +3532,7 @@ function MobileChamberAtlas({
               transition={{ duration: 0.32, ease }}
               className="pt-3"
             >
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 px-1">
+              <div className="px-1">
                 <div>
                   <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-400">
                     {String(activeChamberIndex + 1).padStart(2, "0")} /{" "}
@@ -3542,33 +3542,13 @@ function MobileChamberAtlas({
                     {activeChamber.title}
                   </h3>
                 </div>
-                <div className="flex shrink-0 gap-1.5 pt-1">
-                  <button
-                    type="button"
-                    aria-label="Previous chamber"
-                    onMouseEnter={() => sound.playRole("hover")}
-                    onClick={() => selectChamberByOffset(-1)}
-                    className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/34 text-[13px] text-neutral-500 transition hover:border-neutral-950/40 hover:text-neutral-950"
-                  >
-                    {"<"}
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next chamber"
-                    onMouseEnter={() => sound.playRole("hover")}
-                    onClick={() => selectChamberByOffset(1)}
-                    className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/34 text-[13px] text-neutral-500 transition hover:border-neutral-950/40 hover:text-neutral-950"
-                  >
-                    {">"}
-                  </button>
-                </div>
               </div>
 
               <p className="mt-5 px-1 text-[15px] leading-7 text-neutral-600">
                 {activeDetails.role}
               </p>
 
-              <div className="mt-5 flex items-center justify-between gap-4 border-y border-neutral-950/10 px-1 py-3">
+              <div className="mt-6 grid gap-4 border-y border-neutral-950/10 px-1 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
                 <div className="flex items-center gap-2">
                   {futureChambers.map((chamber, index) => (
                     <button
@@ -3586,13 +3566,35 @@ function MobileChamberAtlas({
                     </button>
                   ))}
                 </div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-400">
-                  {activeChamberIndex + 1} / {futureChambers.length} chamber
+                <div className="flex items-center justify-between gap-4 sm:justify-end">
+                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-400">
+                    {activeChamberIndex + 1} / {futureChambers.length} chamber
+                  </div>
+                  <div className="flex shrink-0 gap-1.5">
+                    <button
+                      type="button"
+                      aria-label="Previous chamber"
+                      onMouseEnter={() => sound.playRole("hover")}
+                      onClick={() => selectChamberByOffset(-1)}
+                      className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/44 text-[13px] text-neutral-500 transition hover:border-neutral-950/40 hover:text-neutral-950"
+                    >
+                      {"<"}
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next chamber"
+                      onMouseEnter={() => sound.playRole("hover")}
+                      onClick={() => selectChamberByOffset(1)}
+                      className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/44 text-[13px] text-neutral-500 transition hover:border-neutral-950/40 hover:text-neutral-950"
+                    >
+                      {">"}
+                    </button>
+                  </div>
                 </div>
               </div>
 
               <div
-                className="relative mx-[-1.05rem] mt-5 min-h-[18.75rem] touch-pan-y overflow-visible px-4"
+                className="relative mx-[-1.05rem] mt-7 min-h-[25rem] touch-pan-y overflow-visible px-4 sm:min-h-[29rem]"
                 style={{ perspective: "1300px", transformStyle: "preserve-3d" }}
               >
                 <div className="pointer-events-none absolute left-[7%] top-[13%] h-[70%] w-[86%] rounded-[50%] border border-neutral-950/[0.055]" />
@@ -3635,7 +3637,7 @@ function MobileChamberAtlas({
                           sound.playRole("transition");
                           setActiveTraceIndex(index);
                         }}
-                        className={`absolute left-1/2 top-[50%] h-[13.9rem] w-[88%] max-w-[34rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 ${
+                        className={`absolute left-1/2 top-[50%] aspect-[4/3] w-[74%] max-w-[30rem] overflow-hidden border bg-neutral-950 text-left text-white outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/40 sm:w-[68%] ${
                           hidden ? "pointer-events-none" : ""
                         } ${
                           active ? "border-white/70 shadow-[0_12px_34px_rgba(0,0,0,0.14)]" : "border-white/22 shadow-[0_10px_26px_rgba(0,0,0,0.08)]"

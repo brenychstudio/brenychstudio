@@ -552,7 +552,7 @@ export default function AboutV2({
       <AboutV2Meta noIndex={noIndex} />
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
+      <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="practice" />
         <SectionRail
           items={aboutRailItems}

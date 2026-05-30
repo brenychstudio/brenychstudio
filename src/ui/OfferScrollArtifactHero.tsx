@@ -412,11 +412,13 @@ function ArtifactScene({
   pointer,
   reducedMotion,
   autoSignal = false,
+  sceneScale = 1,
 }: {
   progress: number;
   pointer: Pointer;
   reducedMotion: boolean;
   autoSignal?: boolean;
+  sceneScale?: number;
 }) {
   const rootRef = useRef<THREE.Group>(null);
   const stablePrimaryRef = useRef<THREE.LineSegments>(null);
@@ -467,7 +469,7 @@ function ArtifactScene({
       rootRef.current.rotation.y = p * 4.6 + pointerRef.current.x * 0.18 + scrollSpin * 0.09 + autoTime * 0.18;
       rootRef.current.rotation.z =
         -0.16 + Math.sin(p * Math.PI * 2) * 0.05 + pointerRef.current.x * 0.08 + Math.sin(autoTime * 0.72) * 0.025;
-      rootRef.current.scale.setScalar(0.58 + entrance * 0.07 - preTension - disassemble * 0.005);
+      rootRef.current.scale.setScalar((0.58 + entrance * 0.07 - preTension - disassemble * 0.005) * sceneScale);
     }
 
     const stablePrimaryMaterial = stablePrimaryRef.current?.material;
@@ -611,6 +613,25 @@ function useScrollProgress(sectionRef: React.RefObject<HTMLElement | null>) {
   return progress;
 }
 
+function useTabletArtifactStage() {
+  const [tabletStage, setTabletStage] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(min-width: 768px) and (max-width: 1023px)").matches;
+  });
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 768px) and (max-width: 1023px)");
+    const update = () => setTabletStage(query.matches);
+
+    update();
+    query.addEventListener("change", update);
+
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return tabletStage;
+}
+
 export default function OfferScrollArtifactHero({ compact = false }: { compact?: boolean } = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const scrollProgress = useScrollProgress(sectionRef);
@@ -618,8 +639,13 @@ export default function OfferScrollArtifactHero({ compact = false }: { compact?:
   const sound = useSound();
   const [pointer, setPointer] = useState<Pointer>({ x: 0, y: 0 });
   const soundPhaseRef = useRef<number | null>(null);
+  const tabletStage = useTabletArtifactStage();
   const progress = scrollProgress;
   const disassemble = smoothstep(0.48, 0.96, progress);
+  const compactCamera = tabletStage
+    ? { position: [0, 0, 8.35] as [number, number, number], fov: 45, near: 0.1, far: 100 }
+    : { position: [0, 0, 8.05] as [number, number, number], fov: 48, near: 0.1, far: 100 };
+  const compactSceneScale = tabletStage ? 0.96 : 1.12;
 
   useEffect(() => {
     if (compact) return;
@@ -661,7 +687,7 @@ export default function OfferScrollArtifactHero({ compact = false }: { compact?:
         onPointerLeave={() => setPointer({ x: 0, y: 0 })}
       >
         <div className="sticky top-[calc(var(--mobile-header-height)+0.25rem)] flex h-[calc(100svh-var(--mobile-header-height)-0.5rem)] min-h-[34rem] items-center overflow-visible">
-          <div className="relative h-[min(38rem,calc(100svh-var(--mobile-header-height)-1rem))] min-h-[32rem] w-full overflow-visible">
+          <div className="relative h-[min(38rem,calc(100svh-var(--mobile-header-height)-1rem))] min-h-[32rem] w-full overflow-visible md:h-[calc(100svh-var(--mobile-header-height)-1.5rem)] md:min-h-[46rem]">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,255,255,0.78)_0%,rgba(255,255,255,0.46)_34%,rgba(244,241,234,0.12)_60%,rgba(255,255,255,0)_86%)]" />
             <div className="pointer-events-none absolute inset-0 opacity-[0.02] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:56px_56px]" />
             <div className="pointer-events-none absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-950/[0.045]" />
@@ -676,11 +702,16 @@ export default function OfferScrollArtifactHero({ compact = false }: { compact?:
 
             <div className="absolute -inset-x-[28vw] -inset-y-[22svh]">
               <Canvas
-                camera={{ position: [0, 0, 8.25], fov: 56, near: 0.1, far: 100 }}
+                camera={compactCamera}
                 dpr={[1, 1.55]}
                 gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
               >
-                <ArtifactScene progress={progress} pointer={pointer} reducedMotion={reducedMotion} />
+                <ArtifactScene
+                  progress={progress}
+                  pointer={pointer}
+                  reducedMotion={reducedMotion}
+                  sceneScale={compactSceneScale}
+                />
               </Canvas>
             </div>
 

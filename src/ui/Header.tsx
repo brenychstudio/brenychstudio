@@ -177,7 +177,7 @@ export default function Header({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="mobile-route-terminal-title"
-                className="fixed inset-0 z-[90] flex items-center justify-center px-4 pb-4 pt-[calc(4.25rem+env(safe-area-inset-top))] md:hidden"
+                className="fixed inset-0 z-[90] flex items-center justify-center px-4 pb-4 pt-[calc(4.25rem+env(safe-area-inset-top))] lg:hidden"
                 initial="closed"
                 animate="open"
                 exit="closed"
@@ -331,7 +331,7 @@ export default function Header({
         "site-header fixed inset-x-0 top-0 z-50 border-b",
       ].join(" ")}
     >
-      <div className="relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] sm:gap-3 sm:py-0">
+      <div className="relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:py-0 lg:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] lg:gap-3">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
         <div className="flex min-w-0 items-center gap-4">
           <button
@@ -358,7 +358,7 @@ export default function Header({
           </div>
         </div>
 
-        <nav className="hidden items-center justify-center gap-5 whitespace-nowrap text-[11px] text-[color:var(--header-muted)] md:flex lg:gap-6">
+        <nav className="hidden items-center justify-center gap-5 whitespace-nowrap text-[11px] text-[color:var(--header-muted)] lg:flex lg:gap-6">
           {navItems.map((item) => {
             const isActive = activePath === item.to;
 
@@ -396,7 +396,7 @@ export default function Header({
             </span>
           </div>
 
-          <div className="flex min-w-0 items-center justify-center gap-1 rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-1 py-1 text-[9px] uppercase tracking-[0.12em] text-[color:var(--header-muted)] shadow-[0_4px_14px_rgba(0,0,0,0.018)] transition-colors duration-[420ms] min-[420px]:px-1.5 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:text-[11px]">
+          <div className="flex shrink-0 items-center justify-center gap-1 rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-1 py-1 text-[9px] uppercase tracking-[0.12em] text-[color:var(--header-muted)] shadow-[0_4px_14px_rgba(0,0,0,0.018)] transition-colors duration-[420ms] min-[420px]:px-1.5 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:text-[11px]">
             {availableLocales.map((language) => {
               const isActive = locale === language;
 
@@ -406,8 +406,8 @@ export default function Header({
                   type="button"
                   onClick={() => setLocale(language)}
                   className={[
-                    "min-w-0 items-center whitespace-nowrap rounded-full px-1.5 py-1 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:px-2",
-                    isActive ? "inline-flex" : "hidden sm:inline-flex",
+                    "shrink-0 items-center whitespace-nowrap rounded-full px-1.5 py-1 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:px-2",
+                    isActive ? "inline-flex" : "hidden lg:inline-flex",
                     isActive
                       ? "bg-[color:var(--header-active-chip-bg)] text-[color:var(--header-active-chip-text)] opacity-100"
                       : "opacity-35 hover:opacity-100",
@@ -427,7 +427,7 @@ export default function Header({
             aria-controls="mobile-header-menu"
             aria-label={mobileMenuOpen ? "Close route terminal" : "Open route terminal"}
             className={[
-              "inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:h-9 min-[420px]:px-3 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] md:hidden",
+              "inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:h-9 min-[420px]:px-3 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] lg:hidden",
               mobileMenuOpen ? "shadow-[0_10px_24px_rgba(0,0,0,0.07)]" : "opacity-88",
             ].join(" ")}
           >

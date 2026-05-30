@@ -1353,7 +1353,7 @@ function OpeningChapter({
     <Chapter
       id="opening"
       headerScene="living-threshold"
-      className="relative overflow-hidden px-4 pb-12 pt-20 sm:px-6 lg:min-h-screen lg:px-8 lg:pb-16 lg:pt-24"
+      className="relative overflow-hidden px-4 pb-12 pt-20 sm:px-6 md:px-10 lg:min-h-screen lg:px-8 lg:pb-16 lg:pt-24"
     >
       <div className="absolute inset-0 z-0">
         <StudioHeroField
@@ -2542,7 +2542,7 @@ export default function StudioIndex({
       {noIndex ? <StudioNoIndexMeta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
+      <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="living" />
         <SectionRail
           items={studioRailItems}

@@ -404,8 +404,8 @@ function FeaturedFlowItem({
       data-archive-depth={depth}
       className={`group relative overflow-hidden border-neutral-950/12 ${
         selected
-          ? "min-h-[min(72svh,610px)] border-y py-4 sm:min-h-[680px] sm:py-7 xl:min-h-[840px] xl:py-9"
-          : "min-h-[min(66svh,560px)] border-t py-4 sm:min-h-[640px] sm:py-7 xl:min-h-[790px] xl:py-10"
+          ? "min-h-[min(72svh,610px)] border-y py-4 sm:min-h-[680px] sm:py-7 md:min-h-[720px] xl:min-h-[840px] xl:py-9"
+          : "min-h-[min(66svh,560px)] border-t py-4 sm:min-h-[640px] sm:py-7 md:min-h-[690px] xl:min-h-[790px] xl:py-10"
       }`}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -413,7 +413,7 @@ function FeaturedFlowItem({
       transition={{ duration: 0.5, ease }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
-      <div className={`relative overflow-hidden text-left ${selected ? "min-h-[min(68svh,580px)] sm:min-h-[620px] xl:min-h-[780px]" : "min-h-[min(62svh,530px)] sm:min-h-[590px] xl:min-h-[710px]"}`}>
+      <div className={`relative overflow-hidden text-left ${selected ? "min-h-[min(68svh,580px)] sm:min-h-[620px] md:min-h-[660px] xl:min-h-[780px]" : "min-h-[min(62svh,530px)] sm:min-h-[590px] md:min-h-[630px] xl:min-h-[710px]"}`}>
         <div className="absolute inset-x-3 top-3 z-40 flex flex-wrap items-center gap-2 sm:inset-x-5 sm:top-5">
           <span className="border-y border-neutral-950/14 bg-[#f8f6f0]/76 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm xl:hidden">
             {availabilityStatusLabel}
@@ -455,8 +455,8 @@ function FeaturedFlowItem({
           <motion.span
             className={`absolute overflow-hidden border border-neutral-950/10 bg-neutral-950 shadow-[0_42px_120px_rgba(10,10,10,0.2)] ${
               selected
-                ? `top-[5.1rem] h-[42%] w-[88%] sm:top-[5.5rem] sm:h-[48%] sm:w-[82%] xl:top-[10%] xl:h-[66%] xl:w-[76%] ${alignRight ? "right-[4%] xl:right-[6%]" : "left-[4%] xl:left-[6%]"}`
-                : `top-[5.1rem] h-[40%] w-[86%] sm:top-[5.5rem] sm:h-[46%] sm:w-[80%] xl:top-[13%] xl:h-[60%] xl:w-[68%] ${alignRight ? "right-[4%] xl:right-[8%]" : "left-[4%] xl:left-[8%]"}`
+                ? `top-[5.1rem] h-[42%] w-[88%] sm:top-[5.5rem] sm:h-[48%] sm:w-[82%] md:top-[5.7rem] md:aspect-[16/10] md:h-auto md:w-[70%] xl:top-[10%] xl:h-[66%] xl:w-[76%] ${alignRight ? "right-[4%] xl:right-[6%]" : "left-[4%] xl:left-[6%]"}`
+                : `top-[5.1rem] h-[40%] w-[86%] sm:top-[5.5rem] sm:h-[46%] sm:w-[80%] md:top-[5.7rem] md:aspect-[16/10] md:h-auto md:w-[68%] xl:top-[13%] xl:h-[60%] xl:w-[68%] ${alignRight ? "right-[4%] xl:right-[8%]" : "left-[4%] xl:left-[8%]"}`
             }`}
             style={reducedMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, rotate: imageRotate }}
           >
@@ -474,7 +474,7 @@ function FeaturedFlowItem({
             return (
               <motion.span
                 key={`${item.slug}-${visual}-${visualIndex}`}
-                className={`absolute ${visualIndex === 2 ? "hidden sm:block" : ""} ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
+                className={`absolute ${visualIndex === 2 ? "hidden sm:block" : ""} ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} md:aspect-[4/3] md:h-auto overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
                 style={reducedMotion ? undefined : { x: motionStyle.x, y: motionStyle.y, scale: motionStyle.scale, rotate: fragmentRotations[visualIndex] ?? 0 }}
               >
                 <img src={visual} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(item)}`} />
@@ -484,7 +484,7 @@ function FeaturedFlowItem({
           })}
 
           <motion.span
-            className={`absolute bottom-[5.75rem] left-[4%] right-[4%] z-30 max-w-[calc(100%-2rem)] text-left sm:bottom-[6.9rem] ${
+            className={`absolute bottom-[5.75rem] left-[4%] right-[4%] z-30 max-w-[calc(100%-2rem)] text-left sm:bottom-[6.9rem] md:bottom-[5.9rem] ${
               alignRight
                 ? "xl:left-[4%] xl:right-auto xl:text-left"
                 : "xl:left-auto xl:right-[4%] xl:text-right"
@@ -980,7 +980,7 @@ export default function EvidenceAtlas({
       {noIndex ? <EvidenceAtlasMeta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
-      <PageSurface className="relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
+      <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="evidence" />
         <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
 

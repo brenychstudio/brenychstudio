@@ -300,177 +300,303 @@ const authoredCaseStories: CaseStory[] = [
   {
     slug: "barcelona-private-advisory",
     caseType: "advisory",
-    label: "CASE SYSTEM / ADVISORY FOUNDATION / PROPERTY SURFACE",
+    label: "CASE SYSTEM / PRIVATE PROPERTY INTELLIGENCE",
     headline: "Barcelona Private Advisory",
-    subheadline: "Mediterranean advisory interface system.",
+    subheadline: "Private property intelligence system.",
     summary:
-      "A calm bilingual advisory surface for Barcelona property discovery, built around shortlist logic, district fit, private intake, and premium buyer pacing.",
+      "A calm Barcelona real-estate advisory prototype built around buyer intent, Barcelona Lens, acquisition signals, shortlist dossiers, property inspection, and advisory inquiry handoff.",
     proofClaim:
-      "Private advisory becomes a system when buyer intent, location intelligence, curated search, shortlist logic, and private inquiry move as one guided path.",
+      "Private advisory becomes a system when buyer intent, district intelligence, ranked candidates, shortlist evidence, inspection, and inquiry handoff move as one guided path.",
     evidencePoints: [
-      "The interface starts from acquisition context instead of listing noise.",
-      "Properties are framed as a guided shortlist, not an endless portal.",
-      "The next step is advisory contact, not generic browsing.",
+      "The interface starts from buyer intent before properties compete for attention.",
+      "Barcelona Lens makes district intelligence visible inside the property decision.",
+      "The final output is an advisor-ready dossier and viewing request, not generic browsing.",
     ],
     systemTags: [
-      "Advisory surface",
-      "District lens",
-      "Shortlist logic",
-      "Private intake",
+      "Private property intelligence",
+      "Barcelona Lens",
+      "Shortlist dossier",
+      "Inquiry handoff",
       "Bilingual",
       "Available foundation",
     ],
     systemLayers: [
       {
-        title: "Visual direction",
+        title: "Buyer intent layer",
         text:
-          "Mediterranean calm, warm light, restrained interface density, and buyer-first editorial framing replace portal noise.",
+          "The experience begins with acquisition context, so the buyer brief shapes the search before listings take over.",
       },
       {
-        title: "Search architecture",
+        title: "Barcelona Lens Field",
         text:
-          "Search is shaped around curated discovery, buyer fit, and practical narrowing instead of a high-volume listing grid.",
+          "District intelligence, lifestyle fit, and location signals become visible decision material rather than hidden advisory knowledge.",
       },
       {
-        title: "District / location lens",
+        title: "Private search surface",
         text:
-          "Neighborhood context becomes part of the property decision, connecting place, lifestyle, and acquisition intent.",
+          "Property cards are treated as acquisition signals with readiness, priority, and buyer-fit context.",
       },
       {
-        title: "Shortlist logic",
+        title: "Private Shortlist Dossier",
         text:
-          "Saved selections become an advisory artifact, helping buyers move from browsing to a structured private conversation.",
+          "Saved selections become a dossier for comparison, trade-off review, and advisor-ready conversation.",
       },
       {
-        title: "Inquiry flow",
+        title: "Advisory inquiry handoff",
         text:
-          "Bilingual access, WhatsApp, email, and copy-brief actions turn interest into a calmer private intake moment.",
+          "Search context, selected properties, timing, and buyer notes become a structured viewing request.",
       },
       {
         title: "Responsive structure",
         text:
-          "Mobile keeps the buyer journey light: property cards, shortlist review, and focused gallery inspection stay easy to scan.",
+          "Mobile keeps the same intelligence model readable across lens, dossier, field card, inspection, and request brief states.",
       },
     ],
     mediaSequence: [
       {
         id: "walkthrough",
         kind: "video",
-        src: "/cases/bcn-advisory/video/bcn-advisory-video.mp4",
-        poster: "/cases/bcn-advisory/desktop/bcn-advisory-hero.webp",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-video.mp4",
+        poster: "/cases/bcn-advisory/v2/bcn-advisory-video-poster.webp",
         alt: "Barcelona Private Advisory walkthrough video",
-        label: "Advisory walkthrough",
+        label: "Intelligence walkthrough",
         caption:
-          "The full surface reframes property browsing into a curated Barcelona-first buyer journey.",
+          "The walkthrough moves through lens, private search, shortlist dossier, property inspection, and advisory handoff.",
         role: "hero",
       },
       {
         id: "threshold",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-hero.webp",
-        alt: "Barcelona Private Advisory desktop hero",
-        label: "Advisory threshold",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-hero.webp",
+        alt: "Barcelona Private Advisory private property intelligence hero",
+        label: "Intelligence threshold",
         caption:
-          "The hero positions Spain Costas through a calmer, more selective advisory-first property experience.",
+          "The hero positions the project as a private property intelligence system: brief, lens, signal, dossier, and action.",
         role: "hero",
       },
       {
         id: "collection",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-1.webp",
-        alt: "Barcelona Private Advisory search surface",
-        label: "Curated search",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-intent-lens.webp",
+        alt: "Barcelona Private Advisory buyer intent lens",
+        label: "Intent lens",
         caption:
-          "Search becomes an advisory filter system rather than a listing dump.",
+          "Buyer intent defines the lens before properties compete for attention.",
         role: "proof",
       },
       {
         id: "craft",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-2.webp",
-        alt: "Barcelona Private Advisory district lens",
-        label: "District lens",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field.webp",
+        alt: "Barcelona Private Advisory Barcelona Lens Field",
+        label: "Barcelona Lens",
         caption:
-          "Location intelligence connects property decisions with neighborhood rhythm, lifestyle fit, and Barcelona context.",
+          "District intelligence becomes visible, connecting acquisition intent with neighborhood rhythm and fit.",
         role: "detail",
       },
       {
         id: "desktop-3",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-3.webp",
-        alt: "Barcelona Private Advisory property detail surface",
-        label: "Property review",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-shortlist-dossier.webp",
+        alt: "Barcelona Private Advisory private shortlist dossier",
+        label: "Shortlist dossier",
         caption:
-          "Property detail is framed as guided evaluation, pairing imagery, context, and decision support.",
+          "Saved properties become a Private Shortlist Dossier for comparison, trade-off review, and advisor-ready handoff.",
         role: "proof",
       },
       {
         id: "inquiry",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-4.webp",
-        alt: "Barcelona Private Advisory shortlist drawer",
-        label: "Shortlist intake",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-media-led-acquisition.webp",
+        alt: "Barcelona Private Advisory media-led acquisition signal",
+        label: "Acquisition signal",
         caption:
-          "Saved properties turn into a structured advisory selection before private contact.",
+          "Media-led cards turn property browsing into acquisition signals with priority and buyer-fit context.",
         role: "flow",
       },
       {
         id: "desktop-5",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-5.webp",
-        alt: "Barcelona Private Advisory contact and intake surface",
-        label: "Private contact",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-visual-proof-send.webp",
+        alt: "Barcelona Private Advisory visual proof ready to send",
+        label: "Visual proof",
         caption:
-          "Contact is shaped as a buyer-intake moment with direct channels and a calmer advisory frame.",
+          "The shortlist becomes visual proof, ready to move from browsing into a prepared conversation.",
         role: "flow",
       },
       {
         id: "desktop-6",
-        src: "/cases/bcn-advisory/desktop/bcn-advisory-6.webp",
-        alt: "Barcelona Private Advisory bilingual advisory content",
-        label: "Bilingual context",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-lens-expanded.webp",
+        alt: "Barcelona Private Advisory expanded district lens",
+        label: "Expanded lens",
         caption:
-          "The system can stretch into bilingual and territory-aware content without losing the premium buyer rhythm.",
+          "Map, district notes, fast-scan index, and selected properties stay visible inside one advisory surface.",
         role: "detail",
       },
       {
+        id: "desktop-7",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-advisory-shortlist.webp",
+        alt: "Barcelona Private Advisory advisory shortlist logic",
+        label: "Advisory shortlist",
+        caption:
+          "A buyer brief is translated into ranked advisory candidates rather than another listing grid.",
+        role: "proof",
+      },
+      {
+        id: "desktop-8",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-shortlist-grid.webp",
+        alt: "Barcelona Private Advisory ranked shortlist grid",
+        label: "Ranked candidates",
+        caption:
+          "Price, signal, readiness, and fit stay visible so comparison keeps its advisory context.",
+        role: "proof",
+      },
+      {
+        id: "desktop-9",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-property-detail.webp",
+        alt: "Barcelona Private Advisory property detail intelligence screen",
+        label: "Property intelligence",
+        caption:
+          "Property detail behaves like guided evaluation with media, priority, fit notes, and advisor summary.",
+        role: "detail",
+      },
+      {
+        id: "desktop-10",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-inspection-preview.webp",
+        alt: "Barcelona Private Advisory inspection preview",
+        label: "Inspection preview",
+        caption:
+          "Inspection preview keeps imagery, fit, and readiness together before the buyer requests a viewing.",
+        role: "detail",
+      },
+      {
+        id: "desktop-11",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-gallery-review.webp",
+        alt: "Barcelona Private Advisory gallery review",
+        label: "Gallery review",
+        caption:
+          "Gallery review supports focused private inspection without flattening the experience into a portal lightbox.",
+        role: "detail",
+      },
+      {
+        id: "desktop-12",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-private-advisory-method.webp",
+        alt: "Barcelona Private Advisory private advisory method page",
+        label: "Advisory method",
+        caption:
+          "The method page explains the system: brief, lens, signal, dossier, and action.",
+        role: "flow",
+      },
+      {
+        id: "desktop-13",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-inquiry-handoff.webp",
+        alt: "Barcelona Private Advisory inquiry handoff",
+        label: "Inquiry handoff",
+        caption:
+          "The final output turns search, selected properties, and timing into a copy-ready viewing request.",
+        role: "flow",
+      },
+      {
         id: "mobile",
-        src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-1.webp",
-        alt: "Barcelona Private Advisory mobile homepage",
-        label: "Mobile advisory",
-        caption: "Mobile preserves the advisory-first message and premium property framing.",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-hero-lens.webp",
+        alt: "Barcelona Private Advisory mobile hero and lens",
+        label: "Mobile lens",
+        caption: "Mobile opens with the same brief, lens, signal, dossier, and action structure.",
         role: "mobile",
       },
       {
         id: "mobile-nav",
-        src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-2.webp",
-        alt: "Barcelona Private Advisory mobile property cards",
-        label: "Mobile cards",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-media-signal.webp",
+        alt: "Barcelona Private Advisory mobile media-led acquisition signal",
+        label: "Mobile signal",
         caption:
-          "Mobile property cards keep browsing calm, selective, and shortlist-oriented.",
+          "Mobile cards preserve acquisition signal, priority, and save actions without becoming a noisy feed.",
         role: "mobile",
       },
       {
         id: "mobile-inquiry",
-        src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-3.webp",
-        alt: "Barcelona Private Advisory mobile shortlist",
-        label: "Mobile shortlist",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-dossier-ready.webp",
+        alt: "Barcelona Private Advisory mobile advisor-ready dossier",
+        label: "Mobile dossier",
         caption:
-          "Saved apartments become a compact private advisory selection on mobile.",
+          "Selected properties become an advisor-ready dossier with buyer intent still visible.",
         role: "mobile",
       },
       {
         id: "mobile-gallery",
-        src: "/cases/bcn-advisory/mobile/bcn-advisory-mb-4.webp",
-        alt: "Barcelona Private Advisory mobile property gallery",
-        label: "Mobile gallery",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-menu.webp",
+        alt: "Barcelona Private Advisory mobile private advisory menu",
+        label: "Mobile menu",
         caption:
-          "Gallery inspection keeps the property decision visual and compact inside the mobile buyer path.",
+          "The private advisory menu keeps primary path, trust, and request actions compact.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-shortlist",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-shortlist-dossier.webp",
+        alt: "Barcelona Private Advisory mobile shortlist dossier",
+        label: "Mobile shortlist",
+        caption:
+          "Shortlisted properties become a mobile dossier for trade-off review and request preparation.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-field",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-field-card.webp",
+        alt: "Barcelona Private Advisory mobile field card",
+        label: "Mobile field card",
+        caption:
+          "Field cards keep readiness, guide price, request path, and saved state in one compact scan.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-detail",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-property-detail.webp",
+        alt: "Barcelona Private Advisory mobile property detail",
+        label: "Mobile property",
+        caption:
+          "Property detail keeps recommendation, acquisition file, guide price, and gallery action close together.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-inspection",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-inspection-gallery.webp",
+        alt: "Barcelona Private Advisory mobile inspection gallery",
+        label: "Mobile inspection",
+        caption:
+          "Private inspection mode gives the buyer a focused image review without leaving the advisory path.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-method",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-advisory-method.webp",
+        alt: "Barcelona Private Advisory mobile advisory method",
+        label: "Mobile method",
+        caption:
+          "The mobile method explains why private advisory selection works better than catalog browsing.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-request",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-request-brief.webp",
+        alt: "Barcelona Private Advisory mobile request brief",
+        label: "Mobile request brief",
+        caption:
+          "Request Brief turns the final message into structured advisory context before first contact.",
+        role: "mobile",
+      },
+      {
+        id: "mobile-viewing",
+        src: "/cases/bcn-advisory/v2/bcn-advisory-mobile-viewing-path.webp",
+        alt: "Barcelona Private Advisory mobile viewing path request",
+        label: "Mobile viewing path",
+        caption:
+          "Viewing path captures source, next action, preferred timing, and buyer notes without becoming a generic form.",
         role: "mobile",
       },
     ],
     interactionLogic:
-      "Motion supports buyer confidence: calm reveals, shortlist feedback, gallery review, and private intake stay restrained so the advisory value remains clear.",
+      "Motion supports buyer confidence: calm reveals, shortlist feedback, inspection review, and inquiry handoff stay restrained so the advisory value remains clear.",
     commercialLogic:
-      "Barcelona Private Advisory shifts real-estate browsing away from portal volume and toward curated selection: fit first, district proof second, private intake when the buyer is ready.",
+      "Barcelona Private Advisory shifts real-estate browsing away from portal volume and toward private property intelligence: brief first, district lens second, dossier third, inquiry handoff when the buyer is ready.",
     technicalFoundation: [
       "Astro / React islands / TypeScript",
       "Multilingual-ready structure",
-      "Search and shortlist UI logic",
+      "Search, shortlist, and dossier UI logic",
       "Responsive buyer journey",
       "Metadata / Open Graph preparation",
       "Deployment-ready front-end",
@@ -479,7 +605,7 @@ const authoredCaseStories: CaseStory[] = [
       status: "available",
       label: "Available as an advisory foundation.",
       summary:
-        "Barcelona Private Advisory can be adapted into a commissioned real-estate, hospitality, destination, or private-service advisory surface.",
+        "Barcelona Private Advisory can be adapted into a commissioned real-estate, hospitality, destination, or private-service intelligence surface.",
       bestFor: ["Real estate advisory", "Private consulting", "Hospitality", "Curated services"],
       adaptationIncludes: [
         "Territory and content adaptation",
@@ -507,291 +633,224 @@ const authoredCaseStories: CaseStory[] = [
   {
     slug: "creatorops",
     caseType: "workflow-tool",
-    label: "CASE SYSTEM / WORKFLOW FOUNDATION / CREATOR OPS",
+    label: "CASE SYSTEM / WORKFLOW TOOL / CREATOR PUBLISHING",
     headline: "CreatorOps",
     subheadline: "Creator workflow interface system.",
     summary:
-      "A beta-ready content workflow prototype for creators and small content teams, built around Library, Smart Mix, Sequence, Planner, Captions, Export, and Bio Builder.",
+      "A beta-ready export-first workspace for creators and small content teams, built around Library, Smart Mix, Planner, Captions, Export, Client Review, Profile Handoff / Bio Builder, and Media Converter.",
     proofClaim:
-      "Creator workflow becomes a system when scattered assets, decision logic, publishing rhythm, export files, and profile tools move as one guided pipeline.",
+      "Creator workflow becomes a system when scattered assets, planning, captions, export, review, and handoff move toward one ready-to-publish Week Pack.",
     evidencePoints: [
-      "Smart Mix narrows scattered visual assets into ranked content candidates.",
-      "Export produces a real downloadable publishing pack instead of a static dashboard preview.",
-      "Bio Builder extends the pack into a profile-ready creator tool layer.",
+      "Raw visual assets enter the system as selectable publishing candidates.",
+      "Export assembles a ready-to-publish Week Pack instead of leaving content scattered across tools.",
+      "Client Review, Profile Handoff, and Media Converter keep approval and utility steps inside one calm product environment.",
     ],
     systemTags: [
       "Creator workflow",
       "Smart Mix",
-      "Export pack",
-      "Bio Builder",
+      "Client Review",
+      "Media Converter",
       "React prototype",
-      "Available foundation",
+      "Product interface",
     ],
     systemLayers: [
       {
         title: "Workflow architecture",
         text:
-          "Library, Smart Mix, Sequence, Planner, Captions, Export, and Bio Builder are shaped as one route-driven product loop.",
+          "Library, Smart Mix, Planner, Captions, Export, Client Review, Profile Handoff / Bio Builder, and Media Converter are shaped as one guided creator publishing flow.",
       },
       {
         title: "Decision layer",
         text:
-          "Smart Mix ranks 3x3 candidates, avoids repetition, supports variety guardrails, and explains why a mix works.",
+          "Smart Mix ranks combinations, avoids repetition, and turns scattered visual assets into clearer publishing candidates before planning begins.",
       },
       {
-        title: "Output logic",
+        title: "Export-first planning",
         text:
-          "Export turns selected assets, captions, hashtags, CSV, manifest, README, and structured text into a practical downloadable pack.",
+          "Planner and Captions turn selected visuals into a structured Week Pack, so the workflow moves toward usable output instead of isolated files.",
       },
       {
-        title: "Tools extension",
+        title: "Client review",
         text:
-          "Bio Builder acts as the first standalone tool, connecting exported content with profile positioning and downloadable profile briefs.",
+          "Feedback and approval are treated as a product layer, keeping collaborator review calm and structured.",
       },
       {
-        title: "Interface density",
+        title: "Handoff and utility",
         text:
-          "The UI keeps workflow controls, preview cards, state feedback, and machine readouts visible without turning the product into clutter.",
+          "Profile Handoff / Bio Builder and Media Converter keep delivery and utility work inside the product environment without breaking the premium interface tone.",
       },
       {
-        title: "Production-shaped front-end",
+        title: "Responsive product UI",
         text:
-          "A Vite, React, TypeScript, Tailwind, Router, Motion, JSZip, and Cloudflare Pages foundation supports a usable live beta.",
+          "A React, TypeScript, Vite, and Tailwind foundation supports a beta-ready workflow prototype with product UI, stateful surfaces, and responsive presentation.",
       },
     ],
     mediaSequence: [
       {
         id: "walkthrough",
         kind: "video",
-        src: "/cases/creatorops/video/creatorops-video.mp4",
-        poster: "/cases/creatorops/desktop/creatorops-hero.webp",
+        src: "/cases/creatorops/v2/creatorops-video.mp4",
+        poster: "/cases/creatorops/v2/creatorops-video-poster.webp",
         alt: "CreatorOps walkthrough video",
         label: "System walkthrough",
         caption:
-          "The full product loop shows content intake, Smart Mix, planning, export, and Bio Builder as one creator workflow.",
+          "The walkthrough shows creator publishing, client review, profile handoff, and utility tools moving through one product-interface prototype.",
         role: "hero",
       },
       {
         id: "threshold",
-        src: "/cases/creatorops/desktop/creatorops-hero.webp",
-        alt: "CreatorOps desktop hero",
+        src: "/cases/creatorops/v2/creatorops-hero.webp",
+        alt: "CreatorOps workflow interface hero screen",
         label: "Workflow threshold",
         caption:
-          "The hero frames CreatorOps as a calm operating system for turning content chaos into a publishing pipeline.",
+          "The hero positions CreatorOps as a calm workflow interface system for creator publishing.",
         role: "hero",
       },
       {
-        id: "collection",
-        src: "/cases/creatorops/desktop/creatorops-6.webp",
-        alt: "CreatorOps library and Smart Mix workspace",
-        label: "Library intake",
-        caption:
-          "The workspace turns visual assets into selected candidates with machine readouts and workflow controls.",
-        role: "proof",
-      },
-      {
         id: "desktop-1",
-        src: "/cases/creatorops/desktop/creatorops-1.webp",
-        alt: "CreatorOps desktop landing surface",
-        label: "Product promise",
+        src: "/cases/creatorops/v2/creatorops-workflow-overview.webp",
+        alt: "CreatorOps workflow overview screen",
+        label: "Workflow overview",
         caption:
-          "The landing surface presents the product promise, creator outcome, and premium SaaS direction.",
+          "The product is framed as an export-first workspace for turning scattered creator assets into a ready-to-publish Week Pack.",
         role: "detail",
       },
       {
         id: "desktop-2",
-        src: "/cases/creatorops/desktop/creatorops-2.webp",
-        alt: "CreatorOps system logic section",
-        label: "System logic",
+        src: "/cases/creatorops/v2/creatorops-week-focus.webp",
+        alt: "CreatorOps weekly focus planning screen",
+        label: "Week focus",
         caption:
-          "The system logic section explains the calm guardrails behind content planning and publishing decisions.",
+          "Weekly and campaign planning stay visible without becoming a calendar-heavy product.",
         role: "detail",
       },
       {
         id: "desktop-3",
-        src: "/cases/creatorops/desktop/creatorops-3.webp",
-        alt: "CreatorOps creator output narrative",
-        label: "Creator outcome",
+        src: "/cases/creatorops/v2/creatorops-pricing-plans.webp",
+        alt: "CreatorOps pricing plans screen",
+        label: "Pricing plans",
         caption:
-          "The creator-facing promise is translated into a clear mobile-output and publishing-pack narrative.",
+          "The plan surface frames the prototype as a serious creator workflow product direction.",
+        role: "detail",
+      },
+      {
+        id: "desktop-4",
+        src: "/cases/creatorops/v2/creatorops-roadmap.webp",
+        alt: "CreatorOps roadmap screen",
+        label: "Roadmap",
+        caption:
+          "Roadmap content shows how the workflow can expand through review, tools, automation, and publishing support.",
         role: "detail",
       },
       {
         id: "desktop-5",
-        src: "/cases/creatorops/desktop/creatorops-5.webp",
-        alt: "CreatorOps roadmap and monetization surface",
-        label: "Roadmap surface",
+        src: "/cases/creatorops/v2/creatorops-waitlist.webp",
+        alt: "CreatorOps waitlist screen",
+        label: "Waitlist",
         caption:
-          "Roadmap and monetization content shows how the prototype can expand into a larger creator workflow product.",
+          "Waitlist intake turns product interest into a restrained beta entry point.",
         role: "flow",
       },
       {
-        id: "craft",
-        src: "/cases/creatorops/desktop/creatorops-9.webp",
-        alt: "CreatorOps Smart Mix output",
-        label: "Smart Mix logic",
+        id: "collection",
+        src: "/cases/creatorops/v2/creatorops-library-grid.webp",
+        alt: "CreatorOps content library grid",
+        label: "Library grid",
         caption:
-          "Smart Mix converts selected assets into ranked 3x3 content directions with practical decision support.",
-        role: "detail",
+          "Raw visual assets enter the system as selectable publishing candidates.",
+        role: "proof",
       },
       {
         id: "desktop-7",
-        src: "/cases/creatorops/desktop/creatorops-7.webp",
-        alt: "CreatorOps dark asset selection workspace",
-        label: "Asset workspace",
+        src: "/cases/creatorops/v2/creatorops-library-expanded.webp",
+        alt: "CreatorOps expanded content library screen",
+        label: "Expanded library",
         caption:
-          "The dark prototype workspace shows asset selection, state-driven layout, and product-like interface density.",
+          "Selection, ranking, and content context remain readable inside the darker product environment.",
         role: "proof",
       },
       {
-        id: "desktop-8",
-        src: "/cases/creatorops/desktop/creatorops-8.webp",
-        alt: "CreatorOps light workspace variation",
-        label: "Review mode",
+        id: "craft",
+        src: "/cases/creatorops/v2/creatorops-publishing-flow.webp",
+        alt: "CreatorOps publishing flow screen",
+        label: "Publishing flow",
         caption:
-          "A light workspace variation demonstrates the product system across visual modes and review contexts.",
-        role: "proof",
+          "Selected visuals, captions, and timing cues are shaped into an export-ready publishing flow.",
+        role: "detail",
       },
       {
         id: "desktop-10",
-        src: "/cases/creatorops/desktop/creatorops-10.webp",
-        alt: "CreatorOps captions and planning workspace",
-        label: "Caption planner",
+        src: "/cases/creatorops/v2/creatorops-artwork-detail.webp",
+        alt: "CreatorOps artwork detail screen",
+        label: "Artwork detail",
         caption:
-          "Captions and planning connect content selection with publishing rhythm and output structure.",
-        role: "flow",
+          "Artwork detail supports inspection, content context, and handoff decisions without leaving the workflow.",
+        role: "proof",
       },
       {
         id: "desktop-11",
-        src: "/cases/creatorops/desktop/creatorops-11.webp",
-        alt: "CreatorOps export and tools state",
-        label: "Export state",
+        src: "/cases/creatorops/v2/creatorops-client-feedback.webp",
+        alt: "CreatorOps client feedback screen",
+        label: "Client feedback",
         caption:
-          "The export and tools state shows how the workflow continues beyond visual selection.",
-        role: "flow",
+          "Feedback is shaped as a calm review layer rather than a scattered comment thread.",
+        role: "proof",
       },
       {
         id: "inquiry",
-        src: "/cases/creatorops/desktop/creatorops-12.webp",
-        alt: "CreatorOps Bio Builder workspace",
-        label: "Tools handoff",
+        src: "/cases/creatorops/v2/creatorops-client-review.webp",
+        alt: "CreatorOps client review screen",
+        label: "Client review",
         caption:
-          "Bio Builder extends the export pack into profile direction, generated variants, and downloadable profile context.",
+          "Collaborators can approve, comment, and refine content direction inside the product.",
         role: "flow",
       },
       {
         id: "desktop-13",
-        src: "/cases/creatorops/desktop/creatorops-13.webp",
-        alt: "CreatorOps connected profile-building flow",
-        label: "Profile layer",
+        src: "/cases/creatorops/v2/creatorops-profile-handoff.webp",
+        alt: "CreatorOps profile handoff screen",
+        label: "Profile handoff",
         caption:
-          "The connected profile-building flow extends the content pack into an Instagram-style bio and identity layer.",
+          "The publishing pack continues into profile context, bio direction, and creator-facing output.",
         role: "flow",
       },
       {
-        id: "mobile",
-        src: "/cases/creatorops/mobile/creatorops-mb-1.webp",
-        alt: "CreatorOps mobile library grid",
-        label: "Mobile library",
+        id: "desktop-14",
+        src: "/cases/creatorops/v2/creatorops-media-converter.webp",
+        alt: "CreatorOps media converter interface",
+        label: "Media Converter",
         caption:
-          "Mobile keeps the visual asset library readable while preserving the creator workflow rhythm.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-nav",
-        src: "/cases/creatorops/mobile/creatorops-mb-2.webp",
-        alt: "CreatorOps mobile Smart Mix",
-        label: "Mobile Smart Mix",
-        caption:
-          "The handheld Smart Mix step keeps selected assets, generated candidates, and continuation flow compact.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-sequence",
-        src: "/cases/creatorops/mobile/creatorops-mb-3.webp",
-        alt: "CreatorOps mobile sequence state",
-        label: "Mobile sequence",
-        caption:
-          "The selected mix becomes an ordered publishing direction inside the mobile sequence state.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-planner",
-        src: "/cases/creatorops/mobile/creatorops-mb-4.webp",
-        alt: "CreatorOps mobile planner state",
-        label: "Mobile planner",
-        caption:
-          "The planner links pack selection, rhythm, and next-step product flow on a compact screen.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-export",
-        src: "/cases/creatorops/mobile/creatorops-mb-5.webp",
-        alt: "CreatorOps mobile export",
-        label: "Mobile export",
-        caption:
-          "Mobile export keeps the practical publishing-pack outcome visible inside the handheld product flow.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-bio-form",
-        src: "/cases/creatorops/mobile/creatorops-mb-6.webp",
-        alt: "CreatorOps mobile Bio Builder form",
-        label: "Mobile bio form",
-        caption:
-          "Bio Builder shapes handle, audience, offer, CTA, and profile direction from the phone flow.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-profile-preview",
-        src: "/cases/creatorops/mobile/creatorops-mb-7.webp",
-        alt: "CreatorOps mobile profile preview",
-        label: "Mobile profile",
-        caption:
-          "The Instagram-style profile preview adapts the content pack into a creator-facing public identity.",
-        role: "mobile",
-      },
-      {
-        id: "mobile-tools",
-        src: "/cases/creatorops/mobile/creatorops-mb-8.webp",
-        alt: "CreatorOps mobile Bio Builder handoff",
-        label: "Mobile tools",
-        caption:
-          "The mobile handoff shows how CreatorOps can expand from workflow into standalone creator tools.",
-        role: "mobile",
+          "Utility tools stay inside the product environment without breaking the premium interface tone.",
+        role: "flow",
       },
     ],
     interactionLogic:
-      "Motion supports product calm: route transitions, card rhythm, state feedback, and workspace changes help the user understand progress without burying the workflow.",
+      "Motion supports product calm: route transitions, modular workflow states, export checkpoints, review surfaces, and utility layers help the user understand progress without burying the interface.",
     commercialLogic:
-      "CreatorOps shifts creator tooling from scattered assets and generic dashboards toward practical output: select assets, generate direction, prepare captions, export a pack, and shape the profile layer.",
+      "CreatorOps shifts creator tooling away from scattered assets and generic dashboards toward an export-first workflow: select, rank, plan, caption, review, export, and hand off visual content.",
     technicalFoundation: [
-      "Vite + React + TypeScript",
-      "React Router workflow architecture",
-      "Tailwind CSS interface system",
-      "Motion transitions",
-      "JSZip export pack generation",
-      "Browser-side file handling",
-      "Local / session state",
+      "React + TypeScript + Vite",
+      "Tailwind CSS product UI",
+      "Workflow logic and stateful surfaces",
+      "Responsive interface structure",
+      "Export-oriented flow architecture",
       "Cloudflare Pages deployment",
     ],
     availability: {
-      status: "available",
-      label: "Available as a workflow foundation.",
+      status: "concept-reference",
+      label: "Available as workflow direction.",
       summary:
-        "CreatorOps can be adapted into a commissioned creator tool, content operations system, internal publishing workflow, or AI-ready product prototype.",
-      bestFor: ["Creator tools", "Content teams", "Publishing workflows", "AI-ready SaaS"],
+        "CreatorOps can inform a custom creator tool, content operations system, internal publishing workflow, or export-first product-interface prototype.",
+      bestFor: ["Creator tools", "Content teams", "Publishing workflows", "Product prototypes"],
       adaptationIncludes: [
-        "Workflow and route adaptation",
-        "Content model and state logic",
-        "Export pack customization",
-        "Tools layer extension",
-        "Deployment-ready front-end",
+        "Custom workflow modelling",
+        "Product UI direction",
+        "Review and handoff architecture",
+        "Utility layer planning",
       ],
       licensingNote:
-        "Final ownership, workflow specificity, AI/API integrations, content model, and product terms are defined per commission.",
-      exclusivityAvailable: true,
-      ctaLabel: "Adapt this workflow",
+        "Available as reference for a custom commissioned product direction, not as a direct reuse of the current concept.",
+      ctaLabel: "Discuss similar direction",
     },
     links: [
       {
@@ -821,6 +880,184 @@ type V2CaseConfig = {
 };
 
 const v2CaseConfigs: Record<string, V2CaseConfig> = {
+  "aurel-eon-gt": {
+    caseType: "luxury-product",
+    label: "CASE SYSTEM / AUTOMOTIVE CONCEPT / LIVING PRODUCT EXPERIENCE",
+    subheadline: "Living automotive product experience.",
+    proofClaim:
+      "Premium automotive websites become product systems when the car is revealed through atmosphere, signal, inspection, gallery logic, drive character, and private preview rather than static marketing blocks.",
+    systemLayers: [
+      {
+        title: "Arrival field",
+        text:
+          "The hero introduces the fictional electric grand tourer as a presence shaped by silence, signal, motion, and cinematic restraint.",
+      },
+      {
+        title: "Presence Rail",
+        text:
+          "Navigation behaves as a product signal rail, tracking active section, mood state, and progression through the experience.",
+      },
+      {
+        title: "Cinematic inspect",
+        text:
+          "Inspect mode opens a sequence of product states with wheel, keyboard, and button navigation instead of a single modal.",
+      },
+      {
+        title: "Gallery archive",
+        text:
+          "The visual archive uses active image, filmstrip navigation, wheel browsing, transitions, and metadata as product evidence.",
+      },
+      {
+        title: "Drive character",
+        text:
+          "The composer reframes configuration as an emotional choice between Silent Range, Night Signal, and Controlled Force.",
+      },
+      {
+        title: "Private preview",
+        text:
+          "The final conversion surface avoids generic contact behavior and closes with a concierge-style introduction path.",
+      },
+    ],
+    interactionLogic:
+      "Interaction is built around section-based mood transitions, active presence tracking, Next Signal progression, cinematic inspect overlays, ghost-frame depth, gallery wheel browsing, product-view expansion, and simplified mobile app-like states.",
+    commercialLogic:
+      "AUREL EON GT proves that a fictional automotive launch can feel commercially legible and experimental at the same time: premium art direction, product storytelling, reusable interface systems, and honest prototype framing stay connected.",
+    technicalFoundation: [
+      "Vite",
+      "React",
+      "TypeScript",
+      "React Router",
+      "Tailwind CSS v4",
+      "CSS custom properties",
+      "Motion for React",
+      "Zustand state store",
+      "Custom wheel / keyboard interaction logic",
+      "WebP media pipeline",
+      "Isolated future XR / WebGL architecture",
+    ],
+    systemTags: ["Automotive concept", "Cinematic UX", "Product system", "Interactive storytelling", "Responsive"],
+    evidencePoints: [
+      "Moves beyond a generic automotive landing page",
+      "Turns the car into a sequence of cinematic product states",
+      "Keeps future XR / WebGL exploration isolated from the fast image-led site",
+    ],
+    mediaLabels: {
+      "aurel-eon-gt-hero": "Arrival field",
+      "aurel-eon-gt-exterior-field": "Exterior field",
+      "aurel-eon-gt-rear-light-signature": "Rear signal",
+      "aurel-eon-gt-cabin-quiet": "Cabin quiet",
+      "aurel-eon-gt-materiality": "Materiality",
+      "aurel-eon-gt-private-preview": "Private preview",
+      "aurel-eon-gt-drive-character-composer": "Drive character",
+      "aurel-eon-gt-product-view-expansion": "Product view",
+      "aurel-eon-gt-gallery-archive": "Gallery archive",
+      "aurel-eon-gt-light-signature": "Light signature",
+      "aurel-eon-gt-case-exit": "Case exit",
+      "aurel-eon-gt-mobile-hero": "Mobile arrival",
+      "aurel-eon-gt-mobile-cabin-quiet": "Mobile cabin",
+      "aurel-eon-gt-mobile-inspect-exterior": "Mobile inspect",
+      "aurel-eon-gt-mobile-drive-character": "Mobile drive",
+      "aurel-eon-gt-mobile-gallery-archive": "Mobile gallery",
+      "aurel-eon-gt-mobile-interface-intelligence": "Mobile intelligence",
+      "aurel-eon-gt-mobile-light-signature": "Mobile signal",
+      "aurel-eon-gt-mobile-private-preview": "Mobile preview",
+      "aurel-eon-gt-mobile-inspect-drive": "Mobile inspect drive",
+      "aurel-eon-gt-mobile-case-exit": "Mobile exit",
+    },
+  },
+  "oria-house-barcelona": {
+    caseType: "hospitality",
+    label: "CASE SYSTEM / BOUTIQUE HOTEL / HOSPITALITY INTERFACE",
+    subheadline: "Boutique hotel hospitality system.",
+    proofClaim:
+      "Hotel concept websites become systems when atmosphere, room decision support, experience layers, location context, and booking contact move as one calm guest path.",
+    systemLayers: [
+      {
+        title: "Atmospheric entry",
+        text:
+          "The hero, courtyard, and warm photography establish the stay as a quiet Barcelona retreat before pushing conversion.",
+      },
+      {
+        title: "Room decision support",
+        text:
+          "Room rhythm, comparison, grids, detail pages, and galleries help guests choose without flattening the hotel into inventory.",
+      },
+      {
+        title: "Experience layer",
+        text:
+          "Spa ritual, breakfast, dining, terrace, and weekend packages expand the concept beyond rooms.",
+      },
+      {
+        title: "Mobile guest path",
+        text:
+          "Mobile screens keep hero, room choice, room detail, experiences, and contact readable as one practical handheld journey.",
+      },
+      {
+        title: "Location context",
+        text:
+          "Barcelona map and local rhythm content ground the concept without turning it into a generic travel guide.",
+      },
+      {
+        title: "Booking contact",
+        text:
+          "Inquiry remains clear and calm, shaped as contact for a concept hotel rather than a claimed live booking engine.",
+      },
+    ],
+    interactionLogic:
+      "Motion and screen rhythm stay warm, slow, and editorial so room selection, gallery inspection, experience browsing, and contact feel like part of the hotel atmosphere.",
+    commercialLogic:
+      "Oria House proves a hospitality case can balance desire and utility: guests feel the stay, compare rooms, inspect details, and reach contact without a template-hotel pattern.",
+    technicalFoundation: [
+      "Astro 5",
+      "Static site generation",
+      "TypeScript",
+      "Tailwind CSS v4",
+      "Astro components",
+      "Vanilla JavaScript interaction layers",
+      "Local asset registry for demo photography",
+      "Multilingual EN/ES routing",
+      "Dynamic room / offer / experience pages",
+    ],
+    systemTags: ["Hotel concept", "Hospitality UX", "Room comparison", "Booking contact", "Responsive"],
+    evidencePoints: [
+      "Connects cinematic atmosphere with practical room selection",
+      "Turns rooms and experiences into one guest decision path",
+      "Keeps booking contact clear without claiming a live reservation platform",
+    ],
+    mediaLabels: {
+      "oria-house-hero": "Hotel threshold",
+      "oria-house-suite-story": "Suite story",
+      "oria-house-arrival-mood": "Arrival mood",
+      "oria-house-stay-before-city": "Stay before city",
+      "oria-house-room-rhythm": "Room rhythm",
+      "oria-house-room-compare": "Room compare",
+      "oria-house-room-grid": "Room grid",
+      "oria-house-deluxe-comfort": "Deluxe detail",
+      "oria-house-suite-gallery": "Suite gallery",
+      "oria-house-room-detail": "Room detail",
+      "oria-house-local-rhythm": "Local rhythm",
+      "oria-house-room-collection": "Room collection",
+      "oria-house-spa-ritual": "Spa ritual",
+      "oria-house-experience-card": "Experience card",
+      "oria-house-signature-breakfast": "Breakfast ritual",
+      "oria-house-dining-evening": "Dining evening",
+      "oria-house-location-map": "Location map",
+      "oria-house-booking-contact": "Booking contact",
+      "oria-house-mobile-hero": "Mobile threshold",
+      "oria-house-mobile-courtyard-arrival": "Mobile arrival",
+      "oria-house-mobile-room-rhythm": "Mobile rooms",
+      "oria-house-mobile-room-compare": "Mobile compare",
+      "oria-house-mobile-studio-courtyard": "Mobile studio",
+      "oria-house-mobile-deluxe-comfort": "Mobile deluxe",
+      "oria-house-mobile-deluxe-gallery": "Mobile gallery",
+      "oria-house-mobile-terrace-breakfast": "Mobile terrace",
+      "oria-house-mobile-romance-weekend": "Mobile package",
+      "oria-house-mobile-spa-ritual": "Mobile spa",
+      "oria-house-mobile-signature-breakfast": "Mobile breakfast",
+      "oria-house-mobile-dining-evening": "Mobile dining",
+      "oria-house-mobile-booking-contact": "Mobile contact",
+    },
+  },
   sprintcrm: {
     caseType: "workflow-tool",
     label: "CASE SYSTEM / OPERATOR WORKFLOW / INTERNAL CRM",
@@ -1020,46 +1257,46 @@ const v2CaseConfigs: Record<string, V2CaseConfig> = {
   },
   "arcwave-integrations": {
     caseType: "premium-website",
-    label: "CASE SYSTEM / SERVICE ARCHITECTURE / BILINGUAL B2B",
-    subheadline: "Bilingual service architecture system.",
+    label: "CASE SYSTEM / INFRASTRUCTURE INTERFACE",
+    subheadline: "Infrastructure interface system.",
     proofClaim:
-      "Service websites become systems when offer structure, technical trust, bilingual content, quote flow, and deployment discipline move together.",
+      "Technical service websites become systems when invisible infrastructure, service paths, proof metrics, install logic, quote flow, and deployment discipline move together.",
     systemLayers: [
       {
-        title: "Service architecture",
+        title: "Connected infrastructure",
         text:
-          "The offer is broken into typed service pages and scannable sections instead of a generic company brochure.",
+          "Telecom, networks, electricity, security, EV charging, smart home, and audio are framed as one technical layer.",
       },
       {
-        title: "Bilingual parity",
+        title: "Service path logic",
         text:
-          "English and Spanish content layers keep technical information consistent across routes and user contexts.",
+          "Each service has a clear entry point, but the interface keeps the buyer inside one connected installation system.",
       },
       {
-        title: "Technical trust",
+        title: "Proof metrics",
         text:
-          "Process, documentation, handover, and service detail are framed as evidence for a high-trust engineering buyer.",
+          "Reliability, active scopes, installed systems, and connected services become visible evidence before inquiry.",
       },
       {
-        title: "Quote flow",
+        title: "Install flow",
         text:
-          "Inquiry is shaped through service-specific selection and field hierarchy so commercial intent is clear early.",
+          "Process sections explain how a signal, need, or service request becomes an installed technical result.",
       },
       {
-        title: "Reusable vertical",
+        title: "Quote brief",
         text:
-          "The structure can be adapted for B2B services, integration companies, technical firms, and quote-led offers.",
+          "The request path turns technical uncertainty into a clearer install brief instead of a cold generic form.",
       },
       {
         title: "Production polish",
         text:
-          "Redirect-safe routing, view transitions, deployment setup, and responsive QA make the concept feel operational.",
+          "Typed content, responsive surfaces, view transitions, deployment setup, and route discipline make the concept feel operational.",
       },
     ],
     interactionLogic:
-      "Transitions and page states stay restrained so the technical offer reads clearly, with motion supporting hierarchy rather than personality-first effects.",
+      "Transitions and page states stay restrained so the infrastructure model reads clearly, with motion supporting service grouping, process rhythm, and quote readiness.",
     commercialLogic:
-      "ARCWAVE translates a technical service business into a premium buyer path: understand the offer, trust the process, then request a quote.",
+      "ARCWAVE translates technical installation work into a premium buyer path: understand the connected layer, choose a service, trust the process, then request a clear install brief.",
     technicalFoundation: [
       "Astro + TypeScript",
       "React islands",
@@ -1069,16 +1306,29 @@ const v2CaseConfigs: Record<string, V2CaseConfig> = {
       "Cloudflare Pages deployment",
     ],
     mediaLabels: {
-      "arc-hero": "Service threshold",
-      "arc-1": "Service architecture",
-      "arc-2": "Process clarity",
-      "arc-3": "Service detail",
-      "arc-4": "Handover surface",
-      "arc-5": "Quote flow",
-      "arc-mb-1": "Mobile landing",
-      "arc-mb-2": "Mobile services",
-      "arc-mb-3": "Mobile handover",
-      "arc-mb-4": "Mobile quote",
+      "arcwave-hero": "Infrastructure threshold",
+      "arcwave-connected-layer": "Connected layer",
+      "arcwave-proof-metrics": "Proof metrics",
+      "arcwave-service-system": "Service system",
+      "arcwave-install-paths": "Install paths",
+      "arcwave-infrastructure-modules": "Infrastructure modules",
+      "arcwave-decision-interface": "Decision interface",
+      "arcwave-networks-wifi": "Networks / Wi-Fi",
+      "arcwave-quote-form": "Quote form",
+      "arcwave-install-flow": "Install flow",
+      "arcwave-commercial-infrastructure": "Commercial infrastructure",
+      "arcwave-engineering-clarity": "Engineering clarity",
+      "arcwave-install-brief": "Install brief",
+      "arcwave-technical-spec": "Technical spec",
+      "arcwave-mobile-hero": "Mobile threshold",
+      "arcwave-mobile-connected-services": "Mobile services",
+      "arcwave-mobile-menu": "Mobile menu",
+      "arcwave-mobile-proof-metrics": "Mobile proof",
+      "arcwave-mobile-service-grid": "Mobile service grid",
+      "arcwave-mobile-process": "Mobile process",
+      "arcwave-mobile-telecom-detail": "Mobile service detail",
+      "arcwave-mobile-need-card": "Mobile need card",
+      "arcwave-mobile-quote-cta": "Mobile quote CTA",
     },
   },
   "casa-nube": {
@@ -1208,6 +1458,8 @@ const v2CaseConfigs: Record<string, V2CaseConfig> = {
 };
 
 const generatedCaseStorySlugs = [
+  "aurel-eon-gt",
+  "oria-house-barcelona",
   "sprintcrm",
   "fluid-exhibition",
   "form-index",

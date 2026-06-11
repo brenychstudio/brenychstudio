@@ -117,7 +117,7 @@ const futureChamberDetails: Record<FutureChamberId, {
         caption: "Decision surface study.",
       },
       {
-        src: "/cases/creatorops/desktop/creatorops-hero.webp",
+        src: "/cases/creatorops/v2/creatorops-hero.webp",
         label: "Motion note",
         caption: "Guided proof material.",
       },

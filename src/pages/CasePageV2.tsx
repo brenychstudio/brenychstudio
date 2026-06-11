@@ -84,35 +84,175 @@ const technicalLedger = [
   "Cloudflare Workers deployment",
 ];
 
+const aurelTechnologyStack = [
+  {
+    group: "Core",
+    items: ["Vite", "React", "TypeScript", "React Router"],
+  },
+  {
+    group: "Styling",
+    items: ["Tailwind CSS v4", "CSS custom properties", "Custom responsive composition logic"],
+  },
+  {
+    group: "Motion / Interaction",
+    items: [
+      "Motion for React",
+      "Intersection-driven section presence",
+      "Zustand state store",
+      "Custom wheel / keyboard interaction logic",
+    ],
+  },
+  {
+    group: "Media",
+    items: ["WebP image pipeline", "Optimized gallery thumbnails", "OG image and favicon generation"],
+  },
+  {
+    group: "Future-ready",
+    items: ["XR placeholder route", "WebGL/XR architecture intentionally kept isolated for later exploration"],
+  },
+];
+
 const MOBILE_SWIPE_DISTANCE = 42;
 const MOBILE_SWIPE_VELOCITY = 360;
 
 function getCaseNarrative(story: CaseStory) {
   if (story.slug === "creatorops") {
     return {
-      heroMeta: "Library / smart mix / export / tools",
-      heroReadiness: "01 / live beta system",
-      heroMediaTitle: "Creator workflow engine",
-      walkthroughTitle: ["The workflow", "turns chaos", "into output."],
+      heroMeta: "Library / planner / export / handoff",
+      heroReadiness: "01 / beta-ready prototype",
+      heroMediaTitle: "Export-first creator workspace",
+      walkthroughTitle: ["The workspace", "turns assets", "into week packs."],
       walkthroughIntro:
-        "CreatorOps moves scattered visual assets through Library, Smart Mix, Sequence, Planner, Captions, Export, and Bio Builder without turning the product into dashboard clutter.",
+        "CreatorOps moves scattered visual assets through Library, Smart Mix, Planner, Captions, Export, Client Review, Profile Handoff / Bio Builder, and Media Converter without turning the product into dashboard clutter.",
       walkthroughSignals: [
-        { label: "Library", text: "Assets enter as raw material, then become selected publishing candidates." },
-        { label: "Smart Mix", text: "The decision layer ranks combinations, avoids repetition, and gives the user a cleaner path." },
-        { label: "Export", text: "The workflow ends in a real downloadable content pack instead of a decorative preview." },
+        { label: "Library", text: "Raw visual assets enter as selectable publishing candidates." },
+        { label: "Export", text: "Selected material is shaped into a ready-to-publish Week Pack instead of staying scattered." },
+        { label: "Handoff", text: "Client review, profile handoff, and utility tools stay inside one calm product environment." },
       ],
       mobileTitle: "Handheld creator rhythm.",
       mobileIntro:
-        "A circular mobile rail for inspecting the creator workflow, export logic, and Bio Builder handoff as compact product surfaces.",
-      screensTitle: ["Workflow", "as evidence."],
+        "CreatorOps V2 currently uses the desktop evidence field as its complete case proof; mobile-specific screenshots can be added later when that surface is ready.",
+      screensTitle: ["Workflow", "as system."],
       screensReadout:
-        "Each frame proves a working product layer: positioning, library intake, Smart Mix, planning, export, and profile tools.",
-      screenSignals: ["Workflow threshold", "Smart Mix", "Export tools"],
-      proofLabels: ["Decision support", "Practical output", "Tools layer"],
+        "Each frame proves a working product layer: positioning, library intake, planning, captions, export readiness, client review, profile handoff, and media conversion.",
+      screenSignals: ["Export-first workflow", "Client review", "Profile handoff"],
+      proofLabels: ["Export readiness", "Review layer", "Utility handoff"],
       availableStatement:
-        "Adapt the creator workflow logic into a commissioned SaaS, content operations, or internal publishing tool.",
+        "Use this creator workflow direction as reference for a commissioned publishing, content operations, or product-interface prototype.",
       availableBlueprint:
-        "Commissioned workflow system with its own steps, data model, export logic, and tool layer.",
+        "Commissioned workflow interface with its own planning states, export rules, review logic, and handoff utilities.",
+    };
+  }
+
+  if (story.slug === "barcelona-private-advisory") {
+    return {
+      heroMeta: "Brief / lens / dossier / handoff",
+      heroReadiness: "01 / sales-ready prototype",
+      heroMediaTitle: "Private property intelligence",
+      walkthroughTitle: ["The advisory", "turns intent", "into a dossier."],
+      walkthroughIntro:
+        "Barcelona Private Advisory turns buyer intent into a guided path: brief, Barcelona Lens, acquisition signal, shortlist dossier, property inspection, and inquiry handoff.",
+      walkthroughSignals: [
+        { label: "Brief", text: "Buyer intent defines the search before properties compete for attention." },
+        { label: "Lens", text: "Barcelona Lens makes district intelligence, lifestyle fit, and location logic visible." },
+        { label: "Dossier", text: "Shortlist and inquiry handoff prepare a clearer first advisory conversation." },
+      ],
+      mobileTitle: "Mobile advisory intelligence.",
+      mobileIntro:
+        "The mobile proof keeps lens, dossier, property detail, inspection, and request brief readable as one compact buyer path.",
+      screensTitle: ["Selection", "as intelligence."],
+      screensReadout:
+        "Each frame proves a decision layer: intent, Barcelona Lens, acquisition signal, shortlist dossier, inspection, method, and inquiry handoff.",
+      screenSignals: ["Intent lens", "Shortlist dossier", "Inquiry handoff"],
+      proofLabels: ["Buyer intent", "District logic", "Advisor-ready output"],
+      availableStatement:
+        "Adapt this private property intelligence direction into a commissioned real-estate, destination, or advisory surface.",
+      availableBlueprint:
+        "Commissioned advisory interface with its own market lens, shortlist logic, dossier structure, and inquiry path.",
+    };
+  }
+
+  if (story.slug === "arcwave-integrations") {
+    return {
+      heroMeta: "Infrastructure / services / quote / brief",
+      heroReadiness: "01 / deployed concept demo",
+      heroMediaTitle: "Infrastructure interface system",
+      walkthroughTitle: ["The system", "makes infrastructure", "visible."],
+      walkthroughIntro:
+        "ARCWAVE turns telecom, networks, electricity, smart home, EV charging, security, and audio into one readable installation path: connected layer, service choice, process logic, quote request, and technical brief.",
+      walkthroughSignals: [
+        { label: "Layer", text: "Invisible technical systems are presented as one connected infrastructure surface." },
+        { label: "Service", text: "Users can move from need to service path without falling into contractor-site clutter." },
+        { label: "Brief", text: "Quote flow turns uncertainty into structured install context for the first conversation." },
+      ],
+      mobileTitle: "Mobile install clarity.",
+      mobileIntro:
+        "The mobile sequence keeps the infrastructure promise, service cards, process path, proof metrics, and quote CTA readable as one compact technical journey.",
+      screensTitle: ["Infrastructure", "as interface."],
+      screensReadout:
+        "Each frame proves a service layer: connected infrastructure, proof metrics, service modules, decision interface, install flow, quote form, and technical specification.",
+      screenSignals: ["Connected layer", "Install flow", "Quote brief"],
+      proofLabels: ["Infrastructure clarity", "Service path", "Install brief"],
+      availableStatement:
+        "Adapt this infrastructure interface foundation into a commissioned technical service, integration, field-service, or quote-led commercial surface.",
+      availableBlueprint:
+        "Commissioned infrastructure website with its own service system, install logic, technical content, quote path, and deployment route.",
+    };
+  }
+
+  if (story.slug === "oria-house-barcelona") {
+    return {
+      heroMeta: "Rooms / rituals / location / contact",
+      heroReadiness: "01 / concept case",
+      heroMediaTitle: "Boutique hotel hospitality system",
+      walkthroughTitle: ["The stay", "becomes", "a guest path."],
+      walkthroughIntro:
+        "Oria House Barcelona turns a boutique hotel concept into a complete hospitality path: atmospheric entry, room comparison, room detail, experience rituals, location context, and booking contact.",
+      walkthroughSignals: [
+        { label: "Atmosphere", text: "The first surfaces establish a quiet Barcelona retreat before asking for action." },
+        { label: "Rooms", text: "Comparison, room grids, detail pages, and galleries support practical guest choice." },
+        { label: "Contact", text: "The final path turns interest into a clear booking inquiry without claiming a live reservation engine." },
+      ],
+      mobileTitle: "Mobile guest rhythm.",
+      mobileIntro:
+        "The mobile sequence keeps room choice, room detail, stay rituals, dining, spa, and contact close for guests arriving from search, social, or maps.",
+      screensTitle: ["Hotel concept", "as system."],
+      screensReadout:
+        "Each frame proves a hospitality layer: atmosphere, room rhythm, comparison, room detail, gallery, experiences, location, and booking contact.",
+      screenSignals: ["Room comparison", "Stay rituals", "Booking contact"],
+      proofLabels: ["Stay atmosphere", "Room decision", "Guest contact"],
+      availableStatement:
+        "Adapt this boutique hotel foundation into a commissioned hotel, guest house, retreat, serviced apartment, or stay-led destination surface.",
+      availableBlueprint:
+        "Commissioned hospitality website with its own rooms, experience layers, location content, inquiry path, and deployment route.",
+    };
+  }
+
+  if (story.slug === "aurel-eon-gt") {
+    return {
+      heroMeta: "Signal / motion / product states / proof",
+      heroReadiness: "01 / advanced prototype",
+      heroMediaTitle: "Living automotive product system",
+      walkthroughTitle: ["The car", "becomes", "a product field."],
+      walkthroughIntro:
+        "AUREL EON GT turns a fictional premium electric grand tourer launch into a state-driven product experience: arrival, exterior, light signature, cabin, materiality, drive character, gallery archive, inspect sequence, product view, and private preview.",
+      walkthroughSignals: [
+        { label: "Signal", text: "Presence Rail and Next Signal navigation make progression feel like part of the vehicle identity." },
+        { label: "Inspect", text: "Cinematic inspect, gallery archive, and product-view expansion keep the car readable through image-led product states." },
+        { label: "Preview", text: "Private Preview closes the experience as a concierge-style route instead of a generic contact form." },
+      ],
+      mobileTitle: "Mobile product presence.",
+      mobileIntro:
+        "The mobile sequence becomes a focused app-like automotive surface: arrival, cabin, inspect, drive character, gallery archive, intelligence, light signature, preview, and case exit.",
+      screensTitle: ["Automotive", "as system."],
+      screensReadout:
+        "Each frame proves a product layer: arrival, exterior, signal, cabin, materiality, drive character, gallery, inspect, private preview, and responsive mobile states.",
+      screenSignals: ["Presence Rail", "Inspect sequence", "Drive composer"],
+      proofLabels: ["Cinematic states", "Interaction logic", "Prototype honesty"],
+      availableStatement:
+        "Use this case as a reference for commissioned premium automotive, mobility, luxury product, or cinematic interface direction.",
+      availableBlueprint:
+        "Advanced fictional concept with its own visual system, interaction logic, responsive surface, media pipeline, and future XR-ready architecture.",
     };
   }
 
@@ -288,13 +428,27 @@ function CaseMeta({ story, noIndex = false }: { story: CaseStory | null; noIndex
     story?.mediaSequence.find((item) => item.kind !== "video" && item.role === "hero") ??
     story?.mediaSequence.find((item) => item.kind !== "video") ??
     null;
+  const isCreatorOpsCase = story?.slug === "creatorops";
+  const isAurelCase = story?.slug === "aurel-eon-gt";
 
   return (
     <SeoMeta
-      title={story ? `${story.headline} - Case System - Brenych Studio` : "Case System - Brenych Studio"}
+      title={
+        isCreatorOpsCase
+          ? "CreatorOps - Creator Workflow Interface System | Brenych Studio"
+          : isAurelCase
+            ? "AUREL EON GT - Living Automotive Product Experience | Brenych Studio"
+          : story
+            ? `${story.headline} - Case System - Brenych Studio`
+            : "Case System - Brenych Studio"
+      }
       description={
-        story?.summary ??
-        "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure."
+        isCreatorOpsCase
+          ? "An export-first creator workflow prototype for turning scattered visual assets into a ready-to-publish Week Pack with Smart Mix, planning, captions, export, review, handoff, and media conversion."
+          : isAurelCase
+            ? "A fictional premium electric grand tourer launch experience built as a living automotive product system with cinematic states, inspect flows, gallery archive, drive character, and private preview."
+          : story?.summary ??
+            "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure."
       }
       path={story ? `/work/${story.slug}` : "/work"}
       image={media?.src}
@@ -352,15 +506,16 @@ function getEvidenceFrames(story: CaseStory) {
       "desktop-1",
       "desktop-2",
       "desktop-3",
+      "desktop-4",
       "desktop-5",
       "collection",
       "desktop-7",
-      "desktop-8",
       "craft",
       "desktop-10",
       "desktop-11",
       "inquiry",
       "desktop-13",
+      "desktop-14",
     ],
   };
   const customOrder = orderBySlug[story.slug];
@@ -389,6 +544,38 @@ function getAvailabilitySignal(story: CaseStory) {
 }
 
 function getClosingMove(story: CaseStory) {
+  if (story.slug === "aurel-eon-gt") {
+    return {
+      headline: "Commission a premium product experience with this level of control.",
+      prompt: "The automotive concept proves the direction. Choose product world, interaction depth, media system, and launch scope.",
+      steps: ["World", "Motion", "Launch"],
+    };
+  }
+
+  if (story.slug === "oria-house-barcelona") {
+    return {
+      headline: "Use this hotel foundation — or commission a sharper guest path.",
+      prompt: "The stay model is mapped. Choose rooms, rituals, booking logic, and launch scope.",
+      steps: ["Rooms", "Rituals", "Contact"],
+    };
+  }
+
+  if (story.slug === "arcwave-integrations") {
+    return {
+      headline: "Use this infrastructure foundation — or commission a sharper quote path.",
+      prompt: "The service model is mapped. Choose technical vertical, install logic, content depth, and launch scope.",
+      steps: ["Vertical", "Services", "Brief"],
+    };
+  }
+
+  if (story.slug === "barcelona-private-advisory") {
+    return {
+      headline: "Use this intelligence foundation — or commission a sharper buyer path.",
+      prompt: "The advisory model is mapped. Choose market, buyer lens, dossier logic, and launch scope.",
+      steps: ["Market", "Lens", "Handoff"],
+    };
+  }
+
   if (story.caseType === "advisory") {
     return {
       headline: "Use this advisory foundation — or commission a sharper buyer path.",
@@ -461,6 +648,18 @@ function getMobileSectionEyebrow(story: CaseStory, label: string) {
 }
 
 function getMobileHeroSummary(story: CaseStory) {
+  if (story.slug === "oria-house-barcelona") {
+    return "Atmosphere, room comparison, room detail, stay rituals, location context, and booking contact become one boutique hotel path.";
+  }
+
+  if (story.slug === "arcwave-integrations") {
+    return "Connected services, proof metrics, install logic, quote flow, and technical brief turn invisible infrastructure into a clear buyer path.";
+  }
+
+  if (story.slug === "barcelona-private-advisory") {
+    return "Buyer intent, Barcelona Lens, acquisition signals, shortlist dossier, inspection, and inquiry handoff replace listing-portal noise.";
+  }
+
   if (story.caseType === "product-system") {
     return "Controlled light, editorial pacing, multilingual product pages, and private inquiry replace checkout-first commerce.";
   }
@@ -489,6 +688,18 @@ function getMobileHeroSummary(story: CaseStory) {
 }
 
 function getMobileWalkthroughLine(story: CaseStory) {
+  if (story.slug === "oria-house-barcelona") {
+    return "Watch the hotel concept move from atmosphere to rooms, experiences, location context, and booking contact.";
+  }
+
+  if (story.slug === "arcwave-integrations") {
+    return "Watch the technical path move from connected infrastructure to service choice, install flow, quote request, and brief.";
+  }
+
+  if (story.slug === "barcelona-private-advisory") {
+    return "Watch the advisory path move from buyer brief to Barcelona Lens, shortlist dossier, property inspection, and inquiry handoff.";
+  }
+
   if (story.caseType === "product-system") {
     return "Watch the maison move from cinematic entry to product focus, editorial proof, and private inquiry.";
   }
@@ -517,6 +728,18 @@ function getMobileWalkthroughLine(story: CaseStory) {
 }
 
 function getMobileEvidenceReadout(story: CaseStory) {
+  if (story.slug === "oria-house-barcelona") {
+    return "Room comparison, detail pages, gallery review, stay rituals, location, and booking contact frames hold the proof after motion.";
+  }
+
+  if (story.slug === "arcwave-integrations") {
+    return "Connected layer, proof metrics, service modules, process path, quote CTA, and technical spec frames hold the proof after motion.";
+  }
+
+  if (story.slug === "barcelona-private-advisory") {
+    return "Intent lens, district intelligence, shortlist dossier, property inspection, and request brief frames hold the proof after motion.";
+  }
+
   if (story.caseType === "product-system") {
     return "Collection, inquiry, and editorial surfaces hold the proof after the motion pass.";
   }
@@ -1540,6 +1763,7 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
     text: story.evidencePoints[index] ?? item.text,
   }));
   const systemSpine = story.systemLayers.slice(0, 6);
+  const showAurelStack = story.slug === "aurel-eon-gt";
   const compactClaim = story.proofClaim;
 
   return (
@@ -1615,19 +1839,44 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
               </div>
             </div>
 
-            <div className="relative lg:ml-auto lg:w-[82%]">
-              <div className="relative border-y border-neutral-950/12 py-3.5">
-              <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
-                <span className="text-neutral-400">System spine</span>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {systemSpine.map((layer, index) => (
-                    <span key={layer.title} className="grid grid-cols-[1.55rem_1fr] gap-2">
-                      <span className="text-neutral-300">{String(index + 1).padStart(2, "0")}</span>
-                      <span>{layer.title}</span>
-                    </span>
-                  ))}
+            <div className={["relative lg:ml-auto", showAurelStack ? "lg:w-full" : "lg:w-[82%]"].join(" ")}>
+              <div className={["relative grid gap-4", showAurelStack ? "lg:grid-cols-[0.36fr_0.64fr]" : ""].join(" ")}>
+                <div className="relative border-y border-neutral-950/12 py-3.5">
+                  <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
+                    <span className="text-neutral-400">System spine</span>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {systemSpine.map((layer, index) => (
+                        <span key={layer.title} className="grid grid-cols-[1.55rem_1fr] gap-2">
+                          <span className="text-neutral-300">{String(index + 1).padStart(2, "0")}</span>
+                          <span>{layer.title}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
+
+                {showAurelStack ? (
+                  <div className="relative border-y border-neutral-950/12 py-3.5">
+                    <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
+                      <span className="text-neutral-400">Technical stack</span>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {aurelTechnologyStack.map((group, groupIndex) => (
+                          <div key={group.group} className="border-t border-neutral-950/8 pt-2 first:border-t-0 sm:first:border-t">
+                            <div className="grid grid-cols-[1.55rem_1fr] gap-2 text-neutral-500">
+                              <span className="text-neutral-300">{String(groupIndex + 1).padStart(2, "0")}</span>
+                              <span>{group.group}</span>
+                            </div>
+                            <div className="mt-2 grid gap-1.5 pl-[2.15rem] text-[7px] leading-4 tracking-[0.13em] text-neutral-500">
+                              {group.items.map((item) => (
+                                <span key={item}>{item}</span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -1649,26 +1898,38 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
     "Not a template",
   ];
   const adaptationValue =
-    story.caseType === "advisory"
+    story.slug === "barcelona-private-advisory"
+      ? "Market lens, shortlist dossier, inquiry handoff."
+      : story.caseType === "advisory"
       ? "Market structure, shortlist flow, private intake."
       : story.caseType === "workflow-tool" || story.caseType === "tool"
         ? "Workflow steps, state model, output logic."
-        : story.caseType === "hospitality"
-          ? "Place identity, menu structure, visitor flow."
-          : story.caseType === "premium-website"
-            ? "Offer model, content architecture, inquiry flow."
+        : story.slug === "oria-house-barcelona"
+          ? "Rooms, stay rituals, booking contact."
+      : story.caseType === "hospitality"
+        ? "Place identity, menu structure, visitor flow."
+        : story.slug === "arcwave-integrations"
+          ? "Service system, install logic, quote brief."
+        : story.caseType === "premium-website"
+          ? "Offer model, content architecture, inquiry flow."
             : story.caseType === "presentation-system" || story.caseType === "experimental"
               ? "Content model, media rhythm, motion direction."
               : "Brand, product structure, inquiry flow.";
   const blueprintChips =
-    story.caseType === "advisory"
+    story.slug === "barcelona-private-advisory"
+      ? ["Market lens", "Dossier handoff"]
+      : story.caseType === "advisory"
       ? ["Private intake", "Deployable front-end"]
       : story.caseType === "workflow-tool" || story.caseType === "tool"
         ? ["Workflow logic", "Deployable product"]
+        : story.slug === "oria-house-barcelona"
+          ? ["Room system", "Booking contact"]
         : story.caseType === "hospitality"
           ? ["Visitor utility", "Deployable front-end"]
-          : story.caseType === "premium-website"
-            ? ["Service architecture", "Quote-ready surface"]
+      : story.slug === "arcwave-integrations"
+        ? ["Install logic", "Quote-ready surface"]
+      : story.caseType === "premium-website"
+        ? ["Service architecture", "Quote-ready surface"]
             : story.caseType === "presentation-system" || story.caseType === "experimental"
               ? ["Media rhythm", "Deployable surface"]
               : ["Private commerce", "Deployable front-end"];
@@ -2106,6 +2367,7 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
     text: story.evidencePoints[index] ?? item.text,
   }));
   const systemSpine = story.systemLayers.slice(0, 6);
+  const showAurelStack = story.slug === "aurel-eon-gt";
 
   return (
     <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system.">
@@ -2142,6 +2404,28 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
           ))}
         </div>
       </div>
+      {showAurelStack ? (
+        <div className="mt-4 border-y border-neutral-950/12 py-3">
+          <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
+            Technical stack
+          </div>
+          <div className="mt-2 grid gap-3">
+            {aurelTechnologyStack.map((group, groupIndex) => (
+              <div key={group.group} className="border-t border-neutral-950/8 pt-2 first:border-t-0">
+                <div className="grid grid-cols-[1.35rem_1fr] gap-2 font-mono text-[8px] uppercase tracking-[0.13em] text-neutral-500">
+                  <span className="text-neutral-300">{String(groupIndex + 1).padStart(2, "0")}</span>
+                  <span>{group.group}</span>
+                </div>
+                <div className="mt-1.5 grid gap-1 pl-[1.95rem] font-mono text-[7px] uppercase leading-4 tracking-[0.12em] text-neutral-500">
+                  {group.items.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </MobileReaderSection>
   );
 }
@@ -2163,14 +2447,20 @@ function MobileFoundationSection({
   const ctaLabel = story.availability.ctaLabel;
   const technicalRows = story.technicalFoundation.length > 0 ? story.technicalFoundation : technicalLedger;
   const adaptationValue =
-    story.caseType === "advisory"
+    story.slug === "barcelona-private-advisory"
+      ? "Market lens, shortlist dossier, inquiry handoff."
+      : story.caseType === "advisory"
       ? "Market structure, shortlist flow, private intake."
       : story.caseType === "workflow-tool" || story.caseType === "tool"
         ? "Workflow steps, state model, output logic."
-        : story.caseType === "hospitality"
-          ? "Place identity, menu structure, visitor flow."
-          : story.caseType === "premium-website"
-            ? "Offer model, content architecture, inquiry flow."
+        : story.slug === "oria-house-barcelona"
+          ? "Rooms, stay rituals, booking contact."
+      : story.caseType === "hospitality"
+        ? "Place identity, menu structure, visitor flow."
+        : story.slug === "arcwave-integrations"
+          ? "Service system, install logic, quote brief."
+        : story.caseType === "premium-website"
+          ? "Offer model, content architecture, inquiry flow."
             : story.caseType === "presentation-system" || story.caseType === "experimental"
               ? "Content model, media rhythm, motion direction."
         : "Brand, product structure, inquiry flow.";

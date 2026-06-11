@@ -93,13 +93,13 @@ const media = {
   houseVideo: "/cases/house-of-lune/video/house-of-lune-video.mp4",
   houseDetail: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
 
-  advisory: casePoster("bcn-advisory", "/cases/bcn-advisory/desktop/bcn-advisory-hero.webp"),
-  advisoryVideo: "/cases/bcn-advisory/video/bcn-advisory-video.mp4",
-  advisoryDetail: "/cases/bcn-advisory/desktop/bcn-advisory-3.webp",
+  advisory: casePoster("bcn-advisory", "/cases/bcn-advisory/v2/bcn-advisory-hero.webp"),
+  advisoryVideo: "/cases/bcn-advisory/v2/bcn-advisory-video.mp4",
+  advisoryDetail: "/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field.webp",
 
-  creatorops: casePoster("creatorops", "/cases/creatorops/desktop/creatorops-hero.webp"),
-  creatoropsVideo: "/cases/creatorops/video/creatorops-video.mp4",
-  creatoropsMechanics: "/cases/creatorops/desktop/creatorops-7.webp",
+  creatorops: casePoster("creatorops", "/cases/creatorops/v2/creatorops-hero.webp"),
+  creatoropsVideo: "/cases/creatorops/v2/creatorops-video.mp4",
+  creatoropsMechanics: "/cases/creatorops/v2/creatorops-library-expanded.webp",
 
   sprintcrmHero: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
 
@@ -117,8 +117,8 @@ const media = {
   form: casePoster("form-index", "/cases/form-index/desktop/fr-hero.webp"),
   formVideo: "/cases/form-index/video/fr-video.mp4",
 
-  arcwave: casePoster("arcwave-integrations", "/cases/arcwave-integrations/desktop/arc-hero.webp"),
-  arcwaveVideo: "/cases/arcwave-integrations/video/arc-video.mp4",
+  arcwave: casePoster("arcwave-integrations", "/cases/arcwave-integrations/v2/arcwave-hero.webp"),
+  arcwaveVideo: "/cases/arcwave-integrations/v2/arcwave-video.mp4",
 };
 
 const systems: SystemItem[] = [

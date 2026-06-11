@@ -52,6 +52,37 @@ export const fallbackEvidence: WorkEvidenceMeta = {
 };
 
 export const workEvidenceBySlug: Record<string, WorkEvidenceMeta> = {
+  "aurel-eon-gt": {
+    proofLabel: "Living automotive product system",
+    proofSummary:
+      "A fictional premium electric grand tourer launch experience that turns arrival, exterior, light signature, cabin, materiality, drive character, gallery, inspect, product view, and private preview into one cinematic product system.",
+    systemTags: ["Automotive concept", "Cinematic UX", "Product states", "Interaction systems"],
+    workType: "Premium Automotive Product Experience",
+    filters: ["Premium websites", "Product systems", "Experimental"],
+    capability: "Premium automotive interaction direction",
+    layers: ["Presence Rail navigation", "Cinematic inspect flow", "Drive character composer"],
+    proofPoints: [
+      "Reframes an automotive launch site as a living product system",
+      "Connects cinematic image states with reusable interaction logic",
+      "Keeps the fictional concept honest as an advanced prototype",
+    ],
+    featuredEvidence: true,
+  },
+  "oria-house-barcelona": {
+    proofLabel: "Boutique hotel hospitality system",
+    proofSummary:
+      "A boutique hotel concept case that connects stay atmosphere, room comparison, room detail, experience layers, location context, and booking contact into one calm guest path.",
+    systemTags: ["Hotel concept", "Hospitality UX", "Room comparison", "Booking contact"],
+    workType: "Hospitality website",
+    filters: ["Premium websites", "Hospitality", "Multilingual"],
+    capability: "Boutique hotel interface design",
+    layers: ["Atmospheric entry", "Room decision path", "Booking contact"],
+    proofPoints: [
+      "Connects atmosphere with practical room selection",
+      "Turns rooms and experiences into one guest journey",
+      "Keeps contact clear without claiming a live booking platform",
+    ],
+  },
   "house-of-lune": {
     proofLabel: "Luxury product architecture",
     proofSummary:
@@ -65,27 +96,27 @@ export const workEvidenceBySlug: Record<string, WorkEvidenceMeta> = {
     featuredEvidence: true,
   },
   "bcn-advisory": {
-    proofLabel: "Advisory UX system",
+    proofLabel: "Private property intelligence",
     proofSummary:
-      "A bilingual real-estate advisory product reframing property browsing as a curated buyer journey with shortlist logic and district-aware discovery.",
-    systemTags: ["Real estate", "Advisory", "Bilingual", "Buyer journey"],
-    workType: "Advisory platform",
+      "A Barcelona real-estate advisory prototype that turns buyer intent, district intelligence, ranked candidates, shortlist dossier, inspection, and inquiry handoff into one guided path.",
+    systemTags: ["Real estate", "Barcelona Lens", "Shortlist dossier", "Inquiry handoff"],
+    workType: "Private Property Intelligence System",
     filters: ["Premium websites", "Product systems", "Multilingual", "Advisory"],
-    capability: "Advisory-first property experience",
-    layers: ["Shortlist logic", "District lens", "Private intake"],
-    proofPoints: ["Moves away from listing-portal noise", "Frames browsing as guided advisory selection", "Keeps premium buyer context visible"],
+    capability: "Private property advisory interface",
+    layers: ["Buyer intent lens", "Barcelona Lens Field", "Advisor-ready dossier"],
+    proofPoints: ["Makes selection logic visible before first contact", "Frames saved properties as a private dossier", "Turns search context into a structured viewing request"],
     featuredEvidence: true,
   },
   creatorops: {
-    proofLabel: "Creator workflow system",
+    proofLabel: "Creator publishing workflow",
     proofSummary:
-      "A workflow interface for packaging selected content into clearer publishing, profile, caption, and export flows.",
-    systemTags: ["Workflow UX", "Creator tools", "Product logic", "Mobile publishing"],
-    workType: "Workflow tool",
+      "A beta-ready export-first workspace for turning scattered creator assets into a ready-to-publish Week Pack with review, handoff, and media conversion inside one calm workflow.",
+    systemTags: ["Workflow UX", "Creator tools", "Client review", "Media converter"],
+    workType: "Workflow Tool / Creator Publishing System",
     filters: ["Product systems", "Tools"],
-    capability: "Creator workflow product direction",
-    layers: ["Smart Mix logic", "Export pipeline", "Bio Builder"],
-    proofPoints: ["Turns loose assets into a guided content pack", "Produces practical export output", "Extends into creator-facing tool modules"],
+    capability: "Creator publishing workflow interface",
+    layers: ["Library and Smart Mix", "Export and review", "Media Converter"],
+    proofPoints: ["Turns loose assets into selectable publishing candidates", "Builds toward a ready-to-publish Week Pack", "Keeps utility tools inside the premium product environment"],
     featuredEvidence: true,
   },
   "print-border-studio": {
@@ -134,15 +165,19 @@ export const workEvidenceBySlug: Record<string, WorkEvidenceMeta> = {
     proofPoints: ["Builds atmosphere through interaction", "Keeps exhibition content legible", "Turns scrolling into presentation structure"],
   },
   "arcwave-integrations": {
-    proofLabel: "Service architecture system",
+    proofLabel: "Infrastructure interface system",
     proofSummary:
-      "A bilingual service-led product surface with typed content architecture, quote flow, and reusable vertical structure.",
-    systemTags: ["Service UX", "Bilingual", "Quote flow", "Typed content"],
+      "A technical installation service system that turns telecom, networks, electricity, security, EV charging, smart home, and audio into one readable infrastructure path.",
+    systemTags: ["Infrastructure UX", "Install brief", "Quote flow", "Technical services"],
     workType: "Product system",
     filters: ["Premium websites", "Product systems", "Multilingual"],
-    capability: "Service-led product architecture",
-    layers: ["Typed sections", "Quote flow", "Reusable verticals"],
-    proofPoints: ["Translates service detail into scannable structure", "Supports bilingual business presentation", "Makes quote intent visible early"],
+    capability: "Infrastructure service interface",
+    layers: ["Connected services", "Install flow", "Quote brief"],
+    proofPoints: [
+      "Makes invisible infrastructure readable",
+      "Turns technical services into clear buyer paths",
+      "Moves quote intent into a structured install brief",
+    ],
   },
   sprintcrm: {
     proofLabel: "Operator workflow product",

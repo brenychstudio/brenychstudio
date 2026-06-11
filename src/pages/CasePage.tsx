@@ -12,7 +12,6 @@ import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
 import { casaNubeCaseI18n } from "../data/casaNubeCaseI18n";
 import { printBorderStudioCaseI18n } from "../data/printBorderStudioCaseI18n";
 import { houseOfLuneCaseI18n } from "../data/houseOfLuneCaseI18n";
-import { creatorOpsCaseI18n } from "../data/creatorOpsCaseI18n";
 import { sprintCrmCaseI18n } from "../data/sprintCrmCaseI18n";
 import { barcelonaAdvisoryCaseI18n } from "../data/barcelonaAdvisoryCaseI18n";
 import type { CaseCoverTone } from "../ui/work/caseCover.types";
@@ -722,83 +721,6 @@ function getLocalizedHouseOfLuneCase(
   };
 }
 
-const CREATOROPS_SLUG = "creatorops" as const;
-
-function getLocalizedCreatorOpsCase(
-  data: Case,
-  locale: keyof typeof creatorOpsCaseI18n
-): Case {
-  if (data.slug !== CREATOROPS_SLUG) return data;
-
-  const copy = creatorOpsCaseI18n[locale] ?? creatorOpsCaseI18n.en;
-
-  let imageFrameIndex = 0;
-
-  return {
-    ...data,
-    statusLabel: copy.statusLabel,
-    tagline: copy.tagline,
-    statusNote: copy.statusNote,
-    poster: {
-      ...data.poster,
-      alt: copy.posterAlt,
-    },
-    content: data.content
-      ? {
-          ...data.content,
-          summary: copy.summary,
-          problem: copy.problem,
-          approach: copy.approach,
-          outcome: copy.outcome,
-          clarity: copy.clarity,
-          motion: copy.motion,
-          build: copy.build,
-          notes: copy.notes,
-          hero: data.content.hero
-            ? {
-                ...data.content.hero,
-                alt:
-                  (data.content.hero.kind ?? "image") === "video"
-                    ? copy.videoAlt
-                    : copy.posterAlt,
-                caption: copy.heroCaption,
-              }
-            : data.content.hero,
-          frames: (data.content.frames ?? []).map((frame) => {
-            if ((frame.kind ?? "image") === "video") {
-              return {
-                ...frame,
-                alt: copy.videoAlt,
-                caption: copy.heroCaption,
-              };
-            }
-
-            const translated = copy.frames[imageFrameIndex];
-            imageFrameIndex += 1;
-
-            return translated
-              ? {
-                  ...frame,
-                  alt: translated.alt,
-                  caption: translated.caption,
-                }
-              : frame;
-          }),
-          credits: [
-            { label: copy.creditLabels.role, value: data.roleLabel },
-            { label: copy.creditLabels.stack, value: data.stackLabel },
-            { label: copy.creditLabels.status, value: copy.statusLabel },
-          ],
-          links: (data.content.links ?? []).map((link, index) => {
-            if (index === 0) return { ...link, label: copy.linkLabels.live };
-            if (index === 1) return { ...link, label: copy.linkLabels.repo };
-            return link;
-          }),
-        }
-      : data.content,
-  };
-}
-
 const SPRINTCRM_SLUG = "sprintcrm" as const;
 
 function getLocalizedSprintCrmCase(
@@ -991,13 +913,8 @@ function applyLocalizedSpecialCases(
     locale as keyof typeof houseOfLuneCaseI18n
   );
 
-  const withCreatorOps = getLocalizedCreatorOpsCase(
-    withHouseOfLune,
-    locale as keyof typeof creatorOpsCaseI18n
-  );
-
   const withSprintCrm = getLocalizedSprintCrmCase(
-    withCreatorOps,
+    withHouseOfLune,
     locale as keyof typeof sprintCrmCaseI18n
   );
 

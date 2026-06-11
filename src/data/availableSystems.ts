@@ -19,6 +19,26 @@ export type AvailableSystem = {
 
 export const availableSystems: AvailableSystem[] = [
   {
+    slug: "oria-house-barcelona",
+    status: "available",
+    label: "Available System",
+    shortLabel: "Ready to adapt",
+    summary:
+      "A boutique hotel hospitality foundation for hotels, guest houses, retreats, serviced apartments, and stay-led destination concepts.",
+    bestFor: ["Boutique hotel", "Guest house", "Retreat", "Serviced apartments"],
+    adaptationIncludes: [
+      "Rooms / suites content structure",
+      "Experience and amenity sections",
+      "Booking or inquiry flow",
+      "Location and guest utility content",
+      "Deployment-ready front-end",
+    ],
+    licensingNote:
+      "Available as a commissioned adaptation. Brand, imagery, room data, booking logic, and ownership terms are defined per project.",
+    exclusivityAvailable: true,
+    ctaLabel: "Adapt this system",
+  },
+  {
     slug: "house-of-lune",
     status: "available",
     label: "Available System",
@@ -44,11 +64,11 @@ export const availableSystems: AvailableSystem[] = [
     label: "Available System",
     shortLabel: "Ready to adapt",
     summary:
-      "An advisory UX foundation for real estate, consulting, private services, curated discovery, and high-trust buyer journeys.",
+      "A private property intelligence foundation for real estate, consulting, destination advisory, curated discovery, and high-trust buyer journeys.",
     bestFor: ["Real estate", "Advisory", "Private consulting", "Curated services"],
     adaptationIncludes: [
-      "Market-specific content structure",
-      "Inquiry / shortlist flow adaptation",
+      "Market-specific intelligence structure",
+      "Lens / shortlist / dossier adaptation",
       "Bilingual or multilingual setup",
       "Visual direction adjustment",
       "Deployment-ready front-end",
@@ -144,13 +164,13 @@ export const availableSystems: AvailableSystem[] = [
     label: "Available System",
     shortLabel: "Ready to adapt",
     summary:
-      "A service architecture foundation for B2B products, integration companies, technical services, and quote-led commercial sites.",
-    bestFor: ["B2B service", "Integration company", "Technical offer", "Quote-led site"],
+      "An infrastructure interface foundation for technical installation companies, integration teams, field-service offers, and quote-led commercial sites.",
+    bestFor: ["Technical installation", "Integration company", "Field service", "Quote-led site"],
     adaptationIncludes: [
-      "Service vertical adaptation",
-      "Quote / inquiry flow customization",
+      "Service system adaptation",
+      "Install brief / quote flow customization",
       "Bilingual or multilingual setup",
-      "Content hierarchy polish",
+      "Technical content hierarchy",
       "Deployment-ready front-end",
     ],
     licensingNote:
@@ -164,9 +184,9 @@ export const availableSystems: AvailableSystem[] = [
     label: "Concept Reference",
     shortLabel: "Direction available",
     summary:
-      "A creator workflow direction that can inform a custom product system, but is not offered as a direct foundation.",
-    bestFor: ["Creator product", "Workflow tool", "Publishing system"],
-    adaptationIncludes: ["Custom product direction", "Workflow modelling", "Interface architecture"],
+      "An export-first creator workflow direction that can inform a custom product system, content operations surface, review layer, or utility-led publishing prototype.",
+    bestFor: ["Creator product", "Workflow tool", "Publishing system", "Content operations"],
+    adaptationIncludes: ["Custom product direction", "Workflow modelling", "Review and handoff architecture", "Utility layer planning"],
     licensingNote:
       "Available as reference for a custom commissioned product direction, not as a direct reuse of the current concept.",
     ctaLabel: "Discuss similar direction",

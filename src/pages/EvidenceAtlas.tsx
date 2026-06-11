@@ -41,9 +41,9 @@ type ArchiveViewMode = "field" | "index";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const featuredSystemSlugs = [
-  "house-of-lune",
-  "bcn-advisory",
   "creatorops",
+  "bcn-advisory",
+  "house-of-lune",
   "print-border-studio",
   "fluid-exhibition",
   "casa-nube",

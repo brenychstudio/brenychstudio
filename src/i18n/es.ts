@@ -293,6 +293,34 @@ export const es: TranslationDictionary = {
         ctaLabel: "Abrir caso WHISPER",
         status: "Advanced V1 / In progress",
       },
+      webhero: {
+        title: "WEBHERO",
+        tagline:
+          "A web-first visual system for cinematic stage modules, living images, Gaussian Splat spatial works and Art Room presentation.",
+        medium: "Living Visual Systems / Spatial Web Infrastructure",
+        mode: "Advanced internal prototype",
+        stack:
+          "Vite, React, TypeScript, WebGL, GLSL / Canvas, Gaussian Splat viewer, SHARP / 3DGS pipeline",
+        description:
+          "A flagship Brenych Studio R&D platform where images, references, WebGL scenes and spatial assets become living visual experiences with a future XR path.",
+        supportLabel: "Flagship R&D system",
+        ctaLabel: "Open WEBHERO case",
+        status: "Advanced internal prototype / active development",
+      },
+      koolBerk: {
+        title: "Kool Berk",
+        tagline:
+          "A Sonic Object OS for an experimental electronic artist where releases become objects and listening becomes an immersive WebGL state.",
+        medium: "Audio-visual Artist Interface / Immersive Music Environment",
+        mode: "Advanced interactive prototype",
+        stack:
+          "Vite, React, React Router, Three.js, React Three Fiber, Drei, CSS Modules, Web Audio API, custom GLSL shaders",
+        description:
+          "A premium artist environment where release objects, signal-track studies, local audio analysis, Sonic Room, EPK layers and future WebXR direction work inside one dark interface system.",
+        supportLabel: "Sonic object system",
+        ctaLabel: "Open Kool Berk case",
+        status: "Advanced interactive prototype / premium art-tech MVP",
+      },
       atlasArc: {
         title: "Atlas Arc",
         tagline: "Narrativa cinematográfica WebXR para property con transiciones espaciales guiadas.",

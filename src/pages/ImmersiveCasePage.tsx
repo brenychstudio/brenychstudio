@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "../ui/Header";
 import Container from "../ui/Container";
@@ -6,11 +7,18 @@ import ActionPill from "../ui/ActionPill";
 import PageSurface from "../ui/PageSurface";
 import CaseStatusPill from "../ui/status/CaseStatusPill";
 import WhisperCaseLayout from "../ui/immersive/WhisperCaseLayout";
+import KoolBerkWebGLBackdrop from "../ui/immersive/KoolBerkWebGLBackdrop";
+import WebHeroMembraneBackdrop from "../ui/immersive/WebHeroMembraneBackdrop";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveTone } from "../data/immersive";
 import { whisperCaseI18n } from "../data/whisperCaseI18n";
+import type { CaseStoryMedia } from "../data/caseStories";
 import { useLocale } from "../store/useLocale";
 import SeoMeta from "../ui/SeoMeta";
+import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
+import SiteFooterV2 from "../ui/SiteFooterV2";
+import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
+import { useSectionRailActive } from "../ui/useSectionRailActive";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -284,6 +292,1315 @@ function openPath(
   startSpaPageTransition(navigate, path, onCloseProject);
 }
 
+const webHeroVideoChapters = [
+  {
+    eyebrow: "Module 01 / Field",
+    title: "The field establishes the operating language.",
+    text:
+      "The opening route shows WEBHERO as a living interface field: threshold, stage vocabulary, system overview and proof matrix appear as one controlled environment instead of separate portfolio screens.",
+    signals: ["Threshold gate", "Stage vocabulary", "System overview", "R&D proof route"],
+  },
+  {
+    eyebrow: "Module 02 / Backdrops",
+    title: "Cinematic Backdrops",
+    text:
+      "Backdrops are treated as visual infrastructure. They support mood, section transitions and branded atmosphere while staying behind the content rather than becoming decorative noise.",
+    signals: ["Atmospheric runtime", "Signal objects", "Reusable visual families", "Transition support"],
+  },
+  {
+    eyebrow: "Module 03 / Living Images",
+    title: "Images become spatial surfaces.",
+    text:
+      "Living Images Classic keeps source fidelity while adding depth, motion and controlled presentation. Living Splat / Pro Mode extends selected images into SHARP / 3DGS-based spatial works for deeper inspection.",
+    signals: ["Classic image mode", "Splat / Pro candidates", "Poster-first loading", "Controlled viewer safety"],
+  },
+  {
+    eyebrow: "Module 04 / Art Room",
+    title: "Art Room",
+    text:
+      "Art Room is the exhibition layer. It lets works expose available modes, separate public presentation from heavy viewer routes, and prepare a path toward future XR adapters without making XR the unstable core.",
+    signals: ["Curated work modes", "Presentation layer", "Viewer separation", "Future WebXR adapter path"],
+  },
+];
+
+const webHeroTechnicalReadouts = [
+  "Vite / React / TypeScript",
+  "WebGL / GLSL / Canvas",
+  "Three-dimensional stage composition",
+  "SHARP / 3DGS / Gaussian Splat proof vertical",
+  "Controlled splat viewer routes",
+  "WebXR adapter architecture",
+  "Art Room mode-aware presentation layer",
+  "Manifest-driven scene runtime",
+  "Poster-first lightweight listing strategy",
+  "Living Art Mixer active R&D compiler path",
+  "Reduced-motion and camera-safety guardrails",
+  "Desktop proof package / mobile not packaged yet",
+];
+
+const webHeroFieldFrameClasses = [
+  "lg:left-[0%] lg:top-[2rem] lg:w-[42%] lg:rotate-[-1.4deg]",
+  "lg:left-[38%] lg:top-[6rem] lg:w-[54%] lg:rotate-[1.2deg]",
+  "lg:left-[8%] lg:top-[29rem] lg:w-[34%] lg:rotate-[1.8deg]",
+  "lg:left-[50%] lg:top-[34rem] lg:w-[42%] lg:rotate-[-1deg]",
+  "lg:left-[3%] lg:top-[55rem] lg:w-[48%] lg:rotate-[-0.8deg]",
+  "lg:left-[55%] lg:top-[64rem] lg:w-[35%] lg:rotate-[1.4deg]",
+  "lg:left-[22%] lg:top-[84rem] lg:w-[38%] lg:rotate-[0.7deg]",
+  "lg:left-[62%] lg:top-[92rem] lg:w-[30%] lg:rotate-[-1.7deg]",
+  "lg:left-[5%] lg:top-[111rem] lg:w-[36%] lg:rotate-[1.1deg]",
+  "lg:left-[43%] lg:top-[119rem] lg:w-[50%] lg:rotate-[-0.6deg]",
+  "lg:left-[2%] lg:top-[143rem] lg:w-[47%] lg:rotate-[-1.2deg]",
+  "lg:left-[54%] lg:top-[151rem] lg:w-[38%] lg:rotate-[1.5deg]",
+];
+
+type WebHeroProofMode = "index" | "field";
+const webHeroInitialProofCount = 12;
+const webHeroExtendedFieldClasses = [
+  "lg:left-[2%] lg:top-[3rem] lg:w-[42%] lg:rotate-[-1.1deg]",
+  "lg:left-[47%] lg:top-[8rem] lg:w-[32%] lg:rotate-[1.6deg]",
+  "lg:left-[18%] lg:top-[31rem] lg:w-[36%] lg:rotate-[0.9deg]",
+  "lg:left-[56%] lg:top-[38rem] lg:w-[36%] lg:rotate-[-1.4deg]",
+  "lg:left-[4%] lg:top-[60rem] lg:w-[44%] lg:rotate-[1.3deg]",
+  "lg:left-[50%] lg:top-[69rem] lg:w-[42%] lg:rotate-[-0.8deg]",
+  "lg:left-[23%] lg:top-[95rem] lg:w-[38%] lg:rotate-[1.2deg]",
+  "lg:left-[61%] lg:top-[102rem] lg:w-[28%] lg:rotate-[-1.7deg]",
+  "lg:left-[6%] lg:top-[122rem] lg:w-[46%] lg:rotate-[0.8deg]",
+];
+
+const webHeroRailItems: SectionRailItem[] = [
+  { id: "webhero-threshold", index: "01", label: "Threshold" },
+  { id: "webhero-modules", index: "02", label: "Modules" },
+  { id: "webhero-proof", index: "03", label: "Proof" },
+  { id: "webhero-technical", index: "04", label: "Technical" },
+];
+
+const koolBerkRailItems: SectionRailItem[] = [
+  { id: "kool-berk-threshold", index: "01", label: "Object" },
+  { id: "kool-berk-walkthrough", index: "02", label: "Walkthrough" },
+  { id: "kool-berk-depth", index: "03", label: "Depth" },
+  { id: "kool-berk-room", index: "04", label: "Room" },
+  { id: "kool-berk-technical", index: "05", label: "Technical" },
+];
+
+const koolBerkDepthLayers = [
+  {
+    index: "01",
+    title: "Sonic Object Stage",
+    text:
+      "The entry surface is organized around a central cube. It works as identity, navigation object, release archive and sonic artifact instead of a standard artist homepage.",
+    signal: "Cube-led navigation / release archive / identity surface",
+  },
+  {
+    index: "02",
+    title: "Object Inspect",
+    text:
+      "ReleaseUnfold opens albums as compact objects: cover, release note, local preview state, tracklist, platform links and a deeper dossier path stay in one surface.",
+    signal: "Release object / quick inspect / platform handoff",
+  },
+  {
+    index: "03",
+    title: "Album Dossier",
+    text:
+      "The dossier behaves like a dark museum terminal for concept, tracks, visuals, credits, platforms, notes and immersive entry points.",
+    signal: "Terminal mode / track map / visual archive",
+  },
+  {
+    index: "04",
+    title: "Signal Tracks",
+    text:
+      "Tracks are not playlist rows. Each one stores mood, duration, energy, visual tag, local preview source and Sonic Room readiness.",
+    signal: "Tanec Monaha / local audio / room prepared",
+  },
+];
+
+const koolBerkTechnicalReadouts = [
+  "Vite / React / React Router",
+  "Three.js / React Three Fiber / Drei",
+  "CSS Modules in the source project",
+  "Web Audio API / AudioContext / AnalyserNode",
+  "Custom GLSL shader atmosphere",
+  "Audio-reactive cube material response",
+  "Local preview audio for true analysis",
+  "Sonic Room fullscreen WebGL overlay",
+  "EPK / Press Dossier deep-link layer",
+  "Lazy-loaded Home / Dossier / Room / EPK",
+  "Manual Vite chunks for React, Three and R3F",
+  "Mobile and tablet survival pass completed",
+];
+
+function KoolBerkVideoProof({
+  video,
+}: {
+  video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element) return;
+
+    let playbackLocked = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        const visibleEnough = entry.isIntersecting && entry.intersectionRatio >= 0.72;
+        const mostlyGone = !entry.isIntersecting || entry.intersectionRatio <= 0.38;
+
+        if (visibleEnough && !playbackLocked) {
+          playbackLocked = true;
+          const startPlayback = () => {
+            void element.play().catch(() => {
+              playbackLocked = false;
+            });
+          };
+          window.requestAnimationFrame(startPlayback);
+        }
+
+        if (mostlyGone) {
+          playbackLocked = false;
+          element.pause();
+        }
+      },
+      {
+        threshold: [0, 0.2, 0.38, 0.55, 0.72, 0.9],
+        rootMargin: "-8% 0px -10% 0px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      element.pause();
+    };
+  }, []);
+
+  return (
+    <motion.article
+      className="overflow-hidden border border-white/10 bg-white/[0.035] text-white shadow-[0_30px_110px_rgba(0,0,0,0.28)]"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="relative aspect-video bg-black">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-contain"
+          muted
+          loop
+          controls
+          playsInline
+          preload="metadata"
+          poster={video.poster}
+        >
+          <source src={video.src} type="video/mp4" />
+        </video>
+        <div className="pointer-events-none absolute left-4 top-4 border-y border-white/16 bg-black/28 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 backdrop-blur">
+          01 / Walkthrough
+        </div>
+      </div>
+      <div className="grid gap-5 border-t border-white/10 p-5 md:p-7 lg:grid-cols-[0.26fr_0.4fr_0.34fr] lg:items-end">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">{video.label}</div>
+          <h2 className="mt-4 max-w-[9ch] text-[clamp(2.2rem,4.4vw,4.4rem)] font-normal leading-[0.92] text-white">
+            One route. Multiple depths.
+          </h2>
+        </div>
+        <p className="max-w-[38rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">
+          {video.caption} The recording is intentionally kept as a single product story: the cube opens the artist
+          identity, releases unfold as inspectable objects, MONAH enters dossier mode, and the Sonic Room becomes the
+          first immersive listening state.
+        </p>
+        <div className="border border-white/10 bg-black/18 p-4 md:p-5">
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">
+            Demo build / active development presentation
+          </div>
+          <p className="mt-4 text-[13px] leading-6 text-white/56 md:text-[14px] md:leading-7">
+            This case is shown as a public development proof: the core interaction system is already legible, while the
+            final launch polish, platform handoff details, and future animation passes are still being completed.
+          </p>
+          <div className="mt-4 grid gap-2 border-t border-white/10 pt-3 font-mono text-[8px] uppercase tracking-[0.16em] text-white/36">
+            <span>Cube-led identity surface</span>
+            <span>Release inspect + dossier path</span>
+            <span>Audio-reactive room prototype</span>
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function KoolBerkEditorialFrame({
+  frame,
+  index,
+  onOpen,
+  className = "",
+  imageClassName = "aspect-[16/10]",
+}: {
+  frame: NonNullable<(typeof immersiveItems)[number]["frames"]>[number];
+  index: number;
+  onOpen: (index: number) => void;
+  className?: string;
+  imageClassName?: string;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={() => onOpen(index)}
+      className={[
+        "group overflow-hidden border border-white/10 bg-white/[0.035] text-left shadow-[0_30px_110px_rgba(0,0,0,0.28)]",
+        className,
+      ].join(" ")}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.16 }}
+      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className={["relative overflow-hidden bg-black", imageClassName].join(" ")}>
+        <img
+          src={frame.src}
+          alt={frame.alt}
+          className="h-full w-full object-cover opacity-92 transition duration-700 group-hover:scale-[1.02]"
+          loading="lazy"
+          decoding="async"
+        />
+        <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
+          Inspect
+        </div>
+      </div>
+      <div className="border-t border-white/10 p-4 md:p-5">
+        <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/36">
+          {String(index + 1).padStart(2, "0")} / {frame.label}
+        </div>
+        <p className="mt-3 text-[13px] leading-6 text-white/56">{frame.caption}</p>
+      </div>
+    </motion.button>
+  );
+}
+
+function KoolBerkEditorialNote({
+  eyebrow,
+  title,
+  body,
+  signals,
+  className = "",
+}: {
+  eyebrow: string;
+  title: string;
+  body: string;
+  signals: string[];
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={[
+        "border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.018))] p-5 text-white shadow-[0_30px_110px_rgba(0,0,0,0.22)] md:p-6",
+        className,
+      ].join(" ")}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">{eyebrow}</div>
+      <h3 className="mt-4 max-w-[10ch] text-[clamp(2rem,4vw,3.6rem)] font-normal leading-[0.92] text-white">
+        {title}
+      </h3>
+      <p className="mt-5 text-[14px] leading-7 text-white/58">{body}</p>
+      <div className="mt-5 grid gap-2 border-t border-white/10 pt-3 font-mono text-[8px] uppercase tracking-[0.16em] text-white/34">
+        {signals.map((signal) => (
+          <span key={signal}>{signal}</span>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function KoolBerkCaseLayout({
+  item,
+  onBack,
+  onOpenProject,
+}: {
+  item: (typeof immersiveItems)[number];
+  onBack: () => void;
+  onOpenProject?: () => void;
+}) {
+  const video = item.videos?.[0];
+  const frames = item.frames ?? [];
+  const activeSection = useSectionRailActive(koolBerkRailItems, "kool-berk-threshold");
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
+    id: `kool-berk-frame-${String(index + 1).padStart(2, "0")}`,
+    kind: "image",
+    src: frame.src,
+    alt: frame.alt,
+    label: frame.label ?? `Frame ${index + 1}`,
+    caption: frame.caption,
+    role: index === 0 ? "hero" : index === 5 ? "detail" : "proof",
+    fit: "contain",
+  }));
+  const stageFrame = frames[0];
+  const inspectFrame = frames[1];
+  const trackFrame = frames[2];
+  const monahInspectFrame = frames[3];
+  const releaseObjectFrame = frames[4];
+  const roomFrame = frames[5];
+  const contactFrame = frames[6];
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const top = Math.max(0, section.getBoundingClientRect().top + window.scrollY - 76);
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#04070d] text-white">
+      <SeoMeta
+        title="Kool Berk - Sonic Object OS | Brenych Studio"
+        description={item.tagline}
+        path="/immersive/kool-berk"
+        image={item.previewPoster}
+        imageAlt="Kool Berk Sonic Object OS immersive case"
+        type="article"
+      />
+      <SectionRail
+        items={koolBerkRailItems}
+        activeId={activeSection}
+        onSelect={scrollToSection}
+        label="Kool Berk sections"
+        tone="dark"
+      />
+
+      <section
+        id="kool-berk-threshold"
+        data-header-scene="kool-berk-threshold"
+        className="relative min-h-[100svh] scroll-mt-[5.5rem] overflow-hidden bg-[#04070d] pt-[72px] md:scroll-mt-28"
+      >
+        <KoolBerkWebGLBackdrop className="absolute inset-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_26%,rgba(94,151,232,0.16),transparent_24%),radial-gradient(circle_at_24%_76%,rgba(158,36,44,0.12),transparent_28%),linear-gradient(180deg,rgba(4,7,13,0.02),rgba(4,7,13,0.26)_40%,rgba(4,7,13,0.62)_74%,#04070d)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#04070d_0%,rgba(4,7,13,0.94)_24%,rgba(4,7,13,0.42)_52%,rgba(4,7,13,0.16)_74%,rgba(4,7,13,0.28)_100%)]" />
+        <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:76px_76px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,7,13,0.22),transparent_18%,transparent_82%,rgba(4,7,13,0.48))]" />
+
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12 xl:pr-24 2xl:pr-0">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={onBack}
+              className="border-y border-white/16 bg-black/24 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
+            >
+              &lt;- Back to immersive
+            </button>
+            <CaseStatusPill kind={item.statusKind} label={item.status} />
+          </div>
+
+          <div className="grid gap-8 py-10 lg:grid-cols-[0.56fr_0.44fr] lg:items-end">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
+                Audio-visual artist interface / immersive music environment
+              </div>
+              <h1 className="mt-6 max-w-[8ch] text-[clamp(4.4rem,12vw,11rem)] font-normal leading-[0.82] text-white">
+                Kool Berk
+              </h1>
+              <p className="mt-7 max-w-[42rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
+                A Sonic Object OS where releases become digital artifacts, tracks become signal studies, and listening
+                becomes an audio-reactive WebGL room.
+              </p>
+            </div>
+
+            <div className="border-y border-white/14 bg-black/26 p-5 backdrop-blur md:p-6">
+              <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
+              <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/46">
+                <span>Experimental electronic / ritual techno / dark minimal sound design</span>
+                <span>One interface / multiple depths</span>
+                <span>Advanced prototype / public launch polish pending</span>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="https://kool-berk.pages.dev/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/18 bg-transparent px-5 text-[11px] uppercase tracking-[0.14em] text-white/78 transition hover:-translate-y-0.5 hover:border-white/34 hover:bg-white/5 hover:text-white"
+                >
+                  Open live site -&gt;
+                </a>
+                <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
+                  Start a project -&gt;
+                </ActionPill>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
+            <span>Sonic Object Stage</span>
+            <span>Album Dossier</span>
+            <span>Web Audio analysis</span>
+            <span>Future WebXR room path</span>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20 xl:pr-24 2xl:pr-0">
+        {video ? (
+          <section
+            id="kool-berk-walkthrough"
+            data-header-scene="kool-berk-object"
+            className="scroll-mt-[5.5rem] md:scroll-mt-28"
+          >
+            <KoolBerkVideoProof video={video} />
+          </section>
+        ) : null}
+
+        <section
+          id="kool-berk-depth"
+          data-header-scene="kool-berk-object"
+          className="mt-20 scroll-mt-[5.5rem] border-t border-white/10 pt-12 md:scroll-mt-28"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.4fr_0.6fr]">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">System architecture</div>
+              <h2 className="mt-5 max-w-[9ch] text-[clamp(3rem,6.2vw,6.2rem)] font-normal leading-[0.88] text-white">
+                From artist page to sonic object system.
+              </h2>
+              <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+                The project avoids a DJ template, streaming clone, standard press kit, or neon visualizer. It behaves as a
+                dark artist research environment: part release archive, part EPK, part audio-reactive installation.
+              </p>
+              <div className="mt-7 border-y border-white/10 py-4">
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">
+                  Presentation note / demo build in active development
+                </div>
+                <p className="mt-3 max-w-[34rem] text-[14px] leading-7 text-white/54">
+                  The current public case is intentionally framed as a development presentation. It already shows the core
+                  product logic clearly enough to evaluate the direction, while launch polish and future animation passes
+                  are still in progress.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-px bg-white/10 md:grid-cols-2">
+              {koolBerkDepthLayers.map((layer) => (
+                <div key={layer.title} className="bg-[#04070d] p-5 md:p-6">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">{layer.index}</div>
+                  <h3 className="mt-6 text-[clamp(1.8rem,2.8vw,3rem)] font-normal leading-[0.94] text-white">{layer.title}</h3>
+                  <p className="mt-5 text-[14px] leading-7 text-white/58">{layer.text}</p>
+                  <div className="mt-6 border-t border-white/10 pt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/34">
+                    {layer.signal}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-white/10 pt-10">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <h2 className="mt-4 max-w-[11ch] text-[clamp(3.2rem,6.2vw,6.4rem)] font-normal leading-[0.86] text-white">
+                The demo unfolds as a release story.
+              </h2>
+            </div>
+            <p className="max-w-[32rem] text-[14px] leading-7 text-white/54">
+              The media pack is compact, so the strongest presentation move is not a dense archive. We stage the same
+              working frames as a directed editorial sequence: object, inspect, dossier, signal track, room path, booking.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-12">
+            {stageFrame ? (
+              <KoolBerkEditorialFrame
+                frame={stageFrame}
+                index={0}
+                onOpen={setInspectIndex}
+                className="lg:col-span-8"
+                imageClassName="aspect-[16/10]"
+              />
+            ) : null}
+            <KoolBerkEditorialNote
+              eyebrow="Reading mode / release object logic"
+              title="A dark artist system, not a link page."
+              body="The first frame establishes the main premise immediately: identity, navigation, release archive and visual center are fused into one cube-led surface. That gives the case a stronger authored entry than a standard artist homepage or a loose music landing page."
+              signals={[
+                "Demo presentation / active build",
+                "Identity surface before archive depth",
+                "Future animation pass planned for threshold",
+              ]}
+              className="lg:col-span-4"
+            />
+
+            {inspectFrame ? (
+              <KoolBerkEditorialFrame
+                frame={inspectFrame}
+                index={1}
+                onOpen={setInspectIndex}
+                className="lg:col-span-5"
+              />
+            ) : null}
+            {trackFrame ? (
+              <KoolBerkEditorialFrame
+                frame={trackFrame}
+                index={2}
+                onOpen={setInspectIndex}
+                className="lg:col-span-7"
+              />
+            ) : null}
+
+            {monahInspectFrame ? (
+              <KoolBerkEditorialFrame
+                frame={monahInspectFrame}
+                index={3}
+                onOpen={setInspectIndex}
+                className="lg:col-span-7"
+              />
+            ) : null}
+            {releaseObjectFrame ? (
+              <KoolBerkEditorialFrame
+                frame={releaseObjectFrame}
+                index={4}
+                onOpen={setInspectIndex}
+                className="lg:col-span-5"
+              />
+            ) : null}
+
+            <KoolBerkEditorialNote
+              eyebrow="Public case framing / why this layout"
+              title="Enough proof to judge the direction already."
+              body="This presentation is intentionally not overloaded with secondary states. It shows the strongest working layers clearly enough to evaluate the artistic system now, while keeping room for the next pass: threshold animation, room refinement, and final launch polish."
+              signals={[
+                "Public demo before final polish",
+                "Release archive + EPK logic already visible",
+                "Room path remains separate and stronger below",
+              ]}
+              className="lg:col-span-4"
+            />
+            {contactFrame ? (
+              <KoolBerkEditorialFrame
+                frame={contactFrame}
+                index={6}
+                onOpen={setInspectIndex}
+                className="lg:col-span-8"
+              />
+            ) : null}
+          </div>
+        </section>
+
+        <section
+          id="kool-berk-room"
+          data-header-scene="kool-berk-room"
+          className="mt-20 scroll-mt-[5.5rem] border-t border-white/10 pt-12 md:scroll-mt-28"
+        >
+          <div className="grid gap-7 lg:grid-cols-[0.56fr_0.44fr] lg:items-end">
+            <button
+              type="button"
+              onClick={() => {
+                const roomIndex = frames.findIndex((frame) => frame.label === "Sonic Room");
+                setInspectIndex(roomIndex >= 0 ? roomIndex : null);
+              }}
+              className="group overflow-hidden border border-red-300/18 bg-black text-left shadow-[0_34px_120px_rgba(0,0,0,0.36)]"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img
+                  src={roomFrame?.src ?? "/immersive/kool-berk/desktop/kool-berk-sonic-room.webp"}
+                  alt={roomFrame?.alt ?? "Kool Berk MONAH Sonic Room"}
+                  className="h-full w-full object-cover opacity-88 transition duration-700 group-hover:scale-[1.018]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,rgba(0,0,0,0.42)_72%)]" />
+              </div>
+            </button>
+
+            <div className="border-y border-red-200/14 bg-red-950/[0.08] p-5 md:p-7">
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-100/42">Sonic Room</div>
+              <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6rem)] font-normal leading-[0.86] text-white">
+                A track becomes a state.
+              </h2>
+              <p className="mt-6 text-[15px] leading-8 text-white/62">
+                MONAH Room is the first immersive mode of the project: a red-black WebGL chamber with minimal HUD,
+                Play / Pause / Seek, Escape-close behavior, audio-reactive fog, edge pulse, shimmer and structural drift.
+                It is not WebXR yet, but it forms the foundation for a future room.
+              </p>
+              <div className="mt-6 grid gap-2 border-t border-red-100/10 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-red-100/38">
+                <span>{"Bass -> fog pressure / depth"}</span>
+                <span>{"Beat -> rim and edge pulse"}</span>
+                <span>{"Highs -> glass shimmer"}</span>
+                <span>{"Progress -> structural drift"}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="kool-berk-technical"
+          data-header-scene="kool-berk-technical"
+          className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.46fr_0.54fr]"
+        >
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical dossier</div>
+            <h2 className="mt-5 max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-normal leading-[0.86] text-white">
+              Audio-reactive without becoming a visualizer.
+            </h2>
+            <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+              The implementation uses local audio analysis for real reactivity while keeping the atmosphere restrained.
+              SoundCloud, Spotify and Apple embeds are intentionally not analyzed because of browser security and CORS
+              restrictions.
+            </p>
+          </div>
+
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+            {koolBerkTechnicalReadouts.map((item, index) => (
+              <div key={item} className="bg-[#04070d] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
+                <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <SiteFooterV2
+        onOpenProject={onOpenProject}
+        variant="immersiveCase"
+        immersiveCaseContent={{
+          headline: "Build the next artist environment.",
+          description:
+            "Kool Berk closes as a sonic proof: release objects, signal tracks, Web Audio analysis, audio-reactive WebGL and EPK layers stay inside one artist OS.",
+          signal: "sonic object systems",
+          intake: "available",
+          nextStep: "start an audiovisual system",
+          bottomLine: "Built as a sonic interface system.",
+          ctaLabel: "Start a project",
+        }}
+      />
+
+      <CinematicInspectReveal
+        frames={inspectFrames}
+        index={inspectIndex}
+        onClose={() => setInspectIndex(null)}
+        onSelect={setInspectIndex}
+      />
+    </div>
+  );
+}
+
+function WebHeroVideoCard({
+  video,
+  index,
+  chapter,
+  lead = false,
+}: {
+  video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
+  index: number;
+  chapter: (typeof webHeroVideoChapters)[number];
+  lead?: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (!lead) return;
+    const element = videoRef.current;
+    if (!element) return;
+
+    let playbackLocked = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        const visibleEnough = entry.isIntersecting && entry.intersectionRatio >= 0.72;
+        const mostlyGone = !entry.isIntersecting || entry.intersectionRatio <= 0.38;
+
+        if (visibleEnough && !playbackLocked) {
+          playbackLocked = true;
+          const startPlayback = () => {
+            void element.play().catch(() => {
+              playbackLocked = false;
+            });
+          };
+          window.requestAnimationFrame(startPlayback);
+        }
+
+        if (mostlyGone) {
+          playbackLocked = false;
+          element.pause();
+        }
+      },
+      {
+        threshold: [0, 0.2, 0.38, 0.55, 0.72, 0.9],
+        rootMargin: "-8% 0px -10% 0px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      element.pause();
+    };
+  }, [lead]);
+
+  if (lead) {
+    return (
+      <motion.article
+        className="group overflow-hidden border border-white/10 bg-white/[0.035] text-white shadow-[0_26px_90px_rgba(0,0,0,0.24)]"
+        initial={{ opacity: 0, y: 22 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.74, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="relative aspect-video bg-black">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 h-full w-full object-contain opacity-95"
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+            poster={video.poster}
+          >
+            <source src={video.src} type="video/mp4" />
+          </video>
+          <div className="pointer-events-none absolute left-4 top-4 border-y border-white/18 bg-black/20 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/62 backdrop-blur">
+            Module {String(index + 1).padStart(2, "0")}
+          </div>
+        </div>
+        <div className="grid gap-5 border-t border-white/10 p-5 md:grid-cols-[0.42fr_0.58fr] md:p-7">
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/42">{chapter.eyebrow}</div>
+            <h3 className="mt-4 max-w-[14ch] text-[clamp(2.4rem,4.8vw,5rem)] font-normal leading-[0.9] tracking-[-0.04em] text-white">
+              {chapter.title}
+            </h3>
+          </div>
+          <div className="grid content-end gap-4">
+            <p className="max-w-[44rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">{chapter.text}</p>
+            <div className="grid gap-2 border-t border-white/10 pt-4">
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">{video.label}</div>
+              <p className="text-[13px] leading-6 text-white/52">{video.caption}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {chapter.signals.map((signal) => (
+                  <span key={signal} className="border border-white/10 bg-black/22 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-white/38">
+                    {signal}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
+
+  return (
+    <motion.article
+      className={[
+        "group grid overflow-hidden border border-white/10 bg-white/[0.035] text-white shadow-[0_26px_90px_rgba(0,0,0,0.24)]",
+        "lg:grid-cols-2",
+        !lead && index % 2 === 0 ? "lg:[&_.webhero-video-copy]:order-first" : "",
+      ].join(" ")}
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.74, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="relative aspect-video bg-black">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-contain opacity-95 transition duration-700 group-hover:scale-[1.005]"
+          muted
+          loop
+          playsInline
+          controls
+          preload="metadata"
+          poster={video.poster}
+        >
+          <source src={video.src} type="video/mp4" />
+        </video>
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.24)_72%,rgba(0,0,0,0.54))]" />
+        <div className="pointer-events-none absolute left-4 top-4 border-y border-white/18 bg-black/20 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/62 backdrop-blur">
+          Module {String(index + 1).padStart(2, "0")}
+        </div>
+      </div>
+      <div className="webhero-video-copy flex flex-col justify-between gap-10 border-t border-white/10 p-5 md:p-7 lg:border-l lg:border-t-0">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/42">{chapter.eyebrow}</div>
+          <h3 className={["mt-5 font-normal leading-[0.92] tracking-[-0.04em] text-white", lead ? "text-[clamp(2.6rem,5vw,5.8rem)]" : "text-[clamp(2.2rem,4vw,4.6rem)]"].join(" ")}>
+            {chapter.title}
+          </h3>
+          <p className="mt-6 max-w-[36rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">{chapter.text}</p>
+        </div>
+        <div className="grid gap-2 border-t border-white/10 pt-4">
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">{video.label}</div>
+          <p className="text-[13px] leading-6 text-white/52">{video.caption}</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {chapter.signals.map((signal) => (
+              <span key={signal} className="border border-white/10 bg-black/22 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-white/38">
+                {signal}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function WebHeroCaseLayout({
+  item,
+  onBack,
+  onOpenProject,
+}: {
+  item: (typeof immersiveItems)[number];
+  onBack: () => void;
+  onOpenProject?: () => void;
+}) {
+  const videos = item.videos ?? [];
+  const frames = item.frames ?? [];
+  const activeSection = useSectionRailActive(webHeroRailItems, "webhero-threshold");
+  const [proofMode, setProofMode] = useState<WebHeroProofMode>("index");
+  const [proofExpanded, setProofExpanded] = useState(false);
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
+  const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
+    id: `webhero-frame-${String(index + 1).padStart(2, "0")}`,
+    kind: "image",
+    src: frame.src,
+    alt: frame.alt,
+    label: frame.label ?? `Frame ${index + 1}`,
+    caption: frame.caption,
+    role: index < 2 ? "hero" : index >= 9 ? "detail" : "proof",
+    fit: "contain",
+  }));
+  const visibleFrames = frames.slice(0, webHeroInitialProofCount);
+  const extendedFrames = frames.slice(webHeroInitialProofCount);
+  const showExtendedFieldToggle = extendedFrames.length > 0;
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const top = Math.max(0, section.getBoundingClientRect().top + window.scrollY - 76);
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#05070b] text-white">
+      <SeoMeta
+        title="WEBHERO - Living Visual Systems | Brenych Studio"
+        description={item.tagline}
+        path="/immersive/webhero"
+        image={item.previewPoster}
+        imageAlt="WEBHERO Living Visual Systems immersive case"
+        type="article"
+      />
+      <SectionRail
+        items={webHeroRailItems}
+        activeId={activeSection}
+        onSelect={scrollToSection}
+        label="WEBHERO sections"
+        tone="dark"
+      />
+
+      <section
+        id="webhero-threshold"
+        data-header-scene="webhero-threshold"
+        className="relative min-h-[100svh] scroll-mt-[5.5rem] overflow-hidden bg-[#03050a] pt-[72px] md:scroll-mt-28"
+      >
+        <WebHeroMembraneBackdrop className="absolute inset-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_54%_30%,rgba(122,244,227,0.12),transparent_26%),radial-gradient(circle_at_78%_16%,rgba(182,124,255,0.14),transparent_24%),linear-gradient(180deg,rgba(3,5,10,0.06),rgba(3,5,10,0.34)_42%,rgba(3,5,10,0.74)_78%,#05070b)]" />
+        <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
+
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={onBack}
+              className="border-y border-white/16 bg-black/18 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
+            >
+              &lt;- Back to immersive
+            </button>
+            <CaseStatusPill kind={item.statusKind} label={item.status} />
+          </div>
+
+          <div className="grid gap-8 py-10 lg:grid-cols-[0.58fr_0.42fr] lg:items-end">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
+                {item.supportLabel} / desktop proof
+              </div>
+              <h1 className="mt-6 max-w-[7.6ch] text-[clamp(4.8rem,13vw,12rem)] font-normal leading-[0.78] tracking-[-0.075em] text-white">
+                WEBHERO
+              </h1>
+              <p className="mt-7 max-w-[40rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
+                Living Visual Systems for cinematic WebGL stages, spatial images, Gaussian Splat works, Art Room
+                presentation and future XR adapters.
+              </p>
+            </div>
+
+            <div className="border-y border-white/14 bg-black/18 p-5 backdrop-blur md:p-6">
+              <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
+              <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/48">
+                <span>Internal Brenych Studio R&D platform</span>
+                <span>Advanced prototype / active development</span>
+                <span>Mobile version not packaged yet</span>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {liveLink ? (
+                  <a
+                    href={liveLink.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-11 items-center rounded-full border border-white/16 bg-white/8 px-5 text-[11px] uppercase tracking-[0.14em] text-white/74 transition hover:border-white/40 hover:bg-white/12 hover:text-white"
+                  >
+                    Open live site -&gt;
+                  </a>
+                ) : null}
+                <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
+                  Start a project -&gt;
+                </ActionPill>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
+            <span>Stage language + spatial image engines</span>
+            <span>Art Room presentation layer</span>
+            <span>Living Art Mixer in R&D</span>
+            <span>XR adapters after web proof</span>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20">
+        <section
+          id="webhero-modules"
+          data-header-scene="webhero-field"
+          className="grid scroll-mt-[5.5rem] gap-8 md:scroll-mt-28"
+        >
+          {videos.map((video, index) => {
+            const chapter = webHeroVideoChapters[index] ?? webHeroVideoChapters[0];
+
+            return (
+              <WebHeroVideoCard
+                key={video.src}
+                video={video}
+                index={index}
+                chapter={chapter}
+                lead={index === 0}
+              />
+            );
+          })}
+        </section>
+
+        <section
+          id="webhero-proof"
+          data-header-scene="webhero-proof"
+          className="mt-20 scroll-mt-[5.5rem] md:scroll-mt-28"
+        >
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <h2 className="mt-4 max-w-[12ch] text-[clamp(3.5rem,7vw,7.2rem)] font-normal leading-[0.84] tracking-[-0.06em] text-white">
+                Modules shown as working surfaces.
+              </h2>
+            </div>
+            <p className="max-w-[31rem] text-[14px] leading-7 text-white/54">
+              The current media pack is desktop-only. The case therefore presents the strongest real proof: stage
+              screens, living image pages, splat candidates, Art Room states and system readouts.
+            </p>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-y border-white/10 py-3">
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">
+              Click any proof frame to inspect / {String(frames.length).padStart(2, "0")} desktop surfaces
+            </div>
+            <div className="flex rounded-full border border-white/12 bg-white/[0.035] p-1">
+              {(["index", "field"] as WebHeroProofMode[]).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setProofMode(mode)}
+                  className={[
+                    "rounded-full px-4 py-2 font-mono text-[9px] uppercase tracking-[0.16em] transition",
+                    proofMode === mode ? "bg-white text-[#05070b]" : "text-white/44 hover:text-white/78",
+                  ].join(" ")}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {proofMode === "index" ? (
+            <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {visibleFrames.map((frame, index) => (
+                <motion.button
+                  key={frame.src}
+                  type="button"
+                  onClick={() => setInspectIndex(index)}
+                  className="group overflow-hidden border border-white/10 bg-white/[0.035] text-left"
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.16 }}
+                  transition={{ duration: 0.62, delay: (index % 6) * 0.03, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                    <img
+                      src={frame.src}
+                      alt={frame.alt}
+                      className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.025]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
+                      Inspect
+                    </div>
+                  </div>
+                  <div className="border-t border-white/10 p-4">
+                    <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/36">
+                      {String(index + 1).padStart(2, "0")} / {frame.label}
+                    </div>
+                    <p className="mt-3 text-[13px] leading-6 text-white/56">{frame.caption}</p>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          ) : (
+            <div className="relative mt-10 overflow-hidden border border-white/10 bg-white/[0.025] px-4 py-7 md:px-7 lg:min-h-[178rem]">
+              <div className="pointer-events-none absolute inset-0 opacity-[0.1] [background-image:linear-gradient(to_right,rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:68px_68px]" />
+              <div className="pointer-events-none absolute left-[16%] top-[10%] h-[44rem] w-[44rem] rounded-full border border-white/[0.055]" />
+              <div className="pointer-events-none absolute right-[8%] top-[48%] h-[32rem] w-[32rem] rounded-full border border-cyan-200/[0.055]" />
+
+              <div className="relative z-10 mb-8 max-w-[40rem] lg:absolute lg:left-[6%] lg:top-[8%]">
+                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/34">Field mode / editorial spread</div>
+                <p className="mt-4 text-[15px] leading-8 text-white/58">
+                  The same proof set opens into a spatial reading field: stage surfaces, backdrops, splat studies and
+                  Art Room materials become a directed editorial map instead of a compact archive.
+                </p>
+              </div>
+
+              <div className="relative z-10 grid gap-5 lg:block">
+                {visibleFrames.map((frame, index) => (
+                  <motion.button
+                    key={`${frame.src}-field`}
+                    type="button"
+                    onClick={() => setInspectIndex(index)}
+                    className={[
+                      "group overflow-hidden border border-white/12 bg-black/68 text-left shadow-[0_30px_120px_rgba(0,0,0,0.34)] backdrop-blur lg:absolute",
+                      webHeroFieldFrameClasses[index % webHeroFieldFrameClasses.length],
+                    ].join(" ")}
+                    initial={{ opacity: 0, y: 22, scale: 0.98 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, amount: 0.16 }}
+                    transition={{ duration: 0.7, delay: (index % 5) * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="aspect-[16/10] overflow-hidden bg-black">
+                      <img
+                        src={frame.src}
+                        alt={frame.alt}
+                        className="h-full w-full object-cover opacity-92 transition duration-700 group-hover:scale-[1.025]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div className="border-t border-white/10 p-4">
+                      <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/36">
+                        {String(index + 1).padStart(2, "0")} / {frame.label}
+                      </div>
+                      <p className="mt-3 text-[12px] leading-6 text-white/52">{frame.caption}</p>
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {showExtendedFieldToggle ? (
+            <div className="relative mx-auto grid max-w-[1480px] gap-4 border-t border-white/10 px-0 py-6 sm:py-8 lg:grid-cols-2 lg:py-10">
+              <div className="hidden lg:block" />
+              <div className="max-w-[28rem] lg:justify-self-end">
+                <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-white/34">
+                  <span className="xl:hidden">More proof / {String(extendedFrames.length).padStart(2, "0")} extra surfaces</span>
+                  <span className="hidden xl:inline">Extended field / {String(extendedFrames.length).padStart(2, "0")} more proof surfaces</span>
+                </div>
+                <p className="mt-3 hidden text-[14px] leading-7 text-white/56 xl:block">
+                  The first twelve frames establish the main reading field. The extended set opens more backdrop variants,
+                  atlas states, splat proofs, and secondary system evidence without overloading the first pass.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setProofExpanded((value) => !value)}
+                  className="mt-4 inline-flex min-h-10 items-center rounded-full border border-white bg-white px-5 text-[11px] uppercase tracking-[0.14em] text-[#05070b] transition hover:-translate-y-0.5 hover:bg-white/90 xl:mt-5"
+                >
+                  {proofExpanded ? (
+                    <>
+                      <span className="xl:hidden">Close -&gt;</span>
+                      <span className="hidden xl:inline">Close field -&gt;</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="xl:hidden">More proof -&gt;</span>
+                      <span className="hidden xl:inline">Open extended field -&gt;</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          <AnimatePresence initial={false}>
+            {proofExpanded ? (
+              <motion.div
+                id="webhero-extended-field"
+                className="relative mt-2 overflow-hidden border-t border-white/10 bg-white/[0.02] px-0 py-10"
+                initial={{ opacity: 0, height: 0, y: 28 }}
+                animate={{ opacity: 1, height: "auto", y: 0 }}
+                exit={{ opacity: 0, height: 0, y: 18 }}
+                transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="mx-auto mb-8 grid w-[min(92vw,1560px)] gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/34">
+                    Expanded proof field / additional WEBHERO surfaces
+                  </div>
+                </div>
+                {proofMode === "field" ? (
+                  <div className="relative mx-auto overflow-hidden border border-white/10 bg-white/[0.018] px-4 py-7 md:px-7 lg:min-h-[148rem]">
+                    <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,rgba(255,255,255,0.16)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.14)_1px,transparent_1px)] [background-size:68px_68px]" />
+                    <div className="pointer-events-none absolute left-[10%] top-[10%] h-[34rem] w-[34rem] rounded-full border border-white/[0.05]" />
+                    <div className="pointer-events-none absolute right-[8%] top-[56%] h-[28rem] w-[28rem] rounded-full border border-cyan-200/[0.05]" />
+
+                    <div className="relative z-10 grid gap-5 lg:block">
+                      {extendedFrames.map((frame, extraIndex) => {
+                        const absoluteIndex = frames.findIndex((item) => item.src === frame.src);
+
+                        return (
+                          <motion.button
+                            key={`${frame.src}-extended-field`}
+                            type="button"
+                            onClick={() => setInspectIndex(absoluteIndex)}
+                            className={[
+                              "group overflow-hidden border border-white/12 bg-black/68 text-left shadow-[0_30px_120px_rgba(0,0,0,0.34)] backdrop-blur lg:absolute",
+                              webHeroExtendedFieldClasses[extraIndex % webHeroExtendedFieldClasses.length],
+                            ].join(" ")}
+                            initial={{ opacity: 0, y: 18, scale: 0.985 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, amount: 0.16 }}
+                            transition={{ duration: 0.66, ease: [0.22, 1, 0.36, 1] }}
+                          >
+                            <div className="aspect-[16/10] overflow-hidden bg-black">
+                              <img
+                                src={frame.src}
+                                alt={frame.alt}
+                                className="h-full w-full object-cover opacity-92 transition duration-700 group-hover:scale-[1.025]"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                            <div className="border-t border-white/10 p-4">
+                              <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/36">
+                                {String(absoluteIndex + 1).padStart(2, "0")} / {frame.label}
+                              </div>
+                              <p className="mt-3 text-[12px] leading-6 text-white/52">{frame.caption}</p>
+                            </div>
+                          </motion.button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mx-auto grid w-[min(92vw,1560px)] gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {extendedFrames.map((frame) => {
+                      const absoluteIndex = frames.findIndex((item) => item.src === frame.src);
+
+                      return (
+                        <motion.button
+                          key={`${frame.src}-extended`}
+                          type="button"
+                          onClick={() => setInspectIndex(absoluteIndex)}
+                          className="group overflow-hidden border border-white/10 bg-white/[0.035] text-left"
+                          initial={{ opacity: 0, y: 18 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.16 }}
+                          transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                            <img
+                              src={frame.src}
+                              alt={frame.alt}
+                              className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.025]"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
+                              Inspect
+                            </div>
+                          </div>
+                          <div className="border-t border-white/10 p-4">
+                            <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/36">
+                              {String(absoluteIndex + 1).padStart(2, "0")} / {frame.label}
+                            </div>
+                            <p className="mt-3 text-[13px] leading-6 text-white/56">{frame.caption}</p>
+                          </div>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                )}
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </section>
+
+        <section
+          id="webhero-technical"
+          data-header-scene="webhero-field"
+          className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.48fr_0.52fr]"
+        >
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical details</div>
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(3.2rem,6vw,6.4rem)] font-normal leading-[0.84] tracking-[-0.055em] text-white">
+              Web-first before XR-first.
+            </h2>
+            <p className="mt-6 max-w-[35rem] text-[15px] leading-8 text-white/58">
+              Heavy spatial assets stay behind dedicated viewer routes, listing pages use poster previews, and XR remains
+              an adapter direction rather than the unstable core of the platform.
+            </p>
+          </div>
+
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+              {webHeroTechnicalReadouts.map((item, index) => (
+                <div key={item} className="bg-[#05070b] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
+                  <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
+                  {item}
+                </div>
+            ))}
+          </div>
+        </section>
+      </main>
+      <SiteFooterV2
+        onOpenProject={onOpenProject}
+        variant="immersiveCase"
+        immersiveCaseContent={{
+          headline: "Build the next living visual system.",
+          description:
+            "WEBHERO closes as a flagship R&D proof: stage language, backdrop systems, living images, splat routes, and Art Room presentation stay inside one web-first visual platform.",
+          signal: "living visual systems",
+          intake: "available",
+          nextStep: "start a webgl-stage project",
+          bottomLine: "Built as a web-first spatial interface system.",
+          ctaLabel: "Start a project",
+        }}
+      />
+      <CinematicInspectReveal
+        frames={inspectFrames}
+        index={inspectIndex}
+        onClose={() => setInspectIndex(null)}
+        onSelect={setInspectIndex}
+      />
+    </div>
+  );
+}
+
 export default function ImmersiveCasePage({
   drawerOpen = false,
   onOpenProject,
@@ -326,6 +1643,40 @@ export default function ImmersiveCasePage({
             <WhisperCaseLayout item={data} onOpenProject={onOpenProject} />
           </PageSurface>
         </main>
+      </div>
+    );
+  }
+
+  if (data.slug === "webhero") {
+    return (
+      <div className="min-h-screen bg-[#05070b] text-white">
+        <Header
+          drawerOpen={drawerOpen}
+          onOpenProject={onOpenProject}
+          onCloseProject={onCloseProject}
+        />
+        <WebHeroCaseLayout
+          item={data}
+          onOpenProject={onOpenProject}
+          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+        />
+      </div>
+    );
+  }
+
+  if (data.slug === "kool-berk") {
+    return (
+      <div className="min-h-screen bg-[#04070d] text-white">
+        <Header
+          drawerOpen={drawerOpen}
+          onOpenProject={onOpenProject}
+          onCloseProject={onCloseProject}
+        />
+        <KoolBerkCaseLayout
+          item={data}
+          onOpenProject={onOpenProject}
+          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+        />
       </div>
     );
   }

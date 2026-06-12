@@ -2,6 +2,8 @@ export type ImmersiveStatus = "completed" | "prototype" | "research" | "upcoming
 
 export type ImmersiveChamberId =
   | "whisper"
+  | "webhero"
+  | "kool-berk"
   | "product-world"
   | "presence-archive"
   | "collector-continuation"
@@ -10,6 +12,7 @@ export type ImmersiveChamberId =
 export type ImmersiveMood =
   | "forest"
   | "spatial"
+  | "sonic"
   | "object"
   | "memory"
   | "collector"
@@ -95,8 +98,92 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     },
   },
   {
-    id: "product-world",
+    id: "webhero",
     room: "Room 02",
+    title: "WEBHERO",
+    shortTitle: "WEBHERO",
+    status: "prototype",
+    statusLabel: "Advanced R&D system",
+    role: "Living visual systems platform",
+    summary:
+      "A web-first visual system for cinematic stage modules, living images, Gaussian Splat spatial works, Art Room presentation and future XR adapters.",
+    proofLine:
+      "Images, WebGL scenes and spatial assets become controlled living web experiences instead of static portfolio media.",
+    visualRole: "chamber",
+    media: {
+      poster: "/immersive/webhero/desktop/webhero-living-environments-hero.webp",
+      video: "/immersive/webhero/video/webhero-video-field.mp4",
+      stills: [
+        "/immersive/webhero/desktop/webhero-art-room-grid.webp",
+        "/immersive/webhero/desktop/webhero-splat-study-grid.webp",
+        "/immersive/webhero/desktop/webhero-atmosphere-infrastructure.webp",
+      ],
+    },
+    route: "/immersive/webhero",
+    ctaLabel: "Enter WEBHERO",
+    tags: ["WebGL", "Living Images", "3DGS", "Art Room", "XR path"],
+    mood: "spatial",
+    chamberSignal: "Living visual system",
+    engineIds: [
+      "webgl-stage",
+      "living-atmosphere",
+      "cinematic-frame-field",
+      "living-editorial-surface",
+      "cinematic-inspect",
+      "presence-os",
+    ],
+    position: {
+      x: 69,
+      y: 34,
+      scale: 1.02,
+      rotate: 5,
+    },
+  },
+  {
+    id: "kool-berk",
+    room: "Room 03",
+    title: "Kool Berk",
+    shortTitle: "Kool Berk",
+    status: "prototype",
+    statusLabel: "Advanced sonic prototype",
+    role: "Audio-visual artist OS",
+    summary:
+      "A Sonic Object OS for an experimental electronic artist where releases become objects, tracks become signal studies, and listening opens into an audio-reactive WebGL room.",
+    proofLine:
+      "The artist site stops behaving like a link hub and becomes a release archive, EPK layer, and immersive listening environment.",
+    visualRole: "chamber",
+    media: {
+      poster: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
+      video: "/immersive/kool-berk/video/kool-berk-video.mp4",
+      stills: [
+        "/immersive/kool-berk/desktop/kool-berk-monah-track-dossier.webp",
+        "/immersive/kool-berk/desktop/kool-berk-sonic-room.webp",
+        "/immersive/kool-berk/desktop/kool-berk-contact-signal-panel.webp",
+      ],
+    },
+    route: "/immersive/kool-berk",
+    ctaLabel: "Enter Kool Berk",
+    tags: ["R3F", "Web Audio", "GLSL", "EPK", "Sonic Room"],
+    mood: "sonic",
+    chamberSignal: "Music as object",
+    engineIds: [
+      "webgl-stage",
+      "living-atmosphere",
+      "cinematic-frame-field",
+      "cinematic-inspect",
+      "presence-os",
+      "sonic-object-os",
+    ],
+    position: {
+      x: 38,
+      y: 54,
+      scale: 1.02,
+      rotate: -6,
+    },
+  },
+  {
+    id: "product-world",
+    room: "Room 04",
     title: "Product World",
     shortTitle: "Product World",
     status: "prototype",
@@ -125,7 +212,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
   },
   {
     id: "presence-archive",
-    room: "Room 03",
+    room: "Room 05",
     title: "Presence Archive",
     shortTitle: "Presence Archive",
     status: "research",
@@ -153,7 +240,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
   },
   {
     id: "collector-continuation",
-    room: "Room 04",
+    room: "Room 06",
     title: "Collector Continuation",
     shortTitle: "Collector",
     status: "upcoming",
@@ -181,7 +268,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
   },
   {
     id: "installation-field",
-    room: "Room 05",
+    room: "Room 07",
     title: "Installation Field",
     shortTitle: "Installation",
     status: "upcoming",
@@ -215,7 +302,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "WebGL Stage System",
     role: "Scene engine",
     summary: "Turns hero, product, archive, and proof moments into directed visual stages.",
-    chamberIds: ["product-world", "installation-field"],
+    chamberIds: ["webhero", "kool-berk", "product-world", "installation-field"],
     signal: "stage logic",
   },
   {
@@ -223,7 +310,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Living Atmosphere Engine",
     role: "Climate engine",
     summary: "Resolves route, section, scroll, and chamber identity into controlled atmosphere tokens.",
-    chamberIds: ["whisper", "product-world", "presence-archive", "collector-continuation", "installation-field"],
+    chamberIds: ["whisper", "webhero", "kool-berk", "product-world", "presence-archive", "collector-continuation", "installation-field"],
     signal: "atmosphere",
   },
   {
@@ -231,7 +318,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Cinematic Frame Field",
     role: "Media field",
     summary: "Keeps visual material alive as cinematic planes instead of static cards or sliders.",
-    chamberIds: ["whisper", "presence-archive"],
+    chamberIds: ["whisper", "webhero", "kool-berk", "presence-archive"],
     signal: "frame field",
   },
   {
@@ -239,7 +326,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Living Editorial Surface",
     role: "Scroll canvas",
     summary: "Lets media, captions, and scroll behave like one editorial field.",
-    chamberIds: ["presence-archive"],
+    chamberIds: ["webhero", "presence-archive"],
     signal: "living canvas",
   },
   {
@@ -247,7 +334,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Cinematic Inspect Reveal",
     role: "Deep mode",
     summary: "Transforms inspection into a spatial mode transition instead of a modal popup.",
-    chamberIds: ["product-world", "collector-continuation"],
+    chamberIds: ["webhero", "kool-berk", "product-world", "collector-continuation"],
     signal: "inspect",
   },
   {
@@ -263,8 +350,16 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Presence OS",
     role: "Behavior engine",
     summary: "Adds depth through hover, stillness, return, memory, and attention while preserving click-first access.",
-    chamberIds: ["presence-archive", "installation-field"],
+    chamberIds: ["webhero", "kool-berk", "presence-archive", "installation-field"],
     signal: "presence",
+  },
+  {
+    id: "sonic-object-os",
+    title: "Sonic Object OS",
+    role: "Audio object engine",
+    summary: "Turns releases into inspectable objects, tracks into signal studies, and listening into an audio-reactive WebGL room.",
+    chamberIds: ["kool-berk"],
+    signal: "sonic object",
   },
   {
     id: "ar-collector",

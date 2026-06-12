@@ -6,6 +6,15 @@ type SiteFooterV2Props = {
   onOpenProject?: () => void;
   variant?: FooterVariant;
   hideClosingSignal?: boolean;
+  immersiveCaseContent?: {
+    headline?: string;
+    description?: string;
+    signal?: string;
+    intake?: string;
+    nextStep?: string;
+    bottomLine?: string;
+    ctaLabel?: string;
+  };
 };
 
 type FooterLink = {
@@ -132,11 +141,30 @@ function FooterLedgerLinks({
   );
 }
 
-export default function SiteFooterV2({ onOpenProject, variant = "living", hideClosingSignal = false }: SiteFooterV2Props) {
+export default function SiteFooterV2({
+  onOpenProject,
+  variant = "living",
+  hideClosingSignal = false,
+  immersiveCaseContent,
+}: SiteFooterV2Props) {
   const reduceMotion = useReducedMotion();
   const copy = footerCopyByVariant[variant];
   const isCase = variant === "case";
   const isImmersiveCase = variant === "immersiveCase";
+  const immersiveCaseCopy = isImmersiveCase
+    ? {
+        ...copy,
+        headline: immersiveCaseContent?.headline ?? copy.headline,
+        signal: immersiveCaseContent?.signal ?? copy.signal,
+        intake: immersiveCaseContent?.intake ?? copy.intake,
+        nextStep: immersiveCaseContent?.nextStep ?? copy.nextStep,
+        bottomLine: immersiveCaseContent?.bottomLine ?? copy.bottomLine,
+      }
+    : copy;
+  const immersiveCaseDescription =
+    immersiveCaseContent?.description ??
+    "WHISPER closes as the reference pattern: spatial proof, inspectable evidence, media playback, and project intake stay inside one calm immersive system.";
+  const immersiveCaseCtaLabel = immersiveCaseContent?.ctaLabel ?? "Start a project";
 
   if (isCase) {
     return (
@@ -260,18 +288,18 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
               Build the next room.
             </h2>
             <p className="mt-5 text-[14px] leading-7 text-neutral-700">
-              WHISPER closes as a compact pattern for spatial proof, media playback, and project intake.
+              {immersiveCaseDescription}
             </p>
 
             <div className="mt-6 border border-white/24 bg-neutral-950/[0.035] p-4 backdrop-blur-xl">
               <div className="grid gap-3 font-mono text-[9px] uppercase tracking-[0.18em]">
                 <div className="flex items-center justify-between gap-4 border-b border-neutral-950/12 pb-3">
                   <span className="text-neutral-600">Signal</span>
-                  <span className="text-right font-semibold text-neutral-950">{copy.signal}</span>
+                  <span className="text-right font-semibold text-neutral-950">{immersiveCaseCopy.signal}</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-neutral-600">Next</span>
-                  <span className="text-right font-semibold text-neutral-950">{copy.nextStep}</span>
+                  <span className="text-right font-semibold text-neutral-950">{immersiveCaseCopy.nextStep}</span>
                 </div>
               </div>
               <button
@@ -279,7 +307,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
                 onClick={() => onOpenProject?.()}
                 className="group mt-5 inline-flex min-h-12 w-full items-center justify-between border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.2)] transition duration-300 hover:bg-[#141414] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-100 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
               >
-                <span>Start a project</span>
+                <span>{immersiveCaseCtaLabel}</span>
                 <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
               </button>
             </div>
@@ -290,7 +318,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[8.5px] uppercase tracking-[0.16em] text-neutral-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
-                <span>{copy.bottomLine}</span>
+                <span>{immersiveCaseCopy.bottomLine}</span>
               </div>
             </div>
 
@@ -337,10 +365,10 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
                 />
               </div>
               <h2 className="mt-6 max-w-[10.5ch] text-[52px] font-normal leading-[0.88] tracking-normal text-neutral-950 sm:text-[76px] lg:text-[104px]">
-                {copy.headline}
+                {immersiveCaseCopy.headline}
               </h2>
               <p className="mt-7 max-w-[36rem] text-[15px] leading-7 text-neutral-700">
-                WHISPER closes as the reference pattern: spatial proof, inspectable evidence, media playback, and project intake stay inside one calm immersive system.
+                {immersiveCaseDescription}
               </p>
             </div>
 
@@ -356,9 +384,9 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
 
               <div className="grid gap-0 font-mono text-[10px] uppercase tracking-[0.19em]">
                 {[
-                  ["Studio signal", copy.signal],
-                  ["Project intake", copy.intake],
-                  ["Next step", copy.nextStep],
+                  ["Studio signal", immersiveCaseCopy.signal],
+                  ["Project intake", immersiveCaseCopy.intake],
+                  ["Next step", immersiveCaseCopy.nextStep],
                 ].map(([label, value]) => (
                   <div key={label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-5 border-b border-neutral-950/12 py-4 last:border-b-0">
                     <span className="text-neutral-600">{label}</span>
@@ -372,7 +400,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
                 onClick={() => onOpenProject?.()}
                 className="group mt-6 inline-flex min-h-12 w-full items-center justify-between border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.2)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#141414] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-100 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
               >
-                <span>Start a project</span>
+                <span>{immersiveCaseCtaLabel}</span>
                 <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
               </button>
               </div>
@@ -384,7 +412,7 @@ export default function SiteFooterV2({ onOpenProject, variant = "living", hideCl
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
-                <span>{copy.bottomLine}</span>
+                <span>{immersiveCaseCopy.bottomLine}</span>
               </div>
             </div>
 

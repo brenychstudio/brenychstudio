@@ -1,0 +1,252 @@
+.wh-backdrop04 {
+  --fsb-bg: #03050a;
+  --fsb-wash-a: rgba(92, 210, 255, 0.46);
+  --fsb-wash-b: rgba(238, 102, 255, 0.3);
+  --fsb-line: rgba(178, 242, 255, 0.44);
+  --fsb-spark: rgba(246, 255, 255, 0.88);
+  --fsb-shield: rgba(2, 5, 12, 0.72);
+  --fsb-density: 0.78;
+  --fsb-glow: 0.78;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--fsb-bg);
+}
+
+.wh-backdrop04,
+.wh-backdrop04 * {
+  box-sizing: border-box;
+}
+
+.wh-backdrop04 .fsb-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.wh-backdrop04 .fsb-membrane-webgl {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: saturate(1.16) contrast(1.045);
+}
+
+.wh-backdrop04 .fsb-base {
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, var(--fsb-wash-a) 0%, transparent 42%),
+    radial-gradient(circle at 22% 22%, var(--fsb-wash-b) 0%, transparent 34%),
+    radial-gradient(circle at 82% 18%, var(--fsb-wash-a) 0%, transparent 28%),
+    radial-gradient(ellipse at 68% 78%, var(--fsb-wash-b) 0%, transparent 44%),
+    linear-gradient(180deg, #03050a 0%, #081426 52%, #03050a 100%);
+  filter: saturate(1.16) contrast(1.07);
+  animation: fsb-base-drift 18s ease-in-out infinite alternate;
+}
+
+.wh-backdrop04 .fsb-soft-vault {
+  z-index: 1;
+  opacity: 0.9;
+  background:
+    conic-gradient(
+      from 210deg at 50% 48%,
+      transparent 0deg,
+      rgba(78, 211, 255, 0.34) 54deg,
+      rgba(232, 88, 255, 0.22) 132deg,
+      transparent 218deg,
+      rgba(129, 255, 222, 0.18) 310deg,
+      transparent 360deg
+    ),
+    radial-gradient(ellipse at 46% 50%, rgba(103, 190, 255, 0.24) 0%, transparent 48%);
+  mix-blend-mode: screen;
+  animation: fsb-vault-breathe 20s ease-in-out infinite alternate;
+}
+
+.wh-backdrop04 .fsb-membrane-flow {
+  z-index: 3;
+  opacity: 0.38;
+  background:
+    radial-gradient(ellipse at 34% 48%, rgba(104, 223, 255, 0.36) 0%, transparent 32%),
+    radial-gradient(ellipse at 62% 38%, rgba(252, 102, 255, 0.28) 0%, transparent 34%),
+    radial-gradient(ellipse at 58% 68%, rgba(106, 255, 215, 0.18) 0%, transparent 38%),
+    conic-gradient(
+      from 80deg at 50% 50%,
+      transparent 0deg,
+      rgba(86, 225, 255, 0.26) 48deg,
+      rgba(241, 103, 255, 0.18) 112deg,
+      transparent 184deg,
+      rgba(139, 255, 226, 0.16) 254deg,
+      transparent 360deg
+    );
+  filter: blur(18px) saturate(1.42);
+  mix-blend-mode: screen;
+  animation: fsb-membrane-flow 16s ease-in-out infinite alternate;
+}
+
+.wh-backdrop04 .fsb-membrane-flow::before,
+.wh-backdrop04 .fsb-membrane-flow::after {
+  position: absolute;
+  inset: -16%;
+  content: "";
+  background:
+    linear-gradient(
+      112deg,
+      transparent 0 28%,
+      rgba(255, 255, 255, 0.12) 35%,
+      rgba(111, 236, 255, 0.2) 39%,
+      transparent 47%
+    ),
+    linear-gradient(
+      68deg,
+      transparent 0 42%,
+      rgba(247, 114, 255, 0.14) 49%,
+      rgba(126, 255, 220, 0.1) 53%,
+      transparent 61%
+    );
+  filter: blur(4px);
+  opacity: 0.54;
+  mix-blend-mode: screen;
+  animation: fsb-membrane-sheen 12s ease-in-out infinite alternate;
+}
+
+.wh-backdrop04 .fsb-membrane-flow::after {
+  opacity: 0.32;
+  transform: rotate(180deg) scaleX(1.08);
+  animation-duration: 18s;
+  animation-delay: -6s;
+}
+
+.wh-backdrop04 .fsb-membrane-ribbons {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0.34;
+  filter: saturate(1.28);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.wh-backdrop04 .fsb-membrane-ribbon {
+  position: absolute;
+  left: var(--fsb-ribbon-x);
+  top: var(--fsb-ribbon-y);
+  display: block;
+  width: var(--fsb-ribbon-width);
+  height: var(--fsb-ribbon-height);
+  transform: rotate(var(--fsb-ribbon-rotate));
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(76, 223, 255, 0.08) 14%,
+      rgba(136, 244, 255, 0.38) 42%,
+      rgba(250, 116, 255, 0.26) 63%,
+      transparent 100%
+    ),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.18) 0%, transparent 58%);
+  box-shadow:
+    0 0 72px rgba(95, 218, 255, 0.22),
+    inset 0 0 64px rgba(242, 107, 255, 0.16);
+  filter: blur(17px);
+  opacity: 0.54;
+  animation: fsb-membrane-ribbon-drift 18s ease-in-out infinite alternate;
+  animation-delay: var(--fsb-ribbon-delay);
+}
+
+.wh-backdrop04 .fsb-center-shield {
+  z-index: 6;
+  opacity: 0.16;
+  background:
+    radial-gradient(ellipse at 48% 48%, var(--fsb-shield) 0 22%, transparent 64%),
+    linear-gradient(90deg, var(--fsb-bg) 0%, transparent 20%, transparent 80%, var(--fsb-bg) 100%);
+}
+
+.wh-backdrop04 .fsb-vignette {
+  z-index: 8;
+  opacity: 0.42;
+  background:
+    radial-gradient(ellipse at 50% 48%, transparent 0 42%, rgba(3, 5, 10, 0.82) 82%, var(--fsb-bg) 100%),
+    linear-gradient(180deg, var(--fsb-bg) 0%, transparent 16%, transparent 82%, var(--fsb-bg) 100%),
+    linear-gradient(90deg, var(--fsb-bg) 0%, transparent 16%, transparent 84%, var(--fsb-bg) 100%);
+}
+
+@keyframes fsb-base-drift {
+  from {
+    transform: translate3d(-0.8%, -0.6%, 0) scale(1.01);
+  }
+  to {
+    transform: translate3d(0.8%, 0.6%, 0) scale(1.035);
+  }
+}
+
+@keyframes fsb-vault-breathe {
+  from {
+    transform: rotate(-1deg) scale(1.02);
+  }
+  to {
+    transform: rotate(1.2deg) scale(1.07);
+  }
+}
+
+@keyframes fsb-membrane-flow {
+  from {
+    transform: translate3d(-1.8%, -1%, 0) rotate(-2deg) scale(1.03);
+    filter: blur(18px) hue-rotate(-12deg) saturate(1.35);
+  }
+  48% {
+    transform: translate3d(1%, 0.6%, 0) rotate(1deg) scale(1.08);
+    filter: blur(20px) hue-rotate(12deg) saturate(1.55);
+  }
+  to {
+    transform: translate3d(2.2%, 1.4%, 0) rotate(2.6deg) scale(1.12);
+    filter: blur(17px) hue-rotate(28deg) saturate(1.42);
+  }
+}
+
+@keyframes fsb-membrane-ribbon-drift {
+  from {
+    translate: -5% -4%;
+    opacity: 0.3;
+    filter: blur(20px) hue-rotate(-18deg);
+  }
+  45% {
+    opacity: 0.72;
+  }
+  to {
+    translate: 6% 5%;
+    opacity: 0.48;
+    filter: blur(14px) hue-rotate(24deg);
+  }
+}
+
+@keyframes fsb-membrane-sheen {
+  from {
+    translate: -10% -3%;
+    opacity: 0.22;
+  }
+  42% {
+    opacity: 0.68;
+  }
+  to {
+    translate: 10% 3%;
+    opacity: 0.38;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wh-backdrop04 .fsb-base,
+  .wh-backdrop04 .fsb-soft-vault,
+  .wh-backdrop04 .fsb-membrane-flow,
+  .wh-backdrop04 .fsb-membrane-flow::before,
+  .wh-backdrop04 .fsb-membrane-flow::after,
+  .wh-backdrop04 .fsb-membrane-ribbon {
+    animation: none;
+  }
+}

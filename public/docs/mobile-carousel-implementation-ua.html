@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Документація: універсальна мобільна карусель просторового кейсу</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 14mm;
+      }
+
+      :root {
+        --paper: #f4f0e8;
+        --ink: #14120f;
+        --muted: #625e56;
+        --line: rgba(20, 18, 15, 0.16);
+        --soft: rgba(255, 255, 255, 0.48);
+        --dark: #080908;
+        --accent: #d9c6a2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.55;
+      }
+
+      .page {
+        position: relative;
+        min-height: 267mm;
+        padding: 0;
+        break-after: page;
+      }
+
+      .page:last-child {
+        break-after: auto;
+      }
+
+      .cover {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 267mm;
+        overflow: hidden;
+      }
+
+      .cover::before,
+      .section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(to right, rgba(20, 18, 15, 0.07) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(20, 18, 15, 0.07) 1px, transparent 1px);
+        background-size: 25mm 25mm;
+        opacity: 0.32;
+      }
+
+      .cover-top {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        border-bottom: 1px solid var(--line);
+        padding: 14px 0 18px;
+        font-size: 8pt;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        position: relative;
+        z-index: 1;
+        max-width: 13ch;
+        padding-top: 22mm;
+        font-size: 45pt;
+        font-weight: 400;
+        line-height: 0.9;
+        letter-spacing: -0.045em;
+      }
+
+      .cover-summary {
+        position: relative;
+        z-index: 1;
+        max-width: 135mm;
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 13pt;
+        line-height: 1.65;
+      }
+
+      .hero-strip {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1.1fr 0.72fr 0.72fr;
+        align-items: end;
+        gap: 10px;
+        margin-top: 20mm;
+      }
+
+      .hero-card,
+      .phone-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(20, 18, 15, 0.18);
+        background: rgba(255, 255, 255, 0.36);
+        box-shadow: 0 22px 64px rgba(20, 18, 15, 0.16);
+      }
+
+      .hero-card {
+        aspect-ratio: 16 / 10;
+        transform: rotate(-2.4deg);
+      }
+
+      .phone-card {
+        aspect-ratio: 9 / 16;
+        max-height: 112mm;
+        transform: rotate(2.2deg);
+      }
+
+      .hero-card img,
+      .phone-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .phone-card img {
+        object-fit: contain;
+        background: #050505;
+      }
+
+      .cover-footer {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 20px;
+        align-items: end;
+        border-top: 1px solid var(--line);
+        padding-top: 15px;
+        color: var(--muted);
+        font-size: 8pt;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .section {
+        position: relative;
+        padding-top: 4mm;
+      }
+
+      .kicker {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 7px;
+        color: #8a8172;
+        font-size: 7.5pt;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        position: relative;
+        z-index: 1;
+        max-width: 25ch;
+        font-size: 25pt;
+        font-weight: 500;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+      }
+
+      h3 {
+        margin-bottom: 6px;
+        font-size: 12pt;
+        line-height: 1.2;
+      }
+
+      .lead {
+        position: relative;
+        z-index: 1;
+        max-width: 168mm;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 11.5pt;
+        line-height: 1.7;
+      }
+
+      .grid-2,
+      .grid-3 {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.42);
+        padding: 12px;
+      }
+
+      .dark-card {
+        border-color: rgba(255, 255, 255, 0.14);
+        background: var(--dark);
+        color: #f6f1e8;
+      }
+
+      .dark-card p,
+      .dark-card li {
+        color: rgba(246, 241, 232, 0.7);
+      }
+
+      ul,
+      ol {
+        margin: 7px 0 0;
+        padding-left: 18px;
+      }
+
+      li + li {
+        margin-top: 4px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .diagram {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.28);
+      }
+
+      .node {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.56);
+        padding: 10px;
+        min-height: 27mm;
+      }
+
+      .node strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .code {
+        position: relative;
+        z-index: 1;
+        margin-top: 12px;
+        padding: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: #070806;
+        color: #eee7dc;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 8.5pt;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .media-row {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 0.38fr 0.38fr;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .media-frame {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #050505;
+        box-shadow: 0 18px 56px rgba(20, 18, 15, 0.15);
+      }
+
+      .media-frame.wide {
+        aspect-ratio: 16 / 10;
+      }
+
+      .media-frame.phone {
+        aspect-ratio: 9 / 16;
+      }
+
+      .media-frame img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .badge-list {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 12px;
+      }
+
+      .badge {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.42);
+        padding: 5px 8px;
+        color: var(--muted);
+        font-size: 7.5pt;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .table {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        margin-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 0.34fr 0.66fr;
+        gap: 14px;
+        border-bottom: 1px solid var(--line);
+        padding: 9px 0;
+      }
+
+      .row strong {
+        font-size: 8pt;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .small {
+        font-size: 8.5pt;
+      }
+
+      .page-number {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        color: #8a8172;
+        font-size: 7.5pt;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="page cover">
+      <div class="cover-top">
+        <span>Brenych Studio</span>
+        <span>Mobile carousel pattern / UA</span>
+      </div>
+
+      <main>
+        <h1>Універсальна мобільна карусель просторового кейсу</h1>
+        <p class="cover-summary">
+          Документація українською мовою про нашу реалізацію мобільної каруселі для сторінки
+          WHISPER / Spatial Proof: як вона працює технічно, як побудована візуально, і як цей
+          підхід переносити на інші сайти як повторювану технологію.
+        </p>
+
+        <div class="hero-strip">
+          <figure class="hero-card">
+            <img src="../immersive/Whisper/desktop/whisper-vr-1.jpg" alt="WHISPER Quest proof frame" />
+          </figure>
+          <figure class="phone-card">
+            <img src="../immersive/Whisper/mobile/whisper-mb-3.jpg" alt="WHISPER mobile frame" />
+          </figure>
+          <figure class="phone-card">
+            <img src="../immersive/Whisper/mobile/whisper-mb-6.jpg" alt="WHISPER mobile collector frame" />
+          </figure>
+        </div>
+      </main>
+
+      <footer class="cover-footer">
+        <span>React / TypeScript / Framer Motion / touch-first interface</span>
+        <span>2026</span>
+      </footer>
+    </article>
+
+    <section class="page section">
+      <div class="kicker">01 / Призначення</div>
+      <h2>Карусель замінює довгий вертикальний стек скріншотів на керований просторовий маршрут.</h2>
+      <p class="lead">
+        У мобільній версії сторінки ми не показуємо всі кадри один під одним. Ми створюємо один
+        сильний активний кадр у центрі, даємо користувачу відчуття сусідніх станів збоку, і
+        керуємо переходом через swipe, drag, кнопки Prev / Next та індикатори-точки. Так мобільна
+        сторінка лишається короткою, кінематографічною і зрозумілою.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Проблема</h3>
+          <p class="muted">
+            На мобільному довгі списки доказових екранів швидко перетворюють кейс на каталог.
+            Користувач скролить, але не відчуває структуру і втрачає головну історію.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Рішення</h3>
+          <p class="muted">
+            Один активний кадр керує увагою. Сусідні кадри видимі як контекст, але приглушені.
+            Стан переходить циклічно, тому маршрут не має тупика.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Результат</h3>
+          <p class="muted">
+            Сторінка виглядає як мобільний proof-room: не просто скріншоти, а інтерактивна
+            демонстрація поверхонь продукту, XR, print або collector flow.
+          </p>
+        </div>
+      </div>
+
+      <div class="badge-list">
+        <span class="badge">Active frame</span>
+        <span class="badge">Side previews</span>
+        <span class="badge">Circular index</span>
+        <span class="badge">Drag threshold</span>
+        <span class="badge">Motion-safe</span>
+        <span class="badge">Reusable data</span>
+      </div>
+
+      <div class="page-number">01</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">02 / Де це реалізовано</div>
+      <h2>Патерн зібраний з двох рівнів: універсальний showcase і спеціальний immersive-orbit для WHISPER.</h2>
+      <p class="lead">
+        Для звичайних case pages існує компонент <strong>CaseMobileShowcase</strong>. Для
+        WHISPER, де важливий ефект просторової кімнати, створений окремий блок
+        <strong>CinematicMobileField</strong> у <strong>WhisperCaseLayout</strong>. Вони мають
+        одну логіку: активний індекс, циклічне перемикання, swipe / drag, dots, фіксована сцена,
+        object-contain для медіа і motion-переходи.
+      </p>
+
+      <div class="table">
+        <div class="row">
+          <strong>Основна сторінка</strong>
+          <span><code>src/ui/immersive/WhisperCaseLayout.tsx</code> відповідає за immersive case, atlas, Quest orbit і mobile route orbit.</span>
+        </div>
+        <div class="row">
+          <strong>Універсальний блок</strong>
+          <span><code>src/ui/work/CaseMobileShowcase.tsx</code> містить переносну логіку для мобільних кадрів у Work-кейсах.</span>
+        </div>
+        <div class="row">
+          <strong>Inspect mode</strong>
+          <span><code>src/ui/work/CinematicInspectReveal.tsx</code> відкриває активний кадр у повноекранному режимі з клавіатурою, swipe, wheel і thumbnail rail.</span>
+        </div>
+        <div class="row">
+          <strong>Дані</strong>
+          <span><code>src/data/immersive.ts</code> зберігає кадри WHISPER: desktop, Quest VR і mobile з label, alt, caption, device.</span>
+        </div>
+        <div class="row">
+          <strong>Канон</strong>
+          <span><code>docs/immersive-whisper-reference-pattern.md</code> описує WHISPER як reference pattern для майбутніх immersive cases.</span>
+        </div>
+      </div>
+
+      <div class="diagram">
+        <div class="node">
+          <strong>Data</strong>
+          <span>frames[]: src, alt, label, caption, device</span>
+        </div>
+        <div class="node">
+          <strong>State</strong>
+          <span>activeIndex, wrapIndex, circularOffset</span>
+        </div>
+        <div class="node">
+          <strong>View</strong>
+          <span>active center frame, side previews, controls, dots</span>
+        </div>
+      </div>
+
+      <div class="page-number">02</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">03 / Технічна логіка</div>
+      <h2>У центрі реалізації є один стан activeIndex і кілька способів змінити його.</h2>
+      <p class="lead">
+        Компонент не залежить від конкретних зображень. Він отримує масив кадрів, рахує активний,
+        попередній і наступний кадр, а потім рендерить їх у сцені. Ключове правило: всі методи
+        керування змінюють той самий activeIndex. Тому кнопки, swipe, drag і dots не конфліктують.
+      </p>
+
+      <div class="code">const [activeIndex, setActiveIndex] = useState(0);
+
+const wrapIndex = (index) =>
+  ((index % frames.length) + frames.length) % frames.length;
+
+const selectFrame = (index, feedback = "select") => {
+  const safeIndex = wrapIndex(index);
+  sound.playRole(feedback);
+  setActiveIndex(safeIndex);
+};
+
+const circularOffset = (index) => {
+  let offset = index - activeIndex;
+  const half = frames.length / 2;
+  if (offset > half) offset -= frames.length;
+  if (offset < -half) offset += frames.length;
+  return offset;
+};</div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Swipe / drag threshold</h3>
+          <p class="muted">
+            Після завершення drag ми порівнюємо горизонтальний зсув із порогом 42-44 px.
+            Якщо рух малий, кадр не перемикається. Якщо зсув ліворуч, відкриваємо наступний кадр;
+            якщо праворуч, попередній.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Reduced motion</h3>
+          <p class="muted">
+            Якщо користувач має увімкнений reduced motion, drag і transition спрощуються:
+            duration майже нульова, а декоративні рухи не стають бар’єром для користування.
+          </p>
+        </div>
+      </div>
+
+      <div class="page-number">03</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">04 / Візуальна структура</div>
+      <h2>Сцена працює як маленька кімната: центральна площина активна, бокові площини дають глибину.</h2>
+      <p class="lead">
+        Візуально ми не робимо стандартний slider. Кадри поводяться як медіа-площини в просторі:
+        активний кадр має opacity 1, scale 1 і високий z-index; сусідні отримують меншу прозорість,
+        scale приблизно 0.78-0.82, легкий rotate і зміщення по X. Завдяки цьому користувач розуміє,
+        що можна свайпати, навіть без текстової інструкції.
+      </p>
+
+      <div class="media-row">
+        <figure class="media-frame wide">
+          <img src="../immersive/Whisper/desktop/whisper-vr-2.jpg" alt="Quest VR proof" />
+        </figure>
+        <figure class="media-frame phone">
+          <img src="../immersive/Whisper/mobile/whisper-mb-1.jpg" alt="Mobile proof 01" />
+        </figure>
+        <figure class="media-frame phone">
+          <img src="../immersive/Whisper/mobile/whisper-mb-5.jpg" alt="Mobile proof 05" />
+        </figure>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Стабільна висота сцени</h3>
+          <p class="muted">
+            У WHISPER mobile orbit використовується фіксована висота <code>h-[41rem]</code> з
+            корекцією для вузьких екранів. Це запобігає стрибкам layout під час зміни кадру.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Без обрізання інтерфейсу</h3>
+          <p class="muted">
+            Для скріншотів використовується <code>object-contain</code>, тому UI всередині кадру
+            не обрізається. Це важливо для доказових сторінок, де треба бачити реальний продукт.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Атмосферна рамка</h3>
+          <p class="muted">
+            Темний фон, тонка сітка, кругова лінія і верхній/нижній gradient fade створюють
+            відчуття proof-room, але не заважають читанню активного кадру.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Керування без шуму</h3>
+          <p class="muted">
+            Prev / Next винесені у верхній контрольний ряд, dots знаходяться біля label активного
+            кадру, а CTA Inspect frame відкриває повноекранний перегляд.
+          </p>
+        </div>
+      </div>
+
+      <div class="page-number">04</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">05 / Motion rules</div>
+      <h2>Анімація пояснює ієрархію кадрів, а не просто прикрашає інтерфейс.</h2>
+      <p class="lead">
+        Framer Motion використовується для трьох речей: переміщення карток по орбіті, плавного
+        входу активного кадру і фізичного drag gesture. Значення підібрані так, щоб активний кадр
+        лишався домінантним, а сусідні працювали як натяк на продовження маршруту.
+      </p>
+
+      <div class="code">animate={{
+  opacity: visible ? (active ? 1 : 0.22) : 0,
+  x: `calc(-50% + ${offset * 78}%)`,
+  y: active ? 0 : 34,
+  rotateZ: active ? 0 : offset * -4,
+  scale: active ? 1 : 0.82,
+}}
+transition={{ duration: reduceMotion ? 0.01 : 0.58, ease }}</div>
+
+      <div class="grid-3">
+        <div class="dark-card card">
+          <h3>Opacity</h3>
+          <p>Активний кадр читається повністю, неактивні кадри стають майже тінями.</p>
+        </div>
+        <div class="dark-card card">
+          <h3>Offset</h3>
+          <p>Кожна картка отримує позицію відносно activeIndex, тому порядок лишається циклічним.</p>
+        </div>
+        <div class="dark-card card">
+          <h3>Scale / rotate</h3>
+          <p>Неактивні кадри менші й повернуті, що створює відчуття глибини без 3D-canvas.</p>
+        </div>
+      </div>
+
+      <div class="page-number">05</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">06 / Як переносити на інші сайти</div>
+      <h2>Технологія переноситься як компонентний патерн: дані окремо, стан окремо, сцена окремо.</h2>
+      <p class="lead">
+        Щоб використати цей підхід на іншому сайті, не треба копіювати WHISPER візуально. Треба
+        перенести структуру: масив кадрів, activeIndex, wrapIndex, circularOffset, drag threshold,
+        центральний active frame, side previews, dots і inspect/open callback.
+      </p>
+
+      <div class="table">
+        <div class="row">
+          <strong>01 / Дані</strong>
+          <span>Підготувати масив <code>frames</code>: <code>src</code>, <code>alt</code>, <code>label</code>, <code>caption</code>, optional <code>device</code>.</span>
+        </div>
+        <div class="row">
+          <strong>02 / Сцена</strong>
+          <span>Задати стабільну висоту, overflow hidden, touch-pan-y, темну або світлу атмосферну рамку залежно від бренду.</span>
+        </div>
+        <div class="row">
+          <strong>03 / Стан</strong>
+          <span>Один activeIndex має керувати swipe, drag, dots, кнопками і open frame.</span>
+        </div>
+        <div class="row">
+          <strong>04 / Motion</strong>
+          <span>Побудувати visible / active / depth через circularOffset і анімувати opacity, x, y, rotate, scale.</span>
+        </div>
+        <div class="row">
+          <strong>05 / QA</strong>
+          <span>Перевірити 360-430 px, 390 px narrow mode, iOS safe area, відсутність горизонтального overflow і читабельність captions.</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Коли використовувати</h3>
+          <ul class="muted">
+            <li>портфоліо-кейси з багатьма мобільними кадрами;</li>
+            <li>продуктові walkthrough на телефоні;</li>
+            <li>XR / AR / print proof, де треба показати різні поверхні;</li>
+            <li>premium landing page, де скріншоти мають виглядати як доказ, а не галерея.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Коли не використовувати</h3>
+          <ul class="muted">
+            <li>коли є лише один-два кадри без послідовності;</li>
+            <li>коли користувачу треба швидко порівняти багато екранів у таблиці;</li>
+            <li>коли кадри мають різні пропорції і їх неможливо стабілізувати без обрізання.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="page-number">06</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">07 / Універсальний API компонента</div>
+      <h2>Для повторного використання варто винести карусель у нейтральний компонент.</h2>
+      <p class="lead">
+        Рекомендована форма для майбутніх сайтів: <strong>MobileProofCarousel</strong>. Він не
+        має знати про WHISPER, XR або конкретний бренд. Він отримує дані, тему, режим відображення
+        і callback для відкриття активного кадру.
+      </p>
+
+      <div class="code">type MobileProofFrame = {
+  src: string;
+  alt: string;
+  label: string;
+  caption?: string;
+  aspect?: "phone" | "wide";
+};
+
+type MobileProofCarouselProps = {
+  frames: MobileProofFrame[];
+  eyebrow?: string;
+  tone?: "light" | "dark" | "brand";
+  mode?: "phone-orbit" | "surface-atlas";
+  onOpenFrame?: (src: string) => void;
+};</div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>phone-orbit</h3>
+          <p class="muted">Для мобільних скріншотів у рамці телефону або темній proof-сцені.</p>
+        </div>
+        <div class="card">
+          <h3>surface-atlas</h3>
+          <p class="muted">Для різних поверхонь одного проєкту: web, mobile, print, AR, Quest.</p>
+        </div>
+        <div class="card">
+          <h3>inspect callback</h3>
+          <p class="muted">Активний кадр можна відкривати у lightbox / modal / cinematic inspect reveal.</p>
+        </div>
+      </div>
+
+      <div class="page-number">07</div>
+    </section>
+
+    <section class="page section">
+      <div class="kicker">08 / Чеклист якості</div>
+      <h2>Карусель вважається готовою, коли вона стабільна, доступна і не ламає мобільну сторінку.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Технічний чеклист</h3>
+          <ul class="muted">
+            <li><code>npm run build</code> проходить без помилок.</li>
+            <li>Немає горизонтального overflow на 360, 390, 430 px.</li>
+            <li>Drag не блокує вертикальний скрол сторінки: використовується <code>touch-pan-y</code>.</li>
+            <li>Усі кнопки мають aria-label, active dot має aria-pressed.</li>
+            <li>Зображення мають alt, lazy loading і decoding async.</li>
+            <li>Reduced motion не залишає користувача без навігації.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Візуальний чеклист</h3>
+          <ul class="muted">
+            <li>Активний кадр домінує; бокові прев’ю не сперечаються з ним.</li>
+            <li>Кадри не обрізають важливий UI.</li>
+            <li>Caption не змінює висоту сцени різкими стрибками.</li>
+            <li>Controls помітні, але не виглядають як головний контент.</li>
+            <li>Тема каруселі відповідає сайту, але не копіює WHISPER буквально.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 16px;">
+        <h3>Коротка формула патерну</h3>
+        <p class="muted">
+          Мобільна карусель = один активний доказовий кадр + циклічний індекс + swipe/drag
+          threshold + бокові прев’ю + dots + стабільна сцена + inspect mode. Саме ця формула
+          робить рішення універсальним для інших сайтів.
+        </p>
+      </div>
+
+      <div class="page-number">08</div>
+    </section>
+  </body>
+</html>

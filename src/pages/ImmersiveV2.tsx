@@ -75,7 +75,7 @@ const futureChamberIds: FutureChamberId[] = [
   "collector-continuation",
 ];
 
-const immersiveHubChamberIds: ImmersiveChamberId[] = ["whisper", ...futureChamberIds];
+const immersiveHubChamberIds: ImmersiveChamberId[] = ["whisper", "webhero", "kool-berk", ...futureChamberIds];
 
 const immersiveHubChambers = immersiveChambers.filter((chamber) =>
   immersiveHubChamberIds.includes(chamber.id),
@@ -300,7 +300,7 @@ const mobileApplicationPaths = [
   "WebXR prototypes",
 ];
 
-type MobileChamberFieldId = "whisper" | FutureChamberId;
+type MobileChamberFieldId = "whisper" | "webhero" | "kool-berk" | FutureChamberId;
 type MobileChamberFieldMode = "field" | "index";
 
 type MobileChamberFieldEntry = {
@@ -325,8 +325,26 @@ const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
     mediaSrc: "/immersive/Whisper/desktop/whisper-hero.jpg",
   },
   {
-    id: "product-world",
+    id: "webhero",
     index: "02",
+    title: "WEBHERO",
+    status: "Advanced R&D system",
+    role: "Living visual system -> WebGL stages / Living Images / Splat Pro / Art Room / future XR adapters",
+    cta: "Open WEBHERO",
+    mediaSrc: "/immersive/webhero/desktop/webhero-living-environments-hero.webp",
+  },
+  {
+    id: "kool-berk",
+    index: "03",
+    title: "Kool Berk",
+    status: "Advanced sonic prototype",
+    role: "Music becomes a Sonic Object OS with release objects, signal studies, Web Audio and an immersive listening room",
+    cta: "Open Kool Berk",
+    mediaSrc: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
+  },
+  {
+    id: "product-world",
+    index: "04",
     title: "Product World",
     status: "Prepared direction",
     role: "Product or service becomes a navigable world",
@@ -336,7 +354,7 @@ const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
   },
   {
     id: "presence-archive",
-    index: "03",
+    index: "04",
     title: "Presence Archive",
     status: "Research chamber",
     role: "Archive reacts to attention, memory, return, and media fragments",
@@ -346,7 +364,7 @@ const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
   },
   {
     id: "collector-continuation",
-    index: "04",
+    index: "05",
     title: "Collector Continuation",
     status: "Prepared continuation",
     role: "Print, edition, AR preview, and collector logic extend the digital surface",
@@ -1303,6 +1321,8 @@ function PracticeMapScene({
   const selectAtlasChamber = chamberState.selectChamber;
   const chamberSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
     whisper: { x: 48, y: 34, rotate: -5, size: "large" },
+    webhero: { x: 69, y: 35, rotate: 5, size: "large" },
+    "kool-berk": { x: 36, y: 58, rotate: -6, size: "large" },
     "product-world": { x: 24, y: 62, rotate: 6, size: "medium" },
     "presence-archive": { x: 71, y: 61, rotate: -7, size: "medium" },
     "collector-continuation": { x: 78, y: 27, rotate: 8, size: "small" },
@@ -1310,6 +1330,8 @@ function PracticeMapScene({
   };
   const inspectSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
     whisper: { x: 28, y: 30, rotate: -5, size: "large" },
+    webhero: { x: 70, y: 34, rotate: 4, size: "large" },
+    "kool-berk": { x: 39, y: 61, rotate: -5, size: "large" },
     "product-world": { x: 21, y: 61, rotate: 5, size: "large" },
     "presence-archive": { x: 78, y: 60, rotate: -6, size: "large" },
     "collector-continuation": { x: 78, y: 31, rotate: 6, size: "medium" },
@@ -2918,10 +2940,14 @@ function MobileAction({
 function MobileImmersiveHero({
   onExploreChambers,
   onOpenWhisper,
+  onOpenWebHero,
+  onOpenKoolBerk,
   onOpenProject,
 }: {
   onExploreChambers: () => void;
   onOpenWhisper: () => void;
+  onOpenWebHero: () => void;
+  onOpenKoolBerk: () => void;
   onOpenProject?: () => void;
 }) {
   return (
@@ -2961,6 +2987,8 @@ function MobileImmersiveHero({
           <MobileAction variant="dark" onClick={onExploreChambers}>
             Explore chambers -&gt;
           </MobileAction>
+          <MobileAction onClick={onOpenKoolBerk}>Open Kool Berk -&gt;</MobileAction>
+          <MobileAction onClick={onOpenWebHero}>Open WEBHERO -&gt;</MobileAction>
           <MobileAction onClick={onOpenWhisper}>Open WHISPER -&gt;</MobileAction>
           <MobileAction onClick={onOpenProject} className="min-w-[16rem]">
             Start immersive prototype -&gt;
@@ -2973,9 +3001,13 @@ function MobileImmersiveHero({
 
 function MobileChamberField({
   onOpenWhisper,
+  onOpenWebHero,
+  onOpenKoolBerk,
   onShowPreparedChamber,
 }: {
   onOpenWhisper: () => void;
+  onOpenWebHero: () => void;
+  onOpenKoolBerk: () => void;
   onShowPreparedChamber: (id: FutureChamberId) => void;
 }) {
   const sound = useSound();
@@ -3008,6 +3040,16 @@ function MobileChamberField({
   const runActiveAction = () => {
     if (activeEntry.preparedId) {
       onShowPreparedChamber(activeEntry.preparedId);
+      return;
+    }
+
+    if (activeEntry.id === "webhero") {
+      onOpenWebHero();
+      return;
+    }
+
+    if (activeEntry.id === "kool-berk") {
+      onOpenKoolBerk();
       return;
     }
 
@@ -3052,8 +3094,8 @@ function MobileChamberField({
           Immersive project atlas.
         </h2>
         <p className="mt-7 max-w-[35rem] text-[16px] leading-[1.75] text-neutral-600">
-          One completed chamber anchors the system. The next directions are prepared as product, archive, and collector
-          interfaces rather than generic case cards.
+          WHISPER and WEBHERO now anchor the system: one as completed spatial proof, the other as a living visual
+          R&D platform for WebGL stages, spatial images, Art Room work, and future XR adapters.
         </p>
 
         <AnimatePresence mode="wait" initial={false}>
@@ -3234,7 +3276,7 @@ function MobileChamberField({
                   </div>
                 </div>
 
-                <MobileAction variant={activeEntry.id === "whisper" ? "dark" : "line"} onClick={runActiveAction}>
+                <MobileAction variant={activeEntry.id === "whisper" || activeEntry.id === "webhero" || activeEntry.id === "kool-berk" ? "dark" : "line"} onClick={runActiveAction}>
                   {activeEntry.cta} -&gt;
                 </MobileAction>
               </div>
@@ -3874,10 +3916,14 @@ function MobileImmersiveClosing({
 function MobileImmersiveHub({
   onOpenProject,
   onOpenWhisper,
+  onOpenWebHero,
+  onOpenKoolBerk,
   onExploreChambers,
 }: {
   onOpenProject?: () => void;
   onOpenWhisper: () => void;
+  onOpenWebHero: () => void;
+  onOpenKoolBerk: () => void;
   onExploreChambers: () => void;
 }) {
   const [preparedFocus, setPreparedFocus] = useState<FutureChamberId>("product-world");
@@ -3898,11 +3944,18 @@ function MobileImmersiveHub({
         <MobileImmersiveHero
           onExploreChambers={onExploreChambers}
           onOpenWhisper={onOpenWhisper}
+          onOpenWebHero={onOpenWebHero}
+          onOpenKoolBerk={onOpenKoolBerk}
           onOpenProject={onOpenProject}
         />
       </MobileMotionSection>
       <MobileMotionSection variant="media" delay="soft">
-        <MobileChamberField onOpenWhisper={onOpenWhisper} onShowPreparedChamber={showPreparedChamber} />
+        <MobileChamberField
+          onOpenWhisper={onOpenWhisper}
+          onOpenWebHero={onOpenWebHero}
+          onOpenKoolBerk={onOpenKoolBerk}
+          onShowPreparedChamber={showPreparedChamber}
+        />
       </MobileMotionSection>
       <MobileMotionSection variant="media" delay="soft">
         <MobileSurfaceRelay onOpenWhisper={onOpenWhisper} />
@@ -4030,6 +4083,8 @@ export default function ImmersiveV2({
           <MobileImmersiveHub
             onOpenProject={onOpenProject}
             onOpenWhisper={() => goTo("/immersive/whisper")}
+            onOpenWebHero={() => goTo("/immersive/webhero")}
+            onOpenKoolBerk={() => goTo("/immersive/kool-berk")}
             onExploreChambers={() => scrollTo("map")}
           />
         ) : (

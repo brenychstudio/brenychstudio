@@ -731,6 +731,7 @@
     },
     Background: KoolBerkBackground
   };
+  global.__koolBerkBackgroundScriptSource = "/immersive/kool-berk/backdrop-16/kool-berk-background.js";
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = global.KoolBerkWebGLBackground;

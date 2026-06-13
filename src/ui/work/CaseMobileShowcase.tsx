@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { CaseFrame } from "../../data/cases";
+import type { CaseCoverTone } from "./caseCover.types";
 
 type CaseMobileShowcaseProps = {
   frames: CaseFrame[];
   onOpenFrame?: (src: string) => void;
   eyebrow?: string;
   description?: string;
+  tone?: CaseCoverTone;
 };
 
 function formatIndex(value: number) {
@@ -20,15 +22,55 @@ const showcaseTransition = {
   ease: showcaseEase,
 };
 
+const mobileShowcaseToneMap: Record<
+  CaseCoverTone,
+  {
+    stage: string;
+    activeShell: string;
+    ghostShell: string;
+    mobileShell: string;
+  }
+> = {
+  light: {
+    stage: "border-neutral-100 bg-[#f6f3ec]/55",
+    activeShell:
+      "rounded-[28px] border border-black/[0.045] bg-[#f8f5ef]/88 shadow-[0_26px_76px_rgba(15,23,42,0.06)]",
+    ghostShell:
+      "rounded-[24px] border border-black/[0.04] bg-[#f8f5ef]/66 shadow-[0_18px_52px_rgba(15,23,42,0.045)]",
+    mobileShell:
+      "rounded-[24px] border border-black/[0.045] bg-[#f8f5ef]/90 shadow-[0_24px_80px_rgba(15,23,42,0.055)] sm:rounded-[28px]",
+  },
+  dark: {
+    stage: "border-neutral-100 bg-neutral-50/40",
+    activeShell:
+      "rounded-[28px] border border-black/[0.04] bg-white shadow-[0_24px_72px_rgba(15,23,42,0.05)]",
+    ghostShell:
+      "rounded-[24px] border border-black/[0.04] bg-white/78 shadow-[0_16px_46px_rgba(15,23,42,0.04)]",
+    mobileShell:
+      "rounded-[24px] border border-black/[0.04] bg-white shadow-[0_24px_80px_rgba(15,23,42,0.05)] sm:rounded-[28px]",
+  },
+  mixed: {
+    stage: "border-neutral-100 bg-[#f5f4f1]/46",
+    activeShell:
+      "rounded-[28px] border border-black/[0.042] bg-[#f7f5f1]/90 shadow-[0_25px_74px_rgba(15,23,42,0.055)]",
+    ghostShell:
+      "rounded-[24px] border border-black/[0.04] bg-[#f7f5f1]/70 shadow-[0_17px_48px_rgba(15,23,42,0.042)]",
+    mobileShell:
+      "rounded-[24px] border border-black/[0.042] bg-[#f7f5f1]/92 shadow-[0_24px_80px_rgba(15,23,42,0.052)] sm:rounded-[28px]",
+  },
+};
+
 export default function CaseMobileShowcase({
   frames,
   onOpenFrame,
   eyebrow = "Mobile showcase",
   description = "Guided handheld sequence across bilingual entry, district-aware discovery, and shortlist actions.",
+  tone = "mixed",
 }: CaseMobileShowcaseProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const toneStyles = mobileShowcaseToneMap[tone];
 
   useEffect(() => {
     frames.forEach((frame) => {
@@ -89,7 +131,12 @@ export default function CaseMobileShowcase({
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-[26px] border border-neutral-100 bg-neutral-50/40 p-4 md:rounded-[28px] md:p-7">
+      <div
+        className={[
+          "overflow-hidden rounded-[26px] border p-4 md:rounded-[28px] md:p-7",
+          toneStyles.stage,
+        ].join(" ")}
+      >
         <div className="hidden gap-6 md:grid md:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)_minmax(0,0.82fr)] md:items-end">
           <button
             type="button"
@@ -97,10 +144,15 @@ export default function CaseMobileShowcase({
             className="group block min-w-0"
             aria-label={`Set active mobile frame ${formatIndex(prevIndex + 1)}`}
           >
-            <div className="mx-auto flex h-[456px] w-[220px] items-end">
+            <div className="mx-auto flex h-[456px] w-full items-end justify-center">
               <div className="relative h-[396px] w-full opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="inline-flex h-full max-w-full overflow-hidden rounded-[24px] border border-neutral-200 bg-white shadow-[0_18px_52px_rgba(0,0,0,0.05)]">
+                  <div
+                    className={[
+                      "inline-flex h-full w-auto max-w-full overflow-hidden",
+                      toneStyles.ghostShell,
+                    ].join(" ")}
+                  >
                     <img
                       src={prevFrame.src}
                       alt={prevFrame.alt ?? ""}
@@ -120,7 +172,7 @@ export default function CaseMobileShowcase({
             className="group block min-w-0"
             aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
           >
-            <div className="mx-auto h-[456px] w-[270px]">
+            <div className="mx-auto flex h-[456px] w-full items-center justify-center">
               <div className="relative h-full w-full transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)]">
                 <AnimatePresence initial={false} mode="sync">
                   <motion.div
@@ -132,7 +184,12 @@ export default function CaseMobileShowcase({
                     transition={showcaseTransition}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="inline-flex h-full max-w-full overflow-hidden rounded-[28px] border border-neutral-200 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)]">
+                      <div
+                        className={[
+                          "inline-flex h-full w-auto max-w-full overflow-hidden",
+                          toneStyles.activeShell,
+                        ].join(" ")}
+                      >
                         <img
                           src={activeFrame.src}
                           alt={activeFrame.alt ?? ""}
@@ -154,10 +211,15 @@ export default function CaseMobileShowcase({
             className="group block min-w-0"
             aria-label={`Set active mobile frame ${formatIndex(nextIndex + 1)}`}
           >
-            <div className="mx-auto flex h-[456px] w-[220px] items-end">
+            <div className="mx-auto flex h-[456px] w-full items-end justify-center">
               <div className="relative h-[396px] w-full opacity-70 transition duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-90">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="inline-flex h-full max-w-full overflow-hidden rounded-[24px] border border-neutral-200 bg-white shadow-[0_18px_52px_rgba(0,0,0,0.05)]">
+                  <div
+                    className={[
+                      "inline-flex h-full w-auto max-w-full overflow-hidden",
+                      toneStyles.ghostShell,
+                    ].join(" ")}
+                  >
                     <img
                       src={nextFrame.src}
                       alt={nextFrame.alt ?? ""}
@@ -181,7 +243,7 @@ export default function CaseMobileShowcase({
             <button
               type="button"
               onClick={() => onOpenFrame?.(activeFrame.src)}
-              className="relative z-10 flex h-full w-[78vw] max-w-[310px] items-center justify-center overflow-hidden rounded-[28px] bg-transparent md:rounded-[32px]"
+              className="relative z-10 flex h-full max-w-full items-center justify-center bg-transparent"
               aria-label={`Open active mobile frame ${formatIndex(safeActiveIndex + 1)}`}
             >
               <AnimatePresence initial={false} mode="wait">
@@ -196,7 +258,10 @@ export default function CaseMobileShowcase({
                   <img
                     src={activeFrame.src}
                     alt={activeFrame.alt ?? ""}
-                    className="block max-h-full max-w-full rounded-[24px] border border-neutral-200 bg-white object-contain object-center shadow-[0_24px_80px_rgba(0,0,0,0.05)] sm:rounded-[28px]"
+                    className={[
+                      "block max-h-full max-w-full object-contain object-center",
+                      toneStyles.mobileShell,
+                    ].join(" ")}
                     loading="lazy"
                     decoding="async"
                   />

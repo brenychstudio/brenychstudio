@@ -428,6 +428,1257 @@ const koolBerkTechnicalReadouts = [
   "Mobile and tablet survival pass completed",
 ];
 
+const presenceOsRailItems: SectionRailItem[] = [
+  { id: "presence-os-threshold", index: "01", label: "Archive" },
+  { id: "presence-os-walkthrough", index: "02", label: "Walkthrough" },
+  { id: "presence-os-presence", index: "03", label: "Presence" },
+  { id: "presence-os-xr", index: "04", label: "XR room" },
+  { id: "presence-os-artifacts", index: "05", label: "Artifacts" },
+  { id: "presence-os-technical", index: "06", label: "Technical" },
+];
+
+const presenceOsRules = [
+  {
+    index: "01",
+    title: "Stillness = clarity",
+    text:
+      "The interface rewards calm attention. When the user slows down, the memory field becomes more readable instead of adding more controls.",
+    signal: "Presence before click pressure",
+  },
+  {
+    index: "02",
+    title: "Return = depth",
+    text:
+      "Repeated attention can make a fragment feel more present, turning return behavior into an interface signal.",
+    signal: "Memory gains context through return",
+  },
+  {
+    index: "03",
+    title: "Speed = vanishing UI",
+    text:
+      "Fast movement strips the interface back. The system avoids dashboard noise by letting labels and controls appear only when they are earned.",
+    signal: "Quiet archive / reduced interface",
+  },
+  {
+    index: "04",
+    title: "Attention = stabilization",
+    text:
+      "Fragments, climate and inspect states stabilize around attention, creating a field that feels sensitive without pretending to understand the memories.",
+    signal: "Algorithmic reconstruction, not AI memory claims",
+  },
+];
+
+const presenceOsTechnicalReadouts = [
+  "Vite / React / TypeScript",
+  "Three.js / React Three Fiber / Drei",
+  "WebXR / Quest-oriented room path",
+  "Local object URLs / sessionStorage",
+  "Canvas rendering / phone-style Reel preview",
+  "MediaRecorder / local WebM export",
+  "WebAudio ambient sound layer",
+  "JSZip local artifact package",
+  "Synthetic Weather memory climate",
+  "VR session trace logger",
+  "Replay timeline builder",
+  "Mobile and tablet pass still in development",
+];
+
+function PresenceOsVideoProof({
+  video,
+  index,
+  title,
+  description,
+  signals,
+}: {
+  video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
+  index: number;
+  title: string;
+  description: string;
+  signals: string[];
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element) return;
+
+    let playbackLocked = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        const visibleEnough = entry.isIntersecting && entry.intersectionRatio >= 0.72;
+        const mostlyGone = !entry.isIntersecting || entry.intersectionRatio <= 0.36;
+
+        if (visibleEnough && !playbackLocked) {
+          playbackLocked = true;
+          window.requestAnimationFrame(() => {
+            void element.play().catch(() => {
+              playbackLocked = false;
+            });
+          });
+        }
+
+        if (mostlyGone) {
+          playbackLocked = false;
+          element.pause();
+        }
+      },
+      {
+        threshold: [0, 0.2, 0.36, 0.55, 0.72, 0.9],
+        rootMargin: "-8% 0px -12% 0px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      element.pause();
+    };
+  }, []);
+
+  return (
+    <motion.article
+      className="overflow-hidden border border-white/10 bg-white/[0.035] text-white shadow-[0_34px_120px_rgba(0,0,0,0.32)]"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="relative aspect-video bg-black">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-contain"
+          muted
+          loop
+          controls
+          playsInline
+          preload="metadata"
+          poster={video.poster}
+        >
+          <source src={video.src} type="video/mp4" />
+        </video>
+        <div className="pointer-events-none absolute left-4 top-4 border-y border-white/16 bg-black/30 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 backdrop-blur">
+          {String(index + 1).padStart(2, "0")} / {video.label}
+        </div>
+      </div>
+      <div className="grid gap-5 border-t border-white/10 p-5 md:p-7 lg:grid-cols-[0.36fr_0.42fr_0.22fr] lg:items-end">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">Directed proof</div>
+          <h3 className="mt-4 max-w-[10ch] text-[clamp(2.5rem,4.8vw,5.2rem)] font-normal leading-[0.9] text-white">
+            {title}
+          </h3>
+        </div>
+        <p className="max-w-[40rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">
+          {description}
+        </p>
+        <div className="grid gap-2 border-t border-white/10 pt-4 lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0">
+          {signals.map((signal) => (
+            <span key={signal} className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/34">
+              {signal}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function OrbitLensNarrativeVideoCard({
+  video,
+  index,
+  eyebrow,
+  title,
+  description,
+  signals,
+  reverse = false,
+}: {
+  video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
+  index: number;
+  eyebrow: string;
+  title: string;
+  description: string;
+  signals: string[];
+  reverse?: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element) return;
+
+    let playbackLocked = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        const visibleEnough = entry.isIntersecting && entry.intersectionRatio >= 0.7;
+        const mostlyGone = !entry.isIntersecting || entry.intersectionRatio <= 0.32;
+
+        if (visibleEnough && !playbackLocked) {
+          playbackLocked = true;
+          window.requestAnimationFrame(() => {
+            void element.play().catch(() => {
+              playbackLocked = false;
+            });
+          });
+        }
+
+        if (mostlyGone) {
+          playbackLocked = false;
+          element.pause();
+        }
+      },
+      {
+        threshold: [0, 0.18, 0.32, 0.5, 0.7, 0.88],
+        rootMargin: "-8% 0px -12% 0px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      element.pause();
+    };
+  }, []);
+
+  return (
+    <motion.article
+      className="overflow-hidden border border-white/10 bg-white/[0.03] text-white shadow-[0_34px_120px_rgba(0,0,0,0.32)]"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="grid gap-0 lg:grid-cols-[0.58fr_0.42fr]">
+        <div className={["relative bg-black", reverse ? "lg:order-2" : ""].join(" ")}>
+          <div className="relative aspect-video overflow-hidden">
+            <video
+              ref={videoRef}
+              className="absolute inset-0 h-full w-full object-contain"
+              muted
+              loop
+              controls
+              playsInline
+              preload="metadata"
+              poster={video.poster}
+            >
+              <source src={video.src} type="video/mp4" />
+            </video>
+            <div className="pointer-events-none absolute left-4 top-4 border-y border-white/16 bg-black/30 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 backdrop-blur">
+              {String(index + 1).padStart(2, "0")} / {video.label}
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={[
+            "flex min-h-full flex-col justify-between gap-6 border-t border-white/10 p-5 md:p-7 lg:border-l lg:border-t-0",
+            reverse ? "lg:order-1 lg:border-l-0 lg:border-r lg:border-white/10" : "",
+          ].join(" ")}
+        >
+          <div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">{eyebrow}</div>
+            <h3 className="mt-4 max-w-[11ch] text-[clamp(2.2rem,4vw,4.3rem)] font-normal leading-[0.92] text-white">
+              {title}
+            </h3>
+            <p className="mt-5 max-w-[38rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">
+              {description}
+            </p>
+          </div>
+
+          <div className="grid gap-2 border-t border-white/10 pt-4 font-mono text-[8px] uppercase tracking-[0.16em] text-white/34">
+            {signals.map((signal) => (
+              <span key={signal}>{signal}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function OrbitLensSpatialVideoCard({
+  video,
+  index,
+  eyebrow,
+  title,
+  description,
+  signals,
+}: {
+  video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
+  index: number;
+  eyebrow: string;
+  title: string;
+  description: string;
+  signals: string[];
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const element = videoRef.current;
+    if (!element) return;
+
+    let playbackLocked = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        const visibleEnough = entry.isIntersecting && entry.intersectionRatio >= 0.68;
+        const mostlyGone = !entry.isIntersecting || entry.intersectionRatio <= 0.3;
+
+        if (visibleEnough && !playbackLocked) {
+          playbackLocked = true;
+          window.requestAnimationFrame(() => {
+            void element.play().catch(() => {
+              playbackLocked = false;
+            });
+          });
+        }
+
+        if (mostlyGone) {
+          playbackLocked = false;
+          element.pause();
+        }
+      },
+      {
+        threshold: [0, 0.18, 0.3, 0.5, 0.68, 0.9],
+        rootMargin: "-8% 0px -12% 0px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      element.pause();
+    };
+  }, []);
+
+  return (
+    <motion.article
+      className="overflow-hidden border border-white/10 bg-white/[0.03] text-white shadow-[0_34px_120px_rgba(0,0,0,0.34)]"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="relative bg-black">
+        <div className="relative aspect-[16/10] overflow-hidden md:aspect-[16/8.6]">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 h-full w-full object-cover object-[center_18%]"
+            muted
+            loop
+            controls
+            playsInline
+            preload="metadata"
+            poster={video.poster}
+          >
+            <source src={video.src} type="video/mp4" />
+          </video>
+          <div className="pointer-events-none absolute left-4 top-4 border-y border-white/16 bg-black/30 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 backdrop-blur">
+            {String(index + 1).padStart(2, "0")} / {video.label}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-5 border-t border-white/10 p-5 md:p-6 lg:grid-cols-[0.36fr_0.64fr] lg:items-center">
+        <div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">{eyebrow}</div>
+          <h3 className="mt-4 max-w-[10ch] text-[clamp(2rem,3.8vw,3.8rem)] font-normal leading-[0.92] text-white">
+            {title}
+          </h3>
+        </div>
+        <p className="max-w-[44rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">{description}</p>
+      </div>
+
+      <div className="grid gap-px border-t border-white/10 bg-white/10 sm:grid-cols-3">
+        {signals.map((signal) => (
+          <div
+            key={signal}
+            className="bg-[#03070a] px-4 py-4 font-mono text-[8px] uppercase tracking-[0.16em] text-white/34"
+          >
+            {signal}
+          </div>
+        ))}
+      </div>
+    </motion.article>
+  );
+}
+
+function PresenceOsFrameCard({
+  frame,
+  index,
+  onOpen,
+  className = "",
+  imageClassName = "aspect-[16/10]",
+}: {
+  frame: NonNullable<(typeof immersiveItems)[number]["frames"]>[number];
+  index: number;
+  onOpen: (index: number) => void;
+  className?: string;
+  imageClassName?: string;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={() => onOpen(index)}
+      className={[
+        "group overflow-hidden border border-white/10 bg-white/[0.032] text-left shadow-[0_30px_110px_rgba(0,0,0,0.28)]",
+        className,
+      ].join(" ")}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.16 }}
+      transition={{ duration: 0.62, delay: (index % 4) * 0.035, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className={["relative overflow-hidden bg-black", imageClassName].join(" ")}>
+        <img
+          src={frame.src}
+          alt={frame.alt}
+          className="h-full w-full object-cover opacity-92 transition duration-700 group-hover:scale-[1.02]"
+          loading="lazy"
+          decoding="async"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),transparent_55%,rgba(0,0,0,0.34))]" />
+        <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
+          Inspect
+        </div>
+      </div>
+      <div className="border-t border-white/10 p-4 md:p-5">
+        <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/36">
+          {String(index + 1).padStart(2, "0")} / {frame.label}
+        </div>
+        <p className="mt-3 text-[13px] leading-6 text-white/56">{frame.caption}</p>
+      </div>
+    </motion.button>
+  );
+}
+
+function PresenceOsCaseLayout({
+  item,
+  onBack,
+  onOpenProject,
+}: {
+  item: (typeof immersiveItems)[number];
+  onBack: () => void;
+  onOpenProject?: () => void;
+}) {
+  const activeSection = useSectionRailActive(presenceOsRailItems, "presence-os-threshold");
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const videos = item.videos ?? [];
+  const frames = item.frames ?? [];
+  const desktopFrames = frames.filter((frame) => frame.device !== "vr");
+  const vrFrames = frames.filter((frame) => frame.device === "vr");
+  const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
+  const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
+    id: `presence-os-frame-${String(index + 1).padStart(2, "0")}`,
+    kind: "image",
+    src: frame.src,
+    alt: frame.alt,
+    label: frame.label ?? `Frame ${index + 1}`,
+    caption: frame.caption,
+    role: frame.device === "vr" ? "detail" : index < 2 ? "hero" : "proof",
+    fit: "contain",
+  }));
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const top = Math.max(0, section.getBoundingClientRect().top + window.scrollY - 76);
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#030706] text-white">
+      <SeoMeta
+        title="Presence OS / Memory Atlas - Experimental Spatial Memory Interface | Brenych Studio"
+        description="Presence OS / Memory Atlas is an experimental interface engine and private spatial memory archive prototype that transforms personal fragments into a living memory field, cinematic inspect experience, XR room and exportable memory artifacts."
+        path="/immersive/presence-os-memory-atlas"
+        image={item.previewPoster}
+        imageAlt="Presence OS Memory Atlas immersive case"
+        type="article"
+      />
+      <SectionRail
+        items={presenceOsRailItems}
+        activeId={activeSection}
+        onSelect={scrollToSection}
+        label="Presence OS Memory Atlas sections"
+        tone="dark"
+      />
+
+      <section
+        id="presence-os-threshold"
+        data-header-scene="presence-os-threshold"
+        className="relative min-h-[100svh] scroll-mt-[5.5rem] overflow-hidden bg-[#030706] pt-[72px] md:scroll-mt-28"
+      >
+        <img
+          src="/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-48"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_28%,rgba(119,207,184,0.16),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(246,219,165,0.08),transparent_24%),linear-gradient(90deg,#030706_0%,rgba(3,7,6,0.92)_25%,rgba(3,7,6,0.54)_56%,rgba(3,7,6,0.74)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,7,6,0.18),rgba(3,7,6,0.24)_40%,rgba(3,7,6,0.72)_84%,#030706)]" />
+        <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:74px_74px]" />
+
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12 xl:pr-24 2xl:pr-0">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={onBack}
+              className="border-y border-white/16 bg-black/24 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
+            >
+              &lt;- Back to immersive
+            </button>
+            <CaseStatusPill kind={item.statusKind} label={item.status} />
+          </div>
+
+          <div className="grid gap-8 py-10 lg:grid-cols-[0.58fr_0.42fr] lg:items-end">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
+                Private spatial memory / WebXR prototype MVP
+              </div>
+              <h1 className="mt-6 max-w-[10ch] text-[clamp(3.8rem,10vw,9.8rem)] font-normal leading-[0.82] tracking-[-0.07em] text-white">
+                Presence OS / Memory Atlas
+              </h1>
+              <p className="mt-7 max-w-[43rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
+                A private archive that responds to presence: stillness, return, attention and synthetic weather.
+              </p>
+            </div>
+
+            <div className="border-y border-white/14 bg-black/28 p-5 backdrop-blur md:p-6">
+              <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
+              <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/46">
+                <span>Advanced prototype / in active development</span>
+                <span>Fully functional MVP path documented</span>
+                <span>Processed locally / nothing uploaded by default</span>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {liveLink ? (
+                  <a
+                    href={liveLink.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/18 bg-white px-5 text-[11px] uppercase tracking-[0.14em] text-[#030706] transition hover:-translate-y-0.5 hover:bg-white/90"
+                  >
+                    Open live site -&gt;
+                  </a>
+                ) : null}
+                <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
+                  Start a project -&gt;
+                </ActionPill>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
+            <span>Local-first archive intake</span>
+            <span>Cinematic inspect layer</span>
+            <span>XR Memory Room</span>
+            <span>Memory Reel artifact export</span>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20 xl:pr-24 2xl:pr-0">
+        <section
+          id="presence-os-walkthrough"
+          data-header-scene="presence-os-walkthrough"
+          className="grid scroll-mt-[5.5rem] gap-8 md:scroll-mt-28"
+        >
+          {videos[0] ? (
+            <PresenceOsVideoProof
+              video={videos[0]}
+              index={0}
+              title="Drop an archive. Let it become a field."
+              description="The first walkthrough reads as one product story: local intake, presence field, cinematic inspect, human result, Memory Reel and exportable artifact path. The project stays local-first and does not claim cloud understanding or finished production status."
+              signals={["Local-first preview", "Memory field", "Reel + export path"]}
+            />
+          ) : null}
+        </section>
+
+        <section
+          id="presence-os-presence"
+          data-header-scene="presence-os-walkthrough"
+          className="mt-20 scroll-mt-[5.5rem] border-t border-white/10 pt-12 md:scroll-mt-28"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.4fr_0.6fr]">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Presence logic</div>
+              <h2 className="mt-5 max-w-[9ch] text-[clamp(3rem,6.4vw,6.5rem)] font-normal leading-[0.86] text-white">
+                Interface as attention field.
+              </h2>
+              <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+                Presence OS explores interfaces that respond to presence, not only clicks. Memory Atlas is the first use
+                case: a private archive becomes a living field shaped by stillness, return, attention, speed and
+                hesitation.
+              </p>
+            </div>
+            <div className="grid gap-px bg-white/10 md:grid-cols-2">
+              {presenceOsRules.map((rule) => (
+                <div key={rule.title} className="bg-[#030706] p-5 md:p-6">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">{rule.index}</div>
+                  <h3 className="mt-6 text-[clamp(1.8rem,2.8vw,3rem)] font-normal leading-[0.94] text-white">{rule.title}</h3>
+                  <p className="mt-5 text-[14px] leading-7 text-white/58">{rule.text}</p>
+                  <div className="mt-6 border-t border-white/10 pt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/34">
+                    {rule.signal}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-white/10 pt-10">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <h2 className="mt-4 max-w-[11ch] text-[clamp(3.2rem,6.2vw,6.5rem)] font-normal leading-[0.84] text-white">
+                Private fragments become readable weather.
+              </h2>
+            </div>
+            <p className="max-w-[32rem] text-[14px] leading-7 text-white/54">
+              The desktop frames are arranged as an editorial system rather than a dense grid: entry, intake, field,
+              inspect, result, fragments, room and artifact output.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-12">
+            {desktopFrames.map((frame, index) => (
+              <PresenceOsFrameCard
+                key={frame.src}
+                frame={frame}
+                index={index}
+                onOpen={setInspectIndex}
+                className={[
+                  index === 0 ? "lg:col-span-7" : "",
+                  index === 1 ? "lg:col-span-5" : "",
+                  index === 2 ? "lg:col-span-8" : "",
+                  index === 3 ? "lg:col-span-4" : "",
+                  index === 4 ? "lg:col-span-5" : "",
+                  index === 5 ? "lg:col-span-7" : "",
+                  index >= 6 && index <= 8 ? "lg:col-span-4" : "",
+                  index === 9 ? "lg:col-span-8 lg:col-start-3" : "",
+                ].join(" ")}
+                imageClassName={index === 9 ? "aspect-[18/11]" : "aspect-[16/10]"}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="presence-os-xr"
+          data-header-scene="presence-os-xr"
+          className="mt-20 scroll-mt-[5.5rem] border-t border-white/10 pt-12 md:scroll-mt-28"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.45fr_0.55fr] lg:items-end">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">XR Memory Room</div>
+              <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6.3vw,6.4rem)] font-normal leading-[0.86] text-white">
+                A room, not a gimmick.
+              </h2>
+              <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+                The XR layer is a deeper mode of the same memory system. It uses a fixed comfort-first chamber, readable
+                distance bands, gaze focus before hand complexity and a simple command rail for return, reset and exit.
+              </p>
+            </div>
+            {videos[1] ? (
+              <PresenceOsVideoProof
+                video={videos[1]}
+                index={1}
+                title="Memory gains spatial distance."
+                description="The VR capture documents the current working direction: memory fragments are staged around the viewer with hand presence, gaze focus and calm room behavior. It remains an advanced prototype, with Quest interaction stabilization still underway."
+                signals={["Quest-oriented proof", "Hand presence", "No forced locomotion"]}
+              />
+            ) : null}
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {vrFrames.map((frame) => {
+              const frameIndex = frames.findIndex((item) => item.src === frame.src);
+
+              return (
+                <PresenceOsFrameCard
+                  key={frame.src}
+                  frame={frame}
+                  index={frameIndex}
+                  onOpen={setInspectIndex}
+                  className="xl:col-span-1"
+                  imageClassName="aspect-video"
+                />
+              );
+            })}
+          </div>
+        </section>
+
+        <section
+          id="presence-os-artifacts"
+          data-header-scene="presence-os-artifact"
+          className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.52fr_0.48fr]"
+        >
+          <div className="border-y border-white/10 bg-white/[0.025] p-5 md:p-7">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Local-first trust</div>
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6.1rem)] font-normal leading-[0.86] text-white">
+              Nothing uploaded. Nothing stored.
+            </h2>
+            <p className="mt-6 text-[15px] leading-8 text-white/62">
+              The prototype is designed around private archive trust. Files are processed locally in the browser by
+              default, then converted into preview artifacts: Memory Reel, replay timeline, WebM export and a local ZIP
+              handoff pack.
+            </p>
+          </div>
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+            {[
+              "Memory Reel preview",
+              "Local WebM export",
+              "Replay timeline builder",
+              "VR session trace",
+              "Artifact ZIP pack",
+              "Future PDF booklet output",
+            ].map((item, index) => (
+              <div key={item} className="bg-[#030706] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
+                <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="presence-os-technical"
+          data-header-scene="presence-os-technical"
+          className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.46fr_0.54fr]"
+        >
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical dossier</div>
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6.2rem)] font-normal leading-[0.86] text-white">
+              Local-first memory engine.
+            </h2>
+            <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+              The stack supports a working MVP without overstating the product: browser-local intake, WebGL spatial
+              presentation, XR room research, canvas artifact generation and export tooling stay in one experimental
+              system.
+            </p>
+          </div>
+
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+            {presenceOsTechnicalReadouts.map((item, index) => (
+              <div key={item} className="bg-[#030706] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
+                <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <SiteFooterV2
+        onOpenProject={onOpenProject}
+        variant="immersiveCase"
+        immersiveCaseContent={{
+          headline: "Build a private spatial memory interface.",
+          description:
+            "Presence OS closes as an MVP proof: local archive intake, presence-based behavior, cinematic inspect, XR room research and artifact export stay inside one quiet memory system.",
+          signal: "presence-based memory systems",
+          intake: "available",
+          nextStep: "start a spatial memory prototype",
+          bottomLine: "Built as a local-first immersive interface system.",
+          ctaLabel: "Start a project",
+        }}
+      />
+
+      <CinematicInspectReveal
+        frames={inspectFrames}
+        index={inspectIndex}
+        onClose={() => setInspectIndex(null)}
+        onSelect={setInspectIndex}
+      />
+    </div>
+  );
+}
+
+const orbitLensRailItems: SectionRailItem[] = [
+  { id: "orbit-lens-threshold", index: "01", label: "Product OS" },
+  { id: "orbit-lens-walkthrough", index: "02", label: "Walkthrough" },
+  { id: "orbit-lens-fields", index: "03", label: "Fields" },
+  { id: "orbit-lens-orbit", index: "04", label: "Orbit" },
+  { id: "orbit-lens-xr", index: "05", label: "WebXR" },
+  { id: "orbit-lens-technical", index: "06", label: "Technical" },
+];
+
+const orbitLensHeroBackdropConfig = {
+  palette: {
+    bg: "#02070d",
+    deep: "#081426",
+    accent: "#7de9ff",
+  },
+  atmosphere: {
+    intensity: 0.98,
+    haze: 0.9,
+    beam: 1,
+    tint: 0.74,
+    drift: 0.16,
+  },
+} as const;
+
+const orbitLensFields = [
+  {
+    index: "01",
+    title: "Vision / Spatial Clarity",
+    text:
+      "The product appears as a premium AI eyewear object: quiet optical depth, restrained controls and less interface noise.",
+    signal: "Spatial clarity without the noise",
+  },
+  {
+    index: "02",
+    title: "Transparent Language",
+    text:
+      "Translation behaves as a contextual layer over the world, with source and translated hierarchy resolving inside the same optical surface.",
+    signal: "Language becomes transparent",
+  },
+  {
+    index: "03",
+    title: "Recall",
+    text:
+      "Memory is framed as user-led recall, not passive recording. The system only begins when the user asks.",
+    signal: "Memory begins only when you ask",
+  },
+  {
+    index: "04",
+    title: "Focus Quieting",
+    text:
+      "The interface removes excess layers and keeps only the priority signal, making attention feel calmer and more expensive.",
+    signal: "Less interface / more attention",
+  },
+  {
+    index: "05",
+    title: "Trust Boundary",
+    text:
+      "Privacy is shown as visible product behavior: consent, public/private boundary and manual memory access are part of the interface.",
+    signal: "Trust is part of the interface",
+  },
+  {
+    index: "06",
+    title: "Access Terminal",
+    text:
+      "The final field becomes a controlled product terminal for live preview, repository proof and studio handoff.",
+    signal: "Product / studio access",
+  },
+];
+
+const orbitLensTechnicalReadouts = [
+  "Next.js / App Router",
+  "React / TypeScript",
+  "Tailwind CSS material system",
+  "Motion / motion architecture",
+  "Three.js / WebXR scene route",
+  "GLSL / WebGL canvas atmosphere",
+  "Cinematic Inspect Reveal system",
+  "Scroll-Driven Spatial Reference Orbit",
+  "Persistent Field Copy Transition",
+  "De-HUD premium material pass",
+  "Metadata / OG / favicon / manifest",
+  "Mobile and tablet polish deferred",
+];
+
+function OrbitLensCaseLayout({
+  item,
+  onBack,
+  onOpenProject,
+}: {
+  item: (typeof immersiveItems)[number];
+  onBack: () => void;
+  onOpenProject?: () => void;
+}) {
+  const activeSection = useSectionRailActive(orbitLensRailItems, "orbit-lens-threshold");
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const videos = item.videos ?? [];
+  const frames = item.frames ?? [];
+  const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
+  const repoLink = item.links?.find((link) => link.label.toLowerCase().includes("repo"));
+  const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
+    id: `orbit-lens-frame-${String(index + 1).padStart(2, "0")}`,
+    kind: "image",
+    src: frame.src,
+    alt: frame.alt,
+    label: frame.label ?? `Frame ${index + 1}`,
+    caption: frame.caption,
+    role: index < 1 ? "hero" : index >= 7 ? "detail" : "proof",
+    fit: "contain",
+  }));
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const top = Math.max(0, section.getBoundingClientRect().top + window.scrollY - 76);
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#03070a] text-white">
+      <SeoMeta
+        title="Orbit Lens - Premium AI Spatial Glasses Interface Concept | Brenych Studio"
+        description="Orbit Lens is a fictional AI spatial glasses product-interface prototype where the website behaves like the product OS, combining seven contextual fields, cinematic inspection, reference orbit and WebXR proof mode."
+        path="/immersive/orbit-lens"
+        image={item.previewPoster}
+        imageAlt="Orbit Lens immersive product interface case"
+        type="article"
+      />
+      <SectionRail
+        items={orbitLensRailItems}
+        activeId={activeSection}
+        onSelect={scrollToSection}
+        label="Orbit Lens sections"
+        tone="dark"
+      />
+
+      <section
+        id="orbit-lens-threshold"
+        data-header-scene="orbit-lens-threshold"
+        className="relative min-h-[100svh] scroll-mt-[5.5rem] overflow-hidden bg-[#03070a] pt-[72px] md:scroll-mt-28"
+      >
+        <KoolBerkWebGLBackdrop
+          preset={orbitLensHeroBackdropConfig}
+          scriptId="orbit-lens-webgl-background-script"
+          scriptSrc="/immersive/orbit-lens/orbit-lens-background.js"
+          className="absolute inset-0 opacity-[0.98] mix-blend-screen"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_24%,rgba(124,236,255,0.32),transparent_20%),radial-gradient(circle_at_81%_34%,rgba(110,128,255,0.24),transparent_24%),radial-gradient(circle_at_20%_66%,rgba(80,164,255,0.18),transparent_28%),radial-gradient(circle_at_56%_72%,rgba(67,107,196,0.18),transparent_26%),linear-gradient(90deg,rgba(2,7,13,0.94)_0%,rgba(2,7,13,0.82)_34%,rgba(2,7,13,0.2)_62%,rgba(2,7,13,0.78)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,7,13,0.02),rgba(2,7,13,0.14)_24%,rgba(2,7,13,0.58)_72%,#02070d)]" />
+        <div className="absolute inset-0 opacity-[0.065] [background-image:linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
+        <motion.div
+          className="pointer-events-none absolute left-[-8%] top-[6%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(115,226,255,0.22)_0%,rgba(74,118,218,0.12)_34%,transparent_72%)] blur-[96px]"
+          animate={{ opacity: [0.5, 0.86, 0.5], x: [0, 14, 0], y: [0, -8, 0] }}
+          transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+        />
+        <motion.div
+          className="pointer-events-none absolute right-[7%] top-[8%] h-[42rem] w-[42rem] rounded-full border border-cyan-100/12 bg-[radial-gradient(circle_at_center,rgba(123,232,255,0.08)_0%,rgba(75,120,219,0.04)_42%,transparent_72%)] shadow-[0_0_180px_rgba(122,231,255,0.12)]"
+          animate={{ rotate: [0, 7, 0], scale: [1, 1.025, 1], opacity: [0.58, 0.88, 0.58] }}
+          transition={{ duration: 24, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+        />
+        <motion.div
+          className="pointer-events-none absolute right-[14%] top-[17%] h-[20rem] w-[46rem] rounded-full bg-[linear-gradient(90deg,transparent,rgba(126,233,255,0.12),rgba(117,118,255,0.16),rgba(126,233,255,0.12),transparent)] blur-[28px] mix-blend-screen"
+          animate={{ opacity: [0.24, 0.7, 0.24], x: [0, 16, 0] }}
+          transition={{ duration: 11, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+        />
+        <motion.div
+          className="pointer-events-none absolute left-[22%] top-[22%] h-[28rem] w-[28rem] rounded-full border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,rgba(123,232,255,0.04)_36%,transparent_74%)]"
+          animate={{ rotate: [0, -10, 0], opacity: [0.25, 0.5, 0.25] }}
+          transition={{ duration: 30, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+        />
+        <div className="pointer-events-none absolute inset-x-[11%] top-[28%] h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.1),rgba(126,233,255,0.24),rgba(255,255,255,0.08),transparent)]" />
+        <motion.div
+          className="pointer-events-none absolute inset-x-[36%] top-[34%] h-24 bg-[radial-gradient(circle_at_center,rgba(125,233,255,0.36)_0%,rgba(97,125,255,0.2)_34%,transparent_70%)] blur-[24px]"
+          animate={{ opacity: [0.18, 0.64, 0.18], scaleX: [0.94, 1.02, 0.94], x: [0, 10, 0] }}
+          transition={{ duration: 9, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+        />
+        <motion.div
+          className="pointer-events-none absolute left-[-12%] bottom-[8%] h-[20rem] w-[56rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(76,145,255,0.24)_0%,rgba(74,110,210,0.12)_30%,transparent_74%)] blur-[80px]"
+          animate={{ opacity: [0.28, 0.7, 0.28], x: [0, -10, 0] }}
+          transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+        />
+        <div className="absolute inset-y-[12%] right-[14%] w-px bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.08),rgba(126,233,255,0.2),rgba(255,255,255,0.08),transparent)] opacity-80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_26%,transparent_0%,rgba(2,7,13,0.06)_40%,rgba(2,7,13,0.4)_70%,rgba(2,7,13,0.82)_100%)]" />
+
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12 xl:pr-24 2xl:pr-0">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={onBack}
+              className="border-y border-white/16 bg-black/24 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
+            >
+              &lt;- Back to immersive
+            </button>
+            <CaseStatusPill kind={item.statusKind} label={item.status} />
+          </div>
+
+          <div className="grid gap-8 py-10 lg:grid-cols-[0.56fr_0.44fr] lg:items-end">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
+                Fictional AI eyewear / premium product interface
+              </div>
+              <h1 className="mt-6 max-w-[8ch] text-[clamp(4.5rem,12vw,11rem)] font-normal leading-[0.8] tracking-[-0.075em] text-white">
+                Orbit Lens
+              </h1>
+              <p className="mt-7 max-w-[43rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
+                A cinematic web interface for fictional AI spatial glasses, where the website behaves like the product OS.
+              </p>
+            </div>
+
+            <div className="border-y border-white/14 bg-black/10 p-5 backdrop-blur-2xl md:p-6">
+              <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
+              <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/46">
+                <span>Fictional product concept / no commercial hardware claim</span>
+                <span>Web-first prototype / Spatial Mode as WebXR proof</span>
+                <span>AI processing conceptual / hand navigation experimental</span>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {liveLink ? (
+                  <a
+                    href={liveLink.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/18 bg-white px-5 text-[11px] uppercase tracking-[0.14em] text-[#03070a] transition hover:-translate-y-0.5 hover:bg-white/90"
+                  >
+                    Open live site -&gt;
+                  </a>
+                ) : null}
+                {repoLink ? (
+                  <a
+                    href={repoLink.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/16 bg-white/[0.04] px-5 text-[11px] uppercase tracking-[0.14em] text-white/74 transition hover:-translate-y-0.5 hover:border-white/34 hover:bg-white/8 hover:text-white"
+                  >
+                    Open GitHub -&gt;
+                  </a>
+                ) : null}
+                <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
+                  Start a project -&gt;
+                </ActionPill>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
+            <span>Seven contextual intelligence fields</span>
+            <span>Cinematic Inspect Reveal</span>
+            <span>Scroll-driven Reference Orbit</span>
+            <span>Optional WebXR proof mode</span>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20 xl:pr-24 2xl:pr-0">
+        <section
+          id="orbit-lens-walkthrough"
+          data-header-scene="orbit-lens-fields"
+          className="grid scroll-mt-[5.5rem] gap-8 md:scroll-mt-28"
+        >
+          {videos[0] ? (
+            <OrbitLensNarrativeVideoCard
+              video={videos[0]}
+              index={0}
+              eyebrow="Directed module / product OS"
+              title="The site behaves like the device."
+              description="The first walkthrough reads as one product operating field: optical clarity sets the tone, then language, recall, creator capture, focus, privacy and access resolve as contextual layers of the same imagined AI eyewear system."
+              signals={["Field-driven product narrative", "Persistent copy transition", "De-HUD material pass"]}
+            />
+          ) : null}
+        </section>
+
+        <section
+          id="orbit-lens-fields"
+          data-header-scene="orbit-lens-fields"
+          className="mt-20 scroll-mt-[5.5rem] border-t border-white/10 pt-12 md:scroll-mt-28"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.4fr_0.6fr]">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Product fields</div>
+              <h2 className="mt-5 max-w-[9ch] text-[clamp(3rem,6.4vw,6.5rem)] font-normal leading-[0.86] text-white">
+                Seven modes, one product OS.
+              </h2>
+              <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+                Orbit Lens replaces the expected hero/features/benefits pattern with contextual intelligence fields.
+                Each field demonstrates how fictional AI glasses could layer useful context over the world without becoming
+                cyberpunk HUD clutter.
+              </p>
+            </div>
+            <div className="grid gap-px bg-white/10 md:grid-cols-2">
+              {orbitLensFields.map((field) => (
+                <div key={field.title} className="bg-[#03070a] p-5 md:p-6">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">{field.index}</div>
+                  <h3 className="mt-6 text-[clamp(1.8rem,2.8vw,3rem)] font-normal leading-[0.94] text-white">{field.title}</h3>
+                  <p className="mt-5 text-[14px] leading-7 text-white/58">{field.text}</p>
+                  <div className="mt-6 border-t border-white/10 pt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/34">
+                    {field.signal}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-white/10 pt-10">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <h2 className="mt-4 max-w-[11ch] text-[clamp(3.2rem,6.2vw,6.5rem)] font-normal leading-[0.84] text-white">
+                Quiet futuristic luxury, not a gamer HUD.
+              </h2>
+            </div>
+            <p className="max-w-[32rem] text-[14px] leading-7 text-white/54">
+              The frames are sequenced as an authored product story: optical hero, transparent language, user-led recall,
+              creator orbit, quiet focus, trust boundary, access terminal and product inspection.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-12">
+            {frames.map((frame, index) => (
+              <PresenceOsFrameCard
+                key={frame.src}
+                frame={frame}
+                index={index}
+                onOpen={setInspectIndex}
+                className={[
+                  index === 0 ? "lg:col-span-7" : "",
+                  index === 1 ? "lg:col-span-5" : "",
+                  index === 2 ? "lg:col-span-5" : "",
+                  index === 3 ? "lg:col-span-7" : "",
+                  index === 4 ? "lg:col-span-6" : "",
+                  index === 5 ? "lg:col-span-6" : "",
+                  index === 6 ? "lg:col-span-8" : "",
+                  index >= 7 ? "lg:col-span-4" : "",
+                ].join(" ")}
+                imageClassName={index === 6 ? "aspect-[18/11]" : "aspect-[16/10]"}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="orbit-lens-orbit"
+          data-header-scene="orbit-lens-orbit"
+          className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.52fr_0.48fr]"
+        >
+          <button
+            type="button"
+            onClick={() => setInspectIndex(3)}
+            className="group overflow-hidden border border-cyan-100/12 bg-black text-left shadow-[0_34px_120px_rgba(0,0,0,0.36)]"
+          >
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <img
+                src="/immersive/orbit-lens/desktop/orbit-lens-reference-orbit.webp"
+                alt="Orbit Lens Scroll-Driven Spatial Reference Orbit"
+                className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.018]"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_44%,transparent,rgba(0,0,0,0.38)_74%)]" />
+            </div>
+          </button>
+
+          <div className="border-y border-cyan-100/12 bg-cyan-950/[0.06] p-5 md:p-7">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-cyan-100/42">Signature interaction</div>
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6rem)] font-normal leading-[0.86] text-white">
+              References move like objects.
+            </h2>
+            <p className="mt-6 text-[15px] leading-8 text-white/62">
+              Field 04 implements a Scroll-Driven Spatial Reference Orbit: a pseudo-3D carousel where visual notes float,
+              recede and resolve around the active capture layer. The important part is not novelty; it is making creator
+              capture feel like a spatial interface layer.
+            </p>
+            <div className="mt-6 grid gap-2 border-t border-cyan-100/10 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-cyan-100/38">
+              <span>Wheel-driven active state</span>
+              <span>Scale / opacity / z-depth</span>
+              <span>Inspect Optics as persistent layer</span>
+              <span>Reduced HUD / optical material pass</span>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="orbit-lens-xr"
+          data-header-scene="orbit-lens-xr"
+          className="mt-20 scroll-mt-[5.5rem] border-t border-white/10 pt-12 md:scroll-mt-28"
+        >
+          <div className="grid gap-8 lg:grid-cols-[0.32fr_0.68fr] lg:items-start">
+            <div className="flex h-full flex-col justify-between gap-8">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">WebXR proof layer</div>
+                <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.4vw,5.6rem)] font-normal leading-[0.88] text-white">
+                  Spatial Mode is a proof, not a final VR claim.
+                </h2>
+                <p className="mt-6 max-w-[28rem] text-[15px] leading-8 text-white/58">
+                  Orbit Lens includes an optional `/spatial` route with Enter VR capability, Quest-tested session
+                  capture, spatial panels, Inspect Optics in XR mode and experimental hand presence. It is positioned
+                  as a WebXR proof layer while the core product remains web-first.
+                </p>
+              </div>
+              <div className="grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-3 lg:grid-cols-1">
+                <div className="border border-white/10 bg-white/[0.03] p-4">
+                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">Capture</div>
+                  <p className="mt-3 text-[14px] leading-7 text-white/66">Quest-tested spatial recording.</p>
+                </div>
+                <div className="border border-white/10 bg-white/[0.03] p-4">
+                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">Mode</div>
+                  <p className="mt-3 text-[14px] leading-7 text-white/66">WebXR proof layer, not final control room.</p>
+                </div>
+                <div className="border border-white/10 bg-white/[0.03] p-4">
+                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">Presence</div>
+                  <p className="mt-3 text-[14px] leading-7 text-white/66">Hand navigation stays experimental.</p>
+                </div>
+              </div>
+            </div>
+            {videos[1] ? (
+              <OrbitLensSpatialVideoCard
+                video={videos[1]}
+                index={1}
+                eyebrow="WebXR proof / spatial mode"
+                title="The interface can leave the page."
+                description="The VR capture demonstrates that the same fictional product system can become a spatial presentation layer. Hand navigation is experimental, so the case stays honest: WebXR proof, not a finished production VR control system."
+                signals={["Quest-tested capture", "Inspect Optics in XR", "Experimental hand presence"]}
+              />
+            ) : null}
+          </div>
+        </section>
+
+        <section
+          id="orbit-lens-technical"
+          data-header-scene="orbit-lens-technical"
+          className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.46fr_0.54fr]"
+        >
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical dossier</div>
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6.2rem)] font-normal leading-[0.86] text-white">
+              Optical product interface stack.
+            </h2>
+            <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
+              The implementation is built as a mode-based product interface: persistent overlays, field-driven narrative,
+              a lightweight GLSL atmospheric layer, WebXR route and production-like metadata/repo hygiene.
+            </p>
+          </div>
+
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+            {orbitLensTechnicalReadouts.map((item, index) => (
+              <div key={item} className="bg-[#03070a] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
+                <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <SiteFooterV2
+        onOpenProject={onOpenProject}
+        variant="immersiveCase"
+        immersiveCaseContent={{
+          headline: "Build the next product OS surface.",
+          description:
+            "Orbit Lens closes as a fictional AI eyewear proof: field-driven product narrative, optical interface materials, cinematic inspection, reference orbit and WebXR proof mode stay inside one premium web-first system.",
+          signal: "premium spatial product systems",
+          intake: "available",
+          nextStep: "start a product-interface prototype",
+          bottomLine: "Built as a fictional AI spatial glasses interface concept.",
+          ctaLabel: "Start a project",
+        }}
+      />
+
+      <CinematicInspectReveal
+        frames={inspectFrames}
+        index={inspectIndex}
+        onClose={() => setInspectIndex(null)}
+        onSelect={setInspectIndex}
+      />
+    </div>
+  );
+}
+
 function KoolBerkVideoProof({
   video,
 }: {
@@ -1673,6 +2924,40 @@ export default function ImmersiveCasePage({
           onCloseProject={onCloseProject}
         />
         <KoolBerkCaseLayout
+          item={data}
+          onOpenProject={onOpenProject}
+          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+        />
+      </div>
+    );
+  }
+
+  if (data.slug === "presence-os-memory-atlas") {
+    return (
+      <div className="min-h-screen bg-[#030706] text-white">
+        <Header
+          drawerOpen={drawerOpen}
+          onOpenProject={onOpenProject}
+          onCloseProject={onCloseProject}
+        />
+        <PresenceOsCaseLayout
+          item={data}
+          onOpenProject={onOpenProject}
+          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+        />
+      </div>
+    );
+  }
+
+  if (data.slug === "orbit-lens") {
+    return (
+      <div className="min-h-screen bg-[#03070a] text-white">
+        <Header
+          drawerOpen={drawerOpen}
+          onOpenProject={onOpenProject}
+          onCloseProject={onCloseProject}
+        />
+        <OrbitLensCaseLayout
           item={data}
           onOpenProject={onOpenProject}
           onBack={() => openPath(navigate, "/immersive", onCloseProject)}

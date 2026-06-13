@@ -312,6 +312,34 @@ export const ru: TranslationDictionary = {
         ctaLabel: "Open Kool Berk case",
         status: "Advanced interactive prototype / premium art-tech MVP",
       },
+      presenceOsMemoryAtlas: {
+        title: "Presence OS / Memory Atlas",
+        tagline:
+          "An experimental presence-based interface engine for private spatial memory.",
+        medium: "Experimental Product Prototype / WebXR Spatial Memory Experience",
+        mode: "Fully functional MVP prototype",
+        stack:
+          "Vite, React, TypeScript, Three.js, React Three Fiber, Drei, WebXR, Canvas rendering, MediaRecorder/WebM, WebAudio, JSZip",
+        description:
+          "A local-first private archive system where personal fragments become a living memory field, cinematic inspect experience, XR room and exportable memory artifact path.",
+        supportLabel: "Presence-based memory system",
+        ctaLabel: "Open Presence OS case",
+        status: "Advanced prototype / in development",
+      },
+      orbitLens: {
+        title: "Orbit Lens",
+        tagline:
+          "A fictional AI spatial glasses launch experience where the website behaves like the product OS.",
+        medium: "Premium AI Spatial Glasses Concept / WebXR Product Interface",
+        mode: "Fully functional web-first prototype",
+        stack:
+          "Next.js, React, TypeScript, Tailwind CSS, Motion, Three.js, WebXR, GLSL / WebGL canvas shader, next/image",
+        description:
+          "A premium fictional AI eyewear product-interface prototype with seven contextual intelligence fields, Cinematic Inspect, Reference Orbit and optional WebXR proof mode.",
+        supportLabel: "Fictional AI eyewear product OS",
+        ctaLabel: "Open Orbit Lens case",
+        status: "Advanced prototype / in development",
+      },
       atlasArc: {
         title: "Atlas Arc",
         tagline: "Кинематографичный WebXR-нарратив для property с направляемыми пространственными переходами.",

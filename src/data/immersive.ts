@@ -6,6 +6,8 @@ export type ImmersiveCaseKey =
   | "whisper"
   | "webhero"
   | "koolBerk"
+  | "presenceOsMemoryAtlas"
+  | "orbitLens"
   | "atlasArc"
   | "signalRoomAr"
   | "nocturneInterface"
@@ -16,6 +18,7 @@ export type ImmersiveStatus =
   | "Advanced V1 / In progress"
   | "Advanced internal prototype / active development"
   | "Advanced interactive prototype / premium art-tech MVP"
+  | "Advanced prototype / in development"
   | "Flagship concept"
   | "Direction build"
   | "Production-ready prototype";
@@ -302,7 +305,7 @@ export const immersiveItems: ImmersiveItem[] = [
       "Stage System, Backdrops, Living Images, Living Splat and Art Room are demonstrated as functional modules. Living Art Mixer remains in active R&D, and mobile-specific screenshots are not part of the current package yet.",
     tone: "signal",
     previewVideo: "/immersive/webhero/video/webhero-video-field.mp4",
-    previewPoster: "/immersive/webhero/desktop/webhero-living-environments-hero.webp",
+    previewPoster: "/immersive/webhero/desktop/webhero-threshold.webp",
     featured: true,
     supportLabel: "Flagship R&D system",
     ctaLabel: "Open WEBHERO case",
@@ -630,6 +633,316 @@ export const immersiveItems: ImmersiveItem[] = [
       "Audio-reactive Sonic Room",
       "EPK / Press Dossier layer",
       "Future WebXR room foundation",
+    ],
+  },
+  {
+    key: "presenceOsMemoryAtlas",
+    slug: "presence-os-memory-atlas",
+    title: "Presence OS / Memory Atlas",
+    tagline:
+      "An experimental presence-based interface engine for private spatial memory.",
+    year: "2026",
+    medium: "Experimental Product Prototype / WebXR Spatial Memory Experience",
+    mode: "Fully functional MVP prototype",
+    stack:
+      "Vite, React, TypeScript, Three.js, React Three Fiber, Drei, WebXR, Canvas rendering, MediaRecorder/WebM, WebAudio, JSZip, local object URLs, sessionStorage",
+    description:
+      "Presence OS / Memory Atlas transforms a private photo archive into a living spatial memory field, cinematic inspect experience, XR room and exportable memory artifact system.",
+    status: "Advanced prototype / in development",
+    statusKind: "in_progress",
+    statusNote:
+      "The web experience, memory field, cinematic inspect layer, local archive intake, Memory Reel, XR Memory Room, VR session trace and replay artifact pipeline are functioning as an MVP. Quest interaction stabilization, artifact styling, mobile/tablet pass and PDF booklet output remain in active development.",
+    tone: "nocturne",
+    previewVideo: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
+    previewPoster: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
+    featured: true,
+    supportLabel: "Presence-based memory system",
+    ctaLabel: "Open Presence OS case",
+    links: [
+      {
+        label: "Live site",
+        href: "https://presence-os-memory-atlas.pages.dev/",
+      },
+    ],
+    videos: [
+      {
+        src: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
+        poster: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video-poster.webp",
+        alt: "Presence OS Memory Atlas desktop walkthrough",
+        label: "Memory Atlas walkthrough",
+        caption:
+          "Desktop walkthrough showing archive intake, memory field behavior, cinematic inspect, human result, Memory Reel and local artifact export flow.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-vr-video.mp4",
+        poster: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-vr-video-poster.webp",
+        alt: "Presence OS Memory Atlas XR Memory Room VR capture",
+        label: "XR Memory Room capture",
+        caption:
+          "VR session capture showing memory fragments as a calm spatial chamber with gaze focus, hand presence and comfort-first command behavior.",
+        device: "vr",
+      },
+    ],
+    frames: [
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
+        alt: "Presence OS Memory Atlas hero with private archive fragments",
+        label: "Entry ritual",
+        caption:
+          "The opening establishes the product formula: drop an archive and let memory fragments respond to stillness, return and attention.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-archive-intake.webp",
+        alt: "Presence OS local archive intake interface",
+        label: "Archive intake",
+        caption:
+          "Files stay local in the browser while a small archive becomes the source material for the memory field.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field.webp",
+        alt: "Presence OS spatial memory field with family archive fragments",
+        label: "Memory field",
+        caption:
+          "Archive fragments become a quiet spatial field where attention, return and hesitation reveal more context.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-cinematic-inspect-beach.webp",
+        alt: "Presence OS cinematic inspect screen for beach memory",
+        label: "Cinematic inspect",
+        caption:
+          "Selected memories open as cinematic inspect surfaces instead of ordinary lightbox images.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-cinematic-inspect-family.webp",
+        alt: "Presence OS cinematic inspect screen for family dinner memory",
+        label: "Recovered clarity",
+        caption:
+          "The inspect layer keeps private memory readable, restrained and human rather than turning the archive into dashboard noise.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-synthetic-weather.webp",
+        alt: "Presence OS synthetic weather result interface",
+        label: "Synthetic weather",
+        caption:
+          "A human result layer converts the archive into emotional climate: warmth, density, signal and stability.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-fragment-grid.webp",
+        alt: "Presence OS fragments that carried the field grid",
+        label: "Fragment grid",
+        caption:
+          "Recovered fragments can be browsed as selected memory candidates without flattening the field into a static gallery.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-fragment-constellation.webp",
+        alt: "Presence OS memory fragment constellation",
+        label: "Fragment constellation",
+        caption:
+          "Not every fragment needs to fully open; the product supports partial signals, peripheral memory and quiet context.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room.webp",
+        alt: "Presence OS XR Memory Room interface",
+        label: "XR Memory Room",
+        caption:
+          "The Memory Room turns the same archive into a comfort-first spatial chamber for gaze, hand presence and memory depth.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/desktop/presence-os-memory-reel-artifact.webp",
+        alt: "Presence OS phone-style Memory Reel artifact export interface",
+        label: "Memory Reel",
+        caption:
+          "The field can become an exportable artifact: a phone-style Memory Reel, replay preview and local handoff material.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence.webp",
+        alt: "Presence OS VR Memory Room with hand presence and memory fragments",
+        label: "VR hand presence",
+        caption:
+          "Hand presence is used as an embodied signal layer, not a gimmick or aggressive game interface.",
+        device: "vr",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-memory-depth.webp",
+        alt: "Presence OS VR Memory Room depth bands",
+        label: "VR depth bands",
+        caption:
+          "Readable distance bands keep personal fragments spatial without forcing locomotion or overwhelming the viewer.",
+        device: "vr",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-focus-band.webp",
+        alt: "Presence OS VR gaze focus memory band",
+        label: "Gaze focus",
+        caption:
+          "Gaze focus comes before hand complexity, keeping the room comfortable and legible on Quest-style devices.",
+        device: "vr",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-command-rail.webp",
+        alt: "Presence OS VR command rail and spatial memory surface",
+        label: "Command rail",
+        caption:
+          "Return, reset and exit behavior stays readable through a calm spatial command rail.",
+        device: "vr",
+      },
+      {
+        src: "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-spatial-return.webp",
+        alt: "Presence OS VR spatial return memory fragment",
+        label: "Spatial return",
+        caption:
+          "Return behavior gives depth to the archive: repeated attention can make a fragment more present.",
+        device: "vr",
+      },
+    ],
+    highlights: [
+      "Local-first archive intake",
+      "Presence-based interaction rules",
+      "Synthetic Weather memory climate",
+      "Cinematic Inspect layer",
+      "Memory Reel and WebM artifact export",
+      "XR Memory Room and VR session trace",
+      "Quest-oriented gaze and hand-presence research",
+    ],
+  },
+  {
+    key: "orbitLens",
+    slug: "orbit-lens",
+    title: "Orbit Lens",
+    tagline:
+      "A fictional AI spatial glasses launch experience where the website behaves like the product OS.",
+    year: "2026",
+    medium: "Premium AI Spatial Glasses Concept / WebXR Product Interface",
+    mode: "Fully functional web-first prototype",
+    stack:
+      "Next.js, React, TypeScript, Tailwind CSS, Motion, Three.js, WebXR, GLSL / WebGL canvas shader, next/image",
+    description:
+      "Orbit Lens is a premium fictional AI spatial glasses concept and interactive product-interface prototype. The site guides viewers through contextual intelligence fields, cinematic product inspection, a scroll-driven spatial reference orbit and an optional WebXR proof layer.",
+    status: "Advanced prototype / in development",
+    statusKind: "in_progress",
+    statusNote:
+      "The web interface, seven field narrative, Inspect Optics layer, Scroll-Driven Spatial Reference Orbit, GLSL atmosphere and WebXR spatial route are functioning as a prototype. Hardware is fictional, AI processing is conceptual, and WebXR hand navigation remains experimental.",
+    tone: "nocturne",
+    previewVideo: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
+    previewPoster: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
+    featured: true,
+    supportLabel: "Fictional AI eyewear product OS",
+    ctaLabel: "Open Orbit Lens case",
+    links: [
+      {
+        label: "Live site",
+        href: "https://orbit-lens-cue.pages.dev/",
+      },
+      {
+        label: "Repository",
+        href: "https://github.com/brenychstudio/Orbit-Lens",
+      },
+    ],
+    videos: [
+      {
+        src: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
+        poster: "/immersive/orbit-lens/video/orbit-lens-video-poster.webp",
+        alt: "Orbit Lens desktop product interface walkthrough",
+        label: "Product OS walkthrough",
+        caption:
+          "Desktop walkthrough showing the seven field product narrative, persistent copy layer, cinematic Inspect Optics, reference orbit and access terminal.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/video/orbit-lens-vr-video.mp4",
+        poster: "/immersive/orbit-lens/video/orbit-lens-vr-video-poster.webp",
+        alt: "Orbit Lens WebXR spatial mode VR capture",
+        label: "WebXR spatial proof",
+        caption:
+          "VR capture of the optional Spatial Mode route, positioning the same product interface as a Quest-tested WebXR proof layer rather than a final production VR control system.",
+        device: "vr",
+      },
+    ],
+    frames: [
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
+        alt: "Orbit Lens AI spatial glasses hero interface",
+        label: "Vision / Spatial clarity",
+        caption:
+          "The hero presents fictional AI eyewear as a quiet premium object: optical depth, minimal UI noise and product confidence.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-language-layer.webp",
+        alt: "Orbit Lens transparent language translation layer",
+        label: "Transparent language",
+        caption:
+          "Live translation becomes a transparent contextual layer over the world instead of a separate app surface.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-recall.webp",
+        alt: "Orbit Lens recall memory interface field",
+        label: "Recall",
+        caption:
+          "Memory is user-led: recall begins only when asked, avoiding passive surveillance framing.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-reference-orbit.webp",
+        alt: "Orbit Lens creator reference orbit interface",
+        label: "Reference orbit",
+        caption:
+          "Creator capture becomes a scroll-driven pseudo-3D reference orbit where visual notes float, recede and resolve around the active capture layer.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-focus-quieting.webp",
+        alt: "Orbit Lens focus quieting system interface",
+        label: "Focus quieting",
+        caption:
+          "The interface removes noise rather than adding more information, keeping attention calm and intentional.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary.webp",
+        alt: "Orbit Lens privacy and trust boundary interface",
+        label: "Trust boundary",
+        caption:
+          "Privacy is presented as part of the interface itself: consent-visible memory, public/private boundary and manual access.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-access-console.webp",
+        alt: "Orbit Lens access console and product terminal",
+        label: "Access console",
+        caption:
+          "The closing field behaves like a controlled product terminal for preview, GitHub and studio handoff.",
+        device: "desktop",
+      },
+      {
+        src: "/immersive/orbit-lens/desktop/orbit-lens-product-layers.webp",
+        alt: "Orbit Lens product layers suspended in spatial field",
+        label: "Product layers",
+        caption:
+          "Product layers stay suspended in the field, reinforcing that the site is an operating surface rather than a conventional landing page.",
+        device: "desktop",
+      },
+    ],
+    highlights: [
+      "Fictional AI spatial glasses product OS",
+      "Seven contextual intelligence fields",
+      "Cinematic Inspect Reveal system",
+      "Scroll-Driven Spatial Reference Orbit",
+      "De-HUD premium material pass",
+      "GLSL Atmospheric Light Field",
+      "Optional WebXR spatial proof mode",
     ],
   },
 ];

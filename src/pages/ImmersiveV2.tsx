@@ -67,15 +67,21 @@ const immersiveHeaderScenes: Record<SectionId, string> = {
   applications: "immersive-layer",
 };
 
-type FutureChamberId = "product-world" | "presence-archive" | "collector-continuation";
+type FutureChamberId = "collective-presence-interface" | "presence-archive" | "collector-continuation";
 
 const futureChamberIds: FutureChamberId[] = [
-  "product-world",
+  "collective-presence-interface",
   "presence-archive",
   "collector-continuation",
 ];
 
-const immersiveHubChamberIds: ImmersiveChamberId[] = ["whisper", "webhero", "kool-berk", ...futureChamberIds];
+const immersiveHubChamberIds: ImmersiveChamberId[] = [
+  "whisper",
+  "webhero",
+  "kool-berk",
+  "presence-os-memory-atlas",
+  "orbit-lens",
+];
 
 const immersiveHubChambers = immersiveChambers.filter((chamber) =>
   immersiveHubChamberIds.includes(chamber.id),
@@ -86,6 +92,11 @@ const futureChambers = immersiveChambers.filter((chamber): chamber is ImmersiveS
 );
 
 const futureChamberDetails: Record<FutureChamberId, {
+  coverMedia?: {
+    type: "image" | "video";
+    src: string;
+    poster?: string;
+  };
   role: string;
   proof: string;
   state: string;
@@ -98,28 +109,34 @@ const futureChamberDetails: Record<FutureChamberId, {
     caption: string;
   }>;
 }> = {
-  "product-world": {
-    role: "Products or services become navigable decision environments.",
-    proof: "Products stop behaving like catalogue entries and start behaving like staged worlds.",
-    state: "Prototype direction",
-    application: "Premium product launches / service demos / founder presentations",
-    tags: ["product surface", "guided proof", "interactive launch"],
-    readout: ["Stage logic", "Guided proof", "Interactive launch"],
+  "collective-presence-interface": {
+    coverMedia: {
+      type: "video",
+      src: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-video.mp4",
+      poster: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
+    },
+    role: "Anonymous presence becomes a collective interface field.",
+    proof:
+      "A website can behave like a signal system: identity stays uncollected while presence, movement, and memory drive the state.",
+    state: "Experimental direction",
+    application: "Artist systems / installation pages / signal-led interface experiments",
+    tags: ["anonymous presence", "collective field", "memory weather"],
+    readout: ["Presence contract", "Organism state", "Memory field"],
     traces: [
       {
-        src: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
-        label: "Prototype still",
-        caption: "Staged launch surface.",
+        src: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
+        label: "Anonymous signal contract",
+        caption: "A website shaped by anonymous presence rather than profile collection.",
       },
       {
-        src: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
-        label: "Working trace",
-        caption: "Decision surface study.",
+        src: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-2.png",
+        label: "Memory field",
+        caption: "Presence, organism, and memory unfold as one interface state.",
       },
       {
-        src: "/cases/creatorops/v2/creatorops-hero.webp",
-        label: "Motion note",
-        caption: "Guided proof material.",
+        src: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-3.png",
+        label: "Interface weather",
+        caption: "The field turns ambient signals into archive, pulse, and weather.",
       },
     ],
   },
@@ -300,7 +317,7 @@ const mobileApplicationPaths = [
   "WebXR prototypes",
 ];
 
-type MobileChamberFieldId = "whisper" | "webhero" | "kool-berk" | FutureChamberId;
+type MobileChamberFieldId = "whisper" | "webhero" | "kool-berk" | "presence-os-memory-atlas" | "orbit-lens";
 type MobileChamberFieldMode = "field" | "index";
 
 type MobileChamberFieldEntry = {
@@ -311,7 +328,6 @@ type MobileChamberFieldEntry = {
   role: string;
   cta: string;
   mediaSrc: string;
-  preparedId?: FutureChamberId;
 };
 
 const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
@@ -331,7 +347,7 @@ const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
     status: "Advanced R&D system",
     role: "Living visual system -> WebGL stages / Living Images / Splat Pro / Art Room / future XR adapters",
     cta: "Open WEBHERO",
-    mediaSrc: "/immersive/webhero/desktop/webhero-living-environments-hero.webp",
+    mediaSrc: "/immersive/webhero/desktop/webhero-threshold.webp",
   },
   {
     id: "kool-berk",
@@ -343,34 +359,22 @@ const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
     mediaSrc: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
   },
   {
-    id: "product-world",
+    id: "presence-os-memory-atlas",
     index: "04",
-    title: "Product World",
-    status: "Prepared direction",
-    role: "Product or service becomes a navigable world",
-    cta: "View direction",
-    mediaSrc: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
-    preparedId: "product-world",
+    title: "Presence OS",
+    status: "Functional MVP prototype",
+    role: "Private archive becomes a presence-based memory field, XR room and exportable artifact system",
+    cta: "Open Presence OS",
+    mediaSrc: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
   },
   {
-    id: "presence-archive",
-    index: "04",
-    title: "Presence Archive",
-    status: "Research chamber",
-    role: "Archive reacts to attention, memory, return, and media fragments",
-    cta: "View traces",
-    mediaSrc: "/immersive/Whisper/desktop/whisper-8.jpg",
-    preparedId: "presence-archive",
-  },
-  {
-    id: "collector-continuation",
+    id: "orbit-lens",
     index: "05",
-    title: "Collector Continuation",
-    status: "Prepared continuation",
-    role: "Print, edition, AR preview, and collector logic extend the digital surface",
-    cta: "View traces",
-    mediaSrc: "/immersive/Whisper/desktop/whisper-7.jpg",
-    preparedId: "collector-continuation",
+    title: "Orbit Lens",
+    status: "Functional web-first prototype",
+    role: "Fictional AI spatial glasses product OS with contextual fields, Inspect Optics, Reference Orbit and WebXR proof",
+    cta: "Open Orbit Lens",
+    mediaSrc: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
   },
 ];
 
@@ -665,64 +669,64 @@ function SpatialChamberOrbit({
     titleClass: string;
   }> = {
     active: {
-      width: "w-[70%]",
-      height: "h-[49%]",
+      width: "w-[64%]",
+      height: "h-[46%]",
       x: 0,
-      y: -12,
-      rotateZ: -3.5,
+      y: -8,
+      rotateZ: -2,
       rotateY: 0,
       scale: 1,
       opacity: 1,
       clipPath: "polygon(2% 0, 100% 6%, 94% 92%, 0 100%)",
-      titleClass: "text-[60px]",
+      titleClass: "text-[56px]",
     },
     prev: {
-      width: "w-[39%]",
-      height: "h-[26%]",
-      x: -74,
-      y: -48,
-      rotateZ: -11,
-      rotateY: 12,
-      scale: 0.86,
-      opacity: 0.68,
+      width: "w-[30%]",
+      height: "h-[21%]",
+      x: -122,
+      y: -62,
+      rotateZ: -14,
+      rotateY: 18,
+      scale: 0.74,
+      opacity: 0.44,
       clipPath: "polygon(8% 0, 100% 6%, 91% 94%, 0 100%)",
-      titleClass: "text-[28px]",
+      titleClass: "text-[20px]",
     },
     next: {
-      width: "w-[38%]",
-      height: "h-[26%]",
-      x: 90,
-      y: -8,
-      rotateZ: 10,
-      rotateY: -14,
-      scale: 0.82,
-      opacity: 0.6,
+      width: "w-[30%]",
+      height: "h-[21%]",
+      x: 126,
+      y: -34,
+      rotateZ: 12,
+      rotateY: -18,
+      scale: 0.74,
+      opacity: 0.42,
       clipPath: "polygon(5% 0, 100% 8%, 88% 100%, 0 90%)",
-      titleClass: "text-[28px]",
+      titleClass: "text-[20px]",
     },
     farPrev: {
-      width: "w-[31%]",
-      height: "h-[22%]",
-      x: -94,
-      y: 64,
-      rotateZ: 10,
-      rotateY: 18,
-      scale: 0.72,
-      opacity: 0.34,
+      width: "w-[25%]",
+      height: "h-[17%]",
+      x: -146,
+      y: 58,
+      rotateZ: 8,
+      rotateY: 24,
+      scale: 0.64,
+      opacity: 0.22,
       clipPath: "polygon(0 8%, 95% 0, 100% 86%, 7% 100%)",
-      titleClass: "text-[24px]",
+      titleClass: "text-[18px]",
     },
     farNext: {
-      width: "w-[31%]",
-      height: "h-[22%]",
-      x: 101,
-      y: 61,
-      rotateZ: -9,
-      rotateY: -18,
-      scale: 0.72,
-      opacity: 0.34,
+      width: "w-[25%]",
+      height: "h-[17%]",
+      x: 148,
+      y: 56,
+      rotateZ: -8,
+      rotateY: -24,
+      scale: 0.64,
+      opacity: 0.22,
       clipPath: "polygon(10% 0, 100% 10%, 86% 100%, 0 90%)",
-      titleClass: "text-[24px]",
+      titleClass: "text-[18px]",
     },
   };
   const reduceMotion = useReducedMotion();
@@ -1300,8 +1304,6 @@ function PracticeMapScene({
   const sound = useSound();
   const activeChamber = chamberState.activeChamber;
   const activePoster = activeChamber.media?.poster ?? activeChamber.media?.stills?.[0] ?? "";
-  const activeTrace = activeChamber.media?.stills?.[1] ?? activeChamber.media?.stills?.[0] ?? activePoster;
-  const activeMemoryTraces = Array.from(new Set([activeTrace, ...(activeChamber.media?.stills ?? [])])).filter(Boolean).slice(0, 3);
   const activeEngines = chamberState.activeChamberEngines.slice(0, 4);
   const [atlasOpen, setAtlasOpen] = useState(false);
   const [atlasMode, setAtlasMode] = useState<AtlasMode>("orbit");
@@ -1320,19 +1322,23 @@ function PracticeMapScene({
   const atlasActiveChamberId = chamberState.activeChamberId;
   const selectAtlasChamber = chamberState.selectChamber;
   const chamberSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
-    whisper: { x: 48, y: 34, rotate: -5, size: "large" },
-    webhero: { x: 69, y: 35, rotate: 5, size: "large" },
-    "kool-berk": { x: 36, y: 58, rotate: -6, size: "large" },
-    "product-world": { x: 24, y: 62, rotate: 6, size: "medium" },
-    "presence-archive": { x: 71, y: 61, rotate: -7, size: "medium" },
-    "collector-continuation": { x: 78, y: 27, rotate: 8, size: "small" },
-    "installation-field": { x: 39, y: 78, rotate: -4, size: "small" },
+    whisper: { x: 45, y: 25, rotate: -6, size: "medium" },
+    webhero: { x: 79, y: 31, rotate: 7, size: "medium" },
+    "kool-berk": { x: 28, y: 68, rotate: -8, size: "medium" },
+    "presence-os-memory-atlas": { x: 56, y: 78, rotate: 2, size: "medium" },
+    "orbit-lens": { x: 84, y: 64, rotate: -7, size: "medium" },
+    "collective-presence-interface": { x: 20, y: 66, rotate: 6, size: "small" },
+    "presence-archive": { x: 76, y: 69, rotate: -7, size: "small" },
+    "collector-continuation": { x: 83, y: 23, rotate: 8, size: "small" },
+    "installation-field": { x: 36, y: 82, rotate: -4, size: "small" },
   };
   const inspectSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
     whisper: { x: 28, y: 30, rotate: -5, size: "large" },
     webhero: { x: 70, y: 34, rotate: 4, size: "large" },
     "kool-berk": { x: 39, y: 61, rotate: -5, size: "large" },
-    "product-world": { x: 21, y: 61, rotate: 5, size: "large" },
+    "presence-os-memory-atlas": { x: 62, y: 72, rotate: 3, size: "large" },
+    "orbit-lens": { x: 76, y: 55, rotate: -5, size: "large" },
+    "collective-presence-interface": { x: 21, y: 61, rotate: 5, size: "large" },
     "presence-archive": { x: 78, y: 60, rotate: -6, size: "large" },
     "collector-continuation": { x: 78, y: 31, rotate: 6, size: "medium" },
     "installation-field": { x: 43, y: 80, rotate: -3, size: "medium" },
@@ -1434,7 +1440,10 @@ function PracticeMapScene({
   useEffect(() => {
     if (!atlasOpen) return;
 
+    const root = document.documentElement;
+    const previousRootOverflow = root.style.overflow;
     const previousOverflow = document.body.style.overflow;
+    root.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -1460,6 +1469,7 @@ function PracticeMapScene({
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      root.style.overflow = previousRootOverflow;
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -1549,75 +1559,62 @@ function PracticeMapScene({
             </figcaption>
           </motion.figure>
 
-          <div className="pointer-events-none absolute bottom-[12%] left-[12%] h-[20%] w-[19%] overflow-hidden border border-white/18 opacity-80 shadow-[0_24px_90px_rgba(0,0,0,0.28)] [clip-path:polygon(8%_0,100%_12%,88%_100%,0_92%)]">
-            <img src={activeTrace} alt="" className="h-full w-full object-cover saturate-[1.04] contrast-[1.02]" />
-            <div className="absolute inset-0 bg-black/16" />
-          </div>
+          {immersiveHubChambers
+            .filter((chamber) => chamber.id !== chamberState.activeChamberId)
+            .map((chamber) => {
+              const slot = chamberSlots[chamber.id];
+              const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
+              const sizeClass =
+                slot.size === "large"
+                  ? "h-52 w-72 md:h-64 md:w-[25rem]"
+                  : slot.size === "medium"
+                    ? "h-40 w-56 md:h-48 md:w-72"
+                    : "h-32 w-48 md:h-40 md:w-60";
 
-          {immersiveHubChambers.map((chamber) => {
-            const active = chamberState.activeChamberId === chamber.id;
-            const slot = chamberSlots[chamber.id];
-            const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
-            const sizeClass =
-              slot.size === "large"
-                ? "h-52 w-72 md:h-64 md:w-[25rem]"
-                : slot.size === "medium"
-                  ? "h-40 w-56 md:h-48 md:w-72"
-                  : "h-32 w-48 md:h-40 md:w-60";
-
-            return (
-              <button
-                key={chamber.id}
-                type="button"
-                onMouseEnter={() => chamberState.selectChamber(chamber.id)}
-                onFocus={() => chamberState.selectChamber(chamber.id)}
-                onClick={() => openChamber(chamber.id)}
-                className="group absolute z-20 text-left outline-none"
-                style={{
-                  left: `${slot.x}%`,
-                  top: `${slot.y}%`,
-                  transform: "translate(-50%, -50%)",
-                }}
-                data-active-chamber={active ? "true" : "false"}
-              >
-                <span
-                  className={`block transition duration-300 ${
-                    active ? "scale-100 opacity-100" : "scale-95 opacity-58 group-hover:scale-100 group-hover:opacity-95"
-                  }`}
+              return (
+                <button
+                  key={chamber.id}
+                  type="button"
+                  onClick={() => openChamber(chamber.id)}
+                  className="group absolute z-20 text-left outline-none"
                   style={{
-                    transform: `rotate(${slot.rotate}deg)`,
+                    left: `${slot.x}%`,
+                    top: `${slot.y}%`,
+                    transform: "translate(-50%, -50%)",
                   }}
                 >
                   <span
-                    className={`relative block overflow-hidden border transition duration-300 ${sizeClass} ${
-                      active
-                        ? "border-white/38 bg-white/10 text-white shadow-[0_36px_130px_rgba(0,0,0,0.45)]"
-                        : "border-white/16 bg-white/5 text-white group-hover:border-white/34"
-                    }`}
+                    className="block transition duration-300 opacity-95 group-hover:opacity-100"
                     style={{
-                      clipPath: active ? "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)" : "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)",
+                      transform: `rotate(${slot.rotate}deg)`,
                     }}
                   >
-                    <img src={poster} alt="" className="absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-80 saturate-[1.05] contrast-[1.04] transition duration-500 group-hover:scale-[1.045]" />
-                    <span className={`absolute inset-0 ${active ? "bg-black/28" : "bg-black/52 group-hover:bg-black/34"}`} />
-                    <span className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] text-white/60">
-                      {chamber.room.replace("Room ", "")}
-                    </span>
-                    <span className="absolute bottom-4 left-4 right-4">
-                      <span className="block text-[10px] uppercase tracking-[0.16em] text-white/54">{chamber.statusLabel}</span>
-                      <span className="mt-1 block max-w-[10ch] text-[26px] leading-[0.88] tracking-[-0.055em] text-white md:text-[34px]">
-                        {chamber.shortTitle}
+                    <span
+                      className={`relative block overflow-hidden border transition duration-300 ${sizeClass} border-white/16 bg-white/5 text-white group-hover:border-white/34`}
+                      style={{
+                        clipPath: "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)",
+                      }}
+                    >
+                      <img src={poster} alt="" className="absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-80 saturate-[1.05] contrast-[1.04] transition duration-500 group-hover:scale-[1.045]" />
+                      <span className="absolute inset-0 bg-black/52 group-hover:bg-black/34" />
+                      <span className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] text-white/60">
+                        {chamber.room.replace("Room ", "")}
+                      </span>
+                      <span className="absolute bottom-4 left-4 right-4">
+                        <span className="block text-[10px] uppercase tracking-[0.16em] text-white/54">{chamber.statusLabel}</span>
+                        <span className="mt-1 block max-w-[10ch] text-[26px] leading-[0.88] tracking-[-0.055em] text-white md:text-[34px]">
+                          {chamber.shortTitle}
+                        </span>
                       </span>
                     </span>
-                  </span>
 
-                  <span className={`mt-3 block border-l pl-3 transition duration-300 ${active ? "border-white/42 text-white" : "border-white/12 text-white/38 group-hover:border-white/28 group-hover:text-white/72"}`}>
-                    <span className="block text-[10px] uppercase tracking-[0.18em]">{chamber.chamberSignal}</span>
+                    <span className="mt-3 block border-l border-white/12 pl-3 text-white/38 transition duration-300 group-hover:border-white/28 group-hover:text-white/72">
+                      <span className="block text-[10px] uppercase tracking-[0.18em]">{chamber.chamberSignal}</span>
+                    </span>
                   </span>
-                </span>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
 
           <div className="hidden">
             <div className="flex flex-wrap gap-2">
@@ -1757,44 +1754,9 @@ function PracticeMapScene({
               exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 42, scale: 1.035, filter: "blur(5px)" }}
               transition={{ duration: 0.72, ease }}
             >
-              {activeMemoryTraces.map((trace, index) => {
-                const traceSlots = [
-                  "left-[43%] top-[13%] h-[15%] w-[18%]",
-                  "left-[63%] top-[55%] h-[17%] w-[19%]",
-                  "left-[25%] top-[54%] h-[16%] w-[18%]",
-                ];
-
-                return (
-                  <motion.div
-                    key={`${activeChamber.id}-memory-${trace}-${index}`}
-                    className={`pointer-events-none absolute z-10 overflow-hidden border border-white/18 bg-white/6 shadow-[0_28px_120px_rgba(0,0,0,0.42)] ${traceSlots[index] ?? traceSlots[0]}`}
-                    style={{
-                      clipPath: index % 2 === 0 ? "polygon(7% 0, 100% 9%, 91% 100%, 0 88%)" : "polygon(0 12%, 96% 0, 100% 86%, 8% 100%)",
-                    }}
-                    initial={reduceMotion ? undefined : { opacity: 0, scale: 0.9, y: 14, filter: "blur(2px)" }}
-                    animate={
-                      reduceMotion
-                        ? undefined
-                        : {
-                            opacity: [0.3, 0.52, 0.3],
-                            scale: [0.96, 1.01, 0.96],
-                            y: [0, index % 2 === 0 ? -10 : 10, 0],
-                            rotate: [index === 0 ? -4 : index === 1 ? 5 : -7, index === 0 ? -2 : index === 1 ? 7 : -5, index === 0 ? -4 : index === 1 ? 5 : -7],
-                            filter: "blur(0px)",
-                          }
-                    }
-                    transition={{ duration: 7 + index * 1.2, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
-                  >
-                    <img src={trace} alt="" className="h-full w-full object-cover opacity-100 saturate-[1.12] contrast-[1.05] brightness-[1.08]" />
-                    <div className="absolute inset-0 bg-black/16" />
-                  </motion.div>
-                );
-              })}
-
               {immersiveHubChambers.map((chamber, index) => {
                 const slot = inspectSlots[chamber.id];
                 const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
-                const trace = chamber.media?.stills?.[0] ?? poster;
                 const planeOffset = atlasPlaneOffsets[chamber.id] ?? { x: 0, y: 0 };
                 const selected = inspectedChamberId === chamber.id;
                 const floatDistance = index % 2 === 0 ? -9 : 9;
@@ -1870,9 +1832,6 @@ function PracticeMapScene({
                     >
                       <img src={poster} alt="" className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-100 saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.055] group-hover:brightness-[1.07] ${selected ? "scale-[1.015]" : ""}`} />
                       <span className={`absolute inset-0 transition duration-500 ${selected ? "bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.22)_70%,rgba(0,0,0,0.44))]" : "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.22)_72%,rgba(0,0,0,0.42))] group-hover:bg-black/10"}`} />
-                      <span className={`absolute right-4 top-4 overflow-hidden border border-white/22 opacity-68 [clip-path:polygon(6%_0,100%_10%,88%_100%,0_86%)] ${selected ? "h-[18%] w-[22%]" : "h-[22%] w-[28%]"}`}>
-                        <img src={trace} alt="" className="h-full w-full object-cover saturate-[1.1] brightness-[1.1]" />
-                      </span>
                       <span className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] text-white/58">
                         {chamber.room.replace("Room ", "")}
                       </span>
@@ -2025,7 +1984,6 @@ function PracticeMapScene({
                   <div className="grid gap-8 lg:grid-cols-2">
                     {immersiveHubChambers.map((chamber, index) => {
                       const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
-                      const trace = chamber.media?.stills?.[0] ?? poster;
                       const engines = getChamberEngines(chamber.id).slice(0, 3);
                       const featured = index === 0 || index === 3;
 
@@ -2046,8 +2004,7 @@ function PracticeMapScene({
                               onMouseEnter={() => sound.playRole("hover")}
                               onClick={() => {
                                 sound.playRole("select");
-                                returnAtlasToOrbit();
-                                inspectAtlasChamber(chamber.id);
+                                openChamber(chamber.id);
                               }}
                               data-atlas-control="true"
                               className={`relative min-h-[22rem] overflow-hidden border border-white/18 text-left transition duration-500 group-hover:border-white/42 ${
@@ -2066,9 +2023,6 @@ function PracticeMapScene({
                                 className="absolute inset-[-3%] h-[106%] w-[106%] object-cover saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.045] group-hover:brightness-[1.07]"
                               />
                               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.25)_66%,rgba(0,0,0,0.58))]" />
-                              <div className="absolute right-5 top-5 h-[22%] w-[24%] overflow-hidden border border-white/20 opacity-70 [clip-path:polygon(8%_0,100%_10%,88%_100%,0_88%)]">
-                                <img src={trace} alt="" className="h-full w-full object-cover saturate-[1.12] brightness-[1.1]" />
-                              </div>
                               <div className="absolute bottom-5 left-5 right-5">
                                 <div className="text-[10px] uppercase tracking-[0.18em] text-white/54">{chamber.room}</div>
                                 <div className="mt-2 max-w-[10ch] text-[44px] font-normal leading-[0.86] tracking-[-0.065em] text-white md:text-[58px]">
@@ -2629,7 +2583,7 @@ function FutureChambersScene() {
               <div>
                 <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">Future Direction Register</div>
                 <p className="mt-2 max-w-[31rem] text-[13px] leading-6 text-neutral-500">
-                  Prepared directions, not public case studies. Each chamber defines a role, proof claim, material trace, and possible application path.
+                  Prepared directions, not public case studies. The first chamber is a real experimental signal prototype, while the other two map future product, archive, and collector paths.
                 </p>
               </div>
               <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">03 directions</div>
@@ -2640,6 +2594,7 @@ function FutureChambersScene() {
                 const details = futureChamberDetails[item.id];
                 const isInspecting = inspectedTraceId === item.id;
                 const tracePanelId = `future-traces-${item.id}`;
+                const coverMedia = details.coverMedia ?? { type: "image" as const, src: details.traces[0].src };
 
                 return (
                   <article
@@ -2692,12 +2647,26 @@ function FutureChambersScene() {
                             onClick={() => toggleTracePanel(item.id, isInspecting)}
                           >
                             <span className="relative block aspect-[16/10] overflow-hidden border border-neutral-950/12 bg-white/35">
-                              <img
-                                src={details.traces[0].src}
-                                alt={`${item.title} trace cover`}
-                                className="h-full w-full object-cover opacity-88 grayscale-[0.18] contrast-[0.98] transition duration-300 group-hover/cover:scale-[1.025] group-hover/cover:opacity-100 group-focus-visible/cover:opacity-100"
-                                loading="lazy"
-                              />
+                              {coverMedia.type === "video" ? (
+                                <video
+                                  className="h-full w-full object-cover opacity-88 grayscale-[0.12] contrast-[0.98] transition duration-300 group-hover/cover:scale-[1.025] group-hover/cover:opacity-100 group-focus-visible/cover:opacity-100"
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                  poster={coverMedia.poster}
+                                >
+                                  <source src={coverMedia.src} type="video/mp4" />
+                                </video>
+                              ) : (
+                                <img
+                                  src={coverMedia.src}
+                                  alt={`${item.title} trace cover`}
+                                  className="h-full w-full object-cover opacity-88 grayscale-[0.18] contrast-[0.98] transition duration-300 group-hover/cover:scale-[1.025] group-hover/cover:opacity-100 group-focus-visible/cover:opacity-100"
+                                  loading="lazy"
+                                />
+                              )}
                               <span className="absolute bottom-2 left-2 border border-white/25 bg-black/42 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.14em] text-white/78">
                                 Trace 01
                               </span>
@@ -2942,12 +2911,16 @@ function MobileImmersiveHero({
   onOpenWhisper,
   onOpenWebHero,
   onOpenKoolBerk,
+  onOpenPresenceOs,
+  onOpenOrbitLens,
   onOpenProject,
 }: {
   onExploreChambers: () => void;
   onOpenWhisper: () => void;
   onOpenWebHero: () => void;
   onOpenKoolBerk: () => void;
+  onOpenPresenceOs: () => void;
+  onOpenOrbitLens: () => void;
   onOpenProject?: () => void;
 }) {
   return (
@@ -2987,6 +2960,8 @@ function MobileImmersiveHero({
           <MobileAction variant="dark" onClick={onExploreChambers}>
             Explore chambers -&gt;
           </MobileAction>
+          <MobileAction onClick={onOpenPresenceOs}>Open Presence OS -&gt;</MobileAction>
+          <MobileAction onClick={onOpenOrbitLens}>Open Orbit Lens -&gt;</MobileAction>
           <MobileAction onClick={onOpenKoolBerk}>Open Kool Berk -&gt;</MobileAction>
           <MobileAction onClick={onOpenWebHero}>Open WEBHERO -&gt;</MobileAction>
           <MobileAction onClick={onOpenWhisper}>Open WHISPER -&gt;</MobileAction>
@@ -3003,12 +2978,14 @@ function MobileChamberField({
   onOpenWhisper,
   onOpenWebHero,
   onOpenKoolBerk,
-  onShowPreparedChamber,
+  onOpenPresenceOs,
+  onOpenOrbitLens,
 }: {
   onOpenWhisper: () => void;
   onOpenWebHero: () => void;
   onOpenKoolBerk: () => void;
-  onShowPreparedChamber: (id: FutureChamberId) => void;
+  onOpenPresenceOs: () => void;
+  onOpenOrbitLens: () => void;
 }) {
   const sound = useSound();
   const [mode, setMode] = useState<MobileChamberFieldMode>("field");
@@ -3038,11 +3015,6 @@ function MobileChamberField({
   };
 
   const runActiveAction = () => {
-    if (activeEntry.preparedId) {
-      onShowPreparedChamber(activeEntry.preparedId);
-      return;
-    }
-
     if (activeEntry.id === "webhero") {
       onOpenWebHero();
       return;
@@ -3050,6 +3022,16 @@ function MobileChamberField({
 
     if (activeEntry.id === "kool-berk") {
       onOpenKoolBerk();
+      return;
+    }
+
+    if (activeEntry.id === "presence-os-memory-atlas") {
+      onOpenPresenceOs();
+      return;
+    }
+
+    if (activeEntry.id === "orbit-lens") {
+      onOpenOrbitLens();
       return;
     }
 
@@ -3276,7 +3258,7 @@ function MobileChamberField({
                   </div>
                 </div>
 
-                <MobileAction variant={activeEntry.id === "whisper" || activeEntry.id === "webhero" || activeEntry.id === "kool-berk" ? "dark" : "line"} onClick={runActiveAction}>
+                <MobileAction variant="dark" onClick={runActiveAction}>
                   {activeEntry.cta} -&gt;
                 </MobileAction>
               </div>
@@ -3918,25 +3900,19 @@ function MobileImmersiveHub({
   onOpenWhisper,
   onOpenWebHero,
   onOpenKoolBerk,
+  onOpenPresenceOs,
+  onOpenOrbitLens,
   onExploreChambers,
 }: {
   onOpenProject?: () => void;
   onOpenWhisper: () => void;
   onOpenWebHero: () => void;
   onOpenKoolBerk: () => void;
+  onOpenPresenceOs: () => void;
+  onOpenOrbitLens: () => void;
   onExploreChambers: () => void;
 }) {
-  const [preparedFocus, setPreparedFocus] = useState<FutureChamberId>("product-world");
-
-  const showPreparedChamber = (id: FutureChamberId) => {
-    setPreparedFocus(id);
-    window.requestAnimationFrame(() => {
-      document.getElementById("future")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
-  };
+  const [preparedFocus, setPreparedFocus] = useState<FutureChamberId>("collective-presence-interface");
 
   return (
     <main className="relative z-10 lg:hidden" data-mobile-immersive-hub>
@@ -3946,6 +3922,8 @@ function MobileImmersiveHub({
           onOpenWhisper={onOpenWhisper}
           onOpenWebHero={onOpenWebHero}
           onOpenKoolBerk={onOpenKoolBerk}
+          onOpenPresenceOs={onOpenPresenceOs}
+          onOpenOrbitLens={onOpenOrbitLens}
           onOpenProject={onOpenProject}
         />
       </MobileMotionSection>
@@ -3954,7 +3932,8 @@ function MobileImmersiveHub({
           onOpenWhisper={onOpenWhisper}
           onOpenWebHero={onOpenWebHero}
           onOpenKoolBerk={onOpenKoolBerk}
-          onShowPreparedChamber={showPreparedChamber}
+          onOpenPresenceOs={onOpenPresenceOs}
+          onOpenOrbitLens={onOpenOrbitLens}
         />
       </MobileMotionSection>
       <MobileMotionSection variant="media" delay="soft">
@@ -4085,6 +4064,8 @@ export default function ImmersiveV2({
             onOpenWhisper={() => goTo("/immersive/whisper")}
             onOpenWebHero={() => goTo("/immersive/webhero")}
             onOpenKoolBerk={() => goTo("/immersive/kool-berk")}
+            onOpenPresenceOs={() => goTo("/immersive/presence-os-memory-atlas")}
+            onOpenOrbitLens={() => goTo("/immersive/orbit-lens")}
             onExploreChambers={() => scrollTo("map")}
           />
         ) : (

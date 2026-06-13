@@ -348,6 +348,12 @@ export const cases: Case[] = [
         },
         { label: "Status", value: "Advanced prototype / in development" },
       ],
+      links: [
+        {
+          label: "Website",
+          href: "https://aurel-eon-gt.pages.dev",
+        },
+      ],
     },
   },
   {
@@ -724,6 +730,12 @@ export const cases: Case[] = [
             "Astro 5 / TypeScript / Tailwind CSS v4 / Vanilla JS / EN-ES routing",
         },
         { label: "Status", value: "Concept case" },
+      ],
+      links: [
+        {
+          label: "Website",
+          href: "https://oria-house-barcelona.pages.dev/en/",
+        },
       ],
     },
   },

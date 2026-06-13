@@ -1203,12 +1203,23 @@ function MobileSurfaceRail({
   const narrative = getCaseNarrative(story);
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
+  const isHospitalityCase = story.caseType === "hospitality";
   const usesTallPhoneFrames = isAdvisoryCase || isCreatorOpsCase;
   const phoneAspectClass = isCreatorOpsCase
     ? "aspect-[1080/2340] bg-neutral-950"
+    : "aspect-[1080/2340] bg-transparent";
+  const phoneShellClass = isCreatorOpsCase
+    ? "border-neutral-950/10 bg-neutral-950/82 p-1"
     : isAdvisoryCase
-      ? "aspect-[1080/2088] bg-white"
-      : "aspect-[9/16] bg-neutral-950";
+      ? "border-black/[0.045] bg-white/78 p-1"
+      : isHospitalityCase
+        ? "border-black/[0.045] bg-[#f5f0e7]/78 p-1"
+        : "border-black/[0.045] bg-[#f4f1ea]/72 p-1";
+  const mobileCaptionPanelClass = isAdvisoryCase
+      ? "border-neutral-950/10 bg-white/78"
+      : isHospitalityCase
+        ? "border-neutral-950/10 bg-[#f4efe6]/78"
+        : "border-neutral-950/10 bg-[#f4f1ea]/74";
   const sound = useSound();
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -1391,12 +1402,8 @@ function MobileSurfaceRail({
               >
                 <span
                   className={[
-                    "block border border-neutral-950/10 shadow-[0_24px_78px_rgba(15,15,15,0.1)] backdrop-blur-sm",
-                    isCreatorOpsCase
-                      ? "bg-neutral-950/82 p-1"
-                      : isAdvisoryCase
-                        ? "bg-white/74 p-2"
-                        : "bg-[#f4f1ea]/82 p-3",
+                    "block border shadow-[0_24px_78px_rgba(15,15,15,0.1)] backdrop-blur-sm",
+                    phoneShellClass,
                   ].join(" ")}
                 >
                   <span
@@ -1430,7 +1437,12 @@ function MobileSurfaceRail({
             );
           })}
 
-          <div className="pointer-events-none absolute bottom-0 left-1/2 w-[min(86vw,42rem)] -translate-x-1/2 border-y border-neutral-950/10 bg-[#f4f1ea]/74 px-4 py-4 text-center backdrop-blur-md">
+          <div
+            className={[
+              "pointer-events-none absolute bottom-0 left-1/2 w-[min(86vw,42rem)] -translate-x-1/2 border-y px-4 py-4 text-center backdrop-blur-md",
+              mobileCaptionPanelClass,
+            ].join(" ")}
+          >
             <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
               Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
             </div>
@@ -2862,7 +2874,85 @@ export default function CasePageV2({
   const primaryLiveLink = visibleLinks[0] ?? secondaryClosingLink;
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
+  const isHospitalityCase = story.caseType === "hospitality";
+  const isPremiumWebsiteCase = story.caseType === "premium-website";
+  const isPresentationCase =
+    story.caseType === "presentation-system" || story.caseType === "experimental";
+  const isLuxuryHeroCase =
+    story.caseType === "luxury-product" || story.caseType === "product-system";
   const hasAlignedHeroCards = true;
+  const heroPrimaryShellClass = isAdvisoryCase
+    ? "border border-neutral-950/10 bg-white/92 p-2 shadow-[0_38px_116px_rgba(30,30,30,0.12)] hover:shadow-[0_48px_132px_rgba(30,30,30,0.16)] md:p-3"
+    : isCreatorOpsCase
+      ? "border border-neutral-950/10 bg-white/84 p-2 shadow-[0_34px_104px_rgba(15,15,15,0.16)] hover:shadow-[0_44px_124px_rgba(15,15,15,0.22)] md:p-3"
+      : isHospitalityCase
+        ? "border border-[#d7cec0]/95 bg-[#faf5ed]/94 p-2 shadow-[0_34px_102px_rgba(76,60,32,0.12)] hover:shadow-[0_44px_122px_rgba(76,60,32,0.16)] md:p-3"
+        : isPremiumWebsiteCase
+          ? "border border-[#d6dfeb]/92 bg-[#fbfdff]/92 p-2 shadow-[0_34px_102px_rgba(34,64,110,0.12)] hover:shadow-[0_44px_122px_rgba(34,64,110,0.16)] md:p-3"
+          : isPresentationCase
+            ? "border border-white/14 bg-[#10131a]/95 p-2 shadow-[0_34px_106px_rgba(8,10,18,0.22)] hover:shadow-[0_46px_128px_rgba(8,10,18,0.3)] md:p-3"
+            : isLuxuryHeroCase
+              ? "border border-[#4b4439]/42 bg-[#0e0d0b]/95 p-2 shadow-[0_34px_104px_rgba(14,12,10,0.22)] hover:shadow-[0_46px_126px_rgba(14,12,10,0.3)] md:p-3"
+              : "border border-white/16 bg-[#111317]/95 p-2 shadow-[0_34px_104px_rgba(12,12,12,0.22)] hover:shadow-[0_46px_126px_rgba(12,12,12,0.3)] md:p-3";
+  const heroPrimaryMediaClass = isAdvisoryCase
+    ? "saturate-[1.02]"
+    : isCreatorOpsCase
+      ? "brightness-[1.03] saturate-[1.04]"
+      : isHospitalityCase
+        ? "brightness-[1.01] saturate-[0.98]"
+        : isPremiumWebsiteCase
+          ? "brightness-[1.02] saturate-[0.98]"
+          : "brightness-[1.02] saturate-[1.03]";
+  const heroPrimaryOverlayClass = isAdvisoryCase
+    ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.1),transparent_52%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18))]"
+    : isCreatorOpsCase
+      ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.11),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.04),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.035))]"
+      : isHospitalityCase
+        ? "bg-[radial-gradient(circle_at_60%_34%,rgba(255,250,240,0.18),transparent_32%),linear-gradient(90deg,rgba(255,255,255,0.08),transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(112,92,62,0.08))]"
+        : isPremiumWebsiteCase
+          ? "bg-[radial-gradient(circle_at_60%_34%,rgba(255,255,255,0.18),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.08),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(45,86,138,0.08))]"
+          : isPresentationCase
+            ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.08),transparent_32%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.18))]"
+            : "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.07),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.16))]";
+  const heroPrimaryMetaClass =
+    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/62";
+  const heroPrimaryReadinessClass =
+    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-500" : "text-white/52";
+  const heroPrimaryTitleClass =
+    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-950" : "text-white";
+  const heroFragmentShellClass = isAdvisoryCase
+    ? "border-neutral-950/10 bg-white/90 shadow-[0_16px_54px_rgba(30,30,30,0.1)] hover:shadow-[0_24px_72px_rgba(30,30,30,0.14)]"
+    : isCreatorOpsCase
+      ? "border-neutral-950/10 bg-white/88 shadow-[0_18px_58px_rgba(15,15,15,0.13)] hover:shadow-[0_28px_78px_rgba(15,15,15,0.2)]"
+      : isHospitalityCase
+        ? "border-[#d7cec0]/90 bg-[#fbf6ee]/90 shadow-[0_16px_52px_rgba(76,60,32,0.1)] hover:shadow-[0_24px_72px_rgba(76,60,32,0.14)]"
+        : isPremiumWebsiteCase
+          ? "border-[#d6dfeb]/88 bg-[#fbfdff]/88 shadow-[0_16px_52px_rgba(34,64,110,0.1)] hover:shadow-[0_24px_72px_rgba(34,64,110,0.14)]"
+          : isPresentationCase
+            ? "border-white/14 bg-[#11141a]/92 shadow-[0_18px_56px_rgba(8,10,18,0.18)] hover:shadow-[0_26px_76px_rgba(8,10,18,0.24)]"
+            : isLuxuryHeroCase
+              ? "border-[#4b4439]/40 bg-[#0e0d0b]/92 shadow-[0_18px_56px_rgba(14,12,10,0.18)] hover:shadow-[0_26px_76px_rgba(14,12,10,0.24)]"
+              : "border-white/16 bg-[#111317]/92 shadow-[0_18px_56px_rgba(12,12,12,0.18)] hover:shadow-[0_26px_76px_rgba(12,12,12,0.24)]";
+  const heroFragmentMediaClass = isAdvisoryCase
+    ? "opacity-100 saturate-[1.02]"
+    : isCreatorOpsCase
+      ? "opacity-100 saturate-[1.04] brightness-[1.03]"
+      : isHospitalityCase
+        ? "opacity-[0.98] saturate-[0.98] brightness-[1.01]"
+        : isPremiumWebsiteCase
+          ? "opacity-[0.98] saturate-[0.98] brightness-[1.02]"
+          : "opacity-[0.94] saturate-[1.03] brightness-[1.02]";
+  const heroFragmentOverlayClass = isAdvisoryCase
+    ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.1))]"
+    : isCreatorOpsCase
+      ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.07),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.055))]"
+      : isHospitalityCase
+        ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,250,240,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(112,92,62,0.08))]"
+        : isPremiumWebsiteCase
+          ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(45,86,138,0.08))]"
+          : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.24))]";
+  const heroFragmentMetaClass =
+    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/72";
   const goToWork = () => startSpaPageTransition(navigate, "/work", onCloseProject);
   const openProject = () => onOpenProject?.();
 
@@ -2963,11 +3053,7 @@ export default function CasePageV2({
                 transition={reduceMotion ? undefined : { duration: 7.5, repeat: Infinity, repeatType: "mirror", ease }}
                 className={[
                   "absolute left-[6%] top-[9%] h-[64%] w-[76%] cursor-zoom-in overflow-hidden text-left transition-shadow duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300",
-                  isAdvisoryCase
-                    ? "border border-neutral-950/10 bg-white/92 p-2 shadow-[0_38px_116px_rgba(30,30,30,0.12)] hover:shadow-[0_48px_132px_rgba(30,30,30,0.16)] md:p-3"
-                    : isCreatorOpsCase
-                      ? "border border-neutral-950/10 bg-white/84 p-2 shadow-[0_34px_104px_rgba(15,15,15,0.16)] hover:shadow-[0_44px_124px_rgba(15,15,15,0.22)] md:p-3"
-                      : "bg-neutral-950 p-3 shadow-[0_46px_130px_rgba(15,15,15,0.26)] hover:shadow-[0_58px_150px_rgba(15,15,15,0.34)] md:p-4",
+                  heroPrimaryShellClass,
                 ].join(" ")}
                 style={
                   hasAlignedHeroCards
@@ -2979,32 +3065,17 @@ export default function CasePageV2({
                   media={thresholdMedia}
                   priority
                   ambient
-                  className={
-                    isAdvisoryCase
-                      ? "saturate-[1.02]"
-                      : isCreatorOpsCase
-                        ? "brightness-[1.03] saturate-[1.04]"
-                        : "brightness-[1.02] saturate-[1.03]"
-                  }
+                  className={heroPrimaryMediaClass}
                 />
-                <div
-                  className={[
-                    "absolute inset-0",
-                    isAdvisoryCase
-                      ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.1),transparent_52%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18))]"
-                      : isCreatorOpsCase
-                        ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.11),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.04),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.035))]"
-                        : "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(90deg,rgba(0,0,0,0.06),transparent_52%),linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.13))]",
-                  ].join(" ")}
-                />
-                <div className={["absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.18em]", isAdvisoryCase ? "text-neutral-600" : "text-white/62"].join(" ")}>
+                <div className={["absolute inset-0", heroPrimaryOverlayClass].join(" ")} />
+                <div className={["absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.18em]", heroPrimaryMetaClass].join(" ")}>
                   {narrative.heroMeta}
                 </div>
                 <div className="absolute bottom-14 left-5 right-5">
-                  <div className={["font-mono text-[10px] uppercase tracking-[0.18em]", isAdvisoryCase ? "text-neutral-500" : "text-white/52"].join(" ")}>
+                  <div className={["font-mono text-[10px] uppercase tracking-[0.18em]", heroPrimaryReadinessClass].join(" ")}>
                     {narrative.heroReadiness}
                   </div>
-                  <div className={["mt-2 max-w-md text-2xl font-semibold leading-tight tracking-normal md:text-3xl", isAdvisoryCase ? "text-neutral-950" : "text-white"].join(" ")}>
+                  <div className={["mt-2 max-w-md text-2xl font-semibold leading-tight tracking-normal md:text-3xl", heroPrimaryTitleClass].join(" ")}>
                     {narrative.heroMediaTitle}
                   </div>
                 </div>
@@ -3023,11 +3094,7 @@ export default function CasePageV2({
                         ? (alignedHeroFragmentFrames[index] ?? alignedHeroFragmentFrames[0])
                         : (heroFragmentFrames[index] ?? heroFragmentFrames[0])
                     } cursor-zoom-in overflow-hidden border p-1.5 text-left backdrop-blur-sm transition-shadow duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300`,
-                    isAdvisoryCase
-                      ? "border-neutral-950/10 bg-white/90 shadow-[0_16px_54px_rgba(30,30,30,0.1)] hover:shadow-[0_24px_72px_rgba(30,30,30,0.14)]"
-                      : isCreatorOpsCase
-                        ? "border-neutral-950/10 bg-white/88 shadow-[0_18px_58px_rgba(15,15,15,0.13)] hover:shadow-[0_28px_78px_rgba(15,15,15,0.2)]"
-                        : "border-white/38 bg-neutral-950/90 shadow-[0_22px_64px_rgba(15,15,15,0.16)] hover:shadow-[0_34px_92px_rgba(15,15,15,0.24)]",
+                    heroFragmentShellClass,
                   ].join(" ")}
                   initial={reduceMotion ? false : { opacity: 0, y: 24 }}
                   animate={
@@ -3067,28 +3134,12 @@ export default function CasePageV2({
                   }
                 >
                   <span
-                    className={[
-                      "block h-full w-full",
-                      isAdvisoryCase
-                        ? "opacity-100 saturate-[1.02]"
-                        : isCreatorOpsCase
-                          ? "opacity-100 saturate-[1.04] brightness-[1.03]"
-                          : "opacity-[0.92] saturate-[1.03] brightness-[1.02]",
-                    ].join(" ")}
+                    className={["block h-full w-full", heroFragmentMediaClass].join(" ")}
                   >
                     <CaseMediaView media={media} />
                   </span>
-                  <div
-                    className={[
-                      "absolute inset-0",
-                      isAdvisoryCase
-                        ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.1))]"
-                        : isCreatorOpsCase
-                          ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.07),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.055))]"
-                          : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.09),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.32))]",
-                    ].join(" ")}
-                  />
-                  <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", isAdvisoryCase ? "text-neutral-600" : "text-white/72"].join(" ")}>
+                  <div className={["absolute inset-0", heroFragmentOverlayClass].join(" ")} />
+                  <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", heroFragmentMetaClass].join(" ")}>
                     signal {index + 1} / {mediaRoleLabel(media.role)}
                   </div>
                 </motion.button>

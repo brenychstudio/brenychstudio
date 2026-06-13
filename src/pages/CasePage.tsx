@@ -1655,6 +1655,7 @@ export default function CasePage({
                     <CaseMobileShowcase
                       frames={mobileFrames}
                       onOpenFrame={openLightbox}
+                      tone={caseTone}
                       description="Guided mobile sequence across key responsive surfaces, navigation states, detail views, and conversion/support flows."
                     />
                   ) : null}

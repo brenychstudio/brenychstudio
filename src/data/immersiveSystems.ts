@@ -4,7 +4,9 @@ export type ImmersiveChamberId =
   | "whisper"
   | "webhero"
   | "kool-berk"
-  | "product-world"
+  | "presence-os-memory-atlas"
+  | "orbit-lens"
+  | "collective-presence-interface"
   | "presence-archive"
   | "collector-continuation"
   | "installation-field";
@@ -15,6 +17,7 @@ export type ImmersiveMood =
   | "sonic"
   | "object"
   | "memory"
+  | "optic"
   | "collector"
   | "installation";
 
@@ -111,7 +114,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
       "Images, WebGL scenes and spatial assets become controlled living web experiences instead of static portfolio media.",
     visualRole: "chamber",
     media: {
-      poster: "/immersive/webhero/desktop/webhero-living-environments-hero.webp",
+      poster: "/immersive/webhero/desktop/webhero-threshold.webp",
       video: "/immersive/webhero/video/webhero-video-field.mp4",
       stills: [
         "/immersive/webhero/desktop/webhero-art-room-grid.webp",
@@ -182,27 +185,114 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     },
   },
   {
-    id: "product-world",
+    id: "presence-os-memory-atlas",
     room: "Room 04",
-    title: "Product World",
-    shortTitle: "Product World",
+    title: "Presence OS / Memory Atlas",
+    shortTitle: "Presence OS",
     status: "prototype",
-    statusLabel: "Prototype direction",
-    role: "Interactive product environment",
+    statusLabel: "Functional MVP prototype",
+    role: "Presence-based spatial memory interface",
     summary:
-      "A premium product or service presented as a navigable world with staged proof, cinematic reveal, and interface-led decisions.",
+      "A private spatial memory interface where personal archive fragments reveal themselves through stillness, return and attention.",
     proofLine:
-      "Products stop behaving like catalog entries and start behaving like staged environments.",
+      "A local-first archive becomes a living memory field, cinematic inspect experience, XR room and exportable artifact system.",
+    visualRole: "chamber",
+    media: {
+      poster: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
+      video: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
+      stills: [
+        "/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field.webp",
+        "/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room.webp",
+        "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence.webp",
+      ],
+    },
+    route: "/immersive/presence-os-memory-atlas",
+    ctaLabel: "Enter Presence OS",
+    tags: ["Local-first", "Presence OS", "WebXR", "Memory Reel", "VR trace"],
+    mood: "memory",
+    chamberSignal: "Archive responds to presence",
+    engineIds: [
+      "presence-os",
+      "webgl-stage",
+      "living-atmosphere",
+      "cinematic-frame-field",
+      "cinematic-inspect",
+      "spatial-reference-orbit",
+    ],
+    position: {
+      x: 58,
+      y: 70,
+      scale: 1,
+      rotate: 3,
+    },
+  },
+  {
+    id: "orbit-lens",
+    room: "Room 05",
+    title: "Orbit Lens",
+    shortTitle: "Orbit Lens",
+    status: "prototype",
+    statusLabel: "Functional web-first prototype",
+    role: "Fictional AI spatial glasses product OS",
+    summary:
+      "A premium fictional AI spatial glasses concept where the website behaves like the spatial interface of the device itself.",
+    proofLine:
+      "Seven contextual intelligence fields, Inspect Optics, Reference Orbit and optional WebXR proof mode replace a standard hardware landing page.",
+    visualRole: "chamber",
+    media: {
+      poster: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
+      video: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
+      stills: [
+        "/immersive/orbit-lens/desktop/orbit-lens-reference-orbit.webp",
+        "/immersive/orbit-lens/desktop/orbit-lens-inspect-optics.webp",
+        "/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary.webp",
+      ],
+    },
+    route: "/immersive/orbit-lens",
+    ctaLabel: "Enter Orbit Lens",
+    tags: ["AI eyewear", "WebXR", "Inspect Optics", "Reference Orbit", "GLSL"],
+    mood: "optic",
+    chamberSignal: "Website as product OS",
+    engineIds: [
+      "webgl-stage",
+      "living-atmosphere",
+      "cinematic-frame-field",
+      "cinematic-inspect",
+      "spatial-reference-orbit",
+    ],
+    position: {
+      x: 74,
+      y: 58,
+      scale: 0.98,
+      rotate: -5,
+    },
+  },
+  {
+    id: "collective-presence-interface",
+    room: "Room 06",
+    title: "Collective Signal Interface",
+    shortTitle: "Collective Signal",
+    status: "prototype",
+    statusLabel: "Prepared signal / experiment 01",
+    role: "Anonymous presence interface",
+    summary:
+      "A website shaped by anonymous presence, where identity stays uncollected and the field behaves like a living collective contract.",
+    proofLine:
+      "The surface remembers pauses, returns, movement, and silence without storing the person behind them.",
     visualRole: "signal",
     media: {
-      poster: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
-      video: "/cases/house-of-lune/video/house-of-lune-video.mp4",
-      stills: ["/cases/house-of-lune/desktop/house-of-lune-3.webp"],
+      poster: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
+      video: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-video.mp4",
+      stills: [
+        "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
+        "/immersive/future/collective-presence-interface/Collective-Presence-Interface-2.png",
+        "/immersive/future/collective-presence-interface/Collective-Presence-Interface-3.png",
+      ],
     },
-    tags: ["Product surfaces", "Guided proof", "Interactive launch"],
-    mood: "object",
-    chamberSignal: "Product as world",
-    engineIds: ["webgl-stage", "cinematic-inspect", "living-atmosphere"],
+    tags: ["anonymous presence", "collective field", "memory weather"],
+    mood: "memory",
+    chamberSignal: "Presence as contract",
+    engineIds: ["presence-os", "living-editorial-surface", "living-atmosphere"],
     position: {
       x: 70,
       y: 42,
@@ -212,7 +302,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
   },
   {
     id: "presence-archive",
-    room: "Room 05",
+    room: "Room 07",
     title: "Presence Archive",
     shortTitle: "Presence Archive",
     status: "research",
@@ -240,7 +330,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
   },
   {
     id: "collector-continuation",
-    room: "Room 06",
+    room: "Room 08",
     title: "Collector Continuation",
     shortTitle: "Collector",
     status: "upcoming",
@@ -268,7 +358,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
   },
   {
     id: "installation-field",
-    room: "Room 07",
+    room: "Room 09",
     title: "Installation Field",
     shortTitle: "Installation",
     status: "upcoming",
@@ -302,7 +392,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "WebGL Stage System",
     role: "Scene engine",
     summary: "Turns hero, product, archive, and proof moments into directed visual stages.",
-    chamberIds: ["webhero", "kool-berk", "product-world", "installation-field"],
+    chamberIds: ["webhero", "kool-berk", "presence-os-memory-atlas", "orbit-lens", "collective-presence-interface", "installation-field"],
     signal: "stage logic",
   },
   {
@@ -310,7 +400,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Living Atmosphere Engine",
     role: "Climate engine",
     summary: "Resolves route, section, scroll, and chamber identity into controlled atmosphere tokens.",
-    chamberIds: ["whisper", "webhero", "kool-berk", "product-world", "presence-archive", "collector-continuation", "installation-field"],
+    chamberIds: ["whisper", "webhero", "kool-berk", "presence-os-memory-atlas", "orbit-lens", "collective-presence-interface", "presence-archive", "collector-continuation", "installation-field"],
     signal: "atmosphere",
   },
   {
@@ -318,7 +408,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Cinematic Frame Field",
     role: "Media field",
     summary: "Keeps visual material alive as cinematic planes instead of static cards or sliders.",
-    chamberIds: ["whisper", "webhero", "kool-berk", "presence-archive"],
+    chamberIds: ["whisper", "webhero", "kool-berk", "presence-os-memory-atlas", "orbit-lens", "presence-archive"],
     signal: "frame field",
   },
   {
@@ -326,7 +416,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Living Editorial Surface",
     role: "Scroll canvas",
     summary: "Lets media, captions, and scroll behave like one editorial field.",
-    chamberIds: ["webhero", "presence-archive"],
+    chamberIds: ["webhero", "presence-os-memory-atlas", "orbit-lens", "presence-archive"],
     signal: "living canvas",
   },
   {
@@ -334,7 +424,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Cinematic Inspect Reveal",
     role: "Deep mode",
     summary: "Transforms inspection into a spatial mode transition instead of a modal popup.",
-    chamberIds: ["webhero", "kool-berk", "product-world", "collector-continuation"],
+    chamberIds: ["webhero", "kool-berk", "presence-os-memory-atlas", "orbit-lens", "collective-presence-interface", "collector-continuation"],
     signal: "inspect",
   },
   {
@@ -342,7 +432,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Spatial Reference Orbit",
     role: "Orbit logic",
     summary: "Supports controlled spatial navigation between media references, chambers, and proof fragments.",
-    chamberIds: ["whisper", "installation-field"],
+    chamberIds: ["whisper", "presence-os-memory-atlas", "orbit-lens", "installation-field"],
     signal: "orbit",
   },
   {
@@ -350,7 +440,7 @@ export const immersiveEngineStack: ImmersiveEngineItem[] = [
     title: "Presence OS",
     role: "Behavior engine",
     summary: "Adds depth through hover, stillness, return, memory, and attention while preserving click-first access.",
-    chamberIds: ["webhero", "kool-berk", "presence-archive", "installation-field"],
+    chamberIds: ["webhero", "kool-berk", "presence-os-memory-atlas", "presence-archive", "installation-field"],
     signal: "presence",
   },
   {

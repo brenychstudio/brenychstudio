@@ -93,6 +93,9 @@ const media = {
   houseVideo: "/cases/house-of-lune/video/house-of-lune-video.mp4",
   houseDetail: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
 
+  oria: casePoster("oria-house-barcelona", "/cases/oria-house-barcelona/oria-house-hero.webp"),
+  oriaVideo: "/cases/oria-house-barcelona/oria-house-video.mp4",
+
   advisory: casePoster("bcn-advisory", "/cases/bcn-advisory/v2/bcn-advisory-hero.webp"),
   advisoryVideo: "/cases/bcn-advisory/v2/bcn-advisory-video.mp4",
   advisoryDetail: "/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field.webp",
@@ -102,6 +105,8 @@ const media = {
   creatoropsMechanics: "/cases/creatorops/v2/creatorops-library-expanded.webp",
 
   sprintcrmHero: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
+
+  aurel: casePoster("aurel-eon-gt", "/cases/aurel-eon-gt/aurel-eon-gt-hero.webp"),
 
   print: casePoster("print-border-studio", "/cases/print-border-studio/desktop/psb-hero.webp"),
   printVideo: "/cases/print-border-studio/video/psb-video.mp4",
@@ -171,10 +176,10 @@ const storyFrames: StoryFrame[] = [
     media: [
       {
         kind: "video",
-        src: media.houseVideo,
-        poster: media.house,
-        label: "luxury product theatre",
-        route: "/work/house-of-lune",
+        src: media.oriaVideo,
+        poster: media.oria,
+        label: "boutique hotel atmosphere",
+        route: "/work/oria-house-barcelona",
       },
       {
         kind: "video",
@@ -226,22 +231,21 @@ const storyFrames: StoryFrame[] = [
     eyebrow: "Scene 03 / interface field",
     title: "The visual language becomes repeatable across contexts.",
     text:
-      "FLUID, ARCWAVE, FORM INDEX, Casa Nube, and the immersive work prove that the practice is not one style. It is a reusable grammar for atmosphere, language, motion, and structure.",
+      "ARCWAVE, AUREL EON GT, Casa Nube, and the immersive work prove that the practice is not one style. It is a reusable grammar for atmosphere, language, motion, and structure.",
     route: "/work",
     media: [
-      {
-        kind: "video",
-        src: media.fluidVideo,
-        poster: media.fluid,
-        label: "fluid exhibition field",
-        route: "/work/fluid-exhibition",
-      },
       {
         kind: "video",
         src: media.arcwaveVideo,
         poster: media.arcwave,
         label: "arcwave signal surface",
         route: "/work/arcwave-integrations",
+      },
+      {
+        kind: "image",
+        src: media.aurel,
+        label: "Aurel Eon GT",
+        route: "/work/aurel-eon-gt",
       },
       {
         kind: "video",
@@ -254,8 +258,13 @@ const storyFrames: StoryFrame[] = [
   },
 ];
 
-const immersiveAtlasMedia = immersiveItems
-  .map((item): StoryMediaAsset | null => {
+const atlasIntroSlugs = ["whisper", "webhero", "kool-berk"] as const;
+
+const immersiveAtlasMedia = atlasIntroSlugs
+  .map((slug): StoryMediaAsset | null => {
+    const item = immersiveItems.find((entry) => entry.slug === slug);
+    if (!item) return null;
+
     const cover =
       item.previewPoster ??
       item.frames?.find((frame) => frame.device === "desktop")?.src ??
@@ -270,8 +279,7 @@ const immersiveAtlasMedia = immersiveItems
       route: `/immersive/${item.slug}`,
     };
   })
-  .filter((asset): asset is StoryMediaAsset => asset !== null)
-  .slice(0, 4);
+  .filter((asset): asset is StoryMediaAsset => asset !== null);
 
 const atlasIntroMedia: StoryMediaAsset[] = immersiveAtlasMedia.length
   ? immersiveAtlasMedia
@@ -335,17 +343,17 @@ const proofSurfaceModes = [
 const visualLanguageAssets: StoryMediaAsset[] = [
   {
     kind: "image",
-    src: media.fluid,
-    label: "FLUID Exhibition Field",
-    route: "/work/fluid-exhibition",
-    objectPosition: "center 38%",
-  },
-  {
-    kind: "image",
     src: media.arcwave,
     label: "ARCWAVE Signal Surface",
     route: "/work/arcwave-integrations",
     objectPosition: "center 34%",
+  },
+  {
+    kind: "image",
+    src: media.aurel,
+    label: "Aurel Eon GT",
+    route: "/work/aurel-eon-gt",
+    objectPosition: "center 40%",
   },
   {
     kind: "image",
@@ -428,28 +436,22 @@ const storyPlaneLayouts = [
 
 const atlasIntroPlaneLayouts = [
   {
-    className: "left-[3%] top-[8%] h-[54%] w-[57%] z-30",
+    className: "left-[3%] top-[8%] h-[54%] w-[58%] z-30",
     shape: "polygon(0 5%, 100% 0, 95% 92%, 7% 100%)",
     shadow: "shadow-[0_44px_136px_rgba(18,18,18,0.16)]",
     label: "left-[7%] top-[calc(100%+0.75rem)]",
   },
   {
-    className: "right-[2%] top-[16%] h-[40%] w-[42%] z-40",
+    className: "right-[1%] top-[15%] h-[41%] w-[43%] z-40",
     shape: "polygon(7% 0, 100% 6%, 92% 100%, 0 90%)",
     shadow: "shadow-[0_34px_106px_rgba(18,18,18,0.13)]",
     label: "right-[7%] top-[calc(100%+0.75rem)]",
   },
   {
-    className: "left-[30%] bottom-[7%] h-[32%] w-[39%] z-50",
+    className: "left-[24%] bottom-[4%] h-[37%] w-[45%] z-50",
     shape: "polygon(5% 0, 100% 8%, 93% 100%, 0 90%)",
-    shadow: "shadow-[0_28px_88px_rgba(18,18,18,0.115)]",
+    shadow: "shadow-[0_30px_92px_rgba(18,18,18,0.125)]",
     label: "left-[8%] top-[calc(100%+0.7rem)]",
-  },
-  {
-    className: "right-[8%] bottom-[1%] h-[28%] w-[34%] z-20",
-    shape: "polygon(4% 8%, 100% 0, 94% 92%, 0 100%)",
-    shadow: "shadow-[0_24px_74px_rgba(18,18,18,0.1)]",
-    label: "right-[7%] bottom-[calc(100%+0.7rem)]",
   },
 ] satisfies readonly StoryPlaneLayout[];
 
@@ -2164,9 +2166,6 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
           ))}
           <SurfaceCaptionLegend assets={atlasIntroMedia} onOpen={goTo} />
 
-          <div className="absolute left-[3%] bottom-[13%] rounded-full border border-neutral-950/10 bg-white/58 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-            immersive covers become atlas
-          </div>
           <div className="absolute right-[9%] bottom-[10%] rounded-full border border-neutral-950/10 bg-white/48 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
             spatial proof index
           </div>
@@ -2282,7 +2281,7 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
       <MobileChapter
         label="06 / Reusable Grammar"
         heading="Reusable visual grammar."
-        summary="FLUID, ARCWAVE, FORM INDEX, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."
+        summary="ARCWAVE, AUREL EON GT, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-4">

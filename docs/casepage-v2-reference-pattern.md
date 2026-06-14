@@ -59,7 +59,7 @@ New cases should be added through `src/data/caseStories.ts` and rendered through
 09 Print Border Studio - production tool validation
 ```
 
-Public `/work/:slug` now renders `CasePageV2` for non-immersive Work cases. The previous detail renderer is retained only as source reference in the legacy archive and is no longer exposed through a classic production route.
+Public `/work/:slug` now renders `CasePageV2` for non-immersive Work cases. The previous detail renderer was removed during the final legacy cleanup; historical source remains available from the `archive/legacy-site-before-cleanup` git branch.
 
 ## Canonical Evidence Mode
 

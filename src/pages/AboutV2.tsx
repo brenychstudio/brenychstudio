@@ -119,9 +119,6 @@ const aboutRailItems: SectionRailItem[] = [
 
 function AboutV2Meta({ noIndex }: { noIndex: boolean }) {
   useEffect(() => {
-    const previousTitle = document.title;
-    document.title = "About - Brenych Studio";
-
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
     const previousContent = existing?.getAttribute("content") ?? null;
     const meta = existing ?? document.createElement("meta");
@@ -133,8 +130,6 @@ function AboutV2Meta({ noIndex }: { noIndex: boolean }) {
     }
 
     return () => {
-      document.title = previousTitle;
-
       if (!noIndex) return;
 
       if (existing && previousContent !== null) {

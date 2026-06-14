@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { DEFAULT_OG_IMAGE, SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
+
 export type SeoMetaProps = {
   title: string;
   description: string;
@@ -9,15 +11,6 @@ export type SeoMetaProps = {
   type?: "website" | "article";
   noIndex?: boolean;
 };
-
-const siteOrigin = "https://brenychstudio.com";
-const siteName = "Brenych Studio";
-const defaultImage = "/og-default.png";
-
-function toAbsoluteUrl(value: string) {
-  if (/^https?:\/\//i.test(value)) return value;
-  return new URL(value.startsWith("/") ? value : `/${value}`, siteOrigin).toString();
-}
 
 function setMeta(attribute: "name" | "property", key: string, content: string) {
   let tag = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`);
@@ -47,14 +40,14 @@ export default function SeoMeta({
   title,
   description,
   path,
-  image = defaultImage,
+  image = DEFAULT_OG_IMAGE,
   imageAlt,
   type = "website",
   noIndex = false,
 }: SeoMetaProps) {
   useEffect(() => {
-    const canonicalUrl = toAbsoluteUrl(path);
-    const imageUrl = toAbsoluteUrl(image);
+    const canonicalUrl = toAbsoluteSiteUrl(path);
+    const imageUrl = toAbsoluteSiteUrl(image);
     const resolvedImageAlt = imageAlt ?? title;
 
     document.title = title;
@@ -64,7 +57,7 @@ export default function SeoMeta({
     setMeta("name", "robots", noIndex ? "noindex, nofollow" : "index, follow");
 
     setMeta("property", "og:type", type);
-    setMeta("property", "og:site_name", siteName);
+    setMeta("property", "og:site_name", SITE_NAME);
     setMeta("property", "og:title", title);
     setMeta("property", "og:description", description);
     setMeta("property", "og:url", canonicalUrl);

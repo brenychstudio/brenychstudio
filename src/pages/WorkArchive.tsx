@@ -9,7 +9,7 @@ import CaseStatusPill from "../ui/status/CaseStatusPill";
 import CaseCover from "../ui/work/CaseCover";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useLocale } from "../store/useLocale";
-import { cases, type ArchiveCategoryKey, type Case } from "../data/cases";
+import { cases, getCasePath, type ArchiveCategoryKey, type Case } from "../data/cases";
 import { fluidCaseI18n } from "../data/fluidCaseI18n";
 import { formIndexCaseI18n } from "../data/formIndexCaseI18n";
 import { arcwaveCaseI18n } from "../data/arcwaveCaseI18n";
@@ -925,7 +925,7 @@ export default function WorkArchive({
                       key={item.slug}
                       type="button"
                       onClick={() => {
-                        startSpaPageTransition(navigate, `/work/${item.slug}`, onCloseProject);
+                        startSpaPageTransition(navigate, getCasePath(item.slug), onCloseProject);
                       }}
                       variants={prefersReducedMotion ? undefined : archiveItemVariants}
                       whileHover={prefersReducedMotion ? undefined : { y: -4 }}
@@ -1048,7 +1048,7 @@ export default function WorkArchive({
                       key={item.slug}
                       type="button"
                       onClick={() => {
-                        startSpaPageTransition(navigate, `/work/${item.slug}`, onCloseProject);
+                        startSpaPageTransition(navigate, getCasePath(item.slug), onCloseProject);
                       }}
                       variants={prefersReducedMotion ? undefined : archiveItemVariants}
                       whileHover={prefersReducedMotion ? undefined : { y: -3 }}

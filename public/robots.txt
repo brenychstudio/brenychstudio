@@ -1,4 +1,13 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
+Disallow: /work-lab/
+Disallow: /studio-index
+Disallow: /evidence-atlas
+Disallow: /immersive-v2
+Disallow: /offer-v2
+Disallow: /about-v2
+Disallow: /privacy-v2
+Disallow: /legal-v2
+Disallow: /spatial-proof
 
-Sitemap: https://brenychstudio.com/sitemap.xml
+Sitemap: https://brenych.com/sitemap.xml

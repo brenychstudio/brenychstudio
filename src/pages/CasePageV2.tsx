@@ -3,18 +3,21 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, typ
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
+import { getCaseBySlug } from "../data/cases";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
 import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
 import SiteFooterV2 from "../ui/SiteFooterV2";
+import StructuredData from "../ui/StructuredData";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
 import type { SectionRailItem } from "../ui/SectionRail";
 import SeoMeta from "../ui/SeoMeta";
+import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -424,38 +427,57 @@ function getCaseNarrative(story: CaseStory) {
 }
 
 function CaseMeta({ story, noIndex = false }: { story: CaseStory | null; noIndex?: boolean }) {
-  const media =
+  const registryCase = getCaseBySlug(story?.slug);
+  const fallbackMedia =
     story?.mediaSequence.find((item) => item.kind !== "video" && item.role === "hero") ??
     story?.mediaSequence.find((item) => item.kind !== "video") ??
     null;
-  const isCreatorOpsCase = story?.slug === "creatorops";
-  const isAurelCase = story?.slug === "aurel-eon-gt";
+  const caseTitle = registryCase
+    ? `${registryCase.title} - ${registryCase.category} | Brenych Studio`
+    : story
+      ? `${story.headline} - Case System | Brenych Studio`
+      : "Case System | Brenych Studio";
+  const caseDescription =
+    registryCase?.shortDescription ??
+    story?.summary ??
+    "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure.";
+  const casePath = story ? `/work/${story.slug}` : "/work";
+  const caseImage = registryCase?.ogImage ?? fallbackMedia?.src;
+  const structuredData =
+    story && registryCase
+      ? {
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          name: registryCase.title,
+          headline: caseTitle,
+          description: caseDescription,
+          url: toAbsoluteSiteUrl(casePath),
+          image: toAbsoluteSiteUrl(caseImage ?? registryCase.previewImage),
+          dateCreated: registryCase.year,
+          creator: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: toAbsoluteSiteUrl("/"),
+          },
+          keywords: registryCase.tags.join(", "),
+          genre: registryCase.category,
+          workExample: registryCase.liveUrl,
+        }
+      : null;
 
   return (
-    <SeoMeta
-      title={
-        isCreatorOpsCase
-          ? "CreatorOps - Creator Workflow Interface System | Brenych Studio"
-          : isAurelCase
-            ? "AUREL EON GT - Living Automotive Product Experience | Brenych Studio"
-          : story
-            ? `${story.headline} - Case System - Brenych Studio`
-            : "Case System - Brenych Studio"
-      }
-      description={
-        isCreatorOpsCase
-          ? "An export-first creator workflow prototype for turning scattered visual assets into a ready-to-publish Week Pack with Smart Mix, planning, captions, export, review, handoff, and media conversion."
-          : isAurelCase
-            ? "A fictional premium electric grand tourer launch experience built as a living automotive product system with cinematic states, inspect flows, gallery archive, drive character, and private preview."
-          : story?.summary ??
-            "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure."
-      }
-      path={story ? `/work/${story.slug}` : "/work"}
-      image={media?.src}
-      imageAlt={media?.alt ?? story?.headline}
-      type="article"
-      noIndex={noIndex}
-    />
+    <>
+      <SeoMeta
+        title={caseTitle}
+        description={caseDescription}
+        path={casePath}
+        image={caseImage}
+        imageAlt={registryCase?.alt ?? fallbackMedia?.alt ?? story?.headline}
+        type="article"
+        noIndex={noIndex}
+      />
+      {structuredData ? <StructuredData id={`structured-data-case-${registryCase?.slug ?? "unknown"}`} data={structuredData} /> : null}
+    </>
   );
 }
 

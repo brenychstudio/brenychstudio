@@ -10,21 +10,71 @@ import WhisperCaseLayout from "../ui/immersive/WhisperCaseLayout";
 import KoolBerkWebGLBackdrop from "../ui/immersive/KoolBerkWebGLBackdrop";
 import WebHeroMembraneBackdrop from "../ui/immersive/WebHeroMembraneBackdrop";
 import { startSpaPageTransition } from "../ui/pageTransition";
-import { immersiveItems, type ImmersiveTone } from "../data/immersive";
+import { immersiveItems, type ImmersiveItem, type ImmersiveTone } from "../data/immersive";
 import { whisperCaseI18n } from "../data/whisperCaseI18n";
 import type { CaseStoryMedia } from "../data/caseStories";
 import { useLocale } from "../store/useLocale";
 import SeoMeta from "../ui/SeoMeta";
+import StructuredData from "../ui/StructuredData";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import { useSectionRailActive } from "../ui/useSectionRailActive";
+import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
 
 type PageProps = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
 };
+
+function getImmersiveMetaTitle(item: ImmersiveItem) {
+  const category = item.searchContent?.category ?? "Immersive System";
+  return `${item.title} - ${category} | Brenych Studio`;
+}
+
+function getImmersiveMetaDescription(item: ImmersiveItem) {
+  return item.searchContent?.shortDescription ?? item.tagline;
+}
+
+function ImmersiveSeoMeta({ item, imageAlt }: { item: ImmersiveItem; imageAlt?: string }) {
+  const title = getImmersiveMetaTitle(item);
+  const description = getImmersiveMetaDescription(item);
+  const path = `/immersive/${item.slug}`;
+  const image = item.previewPoster;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: item.title,
+    headline: title,
+    description,
+    url: toAbsoluteSiteUrl(path),
+    image: toAbsoluteSiteUrl(image ?? "/og-default.png"),
+    dateCreated: item.year,
+    creator: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: toAbsoluteSiteUrl("/"),
+    },
+    keywords: item.searchContent?.tags.join(", ") ?? item.highlights?.join(", "),
+    genre: item.searchContent?.category ?? item.medium,
+    workExample: item.links?.find((link) => link.label.toLowerCase().includes("live"))?.href,
+  };
+
+  return (
+    <>
+      <SeoMeta
+        title={title}
+        description={description}
+        path={path}
+        image={image}
+        imageAlt={imageAlt ?? `${item.title} immersive case`}
+        type="article"
+      />
+      <StructuredData id={`structured-data-immersive-${item.slug}`} data={structuredData} />
+    </>
+  );
+}
 
 const toneSurface: Record<ImmersiveTone, string> = {
   horizon:
@@ -897,14 +947,7 @@ function PresenceOsCaseLayout({
 
   return (
     <div className="min-h-screen bg-[#030706] text-white">
-      <SeoMeta
-        title="Presence OS / Memory Atlas - Experimental Spatial Memory Interface | Brenych Studio"
-        description="Presence OS / Memory Atlas is an experimental interface engine and private spatial memory archive prototype that transforms personal fragments into a living memory field, cinematic inspect experience, XR room and exportable memory artifacts."
-        path="/immersive/presence-os-memory-atlas"
-        image={item.previewPoster}
-        imageAlt="Presence OS Memory Atlas immersive case"
-        type="article"
-      />
+      <ImmersiveSeoMeta item={item} imageAlt="Presence OS Memory Atlas immersive case" />
       <SectionRail
         items={presenceOsRailItems}
         activeId={activeSection}
@@ -1322,14 +1365,7 @@ function OrbitLensCaseLayout({
 
   return (
     <div className="min-h-screen bg-[#03070a] text-white">
-      <SeoMeta
-        title="Orbit Lens - Premium AI Spatial Glasses Interface Concept | Brenych Studio"
-        description="Orbit Lens is a fictional AI spatial glasses product-interface prototype where the website behaves like the product OS, combining seven contextual fields, cinematic inspection, reference orbit and WebXR proof mode."
-        path="/immersive/orbit-lens"
-        image={item.previewPoster}
-        imageAlt="Orbit Lens immersive product interface case"
-        type="article"
-      />
+      <ImmersiveSeoMeta item={item} imageAlt="Orbit Lens immersive product interface case" />
       <SectionRail
         items={orbitLensRailItems}
         activeId={activeSection}
@@ -1910,14 +1946,7 @@ function KoolBerkCaseLayout({
 
   return (
     <div className="min-h-screen bg-[#04070d] text-white">
-      <SeoMeta
-        title="Kool Berk - Sonic Object OS | Brenych Studio"
-        description={item.tagline}
-        path="/immersive/kool-berk"
-        image={item.previewPoster}
-        imageAlt="Kool Berk Sonic Object OS immersive case"
-        type="article"
-      />
+      <ImmersiveSeoMeta item={item} imageAlt="Kool Berk Sonic Object OS immersive case" />
       <SectionRail
         items={koolBerkRailItems}
         activeId={activeSection}
@@ -2437,14 +2466,7 @@ function WebHeroCaseLayout({
 
   return (
     <div className="min-h-screen bg-[#05070b] text-white">
-      <SeoMeta
-        title="WEBHERO - Living Visual Systems | Brenych Studio"
-        description={item.tagline}
-        path="/immersive/webhero"
-        image={item.previewPoster}
-        imageAlt="WEBHERO Living Visual Systems immersive case"
-        type="article"
-      />
+      <ImmersiveSeoMeta item={item} imageAlt="WEBHERO Living Visual Systems immersive case" />
       <SectionRail
         items={webHeroRailItems}
         activeId={activeSection}
@@ -2875,14 +2897,7 @@ export default function ImmersiveCasePage({
   if (isWhisperCase) {
     return (
       <div className="min-h-screen bg-[#050505] text-white">
-        <SeoMeta
-          title="WHISPER - Immersive Case - Brenych Studio"
-          description={data.tagline}
-          path="/immersive/whisper"
-          image={data.previewPoster}
-          imageAlt="WHISPER immersive exhibition case"
-          type="article"
-        />
+        <ImmersiveSeoMeta item={data} imageAlt="WHISPER immersive exhibition case" />
         <Header
           drawerOpen={drawerOpen}
           onOpenProject={onOpenProject}
@@ -2991,14 +3006,7 @@ export default function ImmersiveCasePage({
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      <SeoMeta
-        title={`${data.title} - Immersive Case - Brenych Studio`}
-        description={data.tagline}
-        path={`/immersive/${data.slug}`}
-        image={data.previewPoster}
-        imageAlt={data.title}
-        type="article"
-      />
+      <ImmersiveSeoMeta item={data} imageAlt={data.title} />
       <Header
         drawerOpen={drawerOpen}
         onOpenProject={onOpenProject}

@@ -37,6 +37,21 @@ export type ImmersiveLink = {
   href: string;
 };
 
+export type ImmersiveSearchContent = {
+  category: "Immersive System" | "Interactive Web" | "Creative Tool" | "Product Interface";
+  proofType: "Immersive Proof" | "Product Prototype" | "Interface System" | "Internal System";
+  shortDescription: string;
+  longDescription: string;
+  tags: string[];
+  type: string;
+  audience: string;
+  problem: string;
+  approach: string;
+  outcome: string;
+  productionFacts: string[];
+  relatedServices: string[];
+};
+
 export type ImmersiveItem = {
   key: ImmersiveCaseKey;
   slug: string;
@@ -60,6 +75,7 @@ export type ImmersiveItem = {
   videos?: ImmersiveMedia[];
   frames?: ImmersiveMedia[];
   highlights?: string[];
+  searchContent?: ImmersiveSearchContent;
 };
 
 export const immersiveItems: ImmersiveItem[] = [
@@ -79,6 +95,33 @@ export const immersiveItems: ImmersiveItem[] = [
     statusKind: "in_progress",
     statusNote:
       "Public site, WebXR experience, Quest hand navigation, print catalog, and first AR print preview flow are working. Final XR polish, additional AR assets, and mobile/tablet refinements continue.",
+    searchContent: {
+      category: "Immersive System",
+      proofType: "Immersive Proof",
+      shortDescription:
+        "A cinematic web / XR exhibition system for photographic archives, spatial storytelling and collector-facing presentation.",
+      longDescription:
+        "WHISPER proves how a photography archive can become a living digital exhibition surface through editorial web, WebXR, Quest VR proof, collector print paths and AR preview direction.",
+      tags: ["Interactive web exhibition", "WebXR", "Spatial archive", "Collector presentation"],
+      type: "Immersive web exhibition / spatial archive system.",
+      audience:
+        "Artists, galleries, cultural projects, collectors and experimental digital exhibitions.",
+      problem:
+        "Photography and archive projects often flatten into static galleries, losing atmosphere, sequence and spatial presence.",
+      approach:
+        "WHISPER expands the archive into a cinematic web / XR direction with atmospheric media, spatial navigation, collector logic and immersive proof layers.",
+      outcome:
+        "The case demonstrates how an art archive can become a living digital exhibition surface rather than a passive portfolio grid.",
+      productionFacts: [
+        "Interactive front-end",
+        "Cinematic media presentation",
+        "WebXR direction",
+        "Archive logic",
+        "Spatial proof",
+        "Responsive presentation",
+      ],
+      relatedServices: ["Interactive web systems", "Product demo landing"],
+    },
     tone: "nocturne",
     previewVideo: "/immersive/Whisper/Video/whisper-hero-poster.mp4",
     previewPoster: "/immersive/Whisper/desktop/whisper-hero.jpg",
@@ -303,6 +346,34 @@ export const immersiveItems: ImmersiveItem[] = [
     statusKind: "in_progress",
     statusNote:
       "Stage System, Backdrops, Living Images, Living Splat and Art Room are demonstrated as functional modules. Living Art Mixer remains in active R&D, and mobile-specific screenshots are not part of the current package yet.",
+    searchContent: {
+      category: "Immersive System",
+      proofType: "Internal System",
+      shortDescription:
+        "An internal R&D platform for cinematic stage modules, living images, Gaussian Splat spatial works, Art Room presentation and future XR adapters.",
+      longDescription:
+        "WEBHERO proves a reusable visual infrastructure direction for premium websites: WebGL stages, cinematic backdrops, living image modules, 3DGS spatial works and Art Room presentation behave as one interface system rather than isolated effects.",
+      tags: ["WebGL stage system", "Living images", "Gaussian Splat", "Spatial web"],
+      type: "Living visual systems / spatial web infrastructure.",
+      audience:
+        "Premium brands, cultural projects, product worlds and studios that need source-backed immersive visual systems instead of static hero sections.",
+      problem:
+        "Premium visual websites often depend on decorative backdrops or isolated media blocks that do not scale into a coherent interface system.",
+      approach:
+        "WEBHERO organizes threshold gates, stage language, cinematic backdrops, living images, splat studies, Art Room presentation and XR adapter direction into one modular R&D platform.",
+      outcome:
+        "The case demonstrates how immersive visual infrastructure can support future premium websites, product presentations and spatial archives without becoming a one-off visual trick.",
+      productionFacts: [
+        "Vite",
+        "React",
+        "TypeScript",
+        "WebGL",
+        "GLSL / Canvas",
+        "Gaussian Splat viewer direction",
+        "SHARP / 3DGS generation pipeline",
+      ],
+      relatedServices: ["Interactive web systems", "Premium landing page"],
+    },
     tone: "signal",
     previewVideo: "/immersive/webhero/video/webhero-video-field.mp4",
     previewPoster: "/immersive/webhero/desktop/webhero-threshold.webp",
@@ -549,6 +620,34 @@ export const immersiveItems: ImmersiveItem[] = [
     statusKind: "in_progress",
     statusNote:
       "Sonic Object Stage, R3F album cube, Object Inspect, Album Dossier, Track Detail, Visual Archive, local audio preview, audio-reactive shader/cube response, Sonic Room prototype, EPK layer, deep-link model and mobile survival pass are documented. Contact/Booking layer, final platform links and final public QA remain open before launch.",
+    searchContent: {
+      category: "Immersive System",
+      proofType: "Product Prototype",
+      shortDescription:
+        "A Sonic Object OS for an experimental electronic artist, combining release objects, signal studies, audio-reactive WebGL and an immersive listening room.",
+      longDescription:
+        "Kool Berk proves how an artist website can become an audio-visual interface system: releases behave as digital objects, tracks become signal studies, and listening opens into a WebGL chamber instead of a standard music-link page.",
+      tags: ["Artist website", "Audio-reactive WebGL", "Sonic object", "Music interface"],
+      type: "Audio-visual artist interface / immersive music environment.",
+      audience:
+        "Experimental musicians, labels, cultural projects, audiovisual performers and artist-led releases that need a richer web presence than a link page.",
+      problem:
+        "Artist websites and release pages often collapse into external platform links, losing identity, atmosphere and a sense of the work as an object.",
+      approach:
+        "The system turns albums and tracks into inspectable sonic objects with release dossiers, local preview, signal metadata, visual archive, Sonic Room and contact/booking layers.",
+      outcome:
+        "The case demonstrates how music presentation can become a premium interactive environment while remaining honest about prototype launch status.",
+      productionFacts: [
+        "Vite",
+        "React",
+        "Three.js",
+        "React Three Fiber",
+        "Drei",
+        "Web Audio API",
+        "Custom GLSL shaders",
+      ],
+      relatedServices: ["Interactive web systems", "Product demo landing"],
+    },
     tone: "nocturne",
     previewVideo: "/immersive/kool-berk/video/kool-berk-video.mp4",
     previewPoster: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
@@ -652,6 +751,37 @@ export const immersiveItems: ImmersiveItem[] = [
     statusKind: "in_progress",
     statusNote:
       "The web experience, memory field, cinematic inspect layer, local archive intake, Memory Reel, XR Memory Room, VR session trace and replay artifact pipeline are functioning as an MVP. Quest interaction stabilization, artifact styling, mobile/tablet pass and PDF booklet output remain in active development.",
+    searchContent: {
+      category: "Immersive System",
+      proofType: "Product Prototype",
+      shortDescription:
+        "An experimental presence-based interface engine that transforms private photo archives into a spatial memory field, cinematic inspect layer, XR room and exportable artifacts.",
+      longDescription:
+        "Presence OS / Memory Atlas proves how personal archive material can become a local-first spatial memory product: intake, attention, return, synthetic weather, cinematic inspection, memory reel and XR room behave as one prototype system.",
+      tags: ["Spatial memory", "Private archive", "WebXR", "Local-first prototype"],
+      type: "Experimental product prototype / WebXR spatial memory experience.",
+      audience:
+        "Memory products, family archive tools, cultural archive projects, private collections and experimental spatial interfaces.",
+      problem:
+        "Private photo archives usually remain flat folders or galleries, losing context, emotional sequence and a sense of spatial distance.",
+      approach:
+        "The prototype keeps files local while turning archive fragments into a presence-based memory field, cinematic inspect flow, Memory Reel artifact path and XR Memory Room.",
+      outcome:
+        "The case demonstrates how a private archive can become a calm spatial product direction without claiming cloud intelligence or finished production status.",
+      productionFacts: [
+        "Vite",
+        "React",
+        "TypeScript",
+        "Three.js",
+        "React Three Fiber",
+        "WebXR",
+        "Canvas rendering",
+        "MediaRecorder/WebM",
+        "JSZip",
+        "Local object URLs",
+      ],
+      relatedServices: ["Interactive web systems", "Product demo landing"],
+    },
     tone: "nocturne",
     previewVideo: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
     previewPoster: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
@@ -833,6 +963,35 @@ export const immersiveItems: ImmersiveItem[] = [
     statusKind: "in_progress",
     statusNote:
       "The web interface, seven field narrative, Inspect Optics layer, Scroll-Driven Spatial Reference Orbit, GLSL atmosphere and WebXR spatial route are functioning as a prototype. Hardware is fictional, AI processing is conceptual, and WebXR hand navigation remains experimental.",
+    searchContent: {
+      category: "Product Interface",
+      proofType: "Product Prototype",
+      shortDescription:
+        "A fictional AI spatial glasses product-interface prototype where the website behaves like the product OS.",
+      longDescription:
+        "Orbit Lens proves how a premium fictional hardware concept can be presented through contextual fields, cinematic inspection, reference orbit and WebXR spatial proof while staying honest that the hardware and AI processing are conceptual.",
+      tags: ["AI eyewear concept", "Product interface", "WebXR", "Spatial product demo"],
+      type: "Premium AI spatial glasses concept / WebXR product interface.",
+      audience:
+        "Hardware concepts, AI products, product launches, founder-led demos and premium product worlds that need a believable interactive product surface.",
+      problem:
+        "Fictional hardware and AI products can feel generic or overclaimed when presented as static marketing pages with vague intelligence language.",
+      approach:
+        "Orbit Lens frames the site as the product OS: seven contextual fields, Inspect Optics, scroll-driven spatial reference orbit, GLSL atmosphere and optional WebXR proof mode.",
+      outcome:
+        "The case demonstrates a premium product demo direction that communicates concept, interaction logic and prototype honesty without claiming a finished device.",
+      productionFacts: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Motion",
+        "Three.js",
+        "WebXR",
+        "GLSL / WebGL canvas shader",
+      ],
+      relatedServices: ["Product demo landing", "Interactive web systems"],
+    },
     tone: "nocturne",
     previewVideo: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
     previewPoster: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",

@@ -79,7 +79,7 @@ const authoredCaseStories: CaseStory[] = [
     headline: "House of Lune",
     subheadline: "A cinematic maison for luxury objects.",
     summary:
-      "Jewelry, fashion, and collector pieces are presented through controlled light, editorial pacing, multilingual product pages, and a private inquiry path instead of a checkout-first store.",
+      "A premium product-world presentation surface for luxury objects, private inquiry and visual storytelling. The case shows how jewelry, fashion and collectible products can move beyond generic ecommerce grids into a controlled digital maison.",
     proofClaim:
       "Luxury commerce becomes a system when atmosphere, product focus, trust, and private inquiry move as one surface.",
     evidencePoints: [
@@ -104,7 +104,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         title: "Content architecture",
         text:
-          "Homepage, collection, product detail, craftsmanship, philosophy, journal, and contact surfaces are organized as one maison journey.",
+          "Homepage, collection, product detail, craftsmanship, philosophy, journal, and contact surfaces are organized as one product presentation website for private commerce.",
       },
       {
         title: "Motion grammar",
@@ -124,7 +124,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         title: "Production front-end",
         text:
-          "A Next.js App Router foundation with structured content, reusable editorial components, metadata, and Cloudflare Workers deployment.",
+          "A responsive Next.js App Router foundation with structured product data, reusable editorial components, metadata-ready routes, Open Graph preparation, and Cloudflare Workers deployment.",
       },
     ],
     mediaSequence: [
@@ -304,7 +304,7 @@ const authoredCaseStories: CaseStory[] = [
     headline: "Barcelona Private Advisory",
     subheadline: "Private property intelligence system.",
     summary:
-      "A calm Barcelona real-estate advisory prototype built around buyer intent, Barcelona Lens, acquisition signals, shortlist dossiers, property inspection, and advisory inquiry handoff.",
+      "A high-trust advisory website concept for private real estate, curated buyer journeys and premium inquiry flows. The prototype is built around buyer intent, Barcelona Lens, acquisition signals, shortlist dossiers, property inspection and advisory handoff.",
     proofClaim:
       "Private advisory becomes a system when buyer intent, district intelligence, ranked candidates, shortlist evidence, inspection, and inquiry handoff move as one guided path.",
     evidencePoints: [
@@ -344,12 +344,12 @@ const authoredCaseStories: CaseStory[] = [
       {
         title: "Advisory inquiry handoff",
         text:
-          "Search context, selected properties, timing, and buyer notes become a structured viewing request.",
+          "Search context, selected properties, timing, and buyer notes become a structured viewing request for a clearer first advisory conversation.",
       },
       {
         title: "Responsive structure",
         text:
-          "Mobile keeps the same intelligence model readable across lens, dossier, field card, inspection, and request brief states.",
+          "Mobile keeps the same intelligence model readable across lens, dossier, field card, inspection, request brief and multilingual-ready advisory states.",
       },
     ],
     mediaSequence: [
@@ -637,7 +637,7 @@ const authoredCaseStories: CaseStory[] = [
     headline: "CreatorOps",
     subheadline: "Creator workflow interface system.",
     summary:
-      "A beta-ready export-first workspace for creators and small content teams, built around Library, Smart Mix, Planner, Captions, Export, Client Review, Profile Handoff / Bio Builder, and Media Converter.",
+      "CreatorOps is an export-first creator workflow system that turns scattered visual assets into a ready-to-publish Week Pack: Library, Smart Mix, planning, captions, ZIP export direction, client review, profile handoff and media conversion.",
     proofClaim:
       "Creator workflow becomes a system when scattered assets, planning, captions, export, review, and handoff move toward one ready-to-publish Week Pack.",
     evidencePoints: [
@@ -667,7 +667,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         title: "Export-first planning",
         text:
-          "Planner and Captions turn selected visuals into a structured Week Pack, so the workflow moves toward usable output instead of isolated files.",
+          "Planner, Captions and Export turn selected visuals into a structured Week Pack, so the workflow moves toward usable output instead of isolated files.",
       },
       {
         title: "Client review",
@@ -682,7 +682,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         title: "Responsive product UI",
         text:
-          "A React, TypeScript, Vite, and Tailwind foundation supports a beta-ready workflow prototype with product UI, stateful surfaces, and responsive presentation.",
+          "A React, TypeScript, Vite, and Tailwind foundation supports a beta-ready workflow prototype with local-first logic, stateful surfaces, responsive product UI and export-ready workflow direction.",
       },
     ],
     mediaSequence: [

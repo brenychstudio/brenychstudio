@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
@@ -76,6 +76,12 @@ const offerSignalLine =
 const offerSignalFollowUp = [
   "The service exposes its working logic.",
   "Each project opens as visible stages, claims, motion states, and delivery route.",
+];
+
+const focusedEntryRoutes = [
+  { label: "Premium landing page", to: "/services/premium-landing-page" },
+  { label: "Product demo landing", to: "/services/product-demo-landing" },
+  { label: "Interactive web system", to: "/services/interactive-web-systems" },
 ];
 
 const buildSystems: BuildSystem[] = [
@@ -306,6 +312,27 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
   return (
     <div className={`font-mono text-[10px] uppercase tracking-[0.18em] ${light ? "text-white/48" : "text-neutral-500"}`}>
       {children}
+    </div>
+  );
+}
+
+function FocusedEntryRoutes({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={compact ? "mt-7 border-y border-neutral-950/10 py-4" : "mt-8 border-y border-neutral-950/10 py-4"}>
+      <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+        Focused entry routes
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {focusedEntryRoutes.map((route) => (
+          <Link
+            key={route.to}
+            to={route.to}
+            className="inline-flex min-h-9 items-center rounded-full border border-neutral-300 bg-white/46 px-3 text-[10px] uppercase tracking-[0.13em] text-neutral-600 transition hover:-translate-y-0.5 hover:border-neutral-950/35 hover:bg-white hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+          >
+            {route.label} -&gt;
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
@@ -772,6 +799,7 @@ function MobileOfferHero({
           View work -&gt;
         </button>
       </div>
+      <FocusedEntryRoutes compact />
     </section>
   );
 }
@@ -1146,6 +1174,7 @@ export default function OfferV2({
                   Explore systems
                 </button>
               </div>
+              <FocusedEntryRoutes />
 
               <div className="mt-9 grid gap-3 border-y border-neutral-950/10 py-5 sm:grid-cols-3">
                 {["Commercial translation", "System architecture", "Production delivery"].map((item, index) => (

@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } fr
 import { useNavigate } from "react-router-dom";
 
 import { getAvailableSystem, isAvailableSystem, type AvailableSystem } from "../data/availableSystems";
-import { cases } from "../data/cases";
+import { cases, getCasePath } from "../data/cases";
 import {
   evidenceFilters,
   fallbackEvidence,
@@ -883,7 +883,7 @@ export default function EvidenceAtlas({
 
   const openCase = (item: EvidenceCase) => {
     playRole("select");
-    startSpaPageTransition(navigate, `/work/${item.slug}`, onCloseProject);
+    startSpaPageTransition(navigate, getCasePath(item.slug), onCloseProject);
   };
 
   const requestSystem = () => {

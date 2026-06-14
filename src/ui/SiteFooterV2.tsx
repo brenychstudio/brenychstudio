@@ -52,6 +52,12 @@ const systemLinks: FooterLink[] = [
   { label: "Practice Model", to: "/offer" },
 ];
 
+const serviceLinks: FooterLink[] = [
+  { label: "Premium landing pages", to: "/services/premium-landing-page" },
+  { label: "Product demo landings", to: "/services/product-demo-landing" },
+  { label: "Interactive web systems", to: "/services/interactive-web-systems" },
+];
+
 const legalLinks: FooterLink[] = [
   { label: "Privacy", to: "/privacy" },
   { label: "Legal", to: "/legal" },
@@ -212,7 +218,7 @@ export default function SiteFooterV2({
             </div>
           </div>
 
-          <div className="grid gap-6 border-b border-neutral-950/[0.08] py-7 lg:grid-cols-[0.95fr_1.2fr_1fr] lg:items-start">
+          <div className="grid gap-6 border-b border-neutral-950/[0.08] py-7 lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start">
             <div>
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
@@ -222,6 +228,7 @@ export default function SiteFooterV2({
             </div>
 
             <FooterLedgerLinks title="Systems" links={systemLinks} />
+            <FooterLedgerLinks title="Services" links={serviceLinks} />
             <FooterLedgerLinks title="Routes" links={routeLinks} />
           </div>
 
@@ -323,7 +330,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-2">
-              {routeLinks.map((link) => (
+              {[...serviceLinks, ...routeLinks].map((link) => (
                 <Link
                   key={`immersive-case-mobile-route-${link.to}-${link.label}`}
                   to={link.to}
@@ -407,7 +414,7 @@ export default function SiteFooterV2({
             </div>
           </div>
 
-          <div className="grid gap-8 border-b border-neutral-950/14 py-8 lg:grid-cols-[0.95fr_1.25fr_1fr] lg:items-start">
+          <div className="grid gap-8 border-b border-neutral-950/14 py-8 lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start">
             <div>
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700">
@@ -422,6 +429,21 @@ export default function SiteFooterV2({
                 {systemLinks.map((link) => (
                   <Link
                     key={`immersive-case-systems-${link.to}-${link.label}`}
+                    to={link.to}
+                    className="text-[12px] uppercase tracking-[0.12em] text-neutral-800 transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">Services</div>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                {serviceLinks.map((link) => (
+                  <Link
+                    key={`immersive-case-services-${link.to}-${link.label}`}
                     to={link.to}
                     className="text-[12px] uppercase tracking-[0.12em] text-neutral-800 transition hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#a9a8a1]"
                   >
@@ -537,7 +559,7 @@ export default function SiteFooterV2({
           </div>
         ) : null}
 
-        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[0.95fr_1.2fr_1fr] lg:items-start ${hideClosingSignal ? "pb-7" : "py-7"}`}>
+        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start ${hideClosingSignal ? "pb-7" : "py-7"}`}>
           <div>
             <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
             <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
@@ -551,6 +573,7 @@ export default function SiteFooterV2({
           </div>
 
           <FooterLedgerLinks title="Systems" links={systemLinks} />
+          <FooterLedgerLinks title="Services" links={serviceLinks} />
           <FooterLedgerLinks title="Routes" links={routeLinks} />
         </div>
 

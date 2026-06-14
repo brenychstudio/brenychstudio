@@ -8,11 +8,14 @@ import AboutV2 from "./pages/AboutV2";
 import StudioIndex from "./pages/StudioIndex";
 import EvidenceAtlas from "./pages/EvidenceAtlas";
 import CasePageV2 from "./pages/CasePageV2";
+import ServicePage from "./pages/ServicePage";
 import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
 import SoundSignalDock from "./ui/SoundSignalDock";
 import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
+import StructuredData, { type StructuredDataValue } from "./ui/StructuredData";
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, toAbsoluteSiteUrl } from "./config/site";
 import { LocaleProvider } from "./store/useLocale";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
@@ -22,33 +25,33 @@ const LegalV2 = lazy(() => import("./pages/LegalV2"));
 
 const routeSeo = {
   home: {
-    title: "Brenych Studio - Premium Interface Systems",
+    title: "Brenych Studio - Premium Front-end Systems & Interactive Web",
     description:
-      "Premium web, product surfaces, immersive digital experiences, and interface systems by Rostyslav Brenych.",
+      "Premium front-end systems, interactive websites, product presentations and immersive digital surfaces for brands, creators, founders and cultural projects.",
     path: "/",
   },
   work: {
-    title: "Work - Brenych Studio Interface Systems",
+    title: "Work - Premium Websites, Product Interfaces & Interactive Systems",
     description:
-      "Selected case systems, commercial interfaces, workflow tools, immersive prototypes, and available foundations.",
+      "Selected Brenych Studio work across premium websites, product interfaces, creator tools, advisory surfaces and immersive web systems.",
     path: "/work",
   },
   immersive: {
-    title: "Immersive Interface Systems - Brenych Studio",
+    title: "Immersive Interface Systems - WebGL, Spatial Archives & Cinematic Web",
     description:
-      "WebGL, WebXR, spatial proof layers, cinematic archives, and immersive prototype systems by Brenych Studio.",
+      "Interactive and immersive web systems for spatial archives, cinematic storytelling, WebGL-ready presentations and experimental digital experiences.",
     path: "/immersive",
   },
   offer: {
-    title: "Offer - Brenych Studio",
+    title: "Offer - Premium Landing Pages, Product Demo Pages & Interactive Web Systems",
     description:
-      "Premium websites, interactive product surfaces, multilingual systems, immersive prototypes, and creative technology direction.",
+      "Focused premium web systems for launches, products, creators, advisory services and immersive digital presentations.",
     path: "/offer",
   },
   about: {
-    title: "About - Brenych Studio",
+    title: "About - Rostyslav Brenych / Brenych Studio",
     description:
-      "The practice behind Brenych Studio: front-end engineering, visual direction, motion grammar, image, and interface research.",
+      "A creative developer and interactive front-end systems builder working across premium websites, product prototypes, visual storytelling and immersive interfaces.",
     path: "/about",
   },
   privacy: {
@@ -65,10 +68,52 @@ const routeSeo = {
   },
 } satisfies Record<string, SeoMetaProps>;
 
-function SeoRoute({ meta, children }: { meta: SeoMetaProps; children: ReactNode }) {
+const organizationSchema: StructuredDataValue = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: toAbsoluteSiteUrl(DEFAULT_OG_IMAGE),
+  founder: {
+    "@type": "Person",
+    name: "Rostyslav Brenych",
+  },
+};
+
+const websiteSchema: StructuredDataValue = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: routeSeo.home.description,
+};
+
+const aboutSchema: StructuredDataValue = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  name: "About - Rostyslav Brenych / Brenych Studio",
+  url: toAbsoluteSiteUrl("/about"),
+  mainEntity: {
+    "@type": "Person",
+    name: "Rostyslav Brenych",
+    url: SITE_URL,
+    jobTitle: "Creative Developer / Interactive Front-end Systems Builder",
+  },
+};
+
+function SeoRoute({
+  meta,
+  structuredData,
+  children,
+}: {
+  meta: SeoMetaProps;
+  structuredData?: StructuredDataValue | StructuredDataValue[];
+  children: ReactNode;
+}) {
   return (
     <>
       <SeoMeta {...meta} />
+      {structuredData ? <StructuredData id={`structured-data-${meta.path.replace(/[^a-z0-9]/gi, "-") || "home"}`} data={structuredData} /> : null}
       {children}
     </>
   );
@@ -85,6 +130,7 @@ function RoutePendingSurface() {
   if (pathname === "/work") background = "bg-[#f3f1ec]";
   else if (pathname === "/immersive") background = "bg-[#f1eee7]";
   else if (pathname === "/offer" || pathname === "/about") background = "bg-[#f3f0e9]";
+  else if (pathname.startsWith("/services/")) background = "bg-[#f4f1ea]";
   else if (isPolicy || isWorkCase) background = "bg-[#f6f4ef]";
   else if (isImmersiveCase) background = "bg-[#080807]";
 
@@ -150,7 +196,7 @@ export default function App() {
           <Route
             path="/"
             element={
-              <SeoRoute meta={routeSeo.home}>
+              <SeoRoute meta={routeSeo.home} structuredData={[organizationSchema, websiteSchema]}>
                 <StudioIndex
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -214,6 +260,19 @@ export default function App() {
             }
           />
 
+          <Route path="/services" element={<Navigate to="/offer" replace />} />
+
+          <Route
+            path="/services/:slug"
+            element={
+              <ServicePage
+                drawerOpen={drawerOpen}
+                onOpenProject={openProject}
+                onCloseProject={closeProject}
+              />
+            }
+          />
+
           <Route
             path="/work-lab/:slug"
             element={
@@ -242,7 +301,7 @@ export default function App() {
           <Route
             path="/about"
             element={
-              <SeoRoute meta={routeSeo.about}>
+              <SeoRoute meta={routeSeo.about} structuredData={aboutSchema}>
                 <AboutV2
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -368,11 +427,13 @@ export default function App() {
           <Route
             path="/spatial-proof"
             element={
-              <SpatialProof
-                drawerOpen={drawerOpen}
-                onOpenProject={openProject}
-                onCloseProject={closeProject}
-              />
+              <HiddenRoute>
+                <SpatialProof
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </HiddenRoute>
             }
           />
 

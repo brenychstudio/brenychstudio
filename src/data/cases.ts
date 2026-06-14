@@ -1,6 +1,24 @@
 import type { CaseCoverFocus, CaseCoverTone } from "../ui/work/caseCover.types";
 import type { CaseStatusKind } from "../ui/status/status.types";
 
+export type CaseStatus = "live" | "prototype" | "private" | "in_progress";
+export type CaseCategory =
+  | "Product Interface"
+  | "Premium Website"
+  | "Interactive Web"
+  | "Immersive System"
+  | "Creative Tool"
+  | "Editorial / Archive"
+  | "Commercial Surface";
+export type CaseProofType =
+  | "Live Website"
+  | "Product Prototype"
+  | "Case Prototype"
+  | "Immersive Proof"
+  | "Interface System"
+  | "Internal System"
+  | "Private Concept";
+
 export type CaseFrameKind = "image" | "video";
 export type CaseFrameDevice = "desktop" | "mobile";
 export type CaseFrameAspect = "landscape" | "portrait" | "phone";
@@ -52,7 +70,37 @@ export const archiveCategoryLabels: Record<ArchiveCategoryKey, string> = {
   hospitality: "Hospitality",
 };
 
-export type Case = {
+export type CaseSearchContent = {
+  type: string;
+  audience: string;
+  problem: string;
+  approach: string;
+  outcome: string;
+  productionFacts: string[];
+  relatedServices: string[];
+};
+
+export type CaseRegistryFields = {
+  category: CaseCategory;
+  proofType: CaseProofType;
+  status: CaseStatus;
+  shortDescription: string;
+  longDescription: string;
+  tags: string[];
+  liveUrl?: string;
+  repoUrl?: string;
+  previewImage: string;
+  ogImage: string;
+  alt: string;
+  ctaLabel: string;
+  relatedServices?: string[];
+  relatedCases?: string[];
+  clientType?: string;
+  stack?: string[];
+  searchContent?: CaseSearchContent;
+};
+
+export type CaseBase = {
   slug: string;
   code: string;
   index: string;
@@ -72,7 +120,9 @@ export type Case = {
   content?: CaseContent;
 };
 
-export const cases: Case[] = [
+export type Case = CaseBase & CaseRegistryFields;
+
+const caseItems: CaseBase[] = [
   {
     slug: "aurel-eon-gt",
     code: "AE-14",
@@ -2728,3 +2778,278 @@ export const cases: Case[] = [
       },
     },
 ];
+
+type CaseRegistryEntry = Omit<
+  CaseRegistryFields,
+  "previewImage" | "ogImage" | "alt" | "stack" | "liveUrl" | "repoUrl"
+> &
+  Partial<Pick<CaseRegistryFields, "previewImage" | "ogImage" | "alt" | "stack" | "liveUrl" | "repoUrl">>;
+
+const sharedServicePaths = {
+  premiumLanding: "Premium landing page",
+  productDemo: "Product demo landing",
+  interactiveSystems: "Interactive web systems",
+};
+
+const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
+  "aurel-eon-gt": {
+    category: "Interactive Web",
+    proofType: "Case Prototype",
+    status: "prototype",
+    shortDescription:
+      "A cinematic product presentation prototype for a fictional electric grand tourer, built around product states, gallery inspection, drive character and private preview.",
+    longDescription:
+      "AUREL EON GT proves how a premium product launch can behave as an interface system: atmosphere, product evidence, motion, inspection and inquiry are organized into one cinematic front-end surface without claiming a live automotive product.",
+    tags: ["Automotive concept", "Premium product", "Cinematic UX", "Interaction system"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems],
+    relatedCases: ["house-of-lune", "arcwave-integrations"],
+    clientType: "Luxury product / mobility concept",
+  },
+  "oria-house-barcelona": {
+    category: "Premium Website",
+    proofType: "Case Prototype",
+    status: "prototype",
+    shortDescription:
+      "A boutique hotel website concept that turns rooms, stay rituals, location context and booking contact into a calm guest journey.",
+    longDescription:
+      "Oria House Barcelona demonstrates a hospitality website foundation where atmosphere, room comparison, guest decision support and inquiry logic stay readable across desktop and mobile without claiming a live reservation engine.",
+    tags: ["Hospitality", "Boutique hotel", "Room comparison", "Booking inquiry"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.interactiveSystems],
+    relatedCases: ["casa-nube", "barcelona-private-advisory"],
+    clientType: "Boutique hospitality",
+  },
+  sprintcrm: {
+    category: "Product Interface",
+    proofType: "Internal System",
+    status: "prototype",
+    shortDescription:
+      "A premium internal CRM prototype for focused outreach workflows, lead import, pipeline control and operator-facing reporting.",
+    longDescription:
+      "SprintCRM proves product-interface thinking for internal operations: data states, daily workflow, reporting and operator trust are shaped into a focused CRM surface rather than a generic admin dashboard.",
+    tags: ["CRM", "Internal system", "Workflow UX", "Operator console"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems],
+    relatedCases: ["creatorops", "print-border-studio"],
+    clientType: "Internal operations / sales teams",
+  },
+  "bcn-advisory": {
+    category: "Premium Website",
+    proofType: "Case Prototype",
+    status: "prototype",
+    shortDescription:
+      "A high-trust advisory website concept for private real estate, curated buyer journeys and premium inquiry flows.",
+    longDescription:
+      "Barcelona Private Advisory proves how real-estate and private advisory websites can move beyond listing-heavy presentation into buyer intent, district intelligence, shortlist dossiers, property inspection and structured inquiry handoff.",
+    tags: ["Real estate advisory", "Barcelona Lens", "Shortlist dossier", "Private inquiry"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo],
+    relatedCases: ["oria-house-barcelona", "casa-nube"],
+    clientType: "Private advisory / real estate consultants",
+    searchContent: {
+      type: "Premium advisory / real estate presentation website.",
+      audience:
+        "Private advisory, real estate consultants, relocation consultants, boutique property services and high-trust local businesses.",
+      problem:
+        "Advisory and real-estate websites often become listing-heavy, impersonal and difficult to trust.",
+      approach:
+        "The system creates a curated route through buyer context, selected opportunities, private inquiry, location intelligence and trust-oriented navigation.",
+      outcome:
+        "The case demonstrates how a service business can move from generic presentation to a clearer premium advisory interface.",
+      productionFacts: [
+        "Responsive front-end",
+        "Inquiry-oriented architecture",
+        "Multilingual-ready direction",
+        "Location and service framing",
+        "SEO-ready content structure",
+      ],
+      relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo],
+    },
+  },
+  "fluid-exhibition": {
+    category: "Interactive Web",
+    proofType: "Immersive Proof",
+    status: "live",
+    shortDescription:
+      "A cinematic web exhibition surface where image rhythm, motion and scroll structure behave as one editorial presentation system.",
+    longDescription:
+      "FLUID proves that exhibition and culture-facing web experiences can stay atmospheric while remaining structured, readable and production-ready across media, motion and responsive presentation.",
+    tags: ["Web exhibition", "Editorial surface", "Scroll interaction", "Cinematic media"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
+    relatedCases: ["form-index", "print-border-studio"],
+    clientType: "Culture / exhibition / editorial projects",
+  },
+  "form-index": {
+    category: "Editorial / Archive",
+    proofType: "Interface System",
+    status: "live",
+    shortDescription:
+      "A premium interactive editorial system proving reusable case architecture, multilingual presentation and precise motion grammar.",
+    longDescription:
+      "FORM INDEX shows how a presentation website can become a repeatable content system: sticky stage logic, motion pacing, editorial hierarchy and responsive translation work together without becoming effect-driven.",
+    tags: ["Editorial system", "Multilingual", "Motion UI", "Presentation architecture"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
+    relatedCases: ["fluid-exhibition", "arcwave-integrations"],
+    clientType: "Editorial / cultural / product presentation",
+  },
+  "arcwave-integrations": {
+    category: "Commercial Surface",
+    proofType: "Case Prototype",
+    status: "prototype",
+    shortDescription:
+      "A technical installation service system that turns telecom, networks, electricity, security, EV charging, smart home and audio into one readable infrastructure path.",
+    longDescription:
+      "ARCWAVE proves how technical services can be presented as a calm infrastructure interface: connected services, proof metrics, service paths, install flow and quote brief create a clearer first buyer conversation.",
+    tags: ["Infrastructure UX", "Technical services", "Install brief", "Quote flow"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo],
+    relatedCases: ["form-index", "creatorops"],
+    clientType: "Technical services / installation companies",
+  },
+  "casa-nube": {
+    category: "Premium Website",
+    proofType: "Live Website",
+    status: "live",
+    shortDescription:
+      "A premium multilingual hospitality surface with editorial structure, mobile-first service flow and clear local business presentation.",
+    longDescription:
+      "Casa Nube proves how a small hospitality business can use language-aware content, menu structure, visitor utility and local rhythm to feel premium without becoming visually heavy.",
+    tags: ["Hospitality", "Multilingual", "Mobile-first", "Local business"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.premiumLanding],
+    relatedCases: ["oria-house-barcelona", "barcelona-private-advisory"],
+    clientType: "Hospitality / local business",
+  },
+  "print-border-studio": {
+    category: "Creative Tool",
+    proofType: "Product Prototype",
+    status: "prototype",
+    shortDescription:
+      "A creative production tool for print borders, export logic, artwork inspection and collector-facing presentation.",
+    longDescription:
+      "Print Border Studio proves how a specialist creative utility can combine precise production controls, artwork preview, queue logic and presentation value in one focused product interface.",
+    tags: ["Creative tool", "Print production", "Canvas UI", "Export workflow"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems],
+    relatedCases: ["creatorops", "fluid-exhibition"],
+    clientType: "Artists / studios / print workflows",
+  },
+  "house-of-lune": {
+    category: "Premium Website",
+    proofType: "Live Website",
+    status: "live",
+    shortDescription:
+      "A premium product-world presentation surface for luxury objects, private inquiry and visual storytelling.",
+    longDescription:
+      "House of Lune proves how luxury objects, jewelry, fashion or collectible products can move beyond generic ecommerce grids into a controlled product world with editorial pacing, private inquiry, multilingual structure and stronger trust.",
+    tags: ["Luxury product", "Private inquiry", "Product presentation", "Multilingual"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.interactiveSystems],
+    relatedCases: ["creatorops", "barcelona-private-advisory"],
+    clientType: "Luxury objects / founder-led product worlds",
+    searchContent: {
+      type: "Premium product presentation website.",
+      audience:
+        "Luxury objects, jewelry, fashion, collectible products, private commerce and founder-led product worlds.",
+      problem:
+        "Premium products often lose perceived value when shown through generic ecommerce grids or template pages.",
+      approach:
+        "The interface treats the product as a visual world through controlled typography, editorial pacing, product proof, inquiry logic and refined media surfaces.",
+      outcome:
+        "The case demonstrates how a small product collection can become a premium digital surface with stronger trust, atmosphere and conversion intent.",
+      productionFacts: [
+        "Responsive front-end",
+        "Product media system",
+        "Inquiry path",
+        "Premium visual hierarchy",
+        "Metadata-ready structure",
+      ],
+      relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.interactiveSystems],
+    },
+  },
+  creatorops: {
+    category: "Product Interface",
+    proofType: "Product Prototype",
+    status: "in_progress",
+    shortDescription:
+      "CreatorOps is an export-first creator workflow system that turns scattered visual assets into a ready-to-publish Week Pack: Library, Smart Mix, planning, captions, ZIP export, client review and profile handoff.",
+    longDescription:
+      "CreatorOps proves how creator tooling can become a calm export-first operating system instead of another noisy scheduler dashboard. It is positioned as a prototype direction, not a production SaaS with live billing, accounts, backend storage or direct Instagram publishing.",
+    tags: ["Creator workflow", "Product interface", "Smart Mix", "Export workflow"],
+    ctaLabel: "View case",
+    relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
+    relatedCases: ["print-border-studio", "house-of-lune"],
+    clientType: "Creators / small brands / content teams",
+    searchContent: {
+      type: "Creator workflow product interface / beta-ready prototype.",
+      audience:
+        "Creators, small brands, content managers and creative studios preparing weekly content packs.",
+      problem:
+        "Creator workflows often start with scattered visual assets, unclear sequencing and disconnected caption and export tasks.",
+      approach:
+        "CreatorOps structures the work into Library, Smart Mix, Sequence, Planner, Captions, Export, Client Review, Profile Handoff and Media Converter layers.",
+      outcome:
+        "The project demonstrates how a creator tool can become a calm export-first operating system instead of another noisy scheduler dashboard.",
+      productionFacts: [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Responsive product UI",
+        "Local-first prototype logic",
+        "ZIP and export-ready workflow direction",
+      ],
+      relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
+    },
+  },
+};
+
+function getCaseLink(item: CaseBase, pattern: RegExp) {
+  return item.content?.links?.find((link) => pattern.test(link.label))?.href;
+}
+
+function toStackList(stackLabel: string) {
+  return stackLabel
+    .split("/")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function enrichCase(item: CaseBase): Case {
+  const registry = caseRegistryBySlug[item.slug];
+
+  if (!registry) {
+    throw new Error(`Missing case registry metadata for ${item.slug}`);
+  }
+
+  return {
+    ...item,
+    ...registry,
+    liveUrl: registry.liveUrl ?? getCaseLink(item, /live/i),
+    repoUrl: registry.repoUrl ?? getCaseLink(item, /repo/i),
+    previewImage: registry.previewImage ?? item.poster.src,
+    ogImage: registry.ogImage ?? registry.previewImage ?? item.poster.src,
+    alt: registry.alt ?? item.poster.alt,
+    stack: registry.stack ?? toStackList(item.stackLabel),
+  };
+}
+
+export const cases: Case[] = caseItems.map(enrichCase);
+
+export const publicCaseSlugs = cases.map((item) => item.slug);
+
+export function getCaseCanonicalSlug(slug: string) {
+  return slug === "bcn-advisory" ? "barcelona-private-advisory" : slug;
+}
+
+export function getCasePath(slug: string) {
+  return `/work/${getCaseCanonicalSlug(slug)}`;
+}
+
+export function getCaseBySlug(slug: string | undefined) {
+  if (!slug) return null;
+  const canonicalSlug = slug === "barcelona-private-advisory" ? "bcn-advisory" : slug;
+  return cases.find((item) => item.slug === canonicalSlug) ?? null;
+}

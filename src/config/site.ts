@@ -1,4 +1,4 @@
-export const SITE_URL = "https://brenych.com";
+export const SITE_URL = "https://brenychstudio.com";
 export const SITE_NAME = "Brenych Studio";
 export const DEFAULT_OG_IMAGE = "/og-default.png";
 

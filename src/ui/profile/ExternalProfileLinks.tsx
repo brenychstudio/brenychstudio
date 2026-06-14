@@ -1,7 +1,7 @@
 export const externalProfiles = [
   {
     label: "Brenych.com",
-    href: "https://brenych.com",
+    href: "https://brenychstudio.com",
     meta: "Studio hub",
   },
   {

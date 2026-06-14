@@ -7,6 +7,8 @@ export type ServiceProofRef = {
   slug: string;
   source: "work" | "immersive";
   claim: string;
+  label: string;
+  role: string;
 };
 
 export type ServiceMethodStep = {
@@ -17,6 +19,8 @@ export type ServiceMethodStep = {
 export type ServicePageData = {
   slug: ServicePageSlug;
   path: `/services/${ServicePageSlug}`;
+  visualTone: "premium" | "product" | "immersive";
+  heroProofLayout: "editorial-stack" | "product-stack" | "spatial-stack";
   seoTitle: string;
   metaDescription: string;
   heroTitle: string;
@@ -24,10 +28,17 @@ export type ServicePageData = {
   primaryCta: string;
   secondaryCta: string;
   secondaryHref: string;
+  routeTitle: string;
   routeDefinition: string;
+  routeLedger: Array<{
+    title: string;
+    text: string;
+  }>;
+  methodTitle: string;
   bestFor: string[];
   method: ServiceMethodStep[];
   proof: ServiceProofRef[];
+  proofStatement: string;
   deliverables: string[];
   closingTitle: string;
   closingBody: string;
@@ -38,6 +49,8 @@ export const servicePages: ServicePageData[] = [
   {
     slug: "premium-landing-page",
     path: "/services/premium-landing-page",
+    visualTone: "premium",
+    heroProofLayout: "editorial-stack",
     seoTitle: "Premium Landing Pages for Focused Launches | Brenych Studio",
     metaDescription:
       "Premium standalone landing pages for product launches, services, consultations, campaigns, booking flows and focused commercial offers.",
@@ -47,8 +60,24 @@ export const servicePages: ServicePageData[] = [
     primaryCta: "Start a project",
     secondaryCta: "View relevant work",
     secondaryHref: "/work",
+    routeTitle: "One focused commercial surface.",
     routeDefinition:
       "A focused landing system for one clear commercial action: inquiry, booking, waitlist, consultation, product launch, event registration or offer validation.",
+    routeLedger: [
+      {
+        title: "Offer clarity",
+        text: "One action, one audience, one premium route instead of a diluted site section.",
+      },
+      {
+        title: "Visual trust",
+        text: "Proof, media, hierarchy and inquiry logic appear before the page asks for commitment.",
+      },
+      {
+        title: "Launch surface",
+        text: "Responsive front-end, metadata and handoff stay ready for deployment.",
+      },
+    ],
+    methodTitle: "Built as a restrained commercial sequence.",
     bestFor: [
       "Product or service launch",
       "Consultation / booking offer",
@@ -82,19 +111,27 @@ export const servicePages: ServicePageData[] = [
       {
         slug: "house-of-lune",
         source: "work",
+        label: "Product-world proof",
+        role: "Premium presentation",
         claim: "A premium product presentation surface for luxury objects and private inquiry.",
       },
       {
         slug: "barcelona-private-advisory",
         source: "work",
+        label: "Advisory proof",
+        role: "High-trust inquiry",
         claim: "A high-trust advisory website concept with curated buyer journeys and premium inquiry flows.",
       },
       {
         slug: "creatorops",
         source: "work",
+        label: "Workflow proof",
+        role: "Focused product route",
         claim: "A focused product route that turns scattered creator assets into an export-first workflow.",
       },
     ],
+    proofStatement:
+      "A premium landing page should show value before it explains value: product atmosphere, advisory trust and a clear action path in the first half of the route.",
     deliverables: [
       "Production-ready front-end",
       "Structured content and section logic",
@@ -111,6 +148,8 @@ export const servicePages: ServicePageData[] = [
   {
     slug: "product-demo-landing",
     path: "/services/product-demo-landing",
+    visualTone: "product",
+    heroProofLayout: "product-stack",
     seoTitle: "Product Demo Landing Pages for Founders and Product Teams | Brenych Studio",
     metaDescription:
       "Product demo landing pages and founder-led presentation systems for SaaS prototypes, AI tools, internal products, waitlists and investor-facing product narratives.",
@@ -120,8 +159,24 @@ export const servicePages: ServicePageData[] = [
     primaryCta: "Start a project",
     secondaryCta: "View product cases",
     secondaryHref: "/work",
+    routeTitle: "One clear product story.",
     routeDefinition:
       "A product demo landing route that turns a product idea, workflow, tool or prototype into a clear visual narrative: what it is, how it works, who it helps and why it matters.",
+    routeLedger: [
+      {
+        title: "Product thesis",
+        text: "The promise, problem and workflow become visible before the first sales call.",
+      },
+      {
+        title: "Interface proof",
+        text: "Screens, states and modules carry the narrative instead of abstract claims.",
+      },
+      {
+        title: "Demo path",
+        text: "The route leads toward a demo request, beta list, investor review or product conversation.",
+      },
+    ],
+    methodTitle: "Built through product logic and proof.",
     bestFor: [
       "SaaS / AI tool prototypes",
       "Founder-led product launches",
@@ -155,19 +210,27 @@ export const servicePages: ServicePageData[] = [
       {
         slug: "creatorops",
         source: "work",
+        label: "Creator workflow",
+        role: "Export-first product prototype",
         claim: "A creator workflow product prototype that turns scattered assets into a Week Pack operating system.",
       },
       {
         slug: "sprintcrm",
         source: "work",
+        label: "Operator surface",
+        role: "Internal product demo",
         claim: "An internal CRM prototype that makes lead import, pipeline state and operator workflow visible.",
       },
       {
         slug: "barcelona-private-advisory",
         source: "work",
+        label: "Advisory system",
+        role: "Guided buyer workflow",
         claim: "A product-shaped advisory demo that turns buyer context into a structured handoff path.",
       },
     ],
+    proofStatement:
+      "The product page should feel like a working demo surface: clear thesis, visible workflow, proof screens and a direct route toward the next conversation.",
     deliverables: [
       "Product narrative",
       "Demo flow structure",
@@ -184,17 +247,35 @@ export const servicePages: ServicePageData[] = [
   {
     slug: "interactive-web-systems",
     path: "/services/interactive-web-systems",
+    visualTone: "immersive",
+    heroProofLayout: "spatial-stack",
     seoTitle: "Interactive Web Systems and Immersive Interfaces | Brenych Studio",
     metaDescription:
       "Interactive web systems, cinematic interfaces, WebGL experiences, spatial archives and immersive digital presentations for premium brands, artists and product worlds.",
-    heroTitle: "Interactive web systems for spatial digital experiences.",
+    heroTitle: "Interactive web systems for spatial interfaces.",
     heroBody:
       "Cinematic websites, atmospheric interfaces, WebGL-ready systems, spatial archives and immersive presentation layers built for projects that need more than a static page.",
     primaryCta: "Start immersive project",
     secondaryCta: "View immersive proof",
     secondaryHref: "/immersive",
+    routeTitle: "One living interface field.",
     routeDefinition:
       "An interactive system route for projects that need atmosphere, motion, media, spatial structure, experimental presentation or immersive proof without losing usability.",
+    routeLedger: [
+      {
+        title: "Spatial concept",
+        text: "The world, archive, chamber or product field is defined before visual effects begin.",
+      },
+      {
+        title: "Cinematic proof",
+        text: "Existing work anchors the experience so atmosphere remains tied to evidence.",
+      },
+      {
+        title: "Usable field",
+        text: "Motion, media and spatial rhythm support the route instead of hiding the message.",
+      },
+    ],
+    methodTitle: "Built as a spatial sequence with usable edges.",
     bestFor: [
       "Immersive digital exhibitions",
       "Artist archives and visual collections",
@@ -228,19 +309,27 @@ export const servicePages: ServicePageData[] = [
       {
         slug: "whisper",
         source: "immersive",
+        label: "Archive system",
+        role: "Cinematic Web / XR proof",
         claim: "A cinematic Web / XR exhibition system where one archive becomes multiple surfaces.",
       },
       {
         slug: "webhero",
         source: "immersive",
+        label: "WebGL-ready proof",
+        role: "Living visual system",
         claim: "A living visual systems platform for WebGL stages, spatial works and Art Room presentation.",
       },
       {
         slug: "house-of-lune",
         source: "work",
+        label: "Product world",
+        role: "Atmospheric commerce",
         claim: "A product-world proof where atmosphere, media and private inquiry move as one surface.",
       },
     ],
+    proofStatement:
+      "Interactive work needs proof early: not decoration, but a visible system of atmosphere, media, spatial logic and a usable path through the experience.",
     deliverables: [
       "Interactive front-end surface",
       "Motion and atmosphere system",

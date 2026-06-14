@@ -4,20 +4,20 @@ Status: prepared before quiet service-entry pages.
 
 ## Public SEO URLs
 
-- Sitemap: `https://brenych.com/sitemap.xml`
-- Robots: `https://brenych.com/robots.txt`
+- Sitemap: `https://brenychstudio.com/sitemap.xml`
+- Robots: `https://brenychstudio.com/robots.txt`
 
 ## Priority URLs For Search Console Inspection
 
-- `https://brenych.com/`
-- `https://brenych.com/work`
-- `https://brenych.com/offer`
-- `https://brenych.com/about`
-- `https://brenych.com/immersive`
-- `https://brenych.com/work/creatorops`
-- `https://brenych.com/work/house-of-lune`
-- `https://brenych.com/work/barcelona-private-advisory`
-- `https://brenych.com/immersive/whisper`
+- `https://brenychstudio.com/`
+- `https://brenychstudio.com/work`
+- `https://brenychstudio.com/offer`
+- `https://brenychstudio.com/about`
+- `https://brenychstudio.com/immersive`
+- `https://brenychstudio.com/work/creatorops`
+- `https://brenychstudio.com/work/house-of-lune`
+- `https://brenychstudio.com/work/barcelona-private-advisory`
+- `https://brenychstudio.com/immersive/whisper`
 
 ## Routes Excluded From Sitemap
 

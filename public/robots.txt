@@ -10,4 +10,4 @@ Disallow: /privacy-v2
 Disallow: /legal-v2
 Disallow: /spatial-proof
 
-Sitemap: https://brenych.com/sitemap.xml
+Sitemap: https://brenychstudio.com/sitemap.xml

@@ -1322,10 +1322,10 @@ function PracticeMapScene({
   const atlasActiveChamberId = chamberState.activeChamberId;
   const selectAtlasChamber = chamberState.selectChamber;
   const chamberSlots: Record<ImmersiveChamberId, { x: number; y: number; rotate: number; size: "large" | "medium" | "small" }> = {
-    whisper: { x: 45, y: 25, rotate: -6, size: "medium" },
-    webhero: { x: 79, y: 31, rotate: 7, size: "medium" },
-    "kool-berk": { x: 28, y: 68, rotate: -8, size: "medium" },
-    "presence-os-memory-atlas": { x: 56, y: 78, rotate: 2, size: "medium" },
+    whisper: { x: 45, y: 28, rotate: -6, size: "medium" },
+    webhero: { x: 63, y: 49, rotate: 2, size: "medium" },
+    "kool-berk": { x: 29, y: 66, rotate: -8, size: "medium" },
+    "presence-os-memory-atlas": { x: 55, y: 76, rotate: 3, size: "medium" },
     "orbit-lens": { x: 84, y: 64, rotate: -7, size: "medium" },
     "collective-presence-interface": { x: 20, y: 66, rotate: 6, size: "small" },
     "presence-archive": { x: 76, y: 69, rotate: -7, size: "small" },
@@ -1376,6 +1376,22 @@ function PracticeMapScene({
     if (id !== inspectedChamberId) sound.playRole("select");
     chamberState.selectChamber(id);
     setInspectedChamberId(id);
+  };
+
+  const openCinematicAtlas = (id?: ImmersiveChamberId) => {
+    sound.playRole("atlasOpen");
+    setAtlasMode("orbit");
+    setAtlasPlaneOffsets({});
+
+    if (id) {
+      chamberState.selectChamber(id, "none");
+      setInspectedChamberId(id);
+    } else {
+      setInspectedChamberId(null);
+    }
+
+    setAtlasOpen(true);
+    window.requestAnimationFrame(resetAtlasViewport);
   };
 
   const resetAtlasViewport = useCallback(() => {
@@ -1524,58 +1540,37 @@ function PracticeMapScene({
             <p className="mt-5 max-w-[27rem] text-[14px] leading-7 text-white/58">{activeChamber.proofLine}</p>
             <button
               type="button"
-              onClick={() => {
-                sound.playRole("atlasOpen");
-                setAtlasMode("orbit");
-                setInspectedChamberId(null);
-                setAtlasPlaneOffsets({});
-                setAtlasOpen(true);
-                window.requestAnimationFrame(resetAtlasViewport);
-              }}
+              onClick={() => openCinematicAtlas()}
               className="mt-6 rounded-full border border-white bg-white px-4 py-2.5 text-[10px] uppercase tracking-[0.16em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-white/82"
             >
               Open cinematic atlas -&gt;
             </button>
           </div>
 
-          <motion.figure
-            key={activeChamber.id}
-            className="absolute left-[32%] top-[34%] h-[42%] w-[42%] overflow-hidden border border-white/20 bg-white/5 shadow-[0_42px_150px_rgba(0,0,0,0.42)]"
-            style={{ clipPath: "polygon(2% 0, 100% 6%, 94% 94%, 0 100%)" }}
-            initial={{ opacity: 0, scale: 0.92, rotate: -3 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
-          >
-            <img src={activePoster} alt="" className="absolute inset-[-4%] h-[108%] w-[108%] object-cover saturate-[1.04] contrast-[1.04]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_52%_34%,rgba(255,255,255,0),rgba(0,0,0,0.14)_58%,rgba(0,0,0,0.46)),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.28))]" />
-
-            <figcaption className="absolute bottom-6 left-6 right-6">
-              <div className="inline-flex border-y border-white/38 bg-black/12 px-3 py-1.5 text-[10px] uppercase tracking-[0.17em] text-white/78 backdrop-blur-sm">
-                {activeChamber.statusLabel}
-              </div>
-              <div className="mt-3 max-w-[12ch] text-[46px] font-normal leading-[0.84] tracking-[-0.065em] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.45)]">
-                {activeChamber.shortTitle}
-              </div>
-            </figcaption>
-          </motion.figure>
-
           {immersiveHubChambers
-            .filter((chamber) => chamber.id !== chamberState.activeChamberId)
-            .map((chamber) => {
+            .map((chamber, index) => {
               const slot = chamberSlots[chamber.id];
               const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
+              const isActive = chamber.id === chamberState.activeChamberId;
+              const floatDistance = index % 2 === 0 ? -8 : 8;
               const sizeClass =
                 slot.size === "large"
-                  ? "h-52 w-72 md:h-64 md:w-[25rem]"
+                  ? "h-52 w-80 md:h-72 md:w-[31rem]"
                   : slot.size === "medium"
-                    ? "h-40 w-56 md:h-48 md:w-72"
-                    : "h-32 w-48 md:h-40 md:w-60";
+                    ? "h-44 w-64 md:h-56 md:w-[21rem]"
+                    : "h-36 w-52 md:h-44 md:w-64";
 
               return (
                 <button
                   key={chamber.id}
                   type="button"
-                  onClick={() => openChamber(chamber.id)}
+                  aria-pressed={isActive}
+                  onMouseEnter={() => {
+                    sound.playRole("hover");
+                    chamberState.selectChamber(chamber.id, "none");
+                  }}
+                  onFocus={() => chamberState.selectChamber(chamber.id, "none")}
+                  onClick={() => openCinematicAtlas(chamber.id)}
                   className="group absolute z-20 text-left outline-none"
                   style={{
                     left: `${slot.x}%`,
@@ -1583,20 +1578,39 @@ function PracticeMapScene({
                     transform: "translate(-50%, -50%)",
                   }}
                 >
-                  <span
-                    className="block transition duration-300 opacity-95 group-hover:opacity-100"
-                    style={{
-                      transform: `rotate(${slot.rotate}deg)`,
-                    }}
+                  <motion.span
+                    className="block"
+                    initial={false}
+                    animate={
+                      reduceMotion
+                        ? { opacity: 1 }
+                        : {
+                            opacity: isActive ? 1 : [0.82, 0.96, 0.82],
+                            y: isActive ? 0 : [0, floatDistance, 0],
+                            rotate: isActive ? 0 : [slot.rotate, slot.rotate + (index % 2 === 0 ? 1.1 : -1.1), slot.rotate],
+                            scale: isActive ? 1.035 : [1, 1.025, 1],
+                          }
+                    }
+                    whileHover={reduceMotion ? undefined : { scale: 1.1, y: -10, rotate: 0 }}
+                    whileTap={reduceMotion ? undefined : { scale: 1.02 }}
+                    transition={
+                      isActive
+                        ? { duration: 0.42, ease }
+                        : { duration: 6.4 + index * 0.6, repeat: Infinity, ease: "easeInOut", delay: index * 0.18 }
+                    }
                   >
                     <span
-                      className={`relative block overflow-hidden border transition duration-300 ${sizeClass} border-white/16 bg-white/5 text-white group-hover:border-white/34`}
+                      className={`relative block overflow-hidden border transition duration-500 ${sizeClass} ${
+                        isActive
+                          ? "border-white/46 bg-white/12 text-white shadow-[0_42px_150px_rgba(0,0,0,0.5)]"
+                          : "border-white/26 bg-white/8 text-white shadow-[0_28px_110px_rgba(0,0,0,0.34)] group-hover:border-white/56 group-hover:bg-white/12"
+                      }`}
                       style={{
-                        clipPath: "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)",
+                        clipPath: isActive ? "polygon(2% 0, 100% 5%, 94% 94%, 0 100%)" : "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)",
                       }}
                     >
-                      <img src={poster} alt="" className="absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-80 saturate-[1.05] contrast-[1.04] transition duration-500 group-hover:scale-[1.045]" />
-                      <span className="absolute inset-0 bg-black/52 group-hover:bg-black/34" />
+                      <img src={poster} alt="" className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover saturate-[1.08] contrast-[1.05] brightness-[1.06] transition duration-700 group-hover:scale-[1.06] group-hover:brightness-[1.1] ${isActive ? "opacity-100" : "opacity-92"}`} />
+                      <span className={`absolute inset-0 transition duration-500 ${isActive ? "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.16)_62%,rgba(0,0,0,0.48))]" : "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.2)_64%,rgba(0,0,0,0.5))] group-hover:bg-black/18"}`} />
                       <span className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] text-white/60">
                         {chamber.room.replace("Room ", "")}
                       </span>
@@ -1611,7 +1625,7 @@ function PracticeMapScene({
                     <span className="mt-3 block border-l border-white/12 pl-3 text-white/38 transition duration-300 group-hover:border-white/28 group-hover:text-white/72">
                       <span className="block text-[10px] uppercase tracking-[0.18em]">{chamber.chamberSignal}</span>
                     </span>
-                  </span>
+                  </motion.span>
                 </button>
               );
             })}

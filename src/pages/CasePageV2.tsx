@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type WheelEvent } from "react";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, type PanInfo } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type PanInfo,
+} from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
@@ -35,6 +44,7 @@ type EvidenceViewMode = "sequence" | "atlas";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const INITIAL_EVIDENCE_FRAME_COUNT = 5;
+const SCROLL_VIDEO_SEEK_EPSILON = 0.16;
 
 const caseSpineItems: SectionRailItem[] = [
   { index: "01", label: "Threshold", id: "case-threshold" },
@@ -823,12 +833,127 @@ function getMobileSwipeDelta(info: PanInfo) {
   return 0;
 }
 
+function clampScrollProgress(value: number) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(Math.max(value, 0), 1);
+}
+
+function ScrollSyncedCaseVideo({
+  media,
+  frameClass,
+  priority,
+  ambient,
+}: {
+  media: CaseStoryMedia;
+  frameClass: string;
+  priority: boolean;
+  ambient: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [inView, setInView] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [manualUntil, setManualUntil] = useState(0);
+  const { scrollYProgress } = useScroll({
+    target: videoRef,
+    offset: ["start 88%", "end 12%"],
+  });
+  const scrollProgress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 34,
+    mass: 0.22,
+  });
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || prefersReducedMotion) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        setInView(entry.isIntersecting && entry.intersectionRatio >= 0.22);
+      },
+      {
+        threshold: [0, 0.12, 0.22, 0.42, 0.68],
+        rootMargin: "2% 0px -8% 0px",
+      },
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+      video.pause();
+    };
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || prefersReducedMotion) return;
+
+    if (inView) {
+      window.requestAnimationFrame(() => {
+        video.muted = true;
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {
+            // Autoplay can be blocked until the browser has enough media data.
+          });
+        }
+      });
+      return;
+    }
+
+    video.pause();
+  }, [inView, prefersReducedMotion]);
+
+  useMotionValueEvent(scrollProgress, "change", (latest) => {
+    if (!inView || prefersReducedMotion || Date.now() < manualUntil) return;
+
+    const video = videoRef.current;
+    if (!video || video.readyState < 1) return;
+
+    const safeDuration = duration || video.duration;
+    if (!Number.isFinite(safeDuration) || safeDuration <= 0) return;
+
+    const targetTime = clampScrollProgress(latest) * Math.max(safeDuration - 0.08, 0);
+    if (Math.abs(video.currentTime - targetTime) < SCROLL_VIDEO_SEEK_EPSILON) return;
+
+    try {
+      video.currentTime = targetTime;
+    } catch {
+      // Early seeks may fail on some browsers before metadata is fully ready.
+    }
+  });
+
+  const holdManualControl = () => setManualUntil(Date.now() + 2500);
+
+  return (
+    <video
+      ref={videoRef}
+      className={frameClass}
+      src={media.src}
+      poster={media.poster}
+      controls={!ambient}
+      autoPlay={false}
+      loop
+      muted
+      playsInline
+      preload={priority ? "auto" : "metadata"}
+      onPointerDown={holdManualControl}
+      onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+    />
+  );
+}
+
 function CaseMediaView({
   media,
   priority = false,
   ambient = false,
   fit,
   objectPosition,
+  scrollPlayback = false,
   className = "",
 }: {
   media: CaseStoryMedia;
@@ -836,6 +961,7 @@ function CaseMediaView({
   ambient?: boolean;
   fit?: "cover" | "contain";
   objectPosition?: "top" | "center" | "bottom";
+  scrollPlayback?: boolean;
   className?: string;
 }) {
   const resolvedFit = fit ?? media.fit ?? "contain";
@@ -856,6 +982,17 @@ function CaseMediaView({
   ].join(" ");
 
   if (media.kind === "video") {
+    if (scrollPlayback) {
+      return (
+        <ScrollSyncedCaseVideo
+          media={media}
+          frameClass={frameClass}
+          priority={priority}
+          ambient={ambient}
+        />
+      );
+    }
+
     return (
       <video
         className={frameClass}
@@ -1088,7 +1225,7 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
                 isAdvisory ? "border-neutral-950/10 bg-white" : "border-white/10 bg-[#050505]",
               ].join(" ")}
             >
-              <CaseMediaView media={walkthrough} priority fit="contain" />
+              <CaseMediaView media={walkthrough} priority fit="contain" scrollPlayback />
             </div>
             <div
               className={[
@@ -2201,7 +2338,7 @@ function MobileWalkthroughProof({ story }: { story: CaseStory }) {
       </p>
       <div data-sound-safe-area className="-mx-4 mt-5 overflow-hidden bg-neutral-950 shadow-[0_18px_54px_rgba(15,15,15,0.14)] md:mx-0 md:mt-7">
         <div className="aspect-video overflow-hidden bg-black">
-          <CaseMediaView media={walkthrough} priority fit="contain" />
+          <CaseMediaView media={walkthrough} priority fit="contain" scrollPlayback />
         </div>
       </div>
     </MobileReaderSection>

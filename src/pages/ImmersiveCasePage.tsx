@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "../ui/Header";
 import Container from "../ui/Container";
@@ -27,6 +27,177 @@ type PageProps = {
   onOpenProject?: () => void;
   onCloseProject?: () => void;
 };
+
+type CinematicImmersiveTone = "webhero" | "kool-berk" | "presence-os" | "orbit-lens";
+
+const cinematicToneTokens: Record<
+  CinematicImmersiveTone,
+  { rail: string; scan: string; accent: string; label: string }
+> = {
+  webhero: {
+    rail: "rgba(120,244,226,0.62)",
+    scan: "rgba(184,124,255,0.18)",
+    accent: "rgba(120,244,226,0.3)",
+    label: "living visual field",
+  },
+  "kool-berk": {
+    rail: "rgba(255,74,90,0.58)",
+    scan: "rgba(89,144,226,0.18)",
+    accent: "rgba(255,74,90,0.26)",
+    label: "sonic object field",
+  },
+  "presence-os": {
+    rail: "rgba(119,207,184,0.58)",
+    scan: "rgba(246,219,165,0.16)",
+    accent: "rgba(119,207,184,0.24)",
+    label: "memory field",
+  },
+  "orbit-lens": {
+    rail: "rgba(125,233,255,0.62)",
+    scan: "rgba(110,128,255,0.18)",
+    accent: "rgba(125,233,255,0.28)",
+    label: "product os field",
+  },
+};
+
+function CinematicImmersiveCaseShell({
+  tone,
+  children,
+}: {
+  tone: CinematicImmersiveTone;
+  children: ReactNode;
+}) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const tokens = cinematicToneTokens[tone];
+  const { scrollYProgress } = useScroll({
+    target: rootRef,
+    offset: ["start start", "end end"],
+  });
+  const progressScale = useTransform(scrollYProgress, [0, 1], [0.04, 1]);
+  const scanY = useTransform(scrollYProgress, [0, 1], ["0vh", "58vh"]);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const sections = Array.from(root.querySelectorAll<HTMLElement>("section[data-header-scene]"));
+    sections.forEach((section) => {
+      section.dataset.cinematicSection = "true";
+      section.style.setProperty("--cinematic-delay", "0ms");
+
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 1.18) section.dataset.cinematicVisible = "true";
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const section = entry.target as HTMLElement;
+          const rect = section.getBoundingClientRect();
+          const closeToViewport = rect.top < window.innerHeight * 1.16 && rect.bottom > -window.innerHeight * 0.16;
+          section.dataset.cinematicVisible = entry.isIntersecting || closeToViewport ? "true" : "false";
+        });
+      },
+      {
+        rootMargin: "12% 0px 22% 0px",
+        threshold: [0.01, 0.08, 0.18],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={rootRef}
+      data-immersive-cinematic-case={tone}
+      className="relative"
+      style={{
+        "--cinematic-rail": tokens.rail,
+        "--cinematic-scan": tokens.scan,
+        "--cinematic-accent": tokens.accent,
+      } as CSSProperties}
+    >
+      <style>
+        {`
+          [data-immersive-cinematic-case] section[data-cinematic-section="true"] {
+            opacity: 0.7;
+            transform: translate3d(0, 34px, 0) scale(0.992);
+            filter: blur(4px);
+            transform-origin: 50% 16%;
+            transition:
+              opacity 520ms cubic-bezier(0.22, 1, 0.36, 1) var(--cinematic-delay, 0ms),
+              transform 620ms cubic-bezier(0.22, 1, 0.36, 1) var(--cinematic-delay, 0ms),
+              filter 560ms cubic-bezier(0.22, 1, 0.36, 1) var(--cinematic-delay, 0ms);
+            will-change: opacity, transform, filter;
+          }
+
+          [data-immersive-cinematic-case] section[data-cinematic-section="true"][data-cinematic-visible="true"] {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+            filter: blur(0);
+          }
+
+          [data-immersive-cinematic-case] section[data-cinematic-section="true"] img,
+          [data-immersive-cinematic-case] section[data-cinematic-section="true"] video {
+            transition:
+              transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+              filter 520ms cubic-bezier(0.22, 1, 0.36, 1);
+          }
+
+          [data-immersive-cinematic-case] section[data-cinematic-section="true"][data-cinematic-visible="true"] img,
+          [data-immersive-cinematic-case] section[data-cinematic-section="true"][data-cinematic-visible="true"] video {
+            transform: scale(1.006);
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            [data-immersive-cinematic-case] section[data-cinematic-section="true"] {
+              opacity: 1;
+              transform: none;
+              filter: none;
+              transition: none;
+            }
+
+            [data-immersive-cinematic-case] section[data-cinematic-section="true"] img,
+            [data-immersive-cinematic-case] section[data-cinematic-section="true"] video {
+              transform: none;
+              transition: none;
+            }
+          }
+        `}
+      </style>
+
+      <div className="pointer-events-none fixed inset-y-0 left-0 z-[58] hidden w-14 mix-blend-screen xl:block">
+        <div className="absolute left-7 top-[12vh] h-[76vh] w-px bg-white/10" />
+        <motion.div
+          className="absolute left-7 top-[12vh] h-[76vh] w-px origin-top"
+          style={{
+            scaleY: progressScale,
+            background: "var(--cinematic-rail)",
+          }}
+        />
+        <motion.div
+          className="absolute left-3 h-24 w-8 border-y border-white/12"
+          style={{
+            top: scanY,
+            background:
+              "linear-gradient(180deg, transparent, var(--cinematic-scan), transparent)",
+          }}
+        />
+        <div className="absolute bottom-[12vh] left-4 rotate-[-90deg] whitespace-nowrap font-mono text-[8px] uppercase tracking-[0.22em] text-white/28">
+          {tokens.label}
+        </div>
+      </div>
+
+      <div className="pointer-events-none fixed inset-x-0 top-[72px] z-[12] hidden h-px bg-[linear-gradient(90deg,transparent,var(--cinematic-accent),transparent)] opacity-70 xl:block" />
+
+      {children}
+    </div>
+  );
+}
 
 function getImmersiveMetaTitle(item: ImmersiveItem) {
   const category = item.searchContent?.category ?? "Immersive System";
@@ -946,6 +1117,7 @@ function PresenceOsCaseLayout({
   };
 
   return (
+    <CinematicImmersiveCaseShell tone="presence-os">
     <div className="min-h-screen bg-[#030706] text-white">
       <ImmersiveSeoMeta item={item} imageAlt="Presence OS Memory Atlas immersive case" />
       <SectionRail
@@ -1243,6 +1415,7 @@ function PresenceOsCaseLayout({
         onSelect={setInspectIndex}
       />
     </div>
+    </CinematicImmersiveCaseShell>
   );
 }
 
@@ -1364,6 +1537,7 @@ function OrbitLensCaseLayout({
   };
 
   return (
+    <CinematicImmersiveCaseShell tone="orbit-lens">
     <div className="min-h-screen bg-[#03070a] text-white">
       <ImmersiveSeoMeta item={item} imageAlt="Orbit Lens immersive product interface case" />
       <SectionRail
@@ -1712,6 +1886,7 @@ function OrbitLensCaseLayout({
         onSelect={setInspectIndex}
       />
     </div>
+    </CinematicImmersiveCaseShell>
   );
 }
 
@@ -1945,6 +2120,7 @@ function KoolBerkCaseLayout({
   };
 
   return (
+    <CinematicImmersiveCaseShell tone="kool-berk">
     <div className="min-h-screen bg-[#04070d] text-white">
       <ImmersiveSeoMeta item={item} imageAlt="Kool Berk Sonic Object OS immersive case" />
       <SectionRail
@@ -2263,6 +2439,7 @@ function KoolBerkCaseLayout({
         onSelect={setInspectIndex}
       />
     </div>
+    </CinematicImmersiveCaseShell>
   );
 }
 
@@ -2465,6 +2642,7 @@ function WebHeroCaseLayout({
   };
 
   return (
+    <CinematicImmersiveCaseShell tone="webhero">
     <div className="min-h-screen bg-[#05070b] text-white">
       <ImmersiveSeoMeta item={item} imageAlt="WEBHERO Living Visual Systems immersive case" />
       <SectionRail
@@ -2871,6 +3049,7 @@ function WebHeroCaseLayout({
         onSelect={setInspectIndex}
       />
     </div>
+    </CinematicImmersiveCaseShell>
   );
 }
 

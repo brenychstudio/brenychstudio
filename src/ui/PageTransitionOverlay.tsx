@@ -117,7 +117,7 @@ export default function PageTransitionOverlay() {
     <div
       aria-hidden="true"
       className={[
-        "pointer-events-none fixed inset-0 z-[140] transition-opacity duration-[240ms]",
+        "pointer-events-none fixed inset-0 z-[1200] transition-opacity duration-[240ms]",
         visible ? "opacity-100" : "opacity-0",
       ].join(" ")}
     >

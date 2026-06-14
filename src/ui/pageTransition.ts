@@ -69,27 +69,44 @@ export function startSpaPageTransition(
   onBeforeNavigate?: () => void
 ) {
   if (typeof window === "undefined") return;
+  if (!acquireLock()) return;
 
   onBeforeNavigate?.();
+
+  window.dispatchEvent(
+    new CustomEvent("app:page-transition-start", {
+      detail: { mode: "spa", to },
+    })
+  );
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const viewTransition = document.startViewTransition;
 
-  if (!prefersReducedMotion && typeof viewTransition === "function") {
-    try {
-      viewTransition.call(document, () => {
+  window.setTimeout(() => {
+    if (!prefersReducedMotion && typeof viewTransition === "function") {
+      try {
+        viewTransition.call(document, () => {
+          flushSync(() => {
+            navigate(to);
+          });
+        });
+        return;
+      } catch {
+        releasePageTransitionLock();
+        navigate(to);
+        return;
+      }
+    }
+
+    window.requestAnimationFrame(() => {
+      try {
         flushSync(() => {
           navigate(to);
         });
-      });
-      return;
-    } catch {
-      navigate(to);
-      return;
-    }
-  }
-
-  window.requestAnimationFrame(() => {
-    navigate(to);
-  });
+      } catch {
+        releasePageTransitionLock();
+        navigate(to);
+      }
+    });
+  }, EXIT_MS);
 }

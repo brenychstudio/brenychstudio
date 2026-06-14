@@ -43,13 +43,18 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const featuredSystemSlugs = [
   "creatorops",
   "bcn-advisory",
+  "arcwave-integrations",
+  "sprintcrm",
+  "oria-house-barcelona",
+  "casa-nube",
+  "aurel-eon-gt",
   "house-of-lune",
   "print-border-studio",
+  "form-index",
   "fluid-exhibition",
-  "casa-nube",
 ] as const;
 
-const mobileFieldSystemSlugs = ["bcn-advisory", "creatorops", "fluid-exhibition"] as const;
+const mobileFieldSystemSlugs = ["bcn-advisory", "arcwave-integrations", "sprintcrm"] as const;
 
 const capabilityLayer = [
   {
@@ -267,7 +272,7 @@ function getFeaturedCases(evidenceCases: EvidenceCase[]) {
   const bySlug = new Map(evidenceCases.map((item) => [item.slug, item]));
   const selected = featuredSystemSlugs.map((slug) => bySlug.get(slug)).filter((item): item is EvidenceCase => Boolean(item));
   const fallback = evidenceCases.filter((item) => item.evidence.featuredEvidence && !selected.some((selectedItem) => selectedItem.slug === item.slug));
-  return [...selected, ...fallback].slice(0, 6);
+  return [...selected, ...fallback].slice(0, featuredSystemSlugs.length);
 }
 
 function SectionIntro({

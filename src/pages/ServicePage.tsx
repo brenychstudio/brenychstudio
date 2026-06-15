@@ -6,7 +6,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type WheelEvent as ReactWheelEvent,
 } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
@@ -120,404 +120,41 @@ function ServiceMeta({ page, proofCards }: { page: ServicePageData; proofCards: 
   );
 }
 
-function getToneClasses(tone: ServicePageData["visualTone"]) {
+function getGalleryPriority(tone: ServicePageData["visualTone"]) {
   if (tone === "product") {
-    return {
-      shell: "border-neutral-950/25 bg-neutral-950 text-white shadow-[0_34px_120px_rgba(0,0,0,0.22)]",
-      grid: "opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)]",
-      muted: "text-white/56",
-      label: "text-white/68",
-      line: "bg-white/18",
-      card: "border-white/16 bg-white/[0.06]",
-      image: "opacity-100",
-    };
+    return [
+      "/work/creatorops",
+      "/work/sprintcrm",
+      "/work/barcelona-private-advisory",
+      "/work/arcwave-integrations",
+      "/work/print-border-studio",
+      "/work/form-index",
+    ];
   }
 
   if (tone === "immersive") {
-    return {
-      shell: "border-neutral-950/35 bg-[#030504] text-white shadow-[0_42px_140px_rgba(0,0,0,0.28)]",
-      grid: "opacity-[0.07] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)]",
-      muted: "text-white/54",
-      label: "text-white/70",
-      line: "bg-cyan-200/18",
-      card: "border-white/16 bg-white/[0.055]",
-      image: "opacity-100 saturate-[1.08]",
-    };
-  }
-
-  return {
-    shell: "border-neutral-950/14 bg-[#f8f5ee]/72 text-neutral-950 shadow-[0_28px_100px_rgba(15,15,15,0.09)]",
-    grid: "opacity-[0.055] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)]",
-    muted: "text-neutral-500",
-    label: "text-neutral-600",
-    line: "bg-neutral-950/14",
-    card: "border-neutral-950/14 bg-white/68",
-    image: "opacity-100",
-  };
-}
-
-function getProofLayerClass(layout: ServicePageData["heroProofLayout"], index: number) {
-  if (layout === "product-stack") {
     return [
-      "col-span-9 col-start-1 row-start-2 z-30 -rotate-1",
-      "col-span-6 col-start-6 row-start-1 z-20 rotate-2",
-      "col-span-5 col-start-3 row-start-4 z-10 rotate-1",
-    ][index];
-  }
-
-  if (layout === "spatial-stack") {
-    return [
-      "col-span-7 col-start-1 row-start-2 z-30 -rotate-2",
-      "col-span-6 col-start-6 row-start-1 z-20 rotate-1",
-      "col-span-5 col-start-4 row-start-4 z-10 -rotate-1",
-    ][index];
+      "/immersive/whisper",
+      "/immersive/webhero",
+      "/immersive/kool-berk",
+      "/immersive/presence-os-memory-atlas",
+      "/immersive/orbit-lens",
+      "/work/house-of-lune",
+      "/work/arcwave-integrations",
+    ];
   }
 
   return [
-    "col-span-7 col-start-1 row-start-2 z-30 -rotate-2",
-    "col-span-6 col-start-6 row-start-1 z-20 rotate-2",
-    "col-span-5 col-start-3 row-start-4 z-10 rotate-1",
-  ][index];
+    "/work/house-of-lune",
+    "/work/barcelona-private-advisory",
+    "/work/creatorops",
+    "/work/oria-house-barcelona",
+    "/work/casa-nube",
+    "/work/print-border-studio",
+  ];
 }
 
-function HeroProofComposition({
-  page,
-  cards,
-  compact = false,
-}: {
-  page: ServicePageData;
-  cards: ProofCardData[];
-  compact?: boolean;
-}) {
-  const tone = getToneClasses(page.visualTone);
-  const visibleCards = cards.slice(0, 3);
-
-  return (
-    <div
-      className={`relative min-h-[26rem] overflow-hidden border p-4 backdrop-blur-sm md:min-h-[34rem] md:p-5 ${tone.shell}`}
-      aria-label={`${page.schemaName} proof composition`}
-    >
-      <div className={`pointer-events-none absolute inset-0 [background-size:56px_56px] ${tone.grid}`} />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(255,255,255,0.18),transparent_36%),radial-gradient(circle_at_24%_74%,rgba(0,0,0,0.16),transparent_32%)]" />
-      {page.visualTone === "immersive" ? (
-        <div className="pointer-events-none absolute left-[12%] top-[16%] h-[62%] w-[76%] rounded-[999px] border border-cyan-100/14" />
-      ) : null}
-
-      <div className="relative flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.18em]">
-        <span className={tone.label}>Featured proof system</span>
-        <span className={tone.muted}>{page.heroProofLayout.replace("-stack", " stack")}</span>
-      </div>
-
-      <div className={`relative mt-6 grid ${compact ? "min-h-[20rem]" : "min-h-[24rem] md:min-h-[29rem]"} grid-cols-10 grid-rows-5 gap-2`}>
-        {visibleCards.map((card, index) => (
-          <Link
-            key={card.href}
-            to={card.href}
-            className={`group relative block overflow-hidden border transition duration-500 hover:-translate-y-1 hover:scale-[1.015] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${tone.card} ${getProofLayerClass(
-              page.heroProofLayout,
-              index,
-            )}`}
-          >
-            <span className="relative block aspect-[16/10] overflow-hidden bg-neutral-950">
-              <img
-                src={card.image}
-                alt={card.alt}
-                className={`h-full w-full object-cover transition duration-700 group-hover:scale-[1.04] ${tone.image}`}
-                loading={index === 0 ? "eager" : "lazy"}
-                decoding="async"
-              />
-              <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.18))]" />
-              <span className="absolute left-3 top-3 font-mono text-[8px] uppercase tracking-[0.18em] text-white/60">
-                0{index + 1}
-              </span>
-              <span className="absolute bottom-3 left-3 max-w-[80%] font-mono text-[8px] uppercase tracking-[0.16em] text-white/72">
-                {card.label}
-              </span>
-            </span>
-            <span className="grid gap-1 p-3">
-              <span className="text-[18px] leading-none">{card.title}</span>
-              <span className={`font-mono text-[8px] uppercase tracking-[0.16em] ${tone.muted}`}>{card.role}</span>
-            </span>
-          </Link>
-        ))}
-      </div>
-
-      <div className="relative mt-4 grid gap-3 border-t border-current/10 pt-4 md:grid-cols-[0.32fr_0.68fr]">
-        <div className={`font-mono text-[9px] uppercase tracking-[0.18em] ${tone.muted}`}>Proof before pitch</div>
-        <p className={`text-[13px] leading-6 ${tone.muted}`}>{page.proofStatement}</p>
-      </div>
-    </div>
-  );
-}
-
-function ServiceHero({
-  page,
-  proofCards,
-  onOpenProject,
-}: {
-  page: ServicePageData;
-  proofCards: ProofCardData[];
-  onOpenProject?: () => void;
-}) {
-  const reduceMotion = useReducedMotion();
-
-  return (
-    <section
-      id="service-threshold"
-      data-header-scene="practice-threshold"
-      data-sound-safe-area
-      className="relative mx-auto grid min-h-[calc(100svh-5rem)] w-[min(94vw,1720px)] gap-8 border-y border-neutral-950/14 py-10 pt-24 md:min-h-[calc(100svh-5.5rem)] md:py-12 md:pt-28 xl:grid-cols-[0.48fr_0.52fr] xl:items-center"
-    >
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-        animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-        transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-        className="min-w-0"
-      >
-        <SectionSignal index="01" label="Service threshold" />
-        <h1 className="mt-7 max-w-full text-[clamp(2.55rem,8.2vw,8.8rem)] font-normal leading-[0.88] tracking-normal text-neutral-950 sm:max-w-[11ch]">
-          {page.heroTitle}
-        </h1>
-        <p className="mt-7 max-w-full text-[17px] leading-8 text-neutral-600 md:max-w-[44rem] md:text-[20px] md:leading-9">
-          {page.heroBody}
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={onOpenProject}
-            className="inline-flex min-h-11 w-full max-w-[22rem] items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-center text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:w-auto"
-          >
-            {page.primaryCta} -&gt;
-          </button>
-          <Link
-            to={page.secondaryHref}
-            className="inline-flex min-h-11 w-full max-w-[22rem] items-center justify-center rounded-full border border-neutral-300 bg-white/60 px-5 text-center text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 sm:w-auto sm:tracking-[0.16em]"
-          >
-            {page.secondaryCta} -&gt;
-          </Link>
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.985 }}
-        animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.72, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <HeroProofComposition page={page} cards={proofCards} />
-      </motion.div>
-    </section>
-  );
-}
-
-function RouteLedger({ page }: { page: ServicePageData }) {
-  return (
-    <section className="relative mx-auto w-[min(94vw,1500px)] border-b border-neutral-950/12 py-10">
-      <div className="grid gap-3 md:grid-cols-3">
-        {page.routeLedger.map((item, index) => (
-          <article key={item.title} className="group border-y border-neutral-950/12 bg-white/16 px-4 py-5 backdrop-blur-sm transition hover:bg-white/42">
-            <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-              <span>0{index + 1}</span>
-              <span className="h-px flex-1 bg-neutral-950/12 transition group-hover:bg-neutral-950/24" />
-            </div>
-            <h2 className="mt-4 text-[20px] uppercase tracking-[0.08em] text-neutral-950">{item.title}</h2>
-            <p className="mt-3 text-[13px] leading-6 text-neutral-500">{item.text}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function FeaturedProof({
-  page,
-  proofCards,
-}: {
-  page: ServicePageData;
-  proofCards: ProofCardData[];
-}) {
-  return (
-    <section className="relative mx-auto grid w-[min(94vw,1500px)] gap-8 border-b border-neutral-950/12 py-12 md:grid-cols-[0.34fr_0.66fr] md:py-16">
-      <div>
-        <SectionSignal index="02" label="Proof composition" />
-        <h2 className="mt-5 max-w-[10ch] text-[clamp(2.9rem,5.8vw,5.6rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
-          Proof enters before the pitch.
-        </h2>
-        <p className="mt-6 max-w-[23rem] text-[14px] leading-7 text-neutral-500">{page.proofStatement}</p>
-      </div>
-      <HeroProofComposition page={page} cards={proofCards} compact />
-    </section>
-  );
-}
-
-function ServiceRouteDefinition({ page }: { page: ServicePageData }) {
-  return (
-    <section className="relative mx-auto grid w-[min(94vw,1500px)] gap-8 border-b border-neutral-950/12 py-12 md:grid-cols-[0.36fr_0.64fr] md:py-16">
-      <div>
-        <SectionSignal index="03" label="What this route is" />
-        <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,6vw,5.2rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
-          {page.routeTitle}
-        </h2>
-      </div>
-      <p className="max-w-[48rem] text-[22px] leading-[1.18] text-neutral-800 md:text-[32px]">
-        {page.routeDefinition}
-      </p>
-    </section>
-  );
-}
-
-function BestFor({ items }: { items: string[] }) {
-  return (
-    <section className="relative mx-auto w-[min(94vw,1500px)] border-b border-neutral-950/12 py-12 md:py-16">
-      <div className="grid gap-8 md:grid-cols-[0.36fr_0.64fr]">
-        <div>
-          <SectionSignal index="04" label="Best for" />
-        </div>
-        <div className="grid border-y border-neutral-950/12 bg-white/10 backdrop-blur-sm">
-          {items.map((item, index) => (
-            <div
-              key={item}
-              className="group grid gap-3 border-b border-neutral-950/10 px-3 py-4 transition hover:bg-white/34 last:border-b-0 sm:grid-cols-[4rem_1fr] sm:items-baseline"
-            >
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-300 transition group-hover:text-neutral-500">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="text-[18px] leading-7 text-neutral-800 md:text-[22px]">{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Method({ page }: { page: ServicePageData }) {
-  return (
-    <section className="relative mx-auto w-[min(94vw,1500px)] border-b border-neutral-950/12 py-12 md:py-16">
-      <div className="grid gap-8 md:grid-cols-[0.36fr_0.64fr]">
-        <div>
-          <SectionSignal index="05" label="Method" />
-          <h2 className="mt-5 max-w-[9ch] text-[clamp(2.8rem,6vw,5.2rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
-            {page.methodTitle}
-          </h2>
-        </div>
-        <div className="grid gap-x-5 gap-y-6 sm:grid-cols-2">
-          {page.method.map((step, index) => (
-            <article key={step.title} className="group border-t border-neutral-950/14 bg-white/[0.08] px-1 py-4 transition hover:bg-white/24 sm:px-4">
-              <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <span className="h-px flex-1 bg-neutral-950/10 transition group-hover:bg-neutral-950/22" />
-              </div>
-              <h3 className="mt-4 text-[23px] leading-none text-neutral-950 md:text-[26px]">{step.title}</h3>
-              <p className="mt-3 text-[13px] leading-6 text-neutral-600">{step.text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProofStrip({ proofCards }: { proofCards: ProofCardData[] }) {
-  return (
-    <section className="relative mx-auto w-[min(94vw,1500px)] border-b border-neutral-950/12 py-12 md:py-16">
-      <div className="grid gap-8 md:grid-cols-[0.36fr_0.64fr]">
-        <div>
-          <SectionSignal index="06" label="Relevant proof" />
-          <p className="mt-5 max-w-[22rem] text-[14px] leading-7 text-neutral-500">
-            Short proof references only. Full case stories stay inside Work and Immersive.
-          </p>
-        </div>
-        <div className="grid gap-4 lg:grid-cols-3">
-          {proofCards.map((card) => (
-            <Link
-              key={card.href}
-              to={card.href}
-              className="group grid overflow-hidden border border-neutral-950/12 bg-white/24 text-left shadow-[0_18px_54px_rgba(15,15,15,0.05)] transition duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_28px_74px_rgba(15,15,15,0.1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
-            >
-              <span className="relative block aspect-[16/11] overflow-hidden bg-neutral-950">
-                <img
-                  src={card.image}
-                  alt={card.alt}
-                  className="h-full w-full object-cover opacity-92 transition duration-700 group-hover:scale-[1.04]"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.38))]" />
-                <span className="absolute left-3 top-3 font-mono text-[8px] uppercase tracking-[0.17em] text-white/62">
-                  {card.label}
-                </span>
-                <span className="absolute bottom-3 left-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/72">
-                  {card.type}
-                </span>
-              </span>
-              <span className="grid gap-3 p-4">
-                <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400">{card.role}</span>
-                <span className="text-[22px] leading-none text-neutral-950">{card.title}</span>
-                <span className="text-[13px] leading-6 text-neutral-600">{card.claim}</span>
-                <span className="mt-1 text-[10px] uppercase tracking-[0.16em] text-neutral-500">
-                  View case -&gt;
-                </span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Deliverables({ items }: { items: string[] }) {
-  return (
-    <section className="relative mx-auto w-[min(94vw,1500px)] border-b border-neutral-950/12 py-12 md:py-16">
-      <div className="grid gap-8 md:grid-cols-[0.36fr_0.64fr]">
-        <div>
-          <SectionSignal index="07" label="What you receive" />
-        </div>
-        <div className="grid gap-x-5 gap-y-2 sm:grid-cols-2">
-          {items.map((item, index) => (
-            <div key={item} className="group grid grid-cols-[2.8rem_1fr] gap-3 border-t border-neutral-950/10 px-1 py-4 transition hover:bg-white/24 sm:px-3">
-              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-300 transition group-hover:text-neutral-500">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="text-[14px] leading-6 text-neutral-700">{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function StartRoute({ page, onOpenProject }: { page: ServicePageData; onOpenProject?: () => void }) {
-  return (
-    <section className="relative mx-auto w-[min(94vw,1500px)] py-12 md:py-16" data-sound-safe-area>
-      <div className="relative overflow-hidden border-y border-neutral-950/12 bg-white/20 px-4 py-9 backdrop-blur-sm md:px-7 md:py-12">
-        <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:68px_68px]" />
-        <div className="relative grid gap-7 md:grid-cols-[0.58fr_0.42fr] md:items-end">
-          <div>
-            <SectionSignal index="08" label="Start route" />
-            <h2 className="mt-5 max-w-[11ch] text-[clamp(3.2rem,7vw,6.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
-              {page.closingTitle}
-            </h2>
-            <p className="mt-6 max-w-[37rem] text-[15px] leading-7 text-neutral-600">
-              {page.closingBody}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onOpenProject}
-            className="inline-flex min-h-12 w-full max-w-full items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-center text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 md:w-auto"
-          >
-            {page.primaryCta} -&gt;
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function getProjectGalleryCards(): ProofCardData[] {
+function getProjectGalleryCards(tone: ServicePageData["visualTone"]): ProofCardData[] {
   const workCards = cases.map((item) => ({
     title: item.title,
     claim: shortenText(item.shortDescription, 150),
@@ -540,7 +177,76 @@ function getProjectGalleryCards(): ProofCardData[] {
     role: item.medium,
   }));
 
-  return [...workCards, ...immersiveCards];
+  const priority = getGalleryPriority(tone);
+
+  return [...workCards, ...immersiveCards].sort((first, second) => {
+    const firstRank = priority.indexOf(first.href);
+    const secondRank = priority.indexOf(second.href);
+    const normalizedFirst = firstRank === -1 ? priority.length + 1 : firstRank;
+    const normalizedSecond = secondRank === -1 ? priority.length + 1 : secondRank;
+
+    return normalizedFirst - normalizedSecond;
+  });
+}
+
+function getDirectedProofCopy(page: ServicePageData) {
+  if (page.visualTone === "product") {
+    return [
+      {
+        title: "The workflow becomes visible.",
+        text: "A product demo page should let a founder show the product promise through screens, states and workflow evidence before the first explanation.",
+      },
+      {
+        title: "The pitch turns into a path.",
+        text: "Demo request, waitlist, beta access or investor review become one focused route instead of a loose deck and scattered screenshots.",
+      },
+    ];
+  }
+
+  if (page.visualTone === "immersive") {
+    return [
+      {
+        title: "Atmosphere becomes structure.",
+        text: "An immersive route needs more than mood. It needs a readable world, visible media logic and a clear way through the experience.",
+      },
+      {
+        title: "Motion stays usable.",
+        text: "Cinematic layers, archive proof and spatial rhythm can move together without hiding the message or turning the page into a technical demo.",
+      },
+    ];
+  }
+
+  return [
+    {
+      title: "Trust becomes a route.",
+      text: "A premium page is not a pile of sections. It guides attention through proof, context, visual hierarchy and one clear inquiry path.",
+    },
+    {
+      title: "A launch needs motion, not noise.",
+      text: "The surface can move with the offer: product modules, proof screens, campaign logic and a focused handoff without becoming a heavy website.",
+    },
+  ];
+}
+
+function getGalleryCopy(tone: ServicePageData["visualTone"]) {
+  if (tone === "product") {
+    return {
+      title: "Scroll through product proof.",
+      text: "A wider product proof rail keeps workflow, SaaS, CRM and advisory surfaces available without turning the route into a case archive.",
+    };
+  }
+
+  if (tone === "immersive") {
+    return {
+      title: "Move through the spatial proof field.",
+      text: "Immersive and interface-led work stay available in one cinematic rail, so the route can show atmosphere, media logic and usable systems together.",
+    };
+  }
+
+  return {
+    title: "Scroll through the proof field.",
+    text: "A wider proof gallery stays available without turning the page into a heavy archive. Scroll the rail and enter any project directly.",
+  };
 }
 
 function PremiumCoverCard({
@@ -563,6 +269,7 @@ function PremiumCoverCard({
   return (
     <Link
       to={card.href}
+      data-proof-link="true"
       draggable={false}
       className="group flex h-full flex-col overflow-hidden border border-neutral-950/12 bg-white/76 text-left shadow-[0_24px_90px_rgba(20,20,20,0.08)] backdrop-blur-md transition duration-500 hover:-translate-y-1 hover:shadow-[0_32px_120px_rgba(20,20,20,0.13)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
     >
@@ -614,6 +321,20 @@ function PremiumLandingHero({
   const coverScale = useTransform(scrollYProgress, [0, 0.72, 1], [1, 1.055, 1.035]);
   const copyY = useTransform(scrollYProgress, [0, 1], ["0%", "-2%"]);
   const primaryCard = proofCards[0];
+  const secondaryCard = proofCards[1];
+  const tertiaryCard = proofCards[2];
+  const isProduct = page.visualTone === "product";
+  const isImmersive = page.visualTone === "immersive";
+  const heroGridClass = isImmersive
+    ? "lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1.18fr)]"
+    : isProduct
+      ? "lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.08fr)]"
+      : "lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)]";
+  const titleClass = isImmersive
+    ? "mt-7 max-w-[11ch] text-[clamp(3rem,6vw,6.7rem)] font-normal leading-[0.88] tracking-normal text-neutral-950"
+    : isProduct
+      ? "mt-7 max-w-[11ch] text-[clamp(3.05rem,6.4vw,7.3rem)] font-normal leading-[0.88] tracking-normal text-neutral-950"
+      : "mt-7 max-w-[10.5ch] text-[clamp(3.15rem,6.2vw,7rem)] font-normal leading-[0.88] tracking-normal text-neutral-950";
 
   return (
     <section
@@ -621,14 +342,14 @@ function PremiumLandingHero({
       id="service-threshold"
       data-header-scene="practice-threshold"
       data-sound-safe-area
-      className="relative mx-auto grid w-[min(94vw,1640px)] gap-8 border-y border-neutral-950/12 py-9 pt-24 md:py-10 md:pt-28 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)] lg:items-center xl:gap-12"
+      className={`relative mx-auto grid w-[min(94vw,1640px)] gap-8 border-y border-neutral-950/12 py-9 pt-24 md:py-10 md:pt-28 lg:min-h-[calc(100svh-5rem)] lg:items-center xl:gap-12 ${heroGridClass}`}
     >
       <motion.div
         style={reduceMotion ? undefined : { y: copyY }}
         className="relative z-10 min-w-0"
       >
         <SectionSignal index="01" label="Service threshold" />
-        <h1 className="mt-7 max-w-[10.5ch] text-[clamp(3.15rem,6.2vw,7rem)] font-normal leading-[0.88] tracking-normal text-neutral-950">
+        <h1 className={titleClass}>
           {page.heroTitle}
         </h1>
         <p className="mt-7 max-w-[42rem] text-[17px] leading-8 text-neutral-600 md:text-[20px] md:leading-9">
@@ -660,16 +381,86 @@ function PremiumLandingHero({
         </div>
       </motion.div>
 
-      <div className="relative min-h-[24rem] overflow-visible md:min-h-[34rem] lg:min-h-[40rem]">
-        <div className="pointer-events-none absolute inset-0 border border-neutral-950/10 bg-white/16 backdrop-blur-[2px]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:64px_64px]" />
-        <motion.div
-          style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
-          className="relative z-10 mx-auto w-full max-w-[50rem] pt-5 md:pt-8 lg:ml-auto lg:mr-0"
-        >
-          {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
-        </motion.div>
-      </div>
+      {isImmersive ? (
+        <div className="relative min-h-[30rem] overflow-hidden border border-neutral-950/25 bg-[#020403] p-4 text-white shadow-[0_44px_140px_rgba(0,0,0,0.22)] md:min-h-[42rem] md:p-5">
+          <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:70px_70px]" />
+          <div className="pointer-events-none absolute left-[10%] top-[14%] h-[72%] w-[82%] rounded-[999px] border border-cyan-100/12" />
+          <div className="pointer-events-none absolute left-[20%] top-[24%] h-[52%] w-[62%] rounded-[999px] border border-white/10" />
+          <div className="relative z-10 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.18em] text-white/54">
+            <span>Spatial proof chamber</span>
+            <span>{page.heroProofLayout.replace("-stack", " stack")}</span>
+          </div>
+          <motion.div
+            style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
+            className="relative z-10 mx-auto mt-8 w-full max-w-[48rem] md:mt-10"
+          >
+            {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
+          </motion.div>
+          {secondaryCard ? (
+            <motion.div
+              style={reduceMotion ? undefined : { y: copyY }}
+              className="relative z-20 mt-5 w-[min(78vw,28rem)] rotate-2 md:absolute md:right-8 md:top-24 md:mt-0"
+            >
+              <PremiumCoverCard card={secondaryCard} index={1} />
+            </motion.div>
+          ) : null}
+          {tertiaryCard ? (
+            <div className="relative z-20 mt-5 border-y border-white/14 py-4 md:absolute md:bottom-8 md:left-8 md:mt-0 md:w-[18rem]">
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/42">{tertiaryCard.label}</div>
+              <p className="mt-3 text-[20px] leading-none text-white">{tertiaryCard.title}</p>
+              <p className="mt-3 text-[12px] leading-5 text-white/52">{tertiaryCard.claim}</p>
+            </div>
+          ) : null}
+        </div>
+      ) : isProduct ? (
+        <div className="relative min-h-[26rem] overflow-hidden border border-neutral-950/18 bg-neutral-950 p-4 text-white shadow-[0_38px_130px_rgba(0,0,0,0.18)] md:min-h-[38rem] md:p-5">
+          <div className="pointer-events-none absolute inset-0 opacity-[0.09] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:58px_58px]" />
+          <div className="relative z-10 grid h-full gap-5 md:grid-cols-[0.72fr_0.28fr]">
+            <motion.div
+              style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
+              className="w-full max-w-[51rem] self-center"
+            >
+              {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
+            </motion.div>
+            <div className="grid content-between gap-4 border-t border-white/14 pt-4 md:border-l md:border-t-0 md:pl-5 md:pt-0">
+              <div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/46">Demo spine</div>
+                <div className="mt-5 grid gap-3">
+                  {page.routeLedger.map((item, index) => (
+                    <div key={item.title} className="border-t border-white/14 pt-3">
+                      <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/38">
+                        {String(index + 1).padStart(2, "0")} / product
+                      </div>
+                      <p className="mt-2 text-[18px] leading-none text-white">{item.title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {secondaryCard ? (
+                <Link
+                  to={secondaryCard.href}
+                  className="group border-y border-white/14 py-4 transition hover:border-white/26 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/55"
+                >
+                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/38">{secondaryCard.label}</span>
+                  <span className="mt-2 block text-[18px] leading-none text-white">{secondaryCard.title}</span>
+                  <span className="mt-2 block text-[12px] leading-5 text-white/50">{secondaryCard.claim}</span>
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="relative min-h-[24rem] overflow-visible md:min-h-[34rem] lg:min-h-[40rem]">
+          <div className="pointer-events-none absolute inset-0 border border-neutral-950/10 bg-white/16 backdrop-blur-[2px]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:64px_64px]" />
+          <motion.div
+            style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
+            className="relative z-10 mx-auto w-full max-w-[50rem] pt-5 md:pt-8 lg:ml-auto lg:mr-0"
+          >
+            {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }
@@ -727,9 +518,77 @@ function PremiumSequenceScene({
   );
 }
 
-function PremiumDirectedProof({ proofCards }: { proofCards: ProofCardData[] }) {
+function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; proofCards: ProofCardData[] }) {
   const secondary = proofCards[1];
   const tertiary = proofCards[2];
+  const scenes = getDirectedProofCopy(page);
+
+  if (page.visualTone === "product") {
+    return (
+      <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
+        <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-center">
+          <div>
+            <SectionSignal index="02" label="Demo narrative" />
+            <h2 className="mt-5 max-w-[11ch] text-[clamp(2.7rem,5.3vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
+              Product proof before product claims.
+            </h2>
+            <p className="mt-6 max-w-[31rem] text-[15px] leading-7 text-neutral-600">{page.proofStatement}</p>
+          </div>
+          <div className="grid gap-4">
+            {[secondary, tertiary].filter((card): card is ProofCardData => Boolean(card)).map((card, index) => (
+              <Link
+                key={card.href}
+                to={card.href}
+                className="group grid gap-4 border-y border-neutral-950/12 bg-white/18 p-4 transition hover:bg-white/48 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 md:grid-cols-[minmax(0,0.46fr)_minmax(0,0.54fr)] md:items-center"
+              >
+                <span className="relative block aspect-[16/10] overflow-hidden bg-neutral-950">
+                  <img src={card.image} alt={card.alt} className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-[1.035]" loading="lazy" decoding="async" />
+                  <span className="absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.16em] text-white/66">{card.label}</span>
+                </span>
+                <span className="block">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">0{index + 2} / workflow proof</span>
+                  <span className="mt-3 block text-[clamp(1.8rem,3.1vw,3rem)] leading-[0.95] text-neutral-950">{scenes[index].title}</span>
+                  <span className="mt-4 block text-[14px] leading-7 text-neutral-600">{scenes[index].text}</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (page.visualTone === "immersive") {
+    return (
+      <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
+        <div className="relative overflow-hidden border border-neutral-950/24 bg-[#020403] p-4 text-white shadow-[0_44px_140px_rgba(0,0,0,0.2)] md:p-7">
+          <div className="pointer-events-none absolute inset-0 opacity-[0.09] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
+          <div className="pointer-events-none absolute right-[7%] top-[10%] h-[72%] w-[58%] rounded-[999px] border border-cyan-100/12" />
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[0.36fr_0.64fr] lg:items-end">
+            <div>
+              <SectionSignal index="02" label="Immersive proof" />
+              <h2 className="mt-5 max-w-[9ch] text-[clamp(2.9rem,5.6vw,5.8rem)] font-normal leading-[0.9] tracking-normal text-white">
+                Spatial proof with usable edges.
+              </h2>
+              <p className="mt-6 max-w-[30rem] text-[15px] leading-7 text-white/54">{page.proofStatement}</p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              {[secondary, tertiary].filter((card): card is ProofCardData => Boolean(card)).map((card, index) => (
+                <motion.div
+                  key={card.href}
+                  className={index === 1 ? "md:pt-16" : ""}
+                  whileHover={{ y: -7, scale: 1.012 }}
+                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <PremiumCoverCard card={card} index={index + 1} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12">
@@ -737,16 +596,16 @@ function PremiumDirectedProof({ proofCards }: { proofCards: ProofCardData[] }) {
         <PremiumSequenceScene
           card={secondary}
           index={0}
-          title="Trust becomes a route."
-          text="A premium page is not a pile of sections. It guides attention through proof, context, visual hierarchy and one clear inquiry path."
+          title={scenes[0].title}
+          text={scenes[0].text}
         />
       ) : null}
       {tertiary ? (
         <PremiumSequenceScene
           card={tertiary}
           index={1}
-          title="A launch needs motion, not noise."
-          text="The surface can move with the offer: product modules, proof screens, campaign logic and a focused handoff without becoming a heavy website."
+          title={scenes[1].title}
+          text={scenes[1].text}
           reverse
         />
       ) : null}
@@ -756,6 +615,83 @@ function PremiumDirectedProof({ proofCards }: { proofCards: ProofCardData[] }) {
 
 function PremiumServiceModel({ page }: { page: ServicePageData }) {
   const methodLine = page.method.map((step) => step.title).join(" -> ");
+
+  if (page.visualTone === "product") {
+    return (
+      <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
+        <div className="grid gap-9 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
+          <div>
+            <SectionSignal index="04" label="Route model" />
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.8vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
+              {page.routeTitle}
+            </h2>
+            <p className="mt-6 max-w-[31rem] text-[16px] leading-8 text-neutral-600">{page.routeDefinition}</p>
+          </div>
+
+          <div className="grid gap-8">
+            <div className="grid gap-px overflow-hidden border-y border-neutral-950/12 bg-neutral-950/10 md:grid-cols-3">
+              {page.routeLedger.map((item, index) => (
+                <article key={item.title} className="bg-[#f4f1ea]/88 p-4 md:min-h-[13rem]">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+                    {String(index + 1).padStart(2, "0")} / demo
+                  </div>
+                  <h3 className="mt-7 text-[clamp(1.7rem,2.4vw,2.7rem)] leading-[0.94] text-neutral-950">{item.title}</h3>
+                  <p className="mt-4 text-[13px] leading-6 text-neutral-600">{item.text}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="border-y border-neutral-950/12 py-5">
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Build sequence</div>
+              <div className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-[17px] leading-7 text-neutral-800">
+                {page.method.map((step, index) => (
+                  <span key={step.title}>
+                    {step.title}
+                    {index < page.method.length - 1 ? <span className="px-3 text-neutral-300">-&gt;</span> : null}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (page.visualTone === "immersive") {
+    return (
+      <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
+        <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-center">
+          <div>
+            <SectionSignal index="04" label="Route model" />
+            <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.8vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
+              {page.routeTitle}
+            </h2>
+            <p className="mt-6 max-w-[32rem] text-[16px] leading-8 text-neutral-600">{page.routeDefinition}</p>
+          </div>
+
+          <div className="relative overflow-hidden border border-neutral-950/18 bg-white/20 p-5 backdrop-blur-sm md:p-7">
+            <div className="pointer-events-none absolute left-[10%] top-[8%] h-[84%] w-[76%] rounded-[999px] border border-neutral-950/10" />
+            <div className="relative grid gap-6">
+              {page.routeLedger.map((item, index) => (
+                <article key={item.title} className="grid gap-3 border-t border-neutral-950/12 pt-5 md:grid-cols-[5rem_0.38fr_0.62fr] md:items-start">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">
+                    {String(index + 1).padStart(2, "0")} / field
+                  </span>
+                  <h3 className="text-[clamp(1.7rem,2.4vw,2.55rem)] leading-[0.95] text-neutral-950">{item.title}</h3>
+                  <p className="text-[13px] leading-6 text-neutral-600">{item.text}</p>
+                </article>
+              ))}
+              <div className="border-y border-neutral-950/12 py-4">
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Spatial sequence</div>
+                <p className="mt-3 text-[18px] leading-8 text-neutral-800">{methodLine}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
@@ -807,19 +743,23 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
   );
 }
 
-function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
+function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: ProofCardData[] }) {
+  const navigate = useNavigate();
   const railRef = useRef<HTMLDivElement | null>(null);
   const loopResetRef = useRef<number | null>(null);
   const wheelFrameRef = useRef<number | null>(null);
   const wheelVelocityRef = useRef(0);
+  const suppressNextClickRef = useRef(false);
   const dragState = useRef({
     active: false,
     moved: false,
     pointerId: -1,
     startX: 0,
     scrollLeft: 0,
+    targetHref: "",
   });
   const loopCards = useMemo(() => [...cards, ...cards, ...cards], [cards]);
+  const galleryCopy = getGalleryCopy(page.visualTone);
 
   const getLoopSegment = () => {
     const rail = railRef.current;
@@ -887,6 +827,8 @@ function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
 
     const rail = railRef.current;
     if (!rail) return;
+    const target = event.target as HTMLElement;
+    const proofLink = target.closest('a[data-proof-link="true"]') as HTMLAnchorElement | null;
 
     dragState.current = {
       active: true,
@@ -894,6 +836,7 @@ function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
       pointerId: event.pointerId,
       startX: event.clientX,
       scrollLeft: rail.scrollLeft,
+      targetHref: proofLink?.getAttribute("href") ?? "",
     };
     rail.setPointerCapture(event.pointerId);
   };
@@ -924,6 +867,29 @@ function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
     normalizeLoopPosition();
   };
 
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const rail = railRef.current;
+    const state = dragState.current;
+    if (!state.active || state.pointerId !== event.pointerId) return;
+
+    const targetHref = state.targetHref;
+    const shouldOpenCase = !state.moved && Boolean(targetHref);
+
+    state.active = false;
+    state.targetHref = "";
+    if (rail?.hasPointerCapture(event.pointerId)) {
+      rail.releasePointerCapture(event.pointerId);
+    }
+    normalizeLoopPosition();
+
+    if (shouldOpenCase) {
+      event.preventDefault();
+      event.stopPropagation();
+      suppressNextClickRef.current = true;
+      navigate(targetHref);
+    }
+  };
+
   const onWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
     const rail = railRef.current;
     if (!rail) return;
@@ -946,11 +912,12 @@ function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
   };
 
   const onClickCapture = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (!dragState.current.moved) return;
+    if (!dragState.current.moved && !suppressNextClickRef.current) return;
 
     event.preventDefault();
     event.stopPropagation();
     dragState.current.moved = false;
+    suppressNextClickRef.current = false;
   };
 
   const onScroll = () => {
@@ -966,11 +933,11 @@ function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
         <div>
           <SectionSignal index="05" label="Project gallery" />
           <h2 className="mt-5 max-w-[9ch] text-[clamp(2.7rem,5vw,5rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
-            Scroll through the proof field.
+            {galleryCopy.title}
           </h2>
         </div>
         <p className="max-w-[44rem] text-[16px] leading-8 text-neutral-600">
-          A wider proof gallery stays available without turning the page into a heavy archive. Scroll the rail and enter any project directly.
+          {galleryCopy.text}
         </p>
       </div>
 
@@ -981,7 +948,7 @@ function PremiumProjectGallery({ cards }: { cards: ProofCardData[] }) {
         className="cursor-grab overflow-x-auto overscroll-contain pb-5 active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
+        onPointerUp={onPointerUp}
         onPointerCancel={endDrag}
         onPointerLeave={endDrag}
         onWheel={onWheel}
@@ -1054,9 +1021,9 @@ function PremiumLandingRoute({
   return (
     <>
       <PremiumLandingHero page={page} proofCards={proofCards} onOpenProject={onOpenProject} />
-      <PremiumDirectedProof proofCards={proofCards} />
+      <PremiumDirectedProof page={page} proofCards={proofCards} />
       <PremiumServiceModel page={page} />
-      <PremiumProjectGallery cards={galleryCards} />
+      <PremiumProjectGallery page={page} cards={galleryCards} />
       <PremiumClosingRoute page={page} onOpenProject={onOpenProject} />
     </>
   );
@@ -1065,7 +1032,7 @@ function PremiumLandingRoute({
 export default function ServicePage({ drawerOpen = false, onOpenProject, onCloseProject }: PageProps) {
   const { slug } = useParams();
   const page = getServicePage(slug);
-  const galleryCards = useMemo(() => getProjectGalleryCards(), []);
+  const galleryCards = useMemo(() => (page ? getProjectGalleryCards(page.visualTone) : []), [page]);
 
   if (!page) {
     return <Navigate to="/offer" replace />;
@@ -1080,26 +1047,12 @@ export default function ServicePage({ drawerOpen = false, onOpenProject, onClose
       <PageSurface className="relative min-h-screen overflow-x-clip bg-transparent">
         <AtmosphericSiteShell preset="practice" />
         <main className="relative">
-          {page.slug === "premium-landing-page" ? (
-            <PremiumLandingRoute
-              page={page}
-              proofCards={proofCards}
-              galleryCards={galleryCards}
-              onOpenProject={onOpenProject}
-            />
-          ) : (
-            <>
-              <ServiceHero page={page} proofCards={proofCards} onOpenProject={onOpenProject} />
-              <RouteLedger page={page} />
-              <FeaturedProof page={page} proofCards={proofCards} />
-              <ServiceRouteDefinition page={page} />
-              <BestFor items={page.bestFor} />
-              <Method page={page} />
-              <ProofStrip proofCards={proofCards} />
-              <Deliverables items={page.deliverables} />
-              <StartRoute page={page} onOpenProject={onOpenProject} />
-            </>
-          )}
+          <PremiumLandingRoute
+            page={page}
+            proofCards={proofCards}
+            galleryCards={galleryCards}
+            onOpenProject={onOpenProject}
+          />
         </main>
         <SiteFooterV2 onOpenProject={onOpenProject} variant="practice" hideClosingSignal />
       </PageSurface>

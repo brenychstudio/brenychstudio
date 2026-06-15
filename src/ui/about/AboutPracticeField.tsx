@@ -30,15 +30,6 @@ type MethodStage = {
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const fieldLabels = [
-  { label: "visual direction", className: "left-[8%] top-[16%]" },
-  { label: "interface architecture", className: "right-[16%] top-[22%]" },
-  { label: "motion grammar", className: "left-[12%] bottom-[30%]" },
-  { label: "front-end delivery", className: "right-[18%] bottom-[25%]" },
-  { label: "atmosphere", className: "left-[36%] top-[8%]" },
-  { label: "memory", className: "right-[35%] bottom-[13%]" },
-] as const;
-
 const methodStages: MethodStage[] = [
   {
     id: "signal",
@@ -341,18 +332,6 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
           );
         })}
 
-        {fieldLabels.map((item, index) => (
-          <motion.div
-            key={item.label}
-            className={`absolute ${item.className} hidden border-y border-neutral-950/12 bg-white/30 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.17em] text-neutral-500 backdrop-blur md:block`}
-            initial={reduceMotion ? undefined : { opacity: 0, y: 10 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.52, delay: index * 0.045, ease }}
-          >
-            {item.label}
-          </motion.div>
-        ))}
       </motion.div>
 
       <div className="absolute inset-x-4 bottom-[8.6rem] grid grid-cols-[repeat(5,minmax(0,1fr))] gap-1.5 sm:hidden">

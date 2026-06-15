@@ -563,7 +563,7 @@ export default function AboutV2({
             id="about-threshold"
             data-header-scene="about-threshold"
             data-sound-safe-area
-            className="mx-auto grid min-h-[calc(100vh-5rem)] w-[min(94vw,1720px)] gap-12 border-y border-neutral-950/14 py-12 md:py-16 lg:grid-cols-[0.48fr_0.52fr] lg:items-center lg:py-14"
+            className="mx-auto grid min-h-[calc(100vh-5rem)] w-[min(94vw,1640px)] gap-12 border-y border-neutral-950/14 py-12 md:py-16 lg:grid-cols-[0.48fr_0.52fr] lg:items-center lg:py-14"
           >
             <motion.div
               className="min-w-0"
@@ -611,7 +611,7 @@ export default function AboutV2({
             <AboutPracticeField />
           </section>
 
-          <section id="about-practice" data-header-scene="about-practice" className="mx-auto w-[min(94vw,1720px)] py-20 lg:py-28">
+          <section id="about-practice" data-header-scene="about-practice" className="mx-auto w-[min(94vw,1640px)] py-20 lg:py-28">
             <div className="grid gap-12 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.36fr_0.64fr]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionLabel>02 / Practice layers</SectionLabel>
@@ -660,11 +660,11 @@ export default function AboutV2({
             </div>
           </section>
 
-          <section id="about-method" data-header-scene="about-method" className="mx-auto w-[min(94vw,1720px)] pb-20 lg:pb-28">
+          <section id="about-method" data-header-scene="about-method" className="mx-auto w-[min(94vw,1640px)] pb-20 lg:pb-28">
             <MethodSignalSpine />
           </section>
 
-          <section id="about-technical" data-header-scene="about-technical" className="mx-auto w-[min(94vw,1720px)] pb-24 lg:pb-32">
+          <section id="about-technical" data-header-scene="about-technical" className="mx-auto w-[min(94vw,1640px)] pb-24 lg:pb-32">
             <div className="grid gap-12 border-y border-neutral-950/14 py-12 lg:grid-cols-[0.34fr_0.66fr] lg:py-14">
               <div>
                 <SectionLabel>04 / Technical foundation</SectionLabel>
@@ -701,7 +701,7 @@ export default function AboutV2({
             </div>
           </section>
 
-          <section id="about-authorial" data-header-scene="about-closing" className="mx-auto w-[min(94vw,1720px)] pb-24 lg:pb-36">
+          <section id="about-authorial" data-header-scene="about-closing" className="mx-auto w-[min(94vw,1640px)] pb-24 lg:pb-36">
             <div className="relative grid gap-12 overflow-hidden border-y border-neutral-950/14 py-16 lg:grid-cols-[0.38fr_0.62fr] lg:items-center lg:py-20">
               <div className="pointer-events-none absolute right-[8%] top-[10%] h-[32rem] w-[32rem] rounded-full border border-neutral-950/[0.055]" />
               <div className="pointer-events-none absolute right-[18%] top-[22%] h-[20rem] w-[20rem] rounded-full border border-neutral-950/[0.04]" />
@@ -727,7 +727,7 @@ export default function AboutV2({
             </div>
           </section>
 
-          <section id="about-principles" data-header-scene="about-principles" className="mx-auto w-[min(94vw,1720px)] pb-20 lg:pb-32">
+          <section id="about-principles" data-header-scene="about-principles" className="mx-auto w-[min(94vw,1640px)] pb-20 lg:pb-32">
             <div className="relative overflow-hidden border border-white/10 bg-[rgb(12,12,12)] p-6 text-white shadow-[0_48px_180px_rgba(0,0,0,0.22)] sm:p-8 lg:p-10">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,rgba(255,255,255,0.16),transparent_34%),radial-gradient(circle_at_20%_84%,rgba(255,255,255,0.075),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.085),transparent_48%)]" />
               <div className="pointer-events-none absolute inset-0 opacity-[0.085] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />

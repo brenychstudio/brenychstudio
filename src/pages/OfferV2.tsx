@@ -1133,7 +1133,7 @@ export default function OfferV2({
         <main className="relative pt-20 lg:pt-24">
           {desktopLayout ? (
             <>
-          <section id="offer-threshold" data-header-scene="practice-threshold" data-sound-safe-area className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1720px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-center lg:py-12 xl:pr-36">
+          <section id="offer-threshold" data-header-scene="practice-threshold" data-sound-safe-area className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-[min(94vw,1640px)] gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-center lg:py-12 xl:pr-36">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1193,7 +1193,7 @@ export default function OfferV2({
 
           <OfferScrollArtifactHero />
 
-          <section id="offer-systems" ref={systemsRef} data-header-scene="practice-build" className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-20">
+          <section id="offer-systems" ref={systemsRef} data-header-scene="practice-build" className="relative z-10 mx-auto w-[min(94vw,1640px)] py-16 lg:py-20">
             <div className="grid gap-10 border-y border-neutral-950/14 py-9 lg:grid-cols-[0.3fr_0.7fr]">
               <div>
                 <SectionLabel>01 / What I build</SectionLabel>
@@ -1209,7 +1209,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="engagement-model" data-header-scene="practice-system" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-16 lg:pb-20">
+          <section id="engagement-model" data-header-scene="practice-system" className="relative z-10 mx-auto w-[min(94vw,1640px)] scroll-mt-28 pb-16 lg:pb-20">
             <div className="grid gap-10 lg:grid-cols-[0.38fr_0.62fr]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionLabel>02 / Service Architecture</SectionLabel>
@@ -1226,7 +1226,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1720px)] scroll-mt-28 pb-8 lg:pb-10">
+          <section id="offer-delivery" data-header-scene="practice-delivery" className="relative z-10 mx-auto w-[min(94vw,1640px)] scroll-mt-28 pb-8 lg:pb-10">
             <div className="relative isolate -mx-[3vw] overflow-visible px-[3vw] pb-8 pt-10 lg:pb-10 lg:pt-16">
               <div className="pointer-events-none absolute -inset-x-[4vw] -inset-y-20 -z-10 bg-[radial-gradient(circle_at_38%_20%,rgba(255,255,255,0.58),transparent_34%),radial-gradient(circle_at_72%_78%,rgba(244,241,234,0.36),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0),rgba(246,244,239,0.28)_34%,rgba(246,244,239,0.2)_68%,rgba(255,255,255,0))] opacity-80 [mask-image:linear-gradient(180deg,transparent,black_18%,black_82%,transparent)]" />
               <div className="pointer-events-none absolute -inset-x-[4vw] -inset-y-16 -z-10 opacity-[0.035] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(180deg,transparent,black_16%,black_84%,transparent)]" />
@@ -1259,7 +1259,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="offer-formats" data-header-scene="practice-formats" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
+          <section id="offer-formats" data-header-scene="practice-formats" className="relative z-10 mx-auto w-[min(94vw,1640px)] pb-16 lg:pb-20">
             <div className="grid gap-10 lg:grid-cols-[0.34fr_0.66fr]">
               <div>
                 <SectionLabel>04 / Ways to Begin</SectionLabel>
@@ -1327,7 +1327,7 @@ export default function OfferV2({
             </div>
           </section>
 
-          <section id="offer-output" data-header-scene="practice-output" className="relative z-10 mx-auto w-[min(94vw,1720px)] pb-16 lg:pb-20">
+          <section id="offer-output" data-header-scene="practice-output" className="relative z-10 mx-auto w-[min(94vw,1640px)] pb-16 lg:pb-20">
             <div className="grid gap-10 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
               <div>
                 <SectionLabel>05 / What You Receive</SectionLabel>

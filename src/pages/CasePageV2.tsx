@@ -1148,12 +1148,12 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
   return (
     <section
       id="case-walkthrough"
-      className="relative mx-auto w-[min(95vw,1680px)] overflow-hidden border-y border-neutral-950/12 py-14 md:py-16"
+      className="relative mx-auto w-[min(94vw,1640px)] overflow-hidden border-y border-neutral-950/12 py-14 md:py-16"
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:82px_82px]" />
       <div className="pointer-events-none absolute right-[4%] top-[10%] h-[52%] w-[54%] rounded-[50%] bg-neutral-950/10 blur-3xl" />
 
-      <div className="relative mx-auto grid w-[min(92vw,1500px)] gap-5">
+      <div className="relative mx-auto grid w-full gap-5">
         <div className="relative overflow-hidden border-y border-neutral-950/12 py-8 md:py-9">
           <div className="pointer-events-none absolute inset-y-0 left-[53%] hidden w-px bg-neutral-950/10 lg:block" />
           <div className="pointer-events-none absolute right-[10%] top-1/2 hidden h-[22rem] w-[22rem] -translate-y-1/2 rounded-full border border-neutral-950/5 lg:block" />
@@ -1446,7 +1446,7 @@ function MobileSurfaceRail({
     <section
       ref={railRef}
       data-sound-safe-area
-      className="mx-auto w-[min(92vw,1480px)] pb-20"
+      className="mx-auto w-[min(94vw,1640px)] pb-20"
       onWheel={handleCarouselWheel}
     >
       <div className="grid gap-6 border-t border-neutral-950/12 pt-8 lg:grid-cols-[minmax(0,0.62fr)_minmax(18rem,0.38fr)] lg:items-end">
@@ -1782,8 +1782,8 @@ function ScreensAsEvidence({
   };
 
   return (
-    <section id="case-media" data-sound-safe-area className="relative mx-auto w-[min(95vw,1680px)] py-10">
-      <div className="mx-auto w-[min(92vw,1480px)]">
+    <section id="case-media" data-sound-safe-area className="relative mx-auto w-[min(94vw,1640px)] py-10">
+      <div className="mx-auto w-full">
         <div className="relative overflow-hidden border-y border-neutral-950/12 py-10 md:py-12">
           <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-neutral-950/8" />
           <div className="pointer-events-none absolute right-[8%] top-1/2 h-[28rem] w-[28rem] -translate-y-1/2 rounded-full border border-neutral-950/5" />
@@ -1869,7 +1869,7 @@ function ScreensAsEvidence({
       </div>
 
       {hasHiddenFrames ? (
-        <div className="relative mx-auto grid w-[min(92vw,1480px)] gap-6 border-b border-neutral-950/12 px-0 py-8 md:grid-cols-2 md:py-10">
+        <div className="relative mx-auto grid w-full gap-6 border-b border-neutral-950/12 px-0 py-8 md:grid-cols-2 md:py-10">
           <div className="hidden md:block" />
           <motion.div layout className="max-w-[30rem] md:justify-self-end">
             <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
@@ -1912,7 +1912,7 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
   return (
     <section
       id="case-proof-system"
-      className="relative mx-auto w-[min(94vw,1540px)] overflow-hidden py-8 md:py-10"
+      className="relative mx-auto w-[min(94vw,1640px)] overflow-hidden py-8 md:py-10"
     >
       <div className="relative overflow-hidden border-y border-neutral-950/12 bg-white/10 px-4 py-9 backdrop-blur-sm sm:px-6 md:px-8 md:py-11">
         <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:70px_70px]" />
@@ -2094,14 +2094,14 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
   return (
     <section
       id="case-available"
-      className="relative mx-auto w-[min(95vw,1680px)] overflow-hidden py-8 md:py-10"
+      className="relative mx-auto w-[min(94vw,1640px)] overflow-hidden py-8 md:py-10"
     >
       <div className="relative mx-auto overflow-hidden border-y border-neutral-950/12 bg-white/10">
         <div className="pointer-events-none absolute inset-y-8 right-[4%] w-[40%] rounded-[50%] bg-neutral-950/6 blur-3xl" />
         <div className="pointer-events-none absolute left-[8%] top-4 h-[38rem] w-[58rem] rotate-[-8deg] rounded-[50%] border border-neutral-950/[0.055]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
 
-        <div className="relative mx-auto grid w-[min(92vw,1420px)] gap-8 py-10 md:py-12">
+        <div className="relative mx-auto grid w-full gap-8 px-4 py-10 sm:px-6 md:px-8 md:py-12">
           <div className="grid gap-8 lg:grid-cols-[0.43fr_0.57fr] lg:items-end">
             <div>
               <SectionSignal index="05" label="Available / trust" />
@@ -3128,7 +3128,7 @@ export default function CasePageV2({
           <div className="hidden lg:block">
           <section
             id="case-threshold"
-            className="relative mx-auto min-h-screen w-[min(95vw,1680px)] overflow-hidden pb-12 pt-28 lg:min-h-[930px]"
+            className="relative mx-auto min-h-screen w-[min(94vw,1640px)] overflow-hidden pb-12 pt-28 lg:min-h-[930px]"
           >
             <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-neutral-950/14" />
             <div className="pointer-events-none absolute left-[7%] top-[12%] h-[78%] w-[76%] rounded-[50%] border border-neutral-950/6" />
@@ -3310,7 +3310,7 @@ export default function CasePageV2({
 
           <section
             id="case-closing"
-            className="mx-auto w-[min(94vw,1540px)] pb-10 pt-5"
+            className="mx-auto w-[min(94vw,1640px)] pb-10 pt-5"
             data-footer-rail-state="closing"
             data-sound-safe-area
           >

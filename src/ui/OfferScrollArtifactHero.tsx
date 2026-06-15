@@ -742,7 +742,7 @@ export default function OfferScrollArtifactHero({ compact = false }: { compact?:
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 mx-auto h-[205vh] w-[min(94vw,1720px)] sm:h-[220vh]"
+      className="relative z-10 mx-auto h-[205vh] w-[min(94vw,1640px)] sm:h-[220vh]"
       onPointerMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         setPointer({

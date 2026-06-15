@@ -990,7 +990,7 @@ export default function EvidenceAtlas({
         <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
 
         <main className="relative pt-24" style={surfaceStyle}>
-          <MobileMotionSection as="section" variant="threshold" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
+          <MobileMotionSection as="section" variant="threshold" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1640px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
             <div className="grid gap-8 border-y border-neutral-950/14 py-7 sm:gap-10 sm:py-10 lg:min-h-[calc(100vh-10rem)] xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
               <div className="min-w-0">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
@@ -1225,7 +1225,7 @@ export default function EvidenceAtlas({
 
           {routeContentReady ? (
             <>
-          <MobileMotionSection as="section" variant="media" delay="soft" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1720px)] py-16 lg:py-24">
+          <MobileMotionSection as="section" variant="media" delay="soft" id="evidence-featured" data-header-scene="evidence-featured" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1640px)] py-16 lg:py-24">
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionIntro
@@ -1238,7 +1238,7 @@ export default function EvidenceAtlas({
                 </div>
               </div>
 
-              <div className="relative xl:pr-36 2xl:pr-20">
+              <div className="relative">
                 {selectedFeaturedCase ? (
                   <div className="relative overflow-hidden bg-white/16 backdrop-blur-sm">
                     <FeaturedFlowItem
@@ -1282,7 +1282,7 @@ export default function EvidenceAtlas({
               </div>
             </div>
 
-            <div className="mt-10 xl:pr-36 2xl:pr-20">
+            <div className="mt-10">
               <AnimatePresence mode="wait">
                 {archiveViewMode === "index" ? (
                   <WorkIndexTransformList
@@ -1315,7 +1315,7 @@ export default function EvidenceAtlas({
                   ))}
                 </div>
 
-                <div className="relative mx-auto hidden max-w-[1480px] gap-16 lg:gap-x-32 xl:grid xl:grid-cols-2">
+                <div className="relative mx-auto hidden max-w-[1480px] gap-16 lg:gap-x-32 xl:grid xl:max-w-none xl:grid-cols-2">
                   <div className="grid gap-16 lg:gap-44">
                     {filteredSupportingFeaturedColumns.left.map((item, index) => (
                       <div key={item.slug} className="relative">
@@ -1343,7 +1343,7 @@ export default function EvidenceAtlas({
                   </div>
                 </div>
 
-                <div className="relative mx-auto grid max-w-[1480px] gap-4 border-t border-neutral-950/10 px-4 py-6 sm:py-8 lg:grid-cols-2 lg:py-10">
+                <div className="relative mx-auto grid max-w-[1480px] gap-4 border-t border-neutral-950/10 px-4 py-6 sm:py-8 lg:grid-cols-2 lg:py-10 xl:max-w-none">
                   <div className="hidden lg:block" />
                   <div className="max-w-[28rem] lg:justify-self-end" data-sound-safe-area>
                     <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
@@ -1377,7 +1377,7 @@ export default function EvidenceAtlas({
                       exit={{ opacity: 0, height: 0, y: 18 }}
                       transition={{ duration: 0.72, ease }}
                     >
-                      <div className="mx-auto mb-10 grid max-w-[1480px] gap-3 px-4 lg:grid-cols-[1fr_auto] lg:items-center">
+                      <div className="mx-auto mb-10 grid max-w-[1480px] gap-3 px-4 lg:grid-cols-[1fr_auto] lg:items-center xl:max-w-none">
                         <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
                           Expanded archive field / filtered by {activeFilter}
                         </div>
@@ -1406,7 +1406,7 @@ export default function EvidenceAtlas({
                         ))}
                       </div>
 
-                      <div className="relative mx-auto hidden max-w-[1480px] gap-16 lg:grid-cols-2 lg:gap-x-32 xl:grid">
+                      <div className="relative mx-auto hidden max-w-[1480px] gap-16 lg:grid-cols-2 lg:gap-x-32 xl:grid xl:max-w-none">
                         <div className="grid gap-16 lg:gap-44">
                           {expandedFeaturedColumns.left.map((item, index) => (
                             <FeaturedFlowItem
@@ -1441,7 +1441,7 @@ export default function EvidenceAtlas({
             </div>
           </MobileMotionSection>
 
-          <MobileMotionSection as="section" variant="ledger" delay="soft" id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1720px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
+          <MobileMotionSection as="section" variant="ledger" delay="soft" id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1640px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
             <SectionIntro label="Capability Layer" title="What the archive proves." />
             <div className="border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm xl:hidden">
               {capabilityProofMatrix.map((capability) => (

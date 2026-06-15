@@ -1503,7 +1503,7 @@ function PracticeMapScene({
         <div className="absolute right-[12vw] top-[9vh] h-[36rem] w-[36rem] rounded-full border border-neutral-950/[0.045]" />
       </div>
 
-      <div className="relative z-10 mx-auto min-h-[calc(100vh-8rem)] w-[min(96vw,1740px)]">
+      <div className="relative z-10 mx-auto min-h-[calc(100vh-8rem)] w-[min(94vw,1640px)]">
         <div className="mb-6 grid gap-6 xl:grid-cols-[0.42fr_0.58fr] xl:items-end">
           <div>
             <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Spatial practice map</div>
@@ -1969,7 +1969,7 @@ function PracticeMapScene({
             ) : (
               <motion.section
                 key="atlas-assembly"
-                className="mx-auto mt-16 w-[min(94vw,1680px)] pb-28"
+                className="mx-auto mt-16 w-[min(94vw,1640px)] pb-28"
                 initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 90, scale: 0.98, filter: "blur(6px)" }}
                 animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                 exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -72, scale: 0.975, filter: "blur(6px)" }}
@@ -2244,7 +2244,7 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
 
   return (
     <Chapter id="proof" className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-      <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(94vw,1680px)]">
+      <div ref={proofRef} className="relative mx-auto min-h-[calc(100vh-3.75rem)] w-[min(94vw,1640px)]">
         <div
           className="sticky top-[4.75rem] min-h-[calc(100vh-6rem)] overflow-hidden border-y border-neutral-950/[0.085] bg-zinc-50/[0.12] text-neutral-950 backdrop-blur-[1px]"
           style={{ opacity: 1 - proofExitBlend, pointerEvents: proofExitBlend > 0.82 ? "none" : undefined }}
@@ -2417,7 +2417,7 @@ function EngineStackScene() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 -top-44 z-0 h-44"
       />
-      <div className="relative z-10 mx-auto grid w-[min(92vw,1600px)] items-start gap-14 xl:grid-cols-[0.44fr_0.56fr]">
+      <div className="relative z-10 mx-auto grid w-[min(94vw,1640px)] items-start gap-14 xl:grid-cols-[0.44fr_0.56fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface engines</div>
           <KineticTitle
@@ -2570,7 +2570,7 @@ function FutureChambersScene() {
   return (
     <>
     <Chapter id="future" className="relative min-h-screen scroll-mt-24 px-4 pb-16 pt-16 sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(92vw,1600px)] content-start gap-10 xl:grid-cols-[minmax(360px,0.55fr)_minmax(720px,1fr)] xl:items-start xl:pt-[16vh]">
+      <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] content-start gap-10 xl:grid-cols-[minmax(360px,0.55fr)_minmax(720px,1fr)] xl:items-start xl:pt-[16vh]">
         <div className="relative z-10">
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Prepared chambers / systems in development</div>
           <KineticTitle
@@ -2825,7 +2825,7 @@ function FutureChambersScene() {
 function ApplicationLayerScene() {
   return (
     <Chapter id="applications" className="relative min-h-screen px-4 pb-16 pt-10 sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(92vw,1600px)] items-center gap-14 xl:grid-cols-[0.46fr_0.54fr]">
+      <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center gap-14 xl:grid-cols-[0.46fr_0.54fr]">
         <div>
           <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Application layer</div>
           <KineticTitle

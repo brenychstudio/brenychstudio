@@ -259,6 +259,14 @@ function PremiumCoverCard({
   size?: "hero" | "default" | "gallery";
 }) {
   const imageHeight = size === "hero" ? "aspect-[16/10]" : size === "gallery" ? "aspect-[16/11]" : "aspect-[16/10]";
+  const imageClass =
+    size === "gallery"
+      ? "h-full w-full object-cover opacity-90 saturate-[0.92] transition duration-700 group-hover:scale-[1.035] group-hover:opacity-100 group-hover:saturate-100"
+      : "h-full w-full object-cover opacity-[0.92] saturate-[0.94] transition duration-700 group-hover:scale-[1.035] group-hover:opacity-100 group-hover:saturate-100";
+  const overlayClass =
+    size === "gallery"
+      ? "absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12),rgba(0,0,0,0.3))] transition-opacity duration-700 group-hover:opacity-0"
+      : "absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.24))] transition-opacity duration-700 group-hover:opacity-0";
   const titleClass =
     size === "hero"
       ? "text-[clamp(1.8rem,3vw,2.65rem)] leading-none text-neutral-950"
@@ -278,11 +286,11 @@ function PremiumCoverCard({
           src={card.image}
           alt={card.alt}
           draggable={false}
-          className="h-full w-full object-cover opacity-95 transition duration-700 group-hover:scale-[1.035]"
+          className={imageClass}
           loading={index === 0 ? "eager" : "lazy"}
           decoding="async"
         />
-        <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.2))]" />
+        <span className={overlayClass} />
         <span className="absolute left-3 top-3 font-mono text-[8px] uppercase tracking-[0.18em] text-white/68">
           {String(index + 1).padStart(2, "0")}
         </span>
@@ -322,7 +330,6 @@ function PremiumLandingHero({
   const copyY = useTransform(scrollYProgress, [0, 1], ["0%", "-2%"]);
   const primaryCard = proofCards[0];
   const secondaryCard = proofCards[1];
-  const tertiaryCard = proofCards[2];
   const isProduct = page.visualTone === "product";
   const isImmersive = page.visualTone === "immersive";
   const heroGridClass = isImmersive
@@ -403,13 +410,6 @@ function PremiumLandingHero({
             >
               <PremiumCoverCard card={secondaryCard} index={1} />
             </motion.div>
-          ) : null}
-          {tertiaryCard ? (
-            <div className="relative z-20 mt-5 border-y border-white/14 py-4 md:absolute md:bottom-8 md:left-8 md:mt-0 md:w-[18rem]">
-              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/42">{tertiaryCard.label}</div>
-              <p className="mt-3 text-[20px] leading-none text-white">{tertiaryCard.title}</p>
-              <p className="mt-3 text-[12px] leading-5 text-white/52">{tertiaryCard.claim}</p>
-            </div>
           ) : null}
         </div>
       ) : isProduct ? (
@@ -559,6 +559,10 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
   }
 
   if (page.visualTone === "immersive") {
+    const immersiveDirectedCards = [proofCards[2], proofCards[3]].filter(
+      (card): card is ProofCardData => Boolean(card),
+    );
+
     return (
       <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
         <div className="relative overflow-hidden border border-neutral-950/24 bg-[#020403] p-4 text-white shadow-[0_44px_140px_rgba(0,0,0,0.2)] md:p-7">
@@ -573,7 +577,7 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
               <p className="mt-6 max-w-[30rem] text-[15px] leading-7 text-white/54">{page.proofStatement}</p>
             </div>
             <div className="grid gap-5 md:grid-cols-2">
-              {[secondary, tertiary].filter((card): card is ProofCardData => Boolean(card)).map((card, index) => (
+              {immersiveDirectedCards.map((card, index) => (
                 <motion.div
                   key={card.href}
                   className={index === 1 ? "md:pt-16" : ""}

@@ -2,10 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type
 import {
   AnimatePresence,
   motion,
-  useMotionValueEvent,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
   type PanInfo,
 } from "framer-motion";
@@ -44,7 +42,6 @@ type EvidenceViewMode = "sequence" | "atlas";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const INITIAL_EVIDENCE_FRAME_COUNT = 5;
-const SCROLL_VIDEO_SEEK_EPSILON = 0.16;
 
 const caseSpineItems: SectionRailItem[] = [
   { index: "01", label: "Threshold", id: "case-threshold" },
@@ -833,11 +830,6 @@ function getMobileSwipeDelta(info: PanInfo) {
   return 0;
 }
 
-function clampScrollProgress(value: number) {
-  if (!Number.isFinite(value)) return 0;
-  return Math.min(Math.max(value, 0), 1);
-}
-
 function ScrollSyncedCaseVideo({
   media,
   frameClass,
@@ -849,42 +841,46 @@ function ScrollSyncedCaseVideo({
   priority: boolean;
   ambient: boolean;
 }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const [inView, setInView] = useState(false);
-  const [duration, setDuration] = useState(0);
   const [manualUntil, setManualUntil] = useState(0);
-  const { scrollYProgress } = useScroll({
-    target: videoRef,
-    offset: ["start 88%", "end 12%"],
-  });
-  const scrollProgress = useSpring(scrollYProgress, {
-    stiffness: 140,
-    damping: 34,
-    mass: 0.22,
-  });
+  const wasInViewRef = useRef(false);
 
   useEffect(() => {
+    const container = containerRef.current;
     const video = videoRef.current;
-    if (!video || prefersReducedMotion) return;
+    if (!container || prefersReducedMotion) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry) return;
-        setInView(entry.isIntersecting && entry.intersectionRatio >= 0.22);
-      },
-      {
-        threshold: [0, 0.12, 0.22, 0.42, 0.68],
-        rootMargin: "2% 0px -8% 0px",
-      },
-    );
+    let frame = 0;
 
-    observer.observe(video);
+    const updatePlaybackGate = () => {
+      frame = 0;
+      const rect = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
+      const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+      const visibleRatio = Math.max(0, Math.min(visibleHeight / Math.max(rect.height, 1), 1));
+      const topInFocus = rect.top <= viewportHeight * 0.5;
+      const stillInFocus = rect.bottom >= viewportHeight * 0.42;
+
+      setInView(topInFocus && stillInFocus && visibleRatio >= 0.46);
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updatePlaybackGate);
+    };
+
+    updatePlaybackGate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
 
     return () => {
-      observer.disconnect();
-      video.pause();
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      video?.pause();
     };
   }, [prefersReducedMotion]);
 
@@ -894,6 +890,14 @@ function ScrollSyncedCaseVideo({
 
     if (inView) {
       window.requestAnimationFrame(() => {
+        if (!wasInViewRef.current && Date.now() >= manualUntil) {
+          try {
+            video.currentTime = 0;
+          } catch {
+            // Some browsers reject early seeks until metadata is ready.
+          }
+        }
+        wasInViewRef.current = true;
         video.muted = true;
         const playPromise = video.play();
         if (playPromise && typeof playPromise.catch === "function") {
@@ -905,45 +909,36 @@ function ScrollSyncedCaseVideo({
       return;
     }
 
+    wasInViewRef.current = false;
     video.pause();
-  }, [inView, prefersReducedMotion]);
-
-  useMotionValueEvent(scrollProgress, "change", (latest) => {
-    if (!inView || prefersReducedMotion || Date.now() < manualUntil) return;
-
-    const video = videoRef.current;
-    if (!video || video.readyState < 1) return;
-
-    const safeDuration = duration || video.duration;
-    if (!Number.isFinite(safeDuration) || safeDuration <= 0) return;
-
-    const targetTime = clampScrollProgress(latest) * Math.max(safeDuration - 0.08, 0);
-    if (Math.abs(video.currentTime - targetTime) < SCROLL_VIDEO_SEEK_EPSILON) return;
-
-    try {
-      video.currentTime = targetTime;
-    } catch {
-      // Early seeks may fail on some browsers before metadata is fully ready.
-    }
-  });
+  }, [inView, manualUntil, prefersReducedMotion]);
 
   const holdManualControl = () => setManualUntil(Date.now() + 2500);
 
   return (
-    <video
-      ref={videoRef}
-      className={frameClass}
-      src={media.src}
-      poster={media.poster}
-      controls={!ambient}
-      autoPlay={false}
-      loop
-      muted
-      playsInline
-      preload={priority ? "auto" : "metadata"}
-      onPointerDown={holdManualControl}
-      onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
-    />
+    <div ref={containerRef} className="h-full w-full">
+      <video
+        ref={videoRef}
+        className={frameClass}
+        src={media.src}
+        poster={media.poster}
+        controls={!ambient}
+        autoPlay={false}
+        loop
+        muted
+        playsInline
+        preload={priority ? "auto" : "metadata"}
+        onPointerDown={holdManualControl}
+        onLoadedMetadata={(event) => {
+          if (Date.now() < manualUntil) return;
+          try {
+            event.currentTarget.currentTime = 0;
+          } catch {
+            // Some browsers reject early seeks while metadata is settling.
+          }
+        }}
+      />
+    </div>
   );
 }
 
@@ -1374,11 +1369,6 @@ function MobileSurfaceRail({
       : isHospitalityCase
         ? "border-black/[0.045] bg-[#f5f0e7]/78 p-1"
         : "border-black/[0.045] bg-[#f4f1ea]/72 p-1";
-  const mobileCaptionPanelClass = isAdvisoryCase
-      ? "border-neutral-950/10 bg-white/78"
-      : isHospitalityCase
-        ? "border-neutral-950/10 bg-[#f4efe6]/78"
-        : "border-neutral-950/10 bg-[#f4f1ea]/74";
   const sound = useSound();
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -1393,7 +1383,6 @@ function MobileSurfaceRail({
 
   if (!frames.length) return null;
 
-  const activeFrame = frames[activeIndex] ?? frames[0];
   const wrapIndex = (index: number) => (index + frames.length) % frames.length;
   const clampIndex = (index: number) => Math.min(Math.max(index, 0), frames.length - 1);
   const setActive = (index: number, wrap = true) => {
@@ -1595,23 +1584,6 @@ function MobileSurfaceRail({
               </motion.button>
             );
           })}
-
-          <div
-            className={[
-              "pointer-events-none absolute bottom-0 left-1/2 w-[min(86vw,42rem)] -translate-x-1/2 border-y px-4 py-4 text-center backdrop-blur-md",
-              mobileCaptionPanelClass,
-            ].join(" ")}
-          >
-            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-              Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
-            </div>
-            <h4 className="mt-2 text-2xl font-semibold tracking-normal text-neutral-950">
-              {activeFrame.label}
-            </h4>
-            <p className="mx-auto mt-2 max-w-[34rem] text-sm leading-6 text-neutral-600">
-              {activeFrame.caption}
-            </p>
-          </div>
         </motion.div>
 
         <div className="relative mt-6 flex items-center justify-center gap-2">
@@ -3033,6 +3005,7 @@ export default function CasePageV2({
   const primaryLiveLink = visibleLinks[0] ?? secondaryClosingLink;
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
+  const isFormIndexCase = story.slug === "form-index";
   const isHospitalityCase = story.caseType === "hospitality";
   const isPremiumWebsiteCase = story.caseType === "premium-website";
   const isPresentationCase =
@@ -3044,6 +3017,8 @@ export default function CasePageV2({
     ? "border border-neutral-950/10 bg-white/92 p-2 shadow-[0_38px_116px_rgba(30,30,30,0.12)] hover:shadow-[0_48px_132px_rgba(30,30,30,0.16)] md:p-3"
     : isCreatorOpsCase
       ? "border border-neutral-950/10 bg-white/84 p-2 shadow-[0_34px_104px_rgba(15,15,15,0.16)] hover:shadow-[0_44px_124px_rgba(15,15,15,0.22)] md:p-3"
+      : isFormIndexCase
+        ? "border border-neutral-950/8 bg-white/34 p-1.5 shadow-[0_30px_94px_rgba(24,24,24,0.1)] hover:shadow-[0_42px_118px_rgba(24,24,24,0.16)] md:p-2"
       : isHospitalityCase
         ? "border border-[#d7cec0]/95 bg-[#faf5ed]/94 p-2 shadow-[0_34px_102px_rgba(76,60,32,0.12)] hover:shadow-[0_44px_122px_rgba(76,60,32,0.16)] md:p-3"
         : isPremiumWebsiteCase
@@ -3057,6 +3032,8 @@ export default function CasePageV2({
     ? "saturate-[1.02]"
     : isCreatorOpsCase
       ? "brightness-[1.03] saturate-[1.04]"
+      : isFormIndexCase
+        ? "brightness-[1.04] saturate-[1.01] contrast-[1.01]"
       : isHospitalityCase
         ? "brightness-[1.01] saturate-[0.98]"
         : isPremiumWebsiteCase
@@ -3066,6 +3043,8 @@ export default function CasePageV2({
     ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.16),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.1),transparent_52%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18))]"
     : isCreatorOpsCase
       ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.11),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.04),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.035))]"
+      : isFormIndexCase
+        ? "bg-transparent"
       : isHospitalityCase
         ? "bg-[radial-gradient(circle_at_60%_34%,rgba(255,250,240,0.18),transparent_32%),linear-gradient(90deg,rgba(255,255,255,0.08),transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(112,92,62,0.08))]"
         : isPremiumWebsiteCase
@@ -3074,15 +3053,17 @@ export default function CasePageV2({
             ? "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.08),transparent_32%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.18))]"
             : "bg-[radial-gradient(circle_at_58%_36%,rgba(255,255,255,0.07),transparent_30%),linear-gradient(90deg,rgba(255,255,255,0.03),transparent_54%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.16))]";
   const heroPrimaryMetaClass =
-    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/62";
+    isAdvisoryCase || isFormIndexCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/62";
   const heroPrimaryReadinessClass =
-    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-500" : "text-white/52";
+    isAdvisoryCase || isFormIndexCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-500" : "text-white/52";
   const heroPrimaryTitleClass =
-    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-950" : "text-white";
+    isAdvisoryCase || isFormIndexCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-950" : "text-white";
   const heroFragmentShellClass = isAdvisoryCase
     ? "border-neutral-950/10 bg-white/90 shadow-[0_16px_54px_rgba(30,30,30,0.1)] hover:shadow-[0_24px_72px_rgba(30,30,30,0.14)]"
     : isCreatorOpsCase
       ? "border-neutral-950/10 bg-white/88 shadow-[0_18px_58px_rgba(15,15,15,0.13)] hover:shadow-[0_28px_78px_rgba(15,15,15,0.2)]"
+      : isFormIndexCase
+        ? "border-neutral-950/8 bg-white/42 shadow-[0_14px_46px_rgba(24,24,24,0.1)] hover:shadow-[0_22px_66px_rgba(24,24,24,0.15)]"
       : isHospitalityCase
         ? "border-[#d7cec0]/90 bg-[#fbf6ee]/90 shadow-[0_16px_52px_rgba(76,60,32,0.1)] hover:shadow-[0_24px_72px_rgba(76,60,32,0.14)]"
         : isPremiumWebsiteCase
@@ -3096,6 +3077,8 @@ export default function CasePageV2({
     ? "opacity-100 saturate-[1.02]"
     : isCreatorOpsCase
       ? "opacity-100 saturate-[1.04] brightness-[1.03]"
+      : isFormIndexCase
+        ? "opacity-100 brightness-[1.04] saturate-[1.01] contrast-[1.01]"
       : isHospitalityCase
         ? "opacity-[0.98] saturate-[0.98] brightness-[1.01]"
         : isPremiumWebsiteCase
@@ -3105,13 +3088,15 @@ export default function CasePageV2({
     ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.1))]"
     : isCreatorOpsCase
       ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.07),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.055))]"
+      : isFormIndexCase
+        ? "bg-transparent"
       : isHospitalityCase
         ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,250,240,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(112,92,62,0.08))]"
         : isPremiumWebsiteCase
           ? "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(45,86,138,0.08))]"
           : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.24))]";
   const heroFragmentMetaClass =
-    isAdvisoryCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/72";
+    isAdvisoryCase || isFormIndexCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/72";
   const goToWork = () => startSpaPageTransition(navigate, "/work", onCloseProject);
   const openProject = () => onOpenProject?.();
 

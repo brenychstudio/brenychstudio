@@ -13,6 +13,8 @@
   min-height: 320px;
   overflow: hidden;
   isolation: isolate;
+  contain: layout paint size;
+  transform: translateZ(0);
   background: var(--fsb-bg);
 }
 
@@ -36,10 +38,12 @@
   height: 100%;
   pointer-events: none;
   filter: saturate(1.16) contrast(1.045);
+  transform: translateZ(0);
 }
 
 .wh-backdrop04 .fsb-base {
   z-index: 0;
+  will-change: transform;
   background:
     radial-gradient(ellipse at 50% 45%, var(--fsb-wash-a) 0%, transparent 42%),
     radial-gradient(circle at 22% 22%, var(--fsb-wash-b) 0%, transparent 34%),
@@ -53,6 +57,7 @@
 .wh-backdrop04 .fsb-soft-vault {
   z-index: 1;
   opacity: 0.9;
+  will-change: transform;
   background:
     conic-gradient(
       from 210deg at 50% 48%,
@@ -71,6 +76,7 @@
 .wh-backdrop04 .fsb-membrane-flow {
   z-index: 3;
   opacity: 0.38;
+  will-change: transform;
   background:
     radial-gradient(ellipse at 34% 48%, rgba(104, 223, 255, 0.36) 0%, transparent 32%),
     radial-gradient(ellipse at 62% 38%, rgba(252, 102, 255, 0.28) 0%, transparent 34%),
@@ -156,6 +162,7 @@
     inset 0 0 64px rgba(242, 107, 255, 0.16);
   filter: blur(17px);
   opacity: 0.54;
+  will-change: transform, opacity;
   animation: fsb-membrane-ribbon-drift 18s ease-in-out infinite alternate;
   animation-delay: var(--fsb-ribbon-delay);
 }
@@ -198,15 +205,12 @@
 @keyframes fsb-membrane-flow {
   from {
     transform: translate3d(-1.8%, -1%, 0) rotate(-2deg) scale(1.03);
-    filter: blur(18px) hue-rotate(-12deg) saturate(1.35);
   }
   48% {
     transform: translate3d(1%, 0.6%, 0) rotate(1deg) scale(1.08);
-    filter: blur(20px) hue-rotate(12deg) saturate(1.55);
   }
   to {
     transform: translate3d(2.2%, 1.4%, 0) rotate(2.6deg) scale(1.12);
-    filter: blur(17px) hue-rotate(28deg) saturate(1.42);
   }
 }
 
@@ -214,7 +218,6 @@
   from {
     translate: -5% -4%;
     opacity: 0.3;
-    filter: blur(20px) hue-rotate(-18deg);
   }
   45% {
     opacity: 0.72;
@@ -222,7 +225,6 @@
   to {
     translate: 6% 5%;
     opacity: 0.48;
-    filter: blur(14px) hue-rotate(24deg);
   }
 }
 

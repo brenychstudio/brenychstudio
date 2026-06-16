@@ -14,6 +14,8 @@ declare global {
           pointerReactive?: boolean;
           density?: number;
           glow?: number;
+          maxDpr?: number;
+          frameRate?: number;
         },
       ) => { destroy?: () => void };
     };
@@ -88,8 +90,8 @@ export default function WebHeroMembraneBackdrop({ className = "" }: WebHeroMembr
       if (!element || !root) return;
 
       const rect = root.getBoundingClientRect();
-      const nextHeight = Math.max(window.innerHeight, Math.round(rect.height * 1.16));
-      const nextWidth = Math.max(window.innerWidth, Math.round(rect.width * 1.16));
+      const nextHeight = Math.max(window.innerHeight, Math.round(rect.height * 1.06));
+      const nextWidth = Math.max(window.innerWidth, Math.round(rect.width * 1.06));
 
       element.style.height = `${nextHeight}px`;
       element.style.minHeight = `${nextHeight}px`;
@@ -118,13 +120,19 @@ export default function WebHeroMembraneBackdrop({ className = "" }: WebHeroMembr
 
       syncToRootSize();
 
-      const performanceMode = window.innerWidth < 768 ? "library" : "full";
-      const pointerReactive = window.innerWidth >= 1024;
+      const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
+      const hardwareConcurrency = navigator.hardwareConcurrency ?? 8;
+      const prefersConservativeBackdrop = deviceMemory <= 4 || hardwareConcurrency <= 4;
+      const performanceMode = window.innerWidth < 768 || prefersConservativeBackdrop ? "library" : "full";
+      const isWideDesktop = window.innerWidth >= 1440;
+      const pointerReactive = window.innerWidth >= 1280;
       const instance = window.Backdrop04Membrane.mount(mountRef.current, {
         performanceMode,
         pointerReactive,
-        density: performanceMode === "library" ? 0.72 : 0.82,
+        density: performanceMode === "library" ? 0.7 : 0.8,
         glow: 0.82,
+        maxDpr: performanceMode === "library" ? 0.8 : isWideDesktop ? 1 : 0.94,
+        frameRate: performanceMode === "library" ? 24 : 30,
       });
 
       cleanup = instance?.destroy ?? null;

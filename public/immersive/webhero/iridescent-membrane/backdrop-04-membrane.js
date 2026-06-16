@@ -4,6 +4,8 @@
     pointerReactive: true,
     density: 0.78,
     glow: 0.78,
+    maxDpr: 1,
+    frameRate: 30,
     palette: {
       background: "#03050a",
       washA: "rgba(92, 210, 255, 0.46)",
@@ -61,7 +63,7 @@
       float a = 0.5;
       mat2 m = mat2(1.62, 1.18, -1.18, 1.62);
 
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < 5; i++) {
         v += noise(p) * a;
         p = m * p + vec2(8.31, 2.77);
         a *= 0.5;
@@ -156,10 +158,10 @@
       color += vec3(0.9, 0.96, 1.0) * pow(ribbons, 3.2) * 0.055;
 
       float veins = 0.0;
-      for (int i = 0; i < 7; i++) {
+      for (int i = 0; i < 4; i++) {
         veins += membraneVein(flowUv, float(i) * 1.17) * (0.12 + float(i) * 0.01);
       }
-      color += mix(cyan, violet, uv.x) * veins * membrane * 0.12;
+      color += mix(cyan, violet, uv.x) * veins * membrane * 0.16;
 
       float interference = 0.0;
       interference += sin((flowUv.x + breathing * 0.04) * 420.0 + t * 0.42) * 0.5 + 0.5;
@@ -175,8 +177,9 @@
       color += mix(mint, violet, 0.42) * pointerRing * 0.014;
 
       vec2 dustGrid = floor(uv * uResolution.xy * 0.45);
-      float dust = smoothstep(0.992, 1.0, hash(dustGrid));
-      float twinkle = 0.28 + 0.72 * sin(t * 0.9 + hash(dustGrid) * 6.283185);
+      float dustHash = hash(dustGrid);
+      float dust = smoothstep(0.992, 1.0, dustHash);
+      float twinkle = 0.28 + 0.72 * sin(t * 0.9 + dustHash * 6.283185);
       color += vec3(0.72, 0.91, 1.0) * dust * twinkle * 0.06;
 
       float copyZone = max(
@@ -187,7 +190,7 @@
 
       float vignette = smoothstep(0.94, 0.28, length((uv - 0.5) * vec2(1.08, 0.98)));
       color *= mix(0.34, 1.0, vignette);
-      color += vec3(0.004, 0.006, 0.012) * fbm(uv * vec2(48.0, 34.0) + t * 0.02) * 0.06;
+      color += vec3(0.004, 0.006, 0.012) * noise(uv * vec2(48.0, 34.0) + t * 0.02) * 0.045;
       float luma = dot(color, vec3(0.299, 0.587, 0.114));
       color = mix(vec3(luma), color, 1.12);
 
@@ -209,9 +212,10 @@
     return Math.min(fullDprMax, mobile ? 0.82 : 0.88);
   }
 
-  function shouldRenderBackdropFrame(root, timestamp, lastFrameTime) {
-    if (resolvePerformanceMode(root) !== "library") return true;
-    return timestamp - lastFrameTime >= 1000 / 32;
+  function shouldRenderBackdropFrame(root, timestamp, lastFrameTime, targetFrameRate) {
+    const frameRate = clamp(Number(targetFrameRate) || 60, 1, 60);
+    const cappedFrameRate = resolvePerformanceMode(root) === "library" ? Math.min(frameRate, 32) : frameRate;
+    return timestamp - lastFrameTime >= 1000 / cappedFrameRate;
   }
 
   function compileShader(gl, type, source) {
@@ -382,9 +386,16 @@
     let mounted = true;
     let animationFrame = null;
     let lastFrameTime = 0;
+    let resizeDirty = true;
+    let pendingPointerClient = null;
+    let scrollSettledTimer = null;
+    let scrollCoolingUntil = 0;
 
-    function resize() {
-      const ratio = Math.min(window.devicePixelRatio || 1, getBackdropDprMax(element, 1.75));
+    function resize(force) {
+      if (!force && !resizeDirty) return;
+      resizeDirty = false;
+
+      const ratio = Math.min(window.devicePixelRatio || 1, getBackdropDprMax(element, options.maxDpr || 1.25));
       const width = Math.max(1, Math.floor(canvas.clientWidth * ratio));
       const height = Math.max(1, Math.floor(canvas.clientHeight * ratio));
 
@@ -396,12 +407,10 @@
       gl.viewport(0, 0, width, height);
     }
 
-    function handleMove(event) {
-      if (!options.pointerReactive) return;
-
+    function applyPointerMove(clientX, clientY) {
       const rect = canvas.getBoundingClientRect();
-      const nextX = clamp((event.clientX - rect.left) / Math.max(1, rect.width), 0, 1);
-      const nextY = clamp(1 - (event.clientY - rect.top) / Math.max(1, rect.height), 0, 1);
+      const nextX = clamp((clientX - rect.left) / Math.max(1, rect.width), 0, 1);
+      const nextY = clamp(1 - (clientY - rect.top) / Math.max(1, rect.height), 0, 1);
       const dx = nextX - pointer.targetX;
       const dy = nextY - pointer.targetY;
       const speed = Math.hypot(dx, dy);
@@ -413,16 +422,39 @@
       pointer.targetEnergy = clamp(Math.max(pointer.targetEnergy, speed * 4.8), 0, 0.62);
     }
 
+    function handleMove(event) {
+      if (!options.pointerReactive) return;
+      pendingPointerClient = { x: event.clientX, y: event.clientY };
+    }
+
+    function handleResize() {
+      resizeDirty = true;
+    }
+
+    function handleScroll() {
+      scrollCoolingUntil = performance.now() + 180;
+      if (scrollSettledTimer) window.clearTimeout(scrollSettledTimer);
+      scrollSettledTimer = window.setTimeout(function () {
+        scrollCoolingUntil = 0;
+      }, 180);
+    }
+
     function render(timestamp) {
       if (!mounted) return;
 
-      if (!shouldRenderBackdropFrame(element, timestamp, lastFrameTime)) {
+      const activeFrameRate = scrollCoolingUntil > timestamp ? Math.min(options.frameRate || 30, 18) : options.frameRate;
+      if (!shouldRenderBackdropFrame(element, timestamp, lastFrameTime, activeFrameRate)) {
         animationFrame = window.requestAnimationFrame(render);
         return;
       }
       lastFrameTime = timestamp;
 
       resize();
+
+      if (pendingPointerClient) {
+        applyPointerMove(pendingPointerClient.x, pendingPointerClient.y);
+        pendingPointerClient = null;
+      }
 
       pointer.x += (pointer.targetX - pointer.x) * 0.04;
       pointer.y += (pointer.targetY - pointer.y) * 0.04;
@@ -450,17 +482,20 @@
 
     function destroy() {
       mounted = false;
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollSettledTimer) window.clearTimeout(scrollSettledTimer);
       if (animationFrame) window.cancelAnimationFrame(animationFrame);
       if (buffer) gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
       delete element.__backdrop04Destroy;
     }
 
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", handleResize);
     window.addEventListener("pointermove", handleMove, { passive: true });
-    resize();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    resize(true);
     animationFrame = window.requestAnimationFrame(render);
 
     element.__backdrop04Destroy = destroy;

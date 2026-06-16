@@ -94,34 +94,6 @@ const technicalLedger = [
   "Cloudflare Workers deployment",
 ];
 
-const aurelTechnologyStack = [
-  {
-    group: "Core",
-    items: ["Vite", "React", "TypeScript", "React Router"],
-  },
-  {
-    group: "Styling",
-    items: ["Tailwind CSS v4", "CSS custom properties", "Custom responsive composition logic"],
-  },
-  {
-    group: "Motion / Interaction",
-    items: [
-      "Motion for React",
-      "Intersection-driven section presence",
-      "Zustand state store",
-      "Custom wheel / keyboard interaction logic",
-    ],
-  },
-  {
-    group: "Media",
-    items: ["WebP image pipeline", "Optimized gallery thumbnails", "OG image and favicon generation"],
-  },
-  {
-    group: "Future-ready",
-    items: ["XR placeholder route", "WebGL/XR architecture intentionally kept isolated for later exploration"],
-  },
-];
-
 const MOBILE_SWIPE_DISTANCE = 42;
 const MOBILE_SWIPE_VELOCITY = 360;
 
@@ -258,7 +230,7 @@ function getCaseNarrative(story: CaseStory) {
       screensReadout:
         "Each frame proves a product layer: arrival, exterior, signal, cabin, materiality, drive character, gallery, inspect, private preview, and responsive mobile states.",
       screenSignals: ["Presence Rail", "Inspect sequence", "Drive composer"],
-      proofLabels: ["Cinematic states", "Interaction logic", "Prototype honesty"],
+      proofLabels: ["Product states", "Inspect logic", "Future-ready honesty"],
       availableStatement:
         "Use this case as a reference for commissioned premium automotive, mobility, luxury product, or cinematic interface direction.",
       availableBlueprint:
@@ -1906,7 +1878,6 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
     text: story.evidencePoints[index] ?? item.text,
   }));
   const systemSpine = story.systemLayers.slice(0, 6);
-  const showAurelStack = story.slug === "aurel-eon-gt";
   const compactClaim = story.proofClaim;
 
   return (
@@ -1982,8 +1953,8 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
               </div>
             </div>
 
-            <div className={["relative lg:ml-auto", showAurelStack ? "lg:w-full" : "lg:w-[82%]"].join(" ")}>
-              <div className={["relative grid gap-4", showAurelStack ? "lg:grid-cols-[0.36fr_0.64fr]" : ""].join(" ")}>
+            <div className="relative lg:ml-auto lg:w-[82%]">
+              <div className="relative grid gap-4">
                 <div className="relative border-y border-neutral-950/12 py-3.5">
                   <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
                     <span className="text-neutral-400">System spine</span>
@@ -1997,29 +1968,6 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
                     </div>
                   </div>
                 </div>
-
-                {showAurelStack ? (
-                  <div className="relative border-y border-neutral-950/12 py-3.5">
-                    <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
-                      <span className="text-neutral-400">Technical stack</span>
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {aurelTechnologyStack.map((group, groupIndex) => (
-                          <div key={group.group} className="border-t border-neutral-950/8 pt-2 first:border-t-0 sm:first:border-t">
-                            <div className="grid grid-cols-[1.55rem_1fr] gap-2 text-neutral-500">
-                              <span className="text-neutral-300">{String(groupIndex + 1).padStart(2, "0")}</span>
-                              <span>{group.group}</span>
-                            </div>
-                            <div className="mt-2 grid gap-1.5 pl-[2.15rem] text-[7px] leading-4 tracking-[0.13em] text-neutral-500">
-                              {group.items.map((item) => (
-                                <span key={item}>{item}</span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
               </div>
             </div>
           </div>
@@ -2033,7 +1981,10 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
   if (!story.availability) return null;
 
   const narrative = getCaseNarrative(story);
-  const blueprintMedia = findMedia(story, "collection") ?? findMedia(story, "threshold") ?? story.mediaSequence[0];
+  const blueprintMedia =
+    story.slug === "aurel-eon-gt"
+      ? findMedia(story, "desktop-6") ?? findMedia(story, "collection") ?? story.mediaSequence[0]
+      : findMedia(story, "collection") ?? findMedia(story, "threshold") ?? story.mediaSequence[0];
   const technicalRows = story.technicalFoundation.length > 0 ? story.technicalFoundation : technicalLedger;
   const terms = [
     "Commissioned adaptation",
@@ -2043,6 +1994,8 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
   const adaptationValue =
     story.slug === "barcelona-private-advisory"
       ? "Market lens, shortlist dossier, inquiry handoff."
+      : story.slug === "aurel-eon-gt"
+        ? "Product states, inspect flow, private preview."
       : story.caseType === "advisory"
       ? "Market structure, shortlist flow, private intake."
       : story.caseType === "workflow-tool" || story.caseType === "tool"
@@ -2061,6 +2014,8 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
   const blueprintChips =
     story.slug === "barcelona-private-advisory"
       ? ["Market lens", "Dossier handoff"]
+      : story.slug === "aurel-eon-gt"
+        ? ["Product states", "Private preview"]
       : story.caseType === "advisory"
       ? ["Private intake", "Deployable front-end"]
       : story.caseType === "workflow-tool" || story.caseType === "tool"
@@ -2510,7 +2465,6 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
     text: story.evidencePoints[index] ?? item.text,
   }));
   const systemSpine = story.systemLayers.slice(0, 6);
-  const showAurelStack = story.slug === "aurel-eon-gt";
 
   return (
     <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system.">
@@ -2547,28 +2501,6 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
           ))}
         </div>
       </div>
-      {showAurelStack ? (
-        <div className="mt-4 border-y border-neutral-950/12 py-3">
-          <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-            Technical stack
-          </div>
-          <div className="mt-2 grid gap-3">
-            {aurelTechnologyStack.map((group, groupIndex) => (
-              <div key={group.group} className="border-t border-neutral-950/8 pt-2 first:border-t-0">
-                <div className="grid grid-cols-[1.35rem_1fr] gap-2 font-mono text-[8px] uppercase tracking-[0.13em] text-neutral-500">
-                  <span className="text-neutral-300">{String(groupIndex + 1).padStart(2, "0")}</span>
-                  <span>{group.group}</span>
-                </div>
-                <div className="mt-1.5 grid gap-1 pl-[1.95rem] font-mono text-[7px] uppercase leading-4 tracking-[0.12em] text-neutral-500">
-                  {group.items.map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
     </MobileReaderSection>
   );
 }
@@ -2592,6 +2524,8 @@ function MobileFoundationSection({
   const adaptationValue =
     story.slug === "barcelona-private-advisory"
       ? "Market lens, shortlist dossier, inquiry handoff."
+      : story.slug === "aurel-eon-gt"
+        ? "Product states, inspect flow, private preview."
       : story.caseType === "advisory"
       ? "Market structure, shortlist flow, private intake."
       : story.caseType === "workflow-tool" || story.caseType === "tool"

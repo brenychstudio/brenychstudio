@@ -54,6 +54,7 @@ const featuredSystemSlugs = [
   "fluid-exhibition",
 ] as const;
 
+const featuredInitialCaseCount = 8;
 const mobileFieldSystemSlugs = ["bcn-advisory", "arcwave-integrations", "sprintcrm"] as const;
 
 const capabilityLayer = [
@@ -772,13 +773,14 @@ export default function EvidenceAtlas({
   const routeContentReady = useDeferredRouteContent();
   const evidenceCases = useMemo(() => getEvidenceCases(), []);
   const featuredCases = useMemo(() => getFeaturedCases(evidenceCases), [evidenceCases]);
-  const selectedFeaturedCase = featuredCases[0];
-  const supportingFeaturedCases = useMemo(() => featuredCases.slice(1), [featuredCases]);
+  const initialFeaturedCases = useMemo(() => featuredCases.slice(0, featuredInitialCaseCount), [featuredCases]);
+  const selectedFeaturedCase = initialFeaturedCases[0];
+  const supportingFeaturedCases = useMemo(() => initialFeaturedCases.slice(1), [initialFeaturedCases]);
   const expandedArchiveRef = useRef<HTMLDivElement | null>(null);
   const expandedArchiveSeenRef = useRef(false);
   const expandedFeaturedCases = useMemo(
-    () => evidenceCases.filter((item) => !featuredCases.some((featuredItem) => featuredItem.slug === item.slug)),
-    [evidenceCases, featuredCases],
+    () => evidenceCases.filter((item) => !initialFeaturedCases.some((featuredItem) => featuredItem.slug === item.slug)),
+    [evidenceCases, initialFeaturedCases],
   );
   const [activeSlug, setActiveSlug] = useState(featuredCases[0]?.slug ?? evidenceCases[0]?.slug ?? "");
   const [activeFilter, setActiveFilter] = useState<EvidenceFilter>("All");
@@ -820,7 +822,7 @@ export default function EvidenceAtlas({
     if (activeFilter === "Available Systems") return mobileSupportingFeaturedCases.filter((item) => isAvailableSystem(item.slug));
     return mobileSupportingFeaturedCases.filter((item) => item.evidence.filters.includes(activeFilter));
   }, [activeFilter, mobileSupportingFeaturedCases]);
-  const fieldVisibleCount = (selectedFeaturedCase ? 1 : 0) + filteredMobileSupportingFeaturedCases.length;
+  const fieldVisibleCount = (selectedFeaturedCase ? 1 : 0) + filteredSupportingFeaturedCases.length;
 
   const filteredExpandedCases = useMemo(() => {
     if (activeFilter === "All") return expandedFeaturedCases;
@@ -1399,7 +1401,7 @@ export default function EvidenceAtlas({
                           <FeaturedFlowItem
                             key={item.slug}
                             item={item}
-                            index={featuredCases.length + index}
+                            index={initialFeaturedCases.length + index}
                             onOpenCase={openCase}
                             onRequestSystem={requestSystem}
                           />
@@ -1412,7 +1414,7 @@ export default function EvidenceAtlas({
                             <FeaturedFlowItem
                               key={item.slug}
                               item={item}
-                              index={featuredCases.length + index * 2}
+                              index={initialFeaturedCases.length + index * 2}
                               onOpenCase={openCase}
                               onRequestSystem={requestSystem}
                             />
@@ -1424,7 +1426,7 @@ export default function EvidenceAtlas({
                             <FeaturedFlowItem
                               key={item.slug}
                               item={item}
-                              index={featuredCases.length + index * 2 + 1}
+                              index={initialFeaturedCases.length + index * 2 + 1}
                               onOpenCase={openCase}
                               onRequestSystem={requestSystem}
                             />

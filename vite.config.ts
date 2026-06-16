@@ -1,24 +1,45 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import type { OutputAsset, OutputBundle } from "rollup";
+
+type BundleAsset = {
+  type: "asset";
+  fileName: string;
+  source: string | Uint8Array;
+};
+
+type BuildBundle = Record<string, unknown>;
+
+function isBundleAsset(asset: unknown): asset is BundleAsset {
+  return Boolean(
+    asset &&
+      typeof asset === "object" &&
+      "type" in asset &&
+      (asset as { type?: unknown }).type === "asset" &&
+      "fileName" in asset &&
+      typeof (asset as { fileName?: unknown }).fileName === "string",
+  );
+}
 
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function inlineBuiltCss() {
+function inlineBuiltCss(): Plugin {
   return {
     name: "inline-built-css",
     apply: "build" as const,
     enforce: "post" as const,
-    generateBundle(_options: unknown, bundle: OutputBundle) {
-      const htmlAsset = Object.values(bundle).find(
-        (asset) => asset.type === "asset" && asset.fileName === "index.html",
-      ) as OutputAsset | undefined;
-      const cssAssets = Object.values(bundle).filter(
-        (asset) => asset.type === "asset" && asset.fileName.endsWith(".css"),
-      ) as OutputAsset[];
+    generateBundle(_options, bundle) {
+      const buildBundle = bundle as BuildBundle;
+      const htmlAsset = Object.values(buildBundle).find(
+        (asset): asset is BundleAsset =>
+          isBundleAsset(asset) && asset.fileName === "index.html",
+      );
+      const cssAssets = Object.values(buildBundle).filter(
+        (asset): asset is BundleAsset =>
+          isBundleAsset(asset) && asset.fileName.endsWith(".css"),
+      );
 
       if (!htmlAsset || cssAssets.length === 0) return;
 
@@ -31,7 +52,7 @@ function inlineBuiltCss() {
           new RegExp(`\\s*<link[^>]+href="${escapeRegExp(href)}"[^>]*>`, "g"),
           "",
         );
-        delete bundle[asset.fileName];
+        delete buildBundle[asset.fileName];
       });
 
       htmlAsset.source = html.replace(

@@ -59,6 +59,26 @@ export const availableSystems: AvailableSystem[] = [
     ctaLabel: "Adapt this system",
   },
   {
+    slug: "aurel-eon-gt",
+    status: "available",
+    label: "Available System",
+    shortLabel: "Ready to adapt",
+    summary:
+      "A premium automotive product-system foundation for mobility concepts, luxury product launches, cinematic vehicle presentations, and private preview surfaces.",
+    bestFor: ["Automotive concept", "Mobility launch", "Luxury product", "Private preview"],
+    adaptationIncludes: [
+      "Cinematic product-state architecture",
+      "Presence Rail / inspect flow adaptation",
+      "Drive character or product-mode logic",
+      "Responsive image-led presentation",
+      "Future XR / WebGL planning path",
+    ],
+    licensingNote:
+      "Available as a commissioned adaptation. Vehicle concept, media, product data, interaction logic, ownership, and future XR scope are defined per project.",
+    exclusivityAvailable: true,
+    ctaLabel: "Adapt this system",
+  },
+  {
     slug: "bcn-advisory",
     status: "available",
     label: "Available System",

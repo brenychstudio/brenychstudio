@@ -885,7 +885,7 @@ const v2CaseConfigs: Record<string, V2CaseConfig> = {
     label: "CASE SYSTEM / AUTOMOTIVE CONCEPT / LIVING PRODUCT EXPERIENCE",
     subheadline: "Living automotive product experience.",
     proofClaim:
-      "Premium automotive websites become product systems when the car is revealed through atmosphere, signal, inspection, gallery logic, drive character, and private preview rather than static marketing blocks.",
+      "A fictional GT launch becomes a product system through cinematic states, inspectable media, drive character, and private preview.",
     systemLayers: [
       {
         title: "Arrival field",
@@ -923,23 +923,18 @@ const v2CaseConfigs: Record<string, V2CaseConfig> = {
     commercialLogic:
       "AUREL EON GT proves that a fictional automotive launch can feel commercially legible and experimental at the same time: premium art direction, product storytelling, reusable interface systems, and honest prototype framing stay connected.",
     technicalFoundation: [
-      "Vite",
-      "React",
-      "TypeScript",
-      "React Router",
-      "Tailwind CSS v4",
-      "CSS custom properties",
-      "Motion for React",
-      "Zustand state store",
-      "Custom wheel / keyboard interaction logic",
-      "WebP media pipeline",
-      "Isolated future XR / WebGL architecture",
+      "Vite + React + TypeScript",
+      "React Router product-state route",
+      "Tailwind CSS v4 + CSS custom properties",
+      "Motion for React section presence",
+      "Zustand state store + wheel / keyboard logic",
+      "WebP media pipeline + future XR / WebGL path",
     ],
     systemTags: ["Automotive concept", "Cinematic UX", "Product system", "Interactive storytelling", "Responsive"],
     evidencePoints: [
-      "Moves beyond a generic automotive landing page",
-      "Turns the car into a sequence of cinematic product states",
-      "Keeps future XR / WebGL exploration isolated from the fast image-led site",
+      "Frames the vehicle through arrival, cabin, signal, gallery, and inspect states.",
+      "Turns interaction into product reading: Presence Rail, inspect sequence, and drive composer.",
+      "Keeps prototype framing honest while leaving XR / WebGL as a future-ready path.",
     ],
     mediaLabels: {
       "aurel-eon-gt-hero": "Arrival field",

@@ -1144,7 +1144,7 @@ function PresenceOsCaseLayout({
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,7,6,0.18),rgba(3,7,6,0.24)_40%,rgba(3,7,6,0.72)_84%,#030706)]" />
         <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:74px_74px]" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12 xl:pr-24 2xl:pr-0">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(94vw,1640px)] flex-col justify-between py-8 md:py-12">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
@@ -1203,7 +1203,7 @@ function PresenceOsCaseLayout({
         </div>
       </section>
 
-      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20 xl:pr-24 2xl:pr-0">
+      <main className="relative z-10 mx-auto w-[min(94vw,1640px)] py-14 md:py-20">
         <section
           id="presence-os-walkthrough"
           data-header-scene="presence-os-walkthrough"
@@ -1596,7 +1596,7 @@ function OrbitLensCaseLayout({
         <div className="absolute inset-y-[12%] right-[14%] w-px bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.08),rgba(126,233,255,0.2),rgba(255,255,255,0.08),transparent)] opacity-80" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_26%,transparent_0%,rgba(2,7,13,0.06)_40%,rgba(2,7,13,0.4)_70%,rgba(2,7,13,0.82)_100%)]" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12 xl:pr-24 2xl:pr-0">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(94vw,1640px)] flex-col justify-between py-8 md:py-12">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
@@ -1665,7 +1665,7 @@ function OrbitLensCaseLayout({
         </div>
       </section>
 
-      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20 xl:pr-24 2xl:pr-0">
+      <main className="relative z-10 mx-auto w-[min(94vw,1640px)] py-14 md:py-20">
         <section
           id="orbit-lens-walkthrough"
           data-header-scene="orbit-lens-fields"
@@ -2142,7 +2142,7 @@ function KoolBerkCaseLayout({
         <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:76px_76px]" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,7,13,0.22),transparent_18%,transparent_82%,rgba(4,7,13,0.48))]" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12 xl:pr-24 2xl:pr-0">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(94vw,1640px)] flex-col justify-between py-8 md:py-12">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
@@ -2200,7 +2200,7 @@ function KoolBerkCaseLayout({
         </div>
       </section>
 
-      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20 xl:pr-24 2xl:pr-0">
+      <main className="relative z-10 mx-auto w-[min(94vw,1640px)] py-14 md:py-20">
         {video ? (
           <section
             id="kool-berk-walkthrough"
@@ -2662,7 +2662,7 @@ function WebHeroCaseLayout({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_54%_30%,rgba(122,244,227,0.12),transparent_26%),radial-gradient(circle_at_78%_16%,rgba(182,124,255,0.14),transparent_24%),linear-gradient(180deg,rgba(3,5,10,0.06),rgba(3,5,10,0.34)_42%,rgba(3,5,10,0.74)_78%,#05070b)]" />
         <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(92vw,1560px)] flex-col justify-between py-8 md:py-12">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(94vw,1640px)] flex-col justify-between py-8 md:py-12">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
@@ -2722,7 +2722,7 @@ function WebHeroCaseLayout({
         </div>
       </section>
 
-      <main className="relative z-10 mx-auto w-[min(92vw,1560px)] py-14 md:py-20">
+      <main className="relative z-10 mx-auto w-[min(94vw,1640px)] py-14 md:py-20">
         <section
           id="webhero-modules"
           data-header-scene="webhero-field"
@@ -2867,7 +2867,7 @@ function WebHeroCaseLayout({
           )}
 
           {showExtendedFieldToggle ? (
-            <div className="relative mx-auto grid max-w-[1480px] gap-4 border-t border-white/10 px-0 py-6 sm:py-8 lg:grid-cols-2 lg:py-10">
+            <div className="relative mx-auto grid w-full gap-4 border-t border-white/10 px-0 py-6 sm:py-8 lg:grid-cols-2 lg:py-10">
               <div className="hidden lg:block" />
               <div className="max-w-[28rem] lg:justify-self-end">
                 <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-white/34">
@@ -2909,7 +2909,7 @@ function WebHeroCaseLayout({
                 exit={{ opacity: 0, height: 0, y: 18 }}
                 transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="mx-auto mb-8 grid w-[min(92vw,1560px)] gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div className="mx-auto mb-8 grid w-[min(94vw,1640px)] gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
                   <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/34">
                     Expanded proof field / additional WEBHERO surfaces
                   </div>
@@ -2959,7 +2959,7 @@ function WebHeroCaseLayout({
                     </div>
                   </div>
                 ) : (
-                  <div className="mx-auto grid w-[min(92vw,1560px)] gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="mx-auto grid w-[min(94vw,1640px)] gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {extendedFrames.map((frame) => {
                       const absoluteIndex = frames.findIndex((item) => item.src === frame.src);
 

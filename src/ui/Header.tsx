@@ -3,8 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
-import { availableLocales } from "../i18n";
-import { useLocale } from "../store/useLocale";
+import { getLocalizedPath, getLocaleConfig, useI18n, type LocaleCode } from "../i18n";
 import { useActiveHeaderScene } from "../hooks/useActiveHeaderScene";
 import { useHeaderThemeMorph } from "../hooks/useHeaderThemeMorph";
 import { getHeaderMoodForPath, resolveHeaderTheme } from "./header/headerThemeTokens";
@@ -44,7 +43,7 @@ export default function Header({
 }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { locale, setLocale, t } = useLocale();
+  const { locale, t, allLocales } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -150,6 +149,14 @@ export default function Header({
     navigateWithTransition(to);
   };
 
+  const onLocale = (nextLocale: LocaleCode) => {
+    const nextLocaleConfig = getLocaleConfig(nextLocale);
+
+    if (!nextLocaleConfig.enabled || nextLocale === locale) return;
+
+    navigateWithTransition(getLocalizedPath(location.pathname, nextLocale));
+  };
+
   const linkClass = (isActive: boolean) =>
     [
       "group relative inline-flex h-8 items-center gap-2 px-1 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-[color:var(--header-text)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2",
@@ -163,8 +170,8 @@ export default function Header({
   };
 
   const navLabels = t.nav;
-  const getNavItemLabel = (item: NavItem) =>
-    item.id === "home" ? "Home" : navLabels[item.id];
+  const currentLocaleConfig = getLocaleConfig(locale);
+  const getNavItemLabel = (item: NavItem) => navLabels[item.id];
 
   const mobileRouteTerminal =
     typeof document === "undefined"
@@ -304,14 +311,14 @@ export default function Header({
                     <div className="grid gap-3">
                       <div className="grid grid-cols-[1fr_auto] gap-3 border-y border-white/10 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
                         <span>Current / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
-                        <span>{locale} / signal ready</span>
+                        <span>{currentLocaleConfig.label} / signal ready</span>
                       </div>
                       <button
                         type="button"
                         onClick={onCta}
                         className="inline-flex min-h-11 items-center justify-between rounded-full border border-white bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-[#f7f3ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
                       >
-                        <span>{drawerOpen ? "Close project panel" : "Start a project"}</span>
+                        <span>{drawerOpen ? "Close project panel" : navLabels.startProject}</span>
                         <span className="font-mono opacity-55">-&gt;</span>
                       </button>
                     </div>
@@ -397,24 +404,31 @@ export default function Header({
           </div>
 
           <div className="flex shrink-0 items-center justify-center gap-1 rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-1 py-1 text-[9px] uppercase tracking-[0.12em] text-[color:var(--header-muted)] shadow-[0_4px_14px_rgba(0,0,0,0.018)] transition-colors duration-[420ms] min-[420px]:px-1.5 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:text-[11px]">
-            {availableLocales.map((language) => {
-              const isActive = locale === language;
+            {allLocales.map((language) => {
+              const isActive = locale === language.code;
+              const isDisabled = !language.enabled;
 
               return (
                 <button
-                  key={language}
+                  key={language.code}
                   type="button"
-                  onClick={() => setLocale(language)}
+                  onClick={() => onLocale(language.code)}
+                  disabled={isDisabled}
                   className={[
                     "shrink-0 items-center whitespace-nowrap rounded-full px-1.5 py-1 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:px-2",
                     isActive ? "inline-flex" : "hidden lg:inline-flex",
                     isActive
                       ? "bg-[color:var(--header-active-chip-bg)] text-[color:var(--header-active-chip-text)] opacity-100"
-                      : "opacity-35 hover:opacity-100",
+                      : isDisabled
+                        ? "cursor-not-allowed opacity-28"
+                        : "opacity-35 hover:opacity-100",
                   ].join(" ")}
                   aria-pressed={isActive}
+                  aria-disabled={isDisabled || undefined}
+                  aria-label={`${language.name}${isDisabled ? ` - ${t.language.unavailable}` : ""}`}
+                  title={isDisabled ? t.language.unavailable : language.name}
                 >
-                  {language}
+                  {language.label}
                 </button>
               );
             })}
@@ -438,7 +452,7 @@ export default function Header({
             type="button"
             onClick={onCta}
             aria-expanded={drawerOpen}
-            aria-label={drawerOpen ? "Close project drawer" : navLabels.start}
+            aria-label={drawerOpen ? "Close project drawer" : navLabels.startProject}
             className={[
               "inline-flex min-w-10 shrink-0 items-center justify-center gap-1 rounded-full px-2.5 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] min-[420px]:min-w-[4.8rem] min-[420px]:gap-1.5 min-[420px]:px-3 min-[420px]:py-[9px] min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:min-w-[12.2rem] sm:gap-2 sm:px-4 sm:text-[11px] sm:tracking-[0.16em]",
               drawerOpen
@@ -446,8 +460,8 @@ export default function Header({
                 : "border border-[color:var(--header-action-border)] bg-[color:var(--header-action-bg)] text-[color:var(--header-action-text)] hover:opacity-85",
             ].join(" ")}
           >
-            <span className="hidden min-[420px]:inline sm:hidden">{navLabels.startShort}</span>
-            <span className="hidden sm:inline">{navLabels.start}</span>
+            <span className="hidden min-[420px]:inline sm:hidden">{navLabels.startProjectShort}</span>
+            <span className="hidden sm:inline">{navLabels.startProject}</span>
             <span
               className={[
                 "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",

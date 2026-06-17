@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { externalProfiles } from "./profile/ExternalProfileLinks";
+import { useI18n } from "../i18n";
 
 type SiteFooterV2Props = {
   onOpenProject?: () => void;
@@ -154,7 +155,12 @@ export default function SiteFooterV2({
   immersiveCaseContent,
 }: SiteFooterV2Props) {
   const reduceMotion = useReducedMotion();
+  const { t } = useI18n();
   const copy = footerCopyByVariant[variant];
+  const localizedLegalLinks = legalLinks.map((link) => ({
+    ...link,
+    label: link.to === "/privacy" ? t.footer.privacy : t.footer.legal,
+  }));
   const isCase = variant === "case";
   const isImmersiveCase = variant === "immersiveCase";
   const immersiveCaseCopy = isImmersiveCase
@@ -227,9 +233,9 @@ export default function SiteFooterV2({
               </div>
             </div>
 
-            <FooterLedgerLinks title="Systems" links={systemLinks} />
-            <FooterLedgerLinks title="Services" links={serviceLinks} />
-            <FooterLedgerLinks title="Routes" links={routeLinks} />
+            <FooterLedgerLinks title={t.footer.systems} links={systemLinks} />
+            <FooterLedgerLinks title={t.footer.services} links={serviceLinks} />
+            <FooterLedgerLinks title={t.footer.routes} links={routeLinks} />
           </div>
 
           <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">
@@ -248,7 +254,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="flex flex-wrap gap-x-5 gap-y-2">
-              {legalLinks.map((link) => (
+              {localizedLegalLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -424,7 +430,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="grid gap-2">
-              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">Systems</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.systems}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
                 {systemLinks.map((link) => (
                   <Link
@@ -439,7 +445,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="grid gap-2">
-              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">Services</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.services}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
                 {serviceLinks.map((link) => (
                   <Link
@@ -454,7 +460,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="grid gap-2">
-              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">Routes</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.routes}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
                 {routeLinks.map((link) => (
                   <Link
@@ -485,7 +491,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="flex flex-wrap gap-x-5 gap-y-2">
-              {legalLinks.map((link) => (
+              {localizedLegalLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -552,7 +558,7 @@ export default function SiteFooterV2({
                 onClick={onOpenProject}
                 className="group mt-6 inline-flex min-h-12 w-full items-center justify-between rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.14)] transition duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
               >
-                <span>Start a project</span>
+                <span>{t.common.startProject}</span>
                 <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
               </button>
             </div>
@@ -572,9 +578,9 @@ export default function SiteFooterV2({
             </div>
           </div>
 
-          <FooterLedgerLinks title="Systems" links={systemLinks} />
-          <FooterLedgerLinks title="Services" links={serviceLinks} />
-          <FooterLedgerLinks title="Routes" links={routeLinks} />
+          <FooterLedgerLinks title={t.footer.systems} links={systemLinks} />
+          <FooterLedgerLinks title={t.footer.services} links={serviceLinks} />
+          <FooterLedgerLinks title={t.footer.routes} links={routeLinks} />
         </div>
 
         <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">
@@ -593,7 +599,7 @@ export default function SiteFooterV2({
           </div>
 
           <div className="flex flex-wrap gap-x-5 gap-y-2">
-            {legalLinks.map((link) => (
+            {localizedLegalLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}

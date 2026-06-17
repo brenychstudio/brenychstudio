@@ -16,7 +16,7 @@ import SoundSignalDock from "./ui/SoundSignalDock";
 import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import StructuredData, { type StructuredDataValue } from "./ui/StructuredData";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, toAbsoluteSiteUrl } from "./config/site";
-import { LocaleProvider } from "./store/useLocale";
+import { I18nProvider } from "./i18n";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
@@ -186,9 +186,9 @@ export default function App() {
   const closeProject = useCallback(() => setDrawerOpen(false), []);
 
   return (
-    <LocaleProvider>
-      <SoundProvider>
-        <BrowserRouter>
+    <SoundProvider>
+      <BrowserRouter>
+        <I18nProvider>
           <ScrollToTop />
 
           <Suspense fallback={<RoutePendingSurface />}>
@@ -444,8 +444,8 @@ export default function App() {
           <ProjectDrawerV2 open={drawerOpen} onClose={closeProject} />
           <SoundSignalDock />
           <PageTransitionOverlay />
-        </BrowserRouter>
-      </SoundProvider>
-    </LocaleProvider>
+        </I18nProvider>
+      </BrowserRouter>
+    </SoundProvider>
   );
 }

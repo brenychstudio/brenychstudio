@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { useSound } from "../stage/audio/useSound";
+import { useI18n } from "../i18n";
 
 type Props = {
   open: boolean;
@@ -230,6 +231,7 @@ function getSignal(value: ProjectSignal) {
 
 export default function ProjectDrawerV2({ open, onClose }: Props) {
   const { playRole } = useSound();
+  const { t } = useI18n();
   const isMobile = useIsMobileSheet();
   const lastFocusedRef = useRef<HTMLElement | null>(null);
   const copyTimerRef = useRef<number | null>(null);
@@ -412,7 +414,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                         id="project-signal-title-mobile"
                         className="mt-1 text-[34px] font-normal leading-none tracking-normal text-neutral-950"
                       >
-                        Start a project
+                        {t.drawer.title}
                       </h2>
                     </div>
 
@@ -422,7 +424,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       onClick={closeDrawer}
                       className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-neutral-300/80 bg-white/72 px-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-700 shadow-[0_8px_20px_rgba(0,0,0,0.045)] transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
-                      Close
+                      {t.drawer.close}
                     </button>
                   </div>
 
@@ -588,7 +590,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       id="project-signal-title"
                       className="mt-2 text-[34px] font-normal leading-[0.98] tracking-normal text-neutral-950 sm:mt-3 sm:text-[50px]"
                     >
-                      Start a project
+                      {t.drawer.title}
                     </h2>
                   </div>
 
@@ -597,7 +599,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     onClick={closeDrawer}
                     className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-neutral-300/80 bg-white/60 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-neutral-500 hover:bg-white/86 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb] sm:px-4 sm:tracking-[0.22em]"
                   >
-                    Close
+                    {t.drawer.close}
                   </button>
                 </div>
 

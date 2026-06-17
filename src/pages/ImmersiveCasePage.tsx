@@ -13,7 +13,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveItem, type ImmersiveTone } from "../data/immersive";
 import { whisperCaseI18n } from "../data/whisperCaseI18n";
 import type { CaseStoryMedia } from "../data/caseStories";
-import { useLocale } from "../store/useLocale";
+import { useI18n } from "../i18n";
 import SeoMeta from "../ui/SeoMeta";
 import StructuredData from "../ui/StructuredData";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
@@ -3058,7 +3058,7 @@ export default function ImmersiveCasePage({
   onOpenProject,
   onCloseProject,
 }: PageProps) {
-  const { t, locale } = useLocale();
+  const { t, locale } = useI18n();
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -3069,8 +3069,9 @@ export default function ImmersiveCasePage({
   }
 
   const isWhisperCase = data.slug === "whisper";
+  const whisperLocale = locale === "uk" ? "ua" : locale;
   const whisperCopy =
-    whisperCaseI18n[locale as keyof typeof whisperCaseI18n] ??
+    whisperCaseI18n[whisperLocale as keyof typeof whisperCaseI18n] ??
     whisperCaseI18n.en;
 
   if (isWhisperCase) {
@@ -3330,7 +3331,7 @@ export default function ImmersiveCasePage({
                           aria-haspopup="dialog"
                           className="hover:shadow-[0_10px_24px_rgba(17,17,17,0.10)]"
                         >
-                          {t.nav.start}
+                          {t.nav.startProject}
                         </ActionPill>
                       </div>
                     </div>
@@ -3634,7 +3635,7 @@ export default function ImmersiveCasePage({
                   aria-haspopup="dialog"
                   className="hover:shadow-[0_10px_24px_rgba(17,17,17,0.10)]"
                 >
-                  {t.nav.start}
+                  {t.nav.startProject}
                 </ActionPill>
               </div>
             </motion.div>

@@ -1,3 +1,5 @@
+import { spanishServicePageTranslations, type ServicePageTranslation } from "./spanishContent";
+
 export type ServicePageSlug =
   | "premium-landing-page"
   | "product-demo-landing"
@@ -43,6 +45,9 @@ export type ServicePageData = {
   closingTitle: string;
   closingBody: string;
   schemaName: string;
+  translations?: {
+    es?: ServicePageTranslation;
+  };
 };
 
 export const servicePages: ServicePageData[] = [
@@ -144,6 +149,9 @@ export const servicePages: ServicePageData[] = [
     closingBody:
       "Use one route to test the offer, launch clearly, and give the project a premium commercial surface before adding more architecture.",
     schemaName: "Premium landing page",
+    translations: {
+      es: spanishServicePageTranslations["premium-landing-page"],
+    },
   },
   {
     slug: "product-demo-landing",
@@ -243,6 +251,9 @@ export const servicePages: ServicePageData[] = [
     closingBody:
       "Make the product understandable before the first call: promise, workflow, proof and next action in one focused route.",
     schemaName: "Product demo landing page",
+    translations: {
+      es: spanishServicePageTranslations["product-demo-landing"],
+    },
   },
   {
     slug: "interactive-web-systems",
@@ -349,6 +360,9 @@ export const servicePages: ServicePageData[] = [
     closingBody:
       "Use interaction, media and atmosphere as part of the system logic, not as decoration added after the page is built.",
     schemaName: "Interactive web systems",
+    translations: {
+      es: spanishServicePageTranslations["interactive-web-systems"],
+    },
   },
 ];
 

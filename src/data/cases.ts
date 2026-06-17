@@ -1,5 +1,6 @@
 import type { CaseCoverFocus, CaseCoverTone } from "../ui/work/caseCover.types";
 import type { CaseStatusKind } from "../ui/status/status.types";
+import { spanishCaseRegistryTranslations, type CaseRegistryTranslation } from "./spanishContent";
 
 export type CaseStatus = "live" | "prototype" | "private" | "in_progress";
 export type CaseCategory =
@@ -98,6 +99,9 @@ export type CaseRegistryFields = {
   clientType?: string;
   stack?: string[];
   searchContent?: CaseSearchContent;
+  translations?: {
+    es?: CaseRegistryTranslation;
+  };
 };
 
 export type CaseBase = {
@@ -2866,6 +2870,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
       ],
       relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo],
     },
+    translations: {
+      es: spanishCaseRegistryTranslations["bcn-advisory"],
+    },
   },
   "fluid-exhibition": {
     category: "Interactive Web",
@@ -2969,6 +2976,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
       ],
       relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.interactiveSystems],
     },
+    translations: {
+      es: spanishCaseRegistryTranslations["house-of-lune"],
+    },
   },
   creatorops: {
     category: "Product Interface",
@@ -3002,6 +3012,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
         "ZIP and export-ready workflow direction",
       ],
       relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
+    },
+    translations: {
+      es: spanishCaseRegistryTranslations.creatorops,
     },
   },
 };

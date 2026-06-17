@@ -1,4 +1,5 @@
 import type { CaseStatusKind } from "../ui/status/status.types";
+import { spanishImmersiveTranslations, type ImmersiveTranslation } from "./spanishContent";
 
 export type ImmersiveTone = "horizon" | "signal" | "nocturne";
 
@@ -76,6 +77,9 @@ export type ImmersiveItem = {
   frames?: ImmersiveMedia[];
   highlights?: string[];
   searchContent?: ImmersiveSearchContent;
+  translations?: {
+    es?: ImmersiveTranslation;
+  };
 };
 
 export const immersiveItems: ImmersiveItem[] = [
@@ -328,6 +332,9 @@ export const immersiveItems: ImmersiveItem[] = [
       "AR framed print preview",
       "Reusable XRCore foundation",
     ],
+    translations: {
+      es: spanishImmersiveTranslations.whisper,
+    },
   },
   {
     key: "webhero",

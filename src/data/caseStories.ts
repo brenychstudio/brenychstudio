@@ -1,5 +1,6 @@
 import { getAvailableSystem } from "./availableSystems";
 import { cases, type Case, type CaseFrame } from "./cases";
+import { spanishCaseStoryTranslations, type CaseStoryTranslation } from "./spanishContent";
 import { workEvidenceBySlug } from "./workEvidence";
 
 export type CaseStoryType =
@@ -69,6 +70,9 @@ export type CaseStory = {
     label: string;
     href: string;
   }[];
+  translations?: {
+    es?: CaseStoryTranslation;
+  };
 };
 
 const authoredCaseStories: CaseStory[] = [
@@ -296,6 +300,9 @@ const authoredCaseStories: CaseStory[] = [
         href: "https://github.com/brenychstudio/House-of-Lune",
       },
     ],
+    translations: {
+      es: spanishCaseStoryTranslations["house-of-lune"],
+    },
   },
   {
     slug: "barcelona-private-advisory",
@@ -629,6 +636,9 @@ const authoredCaseStories: CaseStory[] = [
         href: "https://github.com/brenychstudio/Barcelona-Private-Advisory",
       },
     ],
+    translations: {
+      es: spanishCaseStoryTranslations["barcelona-private-advisory"],
+    },
   },
   {
     slug: "creatorops",
@@ -862,6 +872,9 @@ const authoredCaseStories: CaseStory[] = [
         href: "https://github.com/brenychstudio/CreatorOps",
       },
     ],
+    translations: {
+      es: spanishCaseStoryTranslations.creatorops,
+    },
   },
 ];
 

@@ -39,3 +39,15 @@ export type Dictionary = {
     unavailable: string;
   };
 };
+
+export type SeoDraft = {
+  title: string;
+  description: string;
+  ogTitle: string;
+  ogDescription: string;
+  alt?: string;
+};
+
+export type LocalizedData<T> = {
+  es?: T;
+};

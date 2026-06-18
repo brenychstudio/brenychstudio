@@ -13,6 +13,8 @@ import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
+import { spanishCorePageContent } from "../data/spanishContent";
+import { getLocalizedPath, useI18n } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -521,6 +523,8 @@ export default function AboutV2({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { locale } = useI18n();
+  const copy = locale === "es" ? spanishCorePageContent.about : undefined;
   const activeSectionId = useSectionRailActive(aboutRailItems);
   const { playRole, setScene, stopAmbient } = useSound();
   const desktopLayout = useDesktopAboutLayout();
@@ -532,7 +536,7 @@ export default function AboutV2({
 
   const goTo = (path: string) => {
     playRole(path === "/immersive" ? "open" : "select");
-    startSpaPageTransition(navigate, path, () => {
+    startSpaPageTransition(navigate, getLocalizedPath(path, locale), () => {
       onCloseProject?.();
     });
   };
@@ -573,11 +577,11 @@ export default function AboutV2({
             >
               <SectionLabel>Studio position</SectionLabel>
               <h1 className="mt-6 max-w-[10ch] text-[46px] font-normal leading-[0.92] tracking-[-0.055em] text-neutral-950 sm:max-w-[13ch] sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.06em] lg:text-[74px] xl:text-[78px] 2xl:text-[100px]">
-                I build interface systems for premium web, product surfaces, and immersive digital experiences.
+                {copy?.title ?? "I build interface systems for premium web, product surfaces, and immersive digital experiences."}
               </h1>
               <p className="mt-6 max-w-[34ch] text-[16px] leading-7 text-neutral-600 sm:max-w-[43rem] sm:text-[17px]">
-                Brenych Studio is an independent creative development practice focused on premium front-end systems,
-                interactive storytelling, multilingual websites, WebGL stages, and spatial interface research.
+                {copy?.body ??
+                  "Brenych Studio is an independent creative development practice focused on premium front-end systems, interactive storytelling, multilingual websites, WebGL stages, and spatial interface research."}
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -587,7 +591,7 @@ export default function AboutV2({
                   onClick={() => goTo("/work")}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
                 >
-                  View work -&gt;
+                  {copy?.ctas?.[0] ?? "View work"} -&gt;
                 </button>
                 <button
                   type="button"
@@ -595,7 +599,7 @@ export default function AboutV2({
                   onClick={() => goTo("/immersive")}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-white/56 px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
                 >
-                  Explore immersive -&gt;
+                  {copy?.ctas?.[1] ?? "Explore immersive"} -&gt;
                 </button>
                 <button
                   type="button"
@@ -603,7 +607,7 @@ export default function AboutV2({
                   onClick={openProjectWithSound}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-transparent px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:border-neutral-950/40 hover:text-neutral-950"
                 >
-                  Start a project
+                  {copy?.ctas?.[2] ?? "Start a project"}
                 </button>
               </div>
             </motion.div>

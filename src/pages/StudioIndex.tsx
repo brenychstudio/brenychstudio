@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 import { cases } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
+import { spanishCorePageContent, type CorePageTranslation } from "../data/spanishContent";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import LiveBuildSignal from "../ui/studio-index/LiveBuildSignal";
@@ -27,6 +28,7 @@ import FormulaSignalStrand from "../ui/StudioSystemStrand";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
+import { getLocalizedPath, useI18n } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -1341,15 +1343,20 @@ function MobileFormulaPanel({ compact = false }: { compact?: boolean }) {
 }
 
 function OpeningChapter({
+  copy,
   onSystems,
   onWork,
   onImmersive,
 }: {
+  copy?: CorePageTranslation;
   onSystems: () => void;
   onWork: () => void;
   onImmersive: () => void;
 }) {
   const sound = useSound();
+  const systemsCta = copy ? "Explorar sistemas" : "Explore systems";
+  const workCta = copy?.ctas?.[0] ?? "View work";
+  const immersiveCta = copy?.ctas?.[1] ?? "Enter immersive";
 
   return (
     <Chapter
@@ -1384,11 +1391,11 @@ function OpeningChapter({
 
         <div>
           <h1 className="max-w-[9ch] text-[clamp(4.25rem,18vw,6.9rem)] font-normal leading-[0.78] tracking-[-0.085em] text-neutral-950">
-            Living interface systems.
+            {copy?.title ?? "Living interface systems."}
           </h1>
           <p className="mt-7 max-w-[36rem] text-[15px] leading-7 text-neutral-600">
-            Premium websites, cinematic web environments, multilingual product surfaces,
-            and spatial digital experiences built as one coherent interface system.
+            {copy?.body ??
+              "Premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences built as one coherent interface system."}
           </p>
         </div>
 
@@ -1400,7 +1407,7 @@ function OpeningChapter({
               onClick={onSystems}
               className={mobilePrimaryCta}
             >
-              Explore systems -&gt;
+              {systemsCta} -&gt;
             </button>
             <button
               type="button"
@@ -1408,7 +1415,7 @@ function OpeningChapter({
               onClick={onWork}
               className={mobileSecondaryCta}
             >
-              View work -&gt;
+              {workCta} -&gt;
             </button>
           </div>
           <button
@@ -1417,7 +1424,7 @@ function OpeningChapter({
             onClick={onImmersive}
             className={mobileSecondaryCta}
           >
-            Enter immersive -&gt;
+            {immersiveCta} -&gt;
           </button>
         </div>
 
@@ -1438,13 +1445,12 @@ function OpeningChapter({
           </div>
 
           <h1 className="mt-8 max-w-[10ch] text-[78px] font-normal leading-[0.78] tracking-[-0.09em] text-neutral-950 sm:text-[112px] md:text-[150px] xl:text-[176px] 2xl:text-[206px]">
-            Living interface systems.
+            {copy?.title ?? "Living interface systems."}
           </h1>
 
           <p className="mt-9 max-w-[45rem] text-[17px] leading-[1.85] text-neutral-600 sm:text-[19px]">
-            I build premium websites, cinematic web environments, multilingual product surfaces,
-            and spatial digital experiences where motion, media, language, and technical structure
-            work as one environment.
+            {copy?.body ??
+              "I build premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences where motion, media, language, and technical structure work as one environment."}
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
@@ -1454,7 +1460,7 @@ function OpeningChapter({
               onClick={onSystems}
               className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
-              Explore systems -&gt;
+              {systemsCta} -&gt;
             </button>
             <button
               type="button"
@@ -1462,7 +1468,7 @@ function OpeningChapter({
               onClick={onWork}
               className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              View work -&gt;
+              {workCta} -&gt;
             </button>
             <button
               type="button"
@@ -1470,7 +1476,7 @@ function OpeningChapter({
               onClick={onImmersive}
               className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              Enter immersive -&gt;
+              {immersiveCta} -&gt;
             </button>
           </div>
 
@@ -2494,6 +2500,8 @@ export default function StudioIndex({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { locale } = useI18n();
+  const copy = locale === "es" ? spanishCorePageContent.home : undefined;
   const activeId = useActiveStudioSection();
   const whisperChromeActive = useStudioWhisperChromeActive();
   const routeContentReady = useDeferredRouteContent();
@@ -2514,7 +2522,7 @@ export default function StudioIndex({
 
   const goTo = (path: string) => {
     playRole(path === "/immersive" ? "open" : "select");
-    startSpaPageTransition(navigate, path, () => {
+    startSpaPageTransition(navigate, getLocalizedPath(path, locale), () => {
       onCloseProject?.();
     });
   };
@@ -2554,6 +2562,7 @@ export default function StudioIndex({
         <main className="relative z-10">
           <MobileMotionSection variant="threshold">
             <OpeningChapter
+              copy={copy}
               onSystems={() => scrollTo("systems")}
               onWork={() => goTo("/work")}
               onImmersive={() => goTo("/immersive")}

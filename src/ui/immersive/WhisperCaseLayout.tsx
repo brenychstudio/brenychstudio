@@ -26,6 +26,7 @@ import CinematicInspectReveal from "../work/CinematicInspectReveal";
 type WhisperCaseLayoutProps = {
   item: ImmersiveItem;
   onOpenProject?: () => void;
+  copy?: (typeof whisperCaseI18n)[keyof typeof whisperCaseI18n];
 };
 
 type SectionId = "threshold" | "atlas" | "web" | "xr" | "collector" | "mobile" | "engine";
@@ -1971,11 +1972,10 @@ function VideoModal({ video, onClose }: { video: VideoProof | null; onClose: () 
   );
 }
 
-export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLayoutProps) {
+export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperCaseI18n.en }: WhisperCaseLayoutProps) {
   const navigate = useNavigate();
   const sound = useSound();
   const reduceMotion = useReducedMotion();
-  const copy = whisperCaseI18n.en;
   const rawFrames = useMemo(() => item.frames ?? [], [item.frames]);
   const rawVideos = useMemo(() => item.videos ?? [], [item.videos]);
 
@@ -2138,13 +2138,13 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] w-[min(92vw,1680px)] gap-10 px-4 pb-14 pt-24 max-[640px]:w-full max-[640px]:gap-6 max-[640px]:px-7 max-[640px]:pb-12 max-[640px]:pt-12 md:px-8 lg:grid-cols-[0.45fr_0.55fr] lg:items-end lg:pt-28">
           <div className="max-w-[46rem] pb-2 max-[640px]:max-w-full">
             <div className="mb-7 flex flex-wrap gap-2 max-[640px]:mb-5">
-              {["Flagship immersive", item.status].map((label) => (
+              {[item.supportLabel ?? "Flagship immersive", item.status].map((label) => (
                 <span key={label} className="hidden border border-white/16 bg-white/8 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/58 backdrop-blur md:inline-flex">
                   {label}
                 </span>
               ))}
               <span className="border border-white/16 bg-white/8 px-3 py-2 text-[9px] uppercase tracking-[0.15em] text-white/58 backdrop-blur md:hidden">
-                Flagship / Advanced V1
+                {copy.top.status}
               </span>
             </div>
 
@@ -2152,10 +2152,10 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
               WHISPER
             </h1>
             <p className="mt-8 max-w-[42rem] text-[21px] leading-[1.55] text-white/78 max-[640px]:mt-5 max-[640px]:max-w-[20rem] max-[420px]:text-[19px] md:text-[28px]">
-              Cinematic Web / XR exhibition where photography becomes a public surface, collector system, and room-scale proof.
+              {item.tagline}
             </p>
             <p className="mt-6 max-w-[40rem] text-base leading-8 text-white/56 max-[640px]:hidden">
-              One continuous proof route across website, mobile, Quest VR, print detail, and AR preview.
+              {item.description}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3 max-[640px]:mt-6 max-[640px]:grid max-[640px]:max-w-[21rem] max-[640px]:grid-cols-2 max-[640px]:gap-0">
@@ -2165,7 +2165,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
                 rel="noreferrer"
                 className="border border-[#f4efe4] bg-[#f4efe4] px-5 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:bg-white max-[640px]:min-h-12 max-[640px]:px-3 max-[640px]:text-[10px]"
               >
-                Live site
+                {copy.links.live}
               </a>
               <a
                 href={WHISPER_REPO_URL}
@@ -2173,7 +2173,7 @@ export default function WhisperCaseLayout({ item, onOpenProject }: WhisperCaseLa
                 rel="noreferrer"
                 className="border border-white/18 bg-white/8 px-5 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-white/72 transition hover:border-white/42 hover:text-white max-[640px]:min-h-12 max-[640px]:px-3 max-[640px]:text-[10px]"
               >
-                Repository
+                {copy.links.repo}
               </a>
               {openingFrame ? (
                 <button

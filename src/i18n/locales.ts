@@ -1,3 +1,5 @@
+import { spanishPreviewEnabled } from "./preview";
+
 export type LocaleCode = "en" | "es" | "uk" | "ru";
 
 export type LocaleConfig = {
@@ -46,7 +48,25 @@ export const LOCALES: LocaleConfig[] = [
   },
 ];
 
-export const enabledLocales = LOCALES.filter((locale) => locale.enabled);
+export function isRuntimeLocaleEnabled(code: LocaleCode) {
+  if (code === "en") return true;
+  if (code === "es") return spanishPreviewEnabled;
+
+  return false;
+}
+
+export function getRuntimeLocales() {
+  return LOCALES.map((locale) => ({
+    ...locale,
+    enabled: isRuntimeLocaleEnabled(locale.code),
+  }));
+}
+
+export function getRuntimeEnabledLocales() {
+  return getRuntimeLocales().filter((locale) => locale.enabled);
+}
+
+export const enabledLocales = getRuntimeEnabledLocales();
 
 export function isLocaleCode(value: string): value is LocaleCode {
   return value === "en" || value === "es" || value === "uk" || value === "ru";

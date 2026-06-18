@@ -7,14 +7,14 @@ export const es: Dictionary = {
     immersive: "Inmersivo",
     offer: "Servicios",
     about: "Estudio",
-    startProject: "Iniciar un proyecto",
+    startProject: "Iniciar proyecto",
     startProjectShort: "Iniciar",
   },
 
   common: {
     viewWork: "Ver proyectos",
     viewCase: "Ver caso",
-    startProject: "Iniciar un proyecto",
+    startProject: "Iniciar proyecto",
     liveSignal: "Señal activa",
     signal: "Señal",
     closingSignal: "Señal final",
@@ -30,7 +30,7 @@ export const es: Dictionary = {
   },
 
   drawer: {
-    title: "Iniciar un proyecto",
+    title: "Iniciar proyecto",
     subtitle: "Envía el contexto del proyecto, el calendario y los materiales disponibles.",
     inquiry: "Consulta de proyecto",
     close: "Cerrar",

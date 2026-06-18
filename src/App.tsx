@@ -16,7 +16,8 @@ import SoundSignalDock from "./ui/SoundSignalDock";
 import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import StructuredData, { type StructuredDataValue } from "./ui/StructuredData";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, toAbsoluteSiteUrl } from "./config/site";
-import { I18nProvider } from "./i18n";
+import { I18nProvider, spanishPreviewEnabled } from "./i18n";
+import { spanishPageSeoDrafts } from "./data/spanishContent";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
@@ -100,6 +101,20 @@ const aboutSchema: StructuredDataValue = {
     jobTitle: "Creative Developer / Interactive Front-end Systems Builder",
   },
 };
+
+function getSpanishPreviewMeta(path: string, fallback: SeoMetaProps): SeoMetaProps {
+  const draft = spanishPageSeoDrafts[path];
+  const previewPath = `/es${path === "/" ? "" : path}`;
+
+  return {
+    ...fallback,
+    title: draft?.title ?? fallback.title,
+    description: draft?.description ?? fallback.description,
+    imageAlt: draft?.ogTitle ?? fallback.imageAlt,
+    path: previewPath,
+    noIndex: true,
+  };
+}
 
 function SeoRoute({
   meta,
@@ -193,6 +208,118 @@ export default function App() {
 
           <Suspense fallback={<RoutePendingSurface />}>
             <Routes>
+          {spanishPreviewEnabled ? (
+            <>
+              <Route
+                path="/es"
+                element={
+                  <SeoRoute meta={getSpanishPreviewMeta("/", routeSeo.home)} structuredData={[organizationSchema, websiteSchema]}>
+                    <StudioIndex
+                      drawerOpen={drawerOpen}
+                      onOpenProject={openProject}
+                      onCloseProject={closeProject}
+                      noIndex={false}
+                    />
+                  </SeoRoute>
+                }
+              />
+
+              <Route
+                path="/es/work"
+                element={
+                  <SeoRoute meta={getSpanishPreviewMeta("/work", routeSeo.work)}>
+                    <EvidenceAtlas
+                      drawerOpen={drawerOpen}
+                      onOpenProject={openProject}
+                      onCloseProject={closeProject}
+                      noIndex={false}
+                    />
+                  </SeoRoute>
+                }
+              />
+
+              <Route
+                path="/es/immersive"
+                element={
+                  <SeoRoute meta={getSpanishPreviewMeta("/immersive", routeSeo.immersive)}>
+                    <ImmersiveV2
+                      drawerOpen={drawerOpen}
+                      onOpenProject={openProject}
+                      onCloseProject={closeProject}
+                      noIndex={false}
+                    />
+                  </SeoRoute>
+                }
+              />
+
+              <Route
+                path="/es/offer"
+                element={
+                  <SeoRoute meta={getSpanishPreviewMeta("/offer", routeSeo.offer)}>
+                    <OfferV2
+                      drawerOpen={drawerOpen}
+                      onOpenProject={openProject}
+                      onCloseProject={closeProject}
+                      noIndex={false}
+                    />
+                  </SeoRoute>
+                }
+              />
+
+              <Route
+                path="/es/about"
+                element={
+                  <SeoRoute meta={getSpanishPreviewMeta("/about", routeSeo.about)} structuredData={aboutSchema}>
+                    <AboutV2
+                      drawerOpen={drawerOpen}
+                      onOpenProject={openProject}
+                      onCloseProject={closeProject}
+                      noIndex={false}
+                    />
+                  </SeoRoute>
+                }
+              />
+
+              <Route path="/es/services" element={<Navigate to="/es/offer" replace />} />
+
+              <Route
+                path="/es/services/:slug"
+                element={
+                  <ServicePage
+                    drawerOpen={drawerOpen}
+                    onOpenProject={openProject}
+                    onCloseProject={closeProject}
+                    noIndex
+                  />
+                }
+              />
+
+              <Route
+                path="/es/work/:slug"
+                element={
+                  <CasePageV2
+                    drawerOpen={drawerOpen}
+                    onOpenProject={openProject}
+                    onCloseProject={closeProject}
+                    noIndex
+                  />
+                }
+              />
+
+              <Route
+                path="/es/immersive/:slug"
+                element={
+                  <ImmersiveCasePage
+                    drawerOpen={drawerOpen}
+                    onOpenProject={openProject}
+                    onCloseProject={closeProject}
+                    noIndex
+                  />
+                }
+              />
+            </>
+          ) : null}
+
           <Route
             path="/"
             element={

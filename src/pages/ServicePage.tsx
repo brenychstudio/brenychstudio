@@ -18,12 +18,15 @@ import StructuredData from "../ui/StructuredData";
 import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
 import { cases, getCaseBySlug, getCasePath } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
+import { localizeCase, localizeImmersiveItem, localizeServicePage } from "../data/localization";
 import { getServicePage, type ServicePageData, type ServiceProofRef } from "../data/servicePages";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
+  noIndex?: boolean;
 };
 
 type ProofCardData = {
@@ -47,9 +50,10 @@ function SectionSignal({ index, label }: { index: string; label: string }) {
   );
 }
 
-function resolveProof(ref: ServiceProofRef): ProofCardData | null {
+function resolveProof(ref: ServiceProofRef, locale: LocaleCode): ProofCardData | null {
   if (ref.source === "immersive") {
-    const item = immersiveItems.find((candidate) => candidate.slug === ref.slug);
+    const sourceItem = immersiveItems.find((candidate) => candidate.slug === ref.slug);
+    const item = sourceItem ? localizeImmersiveItem(sourceItem, locale) : null;
     if (!item) return null;
 
     return {
@@ -58,13 +62,14 @@ function resolveProof(ref: ServiceProofRef): ProofCardData | null {
       image: item.previewPoster ?? item.frames?.[0]?.src ?? "/og-default.png",
       alt: item.frames?.[0]?.alt ?? `${item.title} immersive case preview`,
       type: item.searchContent?.category ?? item.medium,
-      href: `/immersive/${item.slug}`,
+      href: getLocalizedPath(`/immersive/${item.slug}`, locale),
       label: ref.label,
       role: ref.role,
     };
   }
 
-  const item = getCaseBySlug(ref.slug);
+  const sourceItem = getCaseBySlug(ref.slug);
+  const item = sourceItem ? localizeCase(sourceItem, locale) : null;
   if (!item) return null;
 
   return {
@@ -73,14 +78,14 @@ function resolveProof(ref: ServiceProofRef): ProofCardData | null {
     image: item.previewImage,
     alt: item.alt,
     type: item.category,
-    href: getCasePath(item.slug),
+    href: getLocalizedPath(getCasePath(item.slug), locale),
     label: ref.label,
     role: ref.role,
   };
 }
 
-function getResolvedProof(page: ServicePageData) {
-  return page.proof.map(resolveProof).filter((item): item is ProofCardData => Boolean(item));
+function getResolvedProof(page: ServicePageData, locale: LocaleCode) {
+  return page.proof.map((item) => resolveProof(item, locale)).filter((item): item is ProofCardData => Boolean(item));
 }
 
 function shortenText(text: string, maxLength = 150) {
@@ -88,14 +93,25 @@ function shortenText(text: string, maxLength = 150) {
   return `${text.slice(0, maxLength).trimEnd()}...`;
 }
 
-function ServiceMeta({ page, proofCards }: { page: ServicePageData; proofCards: ProofCardData[] }) {
+function ServiceMeta({
+  page,
+  proofCards,
+  noIndex = false,
+  locale,
+}: {
+  page: ServicePageData;
+  proofCards: ProofCardData[];
+  noIndex?: boolean;
+  locale: LocaleCode;
+}) {
   const heroProof = proofCards[0];
+  const path = getLocalizedPath(page.path, locale);
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
     name: page.schemaName,
     description: page.metaDescription,
-    url: toAbsoluteSiteUrl(page.path),
+    url: toAbsoluteSiteUrl(path),
     provider: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -110,10 +126,11 @@ function ServiceMeta({ page, proofCards }: { page: ServicePageData; proofCards: 
       <SeoMeta
         title={page.seoTitle}
         description={page.metaDescription}
-        path={page.path}
+        path={path}
         image={heroProof?.image ?? "/og-default.png"}
         imageAlt={heroProof?.alt ?? `${page.schemaName} by Brenych Studio`}
         type="website"
+        noIndex={noIndex}
       />
       <StructuredData id={`structured-data-service-${page.slug}`} data={serviceSchema} />
     </>
@@ -154,34 +171,42 @@ function getGalleryPriority(tone: ServicePageData["visualTone"]) {
   ];
 }
 
-function getProjectGalleryCards(tone: ServicePageData["visualTone"]): ProofCardData[] {
-  const workCards = cases.map((item) => ({
-    title: item.title,
-    claim: shortenText(item.shortDescription, 150),
-    image: item.previewImage,
-    alt: item.alt,
-    type: item.category,
-    href: getCasePath(item.slug),
-    label: item.proofType,
-    role: item.clientType ?? item.status,
-  }));
+function getProjectGalleryCards(tone: ServicePageData["visualTone"], locale: LocaleCode): ProofCardData[] {
+  const workCards = cases.map((sourceItem) => {
+    const item = localizeCase(sourceItem, locale);
 
-  const immersiveCards = immersiveItems.map((item) => ({
-    title: item.title,
-    claim: shortenText(item.searchContent?.shortDescription ?? item.description, 150),
-    image: item.previewPoster ?? item.frames?.[0]?.src ?? "/og-default.png",
-    alt: item.frames?.[0]?.alt ?? `${item.title} immersive case preview`,
-    type: item.searchContent?.category ?? "Immersive System",
-    href: `/immersive/${item.slug}`,
-    label: item.searchContent?.proofType ?? "Immersive Proof",
-    role: item.medium,
-  }));
+    return {
+      title: item.title,
+      claim: shortenText(item.shortDescription, 150),
+      image: item.previewImage,
+      alt: item.alt,
+      type: item.category,
+      href: getLocalizedPath(getCasePath(item.slug), locale),
+      label: item.proofType,
+      role: item.clientType ?? item.status,
+    };
+  });
+
+  const immersiveCards = immersiveItems.map((sourceItem) => {
+    const item = localizeImmersiveItem(sourceItem, locale);
+
+    return {
+      title: item.title,
+      claim: shortenText(item.searchContent?.shortDescription ?? item.description, 150),
+      image: item.previewPoster ?? item.frames?.[0]?.src ?? "/og-default.png",
+      alt: item.frames?.[0]?.alt ?? `${item.title} immersive case preview`,
+      type: item.searchContent?.category ?? "Immersive System",
+      href: getLocalizedPath(`/immersive/${item.slug}`, locale),
+      label: item.searchContent?.proofType ?? "Immersive Proof",
+      role: item.medium,
+    };
+  });
 
   const priority = getGalleryPriority(tone);
 
   return [...workCards, ...immersiveCards].sort((first, second) => {
-    const firstRank = priority.indexOf(first.href);
-    const secondRank = priority.indexOf(second.href);
+    const firstRank = priority.indexOf(first.href.replace(/^\/es/, ""));
+    const secondRank = priority.indexOf(second.href.replace(/^\/es/, ""));
     const normalizedFirst = firstRank === -1 ? priority.length + 1 : firstRank;
     const normalizedSecond = secondRank === -1 ? priority.length + 1 : secondRank;
 
@@ -1033,20 +1058,33 @@ function PremiumLandingRoute({
   );
 }
 
-export default function ServicePage({ drawerOpen = false, onOpenProject, onCloseProject }: PageProps) {
+export default function ServicePage({
+  drawerOpen = false,
+  onOpenProject,
+  onCloseProject,
+  noIndex = false,
+}: PageProps) {
   const { slug } = useParams();
-  const page = getServicePage(slug);
-  const galleryCards = useMemo(() => (page ? getProjectGalleryCards(page.visualTone) : []), [page]);
+  const { locale } = useI18n();
+  const sourcePage = getServicePage(slug);
+  const page = useMemo(
+    () => (sourcePage ? localizeServicePage(sourcePage, locale) : null),
+    [locale, sourcePage],
+  );
+  const galleryCards = useMemo(
+    () => (page ? getProjectGalleryCards(page.visualTone, locale) : []),
+    [locale, page],
+  );
 
   if (!page) {
-    return <Navigate to="/offer" replace />;
+    return <Navigate to={getLocalizedPath("/offer", locale)} replace />;
   }
 
-  const proofCards = getResolvedProof(page);
+  const proofCards = getResolvedProof(page, locale);
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-neutral-950">
-      <ServiceMeta page={page} proofCards={proofCards} />
+      <ServiceMeta page={page} proofCards={proofCards} locale={locale} noIndex={noIndex || locale === "es"} />
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
       <PageSurface className="relative min-h-screen overflow-x-clip bg-transparent">
         <AtmosphericSiteShell preset="practice" />

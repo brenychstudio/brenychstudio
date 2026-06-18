@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
 import { getCaseBySlug } from "../data/cases";
+import { localizeCase, localizeCaseStory } from "../data/localization";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
@@ -25,6 +26,7 @@ import { useSound } from "../stage/audio/useSound";
 import type { SectionRailItem } from "../ui/SectionRail";
 import SeoMeta from "../ui/SeoMeta";
 import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -98,6 +100,92 @@ const MOBILE_SWIPE_DISTANCE = 42;
 const MOBILE_SWIPE_VELOCITY = 360;
 
 function getCaseNarrative(story: CaseStory) {
+  const isSpanishPreviewStory = story.translations?.es?.headline === story.headline;
+
+  if (isSpanishPreviewStory && story.slug === "creatorops") {
+    return {
+      heroMeta: "Library / planificación / exportación / entrega",
+      heroReadiness: "01 / prototipo beta-ready",
+      heroMediaTitle: "Espacio de trabajo orientado a la exportación",
+      walkthroughTitle: ["El workspace", "convierte assets", "en Week Packs."],
+      walkthroughIntro:
+        "CreatorOps mueve recursos visuales dispersos a través de Library, Smart Mix, Planner, Captions, Export, Client Review, Profile Handoff / Bio Builder y Media Converter sin convertir el producto en un dashboard pesado.",
+      walkthroughSignals: [
+        { label: "Library", text: "Los recursos visuales entran como candidatos seleccionables para publicación." },
+        { label: "Export", text: "El material elegido se convierte en un Week Pack listo para publicar." },
+        { label: "Handoff", text: "La revisión para cliente, la entrega de perfil y las utilidades viven en un entorno calmado." },
+      ],
+      mobileTitle: "Ritmo creator en formato compacto.",
+      mobileIntro:
+        "CreatorOps V2 usa el campo de evidencia desktop como prueba completa; las pantallas móviles pueden sumarse cuando esa superficie esté lista.",
+      screensTitle: ["Workflow", "como sistema."],
+      screensReadout:
+        "Cada frame prueba una capa funcional: posicionamiento, library intake, planificación, captions, exportación, revisión para cliente, profile handoff y conversión de medios.",
+      screenSignals: ["Workflow export-first", "Client Review", "Profile Handoff"],
+      proofLabels: ["Exportación lista", "Capa de revisión", "Entrega útil"],
+      availableStatement:
+        "Usar esta dirección de flujo creator como referencia para una herramienta de publishing, operaciones de contenido o prototipo de interfaz de producto.",
+      availableBlueprint:
+        "Interfaz de workflow con estados de planificación, reglas de exportación, lógica de revisión y utilidades de entrega.",
+    };
+  }
+
+  if (isSpanishPreviewStory && story.slug === "barcelona-private-advisory") {
+    return {
+      heroMeta: "Brief / lente / dossier / handoff",
+      heroReadiness: "01 / prototipo sales-ready",
+      heroMediaTitle: "Inteligencia inmobiliaria privada",
+      walkthroughTitle: ["La asesoría", "convierte intención", "en dossier."],
+      walkthroughIntro:
+        "Barcelona Private Advisory convierte la intención del comprador en un recorrido guiado: brief, Barcelona Lens, señal de adquisición, dossier de shortlist, inspección de propiedad y handoff de consulta.",
+      walkthroughSignals: [
+        { label: "Brief", text: "La intención del comprador define la búsqueda antes de que compitan las propiedades." },
+        { label: "Lens", text: "Barcelona Lens hace visible la lógica de distrito, estilo de vida y localización." },
+        { label: "Dossier", text: "La shortlist y el handoff preparan una primera conversación de asesoría más clara." },
+      ],
+      mobileTitle: "Inteligencia advisory en móvil.",
+      mobileIntro:
+        "La prueba móvil mantiene lens, dossier, detalle de propiedad, inspección y request brief como un único recorrido compacto.",
+      screensTitle: ["Selección", "como inteligencia."],
+      screensReadout:
+        "Cada frame prueba una capa de decisión: intención, Barcelona Lens, señal de adquisición, shortlist, inspección, método y handoff.",
+      screenSignals: ["Intent lens", "Shortlist dossier", "Inquiry handoff"],
+      proofLabels: ["Intención del comprador", "Lógica de distrito", "Output listo para asesoría"],
+      availableStatement:
+        "Adaptar esta dirección de inteligencia inmobiliaria privada a una superficie real-estate, destination o advisory.",
+      availableBlueprint:
+        "Interfaz advisory con lente de mercado, lógica de shortlist, estructura de dossier y ruta de consulta.",
+    };
+  }
+
+  if (isSpanishPreviewStory && story.slug === "house-of-lune") {
+    return {
+      heroMeta: "Objeto / consulta / maison / prueba",
+      heroReadiness: "01 / available foundation",
+      heroMediaTitle: "Superficie premium de producto",
+      walkthroughTitle: ["El objeto", "se convierte", "en maison digital."],
+      walkthroughIntro:
+        "House of Lune convierte objetos de lujo en una superficie editorial con atmósfera, enfoque de producto, consulta privada y storytelling visual.",
+      walkthroughSignals: [
+        { label: "Atmósfera", text: "La primera superficie posiciona el producto como objeto raro, no como inventario." },
+        { label: "Producto", text: "La lectura visual mantiene foco, materialidad y deseo antes de pedir acción." },
+        { label: "Consulta", text: "La conversión funciona como ruta privada, no como checkout genérico." },
+      ],
+      mobileTitle: "Ritmo maison en móvil.",
+      mobileIntro:
+        "La secuencia móvil conserva la sensación premium mientras hace legibles producto, detalle, historia y consulta privada.",
+      screensTitle: ["Producto", "como sistema."],
+      screensReadout:
+        "Cada frame prueba una capa comercial: atmósfera, producto, detalle editorial, confianza y consulta privada.",
+      screenSignals: ["Objeto premium", "Storytelling visual", "Consulta privada"],
+      proofLabels: ["Enfoque de producto", "Consulta privada", "Confianza comercial"],
+      availableStatement:
+        "Adaptar esta lógica maison a una superficie de producto premium, luxury, fashion, jewellery o collectible.",
+      availableBlueprint:
+        "Superficie de producto con dirección visual, estructura editorial, consulta privada y ruta de adaptación.",
+    };
+  }
+
   if (story.slug === "creatorops") {
     return {
       heroMeta: "Library / planner / export / handoff",
@@ -405,8 +493,17 @@ function getCaseNarrative(story: CaseStory) {
   };
 }
 
-function CaseMeta({ story, noIndex = false }: { story: CaseStory | null; noIndex?: boolean }) {
-  const registryCase = getCaseBySlug(story?.slug);
+function CaseMeta({
+  story,
+  noIndex = false,
+  locale,
+}: {
+  story: CaseStory | null;
+  noIndex?: boolean;
+  locale: LocaleCode;
+}) {
+  const sourceRegistryCase = getCaseBySlug(story?.slug);
+  const registryCase = sourceRegistryCase ? localizeCase(sourceRegistryCase, locale) : null;
   const fallbackMedia =
     story?.mediaSequence.find((item) => item.kind !== "video" && item.role === "hero") ??
     story?.mediaSequence.find((item) => item.kind !== "video") ??
@@ -420,7 +517,7 @@ function CaseMeta({ story, noIndex = false }: { story: CaseStory | null; noIndex
     registryCase?.shortDescription ??
     story?.summary ??
     "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure.";
-  const casePath = story ? `/work/${story.slug}` : "/work";
+  const casePath = getLocalizedPath(story ? `/work/${story.slug}` : "/work", locale);
   const caseImage = registryCase?.ogImage ?? fallbackMedia?.src;
   const structuredData =
     story && registryCase
@@ -649,6 +746,10 @@ function getMobileSectionEyebrow(story: CaseStory, label: string) {
 }
 
 function getMobileHeroSummary(story: CaseStory) {
+  if (story.translations?.es?.headline === story.headline) {
+    return story.summary;
+  }
+
   if (story.slug === "oria-house-barcelona") {
     return "Atmosphere, room comparison, room detail, stay rituals, location context, and booking contact become one boutique hotel path.";
   }
@@ -2892,9 +2993,14 @@ export default function CasePageV2({
 }: PageProps) {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { locale } = useI18n();
   const sound = useSound();
   const reduceMotion = useReducedMotion();
-  const story = useMemo(() => getCaseStory(slug), [slug]);
+  const sourceStory = useMemo(() => getCaseStory(slug), [slug]);
+  const story = useMemo(
+    () => (sourceStory ? localizeCaseStory(sourceStory, locale) : null),
+    [locale, sourceStory],
+  );
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
 
   const spineItems = useMemo(
@@ -2919,7 +3025,7 @@ export default function CasePageV2({
   if (!story) {
     return (
       <>
-        <CaseMeta story={story} noIndex={noIndex} />
+        <CaseMeta story={story} noIndex={noIndex || locale === "es"} locale={locale} />
         <LabFallback
           drawerOpen={drawerOpen}
           onOpenProject={onOpenProject}
@@ -3031,12 +3137,12 @@ export default function CasePageV2({
           : "bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.08),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.24))]";
   const heroFragmentMetaClass =
     isAdvisoryCase || isFormIndexCase || isHospitalityCase || isPremiumWebsiteCase ? "text-neutral-600" : "text-white/72";
-  const goToWork = () => startSpaPageTransition(navigate, "/work", onCloseProject);
+  const goToWork = () => startSpaPageTransition(navigate, getLocalizedPath("/work", locale), onCloseProject);
   const openProject = () => onOpenProject?.();
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f4f1ea] text-neutral-950">
-      <CaseMeta story={story} noIndex={noIndex} />
+      <CaseMeta story={story} noIndex={noIndex || locale === "es"} locale={locale} />
       <AtmosphericSiteShell preset="case" />
       <Header
         drawerOpen={drawerOpen}

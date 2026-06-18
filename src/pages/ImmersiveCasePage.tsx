@@ -11,9 +11,10 @@ import KoolBerkWebGLBackdrop from "../ui/immersive/KoolBerkWebGLBackdrop";
 import WebHeroMembraneBackdrop from "../ui/immersive/WebHeroMembraneBackdrop";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { immersiveItems, type ImmersiveItem, type ImmersiveTone } from "../data/immersive";
+import { localizeImmersiveItem } from "../data/localization";
 import { whisperCaseI18n } from "../data/whisperCaseI18n";
 import type { CaseStoryMedia } from "../data/caseStories";
-import { useI18n } from "../i18n";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 import SeoMeta from "../ui/SeoMeta";
 import StructuredData from "../ui/StructuredData";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
@@ -26,6 +27,7 @@ type PageProps = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
+  noIndex?: boolean;
 };
 
 type CinematicImmersiveTone = "webhero" | "kool-berk" | "presence-os" | "orbit-lens";
@@ -208,10 +210,20 @@ function getImmersiveMetaDescription(item: ImmersiveItem) {
   return item.searchContent?.shortDescription ?? item.tagline;
 }
 
-function ImmersiveSeoMeta({ item, imageAlt }: { item: ImmersiveItem; imageAlt?: string }) {
+function ImmersiveSeoMeta({
+  item,
+  imageAlt,
+  noIndex = false,
+  locale = "en",
+}: {
+  item: ImmersiveItem;
+  imageAlt?: string;
+  noIndex?: boolean;
+  locale?: LocaleCode;
+}) {
   const title = getImmersiveMetaTitle(item);
   const description = getImmersiveMetaDescription(item);
-  const path = `/immersive/${item.slug}`;
+  const path = getLocalizedPath(`/immersive/${item.slug}`, locale);
   const image = item.previewPoster;
   const structuredData = {
     "@context": "https://schema.org",
@@ -241,6 +253,7 @@ function ImmersiveSeoMeta({ item, imageAlt }: { item: ImmersiveItem; imageAlt?: 
         image={image}
         imageAlt={imageAlt ?? `${item.title} immersive case`}
         type="article"
+        noIndex={noIndex}
       />
       <StructuredData id={`structured-data-immersive-${item.slug}`} data={structuredData} />
     </>
@@ -3057,12 +3070,14 @@ export default function ImmersiveCasePage({
   drawerOpen = false,
   onOpenProject,
   onCloseProject,
+  noIndex = false,
 }: PageProps) {
   const { t, locale } = useI18n();
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const data = immersiveItems.find((item) => item.slug === slug) ?? null;
+  const sourceData = immersiveItems.find((item) => item.slug === slug) ?? null;
+  const data = sourceData ? localizeImmersiveItem(sourceData, locale) : null;
 
   if (!data) {
     return <Navigate to="/immersive" replace />;
@@ -3077,7 +3092,12 @@ export default function ImmersiveCasePage({
   if (isWhisperCase) {
     return (
       <div className="min-h-screen bg-[#050505] text-white">
-        <ImmersiveSeoMeta item={data} imageAlt="WHISPER immersive exhibition case" />
+        <ImmersiveSeoMeta
+          item={data}
+          imageAlt="WHISPER immersive exhibition case"
+          locale={locale}
+          noIndex={noIndex || locale === "es"}
+        />
         <Header
           drawerOpen={drawerOpen}
           onOpenProject={onOpenProject}
@@ -3086,7 +3106,7 @@ export default function ImmersiveCasePage({
 
         <main className="pt-[60px]">
           <PageSurface>
-            <WhisperCaseLayout item={data} onOpenProject={onOpenProject} />
+            <WhisperCaseLayout item={data} copy={whisperCopy} onOpenProject={onOpenProject} />
           </PageSurface>
         </main>
       </div>
@@ -3104,7 +3124,7 @@ export default function ImmersiveCasePage({
         <WebHeroCaseLayout
           item={data}
           onOpenProject={onOpenProject}
-          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+          onBack={() => openPath(navigate, getLocalizedPath("/immersive", locale), onCloseProject)}
         />
       </div>
     );
@@ -3121,7 +3141,7 @@ export default function ImmersiveCasePage({
         <KoolBerkCaseLayout
           item={data}
           onOpenProject={onOpenProject}
-          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+          onBack={() => openPath(navigate, getLocalizedPath("/immersive", locale), onCloseProject)}
         />
       </div>
     );
@@ -3138,7 +3158,7 @@ export default function ImmersiveCasePage({
         <PresenceOsCaseLayout
           item={data}
           onOpenProject={onOpenProject}
-          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+          onBack={() => openPath(navigate, getLocalizedPath("/immersive", locale), onCloseProject)}
         />
       </div>
     );
@@ -3155,7 +3175,7 @@ export default function ImmersiveCasePage({
         <OrbitLensCaseLayout
           item={data}
           onOpenProject={onOpenProject}
-          onBack={() => openPath(navigate, "/immersive", onCloseProject)}
+          onBack={() => openPath(navigate, getLocalizedPath("/immersive", locale), onCloseProject)}
         />
       </div>
     );
@@ -3186,7 +3206,12 @@ export default function ImmersiveCasePage({
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
-      <ImmersiveSeoMeta item={data} imageAlt={data.title} />
+      <ImmersiveSeoMeta
+        item={data}
+        imageAlt={data.title}
+        locale={locale}
+        noIndex={noIndex || locale === "es"}
+      />
       <Header
         drawerOpen={drawerOpen}
         onOpenProject={onOpenProject}
@@ -3200,7 +3225,7 @@ export default function ImmersiveCasePage({
             <div className="grid gap-4 md:flex md:flex-wrap md:items-center md:justify-between">
               <button
                 type="button"
-                onClick={() => openPath(navigate, "/immersive", onCloseProject)}
+                onClick={() => openPath(navigate, getLocalizedPath("/immersive", locale), onCloseProject)}
                 className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-400 hover:text-neutral-900"
               >
                 <span className="text-neutral-400">←</span>{" "}

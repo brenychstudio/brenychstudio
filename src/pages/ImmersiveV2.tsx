@@ -37,6 +37,8 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { useImmersiveProofChromeActive } from "../hooks/useImmersiveProofChromeActive";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
+import { spanishCorePageContent, type CorePageTranslation } from "../data/spanishContent";
+import { getLocalizedPath, useI18n } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -979,6 +981,7 @@ function SpatialChamberOrbit({
 }
 
 function ChamberEntryField({
+  copy,
   activeChamber,
   activeChamberId,
   activeChamberEngines,
@@ -987,6 +990,7 @@ function ChamberEntryField({
   onExplore,
   onOpenProject,
 }: {
+  copy?: CorePageTranslation;
   activeChamber: ImmersiveSystemItem;
   activeChamberId: ImmersiveChamberId;
   activeChamberEngines: ReturnType<typeof getChamberEngines>;
@@ -1035,12 +1039,12 @@ function ChamberEntryField({
           </div>
 
           <h1 className="mt-8 max-w-[10ch] text-[76px] font-normal leading-[0.78] tracking-[-0.09em] text-neutral-950 sm:text-[112px] md:text-[150px] xl:text-[176px]">
-            Immersive interface systems.
+            {copy?.title ?? "Immersive interface systems."}
           </h1>
 
           <p className="mt-9 max-w-[46rem] text-[17px] leading-[1.85] text-neutral-600 sm:text-[19px]">
-            Cinematic web environments, spatial archives, product worlds, AR continuations, presence-based interfaces,
-            and WebXR-ready prototypes.
+            {copy?.body ??
+              "Cinematic web environments, spatial archives, product worlds, AR continuations, presence-based interfaces, and WebXR-ready prototypes."}
           </p>
 
           <p className="mt-5 max-w-[42rem] text-[14px] leading-7 text-neutral-500">
@@ -1057,7 +1061,7 @@ function ChamberEntryField({
               }}
               className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
-              Explore chambers →
+              {copy?.ctas?.[0] ?? "Explore chambers"} →
             </button>
 
             <button
@@ -1066,7 +1070,7 @@ function ChamberEntryField({
               onClick={() => openChamber("whisper")}
               className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              Open WHISPER →
+              {copy?.ctas?.[1] ?? "Open WHISPER"} →
             </button>
 
             <button
@@ -1078,7 +1082,7 @@ function ChamberEntryField({
               }}
               className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              Start immersive prototype →
+              {copy?.ctas?.[2] ?? "Start immersive prototype"} →
             </button>
           </div>
 
@@ -3976,6 +3980,8 @@ export default function ImmersiveV2({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { locale } = useI18n();
+  const copy = locale === "es" ? spanishCorePageContent.immersive : undefined;
   const chamberState = useImmersiveChamberSelection();
   const routeContentReady = useDeferredRouteContent();
   const activeId = useActiveSection();
@@ -4000,7 +4006,7 @@ export default function ImmersiveV2({
   }, [stopAmbient]);
 
   const goTo = (path: string) => {
-    startSpaPageTransition(navigate, path, () => {
+    startSpaPageTransition(navigate, getLocalizedPath(path, locale), () => {
       onCloseProject?.();
     });
   };
@@ -4059,6 +4065,7 @@ export default function ImmersiveV2({
               openChamber={openChamber}
               onExplore={() => scrollTo("map")}
               onOpenProject={onOpenProject}
+              copy={copy}
             />
             {routeContentReady ? (
               <>

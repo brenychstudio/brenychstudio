@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import { getAvailableSystem, isAvailableSystem, type AvailableSystem } from "../data/availableSystems";
 import { cases, getCasePath } from "../data/cases";
+import { localizeCase } from "../data/localization";
+import { spanishCorePageContent } from "../data/spanishContent";
 import {
   evidenceFilters,
   fallbackEvidence,
@@ -21,6 +23,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -139,11 +142,15 @@ function EvidenceAtlasMeta() {
   return null;
 }
 
-function getEvidenceCases(): EvidenceCase[] {
-  return cases.map((item) => ({
-    ...item,
-    evidence: workEvidenceBySlug[item.slug] ?? fallbackEvidence,
-  }));
+function getEvidenceCases(locale: LocaleCode): EvidenceCase[] {
+  return cases.map((item) => {
+    const localizedItem = localizeCase(item, locale);
+
+    return {
+      ...localizedItem,
+      evidence: workEvidenceBySlug[item.slug] ?? fallbackEvidence,
+    };
+  });
 }
 
 function getAvailabilityView(system: AvailableSystem): AvailabilityView {
@@ -769,9 +776,11 @@ export default function EvidenceAtlas({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { locale } = useI18n();
   const { playRole, setScene, stopAmbient } = useSound();
   const routeContentReady = useDeferredRouteContent();
-  const evidenceCases = useMemo(() => getEvidenceCases(), []);
+  const copy = locale === "es" ? spanishCorePageContent.work : null;
+  const evidenceCases = useMemo(() => getEvidenceCases(locale), [locale]);
   const featuredCases = useMemo(() => getFeaturedCases(evidenceCases), [evidenceCases]);
   const initialFeaturedCases = useMemo(() => featuredCases.slice(0, featuredInitialCaseCount), [featuredCases]);
   const selectedFeaturedCase = initialFeaturedCases[0];
@@ -890,7 +899,7 @@ export default function EvidenceAtlas({
 
   const openCase = (item: EvidenceCase) => {
     playRole("select");
-    startSpaPageTransition(navigate, getCasePath(item.slug), onCloseProject);
+    startSpaPageTransition(navigate, getLocalizedPath(getCasePath(item.slug), locale), onCloseProject);
   };
 
   const requestSystem = () => {
@@ -995,23 +1004,27 @@ export default function EvidenceAtlas({
           <MobileMotionSection as="section" variant="threshold" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1640px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
             <div className="grid gap-8 border-y border-neutral-950/14 py-7 sm:gap-10 sm:py-10 lg:min-h-[calc(100vh-10rem)] xl:grid-cols-[0.54fr_0.46fr] xl:items-center">
               <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">Work Archive / Living Case Atlas</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">{copy?.eyebrow ?? "Work Archive / Living Case Atlas"}</div>
                 <h1 className="mt-6 max-w-[10.5ch] text-[50px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 [overflow-wrap:anywhere] sm:text-[92px] sm:leading-[0.9] sm:tracking-[-0.06em] xl:text-[124px]">
-                  <span className="block sm:inline">Selected work, </span>
-                  <span className="block sm:inline">built as </span>
-                  <span className="block sm:inline">interface </span>
-                  <span className="block sm:inline">systems.</span>
+                  {copy ? copy.title : (
+                    <>
+                      <span className="block sm:inline">Selected work, </span>
+                      <span className="block sm:inline">built as </span>
+                      <span className="block sm:inline">interface </span>
+                      <span className="block sm:inline">systems.</span>
+                    </>
+                  )}
                 </h1>
                 <p className="mt-7 max-w-[44rem] text-[15px] leading-7 text-neutral-600 sm:mt-8 sm:text-[17px] sm:leading-8">
-                  A curated atlas of premium websites, product systems, tools, multilingual surfaces, and immersive
-                  interface experiments, presented as visual systems, available foundations, and proof layers.
+                  {copy?.body ??
+                    "A curated atlas of premium websites, product systems, tools, multilingual surfaces, and immersive interface experiments, presented as visual systems, available foundations, and proof layers."}
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3 sm:mt-10" data-sound-safe-area>
                   <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800" href="#evidence-featured">
-                    Explore featured systems -&gt;
+                    {copy?.labels?.selectedSystem ?? "Explore featured systems"} -&gt;
                   </a>
                   <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white" href="#work-lens">
-                    View archive lens -&gt;
+                    {copy?.labels?.archiveLens ?? "View archive lens"} -&gt;
                   </a>
                   <a className="hidden min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white sm:inline-flex" href="#work-lens">
                     Switch archive view -&gt;
@@ -1363,7 +1376,7 @@ export default function EvidenceAtlas({
                       className="mt-4 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 disabled:pointer-events-none disabled:border-neutral-300 disabled:bg-white/50 disabled:text-neutral-300 xl:mt-5"
                     >
                       <span className="xl:hidden">More cases -&gt;</span>
-                      <span className="hidden xl:inline">Open extended field -&gt;</span>
+                      <span className="hidden xl:inline">{copy?.labels?.openExtendedField ?? "Open extended field"} -&gt;</span>
                     </button>
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
-import { getLocalizedPath, getLocaleConfig, useI18n, type LocaleCode } from "../i18n";
+import { getLocalizedPath, getLocaleConfig, stripLocaleFromPathname, useI18n, type LocaleCode } from "../i18n";
 import { useActiveHeaderScene } from "../hooks/useActiveHeaderScene";
 import { useHeaderThemeMorph } from "../hooks/useHeaderThemeMorph";
 import { getHeaderMoodForPath, resolveHeaderTheme } from "./header/headerThemeTokens";
@@ -48,10 +48,11 @@ export default function Header({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
   const mobileMenuCloseRef = useRef<HTMLButtonElement | null>(null);
+  const cleanPathname = useMemo(() => stripLocaleFromPathname(location.pathname), [location.pathname]);
 
-  const onHome = location.pathname === "/";
-  const activeSceneId = useActiveHeaderScene(location.pathname);
-  const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
+  const onHome = cleanPathname === "/";
+  const activeSceneId = useActiveHeaderScene(cleanPathname);
+  const routeTheme = useMemo(() => getHeaderMoodForPath(cleanPathname), [cleanPathname]);
   const headerTheme = useMemo(
     () => resolveHeaderTheme({ routeTheme, activeSceneId }),
     [activeSceneId, routeTheme],
@@ -60,21 +61,21 @@ export default function Header({
   useHeaderThemeMorph(headerRef, headerTheme, scrolled);
 
   const activePath = useMemo(() => {
-    if (location.pathname === "/") return "/";
+    if (cleanPathname === "/") return "/";
 
-    if (location.pathname === "/work" || location.pathname.startsWith("/work/")) {
+    if (cleanPathname === "/work" || cleanPathname.startsWith("/work/")) {
       return "/work";
     }
 
-    if (location.pathname === "/immersive" || location.pathname.startsWith("/immersive/")) {
+    if (cleanPathname === "/immersive" || cleanPathname.startsWith("/immersive/")) {
       return "/immersive";
     }
 
-    if (location.pathname === "/offer") return "/offer";
-    if (location.pathname === "/about") return "/about";
+    if (cleanPathname === "/offer") return "/offer";
+    if (cleanPathname === "/about") return "/about";
 
     return "";
-  }, [location.pathname]);
+  }, [cleanPathname]);
   const mobileMenuContext = `${drawerOpen ? "drawer-open" : "drawer-closed"}:${location.pathname}`;
   const mobileMenuContextRef = useRef(mobileMenuContext);
 
@@ -139,18 +140,18 @@ export default function Header({
       return;
     }
 
-    startSpaPageTransition(navigate, "/", () => {
+    startSpaPageTransition(navigate, getLocalizedPath("/", locale), () => {
       onCloseProject?.();
     });
   };
 
   const onNav = (to: NavItem["to"]) => {
     setMobileMenuOpen(false);
-    navigateWithTransition(to);
+    navigateWithTransition(getLocalizedPath(to, locale));
   };
 
   const onLocale = (nextLocale: LocaleCode) => {
-    const nextLocaleConfig = getLocaleConfig(nextLocale);
+    const nextLocaleConfig = allLocales.find((language) => language.code === nextLocale) ?? getLocaleConfig(nextLocale);
 
     if (!nextLocaleConfig.enabled || nextLocale === locale) return;
 

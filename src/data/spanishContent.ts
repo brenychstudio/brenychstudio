@@ -187,10 +187,10 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   home: {
     route: "/",
     eyebrow: "Studio signal",
-    title: "Sistemas front-end premium para superficies web, producto e interfaz inmersiva.",
+    title: "Sistemas de interfaz vivos.",
     body:
       "Brenych Studio crea sistemas de interfaz para sitios premium, lanzamientos de producto, superficies comerciales, archivos espaciales y experiencias digitales que necesitan claridad, presencia y prueba real.",
-    ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar un proyecto"],
+    ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
     labels: {
       liveSignal: "Señal activa",
       selectedWork: "Proyectos seleccionados",
@@ -206,7 +206,7 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   work: {
     route: "/work",
     eyebrow: "Archivo de proyectos",
-    title: "Sistemas que se mueven dentro de un campo de scroll vivo.",
+    title: "Sistemas en movimiento.",
     body:
       "Un archivo de proyectos donde cada caso funciona como objeto con imagen, caption, profundidad, prueba y señales de adaptación.",
     ctas: ["Ver caso", "Adaptar este sistema", "Abrir campo extendido"],
@@ -228,10 +228,10 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   offer: {
     route: "/offer",
     eyebrow: "Modelo de servicios",
-    title: "Tres rutas para convertir una idea en superficie de interfaz.",
+    title: "Tres rutas de interfaz.",
     body:
       "Landing pages premium, demos de producto y sistemas web interactivos para proyectos que necesitan estructura comercial, prueba visual y front-end listo para producción.",
-    ctas: ["Iniciar un proyecto", "Ver proyectos relacionados"],
+    ctas: ["Iniciar proyecto", "Ver proyectos relacionados"],
     labels: {
       premiumLandingPages: "Landing pages premium",
       productDemoLanding: "Landing pages de producto",
@@ -251,7 +251,7 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
     title: "Una práctica entre ingeniería, imagen e investigación de interfaz.",
     body:
       "Brenych Studio trabaja entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz para construir superficies precisas, atmosféricas y usables.",
-    ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar un proyecto"],
+    ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
     labels: {
       practiceLayers: "Capas de práctica",
       methodGrammar: "Gramática de método",
@@ -297,10 +297,10 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
     ogTitle: "Landing pages premium para lanzamientos concretos",
     ogDescription:
       "Páginas comerciales independientes construidas como sistemas de interfaz claros, no como plantillas genéricas.",
-    heroTitle: "Landing pages premium para lanzamientos concretos.",
+    heroTitle: "Landing pages premium enfocadas.",
     heroBody:
       "Páginas comerciales independientes para una oferta, producto, servicio, consulta, evento, lista de espera o campaña — construidas como un sistema de interfaz claro, no como una plantilla genérica.",
-    primaryCta: "Iniciar un proyecto",
+    primaryCta: "Iniciar proyecto",
     secondaryCta: "Ver proyectos relacionados",
     routeTitle: "Una superficie comercial enfocada.",
     routeDefinition:
@@ -392,10 +392,10 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
     ogTitle: "Landing pages de producto para fundadores y equipos",
     ogDescription:
       "Rutas de demostración que convierten producto, flujo de trabajo y prueba de interfaz en una presentación clara.",
-    heroTitle: "Landing pages de producto para fundadores y equipos.",
+    heroTitle: "Landing pages de producto.",
     heroBody:
       "Sistemas de presentación para productos SaaS, herramientas AI, prototipos, demos para fundadores, conversaciones con inversores, listas de espera y validación temprana.",
-    primaryCta: "Iniciar un proyecto",
+    primaryCta: "Iniciar proyecto",
     secondaryCta: "Ver casos de producto",
     routeTitle: "Una historia de producto clara.",
     routeDefinition:
@@ -487,10 +487,10 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
     ogTitle: "Sistemas web interactivos e interfaces inmersivas",
     ogDescription:
       "Sitios cinematográficos, interfaces atmosféricas y capas de presentación inmersiva para proyectos que necesitan más que una página estática.",
-    heroTitle: "Sistemas web interactivos para experiencias digitales espaciales.",
+    heroTitle: "Interfaces web espaciales.",
     heroBody:
       "Sitios cinematográficos, interfaces atmosféricas, sistemas preparados para WebGL, archivos espaciales y capas de presentación inmersiva para proyectos que necesitan más que una página estática.",
-    primaryCta: "Iniciar un proyecto inmersivo",
+    primaryCta: "Proyecto inmersivo",
     secondaryCta: "Ver prueba inmersiva",
     routeTitle: "Un campo de interfaz vivo.",
     routeDefinition:

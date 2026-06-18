@@ -14,6 +14,8 @@ import SiteFooterV2 from "../ui/SiteFooterV2";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
+import { spanishCorePageContent, type CorePageTranslation } from "../data/spanishContent";
+import { getLocalizedPath, useI18n } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -317,16 +319,24 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
 }
 
 function FocusedEntryRoutes({ compact = false }: { compact?: boolean }) {
+  const { locale } = useI18n();
+  const copy = locale === "es" ? spanishCorePageContent.offer : undefined;
+  const localizedRoutes = [
+    { ...focusedEntryRoutes[0], label: copy?.labels?.premiumLandingPages ?? focusedEntryRoutes[0].label },
+    { ...focusedEntryRoutes[1], label: copy?.labels?.productDemoLanding ?? focusedEntryRoutes[1].label },
+    { ...focusedEntryRoutes[2], label: copy?.labels?.interactiveWebSystems ?? focusedEntryRoutes[2].label },
+  ];
+
   return (
     <div className={compact ? "mt-7 border-y border-neutral-950/10 py-4" : "mt-8 border-y border-neutral-950/10 py-4"}>
       <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-        Focused entry routes
+        {copy?.labels?.serviceRoutes ?? "Focused entry routes"}
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        {focusedEntryRoutes.map((route) => (
+        {localizedRoutes.map((route) => (
           <Link
             key={route.to}
-            to={route.to}
+            to={getLocalizedPath(route.to, locale)}
             className="inline-flex min-h-9 items-center rounded-full border border-neutral-300 bg-white/46 px-3 text-[10px] uppercase tracking-[0.13em] text-neutral-600 transition hover:-translate-y-0.5 hover:border-neutral-950/35 hover:bg-white hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
           >
             {route.label} -&gt;
@@ -761,9 +771,11 @@ function useDesktopOfferLayout() {
 }
 
 function MobileOfferHero({
+  copy,
   onOpenProject,
   onViewWork,
 }: {
+  copy?: CorePageTranslation;
   onOpenProject: () => void;
   onViewWork: () => void;
 }) {
@@ -776,11 +788,11 @@ function MobileOfferHero({
     >
       <SectionLabel>Commercial Threshold / Offer V2</SectionLabel>
       <h1 className="mt-7 max-w-[11ch] text-[58px] font-normal leading-[0.9] text-neutral-950">
-        Premium interface systems for real projects.
+        {copy?.title ?? "Premium interface systems for real projects."}
       </h1>
       <p className="mt-7 max-w-[21rem] text-[17px] leading-7 text-neutral-600">
-        Premium websites, product surfaces, multilingual systems, and focused prototypes shaped around strategy,
-        proof, motion, and production-ready front-end delivery.
+        {copy?.body ??
+          "Premium websites, product surfaces, multilingual systems, and focused prototypes shaped around strategy, proof, motion, and production-ready front-end delivery."}
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -789,14 +801,14 @@ function MobileOfferHero({
           onClick={onOpenProject}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white"
         >
-          Start a project -&gt;
+          {copy?.ctas?.[0] ?? "Start a project"} -&gt;
         </button>
         <button
           type="button"
           onClick={onViewWork}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-300 bg-white/54 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700"
         >
-          View work -&gt;
+          {copy?.ctas?.[1] ?? "View work"} -&gt;
         </button>
       </div>
       <FocusedEntryRoutes compact />
@@ -1035,16 +1047,18 @@ function MobileOutputLedger() {
 }
 
 function MobileOfferLayout({
+  copy,
   onOpenProject,
   onViewWork,
 }: {
+  copy?: CorePageTranslation;
   onOpenProject: () => void;
   onViewWork: () => void;
 }) {
   return (
     <div className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip lg:hidden">
       <MobileMotionSection variant="threshold">
-        <MobileOfferHero onOpenProject={onOpenProject} onViewWork={onViewWork} />
+        <MobileOfferHero copy={copy} onOpenProject={onOpenProject} onViewWork={onViewWork} />
       </MobileMotionSection>
       <MobileMotionSection variant="media" delay="soft">
         <div className="py-7">
@@ -1074,6 +1088,8 @@ export default function OfferV2({
   noIndex = false,
 }: PageProps) {
   const navigate = useNavigate();
+  const { locale } = useI18n();
+  const copy = locale === "es" ? spanishCorePageContent.offer : undefined;
   const { playRole, setScene, stopAmbient } = useSound();
   const systemsRef = useRef<HTMLElement | null>(null);
   const [activeStage, setActiveStage] = useState(0);
@@ -1099,7 +1115,7 @@ export default function OfferV2({
 
   const viewWork = () => {
     playRole("select");
-    startSpaPageTransition(navigate, "/work", onCloseProject);
+    startSpaPageTransition(navigate, getLocalizedPath("/work", locale), onCloseProject);
   };
 
   const exploreSystems = () => {
@@ -1141,11 +1157,11 @@ export default function OfferV2({
             >
               <SectionLabel>Commercial Threshold / Offer V2</SectionLabel>
               <h1 className="mt-6 max-w-[11ch] text-[58px] font-normal leading-[0.88] tracking-[-0.06em] text-neutral-950 sm:text-[88px] lg:text-[112px] xl:text-[128px]">
-                Premium interface systems for real projects.
+                {copy?.title ?? "Premium interface systems for real projects."}
               </h1>
               <p className="mt-8 max-w-[43rem] text-[17px] leading-8 text-neutral-600 sm:text-[20px]">
-                Premium websites, product surfaces, multilingual systems, and immersive prototypes built with strategy,
-                visual direction, motion grammar, and production-ready front-end delivery.
+                {copy?.body ??
+                  "Premium websites, product surfaces, multilingual systems, and immersive prototypes built with strategy, visual direction, motion grammar, and production-ready front-end delivery."}
               </p>
 
               <div className="mt-9 flex flex-wrap gap-3">
@@ -1155,7 +1171,7 @@ export default function OfferV2({
                   onClick={openProjectWithSound}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
                 >
-                  Start a project -&gt;
+                  {copy?.ctas?.[0] ?? "Start a project"} -&gt;
                 </button>
                 <button
                   type="button"
@@ -1163,7 +1179,7 @@ export default function OfferV2({
                   onClick={viewWork}
                   className="inline-flex min-h-11 items-center rounded-full border border-neutral-300 bg-white/54 px-5 text-[11px] uppercase tracking-[0.16em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white"
                 >
-                  View work -&gt;
+                  {copy?.ctas?.[1] ?? "View work"} -&gt;
                 </button>
                 <button
                   type="button"
@@ -1350,7 +1366,7 @@ export default function OfferV2({
           </section>
             </>
           ) : (
-            <MobileOfferLayout onOpenProject={openProjectWithSound} onViewWork={viewWork} />
+            <MobileOfferLayout copy={copy} onOpenProject={openProjectWithSound} onViewWork={viewWork} />
           )}
         </main>
 

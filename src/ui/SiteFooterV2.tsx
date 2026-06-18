@@ -393,7 +393,7 @@ export default function SiteFooterV2({
 
             <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
             <FooterLedgerLinks title={t.footer.services} links={localizedServiceLinks} />
-            <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} className="lg:justify-self-start" />
+            <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} className="lg:justify-self-end lg:translate-x-4" />
           </div>
 
           <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">
@@ -624,7 +624,7 @@ export default function SiteFooterV2({
               </div>
             </div>
 
-            <div className="grid gap-2 lg:justify-self-start">
+            <div className="grid gap-2 lg:justify-self-end lg:translate-x-4">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.routes}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
                 {localizedRouteLinks.map((link) => (
@@ -700,7 +700,7 @@ export default function SiteFooterV2({
               </h2>
             </div>
 
-            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:justify-self-end lg:w-full lg:max-w-[34rem]">
+            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:justify-self-end lg:w-full lg:max-w-[34rem] lg:translate-x-5">
               <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                 <div className="flex items-center justify-between gap-5">
                   <span>{footerLabels.studioSignal}</span>
@@ -754,7 +754,7 @@ export default function SiteFooterV2({
 
           <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
           <FooterLedgerLinks title={t.footer.services} links={localizedServiceLinks} />
-          <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} className="lg:justify-self-start" />
+          <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} className="lg:justify-self-end lg:translate-x-4" />
         </div>
 
         <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">

@@ -221,12 +221,14 @@ function localizeFooterLinks(links: FooterLink[], locale: LocaleCode, group: "ro
 function FooterLedgerLinks({
   title,
   links,
+  className,
 }: {
   title: string;
   links: FooterLink[];
+  className?: string;
 }) {
   return (
-    <div className="grid gap-2">
+    <div className={`grid gap-2 ${className ?? ""}`.trim()}>
       <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">{title}</div>
       <div className="flex flex-wrap gap-x-4 gap-y-2">
         {links.map((link) => (
@@ -379,7 +381,7 @@ export default function SiteFooterV2({
             </div>
           </div>
 
-          <div className="grid gap-6 border-b border-neutral-950/[0.08] py-7 lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start">
+          <div className="grid gap-6 border-b border-neutral-950/[0.08] py-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.82fr)] lg:items-start">
             <div>
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
@@ -391,7 +393,7 @@ export default function SiteFooterV2({
 
             <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
             <FooterLedgerLinks title={t.footer.services} links={localizedServiceLinks} />
-            <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} />
+            <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} className="lg:justify-self-start" />
           </div>
 
           <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">
@@ -582,7 +584,7 @@ export default function SiteFooterV2({
             </div>
           </div>
 
-          <div className="grid gap-8 border-b border-neutral-950/14 py-8 lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start">
+          <div className="grid gap-8 border-b border-neutral-950/14 py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.82fr)] lg:items-start">
             <div>
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-700">
@@ -622,7 +624,7 @@ export default function SiteFooterV2({
               </div>
             </div>
 
-            <div className="grid gap-2">
+            <div className="grid gap-2 lg:justify-self-start">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.routes}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
                 {localizedRouteLinks.map((link) => (
@@ -736,7 +738,7 @@ export default function SiteFooterV2({
           </div>
         ) : null}
 
-        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start ${hideClosingSignal ? "pb-6" : "py-6"}`}>
+        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.82fr)] lg:items-start ${hideClosingSignal ? "pb-6" : "py-6"}`}>
           <div>
             <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
             <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
@@ -752,7 +754,7 @@ export default function SiteFooterV2({
 
           <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
           <FooterLedgerLinks title={t.footer.services} links={localizedServiceLinks} />
-          <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} />
+          <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} className="lg:justify-self-start" />
         </div>
 
         <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">

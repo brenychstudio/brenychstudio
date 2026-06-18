@@ -23,6 +23,7 @@ import SiteFooterV2 from "../ui/SiteFooterV2";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import { useSectionRailActive } from "../ui/useSectionRailActive";
 import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
+import "../styles/presence-entry-hero.css";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -673,6 +674,266 @@ const presenceOsRailItems: SectionRailItem[] = [
   { id: "presence-os-technical", index: "06", label: "Technical" },
 ];
 
+const presenceEntryImages = [
+  {
+    src: "/immersive/presence-os-memory-atlas/entry/archive_01_father_child_coast.webp",
+    label: "coast signal",
+    x: "1vw",
+    y: "-13vh",
+    rotate: "-6deg",
+    scale: "1.08",
+    delay: "0s",
+  },
+  {
+    src: "/immersive/presence-os-memory-atlas/entry/archive_03_woman_window_rain.webp",
+    label: "rain trace",
+    x: "13vw",
+    y: "2vh",
+    rotate: "5deg",
+    scale: "0.88",
+    delay: "-2.8s",
+  },
+  {
+    src: "/immersive/presence-os-memory-atlas/entry/archive_14_lake_pier_traces_of_people.webp",
+    label: "lake memory",
+    x: "-6vw",
+    y: "18vh",
+    rotate: "3deg",
+    scale: "0.92",
+    delay: "-4.4s",
+  },
+  {
+    src: "/immersive/presence-os-memory-atlas/entry/archive_20_old_camera_wooden_table.webp",
+    label: "object memory",
+    x: "15vw",
+    y: "24vh",
+    rotate: "-4deg",
+    scale: "0.74",
+    delay: "-1.6s",
+  },
+];
+
+function PresenceEntryHeroBackdrop() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const noteRef = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const labels = {
+      forming: "signal forming",
+      stable: "entry available",
+      unstable: "signal unstable",
+    };
+
+    if (prefersReducedMotion) {
+      root.style.setProperty("--presence-entry-signal", "0.82");
+      root.dataset.signalState = "stable";
+      if (noteRef.current) noteRef.current.textContent = labels.stable;
+      return;
+    }
+
+    let frameId = 0;
+    let destroyed = false;
+    let pointerInside = false;
+    let lastInteractionAt = performance.now();
+    let lastMoveAt = lastInteractionAt;
+    let lastRushAt = -Infinity;
+    let lastPointer: { x: number; y: number; at: number } | null = null;
+
+    const timing = {
+      stabilityMs: 2100,
+      idleMaxMs: 2600,
+      rushPenalty: 0.32,
+      rushWindowMs: 1100,
+      rushSpeed: 0.85,
+      rushDistance: 28,
+      movementEpsilon: 1.5,
+    };
+
+    const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+    const markInteraction = () => {
+      lastInteractionAt = performance.now();
+    };
+
+    const registerMovement = (x: number, y: number) => {
+      const now = performance.now();
+      markInteraction();
+
+      if (!lastPointer) {
+        lastPointer = { x, y, at: now };
+        lastMoveAt = now;
+        return;
+      }
+
+      const distance = Math.hypot(x - lastPointer.x, y - lastPointer.y);
+      const deltaTime = Math.max(16, now - lastPointer.at);
+      const speed = distance / deltaTime;
+
+      lastPointer = { x, y, at: now };
+
+      if (distance > timing.movementEpsilon) lastMoveAt = now;
+
+      if (speed > timing.rushSpeed || distance > timing.rushDistance) {
+        lastRushAt = now;
+      }
+    };
+
+    const onPointerMove = (event: PointerEvent) => registerMovement(event.clientX, event.clientY);
+    const onTouchMove = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (touch) registerMovement(touch.clientX, touch.clientY);
+    };
+    const onPointerEnter = () => {
+      pointerInside = true;
+      markInteraction();
+    };
+    const onPointerLeave = () => {
+      pointerInside = false;
+    };
+
+    const setState = (signal: number, state: keyof typeof labels) => {
+      root.style.setProperty("--presence-entry-signal", signal.toFixed(3));
+      root.dataset.signalState = state;
+      if (noteRef.current) noteRef.current.textContent = labels[state];
+    };
+
+    const tick = () => {
+      if (destroyed) return;
+
+      const now = performance.now();
+      const stillSignal = pointerInside ? now - lastMoveAt : 0;
+      const idleSignal = Math.min(now - lastInteractionAt, timing.idleMaxMs);
+      const isRushed = now - lastRushAt < timing.rushWindowMs;
+      const rawSignal = Math.max(stillSignal, idleSignal) / timing.stabilityMs;
+      const signal = clamp01(rawSignal - (isRushed ? timing.rushPenalty : 0));
+      const state = isRushed ? "unstable" : signal > 0.78 ? "stable" : "forming";
+
+      setState(signal, state);
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    root.addEventListener("pointerenter", onPointerEnter);
+    root.addEventListener("pointerleave", onPointerLeave);
+    root.addEventListener("pointermove", onPointerMove, { passive: true });
+    root.addEventListener("touchstart", markInteraction, { passive: true });
+    root.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("scroll", markInteraction, { passive: true });
+    window.addEventListener("keydown", markInteraction);
+
+    tick();
+
+    return () => {
+      destroyed = true;
+      window.cancelAnimationFrame(frameId);
+      root.removeEventListener("pointerenter", onPointerEnter);
+      root.removeEventListener("pointerleave", onPointerLeave);
+      root.removeEventListener("pointermove", onPointerMove);
+      root.removeEventListener("touchstart", markInteraction);
+      root.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("scroll", markInteraction);
+      window.removeEventListener("keydown", markInteraction);
+    };
+  }, []);
+
+  return (
+    <div ref={rootRef} data-presence-entry-hero data-signal-state="forming" aria-hidden="true">
+      <div className="presence-entry-atmosphere" />
+      <div className="presence-entry-vignette" />
+      <div className="presence-entry-scan" />
+
+      <div className="presence-entry-signal-field">
+        <span className="presence-entry-signal-map" />
+        <span className="presence-entry-depth" />
+        <span className="presence-entry-depth presence-entry-depth-b" />
+        {[
+          { y: "43%", r: "-8deg", delay: "-2s" },
+          { y: "54%", r: "2deg", delay: "-4s" },
+          { y: "65%", r: "9deg", delay: "-6s" },
+        ].map((rail) => (
+          <span
+            key={`${rail.y}-${rail.r}`}
+            className="presence-entry-rail"
+            style={
+              {
+                "--entry-y": rail.y,
+                "--entry-r": rail.r,
+                "--entry-delay": rail.delay,
+              } as CSSProperties
+            }
+          />
+        ))}
+        {[
+          { x: "71%", y: "41%", delay: "-1s" },
+          { x: "66%", y: "57%", delay: "-4s" },
+          { x: "58%", y: "68%", delay: "-7s" },
+        ].map((node) => (
+          <span
+            key={`${node.x}-${node.y}`}
+            className="presence-entry-node"
+            style={
+              {
+                "--entry-x": node.x,
+                "--entry-y": node.y,
+                "--entry-delay": node.delay,
+              } as CSSProperties
+            }
+          />
+        ))}
+        <span className="presence-entry-aperture">
+          <span className="presence-entry-aperture-ring" />
+          <span className="presence-entry-aperture-ring presence-entry-aperture-ring-b" />
+          <span className="presence-entry-aperture-ring presence-entry-aperture-ring-c" />
+          <span className="presence-entry-aperture-core" />
+          <span className="presence-entry-aperture-scan" />
+          <span className="presence-entry-aperture-label">memory well</span>
+        </span>
+      </div>
+
+      <div className="presence-entry-rings" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
+
+      <div className="presence-entry-traces" aria-hidden="true">
+        <span className="presence-entry-trace-a">stillness opens the deeper layer</span>
+        <span className="presence-entry-trace-b">speed reduces the field</span>
+        <span className="presence-entry-trace-c">return forms memory</span>
+        <span className="presence-entry-trace-d">local session only</span>
+      </div>
+
+      <div className="presence-entry-memory-constellation" aria-hidden="true">
+        {presenceEntryImages.map((image) => (
+          <figure
+            key={image.src}
+            style={
+              {
+                "--entry-x": image.x,
+                "--entry-y": image.y,
+                "--entry-r": image.rotate,
+                "--entry-scale": image.scale,
+                "--entry-delay": image.delay,
+              } as CSSProperties
+            }
+          >
+            <img src={image.src} alt="" loading="eager" decoding="async" />
+            <figcaption>{image.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div className="presence-entry-note">
+        <span />
+        <p ref={noteRef}>signal forming</p>
+      </div>
+    </div>
+  );
+}
+
 const presenceOsRules = [
   {
     index: "01",
@@ -1148,15 +1409,9 @@ function PresenceOsCaseLayout({
         data-header-scene="presence-os-threshold"
         className="relative min-h-[100svh] scroll-mt-[5.5rem] overflow-hidden bg-[#030706] pt-[72px] md:scroll-mt-28"
       >
-        <img
-          src="/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-48"
-          loading="eager"
-          decoding="async"
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_28%,rgba(119,207,184,0.16),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(246,219,165,0.08),transparent_24%),linear-gradient(90deg,#030706_0%,rgba(3,7,6,0.92)_25%,rgba(3,7,6,0.54)_56%,rgba(3,7,6,0.74)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,7,6,0.18),rgba(3,7,6,0.24)_40%,rgba(3,7,6,0.72)_84%,#030706)]" />
+        <PresenceEntryHeroBackdrop />
+        <div className="pointer-events-none absolute inset-0 z-[7] bg-[radial-gradient(circle_at_58%_28%,rgba(119,207,184,0.11),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(246,219,165,0.055),transparent_24%),linear-gradient(90deg,#030706_0%,rgba(3,7,6,0.88)_25%,rgba(3,7,6,0.34)_56%,rgba(3,7,6,0.68)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 z-[8] bg-[linear-gradient(180deg,rgba(3,7,6,0.16),rgba(3,7,6,0.22)_40%,rgba(3,7,6,0.74)_84%,#030706)]" />
         <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:74px_74px]" />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(94vw,1640px)] flex-col justify-between py-8 md:py-12">

@@ -1,0 +1,652 @@
+[data-presence-entry-hero] {
+  --presence-entry-signal: 0.18;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: auto;
+  background:
+    radial-gradient(circle at 74% 30%, rgba(232, 201, 152, 0.045), transparent 27rem),
+    radial-gradient(circle at 52% 50%, rgba(86, 214, 198, 0.075), transparent 33rem),
+    linear-gradient(110deg, #010202 0%, #020b0a 42%, #020303 72%, #010101 100%);
+}
+
+[data-presence-entry-hero]::before,
+[data-presence-entry-hero]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+[data-presence-entry-hero]::before {
+  background:
+    linear-gradient(90deg, rgba(126, 238, 218, 0.026) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(244, 239, 229, 0.014) 1px, transparent 1px);
+  background-size: 5.8rem 5.8rem;
+  mask-image: linear-gradient(90deg, transparent, black 18%, black 80%, transparent);
+  opacity: 0.28;
+}
+
+[data-presence-entry-hero]::after {
+  background:
+    radial-gradient(circle at 54% 50%, transparent 0 20rem, rgba(0, 0, 0, 0.18) 40rem, rgba(0, 0, 0, 0.64) 78rem),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.48), transparent 36%, transparent 68%, rgba(0, 0, 0, 0.62)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.26), transparent 20%, rgba(0, 0, 0, 0.54));
+}
+
+.presence-entry-atmosphere,
+.presence-entry-vignette,
+.presence-entry-scan,
+.presence-entry-rings,
+.presence-entry-traces,
+.presence-entry-signal-field,
+.presence-entry-memory-constellation,
+.presence-entry-note {
+  position: absolute;
+  pointer-events: none;
+}
+
+.presence-entry-atmosphere {
+  inset: -16%;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 54% 47%, rgba(91, 226, 207, calc(0.045 + var(--presence-entry-signal) * 0.045)), transparent 29rem),
+    radial-gradient(circle at 82% 23%, rgba(232, 201, 152, 0.038), transparent 32rem),
+    radial-gradient(circle at 27% 76%, rgba(39, 110, 104, 0.074), transparent 38rem);
+  filter: blur(22px) saturate(1.03);
+  opacity: 0.48;
+  animation: presence-entry-breathe 28s ease-in-out infinite;
+}
+
+.presence-entry-vignette {
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 51% 50%, transparent 0 18rem, rgba(0, 0, 0, 0.22) 42rem, rgba(0, 0, 0, 0.74) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2), transparent 36%, transparent 68%, rgba(0, 0, 0, 0.48));
+}
+
+.presence-entry-scan {
+  inset: 0;
+  z-index: 2;
+  opacity: 0.06;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(132, 245, 224, 0.06) 48%, transparent 66%),
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.012) 0,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  transform: translateX(-18%);
+  animation: presence-entry-scan 11s ease-in-out infinite;
+}
+
+.presence-entry-rings {
+  inset: 0;
+  z-index: 3;
+  opacity: 0.2;
+  transform: translate3d(4vw, 0, 0);
+}
+
+.presence-entry-rings span {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  border: 1px solid rgba(104, 232, 213, 0.038);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.presence-entry-rings span:nth-child(1) {
+  width: 22rem;
+  height: 22rem;
+}
+
+.presence-entry-rings span:nth-child(2) {
+  width: 42rem;
+  height: 42rem;
+}
+
+.presence-entry-rings span:nth-child(3) {
+  width: 66rem;
+  height: 66rem;
+}
+
+.presence-entry-rings span:nth-child(4) {
+  width: 92rem;
+  height: 92rem;
+}
+
+.presence-entry-traces {
+  inset: 0;
+  z-index: 5;
+}
+
+.presence-entry-traces span {
+  position: absolute;
+  opacity: 0;
+  filter: blur(8px);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(202, 226, 205, 0.34);
+  text-shadow:
+    0 0 1.4rem rgba(126, 238, 218, 0.18),
+    0 0 2.6rem rgba(226, 214, 185, 0.08);
+  animation: presence-entry-whisper 12s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+[data-presence-entry-hero][data-signal-state="unstable"] .presence-entry-traces span {
+  opacity: 0.06;
+}
+
+.presence-entry-trace-a {
+  top: 21%;
+  right: 29%;
+  animation-delay: -1s;
+}
+
+.presence-entry-trace-b {
+  top: 39%;
+  right: 7%;
+  animation-delay: -5s;
+}
+
+.presence-entry-trace-c {
+  bottom: 21%;
+  left: 49%;
+  animation-delay: -8s;
+}
+
+.presence-entry-trace-d {
+  top: 73%;
+  left: 64%;
+  animation-delay: -3s;
+}
+
+.presence-entry-signal-field {
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.96;
+}
+
+.presence-entry-signal-field span {
+  position: absolute;
+}
+
+.presence-entry-signal-map {
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 47.7%, rgba(215, 199, 169, 0.018) 47.78%, transparent 47.86%),
+    linear-gradient(180deg, transparent 0 61.6%, rgba(215, 199, 169, 0.014) 61.68%, transparent 61.76%),
+    radial-gradient(circle at 54% 51%, rgba(82, 176, 159, 0.075), transparent 0 11rem, rgba(82, 176, 159, 0.024) 21rem, transparent 38rem);
+  mask-image: linear-gradient(90deg, transparent, black 18%, black 83%, transparent);
+  opacity: 0.66;
+}
+
+.presence-entry-depth {
+  left: 38vw;
+  top: 18svh;
+  width: min(45vw, 57rem);
+  height: 60svh;
+  border: 1px solid rgba(181, 166, 132, 0.105);
+  border-radius: 50%;
+  box-shadow: inset 0 0 1.6rem rgba(54, 99, 88, 0.045);
+  opacity: 0.56;
+}
+
+.presence-entry-depth-b {
+  left: 44vw;
+  top: 31svh;
+  width: min(26vw, 34rem);
+  height: 32svh;
+  border-color: rgba(244, 226, 190, 0.075);
+  opacity: 0.36;
+}
+
+.presence-entry-rail {
+  left: 52vw;
+  top: var(--entry-y);
+  width: 48vw;
+  height: 1px;
+  opacity: 0.38;
+  transform: translate3d(-2vw, -50%, 0) rotate(var(--entry-r));
+  transform-origin: 0 50%;
+  background:
+    linear-gradient(90deg, rgba(244, 239, 229, 0), rgba(221, 203, 161, 0.34) 18%, rgba(109, 189, 171, 0.18) 58%, rgba(244, 239, 229, 0.03) 100%);
+}
+
+.presence-entry-rail::before,
+.presence-entry-rail::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  border-radius: 999px;
+}
+
+.presence-entry-rail::before {
+  left: 0;
+  width: 0.38rem;
+  height: 0.38rem;
+  translate: -50% -50%;
+  background: rgba(226, 214, 185, 0.72);
+  box-shadow:
+    0 0 0 0.26rem rgba(126, 238, 218, 0.035),
+    0 0 0.9rem rgba(126, 238, 218, 0.18);
+}
+
+.presence-entry-rail::after {
+  left: 10%;
+  width: 2.6rem;
+  height: 1px;
+  translate: -50% -50%;
+  background: linear-gradient(90deg, rgba(244, 239, 229, 0), rgba(226, 214, 185, 0.48), rgba(244, 239, 229, 0));
+  animation: presence-entry-rail-pulse 5.8s linear var(--entry-delay) infinite;
+}
+
+.presence-entry-node {
+  left: var(--entry-x);
+  top: var(--entry-y);
+  width: 0.5rem;
+  height: 0.5rem;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: rgba(226, 214, 185, 0.7);
+  box-shadow:
+    0 0 0 0.42rem rgba(126, 238, 218, 0.025),
+    0 0 1.1rem rgba(126, 238, 218, 0.14);
+  opacity: 0.62;
+  animation: presence-entry-node-breathe 6s ease-in-out var(--entry-delay) infinite;
+}
+
+.presence-entry-aperture {
+  left: 52vw;
+  top: 51%;
+  width: clamp(12rem, 17vw, 20rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.68) 0 34%, rgba(54, 99, 88, 0.2) 35% 38%, transparent 39%),
+    radial-gradient(circle at 50% 45%, rgba(226, 214, 185, 0.12), transparent 0 22%, transparent 56%),
+    conic-gradient(from 90deg, rgba(126, 238, 218, 0.01), rgba(126, 238, 218, 0.07), rgba(226, 214, 185, 0.08), rgba(126, 238, 218, 0.01));
+  box-shadow:
+    0 0 0 1px rgba(181, 166, 132, 0.18),
+    0 0 0 0.65rem rgba(126, 238, 218, 0.014),
+    0 0 2.4rem rgba(56, 202, 184, 0.08),
+    inset 0 0 2.8rem rgba(0, 0, 0, 0.72);
+}
+
+.presence-entry-aperture-ring {
+  position: absolute;
+  inset: 9%;
+  border: 1px solid rgba(181, 166, 132, 0.16);
+  border-radius: 50%;
+}
+
+.presence-entry-aperture-ring-b {
+  inset: 23%;
+  border-color: rgba(244, 226, 190, 0.12);
+}
+
+.presence-entry-aperture-ring-c {
+  inset: 39%;
+  border-color: rgba(126, 238, 218, 0.12);
+}
+
+.presence-entry-aperture-core {
+  position: absolute;
+  inset: 45%;
+  border-radius: 50%;
+  background: rgba(226, 214, 185, 0.78);
+  box-shadow:
+    0 0 0.8rem rgba(226, 214, 185, 0.36),
+    0 0 1.8rem rgba(126, 238, 218, 0.12);
+}
+
+.presence-entry-aperture-scan {
+  left: 50%;
+  top: 50%;
+  width: 43%;
+  height: 1px;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, rgba(226, 214, 185, 0.58), rgba(126, 238, 218, 0.16), rgba(126, 238, 218, 0));
+  opacity: 0.42;
+  animation: presence-entry-aperture-minute 60s linear infinite;
+}
+
+.presence-entry-aperture-label {
+  left: 50%;
+  bottom: -1.7rem;
+  translate: -50% 0;
+  width: max-content;
+  color: rgba(226, 214, 185, 0.42);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+[data-presence-entry-hero][data-signal-state="stable"] .presence-entry-aperture {
+  box-shadow:
+    0 0 0 1px rgba(181, 166, 132, 0.22),
+    0 0 0 0.65rem rgba(126, 238, 218, 0.018),
+    0 0 2.8rem rgba(56, 202, 184, 0.1),
+    inset 0 0 2.8rem rgba(0, 0, 0, 0.72);
+}
+
+[data-presence-entry-hero][data-signal-state="unstable"] .presence-entry-signal-field {
+  opacity: 0.74;
+}
+
+.presence-entry-memory-constellation {
+  top: 50%;
+  right: max(1rem, 3vw);
+  z-index: 6;
+  width: min(48vw, 58rem);
+  height: min(68svh, 48rem);
+  transform: translateY(-46%);
+}
+
+.presence-entry-memory-constellation::before {
+  content: "";
+  position: absolute;
+  inset: 9% 2% 4% 18%;
+  border: 1px solid rgba(244, 239, 229, 0.095);
+  border-radius: 999px;
+  opacity: 0.62;
+  transform: rotate(-8deg);
+  box-shadow:
+    0 0 80px rgba(126, 238, 218, 0.035),
+    inset 0 0 80px rgba(126, 238, 218, 0.025);
+}
+
+.presence-entry-memory-constellation figure {
+  position: absolute;
+  left: 42%;
+  top: 45%;
+  width: clamp(12rem, 17vw, 23rem);
+  aspect-ratio: 1.36;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(244, 239, 229, 0.15);
+  border-radius: 0.5rem;
+  background:
+    radial-gradient(circle at 45% 35%, rgba(244, 239, 229, 0.08), transparent 58%),
+    rgba(255, 255, 255, 0.035);
+  box-shadow:
+    0 1.8rem 5.2rem rgba(0, 0, 0, 0.48),
+    0 0 3.4rem rgba(126, 238, 218, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075);
+  opacity: 0;
+  transform:
+    translate3d(var(--entry-x), var(--entry-y), 0)
+    rotate(var(--entry-r))
+    scale(var(--entry-scale));
+  animation:
+    presence-entry-plane-in 980ms cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    presence-entry-plane-drift 9s ease-in-out var(--entry-delay) infinite;
+}
+
+.presence-entry-memory-constellation figure:nth-child(1) {
+  z-index: 4;
+}
+
+.presence-entry-memory-constellation figure:nth-child(2) {
+  z-index: 3;
+}
+
+.presence-entry-memory-constellation figure:nth-child(3) {
+  z-index: 2;
+}
+
+.presence-entry-memory-constellation figure:nth-child(4) {
+  z-index: 1;
+}
+
+.presence-entry-memory-constellation img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.06) contrast(1.03) brightness(1.22);
+}
+
+.presence-entry-memory-constellation figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 18%, rgba(0, 0, 0, 0.02) 52%, rgba(0, 0, 0, 0.38)),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1), transparent 42%, rgba(0, 0, 0, 0.05));
+}
+
+.presence-entry-memory-constellation figcaption {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.68rem;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.presence-entry-note {
+  right: max(1rem, 3vw);
+  bottom: clamp(1.25rem, 3vw, 2.5rem);
+  z-index: 7;
+  display: flex;
+  max-width: 19rem;
+  align-items: center;
+  gap: 0.8rem;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.presence-entry-note span {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 calc(22px + var(--presence-entry-signal) * 42px) rgba(244, 239, 229, 0.72);
+}
+
+.presence-entry-note p {
+  margin: 0;
+}
+
+@keyframes presence-entry-breathe {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.62;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes presence-entry-scan {
+  0%,
+  100% {
+    transform: translateX(-22%);
+    opacity: 0.05;
+  }
+
+  50% {
+    transform: translateX(18%);
+    opacity: 0.1;
+  }
+}
+
+@keyframes presence-entry-whisper {
+  0%,
+  100% {
+    opacity: 0.035;
+    transform: translate3d(0, 0.45rem, 0);
+    filter: blur(5px);
+  }
+
+  22% {
+    opacity: 0.18;
+    transform: translate3d(0, 0.12rem, 0);
+    filter: blur(1.8px);
+  }
+
+  42%,
+  64% {
+    opacity: 0.44;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0.2px);
+  }
+
+  82% {
+    opacity: 0.12;
+    transform: translate3d(0, -0.18rem, 0);
+    filter: blur(2.4px);
+  }
+}
+
+@keyframes presence-entry-plane-in {
+  from {
+    opacity: 0;
+    filter: blur(16px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes presence-entry-plane-drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.7rem;
+  }
+}
+
+@keyframes presence-entry-rail-pulse {
+  0% {
+    left: 2%;
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 0.9;
+  }
+
+  72% {
+    opacity: 0.38;
+  }
+
+  100% {
+    left: 94%;
+    opacity: 0;
+  }
+}
+
+@keyframes presence-entry-node-breathe {
+  0%,
+  100% {
+    opacity: 0.54;
+    transform: scale(0.86);
+  }
+
+  42% {
+    opacity: 0.94;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes presence-entry-aperture-minute {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (max-width: 1024px) {
+  .presence-entry-memory-constellation {
+    right: -9vw;
+    width: 52vw;
+    opacity: 0.5;
+  }
+
+  .presence-entry-memory-constellation figure {
+    width: clamp(10rem, 20vw, 16rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .presence-entry-signal-field {
+    opacity: 0.62;
+  }
+
+  .presence-entry-depth {
+    left: 57vw;
+    top: 13svh;
+    width: 76vw;
+    height: 60svh;
+  }
+
+  .presence-entry-depth-b {
+    left: 66vw;
+    top: 27svh;
+    width: 50vw;
+    height: 36svh;
+  }
+
+  .presence-entry-rail {
+    left: 55vw;
+    width: 74vw;
+    opacity: 0.32;
+  }
+
+  .presence-entry-node {
+    opacity: 0.48;
+  }
+
+  .presence-entry-aperture {
+    left: 82vw;
+    top: 43svh;
+    width: 9rem;
+    opacity: 0.36;
+  }
+
+  .presence-entry-aperture-label,
+  .presence-entry-memory-constellation,
+  .presence-entry-note,
+  .presence-entry-traces {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presence-entry-atmosphere,
+  .presence-entry-scan,
+  .presence-entry-memory-constellation figure,
+  .presence-entry-traces span,
+  .presence-entry-signal-field * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

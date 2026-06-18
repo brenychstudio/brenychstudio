@@ -41,11 +41,7 @@ type FooterCopy = {
 
 type FooterLocationLabels = {
   base: string;
-  scope: string;
-  languages: string;
   location: string;
-  scopeValue: string;
-  languagesValue: string;
   description: string;
 };
 
@@ -257,22 +253,18 @@ function FooterLocationSignal({
   showDescription?: boolean;
 }) {
   return (
-    <div className="mt-4 max-w-[25rem]">
+    <div className="mt-4 max-w-[18rem]">
       <div
-        className={`grid gap-1.5 border-y py-2.5 font-mono text-[8px] uppercase leading-4 tracking-[0.16em] ${
+        className={`border-y py-2.5 ${
           tone === "immersive" ? "border-neutral-950/16 text-neutral-700" : "border-neutral-950/10 text-neutral-400"
         }`}
       >
-        {[
-          [labels.base, labels.location],
-          [labels.scope, labels.scopeValue],
-          [labels.languages, labels.languagesValue],
-        ].map(([label, value]) => (
-          <div key={label} className="grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-4">
-            <span>{label}</span>
-            <span className="text-right font-semibold text-neutral-950">{value}</span>
-          </div>
-        ))}
+        <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.16em]">
+          {labels.base}
+        </div>
+        <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-neutral-950">
+          {labels.location}
+        </div>
       </div>
       {showDescription ? (
         <p className={`mt-4 text-[12px] leading-6 ${tone === "immersive" ? "text-neutral-700" : "text-neutral-500"}`}>
@@ -300,11 +292,7 @@ export default function SiteFooterV2({
     nextStep: isSpanish ? "Siguiente paso" : "Next step",
     brandLine: isSpanish ? "Brenych Studio / Sistemas de interfaz" : "Brenych Studio / Interface Systems",
     base: isSpanish ? "Base del estudio" : "Studio base",
-    scope: isSpanish ? "Alcance" : "Scope",
-    languages: isSpanish ? "Idiomas" : "Languages",
     location: isSpanish ? STUDIO_LOCATION_ES : STUDIO_LOCATION,
-    scopeValue: isSpanish ? "Remoto / internacional" : "Remote / international",
-    languagesValue: "EN / ES",
     locationDescription: isSpanish
       ? "Estudio de sistemas de interfaz con base en Barcelona para fundadores, marcas, creadores y proyectos culturales en Europa y más allá."
       : "Barcelona-based interface systems studio for founders, brands, creators, and cultural projects across Europe and beyond.",
@@ -323,11 +311,7 @@ export default function SiteFooterV2({
   }));
   const locationLabels: FooterLocationLabels = {
     base: footerLabels.base,
-    scope: footerLabels.scope,
-    languages: footerLabels.languages,
     location: footerLabels.location,
-    scopeValue: footerLabels.scopeValue,
-    languagesValue: footerLabels.languagesValue,
     description: footerLabels.locationDescription,
   };
   const isCase = variant === "case";
@@ -703,7 +687,7 @@ export default function SiteFooterV2({
 
       <div className="relative mx-auto w-[min(92vw,1640px)] py-10 sm:py-12 lg:w-[min(94vw,1640px)] lg:py-14">
         {!hideClosingSignal ? (
-          <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-[minmax(0,0.62fr)_minmax(20rem,0.38fr)] lg:items-end">
+          <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-[minmax(0,0.6fr)_minmax(25rem,34rem)] lg:items-end">
             <div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-500">
                 <span>{footerLabels.closingSignal}</span>
@@ -714,16 +698,16 @@ export default function SiteFooterV2({
               </h2>
             </div>
 
-            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm">
+            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:justify-self-end lg:w-full lg:max-w-[34rem]">
               <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                 <div className="flex items-center justify-between gap-5">
                   <span>{footerLabels.studioSignal}</span>
                   <span className="text-neutral-950">{copy.signal}</span>
                 </div>
                 <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
-                <div className="flex items-center justify-between gap-5">
+                <div className="grid gap-1 py-0.5">
                   <span>{footerLabels.base}</span>
-                  <span className="text-neutral-950">{footerLabels.location}</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-950">{footerLabels.location}</span>
                 </div>
                 <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
                 <div className="flex items-center justify-between gap-5">

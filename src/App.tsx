@@ -16,8 +16,9 @@ import SoundSignalDock from "./ui/SoundSignalDock";
 import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import StructuredData, { type StructuredDataValue } from "./ui/StructuredData";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, toAbsoluteSiteUrl } from "./config/site";
-import { I18nProvider, spanishPreviewEnabled } from "./i18n";
+import { I18nProvider } from "./i18n";
 import { spanishPageSeoDrafts } from "./data/spanishContent";
+import { getSeoAlternates, withSeoAlternates } from "./seo/alternates";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
@@ -102,17 +103,17 @@ const aboutSchema: StructuredDataValue = {
   },
 };
 
-function getSpanishPreviewMeta(path: string, fallback: SeoMetaProps): SeoMetaProps {
+function getSpanishMeta(path: string, fallback: SeoMetaProps): SeoMetaProps {
   const draft = spanishPageSeoDrafts[path];
-  const previewPath = `/es${path === "/" ? "" : path}`;
+  const spanishPath = `/es${path === "/" ? "" : path}`;
 
   return {
     ...fallback,
     title: draft?.title ?? fallback.title,
     description: draft?.description ?? fallback.description,
     imageAlt: draft?.ogTitle ?? fallback.imageAlt,
-    path: previewPath,
-    noIndex: true,
+    path: spanishPath,
+    alternates: getSeoAlternates(spanishPath),
   };
 }
 
@@ -208,12 +209,11 @@ export default function App() {
 
           <Suspense fallback={<RoutePendingSurface />}>
             <Routes>
-          {spanishPreviewEnabled ? (
             <>
               <Route
                 path="/es"
                 element={
-                  <SeoRoute meta={getSpanishPreviewMeta("/", routeSeo.home)} structuredData={[organizationSchema, websiteSchema]}>
+                  <SeoRoute meta={getSpanishMeta("/", routeSeo.home)} structuredData={[organizationSchema, websiteSchema]}>
                     <StudioIndex
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -227,7 +227,7 @@ export default function App() {
               <Route
                 path="/es/work"
                 element={
-                  <SeoRoute meta={getSpanishPreviewMeta("/work", routeSeo.work)}>
+                  <SeoRoute meta={getSpanishMeta("/work", routeSeo.work)}>
                     <EvidenceAtlas
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -241,7 +241,7 @@ export default function App() {
               <Route
                 path="/es/immersive"
                 element={
-                  <SeoRoute meta={getSpanishPreviewMeta("/immersive", routeSeo.immersive)}>
+                  <SeoRoute meta={getSpanishMeta("/immersive", routeSeo.immersive)}>
                     <ImmersiveV2
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -255,7 +255,7 @@ export default function App() {
               <Route
                 path="/es/offer"
                 element={
-                  <SeoRoute meta={getSpanishPreviewMeta("/offer", routeSeo.offer)}>
+                  <SeoRoute meta={getSpanishMeta("/offer", routeSeo.offer)}>
                     <OfferV2
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -269,7 +269,7 @@ export default function App() {
               <Route
                 path="/es/about"
                 element={
-                  <SeoRoute meta={getSpanishPreviewMeta("/about", routeSeo.about)} structuredData={aboutSchema}>
+                  <SeoRoute meta={getSpanishMeta("/about", routeSeo.about)} structuredData={aboutSchema}>
                     <AboutV2
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -289,7 +289,6 @@ export default function App() {
                     drawerOpen={drawerOpen}
                     onOpenProject={openProject}
                     onCloseProject={closeProject}
-                    noIndex
                   />
                 }
               />
@@ -301,7 +300,6 @@ export default function App() {
                     drawerOpen={drawerOpen}
                     onOpenProject={openProject}
                     onCloseProject={closeProject}
-                    noIndex
                   />
                 }
               />
@@ -313,17 +311,15 @@ export default function App() {
                     drawerOpen={drawerOpen}
                     onOpenProject={openProject}
                     onCloseProject={closeProject}
-                    noIndex
                   />
                 }
               />
             </>
-          ) : null}
 
           <Route
             path="/"
             element={
-              <SeoRoute meta={routeSeo.home} structuredData={[organizationSchema, websiteSchema]}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.home)} structuredData={[organizationSchema, websiteSchema]}>
                 <StudioIndex
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -337,7 +333,7 @@ export default function App() {
           <Route
             path="/work"
             element={
-              <SeoRoute meta={routeSeo.work}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.work)}>
                 <EvidenceAtlas
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -351,7 +347,7 @@ export default function App() {
           <Route
             path="/immersive"
             element={
-              <SeoRoute meta={routeSeo.immersive}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.immersive)}>
                 <ImmersiveV2
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -365,7 +361,7 @@ export default function App() {
           <Route
             path="/offer"
             element={
-              <SeoRoute meta={routeSeo.offer}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.offer)}>
                 <OfferV2
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -428,7 +424,7 @@ export default function App() {
           <Route
             path="/about"
             element={
-              <SeoRoute meta={routeSeo.about} structuredData={aboutSchema}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.about)} structuredData={aboutSchema}>
                 <AboutV2
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}

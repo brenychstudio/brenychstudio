@@ -23,7 +23,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
-import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
+import { getLocalizedPath, isSpanishPublicCaseRegistrySlug, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -143,7 +143,9 @@ function EvidenceAtlasMeta() {
 }
 
 function getEvidenceCases(locale: LocaleCode): EvidenceCase[] {
-  return cases.map((item) => {
+  const sourceCases = locale === "es" ? cases.filter((item) => isSpanishPublicCaseRegistrySlug(item.slug)) : cases;
+
+  return sourceCases.map((item) => {
     const localizedItem = localizeCase(item, locale);
 
     return {

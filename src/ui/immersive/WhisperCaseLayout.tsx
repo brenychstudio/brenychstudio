@@ -1267,31 +1267,33 @@ function SpatialAtlasMap({
   activeLayer,
   onSelectLayer,
   previewFrames,
+  layers = proofLayers,
 }: {
   activeLayer: LayerId;
   onSelectLayer: (id: LayerId) => void;
   previewFrames: Record<LayerId, ImmersiveMedia | null>;
+  layers?: typeof proofLayers;
 }) {
   const sound = useSound();
   const reduceMotion = useReducedMotion();
   const dragStartRef = useRef<number | null>(null);
-  const activeProof = proofLayers.find((layer) => layer.id === activeLayer) ?? proofLayers[0];
+  const activeProof = layers.find((layer) => layer.id === activeLayer) ?? layers[0];
   const activePreview = previewFrames[activeLayer];
-  const activeLayerIndex = Math.max(0, proofLayers.findIndex((layer) => layer.id === activeLayer));
+  const activeLayerIndex = Math.max(0, layers.findIndex((layer) => layer.id === activeLayer));
   const selectLayer = (id: LayerId, role: "select" | "transition" = "select") => {
     sound.playRole(role);
     onSelectLayer(id);
   };
   const selectLayerByOffset = (offset: number) => {
-    const nextIndex = (activeLayerIndex + offset + proofLayers.length) % proofLayers.length;
-    const nextLayer = proofLayers[nextIndex];
+    const nextIndex = (activeLayerIndex + offset + layers.length) % layers.length;
+    const nextLayer = layers[nextIndex];
     if (nextLayer) selectLayer(nextLayer.id, "transition");
   };
   const circularOffset = (index: number) => {
     let offset = index - activeLayerIndex;
-    const half = proofLayers.length / 2;
-    if (offset > half) offset -= proofLayers.length;
-    if (offset < -half) offset += proofLayers.length;
+    const half = layers.length / 2;
+    if (offset > half) offset -= layers.length;
+    if (offset < -half) offset += layers.length;
     return offset;
   };
   const positions: Record<LayerId, { left: string; top: string; width: string; rotate: number }> = {
@@ -1352,7 +1354,7 @@ function SpatialAtlasMap({
             }}
             style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
           >
-            {proofLayers.map((layer, index) => {
+            {layers.map((layer, index) => {
               const offset = circularOffset(index);
               const active = offset === 0;
               const depth = Math.abs(offset);
@@ -1419,7 +1421,7 @@ function SpatialAtlasMap({
                 {activeProof.index} / {surfaceShortLabels[activeProof.id]}
               </div>
               <div className="flex items-center gap-1.5">
-                {proofLayers.map((layer) => (
+                {layers.map((layer) => (
                   <button
                     key={`${layer.id}-atlas-dot`}
                     type="button"
@@ -1459,7 +1461,7 @@ function SpatialAtlasMap({
         </div>
 
         <div className="relative z-10 min-h-[560px]">
-          {proofLayers.map((layer) => {
+          {layers.map((layer) => {
             const active = activeLayer === layer.id;
             const frame = previewFrames[layer.id];
             const position = positions[layer.id];
@@ -1976,6 +1978,96 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
   const navigate = useNavigate();
   const sound = useSound();
   const reduceMotion = useReducedMotion();
+  const isSpanish = copy === whisperCaseI18n.es;
+  const atlasCopy = {
+    eyebrow: isSpanish ? "Atlas espacial" : "Spatial atlas",
+    title: isSpanish ? "Cuatro superficies, un sistema de prueba." : "Four surfaces, one proof system.",
+    description: isSpanish
+      ? "WHISPER conecta sitio web, Quest, coleccionista y mobile en un patrón de referencia inspeccionable para futuros casos inmersivos."
+      : "WHISPER connects website, Quest, collector, and mobile into one inspectable reference pattern for future Immersive cases.",
+  };
+  const webCopy = {
+    eyebrow: isSpanish ? "Exhibición web" : "Web exhibition",
+    title: isSpanish ? "Sitio en vivo, primera sala." : "Live site, first room.",
+    description: isSpanish
+      ? "Una ruta desktop en vivo sostiene hero, series, lógica de impresión, AR preview y notas antes de XR."
+      : "A live desktop route carries hero, series, print logic, AR preview, and notes before XR.",
+  };
+  const xrCopy = {
+    eyebrow: isSpanish ? "Prueba XR" : "XR proof",
+    title: isSpanish ? "La prueba Quest se convierte en sala." : "Quest proof becomes a room.",
+    description: isSpanish
+      ? "La captura real en headset prueba que el sistema funciona a escala de sala: planos de imagen, navegación con manos y pacing espacial silencioso."
+      : "Real headset capture proves the system works at room scale: image planes, hand navigation, and quiet spatial pacing.",
+  };
+  const milestoneCopy = {
+    eyebrow: isSpanish ? "Hito actual" : "Current milestone",
+    title: isSpanish
+      ? "La V1 avanzada está en vivo en sitio, Quest, mobile, print y AR."
+      : "Advanced V1 is live across site, Quest, mobile, print, and AR.",
+    tags: isSpanish ? ["Sitio público", "Prueba XR", "Mobile", "Print / AR"] : ["Public site", "XR proof", "Mobile", "Print / AR"],
+    openLive: isSpanish ? "Abrir sitio" : "Open live site",
+    restart: isSpanish ? "Reiniciar" : "Restart",
+    rulesEyebrow: isSpanish ? "Reglas operativas" : "Operating rules",
+    rulesSummary: isSpanish
+      ? "Controles silenciosos, una gramática visual común e inspección cinematográfica mantienen el caso reutilizable sin convertirlo en plantilla."
+      : "Quiet controls, one visual grammar, and cinematic inspect keep the case reusable without turning it into a template.",
+  };
+  const resolvedInteractionRules = isSpanish
+    ? [
+        {
+          title: "Presencia antes que interfaz",
+          text:
+            "Navegación, hover states y controles de prueba se mantienen silenciosos para que la obra tenga prioridad sobre la UI.",
+        },
+        {
+          title: "Un sistema entre superficies",
+          text:
+            "Sitio, headset, mobile, print detail y AR preview usan la misma gramática visual en lugar de fragmentos separados.",
+        },
+        {
+          title: "Inspeccionar como modo espacial",
+          text:
+            "Los screenshots se abren con un reveal cinematográfico, convirtiendo la revisión de evidencia en parte del lenguaje inmersivo.",
+        },
+      ]
+    : interactionRules;
+  const resolvedProofLayers = isSpanish
+    ? [
+        {
+          id: "web" as const,
+          index: "01",
+          title: "Exhibición web cinematográfica",
+          signal: "superficie pública",
+          text:
+            "El sitio web es la primera sala: pacing editorial, navegación por series, lógica de impresión e intención de coleccionista antes de entrar en XR.",
+        },
+        {
+          id: "xr" as const,
+          index: "02",
+          title: "Prueba espacial en Quest",
+          signal: "capa room-scale",
+          text:
+            "La captura en headset prueba que el sistema puede salir de la página y mantener el mismo ritmo museístico silencioso.",
+        },
+        {
+          id: "collector" as const,
+          index: "03",
+          title: "Print, AR y continuación de edición",
+          signal: "handoff de objeto",
+          text:
+            "La exhibición digital vuelve a la obra mediante detalle de edición, AR preview, notas y continuación orientada al coleccionista.",
+        },
+        {
+          id: "mobile" as const,
+          index: "04",
+          title: "Ruta expositiva mobile",
+          signal: "prueba small-screen",
+          text:
+            "Mobile conserva la atmósfera mientras comprime navegación, páginas de serie, detalle de print y entrada AR en un recorrido directo.",
+        },
+      ]
+    : proofLayers;
   const rawFrames = useMemo(() => item.frames ?? [], [item.frames]);
   const rawVideos = useMemo(() => item.videos ?? [], [item.videos]);
 
@@ -2008,19 +2100,21 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
   const questVideoData = rawVideos.find((video) => video.device === "vr");
 
   const desktopVideo: VideoProof = {
-    title: "Live capture route",
-    label: "Website navigation",
+    title: isSpanish ? "Ruta de captura en vivo" : "Live capture route",
+    label: isSpanish ? "Navegación del sitio" : "Website navigation",
     src: desktopVideoData?.src ?? WHISPER_DESKTOP_VIDEO,
     poster: desktopVideoData?.poster ?? webFrames[8]?.src ?? openingFrame?.src,
-    caption: "Hero / series / print / AR / notes.",
+    caption: isSpanish ? "Hero / series / print / AR / notas." : "Hero / series / print / AR / notes.",
   };
 
   const questVideo: VideoProof = {
-    title: "Room-scale capture",
-    label: "Meta Quest 3 proof",
+    title: isSpanish ? "Captura a escala de sala" : "Room-scale capture",
+    label: isSpanish ? "Prueba Meta Quest 3" : "Meta Quest 3 proof",
     src: questVideoData?.src ?? WHISPER_VR_VIDEO,
     poster: questVideoData?.poster ?? vrFrames[0]?.src,
-    caption: "Image planes, hand navigation, and room rhythm stay readable inside the headset.",
+    caption: isSpanish
+      ? "Planos de imagen, navegación con manos y ritmo de sala se mantienen legibles dentro del headset."
+      : "Image planes, hand navigation, and room rhythm stay readable inside the headset.",
   };
 
   const inspectFrames = useMemo<CaseStoryMedia[]>(
@@ -2050,7 +2144,7 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
       sound.playRole("select");
       setInspectIndex(nextIndex);
     },
-    [inspectFrames, sound],
+    [inspectFrames, setInspectIndex, sound],
   );
 
   const openVideo = useCallback(
@@ -2058,7 +2152,7 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
       sound.playRole("select");
       setActiveVideo(video);
     },
-    [sound],
+    [setActiveVideo, sound],
   );
 
   const scrollToSection = useCallback(
@@ -2181,7 +2275,7 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
                   onClick={() => openInspectBySrc(openingFrame.src)}
                   className="hidden border border-white/18 bg-black/16 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/72 transition hover:border-white/42 hover:text-white md:inline-flex"
                 >
-                  Inspect hero
+                  {isSpanish ? "Inspeccionar hero" : "Inspect hero"}
                 </button>
               ) : null}
             </div>
@@ -2205,7 +2299,7 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
                   <source src={WHISPER_HOME_VIDEO} type="video/mp4" />
                 </video>
                 <div className="absolute left-4 top-4 border border-white/18 bg-black/42 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-white/64 backdrop-blur max-[640px]:left-3 max-[640px]:top-3 max-[640px]:px-2.5 max-[640px]:py-1.5 max-[640px]:text-[9px]">
-                  Signal 01 / website
+                  {isSpanish ? "Señal 01 / website" : "Signal 01 / website"}
                 </div>
               </div>
             </div>
@@ -2219,7 +2313,9 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
                 <div className="aspect-[4/3] overflow-hidden bg-black">
                   <img src={vrFrames[0].src} alt={vrFrames[0].alt ?? ""} className="h-full w-full object-contain" />
                 </div>
-                <div className="mt-2 text-left text-[9px] uppercase tracking-[0.16em] text-white/48 max-[640px]:mt-1.5 max-[640px]:text-[8px]">Quest proof</div>
+                <div className="mt-2 text-left text-[9px] uppercase tracking-[0.16em] text-white/48 max-[640px]:mt-1.5 max-[640px]:text-[8px]">
+                  {isSpanish ? "Prueba Quest" : "Quest proof"}
+                </div>
               </button>
             ) : null}
 
@@ -2232,7 +2328,9 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
                 <div className="aspect-[9/16] overflow-hidden bg-black">
                   <img src={mobileFrames[0].src} alt={mobileFrames[0].alt ?? ""} className="h-full w-full object-contain" />
                 </div>
-                <div className="mt-2 text-left text-[9px] uppercase tracking-[0.16em] text-white/48 max-[640px]:mt-1.5 max-[640px]:text-[8px]">Mobile route</div>
+                <div className="mt-2 text-left text-[9px] uppercase tracking-[0.16em] text-white/48 max-[640px]:mt-1.5 max-[640px]:text-[8px]">
+                  {isSpanish ? "Ruta mobile" : "Mobile route"}
+                </div>
               </button>
             ) : null}
 
@@ -2250,16 +2348,16 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
       <Chapter id="atlas" soundSafeArea className="bg-[#f2eee4] px-7 pb-20 pt-28 text-neutral-950 md:px-8 md:py-24 lg:py-32">
         <div className="mx-auto grid w-full gap-14 md:w-[min(92vw,1640px)] lg:grid-cols-[0.42fr_0.58fr] lg:gap-16">
           <div>
-            <SectionLabel index="02" label="Spatial atlas" />
+            <SectionLabel index="02" label={atlasCopy.eyebrow} />
             <KineticTitle
-              text="Four surfaces, one proof system."
+              text={atlasCopy.title}
               className="mt-8 max-w-[10ch] text-[44px] font-semibold leading-[0.92] tracking-normal sm:text-[78px] xl:text-[104px]"
             />
             <p className="mt-7 max-w-[42rem] text-[16px] leading-8 text-neutral-600 sm:mt-8 sm:text-[17px]">
-              WHISPER connects website, Quest, collector, and mobile into one inspectable reference pattern for future Immersive cases.
+              {atlasCopy.description}
             </p>
             <div className="mt-9 hidden flex-wrap gap-2 md:flex">
-              {proofLayers.map((layer) => (
+              {resolvedProofLayers.map((layer) => (
                 <button
                   key={layer.id}
                   type="button"
@@ -2283,6 +2381,7 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
           <SpatialAtlasMap
             activeLayer={activeLayer}
             onSelectLayer={setActiveLayer}
+            layers={resolvedProofLayers}
             previewFrames={{
               web: openingFrame ?? webFrames[1] ?? null,
               xr: vrFrames[0] ?? null,
@@ -2297,14 +2396,14 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
         <div className="mx-auto w-full md:w-[min(92vw,1640px)] xl:pr-36">
           <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
             <div>
-              <SectionLabel index="03" label="Web exhibition" />
+              <SectionLabel index="03" label={webCopy.eyebrow} />
               <KineticTitle
-                text="Live site, first room."
+                text={webCopy.title}
                 className="mt-8 max-w-[9ch] text-[44px] font-semibold leading-[0.92] tracking-normal sm:text-[78px] xl:text-[104px]"
               />
             </div>
             <p className="max-w-[48rem] text-[16px] leading-8 text-neutral-600 sm:text-[17px]">
-              A live desktop route carries hero, series, print logic, AR preview, and notes before XR.
+              {webCopy.description}
             </p>
           </div>
 
@@ -2326,13 +2425,13 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
 
         <div className="relative mx-auto grid w-full gap-12 md:w-[min(92vw,1640px)] lg:grid-cols-[0.38fr_0.62fr] lg:gap-14 xl:pr-36">
           <div>
-            <SectionLabel index="04" label="XR proof" dark />
+            <SectionLabel index="04" label={xrCopy.eyebrow} dark />
             <KineticTitle
-              text="Quest proof becomes a room."
+              text={xrCopy.title}
               className="mt-8 max-w-[10ch] text-[44px] font-semibold leading-[0.94] tracking-normal text-white sm:text-[74px] xl:text-[96px]"
             />
             <p className="mt-8 max-w-[40rem] text-[16px] leading-8 text-white/60">
-              Real headset capture proves the system works at room scale: image planes, hand navigation, and quiet spatial pacing.
+              {xrCopy.description}
             </p>
           </div>
 
@@ -2459,9 +2558,9 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
             </div>
 
             <div className="border-y border-white/12 py-4 md:hidden">
-              <div className="text-[9px] uppercase tracking-[0.18em] text-white/32">Operating rules</div>
+              <div className="text-[9px] uppercase tracking-[0.18em] text-white/32">{milestoneCopy.rulesEyebrow}</div>
               <div className="mt-3 grid gap-0">
-                {interactionRules.map((rule, index) => (
+                {resolvedInteractionRules.map((rule, index) => (
                   <div key={`${rule.title}-mobile`} className="flex items-center justify-between gap-4 border-b border-white/10 py-3 last:border-b-0">
                     <span className="text-[9px] uppercase tracking-[0.18em] text-white/30">{formatIndex(index + 1)}</span>
                     <span className="max-w-[16rem] text-right text-[16px] font-semibold leading-tight tracking-normal text-white">{rule.title}</span>
@@ -2469,12 +2568,12 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
                 ))}
               </div>
               <p className="mt-4 text-[12px] leading-5 text-white/50">
-                Quiet controls, one visual grammar, and cinematic inspect keep the case reusable without turning it into a template.
+                {milestoneCopy.rulesSummary}
               </p>
             </div>
 
             <div className="hidden gap-0 border-y border-white/12 md:grid">
-              {interactionRules.map((rule, index) => (
+              {resolvedInteractionRules.map((rule, index) => (
                 <article key={rule.title} className="grid gap-2 border-b border-white/10 py-3.5 last:border-b-0 md:grid-cols-[3rem_0.44fr_1fr] md:items-start md:gap-3 md:py-4">
                   <div className="text-[9px] uppercase tracking-[0.18em] text-white/30">{formatIndex(index + 1)}</div>
                   <h3 className="text-[18px] font-semibold leading-tight tracking-normal text-white md:text-[20px]">{rule.title}</h3>
@@ -2486,12 +2585,12 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
             <div className="relative overflow-hidden border border-white/14 bg-white/[0.035] p-4 md:grid md:grid-cols-[0.62fr_0.38fr] md:items-end md:gap-8 md:p-6">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_34%,rgba(244,239,228,0.12),transparent_28%),linear-gradient(90deg,rgba(244,239,228,0.05),transparent_52%)]" />
               <div className="relative">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-[#f4efe4]/42">Current milestone</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-[#f4efe4]/42">{milestoneCopy.eyebrow}</div>
                 <p className="mt-4 text-[22px] font-semibold leading-tight tracking-normal text-white md:text-[32px]">
-                  Advanced V1 is live across site, Quest, mobile, print, and AR.
+                  {milestoneCopy.title}
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  {["Public site", "XR proof", "Mobile", "Print / AR"].map((item) => (
+                  {milestoneCopy.tags.map((item) => (
                     <span key={item} className="border border-white/10 bg-black/22 px-2.5 py-2 text-[9px] uppercase tracking-[0.14em] text-white/42 sm:px-3 sm:text-[10px]">
                       {item}
                     </span>
@@ -2505,14 +2604,14 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
                   rel="noreferrer"
                   className="border border-[#f4efe4] bg-[#f4efe4] px-5 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:bg-white"
                 >
-                  Open live site
+                  {milestoneCopy.openLive}
                 </a>
                 <button
                   type="button"
                   onClick={() => scrollToSection("whisper-threshold")}
                   className="border border-white/16 bg-black/22 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/66 transition hover:border-white/40 hover:text-white"
                 >
-                  Restart
+                  {milestoneCopy.restart}
                 </button>
               </div>
             </div>

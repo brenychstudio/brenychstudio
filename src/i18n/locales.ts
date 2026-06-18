@@ -1,5 +1,3 @@
-import { spanishPreviewEnabled } from "./preview";
-
 export type LocaleCode = "en" | "es" | "uk" | "ru";
 
 export type LocaleConfig = {
@@ -28,7 +26,7 @@ export const LOCALES: LocaleConfig[] = [
     name: "Español",
     pathPrefix: "/es",
     hreflang: "es",
-    enabled: false,
+    enabled: true,
   },
   {
     code: "uk",
@@ -50,7 +48,7 @@ export const LOCALES: LocaleConfig[] = [
 
 export function isRuntimeLocaleEnabled(code: LocaleCode) {
   if (code === "en") return true;
-  if (code === "es") return spanishPreviewEnabled;
+  if (code === "es") return true;
 
   return false;
 }

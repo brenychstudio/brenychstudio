@@ -7,7 +7,7 @@ import {
   useTransform,
   type PanInfo,
 } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import { getCaseStory, type CaseStory, type CaseStoryMedia } from "../data/caseStories";
 import { getCaseBySlug } from "../data/cases";
@@ -26,7 +26,8 @@ import { useSound } from "../stage/audio/useSound";
 import type { SectionRailItem } from "../ui/SectionRail";
 import SeoMeta from "../ui/SeoMeta";
 import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
-import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
+import { getLocalizedPath, isSpanishPublicCaseStorySlug, useI18n, type LocaleCode } from "../i18n";
+import { getSeoAlternates } from "../seo/alternates";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -41,6 +42,7 @@ type ProofLedgerItem = {
 };
 
 type EvidenceViewMode = "sequence" | "atlas";
+type MobileReaderStepKey = "Threshold" | "Watch" | "Frames" | "Proof" | "Mobile" | "Adapt";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const INITIAL_EVIDENCE_FRAME_COUNT = 5;
@@ -551,6 +553,7 @@ function CaseMeta({
         imageAlt={registryCase?.alt ?? fallbackMedia?.alt ?? story?.headline}
         type="article"
         noIndex={noIndex}
+        alternates={getSeoAlternates(casePath)}
       />
       {structuredData ? <StructuredData id={`structured-data-case-${registryCase?.slug ?? "unknown"}`} data={structuredData} /> : null}
     </>
@@ -634,11 +637,41 @@ function getMobileFrames(story: CaseStory) {
 }
 
 function getAvailabilitySignal(story: CaseStory) {
+  if (isSpanishCaseStory(story)) {
+    if (!story.availability) return "Dirección a medida";
+    if (story.availability.status === "available") return "Base disponible";
+    if (story.availability.status === "custom-only") return "Solo a medida";
+    if (story.availability.status === "concept-reference") return "Referencia";
+    return "Caso de referencia";
+  }
+
   if (!story.availability) return "Custom direction";
   if (story.availability.status === "available") return "Available foundation";
   if (story.availability.status === "custom-only") return "Custom only";
   if (story.availability.status === "concept-reference") return "Concept reference";
   return "Case reference";
+}
+
+function isSpanishCaseStory(story: CaseStory) {
+  return story.translations?.es?.headline === story.headline;
+}
+
+function getCaseTypeLabel(story: CaseStory) {
+  if (!isSpanishCaseStory(story)) return story.caseType.replace("-", " ");
+
+  const labels: Record<CaseStory["caseType"], string> = {
+    advisory: "sistema advisory",
+    experimental: "sistema experimental",
+    hospitality: "sistema hospitality",
+    "luxury-product": "producto premium",
+    "premium-website": "web premium",
+    "presentation-system": "presentación",
+    "product-system": "sistema de producto",
+    "workflow-tool": "herramienta workflow",
+    tool: "herramienta",
+  };
+
+  return labels[story.caseType] ?? story.caseType.replace("-", " ");
 }
 
 function getClosingMove(story: CaseStory) {
@@ -722,27 +755,43 @@ function getDirectMailHref(story: CaseStory) {
 
 function getSecondaryClosingLink(story: CaseStory, links: NonNullable<CaseStory["links"]>) {
   const liveLink = links.find((link) => !/repository|github/i.test(link.label));
-  if (liveLink) return { label: "View live case", href: liveLink.href };
+  if (liveLink) return { label: isSpanishCaseStory(story) ? "Ver caso" : "View live case", href: liveLink.href };
 
-  return { label: "Email directly", href: getDirectMailHref(story) };
+  return { label: isSpanishCaseStory(story) ? "Email directo" : "Email directly", href: getDirectMailHref(story) };
 }
 
 function getMobileReaderSteps(story: CaseStory) {
-  const labels = ["Threshold", "Watch", "Frames", "Proof"];
+  const stepKeys: MobileReaderStepKey[] = ["Threshold", "Watch", "Frames", "Proof"];
 
-  if (getMobileFrames(story).length > 0) labels.push("Mobile");
-  if (story.availability) labels.push("Adapt");
+  if (getMobileFrames(story).length > 0) stepKeys.push("Mobile");
+  if (story.availability) stepKeys.push("Adapt");
 
-  return labels.map((label, index) => ({
+  return stepKeys.map((key, index) => ({
     index: String(index + 1).padStart(2, "0"),
-    label,
+    key,
+    label: getMobileStepLabel(story, key),
   }));
 }
 
-function getMobileSectionEyebrow(story: CaseStory, label: string) {
-  const step = getMobileReaderSteps(story).find((item) => item.label === label);
+function getMobileStepLabel(story: CaseStory, key: MobileReaderStepKey) {
+  if (!isSpanishCaseStory(story)) return key;
 
-  return `${step?.index ?? "00"} / ${label}`;
+  const labels: Record<MobileReaderStepKey, string> = {
+    Threshold: "Entrada",
+    Watch: "Recorrido",
+    Frames: "Pantallas",
+    Proof: "Prueba",
+    Mobile: "Móvil",
+    Adapt: "Adaptar",
+  };
+
+  return labels[key];
+}
+
+function getMobileSectionEyebrow(story: CaseStory, key: MobileReaderStepKey) {
+  const step = getMobileReaderSteps(story).find((item) => item.key === key);
+
+  return `${step?.index ?? "00"} / ${getMobileStepLabel(story, key)}`;
 }
 
 function getMobileHeroSummary(story: CaseStory) {
@@ -790,6 +839,10 @@ function getMobileHeroSummary(story: CaseStory) {
 }
 
 function getMobileWalkthroughLine(story: CaseStory) {
+  if (isSpanishCaseStory(story)) {
+    return getCaseNarrative(story).walkthroughIntro;
+  }
+
   if (story.slug === "oria-house-barcelona") {
     return "Watch the hotel concept move from atmosphere to rooms, experiences, location context, and booking contact.";
   }
@@ -830,6 +883,10 @@ function getMobileWalkthroughLine(story: CaseStory) {
 }
 
 function getMobileEvidenceReadout(story: CaseStory) {
+  if (isSpanishCaseStory(story)) {
+    return getCaseNarrative(story).screensReadout;
+  }
+
   if (story.slug === "oria-house-barcelona") {
     return "Room comparison, detail pages, gallery review, stay rituals, location, and booking contact frames hold the proof after motion.";
   }
@@ -890,6 +947,10 @@ function getMobileEvidenceInitialIndex(frames: CaseStoryMedia[]) {
 }
 
 function getMobileAvailableStatement(story: CaseStory, fallback: string) {
+  if (isSpanishCaseStory(story)) {
+    return fallback;
+  }
+
   if (story.caseType === "product-system") {
     return "Adapt the maison logic into a commissioned luxury product surface.";
   }
@@ -2285,7 +2346,7 @@ function MobileProofSpine({ story }: { story: CaseStory }) {
   return (
     <div className="mt-7 border-y border-neutral-950/12 py-3 md:mt-8 md:py-4">
       <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-400">
-        Case proof spine
+        {isSpanishCaseStory(story) ? "Secuencia de prueba" : "Case proof spine"}
       </div>
       <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2 md:grid-cols-6 md:gap-x-4">
         {steps.map((step) => (
@@ -2318,7 +2379,11 @@ function MobileCaseHero({
       <div className="pointer-events-none absolute left-[8%] top-[8rem] h-[34rem] w-[32rem] rounded-[50%] border border-neutral-950/[0.055]" />
       <div className="relative md:mx-auto md:w-[min(100%,46rem)]">
         <div className="flex max-w-[20rem] flex-wrap gap-2 sm:max-w-none md:max-w-[44rem]">
-          {["Case system", getAvailabilitySignal(story), story.caseType.replace("-", " ")].map((item) => (
+          {[
+            isSpanishCaseStory(story) ? "Sistema de caso" : "Case system",
+            getAvailabilitySignal(story),
+            getCaseTypeLabel(story),
+          ].map((item) => (
             <span
               key={item}
               className="rounded-full border border-neutral-950/10 bg-white/48 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm"
@@ -2360,7 +2425,10 @@ function MobileWalkthroughProof({ story }: { story: CaseStory }) {
   const walkthrough = getWalkthroughMedia(story);
 
   return (
-    <MobileReaderSection eyebrow="02 / Watch" title="System walkthrough.">
+    <MobileReaderSection
+      eyebrow={getMobileSectionEyebrow(story, "Watch")}
+      title={isSpanishCaseStory(story) ? "Recorrido del sistema." : "System walkthrough."}
+    >
       <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600 md:max-w-[52ch] md:text-[15px] md:leading-8">
         {getMobileWalkthroughLine(story)}
       </p>
@@ -2426,7 +2494,10 @@ function MobileEvidenceDeck({
   };
 
   return (
-    <MobileReaderSection eyebrow="03 / Frames" title="Screens as evidence.">
+    <MobileReaderSection
+      eyebrow={getMobileSectionEyebrow(story, "Frames")}
+      title={isSpanishCaseStory(story) ? "Pantallas como evidencia." : "Screens as evidence."}
+    >
       <p className="mt-4 max-w-[36ch] text-[14px] leading-7 text-neutral-600 md:max-w-[52ch] md:text-[15px] md:leading-8">
         {getMobileEvidenceReadout(story)}
       </p>
@@ -2508,7 +2579,7 @@ function MobileEvidenceDeck({
 
       <div className="mt-4 border-y border-neutral-950/12 py-3">
         <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-          Frame {String(activeIndex + 1).padStart(2, "0")} / {mediaRoleLabel(activeFrame.role)}
+          {isSpanishCaseStory(story) ? "Pantalla" : "Frame"} {String(activeIndex + 1).padStart(2, "0")} / {mediaRoleLabel(activeFrame.role)}
         </div>
         <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
           {activeFrame.label}
@@ -2568,7 +2639,10 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
   const systemSpine = story.systemLayers.slice(0, 6);
 
   return (
-    <MobileReaderSection eyebrow="04 / Proof" title="Proof becomes system.">
+    <MobileReaderSection
+      eyebrow={getMobileSectionEyebrow(story, "Proof")}
+      title={isSpanishCaseStory(story) ? "La prueba se vuelve sistema." : "Proof becomes system."}
+    >
       <p className="mt-4 max-w-[19ch] text-[clamp(1.35rem,5.8vw,1.9rem)] leading-[1.08] text-neutral-950 md:max-w-[29ch] md:text-[clamp(2rem,4.7vw,2.55rem)] md:leading-[1.05]">
         {story.proofClaim}
       </p>
@@ -2588,7 +2662,7 @@ function MobileProofSummary({ story }: { story: CaseStory }) {
       </div>
       <div className="mt-5 border-y border-neutral-950/12 py-3">
         <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-          System spine
+          {isSpanishCaseStory(story) ? "Estructura del sistema" : "System spine"}
         </div>
         <div className="mt-2 grid grid-cols-2 gap-x-3">
           {systemSpine.map((layer, index) => (
@@ -2623,7 +2697,13 @@ function MobileFoundationSection({
   const ctaLabel = story.availability.ctaLabel;
   const technicalRows = story.technicalFoundation.length > 0 ? story.technicalFoundation : technicalLedger;
   const adaptationValue =
-    story.slug === "barcelona-private-advisory"
+    isSpanishCaseStory(story) && story.slug === "barcelona-private-advisory"
+      ? "Lente de mercado, dossier de shortlist, handoff de consulta."
+      : isSpanishCaseStory(story) && story.slug === "creatorops"
+        ? "Pasos de workflow, estados, lógica de salida."
+      : isSpanishCaseStory(story) && story.slug === "house-of-lune"
+        ? "Marca, estructura de producto, ruta de consulta."
+      : story.slug === "barcelona-private-advisory"
       ? "Market lens, shortlist dossier, inquiry handoff."
       : story.slug === "aurel-eon-gt"
         ? "Product states, inspect flow, private preview."
@@ -2651,18 +2731,22 @@ function MobileFoundationSection({
   );
   const passportRows = [
     {
-      label: "Fit",
+      label: isSpanishCaseStory(story) ? "Encaje" : "Fit",
       value: story.availability.bestFor?.slice(0, 3).join(" / ") ?? "Jewelry / Fashion / Collector objects",
     },
     {
-      label: "Adaptation",
+      label: isSpanishCaseStory(story) ? "Adaptación" : "Adaptation",
       value: adaptationValue,
     },
     {
-      label: "Terms",
+      label: isSpanishCaseStory(story) ? "Condiciones" : "Terms",
       value: story.availability.exclusivityAvailable
-        ? "Commissioned adaptation / Exclusivity discussed"
-        : "Commissioned adaptation / Shared direction",
+        ? isSpanishCaseStory(story)
+          ? "Adaptación por encargo / Exclusividad a definir"
+          : "Commissioned adaptation / Exclusivity discussed"
+        : isSpanishCaseStory(story)
+          ? "Adaptación por encargo / Dirección compartida"
+          : "Commissioned adaptation / Shared direction",
     },
   ];
 
@@ -2685,7 +2769,7 @@ function MobileFoundationSection({
 
         <div className="border-y border-neutral-950/12 py-4">
           <h2 className="max-w-[11ch] text-[clamp(2rem,9vw,2.9rem)] font-semibold leading-[0.94] tracking-normal text-neutral-950 md:max-w-[14ch] md:text-[clamp(3rem,7.2vw,4.25rem)]">
-            Available foundation.
+            {isSpanishCaseStory(story) ? "Base disponible." : "Available foundation."}
           </h2>
           <p className="mt-3 max-w-[30ch] text-[15px] leading-6 text-neutral-700 md:max-w-[52ch] md:leading-7">
             {getMobileAvailableStatement(story, narrative.availableStatement)}
@@ -2705,7 +2789,7 @@ function MobileFoundationSection({
 
         <div className="mt-4 border-y border-neutral-950/12 py-3">
           <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-neutral-400">
-            Deployable surface
+            {isSpanishCaseStory(story) ? "Superficie desplegable" : "Deployable surface"}
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {deployableHighlights.map((item) => (
@@ -2718,7 +2802,9 @@ function MobileFoundationSection({
 
         <div className="mt-5 border-t border-neutral-950/12 pt-5">
           <p className="max-w-[25ch] text-[1.28rem] font-semibold leading-[1.08] tracking-normal text-neutral-950 md:max-w-[34ch] md:text-[1.65rem]">
-            Use this foundation when the fit is right, or commission one with the same clarity.
+            {isSpanishCaseStory(story)
+              ? "Usar esta base cuando el encaje sea claro, o encargar una con la misma claridad."
+              : "Use this foundation when the fit is right, or commission one with the same clarity."}
           </p>
           <div data-sound-safe-area className="mt-5 grid gap-3 md:grid-cols-[repeat(3,minmax(0,auto))] md:justify-start">
             <SignalButton onClick={onOpenProject}>{ctaLabel}</SignalButton>
@@ -2728,7 +2814,7 @@ function MobileFoundationSection({
               </SignalButton>
             ) : null}
             <SignalButton variant="quiet" onClick={onBackToWork}>
-              Back to Work
+              {isSpanishCaseStory(story) ? "Volver a proyectos" : "Back to Work"}
             </SignalButton>
           </div>
         </div>
@@ -2997,6 +3083,8 @@ export default function CasePageV2({
   const sound = useSound();
   const reduceMotion = useReducedMotion();
   const sourceStory = useMemo(() => getCaseStory(slug), [slug]);
+  const isUnavailableSpanishStory =
+    locale === "es" && (!isSpanishPublicCaseStorySlug(slug) || !sourceStory?.translations?.es);
   const story = useMemo(
     () => (sourceStory ? localizeCaseStory(sourceStory, locale) : null),
     [locale, sourceStory],
@@ -3022,10 +3110,14 @@ export default function CasePageV2({
     [inspectFrames, sound],
   );
 
+  if (isUnavailableSpanishStory) {
+    return <Navigate to={getLocalizedPath("/work", locale)} replace />;
+  }
+
   if (!story) {
     return (
       <>
-        <CaseMeta story={story} noIndex={noIndex || locale === "es"} locale={locale} />
+        <CaseMeta story={story} noIndex={noIndex} locale={locale} />
         <LabFallback
           drawerOpen={drawerOpen}
           onOpenProject={onOpenProject}
@@ -3042,7 +3134,12 @@ export default function CasePageV2({
   const narrative = getCaseNarrative(story);
   const closingMove = getClosingMove(story);
   const secondaryClosingLink = getSecondaryClosingLink(story, visibleLinks);
-  const primaryLiveLink = visibleLinks[0] ?? secondaryClosingLink;
+  const primaryLiveLink = visibleLinks[0]
+    ? {
+        ...visibleLinks[0],
+        label: isSpanishCaseStory(story) ? "Ver caso" : visibleLinks[0].label,
+      }
+    : secondaryClosingLink;
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
   const isFormIndexCase = story.slug === "form-index";
@@ -3142,7 +3239,7 @@ export default function CasePageV2({
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f4f1ea] text-neutral-950">
-      <CaseMeta story={story} noIndex={noIndex || locale === "es"} locale={locale} />
+      <CaseMeta story={story} noIndex={noIndex} locale={locale} />
       <AtmosphericSiteShell preset="case" />
       <Header
         drawerOpen={drawerOpen}

@@ -3,11 +3,11 @@ import type { Dictionary } from "../types";
 export const es: Dictionary = {
   nav: {
     home: "Inicio",
-    work: "Proyectos",
-    immersive: "Inmersivo",
-    offer: "Servicios",
+    work: "Casos",
+    immersive: "XR",
+    offer: "Oferta",
     about: "Estudio",
-    startProject: "Iniciar proyecto",
+    startProject: "Iniciar",
     startProjectShort: "Iniciar",
   },
 

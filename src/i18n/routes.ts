@@ -1,5 +1,40 @@
 import { DEFAULT_LOCALE, getLocaleConfig, isLocaleCode, type LocaleCode } from "./locales";
 
+const PUBLIC_SPANISH_BASE_PATHS = new Set([
+  "/",
+  "/work",
+  "/offer",
+  "/about",
+  "/immersive",
+  "/services/premium-landing-page",
+  "/services/product-demo-landing",
+  "/services/interactive-web-systems",
+  "/work/creatorops",
+  "/work/house-of-lune",
+  "/work/barcelona-private-advisory",
+  "/immersive/whisper",
+]);
+
+const PUBLIC_SPANISH_CASE_STORY_SLUGS = new Set([
+  "creatorops",
+  "house-of-lune",
+  "barcelona-private-advisory",
+]);
+
+const PUBLIC_SPANISH_CASE_REGISTRY_SLUGS = new Set([
+  "creatorops",
+  "house-of-lune",
+  "bcn-advisory",
+]);
+
+const PUBLIC_SPANISH_SERVICE_SLUGS = new Set([
+  "premium-landing-page",
+  "product-demo-landing",
+  "interactive-web-systems",
+]);
+
+const PUBLIC_SPANISH_IMMERSIVE_SLUGS = new Set(["whisper"]);
+
 export function getLocaleFromPathname(pathname: string): LocaleCode {
   const firstSegment = pathname.split("/").filter(Boolean)[0];
 
@@ -30,4 +65,29 @@ export function getLocalizedPath(pathname: string, locale: LocaleCode): string {
   }
 
   return `${config.pathPrefix}${cleanPath === "/" ? "" : cleanPath}`;
+}
+
+function normalizePath(pathname: string): string {
+  const cleanPath = stripLocaleFromPathname(pathname || "/").replace(/\/+$/, "");
+  return cleanPath === "" ? "/" : cleanPath;
+}
+
+export function hasSpanishPublicEquivalent(pathname: string) {
+  return PUBLIC_SPANISH_BASE_PATHS.has(normalizePath(pathname));
+}
+
+export function isSpanishPublicCaseStorySlug(slug: string | undefined) {
+  return Boolean(slug && PUBLIC_SPANISH_CASE_STORY_SLUGS.has(slug));
+}
+
+export function isSpanishPublicCaseRegistrySlug(slug: string | undefined) {
+  return Boolean(slug && PUBLIC_SPANISH_CASE_REGISTRY_SLUGS.has(slug));
+}
+
+export function isSpanishPublicServiceSlug(slug: string | undefined) {
+  return Boolean(slug && PUBLIC_SPANISH_SERVICE_SLUGS.has(slug));
+}
+
+export function isSpanishPublicImmersiveSlug(slug: string | undefined) {
+  return Boolean(slug && PUBLIC_SPANISH_IMMERSIVE_SLUGS.has(slug));
 }

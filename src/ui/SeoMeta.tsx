@@ -10,6 +10,12 @@ export type SeoMetaProps = {
   imageAlt?: string;
   type?: "website" | "article";
   noIndex?: boolean;
+  alternates?: SeoAlternate[];
+};
+
+export type SeoAlternate = {
+  hreflang: string;
+  href: string;
 };
 
 function setMeta(attribute: "name" | "property", key: string, content: string) {
@@ -36,6 +42,21 @@ function setCanonical(canonicalUrl: string) {
   tag.setAttribute("href", canonicalUrl);
 }
 
+function setAlternates(alternates: SeoAlternate[] = []) {
+  document.head.querySelectorAll<HTMLLinkElement>('link[rel="alternate"][data-seo-managed="true"]').forEach((tag) => {
+    tag.remove();
+  });
+
+  alternates.forEach((alternate) => {
+    const tag = document.createElement("link");
+    tag.setAttribute("rel", "alternate");
+    tag.setAttribute("hreflang", alternate.hreflang);
+    tag.setAttribute("href", alternate.href);
+    tag.setAttribute("data-seo-managed", "true");
+    document.head.appendChild(tag);
+  });
+}
+
 export default function SeoMeta({
   title,
   description,
@@ -44,14 +65,15 @@ export default function SeoMeta({
   imageAlt,
   type = "website",
   noIndex = false,
+  alternates = [],
 }: SeoMetaProps) {
   useEffect(() => {
     const canonicalUrl = toAbsoluteSiteUrl(path);
     const imageUrl = toAbsoluteSiteUrl(image);
     const resolvedImageAlt = imageAlt ?? title;
-
     document.title = title;
     setCanonical(canonicalUrl);
+    setAlternates(alternates);
 
     setMeta("name", "description", description);
     setMeta("name", "robots", noIndex ? "noindex, nofollow" : "index, follow");
@@ -70,7 +92,7 @@ export default function SeoMeta({
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", description);
     setMeta("name", "twitter:image", imageUrl);
-  }, [description, image, imageAlt, noIndex, path, title, type]);
+  }, [alternates, description, image, imageAlt, noIndex, path, title, type]);
 
   return null;
 }

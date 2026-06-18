@@ -3,7 +3,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
-import { getLocalizedPath, getLocaleConfig, stripLocaleFromPathname, useI18n, type LocaleCode } from "../i18n";
+import {
+  getLocalizedPath,
+  getLocaleConfig,
+  hasSpanishPublicEquivalent,
+  stripLocaleFromPathname,
+  useI18n,
+  type LocaleCode,
+} from "../i18n";
 import { useActiveHeaderScene } from "../hooks/useActiveHeaderScene";
 import { useHeaderThemeMorph } from "../hooks/useHeaderThemeMorph";
 import { getHeaderMoodForPath, resolveHeaderTheme } from "./header/headerThemeTokens";
@@ -152,8 +159,9 @@ export default function Header({
 
   const onLocale = (nextLocale: LocaleCode) => {
     const nextLocaleConfig = allLocales.find((language) => language.code === nextLocale) ?? getLocaleConfig(nextLocale);
+    const isUnavailableSpanishRoute = nextLocale === "es" && !hasSpanishPublicEquivalent(cleanPathname);
 
-    if (!nextLocaleConfig.enabled || nextLocale === locale) return;
+    if (!nextLocaleConfig.enabled || isUnavailableSpanishRoute || nextLocale === locale) return;
 
     navigateWithTransition(getLocalizedPath(location.pathname, nextLocale));
   };
@@ -407,7 +415,8 @@ export default function Header({
           <div className="flex shrink-0 items-center justify-center gap-1 rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-1 py-1 text-[9px] uppercase tracking-[0.12em] text-[color:var(--header-muted)] shadow-[0_4px_14px_rgba(0,0,0,0.018)] transition-colors duration-[420ms] min-[420px]:px-1.5 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:text-[11px]">
             {allLocales.map((language) => {
               const isActive = locale === language.code;
-              const isDisabled = !language.enabled;
+              const isUnavailableSpanishRoute = language.code === "es" && !hasSpanishPublicEquivalent(cleanPathname);
+              const isDisabled = !language.enabled || isUnavailableSpanishRoute;
 
               return (
                 <button

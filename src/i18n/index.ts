@@ -11,7 +11,16 @@ export {
   isRuntimeLocaleEnabled,
 } from "./locales";
 export { spanishPreviewEnabled } from "./preview";
-export { getLocaleFromPathname, getLocalizedPath, stripLocaleFromPathname } from "./routes";
+export {
+  getLocaleFromPathname,
+  getLocalizedPath,
+  hasSpanishPublicEquivalent,
+  isSpanishPublicCaseRegistrySlug,
+  isSpanishPublicCaseStorySlug,
+  isSpanishPublicImmersiveSlug,
+  isSpanishPublicServiceSlug,
+  stripLocaleFromPathname,
+} from "./routes";
 export { useI18n } from "./useI18n";
 export type { LocaleCode, LocaleConfig } from "./locales";
 export type { Dictionary } from "./types";

@@ -14,7 +14,8 @@ import { immersiveItems, type ImmersiveItem, type ImmersiveTone } from "../data/
 import { localizeImmersiveItem } from "../data/localization";
 import { whisperCaseI18n } from "../data/whisperCaseI18n";
 import type { CaseStoryMedia } from "../data/caseStories";
-import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
+import { getLocalizedPath, isSpanishPublicImmersiveSlug, useI18n, type LocaleCode } from "../i18n";
+import { getSeoAlternates } from "../seo/alternates";
 import SeoMeta from "../ui/SeoMeta";
 import StructuredData from "../ui/StructuredData";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
@@ -254,6 +255,7 @@ function ImmersiveSeoMeta({
         imageAlt={imageAlt ?? `${item.title} immersive case`}
         type="article"
         noIndex={noIndex}
+        alternates={getSeoAlternates(path)}
       />
       <StructuredData id={`structured-data-immersive-${item.slug}`} data={structuredData} />
     </>
@@ -3079,8 +3081,12 @@ export default function ImmersiveCasePage({
   const sourceData = immersiveItems.find((item) => item.slug === slug) ?? null;
   const data = sourceData ? localizeImmersiveItem(sourceData, locale) : null;
 
+  if (locale === "es" && !isSpanishPublicImmersiveSlug(slug)) {
+    return <Navigate to={getLocalizedPath("/immersive", locale)} replace />;
+  }
+
   if (!data) {
-    return <Navigate to="/immersive" replace />;
+    return <Navigate to={getLocalizedPath("/immersive", locale)} replace />;
   }
 
   const isWhisperCase = data.slug === "whisper";
@@ -3096,7 +3102,7 @@ export default function ImmersiveCasePage({
           item={data}
           imageAlt="WHISPER immersive exhibition case"
           locale={locale}
-          noIndex={noIndex || locale === "es"}
+          noIndex={noIndex}
         />
         <Header
           drawerOpen={drawerOpen}
@@ -3210,7 +3216,7 @@ export default function ImmersiveCasePage({
         item={data}
         imageAlt={data.title}
         locale={locale}
-        noIndex={noIndex || locale === "es"}
+        noIndex={noIndex}
       />
       <Header
         drawerOpen={drawerOpen}

@@ -20,7 +20,15 @@ import { cases, getCaseBySlug, getCasePath } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
 import { localizeCase, localizeImmersiveItem, localizeServicePage } from "../data/localization";
 import { getServicePage, type ServicePageData, type ServiceProofRef } from "../data/servicePages";
-import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
+import {
+  getLocalizedPath,
+  isSpanishPublicCaseRegistrySlug,
+  isSpanishPublicImmersiveSlug,
+  isSpanishPublicServiceSlug,
+  useI18n,
+  type LocaleCode,
+} from "../i18n";
+import { getSeoAlternates } from "../seo/alternates";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -51,6 +59,13 @@ function SectionSignal({ index, label }: { index: string; label: string }) {
 }
 
 function resolveProof(ref: ServiceProofRef, locale: LocaleCode): ProofCardData | null {
+  if (locale === "es") {
+    const isPublicProof =
+      ref.source === "immersive" ? isSpanishPublicImmersiveSlug(ref.slug) : isSpanishPublicCaseRegistrySlug(ref.slug);
+
+    if (!isPublicProof) return null;
+  }
+
   if (ref.source === "immersive") {
     const sourceItem = immersiveItems.find((candidate) => candidate.slug === ref.slug);
     const item = sourceItem ? localizeImmersiveItem(sourceItem, locale) : null;
@@ -131,6 +146,7 @@ function ServiceMeta({
         imageAlt={heroProof?.alt ?? `${page.schemaName} by Brenych Studio`}
         type="website"
         noIndex={noIndex}
+        alternates={getSeoAlternates(path)}
       />
       <StructuredData id={`structured-data-service-${page.slug}`} data={serviceSchema} />
     </>
@@ -172,7 +188,12 @@ function getGalleryPriority(tone: ServicePageData["visualTone"]) {
 }
 
 function getProjectGalleryCards(tone: ServicePageData["visualTone"], locale: LocaleCode): ProofCardData[] {
-  const workCards = cases.map((sourceItem) => {
+  const sourceCases =
+    locale === "es" ? cases.filter((sourceItem) => isSpanishPublicCaseRegistrySlug(sourceItem.slug)) : cases;
+  const sourceImmersiveItems =
+    locale === "es" ? immersiveItems.filter((sourceItem) => isSpanishPublicImmersiveSlug(sourceItem.slug)) : immersiveItems;
+
+  const workCards = sourceCases.map((sourceItem) => {
     const item = localizeCase(sourceItem, locale);
 
     return {
@@ -187,7 +208,7 @@ function getProjectGalleryCards(tone: ServicePageData["visualTone"], locale: Loc
     };
   });
 
-  const immersiveCards = immersiveItems.map((sourceItem) => {
+  const immersiveCards = sourceImmersiveItems.map((sourceItem) => {
     const item = localizeImmersiveItem(sourceItem, locale);
 
     return {
@@ -1067,6 +1088,7 @@ export default function ServicePage({
   const { slug } = useParams();
   const { locale } = useI18n();
   const sourcePage = getServicePage(slug);
+  const isUnavailableSpanishService = locale === "es" && !isSpanishPublicServiceSlug(slug);
   const page = useMemo(
     () => (sourcePage ? localizeServicePage(sourcePage, locale) : null),
     [locale, sourcePage],
@@ -1076,7 +1098,7 @@ export default function ServicePage({
     [locale, page],
   );
 
-  if (!page) {
+  if (!page || isUnavailableSpanishService) {
     return <Navigate to={getLocalizedPath("/offer", locale)} replace />;
   }
 
@@ -1084,7 +1106,7 @@ export default function ServicePage({
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-neutral-950">
-      <ServiceMeta page={page} proofCards={proofCards} locale={locale} noIndex={noIndex || locale === "es"} />
+      <ServiceMeta page={page} proofCards={proofCards} locale={locale} noIndex={noIndex} />
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
       <PageSurface className="relative min-h-screen overflow-x-clip bg-transparent">
         <AtmosphericSiteShell preset="practice" />

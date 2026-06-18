@@ -609,6 +609,9 @@ export const immersiveItems: ImmersiveItem[] = [
       "Mode-aware Art Room",
       "Future XR adapter direction",
     ],
+    translations: {
+      es: spanishImmersiveTranslations.webhero,
+    },
   },
   {
     key: "koolBerk",
@@ -740,6 +743,9 @@ export const immersiveItems: ImmersiveItem[] = [
       "EPK / Press Dossier layer",
       "Future WebXR room foundation",
     ],
+    translations: {
+      es: spanishImmersiveTranslations["kool-berk"],
+    },
   },
   {
     key: "presenceOsMemoryAtlas",
@@ -952,6 +958,9 @@ export const immersiveItems: ImmersiveItem[] = [
       "XR Memory Room and VR session trace",
       "Quest-oriented gaze and hand-presence research",
     ],
+    translations: {
+      es: spanishImmersiveTranslations["presence-os-memory-atlas"],
+    },
   },
   {
     key: "orbitLens",
@@ -1110,5 +1119,8 @@ export const immersiveItems: ImmersiveItem[] = [
       "GLSL Atmospheric Light Field",
       "Optional WebXR spatial proof mode",
     ],
+    translations: {
+      es: spanishImmersiveTranslations["orbit-lens"],
+    },
   },
 ];

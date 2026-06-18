@@ -1647,6 +1647,7 @@ function createGeneratedCaseStory(slug: string): CaseStory {
   const source = cases.find((item) => item.slug === slug);
   const config = v2CaseConfigs[slug];
   const evidence = workEvidenceBySlug[slug];
+  const storyTranslation = spanishCaseStoryTranslations[slug];
 
   if (!source || !config || !evidence) {
     throw new Error(`Missing V2 case story source for ${slug}`);
@@ -1669,6 +1670,7 @@ function createGeneratedCaseStory(slug: string): CaseStory {
     technicalFoundation: config.technicalFoundation,
     availability: createAvailability(source),
     links: source.content?.links,
+    ...(storyTranslation ? { translations: { es: storyTranslation } } : {}),
   };
 }
 

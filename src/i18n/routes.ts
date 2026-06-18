@@ -9,22 +9,50 @@ const PUBLIC_SPANISH_BASE_PATHS = new Set([
   "/services/premium-landing-page",
   "/services/product-demo-landing",
   "/services/interactive-web-systems",
+  "/work/aurel-eon-gt",
+  "/work/oria-house-barcelona",
+  "/work/sprintcrm",
   "/work/creatorops",
   "/work/house-of-lune",
   "/work/barcelona-private-advisory",
+  "/work/fluid-exhibition",
+  "/work/form-index",
+  "/work/arcwave-integrations",
+  "/work/casa-nube",
+  "/work/print-border-studio",
   "/immersive/whisper",
+  "/immersive/webhero",
+  "/immersive/kool-berk",
+  "/immersive/presence-os-memory-atlas",
+  "/immersive/orbit-lens",
 ]);
 
 const PUBLIC_SPANISH_CASE_STORY_SLUGS = new Set([
+  "aurel-eon-gt",
+  "oria-house-barcelona",
+  "sprintcrm",
   "creatorops",
   "house-of-lune",
   "barcelona-private-advisory",
+  "fluid-exhibition",
+  "form-index",
+  "arcwave-integrations",
+  "casa-nube",
+  "print-border-studio",
 ]);
 
 const PUBLIC_SPANISH_CASE_REGISTRY_SLUGS = new Set([
+  "aurel-eon-gt",
+  "oria-house-barcelona",
+  "sprintcrm",
   "creatorops",
   "house-of-lune",
   "bcn-advisory",
+  "fluid-exhibition",
+  "form-index",
+  "arcwave-integrations",
+  "casa-nube",
+  "print-border-studio",
 ]);
 
 const PUBLIC_SPANISH_SERVICE_SLUGS = new Set([
@@ -33,7 +61,13 @@ const PUBLIC_SPANISH_SERVICE_SLUGS = new Set([
   "interactive-web-systems",
 ]);
 
-const PUBLIC_SPANISH_IMMERSIVE_SLUGS = new Set(["whisper"]);
+const PUBLIC_SPANISH_IMMERSIVE_SLUGS = new Set([
+  "whisper",
+  "webhero",
+  "kool-berk",
+  "presence-os-memory-atlas",
+  "orbit-lens",
+]);
 
 export function getLocaleFromPathname(pathname: string): LocaleCode {
   const firstSegment = pathname.split("/").filter(Boolean)[0];

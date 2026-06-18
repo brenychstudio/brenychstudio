@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getAvailableSystem, isAvailableSystem, type AvailableSystem } from "../data/availableSystems";
 import { cases, getCasePath } from "../data/cases";
 import { localizeCase } from "../data/localization";
-import { spanishCorePageContent } from "../data/spanishContent";
+import { spanishCorePageContent, spanishWorkEvidenceTranslations } from "../data/spanishContent";
 import {
   evidenceFilters,
   fallbackEvidence,
@@ -23,7 +23,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
-import { getLocalizedPath, isSpanishPublicCaseRegistrySlug, useI18n, type LocaleCode } from "../i18n";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -143,16 +143,52 @@ function EvidenceAtlasMeta() {
 }
 
 function getEvidenceCases(locale: LocaleCode): EvidenceCase[] {
-  const sourceCases = locale === "es" ? cases.filter((item) => isSpanishPublicCaseRegistrySlug(item.slug)) : cases;
-
-  return sourceCases.map((item) => {
+  return cases.map((item) => {
     const localizedItem = localizeCase(item, locale);
+    const evidence = workEvidenceBySlug[item.slug] ?? fallbackEvidence;
+    const translatedEvidence = locale === "es" ? spanishWorkEvidenceTranslations[item.slug] : undefined;
 
     return {
       ...localizedItem,
-      evidence: workEvidenceBySlug[item.slug] ?? fallbackEvidence,
+      evidence: translatedEvidence ? { ...evidence, ...translatedEvidence } : evidence,
     };
   });
+}
+
+function getEvidenceUi(locale: LocaleCode) {
+  const isSpanish = locale === "es";
+
+  return {
+    viewCase: isSpanish ? "Ver caso ->" : "View case ->",
+    adapt: isSpanish ? "Adaptar ->" : "Adapt ->",
+    open: isSpanish ? "Abrir ->" : "Open ->",
+    openVisualCase: isSpanish ? "Abrir caso visual ->" : "Open visual case ->",
+    evidenceIndex: isSpanish ? "Indice de prueba / escaneo compacto" : "Evidence index / compact scan",
+    proof: isSpanish ? "Prueba:" : "Proof:",
+    transformedIndex: isSpanish ? "Indice transformado / escaneo visual" : "Transformed index / visual scan",
+    systems: isSpanish ? "sistemas" : "systems",
+    stack: isSpanish ? "Stack" : "Stack",
+    systemLayers: isSpanish ? "Capas del sistema" : "System layers",
+    signals: isSpanish ? "Senales" : "Signals",
+    field: isSpanish ? "Campo" : "Field",
+    spatial: isSpanish ? "Espacial" : "Spatial",
+    index: isSpanish ? "Indice" : "Index",
+    scan: isSpanish ? "Scan" : "Scan",
+    activeFilterLabel: (filter: EvidenceFilter) =>
+      isSpanish
+        ? ({
+            All: "Todo",
+            "Premium websites": "Webs premium",
+            "Product systems": "Sistemas producto",
+            Multilingual: "Multilingue",
+            Advisory: "Asesoria",
+            Hospitality: "Hospitality",
+            Tools: "Herramientas",
+            Experimental: "Experimental",
+            "Available Systems": "Sistemas disponibles",
+          }[filter] ?? filter)
+        : filter,
+  };
 }
 
 function getAvailabilityView(system: AvailableSystem): AvailabilityView {
@@ -306,12 +342,12 @@ function SectionIntro({
 }
 
 function FilterButton({
-  filter,
+  label,
   active,
   count,
   onClick,
 }: {
-  filter: EvidenceFilter;
+  label: string;
   active: boolean;
   count: number;
   onClick: () => void;
@@ -333,7 +369,7 @@ function FilterButton({
         <span className={`relative h-1.5 w-1.5 shrink-0 rounded-full ${active ? "bg-white" : "bg-neutral-950/18 group-hover:bg-neutral-950/42"}`}>
           {active && <span className="absolute inset-0 animate-ping rounded-full bg-white/38" />}
         </span>
-        <span className="truncate">{filter}</span>
+        <span className="truncate">{label}</span>
       </span>
       <span className={`relative border-l pl-3 tabular-nums transition ${active ? "border-white/18 text-white/56" : "border-neutral-950/10 text-neutral-300 group-hover:text-neutral-500"}`}>
         {String(count).padStart(2, "0")}
@@ -348,12 +384,14 @@ function FeaturedFlowItem({
   variant = "paired",
   onOpenCase,
   onRequestSystem,
+  locale,
 }: {
   item: EvidenceCase;
   index: number;
   variant?: "selected" | "paired";
   onOpenCase: (item: EvidenceCase) => void;
   onRequestSystem: () => void;
+  locale: LocaleCode;
 }) {
   const chapterRef = useRef<HTMLElement | null>(null);
   const reducedMotion = useReducedMotion();
@@ -411,6 +449,7 @@ function FeaturedFlowItem({
         "left-[4%] top-[8%] h-[15%] w-[22%] sm:left-[4%] sm:top-[4%] sm:h-[18%] sm:w-[24%]",
       ];
   const fragmentRotations = alignRight ? [2.4, -1.8, 1.2] : [-2.4, 1.8, -1.2];
+  const ui = getEvidenceUi(locale);
 
   return (
     <motion.article
@@ -446,7 +485,7 @@ function FeaturedFlowItem({
 
         <div className="absolute bottom-5 left-3 right-3 z-50 flex items-center justify-end gap-2 sm:bottom-9 sm:left-5 sm:right-5 xl:bottom-5 xl:justify-start xl:flex-wrap" data-sound-safe-area>
           <button type="button" onClick={() => onOpenCase(item)} className="inline-flex min-h-10 max-w-full items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-4 text-[10px] uppercase tracking-[0.13em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 sm:px-5 sm:text-[11px] sm:tracking-[0.14em]">
-            View case -&gt;
+            {ui.viewCase}
           </button>
           {canRequest ? (
             <button type="button" onClick={onRequestSystem} className="hidden min-h-10 max-w-full items-center justify-center rounded-full border border-neutral-300 bg-white/72 px-4 text-[10px] uppercase tracking-[0.13em] text-neutral-700 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white sm:px-5 sm:text-[11px] sm:tracking-[0.14em] xl:inline-flex">
@@ -528,13 +567,16 @@ function FeaturedFlowItem({
 function ArchiveViewToggle({
   mode,
   onChange,
+  locale,
 }: {
   mode: ArchiveViewMode;
   onChange: (mode: ArchiveViewMode) => void;
+  locale: LocaleCode;
 }) {
+  const ui = getEvidenceUi(locale);
   const options: Array<{ value: ArchiveViewMode; label: string; caption: string }> = [
-    { value: "field", label: "Field", caption: "Spatial" },
-    { value: "index", label: "Index", caption: "Scan" },
+    { value: "field", label: ui.field, caption: ui.spatial },
+    { value: "index", label: ui.index, caption: ui.scan },
   ];
 
   return (
@@ -580,12 +622,16 @@ function WorkIndexTransformList({
   onOpenCase,
   onRequestSystem,
   onFocusCase,
+  locale,
 }: {
   items: EvidenceCase[];
   onOpenCase: (item: EvidenceCase) => void;
   onRequestSystem: () => void;
   onFocusCase: (slug: string) => void;
+  locale: LocaleCode;
 }) {
+  const ui = getEvidenceUi(locale);
+
   return (
     <>
       <motion.div
@@ -599,7 +645,7 @@ function WorkIndexTransformList({
       >
         <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:64px_64px]" />
         <div className="relative grid min-h-10 grid-cols-[1fr_auto] items-center gap-3 border-b border-neutral-950/10 px-3">
-          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400">Evidence index / compact scan</div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400">{ui.evidenceIndex}</div>
           <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-300">{String(items.length).padStart(2, "0")}</div>
         </div>
 
@@ -636,7 +682,7 @@ function WorkIndexTransformList({
                     {item.title}
                   </div>
                   <p className="mt-1 truncate text-[12px] leading-5 text-neutral-500 sm:text-[13px]">
-                    Proof: {item.evidence.proofLabel}
+                    {ui.proof} {item.evidence.proofLabel}
                   </p>
                 </button>
                 <button
@@ -645,7 +691,7 @@ function WorkIndexTransformList({
                   className="inline-flex min-h-9 items-center rounded-full border border-neutral-950 bg-neutral-950 px-3 font-mono text-[9px] uppercase tracking-[0.12em] text-white transition group-hover:-translate-y-0.5 group-hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
                   aria-label={`Open ${item.title}`}
                 >
-                  Open -&gt;
+                  {ui.open}
                 </button>
               </motion.article>
             );
@@ -663,8 +709,8 @@ function WorkIndexTransformList({
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:72px_72px]" />
       <div className="relative grid min-h-11 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/10 px-4">
-        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">Transformed index / visual scan</div>
-        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(items.length).padStart(2, "0")} systems</div>
+        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">{ui.transformedIndex}</div>
+        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(items.length).padStart(2, "0")} {ui.systems}</div>
       </div>
 
       <div className="relative">
@@ -702,7 +748,7 @@ function WorkIndexTransformList({
                   {getCaseCode(item, index)} / {item.evidence.workType}
                 </span>
                 <span className="absolute bottom-4 left-4 bg-neutral-950/24 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/76 backdrop-blur-sm">
-                  Open visual case -&gt;
+                  {ui.openVisualCase}
                 </span>
               </button>
 
@@ -722,7 +768,7 @@ function WorkIndexTransformList({
                   <p className="mt-4 max-w-[42rem] text-[14px] leading-6 text-neutral-600">{item.evidence.proofLabel}</p>
                   <div className="mt-5 grid gap-0 border-y border-neutral-950/10 lg:grid-cols-3">
                     <div className="border-b border-neutral-950/10 py-2.5 lg:border-b-0 lg:border-r lg:pr-4">
-                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">Stack</div>
+                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">{ui.stack}</div>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {stackItems.map((stackItem) => (
                           <span key={stackItem} className="border border-neutral-950/10 bg-white/38 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-500">
@@ -732,13 +778,13 @@ function WorkIndexTransformList({
                       </div>
                     </div>
                     <div className="border-b border-neutral-950/10 py-2.5 lg:border-b-0 lg:border-r lg:px-4">
-                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">System layers</div>
+                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">{ui.systemLayers}</div>
                       <div className="mt-2 font-mono text-[9px] uppercase leading-5 tracking-[0.12em] text-neutral-500">
                         {layerItems.join(" / ")}
                       </div>
                     </div>
                     <div className="py-2.5 lg:pl-4">
-                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">Signals</div>
+                      <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-300">{ui.signals}</div>
                       <div className="mt-2 font-mono text-[9px] uppercase leading-5 tracking-[0.12em] text-neutral-500">
                         {tagItems.join(" / ")}
                       </div>
@@ -752,11 +798,11 @@ function WorkIndexTransformList({
                   </div>
                   <div className="flex flex-wrap gap-2 md:justify-end">
                     <button type="button" onClick={() => onOpenCase(item)} className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
-                      View case -&gt;
+                      {ui.viewCase}
                     </button>
                     {canRequest ? (
                       <button type="button" onClick={onRequestSystem} className="inline-flex min-h-10 items-center rounded-full border border-neutral-300 bg-white/72 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white">
-                        Adapt -&gt;
+                        {ui.adapt}
                       </button>
                     ) : null}
                   </div>
@@ -782,6 +828,7 @@ export default function EvidenceAtlas({
   const { playRole, setScene, stopAmbient } = useSound();
   const routeContentReady = useDeferredRouteContent();
   const copy = locale === "es" ? spanishCorePageContent.work : null;
+  const ui = getEvidenceUi(locale);
   const evidenceCases = useMemo(() => getEvidenceCases(locale), [locale]);
   const featuredCases = useMemo(() => getFeaturedCases(evidenceCases), [evidenceCases]);
   const initialFeaturedCases = useMemo(() => featuredCases.slice(0, featuredInitialCaseCount), [featuredCases]);
@@ -1264,6 +1311,7 @@ export default function EvidenceAtlas({
                       variant="selected"
                       onOpenCase={openCase}
                       onRequestSystem={requestSystem}
+                      locale={locale}
                     />
                   </div>
                 ) : null}
@@ -1278,17 +1326,17 @@ export default function EvidenceAtlas({
                           : `${String(archiveVisibleCases.length).padStart(2, "0")} archive rows / visual index`}
                       </div>
                     </div>
-                    <ArchiveViewToggle mode={archiveViewMode} onChange={changeArchiveViewMode} />
+                    <ArchiveViewToggle mode={archiveViewMode} onChange={changeArchiveViewMode} locale={locale} />
                   </div>
                   <div className="grid gap-2 p-2 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-stretch">
                     <div className="grid grid-flow-col auto-cols-[minmax(8rem,auto)] gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:grid-flow-row sm:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))] sm:pb-0 xl:hidden [&::-webkit-scrollbar]:hidden">
                       {mobileEvidenceFilters.map((filter) => (
-                        <FilterButton key={filter} filter={filter} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
+                        <FilterButton key={filter} label={ui.activeFilterLabel(filter)} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
                       ))}
                     </div>
                     <div className="hidden gap-2 xl:grid xl:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))]">
                       {evidenceFilters.map((filter) => (
-                        <FilterButton key={filter} filter={filter} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
+                        <FilterButton key={filter} label={ui.activeFilterLabel(filter)} active={filter === activeFilter} count={filterCount(filter)} onClick={() => chooseFilter(filter)} />
                       ))}
                     </div>
                     <div className="border-y border-neutral-950/10 bg-[#f8f6f0]/62 px-3 py-2 font-mono text-[8px] uppercase leading-4 tracking-[0.13em] text-neutral-400 sm:py-3 sm:text-[9px] sm:leading-5 sm:tracking-[0.15em]">
@@ -1308,6 +1356,7 @@ export default function EvidenceAtlas({
                     onOpenCase={openCase}
                     onRequestSystem={requestSystem}
                     onFocusCase={selectCase}
+                    locale={locale}
                   />
                 ) : (
                   <motion.div
@@ -1327,6 +1376,7 @@ export default function EvidenceAtlas({
                         index={index + 1}
                         onOpenCase={openCase}
                         onRequestSystem={requestSystem}
+                        locale={locale}
                       />
                     </div>
                   ))}
@@ -1341,6 +1391,7 @@ export default function EvidenceAtlas({
                           index={index * 2 + 1}
                           onOpenCase={openCase}
                           onRequestSystem={requestSystem}
+                          locale={locale}
                         />
                       </div>
                     ))}
@@ -1354,6 +1405,7 @@ export default function EvidenceAtlas({
                           index={index * 2 + 2}
                           onOpenCase={openCase}
                           onRequestSystem={requestSystem}
+                          locale={locale}
                         />
                       </div>
                     ))}
@@ -1419,6 +1471,7 @@ export default function EvidenceAtlas({
                             index={initialFeaturedCases.length + index}
                             onOpenCase={openCase}
                             onRequestSystem={requestSystem}
+                            locale={locale}
                           />
                         ))}
                       </div>
@@ -1432,6 +1485,7 @@ export default function EvidenceAtlas({
                               index={initialFeaturedCases.length + index * 2}
                               onOpenCase={openCase}
                               onRequestSystem={requestSystem}
+                              locale={locale}
                             />
                           ))}
                         </div>
@@ -1444,6 +1498,7 @@ export default function EvidenceAtlas({
                               index={initialFeaturedCases.length + index * 2 + 1}
                               onOpenCase={openCase}
                               onRequestSystem={requestSystem}
+                              locale={locale}
                             />
                           ))}
                         </div>

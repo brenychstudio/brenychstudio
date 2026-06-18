@@ -675,7 +675,97 @@ function getCaseTypeLabel(story: CaseStory) {
   return labels[story.caseType] ?? story.caseType.replace("-", " ");
 }
 
+function localizeCaseSpineItems(items: SectionRailItem[], story: CaseStory | null) {
+  if (!story || !isSpanishCaseStory(story)) return items;
+
+  const labels: Record<string, string> = {
+    "case-threshold": "Entrada",
+    "case-walkthrough": "Recorrido",
+    "case-media": "Pantallas",
+    "case-proof-system": "Prueba",
+    "case-available": "Base",
+    "case-closing": "Siguiente",
+  };
+
+  return items.map((item) => ({
+    ...item,
+    label: labels[item.id] ?? item.label,
+  }));
+}
+
 function getClosingMove(story: CaseStory) {
+  if (isSpanishCaseStory(story)) {
+    if (story.slug === "aurel-eon-gt") {
+      return {
+        headline: "Encarga una experiencia de producto con este nivel de control.",
+        prompt: "El concepto automotriz prueba la direccion. Define universo, profundidad interactiva, sistema media y alcance de lanzamiento.",
+        steps: ["Universo", "Motion", "Lanzamiento"],
+      };
+    }
+
+    if (story.slug === "oria-house-barcelona") {
+      return {
+        headline: "Usa esta base hotelera o encarga una ruta de huesped mas precisa.",
+        prompt: "El modelo de estancia queda mapeado. Define habitaciones, rituales, logica de reserva y alcance de lanzamiento.",
+        steps: ["Rooms", "Rituales", "Contacto"],
+      };
+    }
+
+    if (story.slug === "arcwave-integrations") {
+      return {
+        headline: "Usa esta base de infraestructura o encarga una ruta de presupuesto mas clara.",
+        prompt: "El modelo de servicio queda mapeado. Define vertical tecnica, logica de instalacion, profundidad de contenido y alcance.",
+        steps: ["Vertical", "Servicios", "Brief"],
+      };
+    }
+
+    if (story.slug === "barcelona-private-advisory") {
+      return {
+        headline: "Usa esta base de inteligencia o encarga una ruta de comprador mas precisa.",
+        prompt: "El modelo advisory queda mapeado. Define mercado, lente de comprador, logica de dossier y alcance.",
+        steps: ["Mercado", "Lens", "Handoff"],
+      };
+    }
+
+    if (story.caseType === "advisory") {
+      return {
+        headline: "Usa esta base advisory o encarga una ruta de decision mas precisa.",
+        prompt: "El recorrido de decision esta estructurado. Define territorio, logica de intake y alcance de lanzamiento.",
+        steps: ["Territorio", "Fit", "Launch"],
+      };
+    }
+
+    if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+      return {
+        headline: "Convierte esta logica de workflow en un producto a medida.",
+        prompt: "El modelo operativo ya es visible. Define usuarios, estados y reglas de salida.",
+        steps: ["Usuarios", "Estados", "Salida"],
+      };
+    }
+
+    if (story.caseType === "hospitality") {
+      return {
+        headline: "Construye la proxima ruta de visitante con este ritmo.",
+        prompt: "El recorrido del lugar queda claro. Define idioma, acciones y conversion local.",
+        steps: ["Lugar", "Accion", "Launch"],
+      };
+    }
+
+    if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+      return {
+        headline: "Convierte esta gramatica visual en una nueva ruta editorial.",
+        prompt: "El modelo de motion esta probado. Define contenido, ritmo y superficie de salida.",
+        steps: ["Contenido", "Ritmo", "Salida"],
+      };
+    }
+
+    return {
+      headline: "Usa esta base o encarga una con la misma claridad.",
+      prompt: "La direccion esta estructurada. Define encaje de marca, profundidad de contenido y ritmo de lanzamiento.",
+      steps: ["Encaje", "Alcance", "Build"],
+    };
+  }
+
   if (story.slug === "aurel-eon-gt") {
     return {
       headline: "Commission a premium product experience with this level of control.",
@@ -1278,6 +1368,7 @@ function CaseSystemSpine({
 function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
   const walkthrough = getWalkthroughMedia(story);
   const narrative = getCaseNarrative(story);
+  const isSpanish = isSpanishCaseStory(story);
   const isAdvisory = story.caseType === "advisory";
 
   return (
@@ -1294,7 +1385,7 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
           <div className="pointer-events-none absolute right-[10%] top-1/2 hidden h-[22rem] w-[22rem] -translate-y-1/2 rounded-full border border-neutral-950/5 lg:block" />
           <div className="grid gap-8 lg:grid-cols-[0.56fr_0.18fr_0.52fr] lg:items-end">
             <div>
-              <SectionSignal index="02" label="System walkthrough" />
+              <SectionSignal index="02" label={isSpanish ? "Recorrido del sistema" : "System walkthrough"} />
               <h2 className="max-w-[12ch] text-[clamp(3rem,4.9vw,5.65rem)] font-semibold leading-[0.9] tracking-normal text-neutral-950">
                 {narrative.walkthroughTitle.map((line, index) => (
                   <span key={line} className={index === 1 ? "block pl-[14%]" : "block"}>
@@ -1304,9 +1395,9 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
               </h2>
             </div>
             <div className="hidden self-stretch border-l border-neutral-950/12 pl-4 font-mono text-[9px] uppercase leading-6 tracking-[0.18em] text-neutral-400 lg:grid">
-              <span>Motion grammar</span>
-              <span>Private request path</span>
-              <span>Full system proof</span>
+              <span>{isSpanish ? "Gramatica motion" : "Motion grammar"}</span>
+              <span>{isSpanish ? "Ruta de consulta privada" : "Private request path"}</span>
+              <span>{isSpanish ? "Prueba completa" : "Full system proof"}</span>
             </div>
             <div className="grid gap-5 lg:pb-2">
               <p className="max-w-[32rem] text-lg leading-[1.38] text-neutral-700 md:text-[1.18rem]">
@@ -1346,8 +1437,8 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
                 isAdvisory ? "border-neutral-950/12 text-neutral-500" : "border-white/12 text-white/52",
               ].join(" ")}
             >
-              <span>Walkthrough / full system motion</span>
-              <span>Sound optional / native controls</span>
+              <span>{isSpanish ? "Recorrido / motion del sistema" : "Walkthrough / full system motion"}</span>
+              <span>{isSpanish ? "Sonido opcional / controles nativos" : "Sound optional / native controls"}</span>
             </div>
             <div
               className={[
@@ -1767,13 +1858,23 @@ function MobileSurfaceRail({
 function EvidenceViewToggle({
   mode,
   onChange,
+  isSpanish,
 }: {
   mode: EvidenceViewMode;
   onChange: (mode: EvidenceViewMode) => void;
+  isSpanish: boolean;
 }) {
   const options: Array<{ value: EvidenceViewMode; label: string; caption: string }> = [
-    { value: "sequence", label: "Flow", caption: "Cinematic" },
-    { value: "atlas", label: "Atlas", caption: "Grid scan" },
+    {
+      value: "sequence",
+      label: isSpanish ? "Flujo" : "Flow",
+      caption: isSpanish ? "Cinematico" : "Cinematic",
+    },
+    {
+      value: "atlas",
+      label: "Atlas",
+      caption: isSpanish ? "Escaneo" : "Grid scan",
+    },
   ];
 
   return (
@@ -1821,12 +1922,14 @@ function EvidenceAtlasGrid({
   expanded,
   reducedMotion,
   onInspect,
+  isSpanish,
 }: {
   frames: CaseStoryMedia[];
   totalFrames: number;
   expanded: boolean;
   reducedMotion: boolean;
   onInspect: (id: string) => void;
+  isSpanish: boolean;
 }) {
   return (
     <motion.div
@@ -1838,14 +1941,18 @@ function EvidenceAtlasGrid({
       <div className="relative mb-5 grid gap-3 border-b border-neutral-950/10 pb-4 md:grid-cols-[1fr_auto] md:items-end">
         <div>
           <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-            Evidence atlas / {expanded ? "full field" : "first signal set"}
+            {isSpanish ? "Atlas de prueba" : "Evidence atlas"} /{" "}
+            {expanded ? (isSpanish ? "campo completo" : "full field") : isSpanish ? "primer set" : "first signal set"}
           </div>
           <p className="mt-2 max-w-[31rem] text-sm leading-6 text-neutral-600">
-            Compact scan of the case surfaces, kept inside the same inspection system as the cinematic sequence.
+            {isSpanish
+              ? "Escaneo compacto de las superficies del caso, dentro del mismo sistema de inspeccion que la secuencia cinematica."
+              : "Compact scan of the case surfaces, kept inside the same inspection system as the cinematic sequence."}
           </p>
         </div>
         <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400 md:text-right">
-          {String(frames.length).padStart(2, "0")} / {String(totalFrames).padStart(2, "0")} visible
+          {String(frames.length).padStart(2, "0")} / {String(totalFrames).padStart(2, "0")}{" "}
+          {isSpanish ? "visible" : "visible"}
         </div>
       </div>
 
@@ -1897,6 +2004,7 @@ function ScreensAsEvidence({
   const mobileFrames = getMobileFrames(story);
   const narrative = getCaseNarrative(story);
   const evidenceSignals = narrative.screenSignals;
+  const isSpanish = isSpanishCaseStory(story);
   const sound = useSound();
   const [viewMode, setViewMode] = useState<EvidenceViewMode>("sequence");
   const [expanded, setExpanded] = useState(false);
@@ -1904,8 +2012,14 @@ function ScreensAsEvidence({
   const hasHiddenFrames = frames.length > INITIAL_EVIDENCE_FRAME_COUNT;
   const hiddenFrameCount = Math.max(0, frames.length - INITIAL_EVIDENCE_FRAME_COUNT);
   const fieldSummary = expanded
-    ? `Full field / ${String(frames.length).padStart(2, "0")} visible`
-    : `Compressed field / ${String(Math.min(frames.length, INITIAL_EVIDENCE_FRAME_COUNT)).padStart(2, "0")} visible / ${String(hiddenFrameCount).padStart(2, "0")} hidden`;
+    ? `${isSpanish ? "Campo completo" : "Full field"} / ${String(frames.length).padStart(2, "0")} ${
+        isSpanish ? "visible" : "visible"
+      }`
+    : `${isSpanish ? "Campo compacto" : "Compressed field"} / ${String(
+        Math.min(frames.length, INITIAL_EVIDENCE_FRAME_COUNT),
+      ).padStart(2, "0")} ${isSpanish ? "visible" : "visible"} / ${String(hiddenFrameCount).padStart(2, "0")} ${
+        isSpanish ? "oculto" : "hidden"
+      }`;
   const changeViewMode = (nextMode: EvidenceViewMode) => {
     if (nextMode === viewMode) return;
     sound.playRole("transition");
@@ -1924,7 +2038,7 @@ function ScreensAsEvidence({
           <div className="pointer-events-none absolute right-[8%] top-1/2 h-[28rem] w-[28rem] -translate-y-1/2 rounded-full border border-neutral-950/5" />
           <div className="grid gap-8 lg:grid-cols-[0.5fr_0.22fr_0.55fr] lg:items-end">
             <div>
-              <SectionSignal index="03" label="Screens as evidence" />
+              <SectionSignal index="03" label={isSpanish ? "Pantallas como prueba" : "Screens as evidence"} />
               <h2 className="max-w-[10ch] text-[clamp(3.8rem,7vw,7.2rem)] font-semibold leading-[0.86] tracking-normal text-neutral-950">
                 {narrative.screensTitle.map((line, index) => (
                   <span key={line} className={index === 1 ? "block pl-[18%]" : "block"}>
@@ -1934,15 +2048,15 @@ function ScreensAsEvidence({
               </h2>
             </div>
             <div className="hidden self-stretch border-l border-neutral-950/12 pl-4 font-mono text-[9px] uppercase leading-6 tracking-[0.18em] text-neutral-400 lg:grid">
-              <span>Readable surfaces</span>
-              <span>No crop theatre</span>
-              <span>Proof sequence</span>
+              <span>{isSpanish ? "Superficies legibles" : "Readable surfaces"}</span>
+              <span>{isSpanish ? "Sin recorte teatral" : "No crop theatre"}</span>
+              <span>{isSpanish ? "Secuencia de prueba" : "Proof sequence"}</span>
             </div>
             <div className="relative lg:pb-3">
               <div className="relative max-w-[42rem] border-y border-neutral-950/12 py-6">
                 <div className="pointer-events-none absolute -left-12 top-1/2 hidden h-px w-12 bg-neutral-950/18 lg:block" />
                 <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-                  Inspection readout
+                  {isSpanish ? "Lectura de inspeccion" : "Inspection readout"}
                 </div>
                 <p className="mt-4 max-w-[34rem] text-xl leading-[1.22] text-neutral-800 md:text-2xl">
                   {narrative.screensReadout}
@@ -1955,7 +2069,7 @@ function ScreensAsEvidence({
                   ))}
                 </div>
                 <div className="mt-6 flex flex-col gap-4 border-t border-neutral-950/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                  <EvidenceViewToggle mode={viewMode} onChange={changeViewMode} />
+                  <EvidenceViewToggle mode={viewMode} onChange={changeViewMode} isSpanish={isSpanish} />
                   <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400 sm:max-w-[16rem] sm:text-right">
                     {fieldSummary}
                   </div>
@@ -1998,6 +2112,7 @@ function ScreensAsEvidence({
               expanded={expanded}
               reducedMotion={reducedMotion}
               onInspect={onInspect}
+              isSpanish={isSpanish}
             />
           )}
         </AnimatePresence>
@@ -2009,13 +2124,21 @@ function ScreensAsEvidence({
           <motion.div layout className="max-w-[30rem] md:justify-self-end">
             <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
               {expanded
-                ? `Full evidence field / ${String(frames.length).padStart(2, "0")} case surfaces`
-                : `Extended evidence field / ${String(hiddenFrameCount).padStart(2, "0")} more surfaces`}
+                ? `${isSpanish ? "Campo completo de prueba" : "Full evidence field"} / ${String(frames.length).padStart(2, "0")} ${
+                    isSpanish ? "superficies de caso" : "case surfaces"
+                  }`
+                : `${isSpanish ? "Campo extendido de prueba" : "Extended evidence field"} / ${String(hiddenFrameCount).padStart(2, "0")} ${
+                    isSpanish ? "superficies mas" : "more surfaces"
+                  }`}
             </div>
             <p className="mt-3 text-[14px] leading-7 text-neutral-600">
               {expanded
-                ? "The full surface is open. Collapse it back into the focused five-frame readout when the story needs more air."
-                : "The case keeps its cinematic pace first, then unfolds the rest of the proof when the viewer asks for it."}
+                ? isSpanish
+                  ? "La superficie completa esta abierta. Cierrala de nuevo al readout enfocado cuando la historia necesite mas aire."
+                  : "The full surface is open. Collapse it back into the focused five-frame readout when the story needs more air."
+                : isSpanish
+                  ? "El caso mantiene primero su ritmo cinematico y despliega el resto de la prueba cuando el visitante la pide."
+                  : "The case keeps its cinematic pace first, then unfolds the rest of the proof when the viewer asks for it."}
             </p>
             <button
               type="button"
@@ -2023,7 +2146,13 @@ function ScreensAsEvidence({
               className="mt-5 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
               aria-expanded={expanded}
             >
-              {expanded ? "Close evidence field ->" : "Open full evidence field ->"}
+              {expanded
+                ? isSpanish
+                  ? "Cerrar campo de prueba ->"
+                  : "Close evidence field ->"
+                : isSpanish
+                  ? "Abrir campo completo ->"
+                  : "Open full evidence field ->"}
             </button>
           </motion.div>
         </div>
@@ -2035,6 +2164,7 @@ function ScreensAsEvidence({
 
 function ProofBecomesSystem({ story }: { story: CaseStory }) {
   const narrative = getCaseNarrative(story);
+  const isSpanish = isSpanishCaseStory(story);
   const proofNodes = proofLedger.map((item, index) => ({
     ...item,
     label: narrative.proofLabels[index] ?? item.label,
@@ -2055,22 +2185,24 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
 
         <div className="relative grid gap-9 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
           <div className="relative z-10">
-            <SectionSignal index="04" label="Proof becomes system" />
+            <SectionSignal index="04" label={isSpanish ? "La prueba se vuelve sistema" : "Proof becomes system"} />
             <h2 className="max-w-[10ch] text-[clamp(3.3rem,6.8vw,6.4rem)] font-semibold leading-[0.84] tracking-normal text-neutral-950">
-              Proof becomes system.
+              {isSpanish ? "La prueba se vuelve sistema." : "Proof becomes system."}
             </h2>
 
             <div className="mt-7 max-w-[25rem] border-y border-neutral-950/12 py-4">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-                Proof map key
+                {isSpanish ? "Clave del mapa de prueba" : "Proof map key"}
               </div>
               <p className="mt-3 text-sm leading-7 text-neutral-600">
-                A short synthesis layer: what the previous screens prove before the case turns into an available foundation.
+                {isSpanish
+                  ? "Una capa breve de sintesis: lo que prueban las pantallas antes de convertir el caso en una base disponible."
+                  : "A short synthesis layer: what the previous screens prove before the case turns into an available foundation."}
               </p>
               <div className="mt-4 grid grid-cols-3 border-y border-neutral-950/10 py-3 font-mono text-[8px] uppercase tracking-[0.14em] text-neutral-500">
-                <span>Evidence</span>
-                <span>Logic</span>
-                <span>System</span>
+                <span>{isSpanish ? "Prueba" : "Evidence"}</span>
+                <span>{isSpanish ? "Logica" : "Logic"}</span>
+                <span>Sistema</span>
               </div>
             </div>
           </div>
@@ -2090,7 +2222,7 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
 
               <div className="relative max-w-[39rem]">
                 <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-                  System claim
+                  {isSpanish ? "Claim del sistema" : "System claim"}
                 </div>
                 <p className="mt-3 max-w-[38rem] text-[clamp(1.8rem,2.75vw,2.85rem)] leading-[1.02] text-neutral-950">
                   {compactClaim}
@@ -2120,7 +2252,7 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
               <div className="relative grid gap-4">
                 <div className="relative border-y border-neutral-950/12 py-3.5">
                   <div className="grid gap-y-3 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-[7rem_1fr] sm:gap-x-5">
-                    <span className="text-neutral-400">System spine</span>
+                    <span className="text-neutral-400">{isSpanish ? "Columna del sistema" : "System spine"}</span>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {systemSpine.map((layer, index) => (
                         <span key={layer.title} className="grid grid-cols-[1.55rem_1fr] gap-2">
@@ -2143,19 +2275,46 @@ function ProofBecomesSystem({ story }: { story: CaseStory }) {
 function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpenProject?: () => void }) {
   if (!story.availability) return null;
 
+  const isSpanish = isSpanishCaseStory(story);
   const narrative = getCaseNarrative(story);
   const blueprintMedia =
     story.slug === "aurel-eon-gt"
       ? findMedia(story, "desktop-6") ?? findMedia(story, "collection") ?? story.mediaSequence[0]
       : findMedia(story, "collection") ?? findMedia(story, "threshold") ?? story.mediaSequence[0];
   const technicalRows = story.technicalFoundation.length > 0 ? story.technicalFoundation : technicalLedger;
-  const terms = [
-    "Commissioned adaptation",
-    story.availability.exclusivityAvailable ? "Exclusivity discussed" : "Shared direction",
-    "Not a template",
-  ];
+  const terms = isSpanish
+    ? [
+        "Adaptacion a medida",
+        story.availability.exclusivityAvailable ? "Exclusividad a conversar" : "Direccion compartida",
+        "No es plantilla",
+      ]
+    : [
+        "Commissioned adaptation",
+        story.availability.exclusivityAvailable ? "Exclusivity discussed" : "Shared direction",
+        "Not a template",
+      ];
   const adaptationValue =
-    story.slug === "barcelona-private-advisory"
+    isSpanish && story.slug === "barcelona-private-advisory"
+      ? "Lente de mercado, dossier shortlist, handoff de consulta."
+      : isSpanish && story.slug === "aurel-eon-gt"
+        ? "Estados de producto, inspect flow, preview privada."
+      : isSpanish && story.caseType === "advisory"
+        ? "Estructura de mercado, shortlist, intake privado."
+      : isSpanish && (story.caseType === "workflow-tool" || story.caseType === "tool")
+        ? "Pasos de workflow, modelo de estados, logica de salida."
+      : isSpanish && story.slug === "oria-house-barcelona"
+        ? "Habitaciones, rituales de estancia, contacto de reserva."
+      : isSpanish && story.caseType === "hospitality"
+        ? "Identidad del lugar, estructura de menu, flujo de visitante."
+      : isSpanish && story.slug === "arcwave-integrations"
+        ? "Sistema de servicios, logica de instalacion, brief de presupuesto."
+      : isSpanish && story.caseType === "premium-website"
+        ? "Modelo de oferta, arquitectura de contenido, flujo de consulta."
+      : isSpanish && (story.caseType === "presentation-system" || story.caseType === "experimental")
+        ? "Modelo de contenido, ritmo media, direccion motion."
+      : isSpanish
+        ? "Marca, estructura de producto, flujo de consulta."
+      : story.slug === "barcelona-private-advisory"
       ? "Market lens, shortlist dossier, inquiry handoff."
       : story.slug === "aurel-eon-gt"
         ? "Product states, inspect flow, private preview."
@@ -2175,7 +2334,27 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
               ? "Content model, media rhythm, motion direction."
               : "Brand, product structure, inquiry flow.";
   const blueprintChips =
-    story.slug === "barcelona-private-advisory"
+    isSpanish && story.slug === "barcelona-private-advisory"
+      ? ["Lente de mercado", "Dossier handoff"]
+      : isSpanish && story.slug === "aurel-eon-gt"
+        ? ["Estados producto", "Preview privada"]
+      : isSpanish && story.caseType === "advisory"
+        ? ["Intake privado", "Front-end desplegable"]
+      : isSpanish && (story.caseType === "workflow-tool" || story.caseType === "tool")
+        ? ["Logica workflow", "Producto desplegable"]
+      : isSpanish && story.slug === "oria-house-barcelona"
+        ? ["Sistema rooms", "Contacto reserva"]
+      : isSpanish && story.caseType === "hospitality"
+        ? ["Utilidad visitante", "Front-end desplegable"]
+      : isSpanish && story.slug === "arcwave-integrations"
+        ? ["Logica instalacion", "Superficie quote-ready"]
+      : isSpanish && story.caseType === "premium-website"
+        ? ["Arquitectura servicio", "Superficie quote-ready"]
+      : isSpanish && (story.caseType === "presentation-system" || story.caseType === "experimental")
+        ? ["Ritmo media", "Superficie desplegable"]
+      : isSpanish
+        ? ["Consulta privada", "Front-end desplegable"]
+      : story.slug === "barcelona-private-advisory"
       ? ["Market lens", "Dossier handoff"]
       : story.slug === "aurel-eon-gt"
         ? ["Product states", "Private preview"]
@@ -2196,15 +2375,17 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
               : ["Private commerce", "Deployable front-end"];
   const passportRows = [
     {
-      label: "Fit",
-      value: story.availability.bestFor?.slice(0, 3).join(" / ") ?? "Jewelry / Fashion / Collector objects",
+      label: isSpanish ? "Encaje" : "Fit",
+      value:
+        story.availability.bestFor?.slice(0, 3).join(" / ") ??
+        (isSpanish ? "Producto / Servicio / Archivo" : "Jewelry / Fashion / Collector objects"),
     },
     {
-      label: "Adaptation",
+      label: isSpanish ? "Adaptacion" : "Adaptation",
       value: adaptationValue,
     },
     {
-      label: "Terms",
+      label: isSpanish ? "Terminos" : "Terms",
       value: terms.slice(0, 2).join(" / "),
     },
   ];
@@ -2222,9 +2403,9 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
         <div className="relative mx-auto grid w-full gap-8 px-4 py-10 sm:px-6 md:px-8 md:py-12">
           <div className="grid gap-8 lg:grid-cols-[0.43fr_0.57fr] lg:items-end">
             <div>
-              <SectionSignal index="05" label="Available / trust" />
+              <SectionSignal index="05" label={isSpanish ? "Base / confianza" : "Available / trust"} />
               <h2 className="max-w-[11ch] text-[clamp(4.2rem,8.6vw,8rem)] font-semibold leading-[0.84] tracking-normal text-neutral-950">
-                Available foundation.
+                {isSpanish ? "Base disponible." : "Available foundation."}
               </h2>
             </div>
             <div className="border-y border-neutral-950/12 py-5 lg:mb-4 lg:ml-0 lg:w-[34rem] lg:max-w-none xl:ml-4 xl:w-[36rem]">
@@ -2252,7 +2433,7 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
               <div className="relative flex h-full min-h-[23rem] flex-col justify-between">
                 <div>
                   <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/46">
-                    Commission blueprint
+                    {isSpanish ? "Blueprint de encargo" : "Commission blueprint"}
                   </div>
                   <p className="mt-10 max-w-[23rem] text-3xl leading-[1.02] text-white md:text-4xl">
                     {narrative.availableBlueprint}
@@ -2280,7 +2461,7 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
 
             <div className="border-y border-neutral-950/12 py-3">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-                Deployable surface
+                {isSpanish ? "Superficie desplegable" : "Deployable surface"}
               </div>
               <div className="mt-3 grid gap-y-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 sm:grid-cols-2 sm:gap-x-5">
                 {technicalRows.slice(0, 6).map((item, index) => (
@@ -2296,7 +2477,9 @@ function AvailableFoundation({ story, onOpenProject }: { story: CaseStory; onOpe
 
           <div className="grid gap-5 border-y border-neutral-950/12 px-4 py-5 md:grid-cols-[1fr_auto] md:items-center">
             <p className="max-w-4xl text-sm leading-7 text-neutral-500">
-              Final ownership, content, visual reuse, and adaptation terms are defined per project.
+              {isSpanish
+                ? "Propiedad final, contenido, reutilizacion visual y terminos de adaptacion se definen por proyecto."
+                : "Final ownership, content, visual reuse, and adaptation terms are defined per project."}
             </p>
             <SignalButton onClick={onOpenProject}>{story.availability.ctaLabel}</SignalButton>
           </div>
@@ -3093,7 +3276,7 @@ export default function CasePageV2({
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
 
   const spineItems = useMemo(
-    () => caseSpineItems.filter((item) => story?.availability || item.id !== "case-available"),
+    () => localizeCaseSpineItems(caseSpineItems.filter((item) => story?.availability || item.id !== "case-available"), story),
     [story],
   );
   const activeSpineId = useSectionRailActive(spineItems, spineItems[0]?.id);
@@ -3279,7 +3462,11 @@ export default function CasePageV2({
               className="relative z-20 max-w-[52rem] lg:max-w-[43%] xl:max-w-[45%]"
             >
               <div className="flex flex-wrap items-center gap-2">
-                {["Case system", getAvailabilitySignal(story), story.caseType.replace("-", " ")].map(
+                {[
+                  isSpanishCaseStory(story) ? "Sistema de caso" : "Case system",
+                  getAvailabilitySignal(story),
+                  getCaseTypeLabel(story),
+                ].map(
                   (item) => (
                     <span
                       key={item}
@@ -3422,7 +3609,7 @@ export default function CasePageV2({
                   </span>
                   <div className={["absolute inset-0", heroFragmentOverlayClass].join(" ")} />
                   <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", heroFragmentMetaClass].join(" ")}>
-                    signal {index + 1} / {mediaRoleLabel(media.role)}
+                    {isSpanishCaseStory(story) ? "senal" : "signal"} {index + 1} / {mediaRoleLabel(media.role)}
                   </div>
                 </motion.button>
               ))}
@@ -3458,7 +3645,7 @@ export default function CasePageV2({
               <div className="pointer-events-none absolute right-[20%] top-[12%] h-[19rem] w-[31rem] rotate-[-15deg] rounded-[50%] border border-neutral-950/[0.045]" />
               <div className="relative grid min-h-[29rem] gap-8 lg:grid-cols-[0.62fr_0.38fr] lg:items-end">
                 <div className="relative z-10">
-                  <SectionSignal index="06" label="Final conversion" />
+                  <SectionSignal index="06" label={isSpanishCaseStory(story) ? "Conversion final" : "Final conversion"} />
                   <p className="max-w-[12ch] text-[clamp(3.3rem,7.1vw,7.2rem)] font-semibold leading-[0.86] tracking-normal text-neutral-950">
                     {closingMove.headline}
                   </p>
@@ -3467,7 +3654,7 @@ export default function CasePageV2({
                 <div className="relative z-10 grid gap-5 border-y border-neutral-950/12 py-5 lg:mb-5">
                   <div>
                     <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">
-                      Next move
+                      {isSpanishCaseStory(story) ? "Siguiente movimiento" : "Next move"}
                     </div>
                     <p className="mt-4 max-w-[28rem] text-2xl leading-[1.12] text-neutral-800 md:text-[1.7rem]">
                       {closingMove.prompt}
@@ -3486,7 +3673,7 @@ export default function CasePageV2({
                       {secondaryClosingLink.label}
                     </SignalButton>
                     <SignalButton variant="quiet" onClick={goToWork}>
-                      Back to Work
+                      {isSpanishCaseStory(story) ? "Volver a proyectos" : "Back to Work"}
                     </SignalButton>
                   </div>
                 </div>

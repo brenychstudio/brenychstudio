@@ -86,18 +86,41 @@ export function localizeImmersiveItem(item: ImmersiveItem, locale: LocaleCode): 
   const videos = item.videos?.map((media, index) => {
     const mediaTranslation = translation.videos?.find((candidate) => candidate.index === index);
 
-    return mediaTranslation ? { ...media, ...mediaTranslation } : media;
+    return mediaTranslation
+      ? { ...media, ...mediaTranslation }
+      : {
+          ...media,
+          alt: `${item.title} - video ${index + 1}`,
+          label: `Video ${String(index + 1).padStart(2, "0")}`,
+          caption: translation.description,
+        };
   });
   const frames = item.frames?.map((media, index) => {
     const mediaTranslation = translation.frames?.find((candidate) => candidate.index === index);
 
-    return mediaTranslation ? { ...media, ...mediaTranslation } : media;
+    return mediaTranslation
+      ? { ...media, ...mediaTranslation }
+      : {
+          ...media,
+          alt: `${item.title} - frame ${index + 1}`,
+          label: `Frame ${String(index + 1).padStart(2, "0")}`,
+          caption: translation.description,
+        };
   });
 
   return {
     ...item,
     ...translation,
     status: translation.status as ImmersiveItem["status"],
+    links: item.links?.map((link) => ({
+      ...link,
+      label:
+        link.label.toLowerCase().includes("live")
+          ? "Sitio live"
+          : link.label.toLowerCase().includes("repo")
+            ? "Repositorio"
+            : link.label,
+    })),
     searchContent: item.searchContent
       ? {
           ...item.searchContent,

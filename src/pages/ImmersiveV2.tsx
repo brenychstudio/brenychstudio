@@ -21,7 +21,9 @@ import {
   defaultImmersiveChamberId,
   getChamberEngines,
   getImmersiveChamber,
-  immersiveApplicationLayer,
+  getLocalizedImmersiveApplicationLayer,
+  getLocalizedImmersiveChambers,
+  getLocalizedImmersiveEngineStack,
   immersiveChambers,
   immersiveEngineStack,
   type ImmersiveChamberId,
@@ -84,10 +86,6 @@ const immersiveHubChamberIds: ImmersiveChamberId[] = [
   "presence-os-memory-atlas",
   "orbit-lens",
 ];
-
-const immersiveHubChambers = immersiveChambers.filter((chamber) =>
-  immersiveHubChamberIds.includes(chamber.id),
-);
 
 const futureChambers = immersiveChambers.filter((chamber): chamber is ImmersiveSystemItem & { id: FutureChamberId } =>
   futureChamberIds.includes(chamber.id as FutureChamberId),
@@ -332,54 +330,6 @@ type MobileChamberFieldEntry = {
   mediaSrc: string;
 };
 
-const mobileChamberFieldEntries: MobileChamberFieldEntry[] = [
-  {
-    id: "whisper",
-    index: "01",
-    title: "WHISPER",
-    status: "Completed spatial proof",
-    role: "Photographic archive -> web / mobile / print / AR / room-scale proof",
-    cta: "Open WHISPER",
-    mediaSrc: "/immersive/Whisper/desktop/whisper-hero.jpg",
-  },
-  {
-    id: "webhero",
-    index: "02",
-    title: "WEBHERO",
-    status: "Advanced R&D system",
-    role: "Living visual system -> WebGL stages / Living Images / Splat Pro / Art Room / future XR adapters",
-    cta: "Open WEBHERO",
-    mediaSrc: "/immersive/webhero/desktop/webhero-threshold.webp",
-  },
-  {
-    id: "kool-berk",
-    index: "03",
-    title: "Kool Berk",
-    status: "Advanced sonic prototype",
-    role: "Music becomes a Sonic Object OS with release objects, signal studies, Web Audio and an immersive listening room",
-    cta: "Open Kool Berk",
-    mediaSrc: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
-  },
-  {
-    id: "presence-os-memory-atlas",
-    index: "04",
-    title: "Presence OS",
-    status: "Functional MVP prototype",
-    role: "Private archive becomes a presence-based memory field, XR room and exportable artifact system",
-    cta: "Open Presence OS",
-    mediaSrc: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
-  },
-  {
-    id: "orbit-lens",
-    index: "05",
-    title: "Orbit Lens",
-    status: "Functional web-first prototype",
-    role: "Fictional AI spatial glasses product OS with contextual fields, Inspect Optics, Reference Orbit and WebXR proof",
-    cta: "Open Orbit Lens",
-    mediaSrc: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
-  },
-];
-
 function WhisperProofMedia({
   proof,
   className,
@@ -614,9 +564,11 @@ type AtlasMode = "orbit" | "assemble";
 function useImmersiveChamberSelection(): ChamberSelectionState {
   const [activeChamberId, setActiveChamberId] = useState<ImmersiveChamberId>(defaultImmersiveChamberId);
   const sound = useSound();
+  const { locale } = useI18n();
+  const immersiveLocale = locale === "es" ? "es" : "en";
 
-  const activeChamber = getImmersiveChamber(activeChamberId);
-  const activeChamberEngines = getChamberEngines(activeChamberId);
+  const activeChamber = getImmersiveChamber(activeChamberId, immersiveLocale);
+  const activeChamberEngines = getChamberEngines(activeChamberId, immersiveLocale);
 
   const selectChamber = useCallback((id: ImmersiveChamberId, feedback: "transition" | "select" | "none" = "transition") => {
     if (id !== activeChamberId && feedback !== "none") sound.playRole(feedback);
@@ -658,6 +610,10 @@ function SpatialChamberOrbit({
   selectChamber: (id: ImmersiveChamberId, feedback?: "transition" | "select" | "none") => void;
   openChamber: (id: ImmersiveChamberId) => void;
 }) {
+  const { locale } = useI18n();
+  const localizedHubChambers = getLocalizedImmersiveChambers(locale === "es" ? "es" : "en").filter((chamber) =>
+    immersiveHubChamberIds.includes(chamber.id),
+  );
   const orbitSlots: Record<string, {
     width: string;
     height: string;
@@ -733,12 +689,12 @@ function SpatialChamberOrbit({
   };
   const reduceMotion = useReducedMotion();
   const sound = useSound();
-  const initialIndex = Math.max(0, immersiveHubChambers.findIndex((item) => item.id === activeChamberId));
+  const initialIndex = Math.max(0, localizedHubChambers.findIndex((item) => item.id === activeChamberId));
   const orbitRef = useRef<HTMLDivElement | null>(null);
   const lastWheelRef = useRef(0);
   const [activeOrbitIndex, setActiveOrbitIndex] = useState(initialIndex);
   const [hoveredId, setHoveredId] = useState<ImmersiveChamberId | null>(null);
-  const activeIndex = Math.max(0, immersiveHubChambers.findIndex((item) => item.id === activeChamberId));
+  const activeIndex = Math.max(0, localizedHubChambers.findIndex((item) => item.id === activeChamberId));
 
   useEffect(() => {
     if (activeIndex < 0) return;
@@ -751,8 +707,8 @@ function SpatialChamberOrbit({
 
   const moveOrbit = useCallback((direction: 1 | -1, feedback: "transition" | "select" | "none" = "transition") => {
     setActiveOrbitIndex((current) => {
-      const nextIndex = (current + direction + immersiveHubChambers.length) % immersiveHubChambers.length;
-      const nextChamber = immersiveHubChambers[nextIndex];
+      const nextIndex = (current + direction + localizedHubChambers.length) % localizedHubChambers.length;
+      const nextChamber = localizedHubChambers[nextIndex];
 
       if (nextChamber) selectChamber(nextChamber.id, feedback);
 
@@ -760,7 +716,7 @@ function SpatialChamberOrbit({
     });
 
     if (feedback !== "none") sound.playRole(feedback);
-  }, [selectChamber, sound]);
+  }, [localizedHubChambers, selectChamber, sound]);
 
   const focusChamber = (id: ImmersiveChamberId, index: number) => {
     setActiveOrbitIndex(index);
@@ -828,9 +784,9 @@ function SpatialChamberOrbit({
       >
         <div className="pointer-events-none absolute left-[8%] top-[10%] h-[74%] w-[82%] rounded-[50%] border border-neutral-950/[0.055]" />
 
-        {immersiveHubChambers.map((chamber, index) => {
+        {localizedHubChambers.map((chamber, index) => {
           const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
-          const offset = circularOrbitOffset(index, activeOrbitIndex, immersiveHubChambers.length);
+          const offset = circularOrbitOffset(index, activeOrbitIndex, localizedHubChambers.length);
           const abs = Math.abs(offset);
           const visible = abs <= 2.05;
           const active = index === activeOrbitIndex;
@@ -942,7 +898,7 @@ function SpatialChamberOrbit({
         </div>
 
         <div className="flex gap-3 overflow-x-auto pb-2">
-          {immersiveHubChambers.map((chamber, index) => (
+          {localizedHubChambers.map((chamber, index) => (
             <button
               key={chamber.id}
               type="button"
@@ -1306,6 +1262,11 @@ function PracticeMapScene({
   openChamber: (id: ImmersiveChamberId) => void;
 }) {
   const sound = useSound();
+  const { locale } = useI18n();
+  const immersiveLocale = locale === "es" ? "es" : "en";
+  const immersiveHubChambers = getLocalizedImmersiveChambers(immersiveLocale).filter((chamber) =>
+    immersiveHubChamberIds.includes(chamber.id),
+  );
   const activeChamber = chamberState.activeChamber;
   const activePoster = activeChamber.media?.poster ?? activeChamber.media?.stills?.[0] ?? "";
   const activeEngines = chamberState.activeChamberEngines.slice(0, 4);
@@ -1314,9 +1275,9 @@ function PracticeMapScene({
   const [inspectedChamberId, setInspectedChamberId] = useState<ImmersiveChamberId | null>(null);
   const [atlasPlaneOffsets, setAtlasPlaneOffsets] = useState<Partial<Record<ImmersiveChamberId, { x: number; y: number }>>>({});
   const reduceMotion = useReducedMotion();
-  const inspectedChamber = inspectedChamberId ? getImmersiveChamber(inspectedChamberId) : null;
+  const inspectedChamber = inspectedChamberId ? getImmersiveChamber(inspectedChamberId, immersiveLocale) : null;
   const atlasSignalChamber = inspectedChamber ?? activeChamber;
-  const atlasEngines = getChamberEngines(inspectedChamberId ?? chamberState.activeChamberId).slice(0, 3);
+  const atlasEngines = getChamberEngines(inspectedChamberId ?? chamberState.activeChamberId, immersiveLocale).slice(0, 3);
   const modeTransitionLabel = atlasMode === "assemble" ? "Assembling field" : "Returning orbit";
   const wheelLockRef = useRef(0);
   const dragStartRef = useRef<{ x: number; y: number } | null>(null);
@@ -1354,7 +1315,7 @@ function PracticeMapScene({
     const nextId = immersiveHubChambers[nextIndex].id;
     selectAtlasChamber(nextId);
     if (atlasOpen) setInspectedChamberId(nextId);
-  }, [atlasActiveChamberId, atlasOpen, selectAtlasChamber]);
+  }, [atlasActiveChamberId, atlasOpen, immersiveHubChambers, selectAtlasChamber]);
 
   const clampPlaneOffsetX = (value: number) => Math.max(-240, Math.min(240, value));
   const clampPlaneOffsetY = (value: number) => Math.max(-160, Math.min(220, value));
@@ -2002,7 +1963,7 @@ function PracticeMapScene({
                   <div className="grid gap-8 lg:grid-cols-2">
                     {immersiveHubChambers.map((chamber, index) => {
                       const poster = chamber.media?.poster ?? chamber.media?.stills?.[0] ?? activePoster;
-                      const engines = getChamberEngines(chamber.id).slice(0, 3);
+                      const engines = getChamberEngines(chamber.id, immersiveLocale).slice(0, 3);
                       const featured = index === 0 || index === 3;
 
                       return (
@@ -2406,9 +2367,11 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
 function EngineStackScene() {
   const prefersReducedMotion = useReducedMotion();
   const sound = useSound();
+  const { locale } = useI18n();
+  const localizedEngineStack = getLocalizedImmersiveEngineStack(locale === "es" ? "es" : "en");
   const [activeEngineIndex, setActiveEngineIndex] = useState<number | null>(null);
   const activeSignalTop =
-    activeEngineIndex == null ? "8%" : `${((activeEngineIndex + 0.5) / immersiveEngineStack.length) * 100}%`;
+    activeEngineIndex == null ? "8%" : `${((activeEngineIndex + 0.5) / localizedEngineStack.length) * 100}%`;
   const focusEngine = (index: number, feedback: "hover" | "select" = "hover") => {
     if (feedback === "select" || activeEngineIndex !== index) sound.playRole(feedback);
     setActiveEngineIndex(index);
@@ -2459,7 +2422,7 @@ function EngineStackScene() {
             transition={{ duration: 0.34, ease }}
           />
 
-          {immersiveEngineStack.map((engine, index) => {
+          {localizedEngineStack.map((engine, index) => {
             const active = activeEngineIndex === index;
 
             return (
@@ -2545,7 +2508,37 @@ function EngineStackScene() {
 }
 
 function FutureChambersScene() {
-  const chambers = futureChambers;
+  const { locale } = useI18n();
+  const immersiveLocale = locale === "es" ? "es" : "en";
+  const chambers = getLocalizedImmersiveChambers(immersiveLocale).filter((chamber): chamber is ImmersiveSystemItem & { id: FutureChamberId } =>
+    futureChamberIds.includes(chamber.id as FutureChamberId),
+  );
+  const labels =
+    locale === "es"
+      ? {
+          eyebrow: "Camaras preparadas / sistemas en desarrollo",
+          title: "Tres camaras preparadas para las proximas pruebas.",
+          body:
+            "No son case studies publicos todavia. Son direcciones preparadas para futuros sistemas de producto, archivo y continuacion collector.",
+          register: "Registro de direccion futura",
+          registerBody:
+            "Direcciones preparadas, no case studies publicos. La primera camara es un prototipo experimental real; las otras trazan rutas de producto, archivo y collector.",
+          directions: "03 direcciones",
+          role: "Rol",
+          proof: "Va a probar",
+        }
+      : {
+          eyebrow: "Prepared chambers / systems in development",
+          title: "Three chambers prepared for the next proofs.",
+          body:
+            "These are not public cases yet. They are prepared directions for future product, archive, and collector continuation systems.",
+          register: "Future Direction Register",
+          registerBody:
+            "Prepared directions, not public case studies. The first chamber is a real experimental signal prototype, while the other two map future product, archive, and collector paths.",
+          directions: "03 directions",
+          role: "Role",
+          proof: "Will prove",
+        };
   const sound = useSound();
   const [inspectedTraceId, setInspectedTraceId] = useState<FutureChamberId | null>(null);
   const [previewTrace, setPreviewTrace] = useState<{
@@ -2576,14 +2569,13 @@ function FutureChambersScene() {
     <Chapter id="future" className="relative min-h-screen scroll-mt-24 px-4 pb-16 pt-16 sm:px-6 lg:px-8">
       <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] content-start gap-10 xl:grid-cols-[minmax(360px,0.55fr)_minmax(720px,1fr)] xl:items-start xl:pt-[16vh]">
         <div className="relative z-10">
-          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Prepared chambers / systems in development</div>
+          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{labels.eyebrow}</div>
           <KineticTitle
-            text="Three chambers prepared for the next proofs."
+            text={labels.title}
             className="mt-6 max-w-[10.5ch] text-[58px] font-normal leading-[0.86] tracking-normal text-neutral-950 sm:text-[88px] xl:text-[108px]"
           />
           <p className="mt-8 max-w-[32rem] text-[15px] leading-8 text-neutral-600">
-            These are not public cases yet. They are prepared directions for future product, archive, and collector
-            continuation systems.
+            {labels.body}
           </p>
         </div>
 
@@ -2599,12 +2591,12 @@ function FutureChambersScene() {
           <div className="relative z-10">
             <div className="grid gap-4 border-b border-neutral-950/12 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-end sm:px-7">
               <div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">Future Direction Register</div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">{labels.register}</div>
                 <p className="mt-2 max-w-[31rem] text-[13px] leading-6 text-neutral-500">
-                  Prepared directions, not public case studies. The first chamber is a real experimental signal prototype, while the other two map future product, archive, and collector paths.
+                  {labels.registerBody}
                 </p>
               </div>
-              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">03 directions</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">{labels.directions}</div>
             </div>
 
             <div className="divide-y divide-neutral-950/12">
@@ -2637,12 +2629,12 @@ function FutureChambersScene() {
                       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,20rem)]">
                         <div className="grid content-start gap-4">
                           <div>
-                            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Role</div>
+                            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{labels.role}</div>
                             <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.role}</p>
                           </div>
 
                           <div>
-                            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Will prove</div>
+                            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{labels.proof}</div>
                             <p className="mt-1.5 text-[13px] leading-6 text-neutral-600">{details.proof}</p>
                           </div>
 
@@ -2827,6 +2819,9 @@ function FutureChambersScene() {
 }
 
 function ApplicationLayerScene() {
+  const { locale } = useI18n();
+  const localizedApplicationLayer = getLocalizedImmersiveApplicationLayer(locale === "es" ? "es" : "en");
+
   return (
     <Chapter id="applications" className="relative min-h-screen px-4 pb-16 pt-10 sm:px-6 lg:px-8">
       <div className="mx-auto grid min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center gap-14 xl:grid-cols-[0.46fr_0.54fr]">
@@ -2839,7 +2834,7 @@ function ApplicationLayerScene() {
         </div>
 
         <div className="border-y border-neutral-950/14">
-          {immersiveApplicationLayer.map((layer, index) => (
+          {localizedApplicationLayer.map((layer, index) => (
             <motion.div
               key={layer}
               className="grid gap-5 border-b border-neutral-950/12 py-7 last:border-b-0 md:grid-cols-[0.16fr_0.84fr]"
@@ -2941,6 +2936,40 @@ function MobileImmersiveHero({
   onOpenOrbitLens: () => void;
   onOpenProject?: () => void;
 }) {
+  const { locale } = useI18n();
+  const labels =
+    locale === "es"
+      ? {
+          eyebrow: "Hub de sistemas inmersivos",
+          map: "Mapa de camaras",
+          title: "Sistemas de interfaz inmersiva.",
+          body:
+            "Entornos web cinematicos, archivos espaciales, universos de producto, continuaciones AR, interfaces basadas en presencia y prototipos WebXR.",
+          note: "Webs como escenas, archivos como salas, productos como mundos e interfaces como campos vivos.",
+          explore: "Explorar camaras ->",
+          openPresence: "Abrir Presence OS ->",
+          openOrbit: "Abrir Orbit Lens ->",
+          openKool: "Abrir Kool Berk ->",
+          openWebHero: "Abrir WEBHERO ->",
+          openWhisper: "Abrir WHISPER ->",
+          start: "Iniciar prototipo inmersivo ->",
+        }
+      : {
+          eyebrow: "Immersive interface systems hub",
+          map: "Chamber map",
+          title: "Immersive interface systems.",
+          body:
+            "Cinematic web environments, spatial archives, product worlds, AR continuations, presence-based interfaces, and WebXR-ready prototypes.",
+          note: "Websites as scenes, archives as rooms, products as worlds, interfaces as living fields.",
+          explore: "Explore chambers ->",
+          openPresence: "Open Presence OS ->",
+          openOrbit: "Open Orbit Lens ->",
+          openKool: "Open Kool Berk ->",
+          openWebHero: "Open WEBHERO ->",
+          openWhisper: "Open WHISPER ->",
+          start: "Start immersive prototype ->",
+        };
+
   return (
     <section
       id="threshold"
@@ -2954,37 +2983,36 @@ function MobileImmersiveHero({
       <div className="relative z-10 mx-auto max-w-[42rem]">
         <div className="flex flex-wrap gap-2">
           <span className="rounded-full border border-neutral-300/70 bg-white/56 px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-            Immersive interface systems hub
+            {labels.eyebrow}
           </span>
           <span className="rounded-full border border-neutral-300/70 bg-white/38 px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-            Chamber map
+            {labels.map}
           </span>
         </div>
 
         <h1 className="mt-9 max-w-[8.6ch] text-[clamp(4.7rem,17.4vw,8.7rem)] font-normal leading-[0.8] tracking-[-0.08em] text-neutral-950">
-          Immersive interface systems.
+          {labels.title}
         </h1>
 
         <p className="mt-8 max-w-[36rem] text-[18px] leading-[1.7] text-neutral-600 sm:text-[20px]">
-          Cinematic web environments, spatial archives, product worlds, AR continuations, presence-based interfaces,
-          and WebXR-ready prototypes.
+          {labels.body}
         </p>
 
         <p className="mt-5 max-w-[34rem] text-[15px] leading-7 text-neutral-500">
-          Websites as scenes, archives as rooms, products as worlds, interfaces as living fields.
+          {labels.note}
         </p>
 
         <div className="mt-9 flex flex-wrap gap-3">
           <MobileAction variant="dark" onClick={onExploreChambers}>
-            Explore chambers -&gt;
+            {labels.explore}
           </MobileAction>
-          <MobileAction onClick={onOpenPresenceOs}>Open Presence OS -&gt;</MobileAction>
-          <MobileAction onClick={onOpenOrbitLens}>Open Orbit Lens -&gt;</MobileAction>
-          <MobileAction onClick={onOpenKoolBerk}>Open Kool Berk -&gt;</MobileAction>
-          <MobileAction onClick={onOpenWebHero}>Open WEBHERO -&gt;</MobileAction>
-          <MobileAction onClick={onOpenWhisper}>Open WHISPER -&gt;</MobileAction>
+          <MobileAction onClick={onOpenPresenceOs}>{labels.openPresence}</MobileAction>
+          <MobileAction onClick={onOpenOrbitLens}>{labels.openOrbit}</MobileAction>
+          <MobileAction onClick={onOpenKoolBerk}>{labels.openKool}</MobileAction>
+          <MobileAction onClick={onOpenWebHero}>{labels.openWebHero}</MobileAction>
+          <MobileAction onClick={onOpenWhisper}>{labels.openWhisper}</MobileAction>
           <MobileAction onClick={onOpenProject} className="min-w-[16rem]">
-            Start immersive prototype -&gt;
+            {labels.start}
           </MobileAction>
         </div>
       </div>
@@ -3006,8 +3034,43 @@ function MobileChamberField({
   onOpenOrbitLens: () => void;
 }) {
   const sound = useSound();
+  const { locale } = useI18n();
+  const immersiveLocale = locale === "es" ? "es" : "en";
+  const labels =
+    locale === "es"
+      ? {
+          section: "02 / Campo de camaras",
+          modes: { field: "campo", index: "indice" },
+          swipe: "Orbita swipe",
+          active: "Camara activa",
+          prepared: "Plano preparado",
+          prev: "Anterior",
+          next: "Siguiente",
+        }
+      : {
+          section: "02 / Chamber field",
+          modes: { field: "field", index: "index" },
+          swipe: "Swipe orbit",
+          active: "Active chamber",
+          prepared: "Prepared plane",
+          prev: "Prev",
+          next: "Next",
+        };
   const [mode, setMode] = useState<MobileChamberFieldMode>("field");
   const [activeId, setActiveId] = useState<MobileChamberFieldId>("whisper");
+  const mobileChamberFieldEntries: MobileChamberFieldEntry[] = getLocalizedImmersiveChambers(immersiveLocale)
+    .filter((chamber): chamber is ImmersiveSystemItem & { id: MobileChamberFieldId } =>
+      immersiveHubChamberIds.includes(chamber.id),
+    )
+    .map((chamber, index) => ({
+      id: chamber.id,
+      index: String(index + 1).padStart(2, "0"),
+      title: chamber.shortTitle,
+      status: chamber.statusLabel,
+      role: chamber.role,
+      cta: chamber.ctaLabel ?? (locale === "es" ? "Abrir camara" : "Open chamber"),
+      mediaSrc: chamber.media?.poster ?? chamber.media?.stills?.[0] ?? "",
+    }));
   const activeEntry =
     mobileChamberFieldEntries.find((entry) => entry.id === activeId) ?? mobileChamberFieldEntries[0];
   const activeIndex = Math.max(0, mobileChamberFieldEntries.findIndex((entry) => entry.id === activeId));
@@ -3068,7 +3131,7 @@ function MobileChamberField({
 
       <div className="relative z-10 mx-auto max-w-[42rem]">
         <div className="flex items-center justify-between gap-4">
-          <MobileSectionLabel>02 / Chamber field</MobileSectionLabel>
+          <MobileSectionLabel>{labels.section}</MobileSectionLabel>
           <div className="grid grid-cols-2 overflow-hidden rounded-full border border-neutral-950/12 bg-white/42 p-1 text-[8px] uppercase tracking-[0.14em] text-neutral-500 backdrop-blur">
             {(["field", "index"] as const).map((item) => (
               <button
@@ -3084,7 +3147,7 @@ function MobileChamberField({
                   mode === item ? "bg-neutral-950 text-white" : "text-neutral-500"
                 }`}
               >
-                {item}
+                {labels.modes[item]}
               </button>
             ))}
           </div>
@@ -3115,7 +3178,7 @@ function MobileChamberField({
                 <div className="pointer-events-none absolute left-[7%] top-[12%] h-[76%] w-[86%] rounded-[50%] border border-neutral-950/[0.07]" />
                 <div className="pointer-events-none absolute left-[-4%] top-[50%] h-px w-[108%] rotate-[-10deg] bg-gradient-to-r from-transparent via-neutral-950/18 to-transparent" />
                 <div className="pointer-events-none absolute right-[6%] top-2 z-40 border-y border-neutral-950/12 bg-white/62 px-3 py-1.5 font-mono text-[7px] uppercase tracking-[0.18em] text-neutral-500 shadow-[0_10px_28px_rgba(0,0,0,0.05)] backdrop-blur">
-                  Swipe orbit
+                  {labels.swipe}
                 </div>
 
                 <motion.div
@@ -3192,7 +3255,7 @@ function MobileChamberField({
                         />
                         <span className="absolute inset-0 bg-[radial-gradient(circle_at_52%_32%,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.18)_52%,rgba(0,0,0,0.72))]" />
                         <span className="pointer-events-none absolute inset-x-4 top-4 flex items-center justify-between border-y border-white/15 py-2 font-mono text-[8px] uppercase tracking-[0.17em] text-white/58">
-                          <span>{active ? "Active chamber" : "Prepared plane"}</span>
+                          <span>{active ? labels.active : labels.prepared}</span>
                           <span>{entry.index}</span>
                         </span>
                         <span className="pointer-events-none absolute bottom-5 left-5 right-5">
@@ -3222,7 +3285,7 @@ function MobileChamberField({
                     onClick={() => selectEntryByOffset(-1)}
                     className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
                   >
-                    Prev
+                    {labels.prev}
                   </button>
                   <div className="flex items-center gap-2">
                     {mobileChamberFieldEntries.map((entry) => (
@@ -3244,7 +3307,7 @@ function MobileChamberField({
                     onClick={() => selectEntryByOffset(1)}
                     className="border-y border-neutral-950/16 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition hover:border-neutral-950/44 hover:text-neutral-950"
                   >
-                    Next
+                    {labels.next}
                   </button>
                 </div>
 

@@ -2813,6 +2813,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems],
     relatedCases: ["house-of-lune", "arcwave-integrations"],
     clientType: "Luxury product / mobility concept",
+    translations: {
+      es: spanishCaseRegistryTranslations["aurel-eon-gt"],
+    },
   },
   "oria-house-barcelona": {
     category: "Premium Website",
@@ -2827,6 +2830,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.interactiveSystems],
     relatedCases: ["casa-nube", "barcelona-private-advisory"],
     clientType: "Boutique hospitality",
+    translations: {
+      es: spanishCaseRegistryTranslations["oria-house-barcelona"],
+    },
   },
   sprintcrm: {
     category: "Product Interface",
@@ -2841,6 +2847,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems],
     relatedCases: ["creatorops", "print-border-studio"],
     clientType: "Internal operations / sales teams",
+    translations: {
+      es: spanishCaseRegistryTranslations.sprintcrm,
+    },
   },
   "bcn-advisory": {
     category: "Premium Website",
@@ -2891,6 +2900,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
     relatedCases: ["form-index", "print-border-studio"],
     clientType: "Culture / exhibition / editorial projects",
+    translations: {
+      es: spanishCaseRegistryTranslations["fluid-exhibition"],
+    },
   },
   "form-index": {
     category: "Editorial / Archive",
@@ -2905,6 +2917,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.interactiveSystems, sharedServicePaths.premiumLanding],
     relatedCases: ["fluid-exhibition", "arcwave-integrations"],
     clientType: "Editorial / cultural / product presentation",
+    translations: {
+      es: spanishCaseRegistryTranslations["form-index"],
+    },
   },
   "arcwave-integrations": {
     category: "Commercial Surface",
@@ -2919,6 +2934,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.premiumLanding, sharedServicePaths.productDemo],
     relatedCases: ["form-index", "creatorops"],
     clientType: "Technical services / installation companies",
+    translations: {
+      es: spanishCaseRegistryTranslations["arcwave-integrations"],
+    },
   },
   "casa-nube": {
     category: "Premium Website",
@@ -2933,6 +2951,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.premiumLanding],
     relatedCases: ["oria-house-barcelona", "barcelona-private-advisory"],
     clientType: "Hospitality / local business",
+    translations: {
+      es: spanishCaseRegistryTranslations["casa-nube"],
+    },
   },
   "print-border-studio": {
     category: "Creative Tool",
@@ -2947,6 +2968,9 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     relatedServices: [sharedServicePaths.productDemo, sharedServicePaths.interactiveSystems],
     relatedCases: ["creatorops", "fluid-exhibition"],
     clientType: "Artists / studios / print workflows",
+    translations: {
+      es: spanishCaseRegistryTranslations["print-border-studio"],
+    },
   },
   "house-of-lune": {
     category: "Premium Website",

@@ -140,6 +140,16 @@ export type CorePageTranslation = {
   seo: SeoDraft;
 };
 
+export type WorkEvidenceTranslation = {
+  proofLabel: string;
+  proofSummary: string;
+  systemTags: string[];
+  workType: string;
+  capability: string;
+  layers: string[];
+  proofPoints: string[];
+};
+
 export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
   "/": {
     title: "Brenych Studio - sistemas front-end premium",
@@ -583,6 +593,230 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
 };
 
 export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTranslation> = {
+  "aurel-eon-gt": {
+    shortDescription:
+      "Una experiencia de lanzamiento para un gran turismo electrico ficticio, con estados cinematograficos, inspeccion visual y preview privada.",
+    longDescription:
+      "AUREL EON GT demuestra como un lanzamiento automotriz premium puede funcionar como sistema de producto: presencia, senal, galeria, inspeccion, caracter de conduccion y preview privada conectados en una experiencia front-end controlada.",
+    tags: ["Concepto automotriz", "UX cinematografica", "Sistema de producto", "Storytelling interactivo"],
+    ctaLabel: "Ver caso",
+    alt: "Experiencia premium de producto AUREL EON GT",
+    clientType: "Concepto automotriz / producto premium",
+    seoTitle: "AUREL EON GT - experiencia premium de producto automotriz",
+    seoDescription:
+      "Caso de lanzamiento automotriz ficticio con estados cinematicos, inspeccion visual, galeria, drive character y preview privada.",
+    ogTitle: "AUREL EON GT - lanzamiento automotriz como sistema",
+    ogDescription:
+      "Un concepto GT electrico convertido en experiencia de producto viva, con motion, inspeccion y narrativa premium.",
+    searchContent: {
+      type: "Experiencia premium de producto automotriz.",
+      audience: "Marcas de producto, conceptos automotrices, lanzamientos premium y demos visuales de alto control.",
+      problem:
+        "Un lanzamiento premium puede perder fuerza si se reduce a una pagina estatica o a renders sin logica de experiencia.",
+      approach:
+        "La interfaz organiza llegada, exterior, firma luminica, cabina, materialidad, galeria, inspeccion y preview privada como estados de producto.",
+      outcome:
+        "El caso demuestra una direccion de producto cinematografica, interactiva y honesta como prototipo avanzado.",
+      productionFacts: ["React", "TypeScript", "Vite", "Motion", "Sistema responsive", "Pipeline WebP"],
+      relatedServices: ["Landing page premium", "Sistemas web interactivos"],
+    },
+  },
+  "oria-house-barcelona": {
+    shortDescription:
+      "Un sistema hospitality para hotel boutique en Barcelona, con atmosfera, comparacion de habitaciones, experiencias y contacto de reserva.",
+    longDescription:
+      "Oria House Barcelona demuestra como una web de hotel boutique puede equilibrar deseo y utilidad: atmosfera de estancia, ritmo de habitaciones, decision asistida, experiencias, contexto local y contacto claro.",
+    tags: ["Hospitality", "Hotel boutique", "Comparacion de habitaciones", "Contacto de reserva"],
+    ctaLabel: "Ver caso",
+    alt: "Sistema hospitality Oria House Barcelona",
+    clientType: "Hospitality boutique",
+    seoTitle: "Oria House Barcelona - sistema web para hotel boutique",
+    seoDescription:
+      "Caso hospitality para hotel boutique con atmosfera, habitaciones, experiencias, contexto local y contacto de reserva.",
+    ogTitle: "Oria House Barcelona - hospitality como sistema",
+    ogDescription:
+      "Una superficie hotelera donde atmosfera, decision de habitacion y contacto avanzan como una ruta calmada.",
+    searchContent: {
+      type: "Sitio web premium para hotel boutique.",
+      audience: "Hoteles boutique, guest houses, retreats, serviced apartments y marcas hospitality.",
+      problem:
+        "Las webs hoteleras suelen caer en plantillas frias o en conversion directa antes de construir deseo y confianza.",
+      approach:
+        "La experiencia conecta atmosfera, habitaciones, comparacion, detalle, experiencias, localizacion y contacto.",
+      outcome:
+        "El caso muestra una ruta guest-first donde el visitante siente la estancia y puede actuar sin friccion.",
+      productionFacts: ["Astro", "TypeScript", "Tailwind CSS", "Rutas EN/ES", "Media WebP", "Despliegue Cloudflare"],
+      relatedServices: ["Landing page premium", "Sistemas web interactivos"],
+    },
+  },
+  sprintcrm: {
+    shortDescription:
+      "Un CRM interno premium para outreach, importacion de leads, pipeline, accion diaria y reporting orientado al operador.",
+    longDescription:
+      "SprintCRM demuestra pensamiento de producto para operaciones internas: estados de datos, importacion, seguimiento diario, pipeline y reportes se convierten en una superficie de trabajo enfocada.",
+    tags: ["CRM", "Sistema interno", "Workflow UX", "Consola de operador"],
+    ctaLabel: "Ver caso",
+    alt: "Interfaz SprintCRM para workflow de operador",
+    clientType: "Operaciones internas / equipos comerciales",
+    seoTitle: "SprintCRM - CRM interno y workflow de operador",
+    seoDescription:
+      "Caso de producto interno con importacion XLSX/CSV, pipeline, acciones diarias, reporting y superficie de operador.",
+    ogTitle: "SprintCRM - workflow operativo como sistema",
+    ogDescription:
+      "Un CRM interno que convierte importacion, seguimiento, pipeline y reportes en una interfaz calmada.",
+    searchContent: {
+      type: "Interfaz de producto CRM interno.",
+      audience: "Equipos comerciales, operadores internos, founders y procesos de outreach.",
+      problem:
+        "El outreach se fragmenta entre hojas de calculo, notas, recordatorios manuales y estados dispersos.",
+      approach:
+        "La interfaz estructura importacion, revision de leads, drawer de detalle, acciones, pipeline y reportes.",
+      outcome:
+        "El caso muestra una herramienta seria de producto interno, no solo una maqueta visual.",
+      productionFacts: ["React", "TypeScript", "Vite", "Supabase", "Import XLSX/CSV", "UI multilingue"],
+      relatedServices: ["Landing page de producto", "Sistemas web interactivos"],
+    },
+  },
+  "fluid-exhibition": {
+    shortDescription:
+      "Una superficie web expositiva donde identidad, paginas de artista, QR, motion y contenido multilingue funcionan como sistema cultural.",
+    longDescription:
+      "FLUID demuestra como una exposicion fisica puede ganar una capa digital coherente: acceso QR, paginas de artista, contexto de evento, ritmo visual y despliegue ligero bajo restricciones reales.",
+    tags: ["Exposicion", "Superficie editorial", "QR", "Motion cultural"],
+    ctaLabel: "Ver caso",
+    alt: "Superficie de exposicion digital FLUID",
+    clientType: "Cultura / exposiciones / proyectos editoriales",
+    seoTitle: "FLUID - sistema web para exposicion cultural",
+    seoDescription:
+      "Caso de microsite expositivo con paginas de artista, acceso QR, contexto multilingue y motion atmosferico.",
+    ogTitle: "FLUID - exposicion digital como sistema",
+    ogDescription:
+      "Una capa web cultural donde artistas, evento, QR y motion se conectan en una identidad reutilizable.",
+    searchContent: {
+      type: "Microsite cultural y sistema de exposicion.",
+      audience: "Exposiciones, artistas, espacios culturales, eventos editoriales y proyectos curatoriales.",
+      problem:
+        "Las paginas de evento suelen ser desechables y no dan contexto directo a visitantes ni artistas.",
+      approach:
+        "El sistema usa paginas de artista, acceso QR, contenido multilingue y motion contenido como identidad.",
+      outcome:
+        "La exposicion obtiene una capa digital legible, atmosferica y util para visitantes.",
+      productionFacts: ["Astro", "React islands", "TypeScript", "Tailwind CSS", "Paginas QR", "Cloudflare Pages"],
+      relatedServices: ["Sistemas web interactivos", "Landing page premium"],
+    },
+  },
+  "form-index": {
+    shortDescription:
+      "Un sistema editorial interactivo que prueba arquitectura reusable, presentacion multilingue y motion preciso.",
+    longDescription:
+      "FORM INDEX muestra como una web de presentacion puede convertirse en un sistema repetible: sticky stage, ritmo de imagen, jerarquia editorial, motion contenido y traduccion responsive.",
+    tags: ["Sistema editorial", "Multilingue", "Motion UI", "Arquitectura de presentacion"],
+    ctaLabel: "Ver caso",
+    alt: "Sistema editorial interactivo FORM INDEX",
+    clientType: "Editorial / cultura / presentacion de producto",
+    seoTitle: "FORM INDEX - sistema editorial interactivo",
+    seoDescription:
+      "Caso de presentacion premium con sticky stage, motion preciso, arquitectura reusable y superficie responsive.",
+    ogTitle: "FORM INDEX - presentacion editorial como sistema",
+    ogDescription:
+      "Una base de presentacion para archivos, lookbooks, producto y lanzamientos editoriales.",
+    searchContent: {
+      type: "Sistema editorial interactivo.",
+      audience: "Estudios, archivos, marcas de producto, lookbooks y lanzamientos editoriales.",
+      problem:
+        "Las presentaciones visuales pueden sentirse decorativas si el motion no tiene estructura ni jerarquia.",
+      approach:
+        "La experiencia usa progreso de seccion, sticky composition, imagen, texto y reveal como una misma gramatica.",
+      outcome:
+        "El caso prueba una base reusable para presentaciones premium y sistemas de contenido.",
+      productionFacts: ["Vite", "React", "TypeScript", "Tailwind CSS", "Motion", "Sistema responsive"],
+      relatedServices: ["Sistemas web interactivos", "Landing page premium"],
+    },
+  },
+  "arcwave-integrations": {
+    shortDescription:
+      "Un sistema de servicios tecnicos que convierte telecom, redes, electricidad, seguridad, EV charging, smart home y audio en una ruta legible.",
+    longDescription:
+      "ARCWAVE demuestra como los servicios tecnicos pueden presentarse como una interfaz de infraestructura calmada: capa conectada, rutas de servicio, metricas de prueba, proceso de instalacion y brief de presupuesto.",
+    tags: ["Infraestructura UX", "Servicios tecnicos", "Brief de instalacion", "Quote flow"],
+    ctaLabel: "Ver caso",
+    alt: "Interfaz de infraestructura ARCWAVE",
+    clientType: "Servicios tecnicos / empresas de instalacion",
+    seoTitle: "ARCWAVE - sistema web para servicios tecnicos",
+    seoDescription:
+      "Caso de interfaz para servicios de instalacion tecnica, infraestructura conectada, proceso y brief de presupuesto.",
+    ogTitle: "ARCWAVE - infraestructura tecnica como sistema",
+    ogDescription:
+      "Una ruta comercial que vuelve visibles servicios invisibles, confianza tecnica y contexto de instalacion.",
+    searchContent: {
+      type: "Sitio web premium para servicios tecnicos.",
+      audience: "Empresas de instalacion, telecom, redes, seguridad, EV charging, smart home y audio.",
+      problem:
+        "Los servicios tecnicos suelen presentarse como listas desconectadas y formularios frios.",
+      approach:
+        "La interfaz organiza servicios conectados, metricas, proceso, decision interface y quote brief.",
+      outcome:
+        "El comprador entiende la capa de infraestructura antes de pedir presupuesto.",
+      productionFacts: ["Astro", "TypeScript", "React islands", "Rutas bilingues", "View transitions", "Cloudflare Pages"],
+      relatedServices: ["Landing page premium", "Landing page de producto"],
+    },
+  },
+  "casa-nube": {
+    shortDescription:
+      "Una superficie hospitality multilingue con estructura editorial, flujo mobile-first y presentacion clara para negocio local.",
+    longDescription:
+      "Casa Nube demuestra como un pequeno negocio hospitality puede usar contenido por idioma, menu web, utilidad de visita y ritmo local para sentirse premium sin volverse pesado.",
+    tags: ["Hospitality", "Multilingue", "Mobile-first", "Negocio local"],
+    ctaLabel: "Ver caso",
+    alt: "Sitio hospitality Casa Nube",
+    clientType: "Hospitality / negocio local",
+    seoTitle: "Casa Nube - sitio hospitality multilingue",
+    seoDescription:
+      "Caso de sitio hospitality con menu web, utilidad de visita, contenido multilingue y accion mobile-first.",
+    ogTitle: "Casa Nube - hospitality local como sistema",
+    ogDescription:
+      "Una superficie para cafe o restaurante donde atmosfera, menu y visita permanecen cerca.",
+    searchContent: {
+      type: "Sitio web premium para hospitality local.",
+      audience: "Cafes, brunch, restaurantes, panaderias boutique y marcas locales hospitality.",
+      problem:
+        "Muchos negocios locales esconden menu, horarios y contacto detras de PDFs o redes sociales dispersas.",
+      approach:
+        "La web acerca menu, reserva, mapa, horarios, WhatsApp, Instagram y contenido por idioma.",
+      outcome:
+        "El visitante puede entender el lugar, revisar el menu y actuar desde mobile sin friccion.",
+      productionFacts: ["Next.js", "TypeScript", "next-intl", "Static export", "Responsive QA", "Cloudflare Pages"],
+      relatedServices: ["Landing page premium"],
+    },
+  },
+  "print-border-studio": {
+    shortDescription:
+      "Una herramienta creativa para bordes de impresion, preview de obra, cola de trabajo, inspeccion y preparacion de export.",
+    longDescription:
+      "Print Border Studio demuestra como una utilidad creativa especializada puede combinar precision de produccion, preview de artwork, logica de cola y valor de presentacion en una interfaz enfocada.",
+    tags: ["Herramienta creativa", "Produccion print", "Canvas UI", "Export workflow"],
+    ctaLabel: "Ver caso",
+    alt: "Herramienta Print Border Studio para preparacion de impresion",
+    clientType: "Artistas / estudios / workflows print",
+    seoTitle: "Print Border Studio - herramienta de preparacion print",
+    seoDescription:
+      "Caso de herramienta creativa desktop-first para bordes, preview, inspeccion, cola y preparacion de export.",
+    ogTitle: "Print Border Studio - produccion creativa como sistema",
+    ogDescription:
+      "Una utilidad premium para preparar impresiones fine-art con control visual y flujo repetible.",
+    searchContent: {
+      type: "Herramienta creativa de produccion print.",
+      audience: "Artistas, fotografos, estudios print, archivos visuales y workflows de produccion.",
+      problem:
+        "La preparacion de bordes e impresiones suele ser manual, fragmentada y dificil de repetir con precision.",
+      approach:
+        "La interfaz centra la obra, controla margenes, modos, inspeccion, cola y preparacion de salida.",
+      outcome:
+        "El caso muestra una utilidad practica que tambien funciona como superficie de producto premium.",
+      productionFacts: ["React", "TypeScript", "Canvas preview", "Estado local", "Export preparation", "Cloudflare Pages"],
+      relatedServices: ["Landing page de producto", "Sistemas web interactivos"],
+    },
+  },
   "house-of-lune": {
     shortDescription:
       "Una superficie premium de presentación de producto para objetos de lujo, consulta privada y storytelling visual.",
@@ -691,7 +925,385 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
   },
 };
 
+export const spanishWorkEvidenceTranslations: Record<string, WorkEvidenceTranslation> = {
+  "aurel-eon-gt": {
+    proofLabel: "Sistema vivo de producto automotriz",
+    proofSummary:
+      "Un lanzamiento ficticio de gran turismo electrico que convierte llegada, exterior, firma luminica, cabina, galeria, inspeccion y preview privada en un sistema cinematografico.",
+    systemTags: ["Concepto automotriz", "UX cinematografica", "Estados de producto", "Interaccion"],
+    workType: "Experiencia premium de producto automotriz",
+    capability: "Direccion interactiva para producto premium",
+    layers: ["Presence Rail", "Inspeccion cinematografica", "Drive character"],
+    proofPoints: [
+      "Replantea el lanzamiento como sistema vivo de producto",
+      "Conecta imagen cinematografica con logica reusable",
+      "Mantiene el concepto ficticio como prototipo honesto",
+    ],
+  },
+  "oria-house-barcelona": {
+    proofLabel: "Sistema hospitality para hotel boutique",
+    proofSummary:
+      "Un concepto hotelero que conecta atmosfera, comparacion de habitaciones, experiencias, contexto local y contacto en una ruta calmada.",
+    systemTags: ["Hotel boutique", "Hospitality UX", "Comparacion", "Contacto"],
+    workType: "Web hospitality",
+    capability: "Interfaz para hotel boutique",
+    layers: ["Entrada atmosferica", "Decision de habitacion", "Contacto de reserva"],
+    proofPoints: [
+      "Une atmosfera con seleccion practica",
+      "Convierte habitaciones y experiencias en una ruta",
+      "Mantiene contacto claro sin prometer motor de reservas",
+    ],
+  },
+  "house-of-lune": {
+    proofLabel: "Arquitectura de producto de lujo",
+    proofSummary:
+      "Una superficie cinematografica de producto con rutas multilingues, consulta privada, paginas dinamicas y framing premium.",
+    systemTags: ["Producto de lujo", "Multilingue", "Consulta privada", "Commerce editorial"],
+    workType: "Web premium",
+    capability: "Sistema luxury con arquitectura de producto",
+    layers: ["Rutas multilingues", "Paginas de producto", "Consulta privada"],
+    proofPoints: [
+      "Convierte browsing en seleccion tipo maison",
+      "Sostiene logica editorial y comercial",
+      "Se entrega como despliegue orientado a produccion",
+    ],
+  },
+  "bcn-advisory": {
+    proofLabel: "Inteligencia privada de propiedad",
+    proofSummary:
+      "Un prototipo de asesoria inmobiliaria que convierte intencion, distritos, shortlist, dossier e inquiry en una ruta guiada.",
+    systemTags: ["Real estate", "Barcelona Lens", "Shortlist", "Consulta"],
+    workType: "Sistema privado de asesoria",
+    capability: "Interfaz de asesoria inmobiliaria privada",
+    layers: ["Buyer intent", "Barcelona Lens", "Dossier"],
+    proofPoints: [
+      "Hace visible la logica de seleccion",
+      "Convierte guardados en dossier privado",
+      "Transforma contexto en solicitud estructurada",
+    ],
+  },
+  creatorops: {
+    proofLabel: "Workflow de publicacion para creadores",
+    proofSummary:
+      "Un espacio export-first para transformar assets dispersos en un Week Pack listo para publicar con revision, handoff y utilidad.",
+    systemTags: ["Workflow UX", "Herramientas creator", "Client Review", "Media Converter"],
+    workType: "Sistema de publicacion creator",
+    capability: "Interfaz de workflow para creadores",
+    layers: ["Library y Smart Mix", "Export y revision", "Media Converter"],
+    proofPoints: [
+      "Convierte assets sueltos en candidatos seleccionables",
+      "Avanza hacia un Week Pack listo para publicar",
+      "Mantiene herramientas utiles dentro del producto",
+    ],
+  },
+  "print-border-studio": {
+    proofLabel: "Herramienta de produccion y superficie collector",
+    proofSummary:
+      "Una herramienta tipo museo para bordes de impresion, logica de export, revision e inspeccion visual.",
+    systemTags: ["Print", "Produccion UX", "Canvas", "Collector logic"],
+    workType: "Herramienta de produccion",
+    capability: "Interfaz de produccion con logica collector",
+    layers: ["Motor de bordes", "Inspeccion", "Estados de export"],
+    proofPoints: [
+      "Une utilidad creativa con presentacion premium",
+      "Hace inspeccionables las decisiones de produccion",
+      "Conecta precision y superficie comercial",
+    ],
+  },
+  "casa-nube": {
+    proofLabel: "Sistema hospitality local",
+    proofSummary:
+      "Una superficie hospitality multilingue con estructura editorial, flujo mobile-first y presentacion clara para negocio local.",
+    systemTags: ["Hospitality", "Multilingue", "Mobile-first", "Editorial UX"],
+    workType: "Web hospitality",
+    capability: "Arquitectura web para hospitality",
+    layers: ["Narrativa de servicio", "Ruta mobile", "Estructura local"],
+    proofPoints: [
+      "Aclara lugar y oferta sin clutter generico",
+      "Sostiene presentacion multilingue",
+      "Mantiene la accion mobile directa",
+    ],
+  },
+  "form-index": {
+    proofLabel: "Sistema de presentacion reusable",
+    proofSummary:
+      "Un sistema interactivo y multilingue que prueba arquitectura reusable, jerarquia editorial y motion preciso.",
+    systemTags: ["Multilingue", "Presentacion interactiva", "Arquitectura"],
+    workType: "Sistema de presentacion",
+    capability: "Arquitectura reusable de contenido",
+    layers: ["Estructura interactiva", "Sistema de idioma", "Modelo repetible"],
+    proofPoints: [
+      "Muestra una arquitectura repetible de caso",
+      "Equilibra claridad editorial e interaccion",
+      "Escala el sistema visual a varias piezas",
+    ],
+  },
+  "fluid-exhibition": {
+    proofLabel: "Superficie editorial de exposicion",
+    proofSummary:
+      "Una prueba de exposicion web donde ritmo de imagen, motion, paginas QR y estructura de scroll funcionan como sistema.",
+    systemTags: ["Exposicion", "Superficie cinematica", "QR", "Scroll"],
+    workType: "Presentacion experimental",
+    capability: "Experiencia editorial cinematografica",
+    layers: ["Ritmo de imagen", "Motion", "Composicion de scroll"],
+    proofPoints: [
+      "Construye atmosfera mediante interaccion",
+      "Mantiene legible el contenido expositivo",
+      "Convierte el scroll en estructura de presentacion",
+    ],
+  },
+  "arcwave-integrations": {
+    proofLabel: "Sistema de interfaz de infraestructura",
+    proofSummary:
+      "Un sistema de servicios tecnicos que vuelve legibles telecom, redes, electricidad, seguridad, EV charging, smart home y audio.",
+    systemTags: ["Infraestructura UX", "Brief de instalacion", "Quote flow", "Servicios tecnicos"],
+    workType: "Sistema de servicios",
+    capability: "Interfaz para infraestructura tecnica",
+    layers: ["Servicios conectados", "Proceso de instalacion", "Quote brief"],
+    proofPoints: [
+      "Vuelve visible infraestructura invisible",
+      "Convierte servicios tecnicos en rutas claras",
+      "Lleva la intencion a un brief estructurado",
+    ],
+  },
+  sprintcrm: {
+    proofLabel: "Producto de workflow para operador",
+    proofSummary:
+      "Un CRM interno premium que prueba importacion, pipeline, reporting y claridad de producto para trabajo diario.",
+    systemTags: ["CRM", "Workflow UX", "Supabase", "Consola de operador"],
+    workType: "Producto de software",
+    capability: "UX de producto interno y workflow con datos",
+    layers: ["Importacion de leads", "Pipeline", "Reportes"],
+    proofPoints: [
+      "Prueba logica real de producto",
+      "Mantiene el trabajo del operador calmado",
+      "Conecta estados de datos con acciones diarias",
+    ],
+  },
+};
+
+function generatedStoryTranslation(
+  slug: string,
+  headline: string,
+  subheadline: string,
+  label: string,
+  layers: CaseStoryTranslation["systemLayers"],
+): CaseStoryTranslation {
+  const registry = spanishCaseRegistryTranslations[slug];
+  const search = registry.searchContent;
+
+  return {
+    label,
+    headline,
+    subheadline,
+    summary: registry.longDescription,
+    proofClaim: search?.outcome ?? registry.longDescription,
+    evidencePoints: [search?.problem, search?.approach, search?.outcome].filter(Boolean) as string[],
+    systemTags: registry.tags,
+    systemLayers: layers,
+    mediaSequence: [],
+    interactionLogic: search?.approach ?? registry.longDescription,
+    commercialLogic: search?.outcome ?? registry.shortDescription,
+    technicalFoundation: search?.productionFacts ?? [],
+    seo: {
+      title: registry.seoTitle,
+      description: registry.seoDescription,
+      ogTitle: registry.ogTitle,
+      ogDescription: registry.ogDescription,
+      alt: registry.alt,
+    },
+  };
+}
+
+const generatedSpanishCaseStoryTranslations: Record<string, CaseStoryTranslation> = {
+  "aurel-eon-gt": generatedStoryTranslation(
+    "aurel-eon-gt",
+    "AUREL EON GT",
+    "Experiencia viva de producto automotriz.",
+    "CASE SYSTEM / CONCEPTO AUTOMOTRIZ / EXPERIENCIA DE PRODUCTO",
+    [
+      {
+        title: "Campo de llegada",
+        text:
+          "El hero presenta el gran turismo electrico como presencia de silencio, senal, movimiento y contencion cinematografica.",
+      },
+      {
+        title: "Inspeccion cinematografica",
+        text:
+          "La secuencia visual permite leer exterior, cabina, materialidad, galeria y firma luminica como estados de producto.",
+      },
+      {
+        title: "Preview privada",
+        text:
+          "El cierre evita un formulario generico y transforma la conversion en una entrada de concierge para producto premium.",
+      },
+    ],
+  ),
+  "oria-house-barcelona": generatedStoryTranslation(
+    "oria-house-barcelona",
+    "Oria House Barcelona",
+    "Sistema hospitality para hotel boutique.",
+    "CASE SYSTEM / HOTEL BOUTIQUE / INTERFAZ HOSPITALITY",
+    [
+      {
+        title: "Entrada atmosferica",
+        text:
+          "La superficie presenta la estancia como retiro tranquilo antes de empujar la decision comercial.",
+      },
+      {
+        title: "Decision de habitacion",
+        text:
+          "Comparacion, detalle, galerias y ritmo de habitaciones ayudan a elegir sin convertir el hotel en inventario frio.",
+      },
+      {
+        title: "Ruta de contacto",
+        text:
+          "Experiencias, contexto local y contacto de reserva avanzan como una misma ruta de invitado.",
+      },
+    ],
+  ),
+  sprintcrm: generatedStoryTranslation(
+    "sprintcrm",
+    "SprintCRM",
+    "Sistema CRM para workflow de operador.",
+    "CASE SYSTEM / WORKFLOW OPERATIVO / CRM INTERNO",
+    [
+      {
+        title: "Arquitectura de importacion",
+        text:
+          "XLSX, CSV, mapeo, preview de filas y reporte de importacion convierten listas dispersas en entrada controlada.",
+      },
+      {
+        title: "Espacio de operador",
+        text:
+          "Leads, filtros, drawer de detalle, acciones diarias y pipeline mantienen el foco en el siguiente movimiento util.",
+      },
+      {
+        title: "Superficie de reporting",
+        text:
+          "Los reportes devuelven salud de funnel, fuentes, nichos, tareas vencidas y leads activos como feedback operativo.",
+      },
+    ],
+  ),
+  "fluid-exhibition": generatedStoryTranslation(
+    "fluid-exhibition",
+    "FLUID",
+    "Sistema de interfaz para exposicion y acceso QR.",
+    "CASE SYSTEM / SUPERFICIE CULTURAL / IDENTIDAD EXPOSITIVA",
+    [
+      {
+        title: "Entrada expositiva",
+        text:
+          "La landing convierte el evento en una capa digital coherente, no en una pagina de anuncio desechable.",
+      },
+      {
+        title: "Arquitectura de artistas",
+        text:
+          "Cada pagina de artista funciona como destino QR directo sin perder la identidad comun de la exposicion.",
+      },
+      {
+        title: "Contexto multilingue",
+        text:
+          "Contenido por idioma, motion contenido y ruta mobile sostienen la visita fisica desde una superficie ligera.",
+      },
+    ],
+  ),
+  "form-index": generatedStoryTranslation(
+    "form-index",
+    "FORM INDEX",
+    "Sistema editorial interactivo.",
+    "CASE SYSTEM / MOTION EDITORIAL / MOTOR DE PRESENTACION",
+    [
+      {
+        title: "Escenario sticky",
+        text:
+          "Las secciones se leen como un escenario dirigido, con progreso y foco en lugar de bloques estaticos.",
+      },
+      {
+        title: "Gramatica de motion",
+        text:
+          "Opacidad, escala, blur, imagen y texto trabajan como estructura de lectura, no como efecto decorativo.",
+      },
+      {
+        title: "Base reusable",
+        text:
+          "La arquitectura puede adaptarse a archivo, lookbook, lanzamiento de producto o presentacion multilingue.",
+      },
+    ],
+  ),
+  "arcwave-integrations": generatedStoryTranslation(
+    "arcwave-integrations",
+    "ARCWAVE",
+    "Sistema de interfaz para infraestructura tecnica.",
+    "CASE SYSTEM / INTERFAZ DE INFRAESTRUCTURA",
+    [
+      {
+        title: "Capa conectada",
+        text:
+          "Telecom, redes, electricidad, seguridad, EV charging, smart home y audio se presentan como un sistema tecnico.",
+      },
+      {
+        title: "Rutas de servicio",
+        text:
+          "Cada servicio tiene entrada propia, pero la interfaz mantiene al comprador dentro de una misma logica de instalacion.",
+      },
+      {
+        title: "Brief de presupuesto",
+        text:
+          "La solicitud convierte incertidumbre tecnica en un brief de instalacion mas claro antes del primer contacto.",
+      },
+    ],
+  ),
+  "casa-nube": generatedStoryTranslation(
+    "casa-nube",
+    "Casa Nube",
+    "Sistema hospitality multilingue.",
+    "CASE SYSTEM / HOSPITALITY FOUNDATION / NEGOCIO LOCAL",
+    [
+      {
+        title: "Entrada calida",
+        text:
+          "La homepage funciona como fachada digital y mantiene acciones practicas cerca desde el primer scroll.",
+      },
+      {
+        title: "Menu web",
+        text:
+          "El menu se estructura como interfaz legible, sin depender de un PDF o de redes sociales dispersas.",
+      },
+      {
+        title: "Accion mobile-first",
+        text:
+          "Horario, mapa, reserva, WhatsApp e Instagram quedan disponibles para la decision real del visitante.",
+      },
+    ],
+  ),
+  "print-border-studio": generatedStoryTranslation(
+    "print-border-studio",
+    "Print Border Studio",
+    "Sistema de preparacion print fine-art.",
+    "CASE SYSTEM / HERRAMIENTA DE PRODUCCION / WORKFLOW PRINT",
+    [
+      {
+        title: "Motor de bordes",
+        text:
+          "Margenes de museo, formatos y equilibrio visual se controlan desde una superficie enfocada de preparacion.",
+      },
+      {
+        title: "Preview e inspeccion",
+        text:
+          "La obra permanece como objeto principal de decision mientras controles, modos y revision sostienen precision.",
+      },
+      {
+        title: "Salida preparada",
+        text:
+          "La cola y los estados de exportacion convierten una tarea manual en un workflow repetible para estudio.",
+      },
+    ],
+  ),
+};
+
 export const spanishCaseStoryTranslations: Record<string, CaseStoryTranslation> = {
+  ...generatedSpanishCaseStoryTranslations,
   "house-of-lune": {
     label: "CASE SYSTEM / BASE DISPONIBLE / SUPERFICIE DE PRODUCTO",
     headline: "House of Lune",
@@ -1528,6 +2140,167 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
       ogDescription:
         "Un sistema inmersivo para archivos fotográficos, storytelling espacial y presentación orientada a coleccionistas.",
       alt: "Exposición inmersiva WHISPER Web / XR",
+    },
+  },
+  webhero: {
+    tagline:
+      "Un sistema visual web-first para modulos cinematicos, Living Images, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
+    medium: "Visual web",
+    mode: "R&D avanzado",
+    stack: "Vite, React, TypeScript, WebGL, GLSL / Canvas, Gaussian Splat viewer, SHARP / 3DGS pipeline",
+    description:
+      "WEBHERO explora el futuro de las webs premium como entornos vivos. Reune WebGL Stage System, backdrops cinematograficos, Living Images, obras Living Splat, Art Room y una ruta controlada hacia XR.",
+    status: "Prototipo avanzado",
+    statusNote:
+      "Stage System, Backdrops, Living Images, Living Splat y Art Room funcionan como modulos demostrables. Living Art Mixer sigue en investigacion activa.",
+    supportLabel: "Sistema R&D",
+    ctaLabel: "Abrir caso WEBHERO",
+    searchContent: {
+      shortDescription:
+        "Plataforma R&D para modulos de stage cinematico, imagenes vivas, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
+      longDescription:
+        "WEBHERO demuestra infraestructura visual reusable para webs premium: stages WebGL, backdrops, living image modules, estudios 3DGS y presentacion Art Room dentro de un mismo sistema.",
+      tags: ["WebGL stage system", "Living Images", "Gaussian Splat", "Spatial web"],
+      type: "Sistemas visuales vivos / infraestructura spatial web.",
+      audience:
+        "Marcas premium, proyectos culturales, universos de producto y estudios que necesitan sistemas visuales inmersivos respaldados por fuente.",
+      problem:
+        "Muchas webs visuales premium dependen de fondos decorativos o bloques media aislados que no escalan como sistema.",
+      approach:
+        "WEBHERO organiza threshold gates, lenguaje de stage, backdrops, living images, splat studies, Art Room y direccion XR en una plataforma modular.",
+      outcome:
+        "El caso muestra como la infraestructura visual inmersiva puede sostener webs premium y archivos espaciales sin volverse un truco aislado.",
+      productionFacts: ["Vite", "React", "TypeScript", "WebGL", "GLSL / Canvas", "Gaussian Splat", "SHARP / 3DGS"],
+      relatedServices: ["Sistemas web interactivos", "Landing page premium"],
+    },
+    seo: {
+      title: "WEBHERO - sistema visual web-first",
+      description:
+        "WEBHERO explora WebGL stages, Living Images, Gaussian Splat, Art Room y direccion XR para webs premium.",
+      ogTitle: "WEBHERO - sistemas visuales vivos",
+      ogDescription:
+        "Una plataforma R&D para convertir imagenes, WebGL y obras espaciales en experiencias web controladas.",
+      alt: "Sistema visual WEBHERO",
+    },
+  },
+  "kool-berk": {
+    tagline:
+      "Un Sonic Object OS para artista electronico donde releases, tracks, EPK y escucha se convierten en una sala WebGL audio-reactiva.",
+    medium: "Artist OS sonoro",
+    mode: "Prototipo sonoro",
+    stack: "Vite, React, TypeScript, R3F, Web Audio, GLSL, Cloudflare Pages",
+    description:
+      "Kool Berk replantea el sitio de artista como sistema de objeto sonoro: releases inspeccionables, estudios de senal, EPK, contacto y una sala inmersiva de escucha.",
+    status: "MVP art-tech",
+    statusNote:
+      "La ruta principal, el objeto sonoro, walkthrough, sala WebGL y capas de contacto funcionan como prototipo presentable.",
+    supportLabel: "Sala sonora WebGL",
+    ctaLabel: "Abrir caso Kool Berk",
+    searchContent: {
+      shortDescription:
+        "Sistema audiovisual para artista electronico con releases como objetos, Web Audio y sala WebGL.",
+      longDescription:
+        "Kool Berk demuestra como un artist site puede dejar de ser link hub y convertirse en archivo de releases, EPK y entorno inmersivo de escucha.",
+      tags: ["R3F", "Web Audio", "GLSL", "EPK", "Sonic Room"],
+      type: "Artist OS audiovisual / sistema de objeto sonoro.",
+      audience: "Artistas electronicos, music labels, EPK premium y proyectos audio-visuales.",
+      problem:
+        "Los sitios de artistas suelen reducirse a enlaces, embeds y biografia, perdiendo presencia y estructura de release.",
+      approach:
+        "La interfaz trata releases como objetos, tracks como estudios de senal y escucha como experiencia WebGL audio-reactiva.",
+      outcome:
+        "El caso convierte presencia musical, EPK y contacto en una superficie inmersiva con logica de producto.",
+      productionFacts: ["React", "TypeScript", "R3F", "Web Audio", "GLSL", "Cloudflare Pages"],
+      relatedServices: ["Sistemas web interactivos", "Landing page de producto"],
+    },
+    seo: {
+      title: "Kool Berk - Sonic Object OS",
+      description:
+        "Caso audiovisual donde un artista electronico se presenta mediante releases objeto, EPK y sala WebGL audio-reactiva.",
+      ogTitle: "Kool Berk - musica como objeto sonoro",
+      ogDescription:
+        "Un artist OS inmersivo para releases, tracks, EPK y escucha WebGL.",
+      alt: "Interfaz inmersiva Kool Berk Sonic Object OS",
+    },
+  },
+  "presence-os-memory-atlas": {
+    tagline:
+      "Una interfaz privada de memoria espacial donde fragmentos de archivo personal se revelan por quietud, retorno y atencion.",
+    medium: "Archivo espacial",
+    mode: "MVP funcional",
+    stack: "Vite, React, TypeScript, WebGL, WebXR direction, local-first archive logic",
+    description:
+      "Presence OS / Memory Atlas transforma archivo personal en campo de memoria vivo: presencia, stillness, cinematic inspect, sala XR y artefactos exportables.",
+    status: "MVP funcional",
+    statusNote:
+      "La ruta web, campo de memoria, inspeccion y direccion XR funcionan como prueba MVP. La capa XR final continua en desarrollo.",
+    supportLabel: "Memoria privada",
+    ctaLabel: "Abrir caso Presence OS",
+    searchContent: {
+      shortDescription:
+        "Interfaz de memoria espacial donde archivo personal, presencia y atencion forman un campo vivo.",
+      longDescription:
+        "Presence OS / Memory Atlas demuestra como un archivo local-first puede convertirse en campo cinematico, sala XR y sistema de artefactos exportables.",
+      tags: ["Local-first", "Presence OS", "WebXR", "Memory Reel", "Archivo espacial"],
+      type: "Interfaz de memoria espacial / archivo personal.",
+      audience: "Archivos personales, memoria cultural, artistas, familias, colecciones privadas y productos de presencia.",
+      problem:
+        "Los archivos personales suelen quedar como carpetas o galerias, sin presencia, retorno ni contexto emocional.",
+      approach:
+        "El sistema revela fragmentos mediante quietud, atencion, memoria, inspeccion cinematografica y direccion XR.",
+      outcome:
+        "El caso prueba una ruta sensible para convertir memoria privada en interfaz viva sin ruido de dashboard.",
+      productionFacts: ["React", "TypeScript", "WebGL", "Cinematic inspect", "Local-first logic", "WebXR direction"],
+      relatedServices: ["Sistemas web interactivos", "Landing page de producto"],
+    },
+    seo: {
+      title: "Presence OS / Memory Atlas - archivo espacial",
+      description:
+        "Interfaz local-first donde memoria personal, presencia, inspeccion cinematografica y direccion XR forman un archivo vivo.",
+      ogTitle: "Presence OS - memoria privada como campo espacial",
+      ogDescription:
+        "Un sistema de memoria espacial para archivo personal, stillness, retorno y artefactos exportables.",
+      alt: "Interfaz Presence OS Memory Atlas",
+    },
+  },
+  "orbit-lens": {
+    tagline:
+      "Un concepto premium de gafas AI espaciales donde la web se comporta como la interfaz espacial del propio dispositivo.",
+    medium: "Product OS espacial",
+    mode: "Web-first funcional",
+    stack: "Vite, React, TypeScript, GLSL, WebGL, WebXR proof mode",
+    description:
+      "Orbit Lens sustituye una landing de hardware estandar por un Product OS: campos de inteligencia contextual, Inspect Optics, Reference Orbit, privacidad y modo WebXR opcional.",
+    status: "Prototipo funcional",
+    statusNote:
+      "La experiencia principal, fields, Inspect Optics, Reference Orbit y prueba WebXR funcionan como prototipo de producto ficticio.",
+    supportLabel: "Producto espacial",
+    ctaLabel: "Abrir caso Orbit Lens",
+    searchContent: {
+      shortDescription:
+        "Concepto de gafas AI espaciales con campos contextuales, Inspect Optics, Reference Orbit y prueba WebXR.",
+      longDescription:
+        "Orbit Lens demuestra como una web de producto puede adoptar el lenguaje del dispositivo: contexto espacial, optica, privacidad, orbitas de referencia y prueba XR.",
+      tags: ["AI eyewear", "WebXR", "Inspect Optics", "Reference Orbit", "GLSL"],
+      type: "Product OS espacial / sistema de producto ficticio.",
+      audience: "Productos hardware, AI devices, wearables, demos premium y lanzamientos conceptuales.",
+      problem:
+        "Las landing pages de hardware suelen explicar features desde fuera, sin hacer sentir la interfaz del producto.",
+      approach:
+        "La experiencia convierte features en campos contextuales, inspeccion optica, orbitas y una prueba WebXR opcional.",
+      outcome:
+        "El caso prueba una forma mas inmersiva de presentar producto espacial sin perder claridad comercial.",
+      productionFacts: ["React", "TypeScript", "WebGL", "GLSL", "WebXR", "Responsive product interface"],
+      relatedServices: ["Landing page de producto", "Sistemas web interactivos"],
+    },
+    seo: {
+      title: "Orbit Lens - Product OS espacial",
+      description:
+        "Concepto premium de gafas AI espaciales con contextual fields, Inspect Optics, Reference Orbit y prueba WebXR.",
+      ogTitle: "Orbit Lens - web como interfaz espacial",
+      ogDescription:
+        "Una landing de producto ficticio que funciona como sistema espacial del dispositivo.",
+      alt: "Interfaz Orbit Lens para producto espacial",
     },
   },
 };

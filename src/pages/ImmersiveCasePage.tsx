@@ -3119,7 +3119,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (data.slug === "webhero") {
+  if (locale !== "es" && data.slug === "webhero") {
     return (
       <div className="min-h-screen bg-[#05070b] text-white">
         <Header
@@ -3136,7 +3136,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (data.slug === "kool-berk") {
+  if (locale !== "es" && data.slug === "kool-berk") {
     return (
       <div className="min-h-screen bg-[#04070d] text-white">
         <Header
@@ -3153,7 +3153,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (data.slug === "presence-os-memory-atlas") {
+  if (locale !== "es" && data.slug === "presence-os-memory-atlas") {
     return (
       <div className="min-h-screen bg-[#030706] text-white">
         <Header
@@ -3170,7 +3170,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (data.slug === "orbit-lens") {
+  if (locale !== "es" && data.slug === "orbit-lens") {
     return (
       <div className="min-h-screen bg-[#03070a] text-white">
         <Header
@@ -3201,6 +3201,80 @@ export default function ImmersiveCasePage({
       mediaSummary: data.description,
       mediaModules: [data.mode, data.medium, data.status],
     } satisfies ImmersiveDetailCopy);
+  const genericLabels =
+    locale === "es"
+      ? {
+          back: "Volver a immersive",
+          direction: "Direccion",
+          interaction: "Gramatica de interaccion",
+          build: "Ruta de build",
+          rhythm: "Ritmo de interfaz",
+          rhythmTitle: "Estructura de presentacion por secuencia.",
+          rhythmBody:
+            "Una secuencia minima de estados reemplaza navegacion densa y permite que atmosfera, jerarquia y claridad avancen progresivamente.",
+          entry: "Estado de entrada",
+          entryBody: "Frame de introduccion calmado que establece tono sin ruido de UI.",
+          hierarchy: "Frame de jerarquia",
+          hierarchyBody: "La informacion clave aparece con enfasis controlado y capas espaciales.",
+          transition: "Transicion de estado",
+          transitionBody: "Las transiciones mantienen continuidad mientras cambian contexto y significado.",
+          media: "Estructura de medios",
+          mediaBody:
+            "Un hero en loop establece atmosfera, mientras los frames fijos aislan jerarquia y estados clave de interfaz.",
+          logic: "Logica de interaccion",
+          logicBody: "La navegacion se integra en el ritmo en lugar de exponerse como capas de UI.",
+          potential: "Potencial del sistema",
+          potentialBody: "La misma estructura puede escalar hacia superficies de producto sin perder claridad.",
+          relevance: "Relevancia de produccion",
+          relevanceTitle: "Concepto que se traduce en sistemas listos para build.",
+          reusable: "Logica reusable",
+          reusableBody: "Los patrones de interaccion pueden reutilizarse en varias superficies y flujos.",
+          modular: "Estructura modular",
+          modularBody: "Disenado como componentes componibles, no como escenas visuales aisladas.",
+          launch: "Preparado para lanzamiento",
+          launchBody: "Equilibra atmosfera visual con claridad, rendimiento y usabilidad.",
+          next: "Siguiente paso",
+          nextTitle:
+            "Si esta direccion encaja, el siguiente paso es definir scope, gramatica de motion y profundidad de produccion.",
+          prevStudy: "Caso anterior",
+          nextStudy: "Caso siguiente",
+        }
+      : {
+          back: "Back to immersive",
+          direction: "Direction",
+          interaction: "Interaction grammar",
+          build: "Build path",
+          rhythm: "Interface rhythm",
+          rhythmTitle: "Sequence-driven presentation structure.",
+          rhythmBody:
+            "A minimal sequence of states replaces dense navigation, allowing atmosphere, hierarchy, and clarity to unfold progressively.",
+          entry: "Entry state",
+          entryBody: "Calm introduction frame that establishes tone without UI noise.",
+          hierarchy: "Hierarchy frame",
+          hierarchyBody: "Key information surfaces with controlled emphasis and spatial layering.",
+          transition: "State transition",
+          transitionBody: "Transitions maintain continuity while shifting context and meaning.",
+          media: "Media structure",
+          mediaBody:
+            "A loop-based hero establishes atmosphere, while still frames isolate hierarchy and key interface states.",
+          logic: "Interaction logic",
+          logicBody: "Navigation is embedded into pacing rather than exposed as explicit UI layers.",
+          potential: "System potential",
+          potentialBody: "The same structure can scale into product-facing surfaces without losing clarity.",
+          relevance: "Production relevance",
+          relevanceTitle: "Concept that translates into build-ready systems.",
+          reusable: "Reusable logic",
+          reusableBody: "Interaction patterns can be reused across multiple surfaces and flows.",
+          modular: "Modular structure",
+          modularBody: "Designed as composable components rather than one-off visual scenes.",
+          launch: "Launch-aware",
+          launchBody: "Balances visual atmosphere with clarity, performance, and usability.",
+          next: "Next step",
+          nextTitle:
+            "If this direction aligns, the next step is defining scope, motion grammar, and production depth.",
+          prevStudy: "Prev study",
+          nextStudy: "Next study",
+        };
 
   const variant = immersiveVariantBySlug[data.slug] ?? "ar";
   const variantUi = immersiveVariantUi[variant];
@@ -3235,7 +3309,7 @@ export default function ImmersiveCasePage({
                 className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-400 hover:text-neutral-900"
               >
                 <span className="text-neutral-400">←</span>{" "}
-                {isWhisperCase ? whisperCopy.top.backToImmersive : "Back to immersive"}
+                {isWhisperCase ? whisperCopy.top.backToImmersive : genericLabels.back}
               </button>
 
               <div className="flex flex-wrap items-center gap-2 md:justify-end">
@@ -3313,6 +3387,7 @@ export default function ImmersiveCasePage({
 
                       <h1
                         className={`mt-5 ${variantUi.titleMaxClass} text-[36px] leading-[0.94] tracking-[-0.04em] sm:text-[48px] md:text-[66px] ${variantUi.titleSizeClass}`}
+                        style={{ wordBreak: "keep-all", overflowWrap: "normal" }}
                       >
                         {data.title}
                       </h1>
@@ -3386,7 +3461,7 @@ export default function ImmersiveCasePage({
                 viewport={{ once: true, amount: 0.28 }}
                 transition={{ duration: 0.78, delay: 0.02, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Direction</div>
+                <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.direction}</div>
                 <h2
                   className="mt-3 max-w-[11ch] text-[52px] leading-[0.96] tracking-[-0.04em] md:text-[56px] xl:max-w-[12ch] xl:text-[62px]"
                 >
@@ -3403,12 +3478,12 @@ export default function ImmersiveCasePage({
                 transition={{ duration: 0.78, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] md:p-[18px]">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Interaction grammar</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.interaction}</div>
                   <p className="mt-3 text-sm leading-7 text-neutral-600">{detail.interaction}</p>
                 </div>
 
                 <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] md:p-[18px]">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Build path</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.build}</div>
                   <p className="mt-3 text-sm leading-7 text-neutral-600">{detail.build}</p>
                 </div>
               </motion.div>
@@ -3428,15 +3503,14 @@ export default function ImmersiveCasePage({
             transition={{ duration: 0.8, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="max-w-[1100px]">
-              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Interface rhythm</div>
+              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.rhythm}</div>
 
               <h3 className="mt-3 text-2xl tracking-tight md:text-3xl">
-                Sequence-driven presentation structure.
+                {genericLabels.rhythmTitle}
               </h3>
 
               <p className="mt-3 max-w-[56ch] text-sm text-neutral-600">
-                A minimal sequence of states replaces dense navigation, allowing atmosphere, hierarchy, and
-                clarity to unfold progressively.
+                {genericLabels.rhythmBody}
               </p>
 
               <div className="mt-10 grid gap-6 md:grid-cols-[0.95fr_1.12fr_0.95fr]">
@@ -3449,9 +3523,9 @@ export default function ImmersiveCasePage({
                   <div className="overflow-hidden rounded-[20px] border border-neutral-100/80 bg-white/70 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:border-neutral-200 hover:bg-white/88 hover:shadow-[0_18px_38px_rgba(17,17,17,0.06)]">
                     <div className="aspect-[4/3] bg-[linear-gradient(180deg,#f3f3f2_0%,#ececeb_100%)]" />
                     <div className="p-4">
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Entry state</div>
+                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.entry}</div>
                       <p className="mt-2 text-sm text-neutral-700">
-                        Calm introduction frame that establishes tone without UI noise.
+                        {genericLabels.entryBody}
                       </p>
                     </div>
                   </div>
@@ -3466,9 +3540,9 @@ export default function ImmersiveCasePage({
                   <div className="overflow-hidden rounded-[20px] border border-neutral-100/80 bg-white/70 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:border-neutral-200 hover:bg-white/88 hover:shadow-[0_18px_38px_rgba(17,17,17,0.06)]">
                     <div className="aspect-[4/3] bg-[linear-gradient(180deg,#f3f3f2_0%,#ececeb_100%)]" />
                     <div className="p-4">
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Hierarchy frame</div>
+                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.hierarchy}</div>
                       <p className="mt-2 text-sm text-neutral-700">
-                        Key information surfaces with controlled emphasis and spatial layering.
+                        {genericLabels.hierarchyBody}
                       </p>
                     </div>
                   </div>
@@ -3483,9 +3557,9 @@ export default function ImmersiveCasePage({
                   <div className="overflow-hidden rounded-[20px] border border-neutral-100/80 bg-white/70 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:border-neutral-200 hover:bg-white/88 hover:shadow-[0_18px_38px_rgba(17,17,17,0.06)]">
                     <div className="aspect-[4/3] bg-[linear-gradient(180deg,#f3f3f2_0%,#ececeb_100%)]" />
                     <div className="p-4">
-                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">State transition</div>
+                      <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.transition}</div>
                       <p className="mt-2 text-sm text-neutral-700">
-                        Transitions maintain continuity while shifting context and meaning.
+                        {genericLabels.transitionBody}
                       </p>
                     </div>
                   </div>
@@ -3553,24 +3627,23 @@ export default function ImmersiveCasePage({
                 transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[1px] hover:border-neutral-200 hover:bg-white/88 hover:shadow-[0_12px_24px_rgba(17,17,17,0.045)]">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Media structure</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.media}</div>
                   <p className="mt-2 text-sm text-neutral-700">
-                    A loop-based hero establishes atmosphere, while still frames isolate hierarchy and key
-                    interface states.
+                    {genericLabels.mediaBody}
                   </p>
                 </div>
 
                 <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[1px] hover:border-neutral-200 hover:bg-white/88 hover:shadow-[0_12px_24px_rgba(17,17,17,0.045)]">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Interaction logic</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.logic}</div>
                   <p className="mt-2 text-sm text-neutral-700">
-                    Navigation is embedded into pacing rather than exposed as explicit UI layers.
+                    {genericLabels.logicBody}
                   </p>
                 </div>
 
                 <div className="rounded-[20px] border border-neutral-100 bg-white/72 p-4 backdrop-blur-[2px] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[1px] hover:border-neutral-200 hover:bg-white/88 hover:shadow-[0_12px_24px_rgba(17,17,17,0.045)]">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">System potential</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.potential}</div>
                   <p className="mt-2 text-sm text-neutral-700">
-                    The same structure can scale into product-facing surfaces without losing clarity.
+                    {genericLabels.potentialBody}
                   </p>
                 </div>
               </motion.div>
@@ -3590,10 +3663,10 @@ export default function ImmersiveCasePage({
             transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="max-w-[900px]">
-              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Production relevance</div>
+              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.relevance}</div>
 
               <h3 className="mt-3 text-2xl tracking-[-0.03em] md:text-3xl">
-                Concept that translates into build-ready systems.
+                {genericLabels.relevanceTitle}
               </h3>
 
               <div className="mt-12 grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
@@ -3604,9 +3677,9 @@ export default function ImmersiveCasePage({
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ duration: 0.68, delay: 0.02, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Reusable logic</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.reusable}</div>
                   <p className="mt-2 text-sm text-neutral-700">
-                    Interaction patterns can be reused across multiple surfaces and flows.
+                    {genericLabels.reusableBody}
                   </p>
                 </motion.div>
 
@@ -3617,9 +3690,9 @@ export default function ImmersiveCasePage({
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ duration: 0.68, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Modular structure</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.modular}</div>
                   <p className="mt-2 text-sm text-neutral-700">
-                    Designed as composable components rather than one-off visual scenes.
+                    {genericLabels.modularBody}
                   </p>
                 </motion.div>
 
@@ -3630,9 +3703,9 @@ export default function ImmersiveCasePage({
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ duration: 0.68, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Launch-aware</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.launch}</div>
                   <p className="mt-2 text-sm text-neutral-700">
-                    Balances visual atmosphere with clarity, performance, and usability.
+                    {genericLabels.launchBody}
                   </p>
                 </motion.div>
               </div>
@@ -3655,9 +3728,9 @@ export default function ImmersiveCasePage({
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.82, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">Next step</div>
+              <div className="text-[11px] uppercase tracking-[0.14em] text-neutral-500">{genericLabels.next}</div>
               <h3 className="mt-4 max-w-[22ch] text-xl leading-[1.12] tracking-[-0.025em] text-neutral-900 md:text-2xl">
-                If this direction aligns, the next step is defining scope, motion grammar, and production depth.
+                {genericLabels.nextTitle}
               </h3>
 
               <div className="mt-6">
@@ -3681,20 +3754,20 @@ export default function ImmersiveCasePage({
               {prev ? (
                 <button
                   type="button"
-                  onClick={() => openPath(navigate, `/immersive/${prev.slug}`, onCloseProject)}
+                  onClick={() => openPath(navigate, getLocalizedPath(`/immersive/${prev.slug}`, locale), onCloseProject)}
                   className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-300 hover:text-neutral-900"
                 >
-                  <span className="text-neutral-400">←</span> Prev study
+                  <span className="text-neutral-400">←</span> {genericLabels.prevStudy}
                 </button>
               ) : null}
 
               {next ? (
                 <button
                   type="button"
-                  onClick={() => openPath(navigate, `/immersive/${next.slug}`, onCloseProject)}
+                  onClick={() => openPath(navigate, getLocalizedPath(`/immersive/${next.slug}`, locale), onCloseProject)}
                   className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] hover:border-neutral-300 hover:text-neutral-900"
                 >
-                  Next study <span className="text-neutral-400">→</span>
+                  {genericLabels.nextStudy} <span className="text-neutral-400">→</span>
                 </button>
               ) : null}
             </motion.div>

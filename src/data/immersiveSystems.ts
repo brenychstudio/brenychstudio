@@ -471,10 +471,215 @@ export const immersiveApplicationLayer = [
   "WebXR prototypes",
 ];
 
-export function getImmersiveChamber(id: ImmersiveChamberId) {
-  return immersiveChambers.find((item) => item.id === id) ?? immersiveChambers[0];
+type SpanishImmersiveSystemCopy = Partial<Pick<
+  ImmersiveSystemItem,
+  "room" | "title" | "shortTitle" | "statusLabel" | "role" | "summary" | "proofLine" | "ctaLabel" | "tags" | "chamberSignal"
+>>;
+
+const spanishImmersiveSystemCopy: Record<ImmersiveChamberId, SpanishImmersiveSystemCopy> = {
+  whisper: {
+    room: "Sala 01",
+    statusLabel: "Prueba espacial completada",
+    role: "Exposicion cinematografica web / XR",
+    summary:
+      "Una prueba espacial completada que conecta sitio publico, mobile, prints, preview AR y experiencia Quest.",
+    proofLine:
+      "La primera camara terminada: fotografia como superficie publica, sistema collector y prueba room-scale.",
+    ctaLabel: "Entrar en WHISPER",
+    tags: ["Exposicion web", "Mobile", "Print", "AR", "Quest"],
+    chamberSignal: "Primera prueba completada",
+  },
+  webhero: {
+    room: "Sala 02",
+    statusLabel: "Sistema R&D avanzado",
+    role: "Plataforma de sistemas visuales vivos",
+    summary:
+      "Sistema visual web-first para stages cinematicos, Living Images, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
+    proofLine:
+      "Imagenes, escenas WebGL y assets espaciales se convierten en experiencias web vivas, no en media estatica.",
+    ctaLabel: "Entrar en WEBHERO",
+    tags: ["WebGL", "Living Images", "3DGS", "Art Room", "XR"],
+    chamberSignal: "Sistema visual vivo",
+  },
+  "kool-berk": {
+    room: "Sala 03",
+    statusLabel: "Prototipo sonoro avanzado",
+    role: "Artist OS audiovisual",
+    summary:
+      "Un Sonic Object OS donde releases, tracks, EPK y escucha se convierten en sala WebGL audio-reactiva.",
+    proofLine:
+      "El sitio de artista deja de ser link hub y pasa a ser archivo de releases, EPK y entorno inmersivo.",
+    ctaLabel: "Entrar en Kool Berk",
+    tags: ["R3F", "Web Audio", "GLSL", "EPK", "Sonic Room"],
+    chamberSignal: "Musica como objeto",
+  },
+  "presence-os-memory-atlas": {
+    room: "Sala 04",
+    statusLabel: "Prototipo MVP funcional",
+    role: "Interfaz de memoria espacial basada en presencia",
+    summary:
+      "Interfaz privada donde fragmentos de archivo personal se revelan por quietud, retorno y atencion.",
+    proofLine:
+      "Un archivo local-first se convierte en campo de memoria vivo, inspect cinematico, sala XR y artefactos exportables.",
+    ctaLabel: "Entrar en Presence OS",
+    tags: ["Local-first", "Presence OS", "WebXR", "Memory Reel", "VR"],
+    chamberSignal: "El archivo responde a presencia",
+  },
+  "orbit-lens": {
+    room: "Sala 05",
+    statusLabel: "Prototipo web-first funcional",
+    role: "Product OS ficticio para gafas AI espaciales",
+    summary:
+      "Concepto premium de gafas AI espaciales donde la web se comporta como la interfaz del dispositivo.",
+    proofLine:
+      "Campos de inteligencia contextual, Inspect Optics, Reference Orbit y WebXR reemplazan una landing de hardware estandar.",
+    ctaLabel: "Entrar en Orbit Lens",
+    tags: ["AI eyewear", "WebXR", "Inspect Optics", "Reference Orbit", "GLSL"],
+    chamberSignal: "Web como Product OS",
+  },
+  "collective-presence-interface": {
+    room: "Sala 06",
+    title: "Collective Signal Interface",
+    shortTitle: "Collective Signal",
+    statusLabel: "Senal preparada / experimento 01",
+    role: "Interfaz de presencia anonima",
+    summary:
+      "Una web formada por presencia anonima, donde la identidad no se recoge y el campo actua como contrato colectivo.",
+    proofLine:
+      "La superficie recuerda pausas, retornos, movimiento y silencio sin guardar a la persona detras.",
+    tags: ["presencia anonima", "campo colectivo", "clima de memoria"],
+    chamberSignal: "Presencia como contrato",
+  },
+  "presence-archive": {
+    room: "Sala 07",
+    title: "Presence Archive",
+    shortTitle: "Presence Archive",
+    statusLabel: "Camara de investigacion",
+    role: "Logica de archivo basada en presencia",
+    summary:
+      "Archivos como campos vivos donde atencion, memoria, notas y fragmentos media se comportan espacialmente.",
+    proofLine:
+      "El click da acceso; la presencia anade profundidad, memoria, senal y contexto.",
+    tags: ["archivo campo", "capa memoria", "presencia editorial"],
+    chamberSignal: "La presencia da profundidad",
+  },
+  "collector-continuation": {
+    room: "Sala 08",
+    title: "Collector Continuation",
+    shortTitle: "Collector",
+    statusLabel: "AR / print / logica de edicion",
+    role: "Continuacion orientada a coleccionista",
+    summary:
+      "Capa donde print, datos de edicion, previews y contexto AR permanecen conectados.",
+    proofLine:
+      "La superficie digital continua hacia objeto: print, preview, edicion y contexto collector.",
+    tags: ["print", "preview AR", "edicion"],
+    chamberSignal: "Pantalla a objeto",
+  },
+  "installation-field": {
+    room: "Sala 09",
+    title: "Installation Field",
+    shortTitle: "Installation",
+    statusLabel: "Modo expositivo futuro",
+    role: "Capa web lista para instalacion",
+    summary:
+      "Modo futuro donde interfaces nacidas en web pasan a proyeccion, kiosk y presentacion room-scale.",
+    proofLine:
+      "La interfaz se convierte en entorno: proyectado, espacial y preparado para instalacion.",
+    tags: ["proyeccion", "instalacion", "room-scale"],
+    chamberSignal: "Sala nacida en web",
+  },
+};
+
+const spanishImmersiveEngineCopy: Record<string, Partial<ImmersiveEngineItem>> = {
+  "webgl-stage": {
+    role: "Motor de escena",
+    summary: "Convierte hero, producto, archivo y prueba en stages visuales dirigidos.",
+    signal: "logica de stage",
+  },
+  "living-atmosphere": {
+    role: "Motor de clima",
+    summary: "Resuelve ruta, seccion, scroll e identidad de camara en atmosfera controlada.",
+    signal: "atmosfera",
+  },
+  "cinematic-frame-field": {
+    role: "Campo media",
+    summary: "Mantiene material visual vivo como planos cinematicos, no como cards estaticas.",
+    signal: "frame field",
+  },
+  "living-editorial-surface": {
+    role: "Canvas de scroll",
+    summary: "Permite que media, captions y scroll funcionen como un campo editorial.",
+    signal: "canvas vivo",
+  },
+  "cinematic-inspect": {
+    role: "Modo profundo",
+    summary: "Convierte inspeccion en transicion espacial en vez de modal comun.",
+    signal: "inspect",
+  },
+  "spatial-reference-orbit": {
+    role: "Logica de orbita",
+    summary: "Soporta navegacion espacial controlada entre media, camaras y prueba.",
+    signal: "orbita",
+  },
+  "presence-os": {
+    role: "Motor de comportamiento",
+    summary: "Anade profundidad por hover, quietud, retorno, memoria y atencion.",
+    signal: "presencia",
+  },
+  "sonic-object-os": {
+    role: "Motor de objeto sonoro",
+    summary: "Convierte releases en objetos inspeccionables y escucha en sala WebGL audio-reactiva.",
+    signal: "objeto sonoro",
+  },
+  "ar-collector": {
+    role: "Continuacion de objeto",
+    summary: "Extiende superficies digitales hacia print, edicion, preview y logica collector.",
+    signal: "collector",
+  },
+};
+
+export const spanishImmersiveApplicationLayer = [
+  "microsites expositivos",
+  "universos de producto premium",
+  "sistemas collector / print / AR",
+  "archivos interactivos",
+  "pitch pages espaciales",
+  "capas web listas para instalacion",
+  "prototipos WebXR",
+];
+
+export function localizeImmersiveSystemItem(item: ImmersiveSystemItem, locale: "en" | "es" = "en"): ImmersiveSystemItem {
+  if (locale !== "es") return item;
+  const copy = spanishImmersiveSystemCopy[item.id];
+  return copy ? { ...item, ...copy } : item;
 }
 
-export function getChamberEngines(id: ImmersiveChamberId) {
-  return immersiveEngineStack.filter((engine) => engine.chamberIds.includes(id));
+export function localizeImmersiveEngineItem(item: ImmersiveEngineItem, locale: "en" | "es" = "en"): ImmersiveEngineItem {
+  if (locale !== "es") return item;
+  const copy = spanishImmersiveEngineCopy[item.id];
+  return copy ? { ...item, ...copy } : item;
+}
+
+export function getLocalizedImmersiveChambers(locale: "en" | "es" = "en") {
+  return immersiveChambers.map((item) => localizeImmersiveSystemItem(item, locale));
+}
+
+export function getLocalizedImmersiveEngineStack(locale: "en" | "es" = "en") {
+  return immersiveEngineStack.map((item) => localizeImmersiveEngineItem(item, locale));
+}
+
+export function getLocalizedImmersiveApplicationLayer(locale: "en" | "es" = "en") {
+  return locale === "es" ? spanishImmersiveApplicationLayer : immersiveApplicationLayer;
+}
+
+export function getImmersiveChamber(id: ImmersiveChamberId, locale: "en" | "es" = "en") {
+  const source = immersiveChambers.find((item) => item.id === id) ?? immersiveChambers[0];
+  return localizeImmersiveSystemItem(source, locale);
+}
+
+export function getChamberEngines(id: ImmersiveChamberId, locale: "en" | "es" = "en") {
+  return immersiveEngineStack
+    .filter((engine) => engine.chamberIds.includes(id))
+    .map((engine) => localizeImmersiveEngineItem(engine, locale));
 }

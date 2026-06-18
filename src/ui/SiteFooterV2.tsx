@@ -250,14 +250,16 @@ function FooterLedgerLinks({
 function FooterLocationSignal({
   labels,
   tone = "light",
+  showDescription = false,
 }: {
   labels: FooterLocationLabels;
   tone?: "light" | "immersive";
+  showDescription?: boolean;
 }) {
   return (
-    <div className="mt-5 max-w-[29rem]">
+    <div className="mt-4 max-w-[25rem]">
       <div
-        className={`grid gap-2 border-y py-3 font-mono text-[8.5px] uppercase leading-4 tracking-[0.16em] ${
+        className={`grid gap-1.5 border-y py-2.5 font-mono text-[8px] uppercase leading-4 tracking-[0.16em] ${
           tone === "immersive" ? "border-neutral-950/16 text-neutral-700" : "border-neutral-950/10 text-neutral-400"
         }`}
       >
@@ -272,9 +274,11 @@ function FooterLocationSignal({
           </div>
         ))}
       </div>
-      <p className={`mt-4 text-[12px] leading-6 ${tone === "immersive" ? "text-neutral-700" : "text-neutral-500"}`}>
-        {labels.description}
-      </p>
+      {showDescription ? (
+        <p className={`mt-4 text-[12px] leading-6 ${tone === "immersive" ? "text-neutral-700" : "text-neutral-500"}`}>
+          {labels.description}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -710,7 +714,7 @@ export default function SiteFooterV2({
               </h2>
             </div>
 
-            <div className="border-y border-neutral-950/14 bg-white/20 py-5 backdrop-blur-sm">
+            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm">
               <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                 <div className="flex items-center justify-between gap-5">
                   <span>{footerLabels.studioSignal}</span>
@@ -732,11 +736,14 @@ export default function SiteFooterV2({
                   <span className="text-neutral-950">{copy.nextStep}</span>
                 </div>
               </div>
+              <p className="mt-4 border-t border-neutral-950/10 px-1 pt-4 text-[12px] leading-5 text-neutral-500">
+                {footerLabels.locationDescription}
+              </p>
 
               <button
                 type="button"
                 onClick={onOpenProject}
-                className="group mt-6 inline-flex min-h-12 w-full items-center justify-between rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.14)] transition duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
+                className="group mt-5 inline-flex min-h-12 w-full items-center justify-between rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.14)] transition duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
               >
                 <span>{t.common.startProject}</span>
                 <span className="transition duration-300 group-hover:translate-x-1">-&gt;</span>
@@ -745,7 +752,7 @@ export default function SiteFooterV2({
           </div>
         ) : null}
 
-        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start ${hideClosingSignal ? "pb-7" : "py-7"}`}>
+        <div className={`grid gap-6 border-b border-neutral-950/[0.08] lg:grid-cols-[0.9fr_1.05fr_1.05fr_0.9fr] lg:items-start ${hideClosingSignal ? "pb-6" : "py-6"}`}>
           <div>
             <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
             <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">

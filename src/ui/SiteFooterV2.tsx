@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { externalProfiles } from "./profile/ExternalProfileLinks";
+import { STUDIO_LOCATION, STUDIO_LOCATION_ES } from "../config/site";
 import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type SiteFooterV2Props = {
@@ -36,6 +37,16 @@ type FooterCopy = {
   intake: string;
   nextStep: string;
   bottomLine: string;
+};
+
+type FooterLocationLabels = {
+  base: string;
+  scope: string;
+  languages: string;
+  location: string;
+  scopeValue: string;
+  languagesValue: string;
+  description: string;
 };
 
 const routeLinks: FooterLink[] = [
@@ -236,6 +247,38 @@ function FooterLedgerLinks({
   );
 }
 
+function FooterLocationSignal({
+  labels,
+  tone = "light",
+}: {
+  labels: FooterLocationLabels;
+  tone?: "light" | "immersive";
+}) {
+  return (
+    <div className="mt-5 max-w-[29rem]">
+      <div
+        className={`grid gap-2 border-y py-3 font-mono text-[8.5px] uppercase leading-4 tracking-[0.16em] ${
+          tone === "immersive" ? "border-neutral-950/16 text-neutral-700" : "border-neutral-950/10 text-neutral-400"
+        }`}
+      >
+        {[
+          [labels.base, labels.location],
+          [labels.scope, labels.scopeValue],
+          [labels.languages, labels.languagesValue],
+        ].map(([label, value]) => (
+          <div key={label} className="grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-4">
+            <span>{label}</span>
+            <span className="text-right font-semibold text-neutral-950">{value}</span>
+          </div>
+        ))}
+      </div>
+      <p className={`mt-4 text-[12px] leading-6 ${tone === "immersive" ? "text-neutral-700" : "text-neutral-500"}`}>
+        {labels.description}
+      </p>
+    </div>
+  );
+}
+
 export default function SiteFooterV2({
   onOpenProject,
   variant = "living",
@@ -252,6 +295,15 @@ export default function SiteFooterV2({
     projectIntake: isSpanish ? "Entrada de proyecto" : "Project intake",
     nextStep: isSpanish ? "Siguiente paso" : "Next step",
     brandLine: isSpanish ? "Brenych Studio / Sistemas de interfaz" : "Brenych Studio / Interface Systems",
+    base: isSpanish ? "Base del estudio" : "Studio base",
+    scope: isSpanish ? "Alcance" : "Scope",
+    languages: isSpanish ? "Idiomas" : "Languages",
+    location: isSpanish ? STUDIO_LOCATION_ES : STUDIO_LOCATION,
+    scopeValue: isSpanish ? "Remoto / internacional" : "Remote / international",
+    languagesValue: "EN / ES",
+    locationDescription: isSpanish
+      ? "Estudio de sistemas de interfaz con base en Barcelona para fundadores, marcas, creadores y proyectos culturales en Europa y más allá."
+      : "Barcelona-based interface systems studio for founders, brands, creators, and cultural projects across Europe and beyond.",
     spatialHandoff: isSpanish ? "Entrega espacial" : "Spatial handoff",
     caseCanon: isSpanish ? "Canon de caso" : "Case canon",
     signal: isSpanish ? "Senal" : "Signal",
@@ -265,6 +317,15 @@ export default function SiteFooterV2({
     ...link,
     label: link.to === "/privacy" ? t.footer.privacy : t.footer.legal,
   }));
+  const locationLabels: FooterLocationLabels = {
+    base: footerLabels.base,
+    scope: footerLabels.scope,
+    languages: footerLabels.languages,
+    location: footerLabels.location,
+    scopeValue: footerLabels.scopeValue,
+    languagesValue: footerLabels.languagesValue,
+    description: footerLabels.locationDescription,
+  };
   const isCase = variant === "case";
   const isImmersiveCase = variant === "immersiveCase";
   const immersiveCaseCopy = isImmersiveCase
@@ -337,6 +398,7 @@ export default function SiteFooterV2({
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
                 <span>{footerLabels.brandLine}</span>
               </div>
+              <FooterLocationSignal labels={locationLabels} />
             </div>
 
             <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
@@ -416,6 +478,10 @@ export default function SiteFooterV2({
                   <span className="text-neutral-600">{footerLabels.signal}</span>
                   <span className="text-right font-semibold text-neutral-950">{immersiveCaseCopy.signal}</span>
                 </div>
+                <div className="flex items-center justify-between gap-4 border-b border-neutral-950/12 pb-3">
+                  <span className="text-neutral-600">{footerLabels.base}</span>
+                  <span className="text-right font-semibold text-neutral-950">{footerLabels.location}</span>
+                </div>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-neutral-600">{footerLabels.next}</span>
                   <span className="text-right font-semibold text-neutral-950">{immersiveCaseCopy.nextStep}</span>
@@ -439,6 +505,7 @@ export default function SiteFooterV2({
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
                 <span>{immersiveCaseCopy.bottomLine}</span>
               </div>
+              <FooterLocationSignal labels={locationLabels} tone="immersive" />
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-2">
@@ -504,6 +571,7 @@ export default function SiteFooterV2({
               <div className="grid gap-0 font-mono text-[10px] uppercase tracking-[0.19em]">
                 {[
                   [footerLabels.studioSignal, immersiveCaseCopy.signal],
+                  [footerLabels.base, footerLabels.location],
                   [footerLabels.projectIntake, immersiveCaseCopy.intake],
                   [footerLabels.nextStep, immersiveCaseCopy.nextStep],
                 ].map(([label, value]) => (
@@ -533,6 +601,7 @@ export default function SiteFooterV2({
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
                 <span>{immersiveCaseCopy.bottomLine}</span>
               </div>
+              <FooterLocationSignal labels={locationLabels} tone="immersive" />
             </div>
 
             <div className="grid gap-2">
@@ -649,6 +718,11 @@ export default function SiteFooterV2({
                 </div>
                 <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
                 <div className="flex items-center justify-between gap-5">
+                  <span>{footerLabels.base}</span>
+                  <span className="text-neutral-950">{footerLabels.location}</span>
+                </div>
+                <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
+                <div className="flex items-center justify-between gap-5">
                   <span>{footerLabels.projectIntake}</span>
                   <span className="text-neutral-950">{copy.intake}</span>
                 </div>
@@ -682,6 +756,7 @@ export default function SiteFooterV2({
               />
               <span>{copy.bottomLine}</span>
             </div>
+            <FooterLocationSignal labels={locationLabels} />
           </div>
 
           <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />

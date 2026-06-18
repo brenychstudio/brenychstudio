@@ -15,7 +15,16 @@ import PageTransitionOverlay from "./ui/PageTransitionOverlay";
 import SoundSignalDock from "./ui/SoundSignalDock";
 import SeoMeta, { type SeoMetaProps } from "./ui/SeoMeta";
 import StructuredData, { type StructuredDataValue } from "./ui/StructuredData";
-import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, toAbsoluteSiteUrl } from "./config/site";
+import {
+  DEFAULT_OG_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  STUDIO_CITY,
+  STUDIO_COUNTRY,
+  STUDIO_LOCATION,
+  STUDIO_REGION,
+  toAbsoluteSiteUrl,
+} from "./config/site";
 import { I18nProvider } from "./i18n";
 import { spanishPageSeoDrafts } from "./data/spanishContent";
 import { getSeoAlternates, withSeoAlternates } from "./seo/alternates";
@@ -29,7 +38,7 @@ const routeSeo = {
   home: {
     title: "Brenych Studio - Premium Front-end Systems & Interactive Web",
     description:
-      "Premium front-end systems, interactive websites, product presentations and immersive digital surfaces for brands, creators, founders and cultural projects.",
+      "Barcelona-based premium front-end systems, interactive websites, product presentations and immersive digital surfaces for brands, creators, founders and cultural projects.",
     path: "/",
   },
   work: {
@@ -47,13 +56,13 @@ const routeSeo = {
   offer: {
     title: "Offer - Premium Landing Pages, Product Demo Pages & Interactive Web Systems",
     description:
-      "Focused premium web systems for launches, products, creators, advisory services and immersive digital presentations.",
+      "Focused premium web systems from a Barcelona-based studio for launches, products, creators, advisory services and immersive digital presentations.",
     path: "/offer",
   },
   about: {
     title: "About - Rostyslav Brenych / Brenych Studio",
     description:
-      "A creative developer and interactive front-end systems builder working across premium websites, product prototypes, visual storytelling and immersive interfaces.",
+      "Barcelona-based creative developer and interactive front-end systems builder working across premium websites, product prototypes, visual storytelling and immersive interfaces.",
     path: "/about",
   },
   privacy: {
@@ -76,6 +85,31 @@ const organizationSchema: StructuredDataValue = {
   name: SITE_NAME,
   url: SITE_URL,
   logo: toAbsoluteSiteUrl(DEFAULT_OG_IMAGE),
+  slogan: "Barcelona-based interface systems studio",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: STUDIO_CITY,
+    addressCountry: STUDIO_COUNTRY,
+  },
+  areaServed: [
+    {
+      "@type": "Place",
+      name: STUDIO_CITY,
+    },
+    {
+      "@type": "Country",
+      name: STUDIO_COUNTRY,
+    },
+    {
+      "@type": "Place",
+      name: STUDIO_REGION,
+    },
+    {
+      "@type": "Place",
+      name: "International",
+    },
+  ],
+  availableLanguage: ["en", "es"],
   founder: {
     "@type": "Person",
     name: "Rostyslav Brenych",
@@ -100,6 +134,14 @@ const aboutSchema: StructuredDataValue = {
     name: "Rostyslav Brenych",
     url: SITE_URL,
     jobTitle: "Creative Developer / Interactive Front-end Systems Builder",
+    homeLocation: {
+      "@type": "Place",
+      name: STUDIO_LOCATION,
+    },
+    workLocation: {
+      "@type": "Place",
+      name: STUDIO_LOCATION,
+    },
   },
 };
 

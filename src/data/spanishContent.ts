@@ -154,10 +154,10 @@ export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
   "/": {
     title: "Brenych Studio - sistemas front-end premium",
     description:
-      "Sistemas front-end premium, sitios web de producto e interfaces inmersivas para proyectos que necesitan claridad, presencia y prueba real.",
+      "Estudio con base en Barcelona para sistemas front-end premium, sitios web de producto e interfaces inmersivas con claridad, presencia y prueba real.",
     ogTitle: "Brenych Studio - sistemas front-end premium",
     ogDescription:
-      "Sistemas de interfaz, superficies de producto y experiencias web inmersivas construidas con dirección editorial y front-end listo para producción.",
+      "Sistemas de interfaz desde Barcelona: superficies de producto y experiencias web inmersivas con dirección editorial y front-end listo para producción.",
   },
   "/work": {
     title: "Proyectos seleccionados - Brenych Studio",
@@ -170,7 +170,7 @@ export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
   "/offer": {
     title: "Servicios de interfaz premium - Brenych Studio",
     description:
-      "Landing pages premium, demos de producto y sistemas web interactivos para ofertas, productos y experiencias digitales con prueba visual.",
+      "Servicios de interfaz premium desde Barcelona: landing pages, demos de producto y sistemas web interactivos con prueba visual.",
     ogTitle: "Servicios de interfaz premium - Brenych Studio",
     ogDescription:
       "Tres rutas de entrada comercial: landing pages premium, landing pages de producto y sistemas web interactivos.",
@@ -178,10 +178,10 @@ export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
   "/about": {
     title: "Estudio - Brenych Studio",
     description:
-      "Brenych Studio trabaja entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz.",
+      "Brenych Studio es una práctica con base en Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz.",
     ogTitle: "Estudio - Brenych Studio",
     ogDescription:
-      "Una práctica independiente para sistemas front-end premium, superficies de producto y experiencias digitales precisas.",
+      "Una práctica independiente en Barcelona para sistemas front-end premium, superficies de producto y experiencias digitales precisas.",
   },
   "/immersive": {
     title: "Sistemas de interfaz inmersiva - Brenych Studio",
@@ -199,7 +199,7 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
     eyebrow: "Studio signal",
     title: "Sistemas de interfaz vivos.",
     body:
-      "Brenych Studio crea sistemas de interfaz para sitios premium, lanzamientos de producto, superficies comerciales, archivos espaciales y experiencias digitales que necesitan claridad, presencia y prueba real.",
+      "Desde Barcelona, Brenych Studio crea sistemas de interfaz para sitios premium, lanzamientos de producto, superficies comerciales, archivos espaciales y experiencias digitales que necesitan claridad, presencia y prueba real.",
     ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
     labels: {
       liveSignal: "Señal activa",
@@ -240,7 +240,7 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
     eyebrow: "Modelo de servicios",
     title: "Tres rutas de interfaz.",
     body:
-      "Landing pages premium, demos de producto y sistemas web interactivos para proyectos que necesitan estructura comercial, prueba visual y front-end listo para producción.",
+      "Desde Barcelona, tres rutas de interfaz para proyectos que necesitan estructura comercial, prueba visual y front-end listo para producción: landing pages premium, demos de producto y sistemas web interactivos.",
     ctas: ["Iniciar proyecto", "Ver proyectos relacionados"],
     labels: {
       premiumLandingPages: "Landing pages premium",
@@ -260,7 +260,7 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
     eyebrow: "Posición del estudio",
     title: "Una práctica entre ingeniería, imagen e investigación de interfaz.",
     body:
-      "Brenych Studio trabaja entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz para construir superficies precisas, atmosféricas y usables.",
+      "Brenych Studio es una práctica con base en Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz para construir superficies precisas, atmosféricas y usables.",
     ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
     labels: {
       practiceLayers: "Capas de práctica",
@@ -303,7 +303,7 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
     title: "Landing pages premium",
     seoTitle: "Landing pages premium para lanzamientos concretos | Brenych Studio",
     metaDescription:
-      "Landing pages premium para ofertas, productos, servicios, consultas, eventos, listas de espera y campañas con una ruta comercial clara.",
+      "Landing pages premium desde Barcelona para ofertas, productos, servicios, consultas, eventos, listas de espera y campañas con una ruta comercial clara.",
     ogTitle: "Landing pages premium para lanzamientos concretos",
     ogDescription:
       "Páginas comerciales independientes construidas como sistemas de interfaz claros, no como plantillas genéricas.",
@@ -398,7 +398,7 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
     title: "Landing pages de producto",
     seoTitle: "Landing pages de producto para fundadores y equipos | Brenych Studio",
     metaDescription:
-      "Sistemas de presentación para productos SaaS, herramientas AI, prototipos, demos para fundadores, listas de espera y validación temprana.",
+      "Sistemas de presentación de producto desde Barcelona para SaaS, herramientas AI, prototipos, demos para fundadores, listas de espera y validación temprana.",
     ogTitle: "Landing pages de producto para fundadores y equipos",
     ogDescription:
       "Rutas de demostración que convierten producto, flujo de trabajo y prueba de interfaz en una presentación clara.",
@@ -493,7 +493,7 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
     title: "Sistemas web interactivos",
     seoTitle: "Sistemas web interactivos e interfaces inmersivas | Brenych Studio",
     metaDescription:
-      "Sistemas web interactivos, interfaces cinematográficas, WebGL, archivos espaciales y presentaciones inmersivas para marcas, artistas y productos premium.",
+      "Sistemas web interactivos desde Barcelona: interfaces cinematográficas, WebGL, archivos espaciales y presentaciones inmersivas para marcas, artistas y productos premium.",
     ogTitle: "Sistemas web interactivos e interfaces inmersivas",
     ogDescription:
       "Sitios cinematográficos, interfaces atmosféricas y capas de presentación inmersiva para proyectos que necesitan más que una página estática.",

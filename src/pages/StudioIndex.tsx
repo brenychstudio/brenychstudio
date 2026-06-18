@@ -380,7 +380,9 @@ function getStudioHomeUi(locale: LocaleCode) {
   const isSpanish = locale === "es";
 
   return {
-    openingChips: isSpanish ? ["Indice de estudio", "Sistemas vivos"] : ["Studio Index", "Living systems"],
+    openingChips: isSpanish
+      ? ["Indice de estudio", "Base en Barcelona", "Sistemas vivos"]
+      : ["Studio Index", "Barcelona-based", "Living systems"],
     railItems: isSpanish
       ? [
           { index: "01", label: "Inicio", id: "opening" },
@@ -1548,12 +1550,14 @@ function OpeningChapter({
 
       <div className="relative z-10 mx-auto grid min-h-[calc(100svh-7rem)] w-full content-center gap-8 py-10 lg:hidden">
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full border border-neutral-300/70 bg-white/62 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
-            {ui.openingChips[0]}
-          </span>
-          <span className="rounded-full border border-neutral-300/70 bg-white/42 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
-            {ui.openingChips[1]}
-          </span>
+          {ui.openingChips.map((chip, index) => (
+            <span
+              key={chip}
+              className={`rounded-full border border-neutral-300/70 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur ${index === 0 ? "bg-white/62" : "bg-white/42"}`}
+            >
+              {chip}
+            </span>
+          ))}
         </div>
 
         <div>
@@ -1562,7 +1566,7 @@ function OpeningChapter({
           </h1>
           <p className="mt-7 max-w-[36rem] text-[15px] leading-7 text-neutral-600">
             {copy?.body ??
-              "Premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences built as one coherent interface system."}
+              "Barcelona-based premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences built as one coherent interface system."}
           </p>
         </div>
 
@@ -1603,12 +1607,14 @@ function OpeningChapter({
       <div className="relative z-10 mx-auto hidden min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center lg:flex">
         <div className="max-w-[56rem]">
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-full border border-neutral-300/70 bg-white/56 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-              {ui.openingChips[0]}
-            </span>
-            <span className="rounded-full border border-neutral-300/70 bg-white/38 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-              {ui.openingChips[1]}
-            </span>
+            {ui.openingChips.map((chip, index) => (
+              <span
+                key={chip}
+                className={`rounded-full border border-neutral-300/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur ${index === 0 ? "bg-white/56" : "bg-white/38"}`}
+              >
+                {chip}
+              </span>
+            ))}
           </div>
 
           <h1 className="mt-8 max-w-[10ch] text-[78px] font-normal leading-[0.78] tracking-[-0.09em] text-neutral-950 sm:text-[112px] md:text-[150px] xl:text-[176px] 2xl:text-[206px]">
@@ -1617,7 +1623,7 @@ function OpeningChapter({
 
           <p className="mt-9 max-w-[45rem] text-[17px] leading-[1.85] text-neutral-600 sm:text-[19px]">
             {copy?.body ??
-              "I build premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences where motion, media, language, and technical structure work as one environment."}
+              "From Barcelona, I build premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences where motion, media, language, and technical structure work as one environment."}
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">

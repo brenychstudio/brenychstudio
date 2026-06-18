@@ -58,7 +58,7 @@ export const servicePages: ServicePageData[] = [
     heroProofLayout: "editorial-stack",
     seoTitle: "Premium Landing Pages for Focused Launches | Brenych Studio",
     metaDescription:
-      "Premium standalone landing pages for product launches, services, consultations, campaigns, booking flows and focused commercial offers.",
+      "Barcelona-based premium landing pages for product launches, services, consultations, campaigns, booking flows and focused commercial offers.",
     heroTitle: "Premium landing pages for focused launches.",
     heroBody:
       "Standalone commercial pages for one offer, product, service, consultation, event, waitlist or campaign - built as a clear interface system, not a generic template.",
@@ -160,7 +160,7 @@ export const servicePages: ServicePageData[] = [
     heroProofLayout: "product-stack",
     seoTitle: "Product Demo Landing Pages for Founders and Product Teams | Brenych Studio",
     metaDescription:
-      "Product demo landing pages and founder-led presentation systems for SaaS prototypes, AI tools, internal products, waitlists and investor-facing product narratives.",
+      "Barcelona-based product demo landing pages and founder-led presentation systems for SaaS prototypes, AI tools, internal products, waitlists and investor-facing narratives.",
     heroTitle: "Product demo pages for founder-led products.",
     heroBody:
       "Focused product presentation systems for SaaS concepts, AI tools, workflow products, founder demos, investor conversations, waitlists and early product validation.",
@@ -262,7 +262,7 @@ export const servicePages: ServicePageData[] = [
     heroProofLayout: "spatial-stack",
     seoTitle: "Interactive Web Systems and Immersive Interfaces | Brenych Studio",
     metaDescription:
-      "Interactive web systems, cinematic interfaces, WebGL experiences, spatial archives and immersive digital presentations for premium brands, artists and product worlds.",
+      "Barcelona-based interactive web systems, cinematic interfaces, WebGL experiences, spatial archives and immersive digital presentations for premium brands, artists and product worlds.",
     heroTitle: "Interactive web systems for spatial interfaces.",
     heroBody:
       "Cinematic websites, atmospheric interfaces, WebGL-ready systems, spatial archives and immersive presentation layers built for projects that need more than a static page.",

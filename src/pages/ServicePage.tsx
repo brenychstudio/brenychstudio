@@ -15,7 +15,7 @@ import PageSurface from "../ui/PageSurface";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import SeoMeta from "../ui/SeoMeta";
 import StructuredData from "../ui/StructuredData";
-import { SITE_NAME, toAbsoluteSiteUrl } from "../config/site";
+import { SITE_NAME, STUDIO_CITY, STUDIO_COUNTRY, toAbsoluteSiteUrl } from "../config/site";
 import { cases, getCaseBySlug, getCasePath } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
 import { localizeCase, localizeImmersiveItem, localizeServicePage } from "../data/localization";
@@ -207,8 +207,13 @@ function ServiceMeta({
       "@type": "Organization",
       name: SITE_NAME,
       url: toAbsoluteSiteUrl("/"),
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: STUDIO_CITY,
+        addressCountry: STUDIO_COUNTRY,
+      },
     },
-    areaServed: "International",
+    areaServed: [STUDIO_CITY, STUDIO_COUNTRY, "Europe", "International"],
     serviceType: page.schemaName,
   };
 

@@ -138,8 +138,9 @@ function getAboutUi(locale: LocaleCode) {
     mobileStudioPosition: isSpanish ? "01 / Posicion del estudio" : "01 / Studio position",
     mobileHeroTitle: isSpanish ? "Construyo sistemas de interfaz premium." : "I build premium interface systems.",
     mobileHeroBody: isSpanish
-      ? "Websites, superficies de producto, sistemas multilingues y experiencias digitales inmersivas como una interfaz coherente."
-      : "Websites, product surfaces, multilingual systems, and immersive digital experiences shaped as one coherent interface.",
+      ? "Desde Barcelona, sitios web, superficies de producto, sistemas multilingües y experiencias digitales inmersivas como una interfaz coherente."
+      : "From Barcelona, websites, product surfaces, multilingual systems, and immersive digital experiences shaped as one coherent interface.",
+    locationSignal: isSpanish ? "Base en Barcelona / trabajo internacional" : "Barcelona-based / international work",
     viewWork: isSpanish ? "Ver proyectos ->" : "View work ->",
     exploreImmersive: isSpanish ? "Explorar inmersivo ->" : "Explore immersive ->",
     startProject: isSpanish ? "Iniciar proyecto" : "Start a project",
@@ -177,8 +178,8 @@ function getAboutUi(locale: LocaleCode) {
       : "A practice between engineering, image, and interface research.",
     humanSignal: isSpanish ? "Senal humana / posicion de practica" : "Human signal / practice position",
     authorialBody: isSpanish
-      ? "Mi trabajo vive entre ingenieria front-end, direccion visual, fotografia, medios cinematicos e investigacion experimental de interfaz. Me interesan webs precisas, atmosfericas y vivas, pero tambien usables, rapidas y claras."
-      : "My work sits between front-end engineering, visual direction, photography, cinematic media, and experimental interface research. I am interested in websites that feel precise, atmospheric, and alive, while remaining usable, fast, and clear.",
+      ? "Mi trabajo se desarrolla desde Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinemáticos e investigación experimental de interfaz. Me interesan webs precisas, atmosféricas y vivas, pero también usables, rápidas y claras."
+      : "My work is based in Barcelona and sits between front-end engineering, visual direction, photography, cinematic media, and experimental interface research. I am interested in websites that feel precise, atmospheric, and alive, while remaining usable, fast, and clear.",
     principlesLabel: isSpanish ? "06 / Campo de principios" : "06 / Principle field",
     mobilePrinciplesLabel: isSpanish ? "05 / Principios" : "05 / Principles",
     principlesTitle: isSpanish ? "Reglas calmadas para sistemas expresivos." : "Calm rules for expressive systems.",
@@ -458,6 +459,9 @@ function MobileAboutHero({
       <p className="mt-7 max-w-[21rem] text-[17px] leading-7 text-neutral-600">
         {ui.mobileHeroBody}
       </p>
+      <div className="mt-5 inline-flex rounded-full border border-neutral-300 bg-white/58 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500">
+        {ui.locationSignal}
+      </div>
 
       <div className="mt-8 flex flex-wrap gap-3">
         <button
@@ -746,8 +750,11 @@ export default function AboutV2({
               </h1>
               <p className="mt-6 max-w-[34ch] text-[16px] leading-7 text-neutral-600 sm:max-w-[43rem] sm:text-[17px]">
                 {copy?.body ??
-                  "Brenych Studio is an independent creative development practice focused on premium front-end systems, interactive storytelling, multilingual websites, WebGL stages, and spatial interface research."}
+                  "Brenych Studio is a Barcelona-based creative development practice focused on premium front-end systems, interactive storytelling, multilingual websites, WebGL stages, and spatial interface research."}
               </p>
+              <div className="mt-5 inline-flex rounded-full border border-neutral-300 bg-white/58 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
+                {ui.locationSignal}
+              </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <button

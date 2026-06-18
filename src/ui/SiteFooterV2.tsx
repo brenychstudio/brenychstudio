@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { externalProfiles } from "./profile/ExternalProfileLinks";
-import { useI18n } from "../i18n";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type SiteFooterV2Props = {
   onOpenProject?: () => void;
@@ -123,6 +123,94 @@ const footerCopyByVariant: Record<FooterVariant, FooterCopy> = {
   },
 };
 
+const spanishFooterCopyByVariant: Record<FooterVariant, FooterCopy> = {
+  living: {
+    headline: "Empieza por el sistema.",
+    signal: "sistemas de interfaz",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Construido como sistema de interfaz vivo.",
+  },
+  evidence: {
+    headline: "Convierte la prueba en proyecto.",
+    signal: "capa de evidencia",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Construido como sistema de interfaz basado en prueba.",
+  },
+  immersive: {
+    headline: "Construye el siguiente espacio como interfaz.",
+    signal: "sistemas espaciales",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Construido como sistema de interfaz espacial.",
+  },
+  immersiveCase: {
+    headline: "Construye el siguiente espacio como interfaz.",
+    signal: "sistemas espaciales",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Construido como sistema de interfaz espacial.",
+  },
+  practice: {
+    headline: "Convierte el sistema en una oferta.",
+    signal: "ruta de practica",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Construido como sistema de interfaz comercial.",
+  },
+  studio: {
+    headline: "Empieza por el metodo.",
+    signal: "posicion de estudio",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Construido como sistema de interfaz autoral.",
+  },
+  case: {
+    headline: "La evidencia se vuelve proyecto cuando el encaje es claro.",
+    signal: "capa de evidencia",
+    intake: "disponible",
+    nextStep: "iniciar proyecto",
+    bottomLine: "Sistemas de interfaz.",
+  },
+};
+
+function getFooterCopy(variant: FooterVariant, locale: LocaleCode) {
+  return locale === "es" ? spanishFooterCopyByVariant[variant] : footerCopyByVariant[variant];
+}
+
+function localizeFooterLinks(links: FooterLink[], locale: LocaleCode, group: "routes" | "systems" | "services") {
+  if (locale !== "es") {
+    return links.map((link) => ({ ...link, to: getLocalizedPath(link.to, locale) }));
+  }
+
+  const routeLabels: Record<string, string> = {
+    "/": "Inicio",
+    "/work": "Casos",
+    "/immersive": "XR",
+    "/offer": "Oferta",
+    "/about": "Estudio",
+  };
+  const systemLabels: Record<string, string> = {
+    "/": "Sistemas vivos",
+    "/work": "Atlas de evidencia",
+    "/immersive": "Interfaces inmersivas",
+    "/offer": "Modelo de practica",
+  };
+  const serviceLabels: Record<string, string> = {
+    "/services/premium-landing-page": "Landing pages premium",
+    "/services/product-demo-landing": "Landings demo de producto",
+    "/services/interactive-web-systems": "Sistemas web interactivos",
+  };
+  const labelMap = group === "routes" ? routeLabels : group === "systems" ? systemLabels : serviceLabels;
+
+  return links.map((link) => ({
+    ...link,
+    label: labelMap[link.to] ?? link.label,
+    to: getLocalizedPath(link.to, locale),
+  }));
+}
+
 function FooterLedgerLinks({
   title,
   links,
@@ -155,8 +243,24 @@ export default function SiteFooterV2({
   immersiveCaseContent,
 }: SiteFooterV2Props) {
   const reduceMotion = useReducedMotion();
-  const { t } = useI18n();
-  const copy = footerCopyByVariant[variant];
+  const { t, locale } = useI18n();
+  const isSpanish = locale === "es";
+  const copy = getFooterCopy(variant, locale);
+  const footerLabels = {
+    closingSignal: isSpanish ? "Senal de cierre" : "Closing signal",
+    studioSignal: isSpanish ? "Senal de estudio" : "Studio signal",
+    projectIntake: isSpanish ? "Entrada de proyecto" : "Project intake",
+    nextStep: isSpanish ? "Siguiente paso" : "Next step",
+    brandLine: isSpanish ? "Brenych Studio / Sistemas de interfaz" : "Brenych Studio / Interface Systems",
+    spatialHandoff: isSpanish ? "Entrega espacial" : "Spatial handoff",
+    caseCanon: isSpanish ? "Canon de caso" : "Case canon",
+    signal: isSpanish ? "Senal" : "Signal",
+    next: isSpanish ? "Siguiente" : "Next",
+    mobileImmersiveHeadline: isSpanish ? "Construir el siguiente espacio." : "Build the next room.",
+  };
+  const localizedRouteLinks = localizeFooterLinks(routeLinks, locale, "routes");
+  const localizedSystemLinks = localizeFooterLinks(systemLinks, locale, "systems");
+  const localizedServiceLinks = localizeFooterLinks(serviceLinks, locale, "services");
   const localizedLegalLinks = legalLinks.map((link) => ({
     ...link,
     label: link.to === "/privacy" ? t.footer.privacy : t.footer.legal,
@@ -175,8 +279,10 @@ export default function SiteFooterV2({
     : copy;
   const immersiveCaseDescription =
     immersiveCaseContent?.description ??
-    "WHISPER closes as the reference pattern: spatial proof, inspectable evidence, media playback, and project intake stay inside one calm immersive system.";
-  const immersiveCaseCtaLabel = immersiveCaseContent?.ctaLabel ?? "Start a project";
+    (isSpanish
+      ? "WHISPER funciona como patron de referencia: prueba espacial, evidencia inspeccionable, reproduccion media y entrada de proyecto dentro de un sistema inmersivo calmado."
+      : "WHISPER closes as the reference pattern: spatial proof, inspectable evidence, media playback, and project intake stay inside one calm immersive system.");
+  const immersiveCaseCtaLabel = immersiveCaseContent?.ctaLabel ?? t.common.startProject;
 
   if (isCase) {
     return (
@@ -194,7 +300,7 @@ export default function SiteFooterV2({
           <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-8 lg:grid-cols-[0.4fr_0.6fr] lg:items-end">
             <div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-                <span>Closing signal</span>
+                <span>{footerLabels.closingSignal}</span>
                 <motion.span
                   className="h-1.5 w-1.5 rounded-full bg-neutral-950"
                   animate={reduceMotion ? undefined : { opacity: [0.34, 1, 0.34], scale: [1, 1.28, 1] }}
@@ -209,15 +315,15 @@ export default function SiteFooterV2({
             <div className="border-y border-neutral-950/12 bg-white/18 py-3 backdrop-blur-sm">
               <div className="grid grid-cols-3 divide-x divide-neutral-950/10 font-mono text-[8px] uppercase leading-4 tracking-[0.14em] text-neutral-400">
                 <div className="min-w-0 px-2 first:pl-0">
-                  <span className="block text-neutral-300">Studio signal</span>
+                  <span className="block text-neutral-300">{footerLabels.studioSignal}</span>
                   <span className="mt-1 block text-[8.5px] tracking-[0.12em] text-neutral-950">{copy.signal}</span>
                 </div>
                 <div className="min-w-0 px-2">
-                  <span className="block text-neutral-300">Project intake</span>
+                  <span className="block text-neutral-300">{footerLabels.projectIntake}</span>
                   <span className="mt-1 block text-[8.5px] tracking-[0.12em] text-neutral-950">{copy.intake}</span>
                 </div>
                 <div className="min-w-0 px-2 last:pr-0">
-                  <span className="block text-neutral-300">Next step</span>
+                  <span className="block text-neutral-300">{footerLabels.nextStep}</span>
                   <span className="mt-1 block text-[8.5px] tracking-[0.12em] text-neutral-950">{copy.nextStep}</span>
                 </div>
               </div>
@@ -229,13 +335,13 @@ export default function SiteFooterV2({
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-neutral-950">BRENYCH STUDIO</div>
               <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
-                <span>Brenych Studio / Interface Systems</span>
+                <span>{footerLabels.brandLine}</span>
               </div>
             </div>
 
-            <FooterLedgerLinks title={t.footer.systems} links={systemLinks} />
-            <FooterLedgerLinks title={t.footer.services} links={serviceLinks} />
-            <FooterLedgerLinks title={t.footer.routes} links={routeLinks} />
+            <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
+            <FooterLedgerLinks title={t.footer.services} links={localizedServiceLinks} />
+            <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} />
           </div>
 
           <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">
@@ -290,7 +396,7 @@ export default function SiteFooterV2({
         <div className="relative mx-auto w-[min(92vw,1640px)] py-8 lg:hidden">
           <div className="border-b border-neutral-950/14 pb-7">
             <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-700">
-              <span>Closing signal</span>
+              <span>{footerLabels.closingSignal}</span>
               <motion.span
                 className="h-1.5 w-1.5 rounded-full bg-neutral-950"
                 animate={reduceMotion ? undefined : { opacity: [0.45, 1, 0.45], scale: [1, 1.24, 1] }}
@@ -298,7 +404,7 @@ export default function SiteFooterV2({
               />
             </div>
             <h2 className="mt-5 max-w-[9ch] text-[40px] font-normal leading-[0.9] tracking-normal text-neutral-950">
-              Build the next room.
+              {footerLabels.mobileImmersiveHeadline}
             </h2>
             <p className="mt-5 text-[14px] leading-7 text-neutral-700">
               {immersiveCaseDescription}
@@ -307,11 +413,11 @@ export default function SiteFooterV2({
             <div className="mt-6 border border-white/24 bg-neutral-950/[0.035] p-4 backdrop-blur-xl">
               <div className="grid gap-3 font-mono text-[9px] uppercase tracking-[0.18em]">
                 <div className="flex items-center justify-between gap-4 border-b border-neutral-950/12 pb-3">
-                  <span className="text-neutral-600">Signal</span>
+                  <span className="text-neutral-600">{footerLabels.signal}</span>
                   <span className="text-right font-semibold text-neutral-950">{immersiveCaseCopy.signal}</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-neutral-600">Next</span>
+                  <span className="text-neutral-600">{footerLabels.next}</span>
                   <span className="text-right font-semibold text-neutral-950">{immersiveCaseCopy.nextStep}</span>
                 </div>
               </div>
@@ -336,7 +442,7 @@ export default function SiteFooterV2({
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-2">
-              {[...serviceLinks, ...routeLinks].map((link) => (
+              {[...localizedServiceLinks, ...localizedRouteLinks].map((link) => (
                 <Link
                   key={`immersive-case-mobile-route-${link.to}-${link.label}`}
                   to={link.to}
@@ -370,7 +476,7 @@ export default function SiteFooterV2({
           <div className="grid gap-10 border-b border-neutral-950/14 pb-11 lg:grid-cols-[minmax(0,0.58fr)_minmax(26rem,0.42fr)] lg:items-end">
             <div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-700">
-                <span>Closing signal</span>
+                <span>{footerLabels.closingSignal}</span>
                 <motion.span
                   className="h-1.5 w-1.5 rounded-full bg-neutral-950"
                   animate={reduceMotion ? undefined : { opacity: [0.45, 1, 0.45], scale: [1, 1.24, 1] }}
@@ -391,15 +497,15 @@ export default function SiteFooterV2({
               <div className="pointer-events-none absolute bottom-6 left-6 top-6 w-px bg-gradient-to-b from-transparent via-neutral-950/16 to-transparent" />
               <div className="relative">
               <div className="flex items-center justify-between gap-4 border-b border-neutral-950/14 pb-4 font-mono text-[9px] uppercase tracking-[0.22em]">
-                <span className="text-neutral-500">Spatial handoff</span>
-                <span className="text-neutral-950">Case canon</span>
+                <span className="text-neutral-500">{footerLabels.spatialHandoff}</span>
+                <span className="text-neutral-950">{footerLabels.caseCanon}</span>
               </div>
 
               <div className="grid gap-0 font-mono text-[10px] uppercase tracking-[0.19em]">
                 {[
-                  ["Studio signal", immersiveCaseCopy.signal],
-                  ["Project intake", immersiveCaseCopy.intake],
-                  ["Next step", immersiveCaseCopy.nextStep],
+                  [footerLabels.studioSignal, immersiveCaseCopy.signal],
+                  [footerLabels.projectIntake, immersiveCaseCopy.intake],
+                  [footerLabels.nextStep, immersiveCaseCopy.nextStep],
                 ].map(([label, value]) => (
                   <div key={label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-5 border-b border-neutral-950/12 py-4 last:border-b-0">
                     <span className="text-neutral-600">{label}</span>
@@ -432,7 +538,7 @@ export default function SiteFooterV2({
             <div className="grid gap-2">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.systems}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
-                {systemLinks.map((link) => (
+                {localizedSystemLinks.map((link) => (
                   <Link
                     key={`immersive-case-systems-${link.to}-${link.label}`}
                     to={link.to}
@@ -447,7 +553,7 @@ export default function SiteFooterV2({
             <div className="grid gap-2">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.services}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
-                {serviceLinks.map((link) => (
+                {localizedServiceLinks.map((link) => (
                   <Link
                     key={`immersive-case-services-${link.to}-${link.label}`}
                     to={link.to}
@@ -462,7 +568,7 @@ export default function SiteFooterV2({
             <div className="grid gap-2">
               <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600">{t.footer.routes}</div>
               <div className="flex flex-wrap gap-x-4 gap-y-2">
-                {routeLinks.map((link) => (
+                {localizedRouteLinks.map((link) => (
                   <Link
                     key={`immersive-case-routes-${link.to}-${link.label}`}
                     to={link.to}
@@ -527,7 +633,7 @@ export default function SiteFooterV2({
           <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-[minmax(0,0.62fr)_minmax(20rem,0.38fr)] lg:items-end">
             <div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-500">
-                <span>Closing signal</span>
+                <span>{footerLabels.closingSignal}</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
               </div>
               <h2 className="mt-5 max-w-[12ch] text-[48px] font-normal leading-[0.9] tracking-[-0.06em] text-neutral-950 sm:text-[72px] lg:text-[92px]">
@@ -538,17 +644,17 @@ export default function SiteFooterV2({
             <div className="border-y border-neutral-950/14 bg-white/20 py-5 backdrop-blur-sm">
               <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                 <div className="flex items-center justify-between gap-5">
-                  <span>Studio signal</span>
+                  <span>{footerLabels.studioSignal}</span>
                   <span className="text-neutral-950">{copy.signal}</span>
                 </div>
                 <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
                 <div className="flex items-center justify-between gap-5">
-                  <span>Project intake</span>
+                  <span>{footerLabels.projectIntake}</span>
                   <span className="text-neutral-950">{copy.intake}</span>
                 </div>
                 <div className="h-px bg-gradient-to-r from-neutral-950/40 via-neutral-950/14 to-transparent" />
                 <div className="flex items-center justify-between gap-5">
-                  <span>Next step</span>
+                  <span>{footerLabels.nextStep}</span>
                   <span className="text-neutral-950">{copy.nextStep}</span>
                 </div>
               </div>
@@ -578,9 +684,9 @@ export default function SiteFooterV2({
             </div>
           </div>
 
-          <FooterLedgerLinks title={t.footer.systems} links={systemLinks} />
-          <FooterLedgerLinks title={t.footer.services} links={serviceLinks} />
-          <FooterLedgerLinks title={t.footer.routes} links={routeLinks} />
+          <FooterLedgerLinks title={t.footer.systems} links={localizedSystemLinks} />
+          <FooterLedgerLinks title={t.footer.services} links={localizedServiceLinks} />
+          <FooterLedgerLinks title={t.footer.routes} links={localizedRouteLinks} />
         </div>
 
         <div className="flex flex-col gap-4 pt-6 text-[10px] uppercase tracking-[0.16em] text-neutral-400 lg:flex-row lg:items-center lg:justify-between">

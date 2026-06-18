@@ -116,7 +116,7 @@ export function localizeImmersiveItem(item: ImmersiveItem, locale: LocaleCode): 
       ...link,
       label:
         link.label.toLowerCase().includes("live")
-          ? "Sitio live"
+          ? "Ver sitio"
           : link.label.toLowerCase().includes("repo")
             ? "Repositorio"
             : link.label,

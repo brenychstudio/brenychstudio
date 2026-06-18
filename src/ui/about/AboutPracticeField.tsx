@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 
 import { useSound } from "../../stage/audio/useSound";
+import { useI18n, type LocaleCode } from "../../i18n";
 
 type AboutPracticeFieldProps = {
   className?: string;
@@ -100,7 +101,74 @@ const axisItems = [
   "production discipline",
 ] as const;
 
+function getPracticeFieldUi(locale: LocaleCode) {
+  const isSpanish = locale === "es";
+
+  return {
+    ariaLabel: isSpanish ? "Campo de practica autoral" : "Authorial practice field",
+    methodAtlas: isSpanish ? "Atlas de metodo" : "Method atlas",
+    directionBecomesSystem: isSpanish ? "la direccion se vuelve sistema" : "direction becomes system",
+    axisItems: isSpanish
+      ? [
+          { id: "commercial clarity", label: "claridad comercial" },
+          { id: "experimental research", label: "investigacion experimental" },
+          { id: "production discipline", label: "disciplina de produccion" },
+        ]
+      : axisItems.map((item) => ({ id: item, label: item })),
+  };
+}
+
+function getMethodStages(locale: LocaleCode): MethodStage[] {
+  if (locale !== "es") return methodStages;
+
+  return [
+    {
+      ...methodStages[0],
+      label: "Senal",
+      shortLabel: "lo que debe entenderse",
+      axis: "claridad comercial",
+      description: "Entender que necesita comunicar el proyecto antes de decidir como debe verse, moverse o comportarse.",
+      proof: "La primera capa es significado: oferta, audiencia, contexto, presion y respuesta deseada.",
+    },
+    {
+      ...methodStages[1],
+      label: "Estructura",
+      shortLabel: "ruta, contenido, datos",
+      axis: "arquitectura de sistema",
+      description: "Definir ruta, jerarquia de contenido, modelo de datos y logica de interaccion que sostendran el trabajo.",
+      proof: "La pagina se vuelve sistema antes de volverse superficie.",
+    },
+    {
+      ...methodStages[2],
+      label: "Atmosfera",
+      shortLabel: "clima visual",
+      axis: "temperatura emocional",
+      description: "Dar forma al clima visual, ritmo de motion, comportamiento media y temperatura emocional de la interfaz.",
+      proof: "La atmosfera no es decoracion. Le dice al usuario como sentir y donde mirar.",
+    },
+    {
+      ...methodStages[3],
+      label: "Interfaz",
+      shortLabel: "superficie de produccion",
+      axis: "entrega front-end",
+      description: "Convertir el sistema en front-end responsive, accesible y listo para produccion con estados de interaccion claros.",
+      proof: "La superficie final debe sostenerse en pantallas, motion, contenido y condiciones de launch.",
+    },
+    {
+      ...methodStages[4],
+      label: "Memoria",
+      shortLabel: "lo que permanece",
+      axis: "claridad a largo plazo",
+      description: "Dejar logica reutilizable, documentacion, patrones y memoria de interfaz para que el proyecto continue despues del launch.",
+      proof: "Una buena interfaz no termina en el deploy. Se vuelve un sistema capaz de evolucionar.",
+    },
+  ];
+}
+
 export default function AboutPracticeField({ className = "" }: AboutPracticeFieldProps) {
+  const { locale } = useI18n();
+  const ui = getPracticeFieldUi(locale);
+  const localizedMethodStages = getMethodStages(locale);
   const reduceMotion = useReducedMotion();
   const sound = useSound();
   const boundsRef = useRef<HTMLDivElement | null>(null);
@@ -114,7 +182,7 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
   const smoothY = useSpring(pointerY, { stiffness: 90, damping: 24, mass: 0.35 });
   const fieldX = useTransform(smoothX, [-1, 1], reduceMotion ? ["0%", "0%"] : ["-1.2%", "1.2%"]);
   const fieldY = useTransform(smoothY, [-1, 1], reduceMotion ? ["0%", "0%"] : ["-1%", "1%"]);
-  const activeStage = methodStages.find((stage) => stage.id === activeId) ?? methodStages[2];
+  const activeStage = localizedMethodStages.find((stage) => stage.id === activeId) ?? localizedMethodStages[2];
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (reduceMotion) return;
@@ -157,9 +225,9 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
 
       if (!fieldIsActive || wheelCaptureCountRef.current >= 3) return;
 
-      const currentIndex = methodStages.findIndex((stage) => stage.id === selectedId);
+      const currentIndex = localizedMethodStages.findIndex((stage) => stage.id === selectedId);
       const direction = event.deltaY > 0 ? 1 : -1;
-      const nextIndex = Math.min(methodStages.length - 1, Math.max(0, currentIndex + direction));
+      const nextIndex = Math.min(localizedMethodStages.length - 1, Math.max(0, currentIndex + direction));
 
       if (nextIndex === currentIndex) return;
 
@@ -170,13 +238,13 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
 
       wheelCaptureCountRef.current += 1;
       lastWheelSwitchRef.current = now;
-      selectStage(methodStages[nextIndex].id);
+      selectStage(localizedMethodStages[nextIndex].id);
     };
 
     element.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => element.removeEventListener("wheel", handleWheel);
-  }, [selectStage, selectedId]);
+  }, [localizedMethodStages, selectStage, selectedId]);
 
   return (
     <div
@@ -184,7 +252,7 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointer}
       className={`relative min-h-[610px] overflow-hidden border-y border-neutral-950/10 bg-white/[0.18] md:min-h-[560px] lg:min-h-[660px] ${className}`}
-      aria-label="Authorial practice field"
+      aria-label={ui.ariaLabel}
     >
       <motion.div
         className="absolute inset-0 pb-44 sm:pb-0"
@@ -261,7 +329,7 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
         />
         <div className="absolute left-1/2 top-[31%] w-[min(82vw,21rem)] -translate-x-1/2 -translate-y-1/2 text-center sm:top-[42%] sm:w-[min(78%,23rem)]">
           <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-neutral-400 sm:text-[10px]">
-            Method atlas / {activeStage.index}
+            {ui.methodAtlas} / {activeStage.index}
           </div>
           <AnimatePresence mode="wait">
             <motion.div
@@ -286,11 +354,11 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
             </motion.div>
           </AnimatePresence>
           <div className="mx-auto mt-3 w-fit border-y border-neutral-950/10 px-3 py-1 font-mono text-[8px] uppercase tracking-[0.18em] text-neutral-400">
-            direction becomes system
+            {ui.directionBecomesSystem}
           </div>
         </div>
 
-        {methodStages.map((stage) => {
+        {localizedMethodStages.map((stage) => {
           const active = activeStage.id === stage.id;
 
           return (
@@ -335,7 +403,7 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
       </motion.div>
 
       <div className="absolute inset-x-4 bottom-[8.6rem] grid grid-cols-[repeat(5,minmax(0,1fr))] gap-1.5 sm:hidden">
-        {methodStages.map((stage) => {
+        {localizedMethodStages.map((stage) => {
           const active = activeStage.id === stage.id;
 
           return (
@@ -357,22 +425,22 @@ export default function AboutPracticeField({ className = "" }: AboutPracticeFiel
       </div>
 
       <div className="absolute inset-x-4 bottom-4 grid gap-2 border-t border-neutral-950/10 pt-4 sm:inset-x-6 sm:grid-cols-3 lg:inset-x-8">
-        {axisItems.map((item, index) => (
+        {ui.axisItems.map((item, index) => (
           <div
-            key={item}
+            key={item.id}
             className={`grid grid-cols-[2rem_1fr] gap-3 border-t pt-3 transition duration-300 first:border-t-0 sm:first:border-t ${
-              activeStage.axisGroup === item
+              activeStage.axisGroup === item.id
                 ? "border-neutral-950/24 text-neutral-950"
                 : "border-neutral-950/10 text-neutral-500"
             }`}
           >
             <div className={`font-mono text-[10px] uppercase tracking-[0.16em] ${
-              activeStage.axisGroup === item ? "text-neutral-950" : "text-neutral-300"
+              activeStage.axisGroup === item.id ? "text-neutral-950" : "text-neutral-300"
             }`}>
               {String(index + 1).padStart(2, "0")}
             </div>
             <div className="text-[10px] uppercase leading-5 tracking-[0.12em] sm:text-[11px]">
-              {item}
+              {item.label}
             </div>
           </div>
         ))}

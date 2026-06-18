@@ -14,7 +14,7 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { spanishCorePageContent } from "../data/spanishContent";
-import { getLocalizedPath, useI18n } from "../i18n";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -119,6 +119,150 @@ const aboutRailItems: SectionRailItem[] = [
   { index: "06", label: "Principles", id: "about-principles" },
 ];
 
+function getAboutUi(locale: LocaleCode) {
+  const isSpanish = locale === "es";
+
+  return {
+    railItems: isSpanish
+      ? [
+          { index: "01", label: "Posicion", id: "about-threshold" },
+          { index: "02", label: "Practica", id: "about-practice" },
+          { index: "03", label: "Metodo", id: "about-method" },
+          { index: "04", label: "Tecnico", id: "about-technical" },
+          { index: "05", label: "Autor", id: "about-authorial" },
+          { index: "06", label: "Principios", id: "about-principles" },
+        ]
+      : aboutRailItems,
+    railLabel: isSpanish ? "Secciones de estudio" : "About sections",
+    studioPosition: isSpanish ? "Posicion del estudio" : "Studio position",
+    mobileStudioPosition: isSpanish ? "01 / Posicion del estudio" : "01 / Studio position",
+    mobileHeroTitle: isSpanish ? "Construyo sistemas de interfaz premium." : "I build premium interface systems.",
+    mobileHeroBody: isSpanish
+      ? "Websites, superficies de producto, sistemas multilingues y experiencias digitales inmersivas como una interfaz coherente."
+      : "Websites, product surfaces, multilingual systems, and immersive digital experiences shaped as one coherent interface.",
+    viewWork: isSpanish ? "Ver proyectos ->" : "View work ->",
+    exploreImmersive: isSpanish ? "Explorar inmersivo ->" : "Explore immersive ->",
+    startProject: isSpanish ? "Iniciar proyecto" : "Start a project",
+    practiceLayersLabel: isSpanish ? "02 / Capas de practica" : "02 / Practice layers",
+    practiceLayersTitle: isSpanish
+      ? "Entrega comercial e investigacion experimental son una sola practica."
+      : "Commercial delivery and experimental research are one practice.",
+    practiceLayersBody: isSpanish
+      ? "El trabajo experimental no esta separado de la entrega comercial. Define el lenguaje de interfaz que hace mas fuerte el trabajo comercial."
+      : "The experimental work is not separate from commercial delivery. It defines the interface language that makes the commercial work stronger.",
+    methodLabel: isSpanish ? "03 / Gramatica de metodo" : "03 / Method grammar",
+    mobileMethodLabel: isSpanish ? "02 / Metodo" : "02 / Method",
+    methodTitle: isSpanish ? "Estructura primero. Atmosfera despues." : "Structure first. Atmosphere after.",
+    methodBody: isSpanish
+      ? "El metodo de trabajo avanza de senal a estructura, y luego hacia atmosfera, interfaz y memoria de proyecto."
+      : "The working method moves from signal to structure, then into atmosphere, interface, and project memory.",
+    methodFormula: isSpanish ? "Senal -> estructura -> atmosfera -> interfaz -> memoria." : "Signal -> structure -> atmosphere -> interface -> memory.",
+    technicalLabel: isSpanish ? "04 / Base tecnica" : "04 / Technical foundation",
+    mobileTechnicalLabel: isSpanish ? "03 / Base tecnica" : "03 / Technical foundation",
+    technicalTitle: isSpanish ? "La superficie tiene que sostenerse." : "The surface has to hold up.",
+    technicalTitleParts: isSpanish ? ["La superficie", "tiene que", "sostenerse."] : ["The surface", "has to", "hold up."],
+    technicalBody: isSpanish
+      ? "La misma superficie puede sostener claridad de producto, interaccion, motion, estructura multilingue, stages WebGL y entrega lista para launch solo cuando la arquitectura es fuerte."
+      : "The same surface can carry product clarity, interaction, motion, multilingual structure, WebGL stages, and launch-ready delivery only when the architecture is strong.",
+    mobileTechnicalBody: isSpanish
+      ? "El sistema tiene que sostener claridad, motion, rutas y entrega lista para launch sin colapsar."
+      : "The system has to carry clarity, motion, routes, and launch-ready delivery without collapsing.",
+    technicalNote: isSpanish
+      ? "Las capas multilingues e inmersivas se anaden solo cuando fortalecen el proyecto."
+      : "Multilingual and immersive layers are added only when they strengthen the project.",
+    authorialLabel: isSpanish ? "05 / Nota autoral" : "05 / Authorial note",
+    mobileAuthorialLabel: isSpanish ? "04 / Posicion de practica" : "04 / Practice position",
+    authorialTitle: isSpanish
+      ? "Una practica entre ingenieria, imagen e investigacion de interfaz."
+      : "A practice between engineering, image, and interface research.",
+    humanSignal: isSpanish ? "Senal humana / posicion de practica" : "Human signal / practice position",
+    authorialBody: isSpanish
+      ? "Mi trabajo vive entre ingenieria front-end, direccion visual, fotografia, medios cinematicos e investigacion experimental de interfaz. Me interesan webs precisas, atmosfericas y vivas, pero tambien usables, rapidas y claras."
+      : "My work sits between front-end engineering, visual direction, photography, cinematic media, and experimental interface research. I am interested in websites that feel precise, atmospheric, and alive, while remaining usable, fast, and clear.",
+    principlesLabel: isSpanish ? "06 / Campo de principios" : "06 / Principle field",
+    mobilePrinciplesLabel: isSpanish ? "05 / Principios" : "05 / Principles",
+    principlesTitle: isSpanish ? "Reglas calmadas para sistemas expresivos." : "Calm rules for expressive systems.",
+    methodSignal: isSpanish ? "Senal de metodo / estable" : "Method signal / stable",
+  };
+}
+
+function getPracticeLayers(locale: LocaleCode) {
+  if (locale !== "es") return practiceLayers;
+
+  return [
+    {
+      label: "Sistemas comerciales",
+      text: "Websites premium, superficies de producto, sistemas multilingues y entrega front-end lista para launch.",
+      signals: ["web premium", "superficies producto", "multilingue"],
+    },
+    {
+      label: "Investigacion experimental de interfaz",
+      text: "Sistemas atmosfericos, modulos WebGL stage, capas de prueba espacial y futuras extensiones WebXR.",
+      signals: ["presencia", "WebGL stage", "prueba espacial"],
+    },
+  ];
+}
+
+function getMethodItems(locale: LocaleCode): MethodItem[] {
+  if (locale !== "es") return methodItems;
+
+  return [
+    { id: "signal", index: "01", title: "Senal", text: "Entender que debe comunicar el proyecto antes de decidir como debe verse o moverse." },
+    { id: "structure", index: "02", title: "Estructura", text: "Definir ruta, contenido, datos, jerarquia y logica de interaccion que sostendran el trabajo." },
+    { id: "atmosphere", index: "03", title: "Atmosfera", text: "Convertir clima visual, ritmo de motion, comportamiento media y tono en un campo legible." },
+    { id: "interface", index: "04", title: "Interfaz", text: "Llevar el sistema a front-end responsive, accesible y listo para produccion." },
+    { id: "memory", index: "05", title: "Memoria", text: "Dejar logica reutilizable, documentacion y claridad a largo plazo para que el proyecto siga funcionando." },
+  ];
+}
+
+function getTechnicalLedger(locale: LocaleCode) {
+  if (locale !== "es") return technicalLedger;
+
+  return [
+    ["Arquitectura front-end", "Estructura reutilizable que puede sostener contenido, motion, rutas y crecimiento futuro."],
+    ["Sistema de motion", "Transiciones y reveals escenificados que marcan comportamiento en vez de decorarlo."],
+    ["Capa atmosferica / WebGL", "Logica stage y campos media anadidos solo cuando la presencia fortalece el trabajo."],
+    ["Responsive + accesibilidad", "Layouts, controles, contraste y estados legibles en viewports reales."],
+    ["Deploy + QA", "Build checks, pases responsive, metadata y revision de launch antes de publicar."],
+    ["Documentacion / handoff", "Notas claras y logica reutilizable para que el sistema siga siendo comprensible."],
+  ];
+}
+
+function getMobileMethodLedger(locale: LocaleCode) {
+  if (locale !== "es") return mobileMethodLedger;
+
+  return [
+    ["01", "Senal", "Definir que debe comunicarse."],
+    ["02", "Estructura", "Organizar ruta, contenido, jerarquia y logica de interaccion."],
+    ["03", "Atmosfera", "Dar forma a clima visual, ritmo de motion, media y tono."],
+    ["04", "Interfaz", "Construir la superficie responsive con estados claros."],
+    ["05", "Memoria", "Dejar prueba, continuidad, logica reutilizable y huella de proyecto."],
+  ];
+}
+
+function getMobileTechnicalLedger(locale: LocaleCode) {
+  if (locale !== "es") return mobileTechnicalLedger;
+
+  return [
+    ["01", "Arquitectura front-end", "Estructura reutilizable para contenido, motion, rutas y crecimiento."],
+    ["02", "Sistema de motion", "Transiciones y reveals que marcan comportamiento, no decoracion."],
+    ["03", "Responsive + accesibilidad", "Layouts, controles, contraste y estados legibles en viewports reales."],
+    ["04", "QA de produccion", "Build checks, rutas, readiness de deploy y claridad de handoff."],
+  ];
+}
+
+function getPrinciples(locale: LocaleCode) {
+  if (locale !== "es") return principles;
+
+  return [
+    "El motion no es decoracion. Marca estado.",
+    "El media no es relleno. Actua como prueba.",
+    "WebGL no es un truco. Se convierte en stage.",
+    "La claridad importa mas que el ruido.",
+    "La calidad de produccion importa tanto como la direccion visual.",
+  ];
+}
+
 function AboutV2Meta({ noIndex }: { noIndex: boolean }) {
   useEffect(() => {
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
@@ -189,22 +333,25 @@ function useActiveMethodItem() {
 }
 
 function MethodSignalSpine() {
+  const { locale } = useI18n();
+  const ui = getAboutUi(locale);
+  const localizedMethodItems = getMethodItems(locale);
   const activeId = useActiveMethodItem();
   const sound = useSound();
 
   return (
     <div className="grid gap-10 lg:grid-cols-[0.34fr_0.66fr]">
       <div className="lg:sticky lg:top-28 lg:self-start">
-        <SectionLabel>03 / Method grammar</SectionLabel>
+        <SectionLabel>{ui.methodLabel}</SectionLabel>
         <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[76px]">
-          Structure first. Atmosphere after.
+          {ui.methodTitle}
         </h2>
         <p className="mt-7 max-w-[30rem] text-[15px] leading-7 text-neutral-600">
-          The working method moves from signal to structure, then into atmosphere, interface, and project memory.
+          {ui.methodBody}
         </p>
 
         <div className="mt-9 hidden border-y border-neutral-950/12 py-4 lg:grid">
-          {methodItems.map((item) => {
+          {localizedMethodItems.map((item) => {
             const active = activeId === item.id;
 
             return (
@@ -223,7 +370,7 @@ function MethodSignalSpine() {
 
       <div className="relative overflow-hidden border-y border-neutral-950/14 bg-white/22">
         <div className="pointer-events-none absolute left-[2.1rem] top-0 h-full w-px bg-neutral-950/12 sm:left-[4.6rem]" />
-        {methodItems.map((item, index) => {
+        {localizedMethodItems.map((item, index) => {
           const active = activeId === item.id;
 
           return (
@@ -294,6 +441,9 @@ function MobileAboutHero({
   onViewWork: () => void;
   onExploreImmersive: () => void;
 }) {
+  const { locale } = useI18n();
+  const ui = getAboutUi(locale);
+
   return (
     <section
       id="about-threshold"
@@ -301,13 +451,12 @@ function MobileAboutHero({
       data-sound-safe-area
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-y border-neutral-950/12 px-[var(--mobile-page-x)] pb-9 pt-8"
     >
-      <SectionLabel>01 / Studio position</SectionLabel>
+      <SectionLabel>{ui.mobileStudioPosition}</SectionLabel>
       <h1 className="mt-7 max-w-[10ch] text-[58px] font-normal leading-[0.9] tracking-[-0.055em] text-neutral-950">
-        I build premium interface systems.
+        {ui.mobileHeroTitle}
       </h1>
       <p className="mt-7 max-w-[21rem] text-[17px] leading-7 text-neutral-600">
-        Websites, product surfaces, multilingual systems, and immersive digital experiences shaped as one coherent
-        interface.
+        {ui.mobileHeroBody}
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -316,21 +465,21 @@ function MobileAboutHero({
           onClick={onViewWork}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white"
         >
-          View work -&gt;
+          {ui.viewWork}
         </button>
         <button
           type="button"
           onClick={onExploreImmersive}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-300 bg-white/54 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700"
         >
-          Explore immersive -&gt;
+          {ui.exploreImmersive}
         </button>
         <button
           type="button"
           onClick={onOpenProject}
           className="inline-flex min-h-12 items-center justify-center rounded-full border border-neutral-300 bg-white/24 px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700"
         >
-          Start a project
+          {ui.startProject}
         </button>
       </div>
     </section>
@@ -338,23 +487,28 @@ function MobileAboutHero({
 }
 
 function MobileAboutMethod() {
+  const { locale } = useI18n();
+  const ui = getAboutUi(locale);
+  const localizedMobileMethodLedger = getMobileMethodLedger(locale);
+  const methodTitleParts = ui.methodTitle.split(". ");
+
   return (
     <section
       id="about-method"
       data-header-scene="about-method"
       className="mobile-about-method relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
-      <SectionLabel>02 / Method</SectionLabel>
+      <SectionLabel>{ui.mobileMethodLabel}</SectionLabel>
       <h2 className="mobile-about-method__heading mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
-        <span>Structure first.</span>
-        <span>Atmosphere after.</span>
+        <span>{methodTitleParts[0]}.</span>
+        <span>{methodTitleParts[1] ?? ""}</span>
       </h2>
       <p className="mobile-about-method__summary mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
-        Signal -&gt; structure -&gt; atmosphere -&gt; interface -&gt; memory.
+        {ui.methodFormula}
       </p>
 
       <div data-sound-safe-area className="mobile-about-method__spine mt-8">
-        {mobileMethodLedger.map(([index, title, text], itemIndex) => (
+        {localizedMobileMethodLedger.map(([index, title, text], itemIndex) => (
           <MobileMotionLedgerRow
             key={title}
             className="mobile-about-method__row relative grid grid-cols-[3.5rem_1fr] gap-4 py-4"
@@ -377,24 +531,26 @@ function MobileAboutMethod() {
 }
 
 function MobileAboutTechnical() {
+  const { locale } = useI18n();
+  const ui = getAboutUi(locale);
+  const localizedMobileTechnicalLedger = getMobileTechnicalLedger(locale);
+
   return (
     <section
       id="about-technical"
       data-header-scene="about-technical"
       className="mobile-about-technical relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
-      <SectionLabel>03 / Technical foundation</SectionLabel>
+      <SectionLabel>{ui.mobileTechnicalLabel}</SectionLabel>
       <h2 className="mobile-about-technical__heading mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
-        <span>The surface</span>
-        <span>has to</span>
-        <span>hold up.</span>
+        {ui.technicalTitleParts.map((part) => <span key={part}>{part}</span>)}
       </h2>
       <p className="mobile-about-technical__summary mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
-        The system has to carry clarity, motion, routes, and launch-ready delivery without collapsing.
+        {ui.mobileTechnicalBody}
       </p>
 
       <div data-sound-safe-area className="mobile-about-technical__stack mt-8">
-        {mobileTechnicalLedger.map(([index, title, text], itemIndex) => (
+        {localizedMobileTechnicalLedger.map(([index, title, text], itemIndex) => (
           <MobileMotionLedgerRow
             key={title}
             className="mobile-about-technical__row relative grid grid-cols-[3.5rem_1fr] gap-4 py-4"
@@ -416,13 +572,16 @@ function MobileAboutTechnical() {
       </div>
 
       <p className="mobile-about-technical__note mt-5 max-w-[21rem] pb-5 text-[14px] leading-6 text-neutral-500">
-        Multilingual and immersive layers are added only when they strengthen the project.
+        {ui.technicalNote}
       </p>
     </section>
   );
 }
 
 function MobileAboutPracticePosition() {
+  const { locale } = useI18n();
+  const ui = getAboutUi(locale);
+
   return (
     <section
       id="about-authorial"
@@ -430,19 +589,17 @@ function MobileAboutPracticePosition() {
       data-sound-safe-area
       className="relative z-10 mx-auto w-[min(100%,44rem)] border-b border-neutral-950/12 px-[var(--mobile-page-x)] pb-14 pt-12"
     >
-      <SectionLabel>04 / Practice position</SectionLabel>
+      <SectionLabel>{ui.mobileAuthorialLabel}</SectionLabel>
       <h2 className="mt-5 max-w-[11ch] text-[50px] font-normal leading-[0.95] tracking-[-0.045em] text-neutral-950">
-        Engineering, image, and interface research.
+        {ui.authorialTitle}
       </h2>
       <div className="mt-8 border-l border-neutral-950/24 bg-white/24 py-6 pl-5">
         <div className="mb-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
           <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
-          <span>Human signal / practice position</span>
+          <span>{ui.humanSignal}</span>
         </div>
         <p className="max-w-[22rem] text-[18px] leading-8 text-neutral-700">
-          My work sits between front-end engineering, visual direction, cinematic media, and experimental interface
-          research. The goal is not decoration, but a system that can hold proof, motion, language, and production
-          quality together.
+          {ui.authorialBody}
         </p>
       </div>
     </section>
@@ -450,6 +607,10 @@ function MobileAboutPracticePosition() {
 }
 
 function MobileAboutPrinciples() {
+  const { locale } = useI18n();
+  const ui = getAboutUi(locale);
+  const localizedPrinciples = getPrinciples(locale);
+
   return (
     <section
       id="about-principles"
@@ -464,13 +625,13 @@ function MobileAboutPrinciples() {
         <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
         <div className="pointer-events-none absolute -right-[36%] top-[4%] h-[28rem] w-[28rem] rounded-full border border-white/[0.07]" />
         <div className="relative">
-          <SectionLabel light>05 / Principles</SectionLabel>
+          <SectionLabel light>{ui.mobilePrinciplesLabel}</SectionLabel>
           <h2 className="mt-5 max-w-[10ch] text-[52px] font-normal leading-[0.9] tracking-[-0.055em]">
-            Calm rules for expressive systems.
+            {ui.principlesTitle}
           </h2>
 
           <div data-sound-safe-area className="mt-7 border-y border-white/14 pb-5">
-            {principles.map((principle, index) => (
+            {localizedPrinciples.map((principle, index) => (
               <MobileMotionLedgerRow key={principle} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0">
                 <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/34">
                   <span className="h-1.5 w-1.5 rounded-full bg-white/26" />
@@ -525,7 +686,11 @@ export default function AboutV2({
   const navigate = useNavigate();
   const { locale } = useI18n();
   const copy = locale === "es" ? spanishCorePageContent.about : undefined;
-  const activeSectionId = useSectionRailActive(aboutRailItems);
+  const ui = getAboutUi(locale);
+  const localizedPracticeLayers = getPracticeLayers(locale);
+  const localizedTechnicalLedger = getTechnicalLedger(locale);
+  const localizedPrinciples = getPrinciples(locale);
+  const activeSectionId = useSectionRailActive(ui.railItems);
   const { playRole, setScene, stopAmbient } = useSound();
   const desktopLayout = useDesktopAboutLayout();
 
@@ -554,10 +719,10 @@ export default function AboutV2({
       <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="practice" />
         <SectionRail
-          items={aboutRailItems}
+          items={ui.railItems}
           activeId={activeSectionId}
           onSelect={scrollToRailSection}
-          label="About sections"
+          label={ui.railLabel}
         />
 
         <main className="relative z-10 pt-20 lg:pt-24">
@@ -575,7 +740,7 @@ export default function AboutV2({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.62, ease }}
             >
-              <SectionLabel>Studio position</SectionLabel>
+              <SectionLabel>{ui.studioPosition}</SectionLabel>
               <h1 className="mt-6 max-w-[10ch] text-[46px] font-normal leading-[0.92] tracking-[-0.055em] text-neutral-950 sm:max-w-[13ch] sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.06em] lg:text-[74px] xl:text-[78px] 2xl:text-[100px]">
                 {copy?.title ?? "I build interface systems for premium web, product surfaces, and immersive digital experiences."}
               </h1>
@@ -618,13 +783,12 @@ export default function AboutV2({
           <section id="about-practice" data-header-scene="about-practice" className="mx-auto w-[min(94vw,1640px)] py-20 lg:py-28">
             <div className="grid gap-12 border-y border-neutral-950/14 py-10 lg:grid-cols-[0.36fr_0.64fr]">
               <div className="lg:sticky lg:top-28 lg:self-start">
-                <SectionLabel>02 / Practice layers</SectionLabel>
+                <SectionLabel>{ui.practiceLayersLabel}</SectionLabel>
                 <h2 className="mt-5 max-w-[10ch] text-[50px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[76px]">
-                  Commercial delivery and experimental research are one practice.
+                  {ui.practiceLayersTitle}
                 </h2>
                 <p className="mt-7 max-w-[30rem] text-[15px] leading-7 text-neutral-600">
-                  The experimental work is not separate from commercial delivery. It defines the interface language
-                  that makes the commercial work stronger.
+                  {ui.practiceLayersBody}
                 </p>
               </div>
 
@@ -632,7 +796,7 @@ export default function AboutV2({
                 <div className="relative grid gap-0 border-y border-neutral-950/12 lg:grid-cols-2">
                   <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px bg-neutral-950/12 lg:block" />
                   <div className="pointer-events-none absolute left-[8%] top-1/2 hidden h-px w-[84%] bg-gradient-to-r from-transparent via-neutral-950/24 to-transparent lg:block" />
-                  {practiceLayers.map((layer, index) => (
+                  {localizedPracticeLayers.map((layer, index) => (
                     <motion.article
                       key={layer.label}
                       onMouseEnter={() => playRole("hover")}
@@ -671,19 +835,18 @@ export default function AboutV2({
           <section id="about-technical" data-header-scene="about-technical" className="mx-auto w-[min(94vw,1640px)] pb-24 lg:pb-32">
             <div className="grid gap-12 border-y border-neutral-950/14 py-12 lg:grid-cols-[0.34fr_0.66fr] lg:py-14">
               <div>
-                <SectionLabel>04 / Technical foundation</SectionLabel>
+                <SectionLabel>{ui.technicalLabel}</SectionLabel>
                 <h2 className="mt-5 max-w-[9ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[76px]">
-                  The surface has to hold up.
+                  {ui.technicalTitle}
                 </h2>
                 <p className="mt-7 max-w-[30rem] text-[15px] leading-7 text-neutral-600">
-                  The same surface can carry product clarity, interaction, motion, multilingual structure, WebGL
-                  stages, and launch-ready delivery only when the architecture is strong.
+                  {ui.technicalBody}
                 </p>
               </div>
 
               <div className="relative border-y border-neutral-950/10 py-2">
                 <div className="pointer-events-none absolute left-4 top-0 hidden h-full w-px bg-gradient-to-b from-transparent via-neutral-950/12 to-transparent md:block" />
-                {technicalLedger.map(([label, text], index) => (
+                {localizedTechnicalLedger.map(([label, text], index) => (
                   <motion.div
                     key={label}
                     tabIndex={0}
@@ -711,21 +874,19 @@ export default function AboutV2({
               <div className="pointer-events-none absolute right-[18%] top-[22%] h-[20rem] w-[20rem] rounded-full border border-neutral-950/[0.04]" />
               <div className="pointer-events-none absolute left-[28%] bottom-[16%] h-px w-[54%] rotate-[-9deg] bg-gradient-to-r from-transparent via-neutral-950/16 to-transparent" />
               <div>
-                <SectionLabel>05 / Authorial note</SectionLabel>
+                <SectionLabel>{ui.authorialLabel}</SectionLabel>
                 <h2 className="mt-5 max-w-[11ch] text-[52px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 sm:text-[78px]">
-                  A practice between engineering, image, and interface research.
+                  {ui.authorialTitle}
                 </h2>
               </div>
 
               <div className="relative border-l border-neutral-950/30 bg-white/24 py-9 pl-6 shadow-[0_28px_90px_rgba(20,20,20,0.035)] sm:pl-9 lg:py-14">
                 <div className="mb-7 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
                   <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
-                  <span>Human signal / practice position</span>
+                  <span>{ui.humanSignal}</span>
                 </div>
                 <p className="max-w-[54rem] text-[24px] leading-[1.42] tracking-[-0.018em] text-neutral-700 sm:text-[32px]">
-                  My work sits between front-end engineering, visual direction, photography, cinematic media, and
-                  experimental interface research. I am interested in websites that feel precise, atmospheric, and
-                  alive, while remaining usable, fast, and clear.
+                  {ui.authorialBody}
                 </p>
               </div>
             </div>
@@ -743,21 +904,21 @@ export default function AboutV2({
               <div className="relative grid gap-12 lg:grid-cols-[0.42fr_0.58fr]">
                 <div className="flex flex-col justify-between gap-10">
                   <div>
-                    <SectionLabel light>06 / Principle field</SectionLabel>
+                    <SectionLabel light>{ui.principlesLabel}</SectionLabel>
                   <h2 className="mt-5 max-w-[10ch] text-[54px] font-normal leading-[0.9] tracking-[-0.055em] sm:text-[84px]">
-                    Calm rules for expressive systems.
+                    {ui.principlesTitle}
                   </h2>
                   </div>
                   <div className="flex w-fit items-center gap-3 border-y border-white/14 px-2 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/48">
                     <span className="relative h-2 w-2 rounded-full bg-white">
                       <span className="absolute inset-0 animate-ping rounded-full bg-white/30" />
                     </span>
-                    <span>Method signal / stable</span>
+                    <span>{ui.methodSignal}</span>
                   </div>
                 </div>
 
                 <div className="border-y border-white/14">
-                  {principles.map((principle, index) => (
+                  {localizedPrinciples.map((principle, index) => (
                     <motion.div
                       key={principle}
                       tabIndex={0}

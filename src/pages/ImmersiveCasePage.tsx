@@ -202,8 +202,8 @@ function CinematicImmersiveCaseShell({
   );
 }
 
-function getImmersiveMetaTitle(item: ImmersiveItem) {
-  const category = item.searchContent?.category ?? "Immersive System";
+function getImmersiveMetaTitle(item: ImmersiveItem, locale: LocaleCode = "en") {
+  const category = locale === "es" ? "Sistema inmersivo" : item.searchContent?.category ?? "Immersive System";
   return `${item.title} - ${category} | Brenych Studio`;
 }
 
@@ -222,7 +222,7 @@ function ImmersiveSeoMeta({
   noIndex?: boolean;
   locale?: LocaleCode;
 }) {
-  const title = getImmersiveMetaTitle(item);
+  const title = getImmersiveMetaTitle(item, locale);
   const description = getImmersiveMetaDescription(item);
   const path = getLocalizedPath(`/immersive/${item.slug}`, locale);
   const image = item.previewPoster;
@@ -3207,7 +3207,7 @@ export default function ImmersiveCasePage({
           back: "Volver a immersive",
           direction: "Direccion",
           interaction: "Gramatica de interaccion",
-          build: "Ruta de build",
+          build: "Ruta de desarrollo",
           rhythm: "Ritmo de interfaz",
           rhythmTitle: "Estructura de presentacion por secuencia.",
           rhythmBody:
@@ -3226,7 +3226,7 @@ export default function ImmersiveCasePage({
           potential: "Potencial del sistema",
           potentialBody: "La misma estructura puede escalar hacia superficies de producto sin perder claridad.",
           relevance: "Relevancia de produccion",
-          relevanceTitle: "Concepto que se traduce en sistemas listos para build.",
+          relevanceTitle: "Concepto que se traduce en sistemas listos para produccion.",
           reusable: "Logica reusable",
           reusableBody: "Los patrones de interaccion pueden reutilizarse en varias superficies y flujos.",
           modular: "Estructura modular",

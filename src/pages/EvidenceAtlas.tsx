@@ -251,14 +251,14 @@ function getEvidenceUi(locale: LocaleCode) {
     field: isSpanish ? "Campo" : "Field",
     spatial: isSpanish ? "Espacial" : "Spatial",
     index: isSpanish ? "Indice" : "Index",
-    scan: isSpanish ? "Scan" : "Scan",
+    scan: isSpanish ? "Escaneo" : "Scan",
     featuredSystems: isSpanish ? "Sistemas destacados" : "Featured Systems",
     featuredTitle: isSpanish ? "Sistemas en movimiento dentro de un campo vivo." : "Systems moving through a living scroll field.",
     featuredDescription: isSpanish
-      ? "Una superficie de lectura espacial: cada caso funciona como objeto autoral con imagen, caption, profundidad, prueba y senales de adaptacion."
+      ? "Una superficie de lectura espacial: cada caso funciona como objeto autoral con imagen, leyenda, profundidad, prueba y senales de adaptacion."
       : "A controlled spatial reading surface: each case behaves like an authored object with image, caption, depth, proof, and adaptation signals moving as one system.",
     motionNote: isSpanish
-      ? "El motion sirve a la lectura espacial / los captions siguen como senales / la prueba queda inspeccionable."
+      ? "El motion sirve a la lectura espacial / las leyendas siguen como senales / la prueba queda inspeccionable."
       : "Motion serves spatial reading / captions remain signals / proof stays inspectable.",
     archiveLensCompactFilters: isSpanish ? "Lente de archivo / filtros compactos" : "Archive lens / compact filters",
     featuredSystemsCount: isSpanish ? "sistemas destacados / campo visual" : "featured systems / visual field",
@@ -288,7 +288,7 @@ function getEvidenceUi(locale: LocaleCode) {
             "Product systems": "Sistemas producto",
             Multilingual: "Multilingue",
             Advisory: "Asesoria",
-            Hospitality: "Hospitality",
+            Hospitality: "Hospitalidad",
             Tools: "Herramientas",
             Experimental: "Experimental",
             "Available Systems": "Sistemas disponibles",

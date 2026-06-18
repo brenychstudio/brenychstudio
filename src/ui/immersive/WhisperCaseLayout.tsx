@@ -2216,7 +2216,7 @@ export default function WhisperCaseLayout({ item, onOpenProject, copy = whisperC
             onClick={openImmersiveIndex}
             className="border border-white/16 bg-black/24 px-4 py-2.5 text-[10px] uppercase tracking-[0.16em] text-white/64 backdrop-blur transition hover:border-white/34 hover:text-white"
           >
-            Back to immersive
+            {copy.top.backToImmersive}
           </button>
 
           <div className="flex flex-wrap items-center justify-end gap-2">

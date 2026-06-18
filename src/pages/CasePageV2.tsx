@@ -188,6 +188,258 @@ function getCaseNarrative(story: CaseStory) {
     };
   }
 
+  if (isSpanishPreviewStory) {
+    if (story.slug === "arcwave-integrations") {
+      return {
+        heroMeta: "Infraestructura / servicios / presupuesto / brief",
+        heroReadiness: "01 / demo conceptual desplegada",
+        heroMediaTitle: "Sistema de interfaz para infraestructura",
+        walkthroughTitle: ["El sistema", "hace visible", "la infraestructura."],
+        walkthroughIntro:
+          "ARCWAVE convierte telecom, redes, electricidad, smart home, EV charging, seguridad y audio en una ruta de instalacion legible: capa conectada, eleccion de servicio, logica de proceso, presupuesto y brief tecnico.",
+        walkthroughSignals: [
+          { label: "Capa", text: "Los sistemas tecnicos invisibles se presentan como una superficie de infraestructura conectada." },
+          { label: "Servicio", text: "La persona avanza desde la necesidad hasta una ruta de servicio sin caer en ruido de contractor-site." },
+          { label: "Brief", text: "El flujo de presupuesto transforma incertidumbre en contexto tecnico para la primera conversacion." },
+        ],
+        mobileTitle: "Claridad tecnica en mobile.",
+        mobileIntro:
+          "La secuencia compacta mantiene promesa, servicios, proceso, metricas y quote CTA como un recorrido tecnico claro.",
+        screensTitle: ["Infraestructura", "como interfaz."],
+        screensReadout:
+          "Cada frame prueba una capa de servicio: infraestructura conectada, metricas, modulos, decision interface, instalacion, quote form y especificacion tecnica.",
+        screenSignals: ["Capa conectada", "Flujo de instalacion", "Brief tecnico"],
+        proofLabels: ["Claridad de infraestructura", "Ruta de servicio", "Brief de instalacion"],
+        availableStatement:
+          "Adaptar esta base de infraestructura a un servicio tecnico, integracion, field-service o superficie comercial orientada a presupuesto.",
+        availableBlueprint:
+          "Sitio de infraestructura con sistema de servicios, logica de instalacion, contenido tecnico, quote path y ruta de despliegue.",
+      };
+    }
+
+    if (story.slug === "oria-house-barcelona") {
+      return {
+        heroMeta: "Habitaciones / rituales / ubicacion / contacto",
+        heroReadiness: "01 / caso conceptual",
+        heroMediaTitle: "Sistema hospitality para hotel boutique",
+        walkthroughTitle: ["La estancia", "se convierte", "en ruta de invitado."],
+        walkthroughIntro:
+          "Oria House Barcelona convierte un concepto de hotel boutique en una ruta completa: entrada atmosferica, comparacion de habitaciones, detalle, rituales de experiencia, contexto local y contacto de reserva.",
+        walkthroughSignals: [
+          { label: "Atmosfera", text: "Las primeras superficies posicionan un refugio tranquilo en Barcelona antes de pedir accion." },
+          { label: "Habitaciones", text: "Comparacion, grids, detalles y galerias ayudan a elegir sin convertir el hotel en inventario frio." },
+          { label: "Contacto", text: "La ruta final transforma interes en una consulta clara sin prometer motor de reservas live." },
+        ],
+        mobileTitle: "Ritmo hospitality en mobile.",
+        mobileIntro:
+          "La secuencia compacta mantiene habitaciones, detalle, rituales, dining, spa y contacto cerca para visitas desde search, social o mapas.",
+        screensTitle: ["Concepto hotelero", "como sistema."],
+        screensReadout:
+          "Cada frame prueba una capa hospitality: atmosfera, ritmo de habitaciones, comparacion, detalle, galeria, experiencias, ubicacion y contacto.",
+        screenSignals: ["Comparacion de habitaciones", "Rituales de estancia", "Contacto de reserva"],
+        proofLabels: ["Atmosfera de estancia", "Decision de habitacion", "Contacto de invitado"],
+        availableStatement:
+          "Adaptar esta base de hotel boutique a un hotel, guest house, retreat, serviced apartment o superficie de destino.",
+        availableBlueprint:
+          "Sitio hospitality con habitaciones, capas de experiencia, contenido local, ruta de consulta y despliegue.",
+      };
+    }
+
+    if (story.slug === "aurel-eon-gt") {
+      return {
+        heroMeta: "Senal / motion / estados de producto / prueba",
+        heroReadiness: "01 / prototipo avanzado",
+        heroMediaTitle: "Sistema vivo de producto automotriz",
+        walkthroughTitle: ["El vehiculo", "se convierte", "en campo de producto."],
+        walkthroughIntro:
+          "AUREL EON GT convierte el lanzamiento ficticio de un gran turismo electrico en una experiencia de producto por estados: llegada, exterior, firma luminica, cabina, materialidad, caracter de conduccion, galeria, inspeccion y preview privada.",
+        walkthroughSignals: [
+          { label: "Senal", text: "Presence Rail y Next Signal hacen que la progresion se sienta parte de la identidad del vehiculo." },
+          { label: "Inspeccion", text: "La inspeccion cinematica, el archivo visual y la vista de producto mantienen el vehiculo legible." },
+          { label: "Preview", text: "La salida cierra como ruta concierge en lugar de formulario generico." },
+        ],
+        mobileTitle: "Presencia de producto en mobile.",
+        mobileIntro:
+          "La secuencia compacta funciona como superficie automotriz enfocada: llegada, cabina, inspeccion, conduccion, galeria, inteligencia, firma luminica y preview.",
+        screensTitle: ["Automotive", "como sistema."],
+        screensReadout:
+          "Cada frame prueba una capa de producto: llegada, exterior, senal, cabina, materialidad, conduccion, galeria, inspeccion y preview privada.",
+        screenSignals: ["Presence Rail", "Inspeccion cinematica", "Drive composer"],
+        proofLabels: ["Estados de producto", "Logica de inspeccion", "Prototipo honesto"],
+        availableStatement:
+          "Usar este caso como referencia para una direccion premium de automocion, movilidad, producto luxury o interfaz cinematica.",
+        availableBlueprint:
+          "Concepto avanzado con sistema visual propio, logica interactiva, superficie responsive, media pipeline y arquitectura XR-ready.",
+      };
+    }
+
+    if (story.caseType === "workflow-tool" || story.caseType === "tool") {
+      return {
+        heroMeta: "Workflow / estados / salida / prueba",
+        heroReadiness: "01 / sistema operativo",
+        heroMediaTitle: "Superficie de producto operacional",
+        walkthroughTitle: ["El producto", "convierte trabajo", "en flujo."],
+        walkthroughIntro:
+          "El recorrido sigue una superficie real de trabajo: intake, cambios de estado, revision enfocada, salida y confianza operativa permanecen visibles como un solo sistema.",
+        walkthroughSignals: [
+          { label: "Intake", text: "El trabajo entra por una interfaz controlada en lugar de manejo manual disperso." },
+          { label: "Estado", text: "El producto muestra progreso, selecciones y siguientes acciones sin ruido de dashboard." },
+          { label: "Salida", text: "La interfaz termina en valor practico: export, reporte, revision o produccion repetible." },
+        ],
+        mobileTitle: "Ritmo compacto de workflow.",
+        mobileIntro:
+          "Los frames mobile aparecen cuando el producto tiene superficie handheld; las herramientas desktop-first mantienen la prueba en el campo completo de inspeccion.",
+        screensTitle: ["Workflow", "como evidencia."],
+        screensReadout:
+          "Cada frame prueba una capa de producto: intake, estado operativo, superficie de revision, logica de salida y estructura de confianza.",
+        screenSignals: ["Superficie operativa", "Logica de estados", "Prueba de salida"],
+        proofLabels: ["Claridad de workflow", "Estado operativo", "Salida practica"],
+        availableStatement:
+          "Adaptar esta logica de producto a una herramienta, sistema interno o workflow para creadores.",
+        availableBlueprint:
+          "Superficie de producto con workflow propio, modelo de estados, logica de salida y ruta de despliegue.",
+      };
+    }
+
+    if (story.caseType === "advisory") {
+      return {
+        heroMeta: "Territorio / shortlist / intake privado / prueba",
+        heroReadiness: "01 / listo para asesorar",
+        heroMediaTitle: "Superficie advisory curada",
+        walkthroughTitle: ["La asesoria", "avanza por", "encaje de comprador."],
+        walkthroughIntro:
+          "La interfaz guia desde senal de ubicacion hasta busqueda curada, logica de shortlist y consulta privada sin caer en ruido de portal inmobiliario.",
+        walkthroughSignals: [
+          { label: "Posicion", text: "El framing advisory establece confianza antes de mostrar opciones." },
+          { label: "Shortlist", text: "Las selecciones curadas estrechan el campo de decision antes del intake privado." },
+          { label: "Asesoria", text: "Lente territorial, acceso bilingue y piezas de propiedad permanecen en un mismo flujo." },
+        ],
+        mobileTitle: "Ritmo compacto de comprador.",
+        mobileIntro:
+          "Un rail mobile para inspeccionar la ruta advisory sin convertirla en una fila generica de telefonos.",
+        screensTitle: ["Buyer journey", "como evidencia."],
+        screensReadout:
+          "Cada frame prueba una capa de decision: senal de ubicacion, busqueda curada, fit territorial, shortlist y consulta privada.",
+        screenSignals: ["Entrada advisory", "Busqueda curada", "Lente territorial"],
+        proofLabels: ["Intencion de comprador", "Busqueda curada", "Consulta privada"],
+        availableStatement:
+          "Adaptar esta logica advisory a una superficie inmobiliaria, hospitality o servicio privado.",
+        availableBlueprint:
+          "Superficie advisory con territorio, contenido y ritmo de consulta propios.",
+      };
+    }
+
+    if (story.caseType === "hospitality") {
+      return {
+        heroMeta: "Atmosfera / carta / visita / utilidad mobile",
+        heroReadiness: "01 / listo para recibir",
+        heroMediaTitle: "Superficie web hospitality",
+        walkthroughTitle: ["La visita", "empieza antes", "de llegar."],
+        walkthroughIntro:
+          "La interfaz pasa de atmosfera a claridad de carta, utilidad de visita, intencion de reserva y accion mobile sin volverse una plantilla generica de restaurante.",
+        walkthroughSignals: [
+          { label: "Atmosfera", text: "La primera superficie da al lugar un mood digital claro y una posicion comercial." },
+          { label: "Utilidad", text: "Menu, visita, ubicacion y contacto permanecen cerca de la decision real del visitante." },
+          { label: "Mobile", text: "La version handheld mantiene acciones locales inmediatas para visitas desde search, mapas o social." },
+        ],
+        mobileTitle: "Ritmo compacto de visitante.",
+        mobileIntro:
+          "Un rail mobile para inspeccionar menu, visita, mapa y estados de accion dentro de la ruta hospitality.",
+        screensTitle: ["Ruta de visitante", "como evidencia."],
+        screensReadout:
+          "Cada frame prueba una capa hospitality: atmosfera, menu, ubicacion, utilidad de visita y conversion mobile.",
+        screenSignals: ["Senal del lugar", "Claridad de carta", "Utilidad de visita"],
+        proofLabels: ["Senal de lugar", "Utilidad de visitante", "Accion mobile"],
+        availableStatement:
+          "Adaptar esta logica hospitality a un cafe, restaurante, boutique space o servicio local.",
+        availableBlueprint:
+          "Base hospitality con lugar, estructura de carta, flujo de visita y necesidades multilingues.",
+      };
+    }
+
+    if (story.caseType === "premium-website") {
+      return {
+        heroMeta: "Oferta / confianza / estructura / consulta",
+        heroReadiness: "01 / listo para convertir",
+        heroMediaTitle: "Superficie premium de servicio",
+        walkthroughTitle: ["La oferta", "se convierte", "en arquitectura."],
+        walkthroughIntro:
+          "El recorrido muestra como una oferta de servicio se estructura: posicionamiento, detalle, capas de confianza y consulta permanecen alineados.",
+        walkthroughSignals: [
+          { label: "Oferta", text: "La primera superficie aclara que hace el negocio y por que merece confianza." },
+          { label: "Detalle", text: "Las paginas de servicio y secciones de contenido hacen legible la informacion tecnica." },
+          { label: "Consulta", text: "La ruta de contacto aparece como parte de la arquitectura, no como un agregado final." },
+        ],
+        mobileTitle: "Ritmo compacto de servicio.",
+        mobileIntro:
+          "Un rail mobile para inspeccionar estructura de servicio, contenido de confianza y flujo de consulta.",
+        screensTitle: ["Prueba de servicio", "como evidencia."],
+        screensReadout:
+          "Cada frame prueba una capa comercial: claridad de oferta, confianza tecnica, detalle de servicio y readiness de consulta.",
+        screenSignals: ["Claridad de oferta", "Capas de confianza", "Flujo de consulta"],
+        proofLabels: ["Claridad de servicio", "Confianza tecnica", "Ruta de conversion"],
+        availableStatement:
+          "Adaptar esta arquitectura de servicio a una superficie B2B, tecnica o comercial orientada a presupuesto.",
+        availableBlueprint:
+          "Base de servicio con modelo de oferta, estructura de contenido y logica de consulta propios.",
+      };
+    }
+
+    if (story.caseType === "presentation-system" || story.caseType === "experimental") {
+      return {
+        heroMeta: "Motion / contenido / ritmo / prueba",
+        heroReadiness: "01 / sistema de presentacion",
+        heroMediaTitle: "Superficie editorial cinematica",
+        walkthroughTitle: ["La historia", "avanza mediante", "estructura."],
+        walkthroughIntro:
+          "El recorrido muestra como motion, ritmo de imagen, tipografia y arquitectura de contenido se convierten en un sistema de presentacion legible.",
+        walkthroughSignals: [
+          { label: "Ritmo", text: "El motion define foco y cadencia sin ocultar la arquitectura de informacion." },
+          { label: "Contenido", text: "Imagenes, texto y secciones permanecen legibles mientras el sistema visual gana presencia." },
+          { label: "Sistema", text: "El resultado es logica reusable de presentacion, no un gesto visual aislado." },
+        ],
+        mobileTitle: "Ritmo editorial compacto.",
+        mobileIntro:
+          "Un rail mobile para inspeccionar como la superficie de presentacion se traduce en una lectura compacta.",
+        screensTitle: ["Prueba motion", "como evidencia."],
+        screensReadout:
+          "Cada frame prueba una capa de presentacion: entrada, ritmo, transicion, traduccion mobile y contencion visual.",
+        screenSignals: ["Ritmo motion", "Claridad de contenido", "Superficie reusable"],
+        proofLabels: ["Logica de presentacion", "Control motion", "Estructura reusable"],
+        availableStatement:
+          "Adaptar esta logica de presentacion a una campana, exposicion, archivo o producto editorial.",
+        availableBlueprint:
+          "Base de presentacion con modelo de contenido, ritmo visual y direccion motion propios.",
+      };
+    }
+
+    return {
+      heroMeta: "Deseo / sistemas / disponibilidad / prueba",
+      heroReadiness: "01 / listo para adaptar",
+      heroMediaTitle: "Teatro cinematico de producto",
+      walkthroughTitle: ["La interfaz", "se mueve como", "teatro de producto."],
+      walkthroughIntro:
+        "Una interfaz de producto premium no debe comportarse como inventario. El recorrido mantiene deseo, foco, ritmo editorial y consulta privada en una sola superficie.",
+      walkthroughSignals: [
+        { label: "Reveal", text: "El producto se revela con calma antes del ruido de catalogo." },
+        { label: "Consulta", text: "La ruta privada aparece cuando el deseo ya esta formado." },
+        { label: "Superficie", text: "Ritmo editorial, acceso multilingue y logica comercial se mantienen en un mismo campo." },
+      ],
+      mobileTitle: "Ritmo maison compacto.",
+      mobileIntro:
+        "Un rail mobile circular para inspeccionar la superficie handheld sin aplanarla en una fila estatica de telefonos.",
+      screensTitle: ["Pantallas", "como evidencia."],
+      screensReadout:
+        "Los frames completos permanecen legibles. El motion agrega profundidad; no oculta la interfaz.",
+      screenSignals: ["Superficies completas", "Motion detras del detalle", "Desktop + mobile"],
+      proofLabels: ["Foco de producto", "Consulta privada", "Confianza comercial"],
+      availableStatement:
+        "Adaptar esta logica maison a una superficie de producto comisionada, no a una plantilla revendida.",
+      availableBlueprint:
+        "Adaptacion comisionada con marca, contenido y ritmo de consulta propios.",
+    };
+  }
+
   if (story.slug === "creatorops") {
     return {
       heroMeta: "Library / planner / export / handoff",
@@ -561,7 +813,22 @@ function CaseMeta({
   );
 }
 
-function mediaRoleLabel(role: CaseStoryMedia["role"]) {
+function mediaRoleLabel(role: CaseStoryMedia["role"], storyOrSpanish?: CaseStory | boolean) {
+  const isSpanish =
+    typeof storyOrSpanish === "boolean" ? storyOrSpanish : Boolean(storyOrSpanish && isSpanishCaseStory(storyOrSpanish));
+
+  if (isSpanish) {
+    const labels: Record<CaseStoryMedia["role"], string> = {
+      hero: "entrada",
+      detail: "detalle",
+      mobile: "mobile",
+      flow: "flujo",
+      proof: "prueba",
+    };
+
+    return labels[role];
+  }
+
   return role.replace("-", " ");
 }
 
@@ -838,8 +1105,11 @@ function getClosingMove(story: CaseStory) {
 }
 
 function getDirectMailHref(story: CaseStory) {
-  const subject = `${story.headline} project inquiry`;
-  const body = `Hi Rostyslav,\n\nI would like to discuss a commissioned direction related to ${story.headline}.\n\nProject:\nTimeline:\nBudget:\nLinks:\n\nThanks,`;
+  const isSpanish = isSpanishCaseStory(story);
+  const subject = isSpanish ? `Consulta de proyecto: ${story.headline}` : `${story.headline} project inquiry`;
+  const body = isSpanish
+    ? `Hola Rostyslav,\n\nMe gustaria conversar sobre una direccion a medida relacionada con ${story.headline}.\n\nProyecto:\nTimeline:\nBudget:\nLinks:\n\nGracias,`
+    : `Hi Rostyslav,\n\nI would like to discuss a commissioned direction related to ${story.headline}.\n\nProject:\nTimeline:\nBudget:\nLinks:\n\nThanks,`;
 
   return `mailto:info@brenych.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
@@ -1296,6 +1566,7 @@ function CaseSystemSpine({
   onSelect: (id: string) => void;
 }) {
   const [nearDocumentEnd, setNearDocumentEnd] = useState(false);
+  const isSpanish = items.some((item) => item.label === "Entrada");
 
   useEffect(() => {
     let frame = 0;
@@ -1328,7 +1599,7 @@ function CaseSystemSpine({
 
   return (
     <nav
-      aria-label="Case system spine"
+      aria-label={isSpanish ? "Navegacion del caso" : "Case system spine"}
       className="pointer-events-none fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 xl:block 2xl:right-5"
     >
       <div className="pointer-events-auto grid gap-2 border-r border-neutral-950/12 bg-[#f4f1ea]/18 py-2 pr-2 text-right backdrop-blur-sm 2xl:pr-3">
@@ -1454,8 +1725,12 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
                 isAdvisory ? "text-neutral-500" : "text-white/54",
               ].join(" ")}
             >
-              <span>Motion grammar / private request path / case surface proof</span>
-              <span>Proof / not a static mockup</span>
+              <span>
+                {isSpanish
+                  ? "Gramatica motion / ruta privada / prueba de superficie"
+                  : "Motion grammar / private request path / case surface proof"}
+              </span>
+              <span>{isSpanish ? "Prueba / no maqueta estatica" : "Proof / not a static mockup"}</span>
             </div>
           </div>
         </div>
@@ -1465,16 +1740,19 @@ function SystemWalkthroughTheatre({ story }: { story: CaseStory }) {
 }
 
 function CaseMediaChapter({
+  story,
   media,
   index,
   reducedMotion,
   onInspect,
 }: {
+  story: CaseStory;
   media: CaseStoryMedia;
   index: number;
   reducedMotion: boolean;
   onInspect: (id: string) => void;
 }) {
+  const isSpanish = isSpanishCaseStory(story);
   const chapterRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: chapterRef,
@@ -1546,7 +1824,7 @@ function CaseMediaChapter({
           <CaseMediaView media={media} priority={index < 2} fit="contain" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,rgba(0,0,0,0.28))] opacity-0 transition duration-500 group-hover:opacity-100" />
           <div className="pointer-events-none absolute right-4 top-4 border-y border-white/18 bg-black/32 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-white/62 opacity-0 backdrop-blur-md transition duration-500 group-hover:opacity-100">
-            Inspect surface
+            {isSpanish ? "Inspeccionar superficie" : "Inspect surface"}
           </div>
         </button>
       </motion.div>
@@ -1560,7 +1838,7 @@ function CaseMediaChapter({
         style={reducedMotion ? undefined : { y: copyY }}
       >
         <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">
-          Frame {String(index + 1).padStart(2, "0")} / {mediaRoleLabel(media.role)}
+          {isSpanish ? "Pantalla" : "Frame"} {String(index + 1).padStart(2, "0")} / {mediaRoleLabel(media.role, story)}
         </div>
         <h3 className={["mt-3 font-semibold leading-none tracking-normal text-neutral-950", layout.title].join(" ")}>
           {media.label}
@@ -1581,6 +1859,7 @@ function MobileSurfaceRail({
   onInspect: (id: string) => void;
 }) {
   const narrative = getCaseNarrative(story);
+  const isSpanish = isSpanishCaseStory(story);
   const isAdvisoryCase = story.caseType === "advisory";
   const isCreatorOpsCase = story.slug === "creatorops";
   const isHospitalityCase = story.caseType === "hospitality";
@@ -1678,7 +1957,7 @@ function MobileSurfaceRail({
       <div className="grid gap-6 border-t border-neutral-950/12 pt-8 lg:grid-cols-[minmax(0,0.62fr)_minmax(18rem,0.38fr)] lg:items-end">
         <div>
           <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">
-            Mobile surface carousel
+            {isSpanish ? "Carrusel de superficie mobile" : "Mobile surface carousel"}
           </div>
           <h3 className="mt-3 text-4xl font-semibold leading-none tracking-normal text-neutral-950 md:text-6xl">
             {narrative.mobileTitle}
@@ -1693,7 +1972,7 @@ function MobileSurfaceRail({
               type="button"
               onClick={() => moveCarousel(-1)}
               className="grid h-10 w-10 place-items-center rounded-full border border-neutral-950/12 bg-white/46 font-mono text-[13px] text-neutral-600 backdrop-blur-sm transition hover:-translate-x-0.5 hover:border-neutral-950/24 hover:bg-white hover:text-neutral-950"
-              aria-label="Previous mobile frame"
+              aria-label={isSpanish ? "Pantalla mobile anterior" : "Previous mobile frame"}
             >
               &lt;
             </button>
@@ -1701,7 +1980,7 @@ function MobileSurfaceRail({
               type="button"
               onClick={() => moveCarousel(1)}
               className="grid h-10 w-10 place-items-center rounded-full border border-neutral-950/12 bg-white/46 font-mono text-[13px] text-neutral-600 backdrop-blur-sm transition hover:translate-x-0.5 hover:border-neutral-950/24 hover:bg-white hover:text-neutral-950"
-              aria-label="Next mobile frame"
+              aria-label={isSpanish ? "Pantalla mobile siguiente" : "Next mobile frame"}
             >
               &gt;
             </button>
@@ -1772,7 +2051,11 @@ function MobileSurfaceRail({
                       }
                 }
                 transition={reduceMotion ? { duration: 0.01 } : { duration: 0.72, ease }}
-                aria-label={active ? `Inspect ${media.label}` : `Focus ${media.label}`}
+                aria-label={
+                  active
+                    ? `${isSpanish ? "Inspeccionar" : "Inspect"} ${media.label}`
+                    : `${isSpanish ? "Enfocar" : "Focus"} ${media.label}`
+                }
               >
                 <span
                   className={[
@@ -1803,7 +2086,7 @@ function MobileSurfaceRail({
                           : "border-white/18 bg-black/36 text-white/62",
                       ].join(" ")}
                     >
-                      {active ? "Inspect" : "Focus"}
+                      {active ? (isSpanish ? "Inspeccionar" : "Inspect") : isSpanish ? "Enfocar" : "Focus"}
                     </span>
                   </span>
                 </span>
@@ -1823,7 +2106,7 @@ function MobileSurfaceRail({
                   ? "w-8 border-neutral-950 bg-neutral-950"
                   : "w-2 border-neutral-950/18 bg-white/50 hover:border-neutral-950/40"
               }`}
-              aria-label={`Open mobile frame ${index + 1}`}
+              aria-label={`${isSpanish ? "Abrir pantalla mobile" : "Open mobile frame"} ${index + 1}`}
             />
           ))}
         </div>
@@ -1838,7 +2121,7 @@ function MobileSurfaceRail({
             className={`w-28 shrink-0 snap-center border p-1 transition ${
               index === activeIndex ? "border-neutral-950 bg-neutral-950" : "border-neutral-950/10 bg-white/50"
             }`}
-            aria-label={`Focus ${media.label}`}
+            aria-label={`${isSpanish ? "Enfocar" : "Focus"} ${media.label}`}
           >
             <span
               className={[
@@ -1968,15 +2251,17 @@ function EvidenceAtlasGrid({
             transition={reducedMotion ? { duration: 0.01 } : { duration: 0.48, delay: Math.min(index, 8) * 0.035, ease }}
             onClick={() => onInspect(media.id)}
             className="group relative min-h-[16rem] overflow-hidden border border-neutral-950/10 bg-[#f4f1ea]/72 p-2 text-left shadow-[0_18px_52px_rgba(15,15,15,0.08)] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 hover:-translate-y-1 hover:border-neutral-950/22 hover:shadow-[0_28px_74px_rgba(15,15,15,0.12)]"
-            aria-label={`Inspect ${media.label}`}
+            aria-label={`${isSpanish ? "Inspeccionar" : "Inspect"} ${media.label}`}
           >
             <span className="relative block aspect-video overflow-hidden border border-neutral-950/10 bg-white/70">
               <CaseMediaView media={media} priority={index < INITIAL_EVIDENCE_FRAME_COUNT} />
               <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_46%,rgba(0,0,0,0.08))]" />
             </span>
             <span className="mt-3 flex items-center justify-between gap-3 border-t border-neutral-950/10 pt-3 font-mono text-[8px] uppercase tracking-[0.15em] text-neutral-400">
-              <span>{String(index + 1).padStart(2, "0")} / {mediaRoleLabel(media.role)}</span>
-              <span className="text-neutral-300 transition group-hover:text-neutral-700">Inspect</span>
+              <span>{String(index + 1).padStart(2, "0")} / {mediaRoleLabel(media.role, isSpanish)}</span>
+              <span className="text-neutral-300 transition group-hover:text-neutral-700">
+                {isSpanish ? "Inspeccionar" : "Inspect"}
+              </span>
             </span>
             <span className="mt-2 block text-lg font-semibold leading-tight tracking-normal text-neutral-950">
               {media.label}
@@ -2096,6 +2381,7 @@ function ScreensAsEvidence({
                 {visibleFrames.map((media, index) => (
                   <CaseMediaChapter
                     key={media.id}
+                    story={story}
                     media={media}
                     index={index}
                     reducedMotion={reducedMotion}
@@ -2658,6 +2944,7 @@ function MobileEvidenceDeck({
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const dragConsumedRef = useRef(false);
   const activeFrame = frames[activeIndex] ?? frames[initialIndex] ?? frames[0];
+  const isSpanish = isSpanishCaseStory(story);
 
   const setActive = (index: number) => {
     const nextIndex = (index + frames.length) % frames.length;
@@ -2722,7 +3009,7 @@ function MobileEvidenceDeck({
               <motion.button
                 key={frame.id}
                 type="button"
-                aria-label={`Inspect ${frame.label}`}
+                aria-label={`${isSpanish ? "Inspeccionar" : "Inspect"} ${frame.label}`}
                 aria-pressed={activePlane}
                 onClick={() => {
                   if (!activePlane) {
@@ -2763,7 +3050,7 @@ function MobileEvidenceDeck({
 
       <div className="mt-4 border-y border-neutral-950/12 py-3">
         <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-          {isSpanishCaseStory(story) ? "Pantalla" : "Frame"} {String(activeIndex + 1).padStart(2, "0")} / {mediaRoleLabel(activeFrame.role)}
+          {isSpanish ? "Pantalla" : "Frame"} {String(activeIndex + 1).padStart(2, "0")} / {mediaRoleLabel(activeFrame.role, isSpanish)}
         </div>
         <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
           {activeFrame.label}
@@ -2786,7 +3073,7 @@ function MobileEvidenceDeck({
                   ? "w-8 border-neutral-950 bg-neutral-950"
                   : "w-2 border-neutral-950/18 bg-white/60",
               ].join(" ")}
-              aria-label={`Open evidence frame ${index + 1}`}
+              aria-label={`${isSpanish ? "Abrir pantalla de evidencia" : "Open evidence frame"} ${index + 1}`}
             />
           ))}
         </div>
@@ -2795,7 +3082,7 @@ function MobileEvidenceDeck({
             type="button"
             onClick={() => setActive(activeIndex - 1)}
             className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
-            aria-label="Previous evidence frame"
+            aria-label={isSpanish ? "Pantalla de evidencia anterior" : "Previous evidence frame"}
           >
             &lt;
           </button>
@@ -2803,7 +3090,7 @@ function MobileEvidenceDeck({
             type="button"
             onClick={() => setActive(activeIndex + 1)}
             className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
-            aria-label="Next evidence frame"
+            aria-label={isSpanish ? "Pantalla de evidencia siguiente" : "Next evidence frame"}
           >
             &gt;
           </button>
@@ -3020,6 +3307,7 @@ function MobilePhoneCarousel({
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const dragConsumedRef = useRef(false);
+  const isSpanish = isSpanishCaseStory(story);
   if (!frames.length) return null;
 
   const activeFrame = frames[activeIndex] ?? frames[0];
@@ -3085,7 +3373,7 @@ function MobilePhoneCarousel({
               <motion.button
                 key={frame.id}
                 type="button"
-                aria-label={`Inspect ${frame.label}`}
+                aria-label={`${isSpanish ? "Inspeccionar" : "Inspect"} ${frame.label}`}
                 aria-pressed={activePlane}
                 onClick={() => {
                   if (!activePlane) {
@@ -3142,7 +3430,7 @@ function MobilePhoneCarousel({
                   ? "w-8 border-neutral-950 bg-neutral-950"
                   : "w-2 border-neutral-950/18 bg-white/60",
               ].join(" ")}
-              aria-label={`Open mobile frame ${index + 1}`}
+              aria-label={`${isSpanish ? "Abrir pantalla mobile" : "Open mobile frame"} ${index + 1}`}
             />
           ))}
         </div>
@@ -3151,7 +3439,7 @@ function MobilePhoneCarousel({
             type="button"
             onClick={() => setActive(activeIndex - 1)}
             className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
-            aria-label="Previous mobile frame"
+            aria-label={isSpanish ? "Pantalla mobile anterior" : "Previous mobile frame"}
           >
             &lt;
           </button>
@@ -3159,7 +3447,7 @@ function MobilePhoneCarousel({
             type="button"
             onClick={() => setActive(activeIndex + 1)}
             className="grid h-9 w-9 place-items-center rounded-full border border-neutral-950/12 bg-white/54 font-mono text-[13px] text-neutral-600"
-            aria-label="Next mobile frame"
+            aria-label={isSpanish ? "Pantalla mobile siguiente" : "Next mobile frame"}
           >
             &gt;
           </button>
@@ -3176,7 +3464,7 @@ function MobilePhoneCarousel({
             transition={{ duration: prefersReducedMotion ? 0 : 0.36, ease }}
           >
             <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-              Mobile {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
+              {isSpanish ? "Mobile" : "Mobile"} {String(activeIndex + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
             </div>
             <h3 className="mt-2 text-[1.55rem] font-semibold leading-tight tracking-normal text-neutral-950">
               {activeFrame.label}
@@ -3498,7 +3786,7 @@ export default function CasePageV2({
                     <SignalButton href={visibleLinks[0].href}>{visibleLinks[0].label}</SignalButton>
                   ) : null}
                   <SignalButton variant="secondary" onClick={openProject}>
-                    {story.availability?.ctaLabel ?? "Start a project"}
+                    {story.availability?.ctaLabel ?? (isSpanishCaseStory(story) ? "Iniciar proyecto" : "Start a project")}
                   </SignalButton>
                 </div>
               </div>
@@ -3609,7 +3897,7 @@ export default function CasePageV2({
                   </span>
                   <div className={["absolute inset-0", heroFragmentOverlayClass].join(" ")} />
                   <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", heroFragmentMetaClass].join(" ")}>
-                    {isSpanishCaseStory(story) ? "senal" : "signal"} {index + 1} / {mediaRoleLabel(media.role)}
+                    {isSpanishCaseStory(story) ? "senal" : "signal"} {index + 1} / {mediaRoleLabel(media.role, story)}
                   </div>
                 </motion.button>
               ))}
@@ -3667,7 +3955,7 @@ export default function CasePageV2({
                   </div>
                   <div className="flex flex-wrap gap-3">
                     <SignalButton onClick={openProject}>
-                      {story.availability?.ctaLabel ?? "Start a project"}
+                      {story.availability?.ctaLabel ?? (isSpanishCaseStory(story) ? "Iniciar proyecto" : "Start a project")}
                     </SignalButton>
                     <SignalButton variant="secondary" href={secondaryClosingLink.href}>
                       {secondaryClosingLink.label}

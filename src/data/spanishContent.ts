@@ -218,7 +218,7 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
     eyebrow: "Archivo de proyectos",
     title: "Sistemas en movimiento.",
     body:
-      "Un archivo de proyectos donde cada caso funciona como objeto con imagen, caption, profundidad, prueba y señales de adaptación.",
+      "Un archivo de proyectos donde cada caso funciona como objeto con imagen, leyenda, profundidad, prueba y señales de adaptación.",
     ctas: ["Ver caso", "Adaptar este sistema", "Abrir campo extendido"],
     labels: {
       archiveLens: "Lente de archivo",

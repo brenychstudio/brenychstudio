@@ -35,6 +35,14 @@ const navItemDescriptions: Record<NavItem["id"], string> = {
   about: "Practice / studio context",
 };
 
+const spanishNavItemDescriptions: Record<NavItem["id"], string> = {
+  home: "Senal de estudio / sistema inicial",
+  work: "Atlas de evidencia / sistemas de caso",
+  immersive: "Prueba espacial / campo Web XR",
+  offer: "Modelo de proyecto / arquitectura de servicio",
+  about: "Practica / contexto de estudio",
+};
+
 const navItems: NavItem[] = [
   { id: "home", to: "/" },
   { id: "work", to: "/work" },
@@ -42,6 +50,102 @@ const navItems: NavItem[] = [
   { id: "offer", to: "/offer" },
   { id: "about", to: "/about" },
 ];
+
+function getHeaderUi(locale: LocaleCode) {
+  const isSpanish = locale === "es";
+
+  return {
+    logoSubtitle: isSpanish ? "Sistemas de interfaz" : "Interface systems",
+    signal: isSpanish ? "Senal" : "Signal",
+    liveSignal: isSpanish ? "Senal activa" : "Live signal",
+    routeTerminal: isSpanish ? "Terminal de rutas" : "Route terminal",
+    paths: isSpanish ? "rutas" : "paths",
+    selectSystemPath: isSpanish ? "Selecciona una ruta de sistema." : "Select system path.",
+    close: isSpanish ? "Cerrar" : "Close",
+    open: isSpanish ? "Abrir" : "Open",
+    now: isSpanish ? "Ahora" : "Now",
+    current: isSpanish ? "Actual" : "Current",
+    signalReady: isSpanish ? "senal lista" : "signal ready",
+    closeProjectPanel: isSpanish ? "Cerrar panel de proyecto" : "Close project panel",
+    menu: isSpanish ? "Menu" : "Menu",
+    closeRouteTerminal: isSpanish ? "Cerrar terminal de rutas" : "Close route terminal",
+    openRouteTerminal: isSpanish ? "Abrir terminal de rutas" : "Open route terminal",
+    closeProjectDrawer: isSpanish ? "Cerrar panel de proyecto" : "Close project drawer",
+  };
+}
+
+function getNavItemDescription(id: NavItem["id"], locale: LocaleCode) {
+  return locale === "es" ? spanishNavItemDescriptions[id] : navItemDescriptions[id];
+}
+
+function getLocalizedSignalLabel(label: string, locale: LocaleCode) {
+  if (locale !== "es") return label;
+
+  const labels: Record<string, string> = {
+    "LIVING SYSTEMS": "SISTEMAS VIVOS",
+    "EVIDENCE ATLAS": "ATLAS DE EVIDENCIA",
+    "IMMERSIVE SYSTEMS": "SISTEMAS INMERSIVOS",
+    "PRACTICE MODEL": "MODELO DE PRACTICA",
+    "STUDIO POSITION": "POSICION DE ESTUDIO",
+    "SYSTEMS INDEX": "INDICE DE SISTEMAS",
+    "SPATIAL PROOF": "PRUEBA ESPACIAL",
+    "VISUAL ATLAS": "ATLAS VISUAL",
+    "INTERFACE GRAMMAR": "GRAMATICA DE INTERFAZ",
+    "START SIGNAL": "SENAL DE INICIO",
+    "CLOSING SIGNAL": "SENAL DE CIERRE",
+    "PRIVACY LAYER": "CAPA DE PRIVACIDAD",
+    "LEGAL LAYER": "CAPA LEGAL",
+    "CHAMBER MAP": "MAPA DE SALAS",
+    "FIRST PROOF": "PRIMERA PRUEBA",
+    "ENGINE STACK": "STACK DE MOTORES",
+    "FUTURE CHAMBERS": "SALAS FUTURAS",
+    "APPLICATION LAYER": "CAPA DE APLICACION",
+    "START ROOM": "SALA INICIAL",
+    "SPATIAL ATLAS": "ATLAS ESPACIAL",
+    "WEB EXHIBITION": "EXHIBICION WEB",
+    "SPATIAL FIELD": "CAMPO ESPACIAL",
+    "QUEST PROOF": "PRUEBA QUEST",
+    "OBJECT HANDOFF": "ENTREGA DE OBJETO",
+    "MOBILE PROOF": "PRUEBA MOBILE",
+    "ENGINE LEDGER": "LEDGER DE MOTOR",
+    "LIVING VISUAL SYSTEMS": "SISTEMAS VISUALES VIVOS",
+    "SPATIAL PROOF FIELD": "CAMPO DE PRUEBA ESPACIAL",
+    "SONIC OBJECT OS": "SONIC OBJECT OS",
+    "RELEASE OBJECT FIELD": "CAMPO DE RELEASE",
+    "AUDIO REACTIVE ROOM": "SALA AUDIO-REACTIVA",
+    "SIGNAL DOSSIER": "DOSSIER DE SENAL",
+    "MEMORY ATLAS": "ATLAS DE MEMORIA",
+    "PRESENCE FIELD": "CAMPO DE PRESENCIA",
+    "XR MEMORY ROOM": "SALA XR DE MEMORIA",
+    "LOCAL ARTIFACTS": "ARTEFACTOS LOCALES",
+    "LOCAL-FIRST ENGINE": "MOTOR LOCAL-FIRST",
+    "ORBIT LENS OS": "ORBIT LENS OS",
+    "SPATIAL FIELDS": "CAMPOS ESPACIALES",
+    "REFERENCE ORBIT": "ORBITA DE REFERENCIA",
+    "WEBXR PROOF": "PRUEBA WEBXR",
+    "OPTICAL STACK": "STACK OPTICO",
+    "EVIDENCE READER": "LECTOR DE EVIDENCIA",
+    "FEATURED SYSTEMS": "SISTEMAS DESTACADOS",
+    "AVAILABLE SYSTEMS": "SISTEMAS DISPONIBLES",
+    "CAPABILITY LAYER": "CAPA DE CAPACIDAD",
+    "FAST INDEX": "INDICE RAPIDO",
+    "START PROJECT": "INICIAR PROYECTO",
+    "COMMERCIAL SYSTEMS": "SISTEMAS COMERCIALES",
+    "NOT A PAGE": "NO ES UNA PAGINA",
+    "DELIVERY ENGINE": "MOTOR DE ENTREGA",
+    "WAYS TO BEGIN": "FORMAS DE EMPEZAR",
+    "RECEIVE": "ENTREGA",
+    "START OFFER": "INICIAR OFERTA",
+    "PRACTICE LAYERS": "CAPAS DE PRACTICA",
+    "METHOD SPINE": "COLUMNA DE METODO",
+    "SYSTEM MAP": "MAPA DE SISTEMA",
+    "TECHNICAL FOUNDATION": "BASE TECNICA",
+    "WORKING PRINCIPLES": "PRINCIPIOS DE TRABAJO",
+    "AUTHORIAL NOTE": "NOTA AUTORAL",
+  };
+
+  return labels[label] ?? label;
+}
 
 export default function Header({
   drawerOpen = false,
@@ -180,6 +284,8 @@ export default function Header({
 
   const navLabels = t.nav;
   const currentLocaleConfig = getLocaleConfig(locale);
+  const headerUi = getHeaderUi(locale);
+  const localizedSignalLabel = getLocalizedSignalLabel(headerTheme.signalLabel, locale);
   const getNavItemLabel = (item: NavItem) => navLabels[item.id];
 
   const mobileRouteTerminal =
@@ -205,7 +311,7 @@ export default function Header({
               >
                 <motion.button
                   type="button"
-                  aria-label="Close route terminal"
+                  aria-label={headerUi.closeRouteTerminal}
                   className="absolute inset-0 cursor-default"
                   onClick={() => setMobileMenuOpen(false)}
                   variants={{
@@ -257,13 +363,13 @@ export default function Header({
                     <div className="grid grid-cols-[1fr_auto] items-start gap-3">
                       <div>
                         <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/42">
-                          Route terminal / {String(navItems.length).padStart(2, "0")} paths
+                          {headerUi.routeTerminal} / {String(navItems.length).padStart(2, "0")} {headerUi.paths}
                         </div>
                         <h2
                           id="mobile-route-terminal-title"
                           className="mt-1.5 text-[22px] font-normal leading-[0.94] tracking-[-0.035em] text-white"
                         >
-                          Select system path.
+                          {headerUi.selectSystemPath}
                         </h2>
                       </div>
 
@@ -273,7 +379,7 @@ export default function Header({
                         onClick={() => setMobileMenuOpen(false)}
                         className="inline-flex min-h-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/70 transition hover:border-white/30 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
                       >
-                        Close
+                        {headerUi.close}
                       </button>
                     </div>
 
@@ -306,11 +412,11 @@ export default function Header({
                                 {label}
                               </span>
                               <span className={isActive ? "mt-1 block truncate text-[11px] leading-4 text-neutral-950/62" : "mt-1 block truncate text-[11px] leading-4 text-white/48"}>
-                                {navItemDescriptions[item.id]}
+                                {getNavItemDescription(item.id, locale)}
                               </span>
                             </span>
                             <span className={isActive ? "font-mono text-[9px] uppercase tracking-[0.14em] text-neutral-950" : "font-mono text-[9px] uppercase tracking-[0.14em] text-white/42 group-hover:text-white/70"}>
-                              {isActive ? "Now" : "Open"}
+                              {isActive ? headerUi.now : headerUi.open}
                             </span>
                           </motion.button>
                         );
@@ -319,15 +425,15 @@ export default function Header({
 
                     <div className="grid gap-3">
                       <div className="grid grid-cols-[1fr_auto] gap-3 border-y border-white/10 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
-                        <span>Current / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
-                        <span>{currentLocaleConfig.label} / signal ready</span>
+                        <span>{headerUi.current} / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
+                        <span>{currentLocaleConfig.label} / {headerUi.signalReady}</span>
                       </div>
                       <button
                         type="button"
                         onClick={onCta}
                         className="inline-flex min-h-11 items-center justify-between rounded-full border border-white bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-950 transition hover:-translate-y-0.5 hover:bg-[#f7f3ea] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
                       >
-                        <span>{drawerOpen ? "Close project panel" : navLabels.startProject}</span>
+                        <span>{drawerOpen ? headerUi.closeProjectPanel : navLabels.startProject}</span>
                         <span className="font-mono opacity-55">-&gt;</span>
                       </button>
                     </div>
@@ -359,7 +465,7 @@ export default function Header({
               BRENYCH STUDIO
             </span>
             <span className="mt-1 hidden text-[9px] uppercase tracking-[0.22em] text-[color:var(--header-muted)] transition group-hover:text-[color:var(--header-text)] lg:block">
-              Interface systems
+              {headerUi.logoSubtitle}
             </span>
           </button>
 
@@ -369,7 +475,7 @@ export default function Header({
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--header-progress)]" />
             </span>
             <span className="truncate text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
-              Signal / {headerTheme.signalLabel}
+              {headerUi.signal} / {localizedSignalLabel}
             </span>
           </div>
         </div>
@@ -408,7 +514,7 @@ export default function Header({
           <div className="hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 lg:flex">
             <span className="relative h-1.5 w-1.5 rounded-full bg-[color:var(--header-progress)]" />
             <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
-              Live signal
+              {headerUi.liveSignal}
             </span>
           </div>
 
@@ -449,20 +555,20 @@ export default function Header({
             onClick={() => setMobileMenuOpen((value) => !value)}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-header-menu"
-            aria-label={mobileMenuOpen ? "Close route terminal" : "Open route terminal"}
+            aria-label={mobileMenuOpen ? headerUi.closeRouteTerminal : headerUi.openRouteTerminal}
             className={[
               "inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:h-9 min-[420px]:px-3 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] lg:hidden",
               mobileMenuOpen ? "shadow-[0_10px_24px_rgba(0,0,0,0.07)]" : "opacity-88",
             ].join(" ")}
           >
-            {mobileMenuOpen ? "Close" : "Menu"}
+            {mobileMenuOpen ? headerUi.close : headerUi.menu}
           </button>
 
           <button
             type="button"
             onClick={onCta}
             aria-expanded={drawerOpen}
-            aria-label={drawerOpen ? "Close project drawer" : navLabels.startProject}
+            aria-label={drawerOpen ? headerUi.closeProjectDrawer : navLabels.startProject}
             className={[
               "inline-flex min-w-10 shrink-0 items-center justify-center gap-1 rounded-full px-2.5 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:translate-y-[-1px] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 active:scale-[0.995] min-[420px]:min-w-[4.8rem] min-[420px]:gap-1.5 min-[420px]:px-3 min-[420px]:py-[9px] min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] sm:min-w-[12.2rem] sm:gap-2 sm:px-4 sm:text-[11px] sm:tracking-[0.16em]",
               drawerOpen

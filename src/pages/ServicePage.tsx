@@ -108,6 +108,82 @@ function shortenText(text: string, maxLength = 150) {
   return `${text.slice(0, maxLength).trimEnd()}...`;
 }
 
+type ServiceUi = {
+  serviceThreshold: string;
+  spatialProofChamber: string;
+  demoSpine: string;
+  viewCase: string;
+  demoNarrative: string;
+  productProofHeadline: string;
+  workflowProof: string;
+  immersiveProof: string;
+  immersiveProofHeadline: string;
+  routeModel: string;
+  product: string;
+  demo: string;
+  field: string;
+  route: string;
+  buildSequence: string;
+  spatialSequence: string;
+  builtThrough: string;
+  bestWhen: string;
+  projectGallery: string;
+  galleryAria: string;
+  startRoute: string;
+};
+
+function getServiceUi(locale: LocaleCode): ServiceUi {
+  if (locale === "es") {
+    return {
+      serviceThreshold: "Umbral de servicio",
+      spatialProofChamber: "Camara de prueba espacial",
+      demoSpine: "Columna demo",
+      viewCase: "Ver caso",
+      demoNarrative: "Narrativa demo",
+      productProofHeadline: "Prueba de producto antes que promesa.",
+      workflowProof: "prueba de flujo",
+      immersiveProof: "Prueba inmersiva",
+      immersiveProofHeadline: "Prueba espacial con bordes usables.",
+      routeModel: "Modelo de ruta",
+      product: "producto",
+      demo: "demo",
+      field: "campo",
+      route: "ruta",
+      buildSequence: "Secuencia de construccion",
+      spatialSequence: "Secuencia espacial",
+      builtThrough: "Construido mediante",
+      bestWhen: "Mejor cuando",
+      projectGallery: "Galeria de proyectos",
+      galleryAria: "Galeria desplazable de prueba de proyectos",
+      startRoute: "Ruta de inicio",
+    };
+  }
+
+  return {
+    serviceThreshold: "Service threshold",
+    spatialProofChamber: "Spatial proof chamber",
+    demoSpine: "Demo spine",
+    viewCase: "View case",
+    demoNarrative: "Demo narrative",
+    productProofHeadline: "Product proof before product claims.",
+    workflowProof: "workflow proof",
+    immersiveProof: "Immersive proof",
+    immersiveProofHeadline: "Spatial proof with usable edges.",
+    routeModel: "Route model",
+    product: "product",
+    demo: "demo",
+    field: "field",
+    route: "route",
+    buildSequence: "Build sequence",
+    spatialSequence: "Spatial sequence",
+    builtThrough: "Built through",
+    bestWhen: "Best when",
+    projectGallery: "Project gallery",
+    galleryAria: "Scrollable project proof gallery",
+    startRoute: "Start route",
+  };
+}
+
 function ServiceMeta({
   page,
   proofCards,
@@ -235,7 +311,46 @@ function getProjectGalleryCards(tone: ServicePageData["visualTone"], locale: Loc
   });
 }
 
-function getDirectedProofCopy(page: ServicePageData) {
+function getDirectedProofCopy(page: ServicePageData, locale: LocaleCode) {
+  if (locale === "es") {
+    if (page.visualTone === "product") {
+      return [
+        {
+          title: "El workflow se vuelve visible.",
+          text: "Una pagina demo debe mostrar la promesa del producto mediante pantallas, estados y pruebas de flujo antes de la primera explicacion.",
+        },
+        {
+          title: "El pitch se vuelve ruta.",
+          text: "Solicitud demo, lista de espera, beta o revision inversora se ordenan en una ruta enfocada, no en un deck suelto.",
+        },
+      ];
+    }
+
+    if (page.visualTone === "immersive") {
+      return [
+        {
+          title: "La atmosfera se vuelve estructura.",
+          text: "Una ruta inmersiva necesita mas que mood: un mundo legible, logica visual clara y una forma precisa de atravesar la experiencia.",
+        },
+        {
+          title: "El movimiento sigue siendo usable.",
+          text: "Capas cinematicas, prueba de archivo y ritmo espacial pueden avanzar juntas sin ocultar el mensaje ni convertir la pagina en una demo tecnica.",
+        },
+      ];
+    }
+
+    return [
+      {
+        title: "La confianza se vuelve ruta.",
+        text: "Una pagina premium no es una pila de secciones. Dirige la atencion mediante prueba, contexto, jerarquia visual y una via clara de consulta.",
+      },
+      {
+        title: "Un lanzamiento necesita movimiento, no ruido.",
+        text: "La superficie puede moverse con la oferta: modulos de producto, pantallas de prueba, logica de campaña y handoff enfocado sin volverse un sitio pesado.",
+      },
+    ];
+  }
+
   if (page.visualTone === "product") {
     return [
       {
@@ -274,7 +389,28 @@ function getDirectedProofCopy(page: ServicePageData) {
   ];
 }
 
-function getGalleryCopy(tone: ServicePageData["visualTone"]) {
+function getGalleryCopy(tone: ServicePageData["visualTone"], locale: LocaleCode) {
+  if (locale === "es") {
+    if (tone === "product") {
+      return {
+        title: "Recorre la prueba de producto.",
+        text: "Un rail amplio de prueba mantiene visibles workflow, SaaS, CRM y superficies de advisory sin convertir la ruta en un archivo de casos.",
+      };
+    }
+
+    if (tone === "immersive") {
+      return {
+        title: "Muévete por el campo de prueba espacial.",
+        text: "El trabajo inmersivo y de interfaz permanece disponible en un rail cinematografico, para mostrar atmosfera, logica de medios y sistemas usables a la vez.",
+      };
+    }
+
+    return {
+      title: "Recorre el campo de prueba.",
+      text: "Una galeria amplia de prueba permanece disponible sin convertir la pagina en un archivo pesado. Desplaza el rail y entra en cualquier proyecto.",
+    };
+  }
+
   if (tone === "product") {
     return {
       title: "Scroll through product proof.",
@@ -299,10 +435,12 @@ function PremiumCoverCard({
   card,
   index,
   size = "default",
+  viewCaseLabel = "View case",
 }: {
   card: ProofCardData;
   index: number;
   size?: "hero" | "default" | "gallery";
+  viewCaseLabel?: string;
 }) {
   const imageHeight = size === "hero" ? "aspect-[16/10]" : size === "gallery" ? "aspect-[16/11]" : "aspect-[16/10]";
   const imageClass =
@@ -352,7 +490,9 @@ function PremiumCoverCard({
             {card.claim}
           </span>
         ) : null}
-        <span className="mt-auto pt-2 text-[10px] uppercase tracking-[0.16em] text-neutral-500">View case -&gt;</span>
+        <span className="mt-auto pt-2 text-[10px] uppercase tracking-[0.16em] text-neutral-500">
+          {viewCaseLabel} -&gt;
+        </span>
       </span>
     </Link>
   );
@@ -362,10 +502,12 @@ function PremiumLandingHero({
   page,
   proofCards,
   onOpenProject,
+  ui,
 }: {
   page: ServicePageData;
   proofCards: ProofCardData[];
   onOpenProject?: () => void;
+  ui: ServiceUi;
 }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLElement | null>(null);
@@ -401,7 +543,7 @@ function PremiumLandingHero({
         style={reduceMotion ? undefined : { y: copyY }}
         className="relative z-10 min-w-0"
       >
-        <SectionSignal index="01" label="Service threshold" />
+        <SectionSignal index="01" label={ui.serviceThreshold} />
         <h1 className={titleClass}>
           {page.heroTitle}
         </h1>
@@ -440,21 +582,21 @@ function PremiumLandingHero({
           <div className="pointer-events-none absolute left-[10%] top-[14%] h-[72%] w-[82%] rounded-[999px] border border-cyan-100/12" />
           <div className="pointer-events-none absolute left-[20%] top-[24%] h-[52%] w-[62%] rounded-[999px] border border-white/10" />
           <div className="relative z-10 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.18em] text-white/54">
-            <span>Spatial proof chamber</span>
+            <span>{ui.spatialProofChamber}</span>
             <span>{page.heroProofLayout.replace("-stack", " stack")}</span>
           </div>
           <motion.div
             style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
             className="relative z-10 mx-auto mt-8 w-full max-w-[48rem] md:mt-10"
           >
-            {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
+            {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" viewCaseLabel={ui.viewCase} /> : null}
           </motion.div>
           {secondaryCard ? (
             <motion.div
               style={reduceMotion ? undefined : { y: copyY }}
               className="relative z-20 mt-5 w-[min(78vw,28rem)] rotate-2 md:absolute md:right-8 md:top-24 md:mt-0"
             >
-              <PremiumCoverCard card={secondaryCard} index={1} />
+              <PremiumCoverCard card={secondaryCard} index={1} viewCaseLabel={ui.viewCase} />
             </motion.div>
           ) : null}
         </div>
@@ -466,16 +608,16 @@ function PremiumLandingHero({
               style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
               className="w-full max-w-[51rem] self-center"
             >
-              {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
+              {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" viewCaseLabel={ui.viewCase} /> : null}
             </motion.div>
             <div className="grid content-between gap-4 border-t border-white/14 pt-4 md:border-l md:border-t-0 md:pl-5 md:pt-0">
               <div>
-                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/46">Demo spine</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/46">{ui.demoSpine}</div>
                 <div className="mt-5 grid gap-3">
                   {page.routeLedger.map((item, index) => (
                     <div key={item.title} className="border-t border-white/14 pt-3">
                       <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/38">
-                        {String(index + 1).padStart(2, "0")} / product
+                        {String(index + 1).padStart(2, "0")} / {ui.product}
                       </div>
                       <p className="mt-2 text-[18px] leading-none text-white">{item.title}</p>
                     </div>
@@ -503,7 +645,7 @@ function PremiumLandingHero({
             style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
             className="relative z-10 mx-auto w-full max-w-[50rem] pt-5 md:pt-8 lg:ml-auto lg:mr-0"
           >
-            {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" /> : null}
+            {primaryCard ? <PremiumCoverCard card={primaryCard} index={0} size="hero" viewCaseLabel={ui.viewCase} /> : null}
           </motion.div>
         </div>
       )}
@@ -516,12 +658,14 @@ function PremiumSequenceScene({
   index,
   title,
   text,
+  ui,
   reverse = false,
 }: {
   card: ProofCardData;
   index: number;
   title: string;
   text: string;
+  ui: ServiceUi;
   reverse?: boolean;
 }) {
   const reduceMotion = useReducedMotion();
@@ -551,32 +695,42 @@ function PremiumSequenceScene({
           to={card.href}
           className="mt-6 inline-flex min-h-10 items-center justify-center rounded-full border border-neutral-950/14 bg-white/60 px-5 text-[10px] uppercase tracking-[0.16em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
         >
-          View case -&gt;
+          {ui.viewCase} -&gt;
         </Link>
       </motion.div>
       <motion.div
         style={reduceMotion ? undefined : { y: coverY, rotate: coverRotate, scale: coverScale }}
         className={`w-full max-w-[48rem] ${reverse ? "md:order-1" : "md:justify-self-end"}`}
       >
-        <PremiumCoverCard card={card} index={index + 1} />
+        <PremiumCoverCard card={card} index={index + 1} viewCaseLabel={ui.viewCase} />
       </motion.div>
     </section>
   );
 }
 
-function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; proofCards: ProofCardData[] }) {
+function PremiumDirectedProof({
+  page,
+  proofCards,
+  locale,
+  ui,
+}: {
+  page: ServicePageData;
+  proofCards: ProofCardData[];
+  locale: LocaleCode;
+  ui: ServiceUi;
+}) {
   const secondary = proofCards[1];
   const tertiary = proofCards[2];
-  const scenes = getDirectedProofCopy(page);
+  const scenes = getDirectedProofCopy(page, locale);
 
   if (page.visualTone === "product") {
     return (
       <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
         <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-center">
           <div>
-            <SectionSignal index="02" label="Demo narrative" />
+            <SectionSignal index="02" label={ui.demoNarrative} />
             <h2 className="mt-5 max-w-[11ch] text-[clamp(2.7rem,5.3vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
-              Product proof before product claims.
+              {ui.productProofHeadline}
             </h2>
             <p className="mt-6 max-w-[31rem] text-[15px] leading-7 text-neutral-600">{page.proofStatement}</p>
           </div>
@@ -592,7 +746,9 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
                   <span className="absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.16em] text-white/66">{card.label}</span>
                 </span>
                 <span className="block">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">0{index + 2} / workflow proof</span>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
+                    0{index + 2} / {ui.workflowProof}
+                  </span>
                   <span className="mt-3 block text-[clamp(1.8rem,3.1vw,3rem)] leading-[0.95] text-neutral-950">{scenes[index].title}</span>
                   <span className="mt-4 block text-[14px] leading-7 text-neutral-600">{scenes[index].text}</span>
                 </span>
@@ -616,9 +772,9 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
           <div className="pointer-events-none absolute right-[7%] top-[10%] h-[72%] w-[58%] rounded-[999px] border border-cyan-100/12" />
           <div className="relative z-10 grid gap-8 lg:grid-cols-[0.36fr_0.64fr] lg:items-end">
             <div>
-              <SectionSignal index="02" label="Immersive proof" />
+              <SectionSignal index="02" label={ui.immersiveProof} />
               <h2 className="mt-5 max-w-[9ch] text-[clamp(2.9rem,5.6vw,5.8rem)] font-normal leading-[0.9] tracking-normal text-white">
-                Spatial proof with usable edges.
+                {ui.immersiveProofHeadline}
               </h2>
               <p className="mt-6 max-w-[30rem] text-[15px] leading-7 text-white/54">{page.proofStatement}</p>
             </div>
@@ -630,7 +786,7 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
                   whileHover={{ y: -7, scale: 1.012 }}
                   transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <PremiumCoverCard card={card} index={index + 1} />
+                  <PremiumCoverCard card={card} index={index + 1} viewCaseLabel={ui.viewCase} />
                 </motion.div>
               ))}
             </div>
@@ -648,6 +804,7 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
           index={0}
           title={scenes[0].title}
           text={scenes[0].text}
+          ui={ui}
         />
       ) : null}
       {tertiary ? (
@@ -656,6 +813,7 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
           index={1}
           title={scenes[1].title}
           text={scenes[1].text}
+          ui={ui}
           reverse
         />
       ) : null}
@@ -663,7 +821,7 @@ function PremiumDirectedProof({ page, proofCards }: { page: ServicePageData; pro
   );
 }
 
-function PremiumServiceModel({ page }: { page: ServicePageData }) {
+function PremiumServiceModel({ page, ui }: { page: ServicePageData; ui: ServiceUi }) {
   const methodLine = page.method.map((step) => step.title).join(" -> ");
 
   if (page.visualTone === "product") {
@@ -671,7 +829,7 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
       <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
         <div className="grid gap-9 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
           <div>
-            <SectionSignal index="04" label="Route model" />
+            <SectionSignal index="04" label={ui.routeModel} />
             <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.8vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
               {page.routeTitle}
             </h2>
@@ -683,7 +841,7 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
               {page.routeLedger.map((item, index) => (
                 <article key={item.title} className="bg-[#f4f1ea]/88 p-4 md:min-h-[13rem]">
                   <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">
-                    {String(index + 1).padStart(2, "0")} / demo
+                    {String(index + 1).padStart(2, "0")} / {ui.demo}
                   </div>
                   <h3 className="mt-7 text-[clamp(1.7rem,2.4vw,2.7rem)] leading-[0.94] text-neutral-950">{item.title}</h3>
                   <p className="mt-4 text-[13px] leading-6 text-neutral-600">{item.text}</p>
@@ -692,7 +850,7 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
             </div>
 
             <div className="border-y border-neutral-950/12 py-5">
-              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Build sequence</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{ui.buildSequence}</div>
               <div className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-[17px] leading-7 text-neutral-800">
                 {page.method.map((step, index) => (
                   <span key={step.title}>
@@ -713,7 +871,7 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
       <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
         <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr] lg:items-center">
           <div>
-            <SectionSignal index="04" label="Route model" />
+            <SectionSignal index="04" label={ui.routeModel} />
             <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.8vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
               {page.routeTitle}
             </h2>
@@ -726,14 +884,14 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
               {page.routeLedger.map((item, index) => (
                 <article key={item.title} className="grid gap-3 border-t border-neutral-950/12 pt-5 md:grid-cols-[5rem_0.38fr_0.62fr] md:items-start">
                   <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">
-                    {String(index + 1).padStart(2, "0")} / field
+                    {String(index + 1).padStart(2, "0")} / {ui.field}
                   </span>
                   <h3 className="text-[clamp(1.7rem,2.4vw,2.55rem)] leading-[0.95] text-neutral-950">{item.title}</h3>
                   <p className="text-[13px] leading-6 text-neutral-600">{item.text}</p>
                 </article>
               ))}
               <div className="border-y border-neutral-950/12 py-4">
-                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Spatial sequence</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{ui.spatialSequence}</div>
                 <p className="mt-3 text-[18px] leading-8 text-neutral-800">{methodLine}</p>
               </div>
             </div>
@@ -747,7 +905,7 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
     <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
       <div className="grid gap-10 lg:grid-cols-[0.38fr_0.62fr] lg:items-start">
         <div>
-          <SectionSignal index="04" label="Route model" />
+          <SectionSignal index="04" label={ui.routeModel} />
           <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.8vw,5.4rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
             {page.routeTitle}
           </h2>
@@ -762,7 +920,7 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
                 className="grid gap-3 border-b border-neutral-950/10 py-5 last:border-b-0 md:grid-cols-[4.5rem_minmax(0,1fr)] md:gap-5"
               >
                 <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-300">
-                  {String(index + 1).padStart(2, "0")} / route
+                  {String(index + 1).padStart(2, "0")} / {ui.route}
                 </span>
                 <div className="min-w-0">
                   <h3 className="text-[clamp(1.95rem,2.65vw,3.15rem)] leading-[0.94] text-neutral-950">
@@ -776,12 +934,12 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
 
           <div className="grid gap-5 md:grid-cols-[minmax(0,0.44fr)_minmax(0,0.56fr)] md:items-start">
             <div className="border-t border-neutral-950/12 pt-4">
-              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Built through</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{ui.builtThrough}</div>
               <p className="mt-3 text-[20px] leading-7 text-neutral-800">{methodLine}</p>
             </div>
 
             <div className="border-t border-neutral-950/12 pt-4">
-              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">Best when</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{ui.bestWhen}</div>
               <p className="mt-3 text-[17px] leading-8 text-neutral-700">
                 {page.bestFor.slice(0, 5).join(" / ")}
               </p>
@@ -793,7 +951,17 @@ function PremiumServiceModel({ page }: { page: ServicePageData }) {
   );
 }
 
-function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: ProofCardData[] }) {
+function PremiumProjectGallery({
+  page,
+  cards,
+  locale,
+  ui,
+}: {
+  page: ServicePageData;
+  cards: ProofCardData[];
+  locale: LocaleCode;
+  ui: ServiceUi;
+}) {
   const navigate = useNavigate();
   const railRef = useRef<HTMLDivElement | null>(null);
   const loopResetRef = useRef<number | null>(null);
@@ -809,7 +977,7 @@ function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: 
     targetHref: "",
   });
   const loopCards = useMemo(() => [...cards, ...cards, ...cards], [cards]);
-  const galleryCopy = getGalleryCopy(page.visualTone);
+  const galleryCopy = getGalleryCopy(page.visualTone, locale);
 
   const getLoopSegment = () => {
     const rail = railRef.current;
@@ -981,7 +1149,7 @@ function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: 
     <section className="relative mx-auto w-[min(94vw,1640px)] border-b border-neutral-950/12 py-10 md:py-14">
       <div className="mb-8 grid gap-6 md:grid-cols-[0.34fr_0.66fr] md:items-end">
         <div>
-          <SectionSignal index="05" label="Project gallery" />
+          <SectionSignal index="05" label={ui.projectGallery} />
           <h2 className="mt-5 max-w-[9ch] text-[clamp(2.7rem,5vw,5rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
             {galleryCopy.title}
           </h2>
@@ -994,7 +1162,7 @@ function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: 
       <div
         ref={railRef}
         role="region"
-        aria-label="Scrollable project proof gallery"
+        aria-label={ui.galleryAria}
         className="cursor-grab overflow-x-auto overscroll-contain pb-5 active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -1013,7 +1181,7 @@ function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: 
               whileHover={{ y: -6, scale: 1.012 }}
               transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
             >
-              <PremiumCoverCard card={card} index={index % cards.length} size="gallery" />
+              <PremiumCoverCard card={card} index={index % cards.length} size="gallery" viewCaseLabel={ui.viewCase} />
             </motion.div>
           ))}
         </div>
@@ -1022,12 +1190,20 @@ function PremiumProjectGallery({ page, cards }: { page: ServicePageData; cards: 
   );
 }
 
-function PremiumClosingRoute({ page, onOpenProject }: { page: ServicePageData; onOpenProject?: () => void }) {
+function PremiumClosingRoute({
+  page,
+  onOpenProject,
+  ui,
+}: {
+  page: ServicePageData;
+  onOpenProject?: () => void;
+  ui: ServiceUi;
+}) {
   return (
     <section className="relative mx-auto w-[min(94vw,1640px)] py-12 md:py-16" data-sound-safe-area>
       <div className="grid gap-8 border-y border-neutral-950/12 bg-white/18 px-4 py-8 backdrop-blur-sm md:grid-cols-[0.48fr_0.52fr] md:items-end md:px-7 md:py-10">
         <div>
-          <SectionSignal index="06" label="Start route" />
+          <SectionSignal index="06" label={ui.startRoute} />
           <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6.4vw,6rem)] font-normal leading-[0.9] tracking-normal text-neutral-950">
             {page.closingTitle}
           </h2>
@@ -1062,19 +1238,23 @@ function PremiumLandingRoute({
   proofCards,
   galleryCards,
   onOpenProject,
+  locale,
 }: {
   page: ServicePageData;
   proofCards: ProofCardData[];
   galleryCards: ProofCardData[];
   onOpenProject?: () => void;
+  locale: LocaleCode;
 }) {
+  const ui = getServiceUi(locale);
+
   return (
     <>
-      <PremiumLandingHero page={page} proofCards={proofCards} onOpenProject={onOpenProject} />
-      <PremiumDirectedProof page={page} proofCards={proofCards} />
-      <PremiumServiceModel page={page} />
-      <PremiumProjectGallery page={page} cards={galleryCards} />
-      <PremiumClosingRoute page={page} onOpenProject={onOpenProject} />
+      <PremiumLandingHero page={page} proofCards={proofCards} onOpenProject={onOpenProject} ui={ui} />
+      <PremiumDirectedProof page={page} proofCards={proofCards} locale={locale} ui={ui} />
+      <PremiumServiceModel page={page} ui={ui} />
+      <PremiumProjectGallery page={page} cards={galleryCards} locale={locale} ui={ui} />
+      <PremiumClosingRoute page={page} onOpenProject={onOpenProject} ui={ui} />
     </>
   );
 }
@@ -1116,6 +1296,7 @@ export default function ServicePage({
             proofCards={proofCards}
             galleryCards={galleryCards}
             onOpenProject={onOpenProject}
+            locale={locale}
           />
         </main>
         <SiteFooterV2 onOpenProject={onOpenProject} variant="practice" hideClosingSignal />

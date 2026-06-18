@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { animate, motion, useReducedMotion } from "framer-motion";
 
+import type { LocaleCode } from "../../i18n";
+
 type LiveBuildSignalProps = {
   readiness?: number;
   compact?: boolean;
+  locale?: LocaleCode;
 };
 
 const buildStatusItems = [
@@ -19,13 +22,44 @@ const signalLines = [
   "case-detail refinements continue.",
 ];
 
+function getLiveBuildSignalCopy(locale: LocaleCode = "en") {
+  if (locale !== "es") {
+    return {
+      title: "Live build signal",
+      ariaLabel: "Live build signal",
+      buildStatusItems,
+      signalLines,
+      readinessLabel: "System readiness",
+    };
+  }
+
+  return {
+    title: "Senal de build en vivo",
+    ariaLabel: "Senal de build en vivo",
+    buildStatusItems: [
+      { label: "Paginas core", value: "online" },
+      { label: "Archivo de casos", value: "activo" },
+      { label: "Motion pass", value: "ajuste" },
+      { label: "Pulido mobile", value: "en progreso" },
+    ],
+    signalLines: [
+      "El portfolio se reconstruye en publico como un sistema de interfaz vivo.",
+      "Las secciones principales estan online mientras continuan los ajustes",
+      "de motion, responsive y detalle de casos.",
+    ],
+    readinessLabel: "Preparacion del sistema",
+  };
+}
+
 export default function LiveBuildSignal({
   readiness = 78,
   compact = false,
+  locale = "en",
 }: LiveBuildSignalProps) {
   const prefersReducedMotion = useReducedMotion();
+  const copy = useMemo(() => getLiveBuildSignalCopy(locale), [locale]);
   const safeReadiness = Math.max(0, Math.min(100, readiness));
-  const firstLine = signalLines[0];
+  const firstLine = copy.signalLines[0];
   const [typedLine, setTypedLine] = useState(prefersReducedMotion ? firstLine : "");
   const [displayReadiness, setDisplayReadiness] = useState(prefersReducedMotion ? safeReadiness : 0);
 
@@ -83,7 +117,7 @@ export default function LiveBuildSignal({
           ) : null}
           <span className="relative inline-flex h-2 w-2 rounded-full bg-neutral-950" />
         </span>
-        <span className="truncate">Live build signal</span>
+        <span className="truncate">{copy.title}</span>
         <span className="shrink-0 text-neutral-950">{displayReadiness}%</span>
       </motion.div>
     );
@@ -92,14 +126,14 @@ export default function LiveBuildSignal({
   return (
     <motion.aside
       className="pointer-events-none w-full max-w-[21rem] border-y border-neutral-950/14 py-4 pl-4 text-neutral-950"
-      aria-label="Live build signal"
+      aria-label={copy.ariaLabel}
       initial={prefersReducedMotion ? false : { opacity: 0, y: 12, filter: "blur(4px)" }}
       animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
     >
       <div className="flex items-center justify-between gap-4">
         <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-          Live build signal
+          {copy.title}
         </div>
         <span className="relative flex h-2 w-2 shrink-0">
           {!prefersReducedMotion ? (
@@ -117,7 +151,7 @@ export default function LiveBuildSignal({
           ) : null}
         </p>
 
-        {signalLines.slice(1).map((line, index) => (
+        {copy.signalLines.slice(1).map((line, index) => (
           <motion.p
             key={line}
             initial={prefersReducedMotion ? false : { opacity: 0, y: 3 }}
@@ -135,7 +169,7 @@ export default function LiveBuildSignal({
 
       <div className="mt-4 border-t border-neutral-950/10 pt-3">
         <div className="grid gap-2">
-          {buildStatusItems.map((item) => (
+          {copy.buildStatusItems.map((item) => (
             <div
               key={item.label}
               className="grid grid-cols-[minmax(0,1fr)_auto] gap-4 font-mono text-[10px] uppercase tracking-[0.14em]"
@@ -149,7 +183,7 @@ export default function LiveBuildSignal({
 
       <div className="mt-4 border-t border-neutral-950/10 pt-3">
         <div className="mb-2 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.14em]">
-          <span className="text-neutral-500">System readiness</span>
+          <span className="text-neutral-500">{copy.readinessLabel}</span>
           <span className="text-neutral-950">{displayReadiness}%</span>
         </div>
         <div className="h-px w-full bg-neutral-950/14">

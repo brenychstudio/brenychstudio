@@ -28,7 +28,7 @@ import FormulaSignalStrand from "../ui/StudioSystemStrand";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
-import { getLocalizedPath, useI18n } from "../i18n";
+import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -375,6 +375,168 @@ const mobileCoreSystems = [
 const mobileSupportingLayers = [
   ["04", "Available Systems", "Reusable modules for premium sites, products, archives, and offers."],
 ];
+
+function getStudioHomeUi(locale: LocaleCode) {
+  const isSpanish = locale === "es";
+
+  return {
+    openingChips: isSpanish ? ["Indice de estudio", "Sistemas vivos"] : ["Studio Index", "Living systems"],
+    railItems: isSpanish
+      ? [
+          { index: "01", label: "Inicio", id: "opening" },
+          { index: "02", label: "Sistemas", id: "systems" },
+          { index: "03", label: "WHISPER", id: "whisper" },
+          { index: "04", label: "Atlas", id: "atlas" },
+          { index: "05", label: "Gramatica", id: "grammar" },
+          { index: "06", label: "Practica", id: "practice" },
+        ]
+      : studioRailItems,
+    railLabel: isSpanish ? "Secciones del indice de estudio" : "Studio Index sections",
+    formulaLabel: isSpanish ? "Formula central" : "Core formula",
+    formulaWords: isSpanish ? "SENAL / ESTADO / ATMOSFERA / REVEAL / MEMORIA" : "SIGNAL / STATE / ATMOS / REVEAL / MEMORY",
+    formulaLine: isSpanish
+      ? "senal -> estado -> atmosfera -> reveal -> memoria"
+      : "signal -> state -> atmosphere -> reveal -> memory",
+    openRelatedProof: isSpanish ? "Abrir prueba relacionada ->" : "Open related proof ->",
+    openImmersiveCase: isSpanish ? "Abrir caso inmersivo ->" : "Open immersive case ->",
+    start: isSpanish ? "Iniciar ->" : "Start ->",
+    openOffer: isSpanish ? "Abrir oferta ->" : "Open Offer ->",
+    soundLabels: isSpanish ? ["Exhibicion web", "Prueba mobile", "Captura Quest", "Logica print"] : ["Web exhibition", "Mobile proof", "Quest capture", "Print logic"],
+  };
+}
+
+function getStudioSystems(locale: LocaleCode): SystemItem[] {
+  if (locale !== "es") return systems;
+
+  return [
+    {
+      ...systems[0],
+      title: "Sistema WebGL Stage",
+      label: "escenas web dirigidas",
+      text:
+        "Modulos cinematicos reutilizables para heroes atmosfericos, reveals de objeto, mundos de producto, campos de archivo y estados visuales guiados por scroll.",
+      proof: "Las escenas funcionan como entornos dirigidos, no como fondos decorativos.",
+      tags: ["Escenas WebGL", "Logica de motion", "Estados de stage"],
+    },
+    {
+      ...systems[1],
+      label: "capa de prueba espacial",
+      text:
+        "Un sistema cinematico Web / XR que conecta fotografia, logica editorial, presentacion mobile, preview AR y experiencia espacial probada en Quest.",
+      proof: "Un archivo fotografico se convierte en web, superficie de coleccionista y sala espacial.",
+      tags: ["Prueba espacial", "Logica collector", "Capa XR"],
+    },
+    {
+      ...systems[2],
+      title: "Living Interface OS",
+      label: "Presence OS / capa de estado",
+      text:
+        "Una capa de senal y estado donde contexto de ruta, atencion, motion, profundidad media e interaccion definen como responde la interfaz.",
+      proof: "El sitio deja de comportarse como paginas sueltas y actua como un entorno sensible.",
+      tags: ["Estado senal", "Logica de presencia", "Capa de memoria", "Interfaz adaptativa"],
+    },
+  ];
+}
+
+function getProofSurfaceModes(locale: LocaleCode) {
+  if (locale !== "es") return proofSurfaceModes;
+
+  return [
+    ["01", "Teatro de producto", "Objeto, atmosfera y deseo presentados como prueba."],
+    ["02", "Ruta advisory", "Confianza, seleccion y consulta organizadas como un recorrido calmado."],
+    ["03", "Superficie workflow", "Logica operativa visible antes de la conversion."],
+  ];
+}
+
+function getMobileCoreSystems(locale: LocaleCode) {
+  if (locale !== "es") return mobileCoreSystems;
+
+  return [
+    ["01", "Sistema WebGL Stage", "Logica de escena para atmosfera, reveal y estados de scroll.", "logica stage"],
+    ["02", "Living Interface OS", "Contexto de ruta, motion, profundidad media y estados de atencion.", "estado presencia"],
+    ["03", "Case System Story Engine", "Casos estructurados como prueba, metodo, media y ruta de conversion.", "ruta de caso"],
+  ];
+}
+
+function getMobileSupportingLayers(locale: LocaleCode) {
+  if (locale !== "es") return mobileSupportingLayers;
+
+  return [["04", "Sistemas disponibles", "Modulos reutilizables para sitios premium, productos, archivos y ofertas."]];
+}
+
+function getGrammar(locale: LocaleCode) {
+  if (locale !== "es") return grammar;
+
+  return [
+    ["senal", "la atencion aparece antes de la interaccion"],
+    ["estado", "la interfaz sabe que esta activo"],
+    ["atmosfera", "la pagina sostiene tono y profundidad"],
+    ["reveal", "el motion expone estructura"],
+    ["memoria", "el media deja una huella"],
+  ];
+}
+
+function getPracticeRows(locale: LocaleCode) {
+  if (locale !== "es") return practiceRows;
+
+  return [
+    ["Websites premium", "Sitios editoriales de alta confianza para marcas, estudios, productos, hospitality, advisory, cultura y profesionales creativos."],
+    ["Superficies interactivas de producto", "Interfaces que explican productos mediante prueba escenificada, media, motion y flujos de decision guiados."],
+    ["Sistemas front-end multilingues", "Capas EN / ES / UA / RU estructuradas para webs internacionales, sistemas de casos y superficies de producto."],
+    ["Prototipos inmersivos / XR", "Demos WebGL, WebXR, pruebas Quest, previews AR y sistemas de presentacion orientados al futuro."],
+    ["Direccion creative technology", "Concepto, arquitectura de interfaz, gramatica de motion, sistemas prototipo y entrega lista para produccion."],
+  ];
+}
+
+function getMobilePracticeBridgeRows(locale: LocaleCode) {
+  if (locale !== "es") return mobilePracticeBridgeRows;
+
+  return [
+    ["01", "Website premium", "Una interfaz de alta confianza con direccion editorial, prueba y claridad de conversion."],
+    ["02", "Superficie de producto", "Un producto, oferta o ruta advisory presentado como evidencia guiada."],
+    ["03", "Prototipo inmersivo", "Un prototipo espacial o cinematico para archivo, exhibicion o prueba de futuro."],
+  ];
+}
+
+function getStoryFrames(locale: LocaleCode): StoryFrame[] {
+  if (locale !== "es") return storyFrames;
+
+  return [
+    {
+      ...storyFrames[0],
+      eyebrow: "Escena 01 / atmosfera comercial",
+      title: "Los sitios de producto y advisory se vuelven superficies de decision.",
+      text:
+        "El trabajo comercial usa la misma gramatica cinematica: reveal controlado, prueba visual, rutas de consulta y estructura multilingue.",
+      media: storyFrames[0].media.map((asset, index) => ({
+        ...asset,
+        label: ["atmosfera boutique hotel", "ruta advisory", "detalle de objeto"][index] ?? asset.label,
+      })),
+    },
+    {
+      ...storyFrames[1],
+      eyebrow: "Escena 02 / mecanica de producto",
+      title: "Las herramientas muestran el sistema detras de la produccion.",
+      text:
+        "CreatorOps, Sprint CRM y Print Border Studio llevan el portfolio de muestra visual a logica de producto: publicacion, workflow, export, preparacion y presentacion para coleccionista.",
+      media: storyFrames[1].media.map((asset, index) => ({
+        ...asset,
+        label: ["sistema workflow creator", "preparacion museum print", "superficie CRM operador"][index] ?? asset.label,
+      })),
+    },
+    {
+      ...storyFrames[2],
+      eyebrow: "Escena 03 / campo de interfaz",
+      title: "El lenguaje visual se vuelve repetible entre contextos.",
+      text:
+        "ARCWAVE, AUREL EON GT, Casa Nube y el trabajo inmersivo prueban que la practica no es un solo estilo. Es una gramatica reutilizable de atmosfera, lenguaje, motion y estructura.",
+      media: storyFrames[2].media.map((asset, index) => ({
+        ...asset,
+        label: ["superficie senal ARCWAVE", "Aurel Eon GT", "ritmo hospitality"][index] ?? asset.label,
+      })),
+    },
+  ];
+}
 
 const whisperProofAssets: StoryMediaAsset[] = [
   {
@@ -1318,12 +1480,14 @@ function MobileSpatialStage({
   );
 }
 
-function MobileFormulaPanel({ compact = false }: { compact?: boolean }) {
+function MobileFormulaPanel({ compact = false, locale = "en" }: { compact?: boolean; locale?: LocaleCode }) {
+  const ui = getStudioHomeUi(locale);
+
   return (
     <div className="relative overflow-hidden border-y border-neutral-950/16 bg-white/[0.12] py-3.5 backdrop-blur-[2px]">
       <div aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-neutral-950/[0.045]" />
       <div className="relative flex items-center justify-between gap-4 px-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
-        <span>Core formula</span>
+        <span>{ui.formulaLabel}</span>
         <span className="flex items-center gap-2">
           <span className="font-mono text-[8px] tracking-[0.12em] text-neutral-300">{compact ? "03" : "05"}</span>
           <span className="h-1.5 w-1.5 rounded-full bg-neutral-950/80" />
@@ -1336,7 +1500,7 @@ function MobileFormulaPanel({ compact = false }: { compact?: boolean }) {
           compact ? "text-[8px] leading-none" : "text-[8px] leading-none",
         ].join(" ")}
       >
-        SIGNAL / STATE / ATMOS / REVEAL / MEMORY
+        {ui.formulaWords}
       </div>
     </div>
   );
@@ -1347,13 +1511,16 @@ function OpeningChapter({
   onSystems,
   onWork,
   onImmersive,
+  locale,
 }: {
   copy?: CorePageTranslation;
   onSystems: () => void;
   onWork: () => void;
   onImmersive: () => void;
+  locale: LocaleCode;
 }) {
   const sound = useSound();
+  const ui = getStudioHomeUi(locale);
   const systemsCta = copy ? "Explorar sistemas" : "Explore systems";
   const workCta = copy?.ctas?.[0] ?? "View work";
   const immersiveCta = copy?.ctas?.[1] ?? "Enter immersive";
@@ -1376,16 +1543,16 @@ function OpeningChapter({
       </div>
 
       <div className="absolute right-[clamp(5.5rem,7vw,10rem)] top-[43%] z-10 hidden w-[19rem] xl:block 2xl:right-[11vw] 2xl:w-[21rem]">
-        <LiveBuildSignal readiness={78} />
+        <LiveBuildSignal readiness={78} locale={locale} />
       </div>
 
       <div className="relative z-10 mx-auto grid min-h-[calc(100svh-7rem)] w-full content-center gap-8 py-10 lg:hidden">
         <div className="flex flex-wrap gap-2">
           <span className="rounded-full border border-neutral-300/70 bg-white/62 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
-            Studio Index
+            {ui.openingChips[0]}
           </span>
           <span className="rounded-full border border-neutral-300/70 bg-white/42 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
-            Living systems
+            {ui.openingChips[1]}
           </span>
         </div>
 
@@ -1429,7 +1596,7 @@ function OpeningChapter({
         </div>
 
         <div className="max-w-[24rem]">
-          <LiveBuildSignal readiness={78} compact />
+          <LiveBuildSignal readiness={78} compact locale={locale} />
         </div>
       </div>
 
@@ -1437,10 +1604,10 @@ function OpeningChapter({
         <div className="max-w-[56rem]">
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full border border-neutral-300/70 bg-white/56 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-              Studio Index
+              {ui.openingChips[0]}
             </span>
             <span className="rounded-full border border-neutral-300/70 bg-white/38 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-              Living systems
+              {ui.openingChips[1]}
             </span>
           </div>
 
@@ -1481,7 +1648,7 @@ function OpeningChapter({
           </div>
 
           <div className="mt-6 xl:hidden">
-            <LiveBuildSignal readiness={78} compact />
+            <LiveBuildSignal readiness={78} compact locale={locale} />
           </div>
         </div>
       </div>
@@ -1489,8 +1656,14 @@ function OpeningChapter({
   );
 }
 
-function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
+function SystemsChapter({ goTo, locale }: { goTo: (path: string) => void; locale: LocaleCode }) {
   const [proofModeIndex, setProofModeIndex] = useState(0);
+  const ui = getStudioHomeUi(locale);
+  const localizedProofSurfaceModes = getProofSurfaceModes(locale);
+  const localizedCoreSystems = getMobileCoreSystems(locale);
+  const localizedSupportingLayers = getMobileSupportingLayers(locale);
+  const localizedSystems = getStudioSystems(locale);
+  const isSpanish = locale === "es";
 
   return (
     <Chapter
@@ -1499,14 +1672,14 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
       className="relative overflow-x-clip overflow-y-visible lg:px-8 lg:py-24"
     >
       <MobileChapter
-        label="02 / Proof Surfaces"
-        heading="Proof surfaces, not portfolio tiles."
-        summary="The work opens through three proof modes: product atmosphere, advisory trust, and workflow logic."
+        label={isSpanish ? "02 / Superficies de prueba" : "02 / Proof Surfaces"}
+        heading={isSpanish ? "Superficies de prueba, no tiles de portfolio." : "Proof surfaces, not portfolio tiles."}
+        summary={isSpanish ? "El trabajo se abre en tres modos de prueba: atmosfera de producto, confianza advisory y logica workflow." : "The work opens through three proof modes: product atmosphere, advisory trust, and workflow logic."}
         className="relative z-10 pt-8 lg:hidden"
       >
         <div className="grid gap-4">
           <div className="border-y border-neutral-950/12 py-3">
-            {proofSurfaceModes.map(([index, title, text], modeIndex) => {
+            {localizedProofSurfaceModes.map(([index, title, text], modeIndex) => {
               const active = modeIndex === proofModeIndex;
 
               return (
@@ -1541,22 +1714,22 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
       </MobileChapter>
 
       <MobileChapter
-        label="03 / Systems Index"
-        heading="Systems, not cards."
-        summary="The work is organized as reusable interface systems. WHISPER is proof; the spine below is the operating language behind the site."
+        label={isSpanish ? "03 / Indice de sistemas" : "03 / Systems Index"}
+        heading={isSpanish ? "Sistemas, no tarjetas." : "Systems, not cards."}
+        summary={isSpanish ? "El trabajo se organiza como sistemas de interfaz reutilizables. WHISPER es la prueba; la columna inferior es el lenguaje operativo del sitio." : "The work is organized as reusable interface systems. WHISPER is proof; the spine below is the operating language behind the site."}
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-5">
           <div className="relative overflow-hidden border-y border-neutral-950/14 py-3" data-sound-safe-area>
             <div className="mb-3 flex items-center justify-between text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
-              <span>Operating ledger</span>
+              <span>{isSpanish ? "Ledger operativo" : "Operating ledger"}</span>
               <span className="font-mono">03 core / 01 layer</span>
             </div>
 
             <div className="relative">
               <div className="pointer-events-none absolute left-[2.15rem] top-2 h-[calc(100%-1rem)] w-px bg-gradient-to-b from-neutral-950/8 via-neutral-950/34 to-neutral-950/8" />
 
-              {mobileCoreSystems.map(([index, title, text, axis]) => (
+              {localizedCoreSystems.map(([index, title, text, axis]) => (
                 <div
                   key={title}
                   className="relative grid grid-cols-[3.25rem_1fr] gap-3 border-t border-neutral-950/10 py-3.5 first:border-t-0"
@@ -1575,7 +1748,7 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
               ))}
             </div>
 
-            {mobileSupportingLayers.map(([index, title, text]) => (
+            {localizedSupportingLayers.map(([index, title, text]) => (
               <div
                 key={title}
                 className="mt-3 grid grid-cols-[3.25rem_1fr] gap-3 border-t border-neutral-950/12 pt-3 text-neutral-500"
@@ -1589,7 +1762,7 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
             ))}
 
             <div className="mt-4 border-t border-neutral-950/10 pt-3 font-mono text-[9px] uppercase tracking-[0.13em] text-neutral-400">
-              Next proof reference: WHISPER / spatial exhibition.
+              {isSpanish ? "Siguiente referencia de prueba: WHISPER / exhibicion espacial." : "Next proof reference: WHISPER / spatial exhibition."}
             </div>
           </div>
         </div>
@@ -1598,19 +1771,20 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
       <div className="relative z-10 mx-auto hidden w-[min(94vw,1640px)] lg:block">
         <div className="grid gap-14 xl:grid-cols-[0.34fr_0.66fr] xl:items-start">
           <div className="xl:sticky xl:top-28">
-            <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface systems</div>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{isSpanish ? "Sistemas de interfaz" : "Interface systems"}</div>
             <h2 className="mt-5 max-w-[9.5ch] text-[58px] font-normal leading-[0.84] tracking-[-0.075em] sm:text-[90px] xl:text-[122px]">
-              Systems, not cards.
+              {isSpanish ? "Sistemas, no tarjetas." : "Systems, not cards."}
             </h2>
             <p className="mt-8 max-w-[35rem] text-[17px] leading-[1.85] text-neutral-600">
-              The work is organized as reusable interface systems: stage logic, presence fields,
-              spatial rooms, archive structures, multilingual layers, and commercial product surfaces.
+              {isSpanish
+                ? "El trabajo se organiza como sistemas de interfaz reutilizables: logica de stage, campos de presencia, salas espaciales, estructuras de archivo, capas multilingues y superficies comerciales de producto."
+                : "The work is organized as reusable interface systems: stage logic, presence fields, spatial rooms, archive structures, multilingual layers, and commercial product surfaces."}
             </p>
 
             <div className="mt-10 max-w-[30rem] border-y border-neutral-950/14 py-5">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">Core formula</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">{ui.formulaLabel}</div>
               <div className="mt-4 text-[25px] leading-tight tracking-[-0.05em] text-neutral-950">
-                signal -&gt; state -&gt; atmosphere -&gt; reveal -&gt; memory
+                {ui.formulaLine}
               </div>
               <FormulaSignalStrand className="mt-6 hidden h-[28rem] w-full xl:block 2xl:h-[34rem]" />
             </div>
@@ -1620,7 +1794,7 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
             <div className="absolute left-[18%] top-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-950/14 to-transparent" />
 
             <div className="grid gap-24">
-              {systems.map((system, index) => (
+              {localizedSystems.map((system, index) => (
                 <motion.article
                   key={system.title}
                   className="relative grid gap-8 border-t border-neutral-950/12 pt-9 md:grid-cols-[0.34fr_0.66fr] md:items-center"
@@ -1671,9 +1845,11 @@ function SystemsChapter({ goTo }: { goTo: (path: string) => void }) {
   );
 }
 
-function WhisperChapter({ onOpen }: { onOpen: () => void }) {
+function WhisperChapter({ onOpen, locale }: { onOpen: () => void; locale: LocaleCode }) {
   const target = useRef<HTMLElement | null>(null);
   const [whisperProofIndex, setWhisperProofIndex] = useState(0);
+  const ui = getStudioHomeUi(locale);
+  const isSpanish = locale === "es";
   const { scrollYProgress } = useScroll({ target, offset: ["start end", "end start"] });
   const progress = useSpring(scrollYProgress, { stiffness: 230, damping: 32, mass: 0.18 });
 
@@ -1697,9 +1873,9 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
   return (
     <section ref={target} id="whisper" data-header-scene="living-whisper" className="relative lg:min-h-[148vh]">
       <MobileChapter
-        label="04 / WHISPER Preview"
-        heading="First spatial proof."
-        summary="A cinematic Web / XR exhibition where photography becomes a collector experience across web, mobile, print, AR, and spatial interface."
+        label={isSpanish ? "04 / Preview WHISPER" : "04 / WHISPER Preview"}
+        heading={isSpanish ? "Primera prueba espacial." : "First spatial proof."}
+        summary={isSpanish ? "Una exhibicion cinematica Web / XR donde la fotografia se convierte en experiencia collector en web, mobile, print, AR e interfaz espacial." : "A cinematic Web / XR exhibition where photography becomes a collector experience across web, mobile, print, AR, and spatial interface."}
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-4">
@@ -1716,7 +1892,7 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
           />
 
           <button type="button" onClick={onOpen} className={mobilePrimaryCta} data-sound-safe-area>
-            Open immersive case -&gt;
+            {ui.openImmersiveCase}
           </button>
         </div>
       </MobileChapter>
@@ -1771,17 +1947,18 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
 
             <motion.div style={{ scale: titleScale, transformOrigin: titleOrigin }}>
               <h2 className="mt-7 max-w-[8ch] text-[72px] font-normal leading-[0.8] tracking-[-0.082em] sm:text-[104px] xl:text-[132px]">
-                First spatial proof.
+                {isSpanish ? "Primera prueba espacial." : "First spatial proof."}
               </h2>
             </motion.div>
 
             <motion.p className="mt-8 max-w-[37rem] text-[18px] leading-[1.82]" style={{ color: bodyColor }}>
-              A cinematic Web / XR exhibition where photography becomes an immersive collector experience
-              across website, mobile, print, AR, and spatial interface.
+              {isSpanish
+                ? "Una exhibicion cinematica Web / XR donde la fotografia se convierte en experiencia collector inmersiva entre web, mobile, print, AR e interfaz espacial."
+                : "A cinematic Web / XR exhibition where photography becomes an immersive collector experience across website, mobile, print, AR, and spatial interface."}
             </motion.p>
 
             <motion.div className="mt-8 grid grid-cols-2 gap-2" style={{ opacity: detailOpacity, y: detailY }}>
-              {["Web exhibition", "Mobile proof", "Quest capture", "Print logic"].map((item) => (
+              {ui.soundLabels.map((item) => (
                 <div
                   key={item}
                   className="rounded-full border border-current/24 bg-white/10 px-4 py-2 text-[10px] uppercase tracking-[0.14em] backdrop-blur"
@@ -1797,7 +1974,7 @@ function WhisperChapter({ onOpen }: { onOpen: () => void }) {
               className="mt-8 rounded-full border border-current bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
               style={{ opacity: detailOpacity, y: detailY }}
             >
-              Open immersive case -&gt;
+              {ui.openImmersiveCase}
             </motion.button>
           </motion.div>
         </div>
@@ -2119,8 +2296,11 @@ function SurfaceCaptionLegend({
   );
 }
 
-function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
+function AtlasChapter({ goTo, locale }: { goTo: (path: string) => void; locale: LocaleCode }) {
   const target = useRef<HTMLElement | null>(null);
+  const ui = getStudioHomeUi(locale);
+  const localizedStoryFrames = getStoryFrames(locale);
+  const isSpanish = locale === "es";
   const { scrollYProgress } = useScroll({ target, offset: ["start end", "end start"] });
   const progress = useSpring(scrollYProgress, { stiffness: 70, damping: 25, mass: 0.45 });
 
@@ -2143,13 +2323,14 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
     >
       <div className="relative mx-auto mb-0 hidden min-h-[68vh] w-[min(94vw,1640px)] items-center gap-12 overflow-hidden border-t border-neutral-950/12 py-10 lg:grid xl:grid-cols-[0.45fr_0.55fr]">
         <motion.div style={{ y: handoffY, opacity: handoffOpacity }}>
-          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Cinematic atlas</div>
+          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{isSpanish ? "Atlas cinematico" : "Cinematic atlas"}</div>
           <h2 className="mt-5 max-w-[10ch] text-[64px] font-normal leading-[0.82] tracking-[-0.08em] text-neutral-950 sm:text-[96px] xl:text-[132px]">
-            Immersive cases become connected proof.
+            {isSpanish ? "Los casos inmersivos se vuelven prueba conectada." : "Immersive cases become connected proof."}
           </h2>
           <p className="mt-8 max-w-[43rem] text-[17px] leading-[1.85] text-neutral-600">
-            This atlas gathers spatial studies, cinematic web environments, XR captures, archive surfaces,
-            and future immersive case covers into one visual field before the wider practice continues below.
+            {isSpanish
+              ? "Este atlas reune estudios espaciales, entornos web cinematicos, capturas XR, superficies de archivo y futuras cubiertas inmersivas en un campo visual antes de que la practica continue abajo."
+              : "This atlas gathers spatial studies, cinematic web environments, XR captures, archive surfaces, and future immersive case covers into one visual field before the wider practice continues below."}
           </p>
         </motion.div>
 
@@ -2173,7 +2354,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
           <SurfaceCaptionLegend assets={atlasIntroMedia} onOpen={goTo} />
 
           <div className="absolute right-[9%] bottom-[10%] rounded-full border border-neutral-950/10 bg-white/48 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
-            spatial proof index
+            {isSpanish ? "indice de prueba espacial" : "spatial proof index"}
           </div>
         </motion.div>
       </div>
@@ -2192,7 +2373,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
           style={{ x: driftA, y: driftB, rotate: driftC }}
         />
 
-        {storyFrames.map((frame) => (
+        {localizedStoryFrames.map((frame) => (
           <article
             key={frame.id}
             className="relative min-h-[calc(100vh-5rem)] border-t border-neutral-950/12 py-14 last:border-b"
@@ -2219,7 +2400,7 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
                     onClick={() => goTo(frame.route as string)}
                     className="mt-8 rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
                   >
-                    Open related proof -&gt;
+                    {ui.openRelatedProof}
                   </button>
                 )}
               </motion.div>
@@ -2247,8 +2428,11 @@ function AtlasChapter({ goTo }: { goTo: (path: string) => void }) {
   );
 }
 
-function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
-  const { targetRef, activeIndex } = useScrollActiveIndex(grammar.length);
+function GrammarChapter({ goTo, locale }: { goTo: (path: string) => void; locale: LocaleCode }) {
+  const ui = getStudioHomeUi(locale);
+  const localizedGrammar = getGrammar(locale);
+  const isSpanish = locale === "es";
+  const { targetRef, activeIndex } = useScrollActiveIndex(localizedGrammar.length);
 
   return (
     <Chapter
@@ -2257,17 +2441,17 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
       className="relative lg:min-h-screen lg:px-8 lg:py-24"
     >
       <MobileChapter
-        label="05 / Core Formula"
-        heading="The interface is treated as a living field."
-        summary="Motion is grammar: it marks state, attention, distance, memory, and transition."
+        label={isSpanish ? "05 / Formula central" : "05 / Core Formula"}
+        heading={isSpanish ? "La interfaz se trata como un campo vivo." : "The interface is treated as a living field."}
+        summary={isSpanish ? "El motion es gramatica: marca estado, atencion, distancia, memoria y transicion." : "Motion is grammar: it marks state, attention, distance, memory, and transition."}
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-5">
-          <MobileFormulaPanel />
+          <MobileFormulaPanel locale={locale} />
 
           <div className="relative border-y border-neutral-950/14 bg-white/[0.08] py-1" data-sound-safe-area>
             <div className="pointer-events-none absolute left-[2.1rem] top-3 h-[calc(100%-1.5rem)] w-px bg-gradient-to-b from-neutral-950/8 via-neutral-950/32 to-neutral-950/8" />
-            {grammar.map(([word, note], index) => (
+            {localizedGrammar.map(([word, note], index) => (
               <div
                 key={word}
                 className="relative grid grid-cols-[2.55rem_minmax(5.9rem,0.48fr)_1fr] items-center gap-2 border-b border-neutral-950/10 py-3 last:border-b-0"
@@ -2285,9 +2469,9 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
       </MobileChapter>
 
       <MobileChapter
-        label="06 / Reusable Grammar"
-        heading="Reusable visual grammar."
-        summary="ARCWAVE, AUREL EON GT, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."
+        label={isSpanish ? "06 / Gramatica reutilizable" : "06 / Reusable Grammar"}
+        heading={isSpanish ? "Gramatica visual reutilizable." : "Reusable visual grammar."}
+        summary={isSpanish ? "ARCWAVE, AUREL EON GT, Casa Nube y el trabajo inmersivo prueban una gramatica para atmosfera, lenguaje, motion y estructura." : "ARCWAVE, AUREL EON GT, Casa Nube, and immersive work prove one grammar for atmosphere, language, motion, and structure."}
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-4">
@@ -2298,33 +2482,34 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
             className={mobileSecondaryCta}
             data-sound-safe-area
           >
-            Open related proof -&gt;
+            {ui.openRelatedProof}
           </button>
         </div>
       </MobileChapter>
 
       <div className="mx-auto hidden min-h-[calc(100vh-12rem)] w-[min(94vw,1640px)] items-center gap-14 lg:grid xl:grid-cols-[0.48fr_0.52fr]">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Interface grammar</div>
+          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{isSpanish ? "Gramatica de interfaz" : "Interface grammar"}</div>
           <h2 className="mt-7 max-w-[9.5ch] text-[62px] font-normal leading-[0.82] tracking-[-0.078em] text-neutral-950 sm:text-[94px] xl:text-[126px]">
-            The interface is treated as a living field.
+            {isSpanish ? "La interfaz se trata como un campo vivo." : "The interface is treated as a living field."}
           </h2>
           <p className="mt-8 max-w-[38rem] text-[17px] leading-[1.85] text-neutral-600">
-            I treat interface as a habitat, not a layout. Motion is not decoration. It marks
-            state, attention, distance, memory, and transition.
+            {isSpanish
+              ? "Trato la interfaz como habitat, no como layout. El motion no es decoracion. Marca estado, atencion, distancia, memoria y transicion."
+              : "I treat interface as a habitat, not a layout. Motion is not decoration. It marks state, attention, distance, memory, and transition."}
           </p>
         </div>
 
         <div className="relative">
           <div className="mb-10 border-y border-neutral-950/14 py-8">
-            <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">Core formula</div>
+            <div className="text-[10px] uppercase tracking-[0.2em] text-neutral-400">{ui.formulaLabel}</div>
             <div className="mt-5 text-[42px] leading-tight tracking-[-0.07em] text-neutral-950 sm:text-[70px]">
-              signal -&gt; state -&gt; atmosphere -&gt; reveal -&gt; memory
+              {ui.formulaLine}
             </div>
           </div>
 
           <div ref={targetRef} className="grid">
-            {grammar.map(([word, note], index) => {
+            {localizedGrammar.map(([word, note], index) => {
               const active = activeIndex === index;
 
               return (
@@ -2364,11 +2549,17 @@ function GrammarChapter({ goTo }: { goTo: (path: string) => void }) {
 function PracticeChapter({
   onOpenProject,
   goTo,
+  locale,
 }: {
   onOpenProject?: () => void;
   goTo: (path: string) => void;
+  locale: LocaleCode;
 }) {
-  const { targetRef, activeIndex } = useScrollActiveIndex(practiceRows.length);
+  const ui = getStudioHomeUi(locale);
+  const localizedPracticeRows = getPracticeRows(locale);
+  const localizedMobilePracticeRows = getMobilePracticeBridgeRows(locale);
+  const isSpanish = locale === "es";
+  const { targetRef, activeIndex } = useScrollActiveIndex(localizedPracticeRows.length);
 
   return (
     <Chapter
@@ -2377,14 +2568,14 @@ function PracticeChapter({
       className="relative lg:min-h-screen lg:px-8 lg:py-24"
     >
       <MobileChapter
-        label="07 / Practice Model"
-        heading="Between delivery and research."
-        summary="The research becomes commercial work through three entry points. The full format list lives in Offer."
+        label={isSpanish ? "07 / Modelo de practica" : "07 / Practice Model"}
+        heading={isSpanish ? "Entre entrega e investigacion." : "Between delivery and research."}
+        summary={isSpanish ? "La investigacion se convierte en trabajo comercial por tres entradas. La lista completa vive en Oferta." : "The research becomes commercial work through three entry points. The full format list lives in Offer."}
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-4" data-sound-safe-area>
           <div className="border-y border-neutral-950/14 py-2">
-            {mobilePracticeBridgeRows.map(([index, title, text]) => (
+            {localizedMobilePracticeRows.map(([index, title, text]) => (
               <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
                 <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{index}</div>
                 <div>
@@ -2397,33 +2588,34 @@ function PracticeChapter({
 
           <div className="grid grid-cols-2 gap-2">
             <button type="button" onClick={() => goTo("/offer")} className={mobileSecondaryCta}>
-              Open Offer -&gt;
+              {ui.openOffer}
             </button>
             <button type="button" onClick={onOpenProject} className={mobilePrimaryCta}>
-              Start -&gt;
+              {ui.start}
             </button>
           </div>
 
           <div className="border-t border-neutral-950/10 pt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-400">
-            More formats continue on the Offer page.
+            {isSpanish ? "Mas formatos continuan en la pagina Oferta." : "More formats continue on the Offer page."}
           </div>
         </div>
       </MobileChapter>
 
       <div className="mx-auto hidden min-h-[calc(100vh-10rem)] w-[min(94vw,1640px)] gap-12 lg:grid xl:grid-cols-[0.42fr_0.58fr] xl:items-center">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Practice model</div>
+          <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{isSpanish ? "Modelo de practica" : "Practice model"}</div>
           <h2 className="mt-5 max-w-[10ch] text-[58px] font-normal leading-[0.84] tracking-[-0.075em] text-neutral-950 sm:text-[90px] xl:text-[126px]">
-            Between delivery and research.
+            {isSpanish ? "Entre entrega e investigacion." : "Between delivery and research."}
           </h2>
           <p className="mt-8 max-w-[40rem] text-[17px] leading-[1.85] text-neutral-600">
-            The same research that shapes immersive environments also improves product clarity,
-            storytelling, conversion flow, multilingual structure, and long-term interface quality.
+            {isSpanish
+              ? "La misma investigacion que da forma a entornos inmersivos tambien mejora claridad de producto, storytelling, flujo de conversion, estructura multilingue y calidad de interfaz a largo plazo."
+              : "The same research that shapes immersive environments also improves product clarity, storytelling, conversion flow, multilingual structure, and long-term interface quality."}
           </p>
         </div>
 
         <div ref={targetRef} className="border-y border-neutral-950/14">
-          {practiceRows.map(([title, text], index) => {
+          {localizedPracticeRows.map(([title, text], index) => {
             const active = activeIndex === index;
 
             return (
@@ -2469,13 +2661,14 @@ function PracticeChapter({
               viewport={{ once: false, amount: 0.36 }}
               transition={{ duration: 0.9, ease }}
             />
-            <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">Closing signal</div>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{isSpanish ? "Senal de cierre" : "Closing signal"}</div>
             <h2 className="mt-5 max-w-[14ch] text-[54px] font-normal leading-[0.84] tracking-[-0.075em] text-neutral-950 sm:text-[88px] xl:text-[120px]">
-              If your project needs more than a website, start with the system.
+              {isSpanish ? "Si tu proyecto necesita mas que una web, empieza por el sistema." : "If your project needs more than a website, start with the system."}
             </h2>
             <p className="mt-7 max-w-[46rem] text-[17px] leading-[1.85] text-neutral-600">
-              I work on projects where visual direction, technical architecture, interaction,
-              content, and atmosphere need to become one coherent digital environment.
+              {isSpanish
+                ? "Trabajo en proyectos donde direccion visual, arquitectura tecnica, interaccion, contenido y atmosfera deben convertirse en un entorno digital coherente."
+                : "I work on projects where visual direction, technical architecture, interaction, content, and atmosphere need to become one coherent digital environment."}
             </p>
           </div>
 
@@ -2484,7 +2677,7 @@ function PracticeChapter({
             onClick={onOpenProject}
             className="group relative overflow-hidden rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white shadow-[0_22px_64px_rgba(17,17,17,0.18)] transition hover:-translate-y-0.5 hover:bg-neutral-800"
           >
-            Start a project -&gt;
+            {isSpanish ? "Iniciar proyecto ->" : "Start a project ->"}
           </button>
         </div>
       </div>
@@ -2502,6 +2695,7 @@ export default function StudioIndex({
   const navigate = useNavigate();
   const { locale } = useI18n();
   const copy = locale === "es" ? spanishCorePageContent.home : undefined;
+  const ui = getStudioHomeUi(locale);
   const activeId = useActiveStudioSection();
   const whisperChromeActive = useStudioWhisperChromeActive();
   const routeContentReady = useDeferredRouteContent();
@@ -2552,10 +2746,10 @@ export default function StudioIndex({
       <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="living" />
         <SectionRail
-          items={studioRailItems}
+          items={ui.railItems}
           activeId={activeId}
           onSelect={scrollTo}
-          label="Studio Index sections"
+          label={ui.railLabel}
           tone={whisperChromeActive ? "dark" : "light"}
         />
 
@@ -2566,29 +2760,30 @@ export default function StudioIndex({
               onSystems={() => scrollTo("systems")}
               onWork={() => goTo("/work")}
               onImmersive={() => goTo("/immersive")}
+              locale={locale}
             />
           </MobileMotionSection>
 
           {routeContentReady ? (
             <>
               <MobileMotionSection variant="ledger" delay="soft">
-                <SystemsChapter goTo={goTo} />
+                <SystemsChapter goTo={goTo} locale={locale} />
               </MobileMotionSection>
 
               <MobileMotionSection variant="media" delay="soft">
-                <WhisperChapter onOpen={() => goTo("/immersive")} />
+                <WhisperChapter onOpen={() => goTo("/immersive")} locale={locale} />
               </MobileMotionSection>
 
               <MobileMotionSection variant="media" delay="soft">
-                <AtlasChapter goTo={goTo} />
+                <AtlasChapter goTo={goTo} locale={locale} />
               </MobileMotionSection>
 
               <MobileMotionSection variant="ledger" delay="soft">
-                <GrammarChapter goTo={goTo} />
+                <GrammarChapter goTo={goTo} locale={locale} />
               </MobileMotionSection>
 
               <MobileMotionSection variant="closing" delay="soft">
-                <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} />
+                <PracticeChapter onOpenProject={onOpenProject} goTo={goTo} locale={locale} />
               </MobileMotionSection>
             </>
           ) : (

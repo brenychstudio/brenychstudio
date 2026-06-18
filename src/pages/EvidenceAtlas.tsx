@@ -113,6 +113,69 @@ const evidenceRailItems: SectionRailItem[] = [
   { index: "03", label: "Capability", id: "evidence-capability" },
 ];
 
+function getEvidenceRailItems(locale: LocaleCode): SectionRailItem[] {
+  if (locale !== "es") return evidenceRailItems;
+
+  return [
+    { index: "01", label: "Atlas", id: "evidence-threshold" },
+    { index: "02", label: "Destacados", id: "evidence-featured" },
+    { index: "03", label: "Capacidad", id: "evidence-capability" },
+  ];
+}
+
+function getCapabilityLayer(locale: LocaleCode) {
+  if (locale !== "es") return capabilityLayer;
+
+  return [
+    {
+      label: "Superficies comerciales",
+      summary: "Webs premium y paginas orientadas a producto que hacen clara la oferta antes de que el usuario tenga que buscar.",
+    },
+    {
+      label: "Productos workflow",
+      summary: "Herramientas con estados reales, imports, exports, seleccion, logica y estructura para operador.",
+    },
+    {
+      label: "Sistemas multilingues",
+      summary: "Presentacion sensible al idioma para property, hospitality, servicios y entornos de producto.",
+    },
+    {
+      label: "Prueba cinematica",
+      summary: "Sistemas visuales donde motion, scroll, imagen y estructura de caso sostienen el argumento comercial.",
+    },
+    {
+      label: "Bases disponibles",
+      summary: "Sistemas de interfaz autorales que pueden adaptarse a encargos de cliente.",
+    },
+    {
+      label: "Sistemas interactivos",
+      summary: "Superficies de presentacion, flujos de producto e interfaces experimentales con logica real.",
+    },
+  ];
+}
+
+function getCapabilityProofMatrix(locale: LocaleCode) {
+  if (locale !== "es") return capabilityProofMatrix;
+
+  return [
+    {
+      index: "01",
+      label: "Prueba comercial",
+      summary: "Superficies comerciales / Sistemas multilingues",
+    },
+    {
+      index: "02",
+      label: "Prueba de producto",
+      summary: "Productos workflow / Sistemas interactivos",
+    },
+    {
+      index: "03",
+      label: "Prueba de sistema",
+      summary: "Prueba cinematica / Bases disponibles",
+    },
+  ];
+}
+
 function EvidenceAtlasMeta() {
   useEffect(() => {
     const previousTitle = document.title;
@@ -159,10 +222,25 @@ function getEvidenceUi(locale: LocaleCode) {
   const isSpanish = locale === "es";
 
   return {
+    railLabel: isSpanish ? "Secciones del atlas de casos" : "Living Case Atlas sections",
     viewCase: isSpanish ? "Ver caso ->" : "View case ->",
     adapt: isSpanish ? "Adaptar ->" : "Adapt ->",
     open: isSpanish ? "Abrir ->" : "Open ->",
     openVisualCase: isSpanish ? "Abrir caso visual ->" : "Open visual case ->",
+    switchArchiveView: isSpanish ? "Cambiar vista de archivo ->" : "Switch archive view ->",
+    livingCaseField: isSpanish ? "Campo de casos vivos" : "Living case field",
+    terminalSignal: isSpanish ? "Senal terminal" : "Terminal signal",
+    close: isSpanish ? "Cerrar ->" : "Close ->",
+    prev: isSpanish ? "Anterior" : "Prev",
+    next: isSpanish ? "Siguiente" : "Next",
+    openCase: isSpanish ? "Abrir caso ->" : "Open case ->",
+    focusedSystem: isSpanish ? "Sistema enfocado / doble click para entrar" : "Focused system / double click enters",
+    fieldStack: isSpanish ? "Deseo / sistemas / disponibilidad / prueba" : "Desire / systems / availability / proof",
+    selectedSignal: isSpanish ? "Senal seleccionada" : "Selected signal",
+    selectedSystem: isSpanish ? "Sistema seleccionado" : "Selected system",
+    depth: isSpanish ? "profundidad" : "depth",
+    imageLayer: isSpanish ? "capa de imagen" : "image layer",
+    signal: isSpanish ? "senal" : "signal",
     evidenceIndex: isSpanish ? "Indice de prueba / escaneo compacto" : "Evidence index / compact scan",
     proof: isSpanish ? "Prueba:" : "Proof:",
     transformedIndex: isSpanish ? "Indice transformado / escaneo visual" : "Transformed index / visual scan",
@@ -174,6 +252,34 @@ function getEvidenceUi(locale: LocaleCode) {
     spatial: isSpanish ? "Espacial" : "Spatial",
     index: isSpanish ? "Indice" : "Index",
     scan: isSpanish ? "Scan" : "Scan",
+    featuredSystems: isSpanish ? "Sistemas destacados" : "Featured Systems",
+    featuredTitle: isSpanish ? "Sistemas en movimiento dentro de un campo vivo." : "Systems moving through a living scroll field.",
+    featuredDescription: isSpanish
+      ? "Una superficie de lectura espacial: cada caso funciona como objeto autoral con imagen, caption, profundidad, prueba y senales de adaptacion."
+      : "A controlled spatial reading surface: each case behaves like an authored object with image, caption, depth, proof, and adaptation signals moving as one system.",
+    motionNote: isSpanish
+      ? "El motion sirve a la lectura espacial / los captions siguen como senales / la prueba queda inspeccionable."
+      : "Motion serves spatial reading / captions remain signals / proof stays inspectable.",
+    archiveLensCompactFilters: isSpanish ? "Lente de archivo / filtros compactos" : "Archive lens / compact filters",
+    featuredSystemsCount: isSpanish ? "sistemas destacados / campo visual" : "featured systems / visual field",
+    archiveRowsCount: isSpanish ? "filas de archivo / indice visual" : "archive rows / visual index",
+    availabilityDetails: isSpanish ? "Disponibilidad y detalles de adaptacion viven dentro de cada caso." : "Availability and adaptation details live inside each case.",
+    moreCases: isSpanish ? "Mas casos" : "More cases",
+    objects: isSpanish ? "objetos" : "objects",
+    extendedField: isSpanish ? "Campo extendido" : "Extended field",
+    moreCaseObjects: isSpanish ? "mas objetos de caso" : "more case objects",
+    archiveGrowth: isSpanish
+      ? "Cuando el archivo crece, esta superficie puede desplegar mas sistemas sin convertir la pagina en un catalogo pesado."
+      : "When the archive grows, this surface can unfold more systems without turning the page into a heavy catalogue.",
+    openExtendedField: isSpanish ? "Abrir campo extendido" : "Open extended field",
+    expandedArchiveField: isSpanish ? "Campo de archivo expandido" : "Expanded archive field",
+    filteredBy: isSpanish ? "filtrado por" : "filtered by",
+    closeField: isSpanish ? "Cerrar campo ->" : "Close field ->",
+    capabilityLayer: isSpanish ? "Capa de capacidad" : "Capability Layer",
+    capabilityTitle: isSpanish ? "Lo que prueba el archivo." : "What the archive proves.",
+    capabilityParagraph: isSpanish
+      ? "El archivo muestra como los sistemas visuales se convierten en superficies comerciales, herramientas, productos multilingues y bases adaptables."
+      : "The archive shows how visual systems become commercial surfaces, tools, multilingual products, and adaptable foundations.",
     activeFilterLabel: (filter: EvidenceFilter) =>
       isSpanish
         ? ({
@@ -191,46 +297,52 @@ function getEvidenceUi(locale: LocaleCode) {
   };
 }
 
-function getAvailabilityView(system: AvailableSystem): AvailabilityView {
+function getAvailabilityView(system: AvailableSystem, locale: LocaleCode = "en"): AvailabilityView {
+  const isSpanish = locale === "es";
+
   if (system.status === "available") {
     return {
-      label: "Available System",
-      shortLabel: "Ready to adapt",
+      label: isSpanish ? "Sistema disponible" : "Available System",
+      shortLabel: isSpanish ? "Listo para adaptar" : "Ready to adapt",
       tone: "text-neutral-950",
-      primaryCta: "Adapt this system",
+      primaryCta: isSpanish ? "Adaptar sistema" : "Adapt this system",
     };
   }
 
   if (system.status === "custom-only") {
     return {
-      label: "Custom Direction",
-      shortLabel: "Custom only",
+      label: isSpanish ? "Direccion custom" : "Custom Direction",
+      shortLabel: isSpanish ? "Solo custom" : "Custom only",
       tone: "text-neutral-600",
-      primaryCta: "Discuss similar direction",
+      primaryCta: isSpanish ? "Hablar direccion similar" : "Discuss similar direction",
     };
   }
 
   if (system.status === "concept-reference") {
     return {
-      label: "Concept Reference",
-      shortLabel: "Direction available",
+      label: isSpanish ? "Referencia conceptual" : "Concept Reference",
+      shortLabel: isSpanish ? "Direccion disponible" : "Direction available",
       tone: "text-neutral-600",
-      primaryCta: "Discuss similar direction",
+      primaryCta: isSpanish ? "Hablar direccion similar" : "Discuss similar direction",
     };
   }
 
   return {
-    label: "Case only",
-    shortLabel: "Case only",
+    label: isSpanish ? "Solo caso" : "Case only",
+    shortLabel: isSpanish ? "Solo caso" : "Case only",
     tone: "text-neutral-400",
-    primaryCta: "Open case",
+    primaryCta: isSpanish ? "Abrir caso" : "Open case",
   };
 }
 
-function getAvailabilityStatusLabel(system: AvailableSystem) {
-  if (system.status === "available") return "Ready to adapt";
-  if (system.status === "custom-only" || system.status === "concept-reference") return "Direction available";
-  return "Case only";
+function getAvailabilityStatusLabel(system: AvailableSystem, locale: LocaleCode = "en") {
+  const isSpanish = locale === "es";
+
+  if (system.status === "available") return isSpanish ? "Listo para adaptar" : "Ready to adapt";
+  if (system.status === "custom-only" || system.status === "concept-reference") {
+    return isSpanish ? "Direccion disponible" : "Direction available";
+  }
+  return isSpanish ? "Solo caso" : "Case only";
 }
 
 function getPreviewFrame(item: EvidenceCase) {
@@ -397,8 +509,8 @@ function FeaturedFlowItem({
   const reducedMotion = useReducedMotion();
   const visuals = getVisualFrames(item);
   const availability = getAvailableSystem(item.slug);
-  const availabilityView = getAvailabilityView(availability);
-  const availabilityStatusLabel = getAvailabilityStatusLabel(availability);
+  const availabilityView = getAvailabilityView(availability, locale);
+  const availabilityStatusLabel = getAvailabilityStatusLabel(availability, locale);
   const canRequest =
     availability.status === "available" ||
     availability.status === "custom-only" ||
@@ -473,13 +585,13 @@ function FeaturedFlowItem({
             {availabilityStatusLabel}
           </span>
           <span className="hidden border-y border-neutral-950/14 bg-[#f8f6f0]/76 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm xl:inline-flex">
-            {selected ? "Selected system" : availabilityView.shortLabel}
+            {selected ? ui.selectedSystem : availabilityView.shortLabel}
           </span>
           <span className="border-y border-neutral-950/12 bg-[#f8f6f0]/66 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur-sm">
             {item.evidence.workType}
           </span>
           <span className="border-y border-neutral-950/12 bg-[#f8f6f0]/66 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-400 backdrop-blur-sm">
-            depth {depth}
+            {ui.depth} {depth}
           </span>
         </div>
 
@@ -518,7 +630,7 @@ function FeaturedFlowItem({
             <span className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.035),rgba(0,0,0,0)_46%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.26))]" />
             <span className="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/66">{getCaseCode(item, index)}</span>
             <span className="absolute bottom-4 left-4 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
-              image layer / depth {depth}
+              {ui.imageLayer} / {ui.depth} {depth}
             </span>
           </motion.span>
 
@@ -532,7 +644,7 @@ function FeaturedFlowItem({
                 style={reducedMotion ? undefined : { x: motionStyle.x, y: motionStyle.y, scale: motionStyle.scale, rotate: fragmentRotations[visualIndex] ?? 0 }}
               >
                 <img src={visual} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(item)}`} />
-                <span className="absolute bottom-2 left-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/70">signal {visualIndex + 1}</span>
+                <span className="absolute bottom-2 left-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/70">{ui.signal} {visualIndex + 1}</span>
               </motion.span>
             );
           })}
@@ -652,7 +764,7 @@ function WorkIndexTransformList({
         <div className="relative">
           {items.map((item, index) => {
             const availability = getAvailableSystem(item.slug);
-            const availabilityView = getAvailabilityView(availability);
+            const availabilityView = getAvailabilityView(availability, locale);
 
             return (
               <motion.article
@@ -716,7 +828,7 @@ function WorkIndexTransformList({
       <div className="relative">
         {items.map((item, index) => {
           const availability = getAvailableSystem(item.slug);
-          const availabilityView = getAvailabilityView(availability);
+          const availabilityView = getAvailabilityView(availability, locale);
           const canRequest =
             availability.status === "available" ||
             availability.status === "custom-only" ||
@@ -829,6 +941,9 @@ export default function EvidenceAtlas({
   const routeContentReady = useDeferredRouteContent();
   const copy = locale === "es" ? spanishCorePageContent.work : null;
   const ui = getEvidenceUi(locale);
+  const railItems = getEvidenceRailItems(locale);
+  const localizedCapabilityLayer = getCapabilityLayer(locale);
+  const localizedCapabilityProofMatrix = getCapabilityProofMatrix(locale);
   const evidenceCases = useMemo(() => getEvidenceCases(locale), [locale]);
   const featuredCases = useMemo(() => getFeaturedCases(evidenceCases), [evidenceCases]);
   const initialFeaturedCases = useMemo(() => featuredCases.slice(0, featuredInitialCaseCount), [featuredCases]);
@@ -845,7 +960,7 @@ export default function EvidenceAtlas({
   const [archiveViewMode, setArchiveViewMode] = useState<ArchiveViewMode>("field");
   const [archiveExpanded, setArchiveExpanded] = useState(false);
   const [focusedHeroSlug, setFocusedHeroSlug] = useState<string | null>(null);
-  const activeSectionId = useSectionRailActive(evidenceRailItems);
+  const activeSectionId = useSectionRailActive(railItems);
 
   useEffect(() => {
     setScene("evidence");
@@ -1047,7 +1162,7 @@ export default function EvidenceAtlas({
 
       <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
         <AtmosphericSiteShell preset="evidence" />
-        <SectionRail items={evidenceRailItems} activeId={activeSectionId} onSelect={scrollToRailSection} label="Living Case Atlas sections" />
+        <SectionRail items={railItems} activeId={activeSectionId} onSelect={scrollToRailSection} label={ui.railLabel} />
 
         <main className="relative pt-24" style={surfaceStyle}>
           <MobileMotionSection as="section" variant="threshold" id="evidence-threshold" data-header-scene="evidence-threshold" data-sound-safe-area className="relative z-10 mx-auto w-[min(94vw,1640px)] py-7 pb-9 lg:min-h-[calc(100vh-6rem)] lg:py-12">
@@ -1076,7 +1191,7 @@ export default function EvidenceAtlas({
                     {copy?.labels?.archiveLens ?? "View archive lens"} -&gt;
                   </a>
                   <a className="hidden min-h-10 items-center rounded-full border border-neutral-300 bg-white/60 px-5 text-[11px] uppercase tracking-[0.14em] text-neutral-700 transition hover:-translate-y-0.5 hover:bg-white sm:inline-flex" href="#work-lens">
-                    Switch archive view -&gt;
+                    {ui.switchArchiveView}
                   </a>
                 </div>
               </div>
@@ -1085,8 +1200,8 @@ export default function EvidenceAtlas({
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,var(--evidence-glow),transparent_38%),linear-gradient(135deg,var(--evidence-wash),transparent_58%)] opacity-70" />
                 <div className="pointer-events-none absolute inset-0 opacity-[0.055] [background-image:linear-gradient(to_right,#0a0a0a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a0a_1px,transparent_1px)] [background-size:64px_64px]" />
                 <div className="relative grid min-h-12 grid-cols-[1fr_auto] items-center gap-4 border-b border-neutral-950/12 px-4">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Living case field</div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(heroFragments.length).padStart(2, "0")} systems</div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">{ui.livingCaseField}</div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(heroFragments.length).padStart(2, "0")} {ui.systems}</div>
                 </div>
 
                 <div className="relative min-h-[430px] sm:min-h-[520px] xl:h-[calc(100%-3rem)] xl:min-h-[610px]">
@@ -1128,7 +1243,7 @@ export default function EvidenceAtlas({
                           {String(index + 1).padStart(2, "0")}
                         </div>
                         <div className="absolute inset-x-3 bottom-3 hidden xl:block">
-                          <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/62">{String(index + 1).padStart(2, "0")} / {getAvailableSystem(item.slug).shortLabel}</div>
+                          <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-white/62">{String(index + 1).padStart(2, "0")} / {getAvailabilityView(getAvailableSystem(item.slug), locale).shortLabel}</div>
                           <div className="mt-1 truncate text-[20px] leading-none tracking-[-0.04em] text-white sm:text-[28px]">{item.title}</div>
                         </div>
                       </motion.button>
@@ -1171,7 +1286,7 @@ export default function EvidenceAtlas({
                               setFocusedHeroSlug(null);
                             }}
                           >
-                            Close -&gt;
+                            {ui.close}
                           </button>
                           <motion.button
                             type="button"
@@ -1194,7 +1309,7 @@ export default function EvidenceAtlas({
                             exit={{ opacity: 0, y: 10, clipPath: "inset(0 100% 0 0)" }}
                             transition={{ duration: 0.62, delay: 0.14, ease }}
                           >
-                            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">Terminal signal</div>
+                            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">{ui.terminalSignal}</div>
                             <div className="mt-2 text-[24px] leading-none tracking-[-0.04em] text-neutral-950">
                               {focusedHeroCase.title}
                             </div>
@@ -1203,13 +1318,13 @@ export default function EvidenceAtlas({
                             </p>
                             <div className="mt-3 flex flex-wrap gap-2">
                               <button type="button" onClick={() => moveFocusedHero(-1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
-                                Prev
+                                {ui.prev}
                               </button>
                               <button type="button" onClick={() => moveFocusedHero(1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
-                                Next
+                                {ui.next}
                               </button>
                               <button type="button" onClick={() => openCase(focusedHeroCase)} className="rounded-full border border-neutral-950 bg-neutral-950 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
-                                Open case -&gt;
+                                {ui.openCase}
                               </button>
                             </div>
                           </motion.div>
@@ -1228,7 +1343,7 @@ export default function EvidenceAtlas({
                           <img src={getPreviewFrame(focusedHeroCase)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`} />
                           <span className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.3))] xl:block" />
                           <span className="absolute left-5 top-5 hidden font-mono text-[10px] uppercase tracking-[0.18em] text-white/62 xl:block">
-                            Focused system / double click enters
+                            {ui.focusedSystem}
                           </span>
                           <span className="absolute bottom-5 left-5 hidden max-w-[13ch] text-[42px] leading-[0.88] tracking-[-0.055em] text-white drop-shadow-[0_8px_34px_rgba(0,0,0,0.42)] sm:text-[64px] xl:block">
                             {focusedHeroCase.title}
@@ -1244,7 +1359,7 @@ export default function EvidenceAtlas({
                         >
                           <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
                             <div>
-                              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">Terminal signal</div>
+                              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400">{ui.terminalSignal}</div>
                               <div className="mt-2 text-[24px] leading-none tracking-[-0.04em] text-neutral-950 xl:hidden">
                                 {focusedHeroCase.title}
                               </div>
@@ -1254,13 +1369,13 @@ export default function EvidenceAtlas({
                             </div>
                             <div className="flex flex-wrap gap-2">
                               <button type="button" onClick={() => moveFocusedHero(-1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
-                                Prev
+                                {ui.prev}
                               </button>
                               <button type="button" onClick={() => moveFocusedHero(1)} className="border-y border-neutral-950/14 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950">
-                                Next
+                                {ui.next}
                               </button>
                               <button type="button" onClick={() => openCase(focusedHeroCase)} className="rounded-full border border-neutral-950 bg-neutral-950 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800">
-                                Open case -&gt;
+                                {ui.openCase}
                               </button>
                             </div>
                           </div>
@@ -1270,13 +1385,13 @@ export default function EvidenceAtlas({
                   </AnimatePresence>
 
                   <div className="absolute left-4 top-16 z-40 hidden max-w-[15rem] border-y border-neutral-950/12 bg-[#f8f6f0]/72 px-3 py-2 font-mono text-[9px] uppercase leading-4 tracking-[0.16em] text-neutral-500 backdrop-blur-sm sm:block">
-                    Desire / systems / availability / proof
+                    {ui.fieldStack}
                   </div>
                 </div>
                 {!focusedHeroCase ? (
                   <div className="relative border-t border-neutral-950/10 bg-[#f8f6f0]/70 px-4 py-3 xl:hidden">
                     <div className="font-mono text-[8px] uppercase leading-4 tracking-[0.16em] text-neutral-400">
-                      Selected signal / {String(activeHeroIndex + 1).padStart(2, "0")} / {getAvailableSystem(activeHeroCase.slug).shortLabel}
+                      {ui.selectedSignal} / {String(activeHeroIndex + 1).padStart(2, "0")} / {getAvailabilityView(getAvailableSystem(activeHeroCase.slug), locale).shortLabel}
                     </div>
                     <div className="mt-1 truncate text-[24px] leading-none tracking-[-0.04em] text-neutral-950">
                       {activeHeroCase.title}
@@ -1293,12 +1408,12 @@ export default function EvidenceAtlas({
             <div className="grid gap-10 lg:grid-cols-[minmax(260px,410px)_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <SectionIntro
-                  label="Featured Systems"
-                  title="Systems moving through a living scroll field."
-                  description="A controlled spatial reading surface: each case behaves like an authored object with image, caption, depth, proof, and adaptation signals moving as one system."
+                  label={ui.featuredSystems}
+                  title={ui.featuredTitle}
+                  description={ui.featuredDescription}
                 />
                 <div className="mt-8 hidden border-y border-neutral-950/12 py-4 font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400 lg:block">
-                  Motion serves spatial reading / captions remain signals / proof stays inspectable.
+                  {ui.motionNote}
                 </div>
               </div>
 
@@ -1319,11 +1434,11 @@ export default function EvidenceAtlas({
                 <div id="work-lens" className="mt-5 overflow-hidden border-y border-neutral-950/12 bg-white/22 backdrop-blur-sm sm:mt-6">
                   <div className="grid gap-2 border-b border-neutral-950/10 px-3 py-2 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-3">
                     <div>
-                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Archive lens / compact filters</div>
+                      <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">{ui.archiveLensCompactFilters}</div>
                       <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-neutral-300">
                         {archiveViewMode === "field"
-                          ? `${String(fieldVisibleCount).padStart(2, "0")} featured systems / visual field`
-                          : `${String(archiveVisibleCases.length).padStart(2, "0")} archive rows / visual index`}
+                          ? `${String(fieldVisibleCount).padStart(2, "0")} ${ui.featuredSystemsCount}`
+                          : `${String(archiveVisibleCases.length).padStart(2, "0")} ${ui.archiveRowsCount}`}
                       </div>
                     </div>
                     <ArchiveViewToggle mode={archiveViewMode} onChange={changeArchiveViewMode} locale={locale} />
@@ -1340,7 +1455,7 @@ export default function EvidenceAtlas({
                       ))}
                     </div>
                     <div className="border-y border-neutral-950/10 bg-[#f8f6f0]/62 px-3 py-2 font-mono text-[8px] uppercase leading-4 tracking-[0.13em] text-neutral-400 sm:py-3 sm:text-[9px] sm:leading-5 sm:tracking-[0.15em]">
-                      Availability and adaptation details live inside each case.
+                      {ui.availabilityDetails}
                     </div>
                   </div>
                 </div>
@@ -1416,12 +1531,11 @@ export default function EvidenceAtlas({
                   <div className="hidden lg:block" />
                   <div className="max-w-[28rem] lg:justify-self-end" data-sound-safe-area>
                     <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-neutral-400">
-                      <span className="xl:hidden">More cases / {String(filteredMobileExtendedCases.length).padStart(2, "0")} objects</span>
-                      <span className="hidden xl:inline">Extended field / {String(filteredExpandedCases.length).padStart(2, "0")} more case objects</span>
+                      <span className="xl:hidden">{ui.moreCases} / {String(filteredMobileExtendedCases.length).padStart(2, "0")} {ui.objects}</span>
+                      <span className="hidden xl:inline">{ui.extendedField} / {String(filteredExpandedCases.length).padStart(2, "0")} {ui.moreCaseObjects}</span>
                     </div>
                     <p className="mt-3 hidden text-[14px] leading-7 text-neutral-600 xl:block">
-                      When the archive grows, this surface can unfold more systems without turning the page into a heavy
-                      catalogue.
+                      {ui.archiveGrowth}
                     </p>
                     <button
                       type="button"
@@ -1429,8 +1543,8 @@ export default function EvidenceAtlas({
                       disabled={filteredMobileExtendedCases.length === 0 && filteredExpandedCases.length === 0}
                       className="mt-4 inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800 disabled:pointer-events-none disabled:border-neutral-300 disabled:bg-white/50 disabled:text-neutral-300 xl:mt-5"
                     >
-                      <span className="xl:hidden">More cases -&gt;</span>
-                      <span className="hidden xl:inline">{copy?.labels?.openExtendedField ?? "Open extended field"} -&gt;</span>
+                      <span className="xl:hidden">{ui.moreCases} -&gt;</span>
+                      <span className="hidden xl:inline">{copy?.labels?.openExtendedField ?? ui.openExtendedField} -&gt;</span>
                     </button>
                   </div>
                 </div>
@@ -1448,7 +1562,7 @@ export default function EvidenceAtlas({
                     >
                       <div className="mx-auto mb-10 grid max-w-[1480px] gap-3 px-4 lg:grid-cols-[1fr_auto] lg:items-center xl:max-w-none">
                         <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
-                          Expanded archive field / filtered by {activeFilter}
+                          {ui.expandedArchiveField} / {ui.filteredBy} {ui.activeFilterLabel(activeFilter)}
                         </div>
                         <button
                           type="button"
@@ -1458,8 +1572,8 @@ export default function EvidenceAtlas({
                           }}
                           className="justify-self-start border-y border-neutral-950/14 px-2 py-2 text-[10px] uppercase tracking-[0.14em] text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950 lg:justify-self-end"
                         >
-                          <span className="xl:hidden">Close -&gt;</span>
-                          <span className="hidden xl:inline">Close field -&gt;</span>
+                          <span className="xl:hidden">{ui.close}</span>
+                          <span className="hidden xl:inline">{ui.closeField}</span>
                         </button>
                       </div>
 
@@ -1514,9 +1628,9 @@ export default function EvidenceAtlas({
           </MobileMotionSection>
 
           <MobileMotionSection as="section" variant="ledger" delay="soft" id="evidence-capability" data-header-scene="evidence-capability" data-sound-safe-area className="relative z-10 mx-auto grid w-[min(94vw,1640px)] gap-10 py-16 lg:py-24 xl:grid-cols-[0.34fr_0.66fr]">
-            <SectionIntro label="Capability Layer" title="What the archive proves." />
+            <SectionIntro label={ui.capabilityLayer} title={ui.capabilityTitle} />
             <div className="border-y border-neutral-950/14 bg-white/16 backdrop-blur-sm xl:hidden">
-              {capabilityProofMatrix.map((capability) => (
+              {localizedCapabilityProofMatrix.map((capability) => (
                 <div key={capability.index} data-capability-proof-row className="grid grid-cols-[2.6rem_minmax(0,1fr)] gap-3 border-b border-neutral-950/10 px-3 py-5 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)] sm:px-5 sm:py-6">
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{capability.index}</div>
                   <div>
@@ -1530,11 +1644,11 @@ export default function EvidenceAtlas({
                 </div>
               ))}
               <p className="border-t border-neutral-950/10 px-3 py-4 text-[13px] leading-6 text-neutral-600 sm:px-5 sm:text-[14px] sm:leading-7">
-                The archive shows how visual systems become commercial surfaces, tools, multilingual products, and adaptable foundations.
+                {ui.capabilityParagraph}
               </p>
             </div>
             <div className="hidden gap-0 border-y border-neutral-950/14 xl:grid xl:grid-cols-3">
-              {capabilityLayer.map((capability, index) => (
+              {localizedCapabilityLayer.map((capability, index) => (
                 <div key={capability.label} className="border-b border-neutral-950/10 p-6 md:border-r md:even:border-r-0 xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-child(even)]:border-r">
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">{String(index + 1).padStart(2, "0")}</div>
                   <div className="mt-5 text-[30px] leading-none tracking-[-0.04em] text-neutral-950">{capability.label}</div>

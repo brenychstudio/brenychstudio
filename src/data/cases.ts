@@ -99,6 +99,10 @@ export type CaseRegistryFields = {
   clientType?: string;
   stack?: string[];
   searchContent?: CaseSearchContent;
+  seoTitle?: string;
+  seoDescription?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   translations?: {
     es?: CaseRegistryTranslation;
   };

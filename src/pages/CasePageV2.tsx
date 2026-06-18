@@ -510,12 +510,13 @@ function CaseMeta({
     story?.mediaSequence.find((item) => item.kind !== "video" && item.role === "hero") ??
     story?.mediaSequence.find((item) => item.kind !== "video") ??
     null;
-  const caseTitle = registryCase
+  const caseTitle = registryCase?.seoTitle ?? (registryCase
     ? `${registryCase.title} - ${registryCase.category} | Brenych Studio`
     : story
       ? `${story.headline} - Case System | Brenych Studio`
-      : "Case System | Brenych Studio";
+      : "Case System | Brenych Studio");
   const caseDescription =
+    registryCase?.seoDescription ??
     registryCase?.shortDescription ??
     story?.summary ??
     "Case system story from Brenych Studio: premium interface, proof-led media, and production-ready front-end structure.";

@@ -43,7 +43,25 @@ export function localizeCaseStory(story: CaseStory, locale: LocaleCode): CaseSto
   const mediaSequence = story.mediaSequence.map((media) => {
     const mediaTranslation = translation.mediaSequence.find((item) => item.id === media.id);
 
-    return mediaTranslation ? ({ ...media, ...mediaTranslation } satisfies CaseStoryMedia) : media;
+    if (mediaTranslation) return { ...media, ...mediaTranslation } satisfies CaseStoryMedia;
+
+    const roleLabel =
+      media.role === "hero"
+        ? "Umbral"
+        : media.role === "mobile"
+          ? "Pantalla movil"
+          : media.role === "proof"
+            ? "Prueba visual"
+            : media.role === "detail"
+              ? "Detalle"
+              : "Flujo";
+
+    return {
+      ...media,
+      alt: `${translation.headline} - ${roleLabel}`,
+      label: roleLabel,
+      caption: translation.summary,
+    } satisfies CaseStoryMedia;
   });
 
   return {

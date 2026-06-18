@@ -689,8 +689,8 @@ export default function SiteFooterV2({
 
       <div className="relative mx-auto w-[min(92vw,1640px)] py-10 sm:py-12 lg:w-[min(94vw,1640px)] lg:py-14">
         {!hideClosingSignal ? (
-          <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-[minmax(0,0.6fr)_minmax(25rem,34rem)] lg:items-end">
-            <div>
+          <div className="grid gap-8 border-b border-neutral-950/[0.08] pb-9 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-5">
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-neutral-500">
                 <span>{footerLabels.closingSignal}</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
@@ -700,7 +700,7 @@ export default function SiteFooterV2({
               </h2>
             </div>
 
-            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:ml-32 lg:w-full lg:max-w-[34rem] xl:ml-40">
+            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:col-span-4 lg:col-start-8 lg:w-full lg:max-w-none xl:ml-12">
               <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                 <div className="flex items-center justify-between gap-5">
                   <span>{footerLabels.studioSignal}</span>

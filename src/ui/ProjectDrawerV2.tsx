@@ -45,9 +45,50 @@ type SignalOption = {
   helper: string;
 };
 
+type DrawerLocaleCopy = {
+  directions: DirectionOption[];
+  signals: SignalOption[];
+  mobileDirectionLabels: Partial<Record<ProjectDirection, string>>;
+  mobileSignalLabels: Partial<Record<ProjectSignal, string>>;
+  desktopDirectionLabels: Partial<Record<ProjectDirection, string>>;
+  projectSignal: string;
+  mobileIntro: string;
+  desktopIntro: string;
+  whatBuilding: string;
+  currentNeed: string;
+  shortNote: string;
+  projectNote: string;
+  routePreview: string;
+  live: string;
+  signalIntake: string;
+  directionNeed: string;
+  response: string;
+  nextFormatRoute: string;
+  submit: string;
+  emailDirectly: string;
+  copyEmail: string;
+  copied: string;
+  emailCopied: string;
+  mobileNotePlaceholder: string;
+  namePlaceholder: string;
+  optionalNamePlaceholder: string;
+  emailPlaceholder: string;
+  projectNotePlaceholder: string;
+  availableSystemPlaceholder: string;
+  mailSubject: string;
+  mailHeading: string;
+  mailDirection: string;
+  mailFirstFormat: string;
+  mailCurrentNeed: string;
+  mailNameCompany: string;
+  mailEmail: string;
+  mailProjectNote: string;
+  mailSentFrom: string;
+};
+
 const CONTACT_EMAIL = "info@brenych.com";
 
-const projectDirections: DirectionOption[] = [
+const englishProjectDirections: DirectionOption[] = [
   {
     value: "available-system",
     label: "Adapt an available system",
@@ -114,7 +155,7 @@ const projectDirections: DirectionOption[] = [
   },
 ];
 
-const projectSignals: SignalOption[] = [
+const englishProjectSignals: SignalOption[] = [
   {
     value: "specific-case",
     label: "I like a specific case",
@@ -174,7 +215,7 @@ const mobileSignalOptions: ProjectSignal[] = [
   "not-sure",
 ];
 
-const mobileDirectionLabels: Partial<Record<ProjectDirection, string>> = {
+const englishMobileDirectionLabels: Partial<Record<ProjectDirection, string>> = {
   "available-system": "Adapt system",
   "premium-website": "Website",
   "product-surface": "Product",
@@ -183,7 +224,7 @@ const mobileDirectionLabels: Partial<Record<ProjectDirection, string>> = {
   "not-sure": "Not sure",
 };
 
-const mobileSignalLabels: Partial<Record<ProjectSignal, string>> = {
+const englishMobileSignalLabels: Partial<Record<ProjectSignal, string>> = {
   "new-launch": "New launch",
   "existing-offer": "Improve",
   "product-demo": "Demo",
@@ -191,7 +232,7 @@ const mobileSignalLabels: Partial<Record<ProjectSignal, string>> = {
   "not-sure": "Not sure",
 };
 
-const desktopDirectionLabels: Partial<Record<ProjectDirection, string>> = {
+const englishDesktopDirectionLabels: Partial<Record<ProjectDirection, string>> = {
   "available-system": "Adapt system",
   "premium-website": "Website",
   "product-surface": "Product surface",
@@ -199,6 +240,223 @@ const desktopDirectionLabels: Partial<Record<ProjectDirection, string>> = {
   "immersive-prototype": "Immersive",
   "creative-technology": "Creative tech",
   "not-sure": "Not sure",
+};
+
+const spanishProjectDirections: DirectionOption[] = [
+  {
+    value: "available-system",
+    label: "Adaptar un sistema disponible",
+    helper: "Adaptación comisionada desde una base del estudio",
+    readout:
+      "Partimos de un concepto autoral de Brenych Studio y lo adaptamos como sistema de producción para cliente.",
+    firstFormat: "Adaptación de sistema disponible",
+    nextStep: "Envía el caso que te interesa, contexto de marca, mercado, estado del contenido y calendario.",
+    tags: ["Base", "Adaptación", "Comisión"],
+  },
+  {
+    value: "premium-website",
+    label: "Sitio premium",
+    helper: "Superficie editorial / comercial de alta confianza",
+    readout: "Una superficie comercial precisa, con oferta, confianza y lógica de conversión.",
+    firstFormat: "Sistema landing o micro-sitio premium",
+    nextStep: "Envía la oferta, audiencia, página actual y fecha objetivo de lanzamiento.",
+    tags: ["Oferta", "Confianza", "Launch"],
+  },
+  {
+    value: "product-surface",
+    label: "Superficie de producto",
+    helper: "Interfaz de producto, servicio o demo",
+    readout: "Una capa de producto que vuelve más claro un servicio, demo, workflow o idea.",
+    firstFormat: "Superficie de producto o interfaz demo",
+    nextStep: "Envía el contexto del producto, acción principal del usuario y qué debe quedar probado.",
+    tags: ["Producto", "Demo", "UX"],
+  },
+  {
+    value: "multilingual-system",
+    label: "Sistema multilingüe",
+    helper: "Capa de presentación internacional",
+    readout: "Una superficie estructurada para marcas, ofertas o contenido que debe funcionar en varios idiomas.",
+    firstFormat: "Arquitectura de sitio multilingüe",
+    nextStep: "Envía idiomas, páginas principales, estado del contenido y prioridades regionales.",
+    tags: ["Idioma", "Estructura", "Escala"],
+  },
+  {
+    value: "immersive-prototype",
+    label: "Prototipo inmersivo",
+    helper: "Prueba interactiva / espacial / experimental",
+    readout: "Un prototipo cinematográfico, espacial o guiado por interacción para presentación, atmósfera y prueba.",
+    firstFormat: "Prototipo inmersivo o superficie motion",
+    nextStep: "Envía el mundo, material de referencia, idea de interacción y audiencia prevista.",
+    tags: ["Motion", "Espacial", "Prueba"],
+  },
+  {
+    value: "creative-technology",
+    label: "Dirección creative tech",
+    helper: "Estrategia de concepto, sistema o prototipo",
+    readout: "Una dirección técnica y visual para web, motion, espacial o trabajo generativo no convencional.",
+    firstFormat: "Ruta de creative technology",
+    nextStep: "Envía concepto, límites, referencias y qué debe aclarar el primer prototipo.",
+    tags: ["Concepto", "Sistema", "Prototipo"],
+  },
+  {
+    value: "not-sure",
+    label: "Aún no lo sé",
+    helper: "Te ayudo a definir la ruta",
+    readout: "Una nota breve basta. La primera respuesta puede definir la ruta más limpia antes del alcance.",
+    firstFormat: "Definición de ruta antes del alcance",
+    nextStep: "Envía una nota breve sobre oferta, producto, audiencia, calendario o reto actual.",
+    tags: ["Abierto", "Alcance", "Señal"],
+  },
+];
+
+const spanishProjectSignals: SignalOption[] = [
+  {
+    value: "specific-case",
+    label: "Me interesa un caso concreto",
+    helper: "Adaptación desde una dirección de sistema seleccionada.",
+  },
+  {
+    value: "new-launch",
+    label: "Nuevo lanzamiento",
+    helper: "Preparar la primera superficie publica.",
+  },
+  {
+    value: "existing-offer",
+    label: "Oferta existente",
+    helper: "Hacer una oferta mas clara o mas premium.",
+  },
+  {
+    value: "product-demo",
+    label: "Demo de producto",
+    helper: "Explicar, mostrar o vender una experiencia de producto.",
+  },
+  {
+    value: "portfolio-brand",
+    label: "Marca personal / portfolio",
+    helper: "Una presencia personal, experta o de estudio con más confianza.",
+  },
+  {
+    value: "culture-archive-exhibition",
+    label: "Cultura / archivo / exposición",
+    helper: "Una capa digital cuidada para material cultural o investigación.",
+  },
+  {
+    value: "hospitality-advisory-real-estate",
+    label: "Hospitality / advisory / real estate",
+    helper: "Una superficie premium para servicio o lugar.",
+  },
+  {
+    value: "not-sure",
+    label: "Aún no lo sé",
+    helper: "La nota puede definir la ruta.",
+  },
+];
+
+const englishDrawerCopy: DrawerLocaleCopy = {
+  directions: englishProjectDirections,
+  signals: englishProjectSignals,
+  mobileDirectionLabels: englishMobileDirectionLabels,
+  mobileSignalLabels: englishMobileSignalLabels,
+  desktopDirectionLabels: englishDesktopDirectionLabels,
+  projectSignal: "Project signal",
+  mobileIntro: "Pick a direction, add a short note, and I'll reply with the cleanest next step.",
+  desktopIntro:
+    "Tell me what you want to build. I'll respond with the best next format: landing page, micro-site, product surface, immersive prototype, or creative technology direction.",
+  whatBuilding: "What are we building?",
+  currentNeed: "Current need",
+  shortNote: "Short note",
+  projectNote: "Project note",
+  routePreview: "Route preview",
+  live: "Live",
+  signalIntake: "01 / Signal intake",
+  directionNeed: "Direction + need",
+  response: "Response",
+  nextFormatRoute: "Next format + route",
+  submit: "Send project signal",
+  emailDirectly: "Email directly",
+  copyEmail: "Copy email",
+  copied: "Copied",
+  emailCopied: "Email copied",
+  mobileNotePlaceholder: "Offer, audience, timeline, current page, or what should become clearer...",
+  namePlaceholder: "Name / company",
+  optionalNamePlaceholder: "Name / company, optional",
+  emailPlaceholder: "Email for reply",
+  projectNotePlaceholder: "Project, offer, audience, timeline, current challenge...",
+  availableSystemPlaceholder:
+    "Tell me which available system you like and what you want to adapt it for: brand, product, audience, market, timeline, or required features.",
+  mailSubject: "Project signal",
+  mailHeading: "Project signal",
+  mailDirection: "Direction",
+  mailFirstFormat: "Suggested first format",
+  mailCurrentNeed: "Current need",
+  mailNameCompany: "Name / company",
+  mailEmail: "Email",
+  mailProjectNote: "Project note",
+  mailSentFrom: "Sent from Project Signal Drawer V2",
+};
+
+const spanishDrawerCopy: DrawerLocaleCopy = {
+  directions: spanishProjectDirections,
+  signals: spanishProjectSignals,
+  mobileDirectionLabels: {
+    "available-system": "Adaptar sistema",
+    "premium-website": "Sitio web",
+    "product-surface": "Producto",
+    "multilingual-system": "Multilingüe",
+    "immersive-prototype": "Inmersivo",
+    "not-sure": "No lo sé",
+  },
+  mobileSignalLabels: {
+    "new-launch": "Nuevo launch",
+    "existing-offer": "Mejorar",
+    "product-demo": "Demo",
+    "specific-case": "Caso concreto",
+    "not-sure": "No lo sé",
+  },
+  desktopDirectionLabels: {
+    "available-system": "Adaptar sistema",
+    "premium-website": "Sitio web",
+    "product-surface": "Superficie de producto",
+    "multilingual-system": "Multilingüe",
+    "immersive-prototype": "Inmersivo",
+    "creative-technology": "Creative tech",
+    "not-sure": "No lo sé",
+  },
+  projectSignal: "Señal de proyecto",
+  mobileIntro: "Elige una dirección, añade una nota breve y responderé con el siguiente paso más limpio.",
+  desktopIntro:
+    "Cuéntame qué quieres construir. Responderé con el mejor formato inicial: landing page, micro-sitio, superficie de producto, prototipo inmersivo o dirección creative tech.",
+  whatBuilding: "¿Qué vamos a construir?",
+  currentNeed: "Necesidad actual",
+  shortNote: "Nota breve",
+  projectNote: "Nota de proyecto",
+  routePreview: "Vista de ruta",
+  live: "Activo",
+  signalIntake: "01 / Entrada de señal",
+  directionNeed: "Dirección + necesidad",
+  response: "Respuesta",
+  nextFormatRoute: "Formato + ruta",
+  submit: "Enviar señal de proyecto",
+  emailDirectly: "Email directo",
+  copyEmail: "Copiar email",
+  copied: "Copiado",
+  emailCopied: "Email copiado",
+  mobileNotePlaceholder: "Oferta, audiencia, calendario, página actual o qué debería quedar más claro...",
+  namePlaceholder: "Nombre / empresa",
+  optionalNamePlaceholder: "Nombre / empresa, opcional",
+  emailPlaceholder: "Email para responder",
+  projectNotePlaceholder: "Proyecto, oferta, audiencia, calendario, reto actual...",
+  availableSystemPlaceholder:
+    "Cuéntame qué sistema disponible te interesa y qué quieres adaptar: marca, producto, audiencia, mercado, calendario o funciones necesarias.",
+  mailSubject: "Señal de proyecto",
+  mailHeading: "Señal de proyecto",
+  mailDirection: "Dirección",
+  mailFirstFormat: "Primer formato sugerido",
+  mailCurrentNeed: "Necesidad actual",
+  mailNameCompany: "Nombre / empresa",
+  mailEmail: "Email",
+  mailProjectNote: "Nota de proyecto",
+  mailSentFrom: "Enviado desde Project Signal Drawer V2",
 };
 
 function useIsMobileSheet() {
@@ -221,18 +479,19 @@ function useIsMobileSheet() {
   return isMobile;
 }
 
-function getDirection(value: ProjectDirection) {
-  return projectDirections.find((option) => option.value === value) ?? projectDirections[0];
+function getDirection(value: ProjectDirection, options: DirectionOption[]) {
+  return options.find((option) => option.value === value) ?? options[0];
 }
 
-function getSignal(value: ProjectSignal) {
-  return projectSignals.find((option) => option.value === value) ?? projectSignals[0];
+function getSignal(value: ProjectSignal, options: SignalOption[]) {
+  return options.find((option) => option.value === value) ?? options[0];
 }
 
 export default function ProjectDrawerV2({ open, onClose }: Props) {
   const { playRole } = useSound();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const isMobile = useIsMobileSheet();
+  const copy = locale === "es" ? spanishDrawerCopy : englishDrawerCopy;
   const lastFocusedRef = useRef<HTMLElement | null>(null);
   const copyTimerRef = useRef<number | null>(null);
 
@@ -244,12 +503,12 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
   const [message, setMessage] = useState("");
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const direction = getDirection(selectedDirection);
-  const signal = getSignal(selectedSignal);
+  const direction = getDirection(selectedDirection, copy.directions);
+  const signal = getSignal(selectedSignal, copy.signals);
   const projectNotePlaceholder =
     selectedDirection === "available-system" || selectedSignal === "specific-case"
-      ? "Tell me which available system you like and what you want to adapt it for: brand, product, audience, market, timeline, or required features."
-      : "Project, offer, audience, timeline, current challenge...";
+      ? copy.availableSystemPlaceholder
+      : copy.projectNotePlaceholder;
 
   const hasInteraction =
     selectedDirection !== "not-sure" ||
@@ -312,24 +571,24 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
   }, []);
 
   const mailtoHref = useMemo(() => {
-    const subject = `Project signal${name.trim() ? ` - ${name.trim()}` : ""}`;
+    const subject = `${copy.mailSubject}${name.trim() ? ` - ${name.trim()}` : ""}`;
     const body = [
-      "Project signal",
+      copy.mailHeading,
       "",
-      `Direction: ${direction.label}`,
-      `Suggested first format: ${direction.firstFormat}`,
-      `Current need: ${signal.label}`,
-      `Name / company: ${name.trim() || "-"}`,
-      `Email: ${email.trim() || "-"}`,
+      `${copy.mailDirection}: ${direction.label}`,
+      `${copy.mailFirstFormat}: ${direction.firstFormat}`,
+      `${copy.mailCurrentNeed}: ${signal.label}`,
+      `${copy.mailNameCompany}: ${name.trim() || "-"}`,
+      `${copy.mailEmail}: ${email.trim() || "-"}`,
       "",
-      "Project note:",
+      `${copy.mailProjectNote}:`,
       message.trim() || "-",
       "",
-      "Sent from Project Signal Drawer V2",
+      copy.mailSentFrom,
     ].join("\n");
 
     return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [direction.firstFormat, direction.label, email, message, name, signal.label]);
+  }, [copy, direction.firstFormat, direction.label, email, message, name, signal.label]);
 
   async function copyEmail() {
     try {
@@ -408,7 +667,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                        Project signal
+                        {copy.projectSignal}
                       </p>
                       <h2
                         id="project-signal-title-mobile"
@@ -429,7 +688,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   </div>
 
                   <p className="mt-3 text-[13px] leading-6 text-neutral-600">
-                    Pick a direction, add a short note, and I'll reply with the cleanest next step.
+                    {copy.mobileIntro}
                   </p>
 
                 </header>
@@ -438,14 +697,14 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <section>
                     <div className="mb-2 flex items-center justify-between">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
-                        What are we building?
+                        {copy.whatBuilding}
                       </h3>
                       <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-neutral-400">01</span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
                       {mobileDirectionOptions.map((value) => {
-                        const option = getDirection(value);
+                        const option = getDirection(value, copy.directions);
                         const active = selectedDirection === value;
 
                         return (
@@ -466,7 +725,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                             ].join(" ")}
                           >
                             <span className="block text-[12px] font-semibold leading-4">
-                              {mobileDirectionLabels[value] ?? option.label}
+                              {copy.mobileDirectionLabels[value] ?? option.label}
                             </span>
                             <span className={["mt-1.5 block text-[10px] leading-4", active ? "text-white/58" : "text-neutral-500"].join(" ")}>
                               {option.helper}
@@ -480,14 +739,14 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <section className="mt-5">
                     <div className="mb-2 flex items-center justify-between">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
-                        Current need
+                        {copy.currentNeed}
                       </h3>
                       <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-neutral-400">02</span>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
                       {mobileSignalOptions.map((value) => {
-                        const option = getSignal(value);
+                        const option = getSignal(value, copy.signals);
                         const active = selectedSignal === value;
 
                         return (
@@ -507,7 +766,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                                 : "border-neutral-300/70 bg-white/50 text-neutral-600",
                             ].join(" ")}
                           >
-                            {mobileSignalLabels[value] ?? option.label}
+                            {copy.mobileSignalLabels[value] ?? option.label}
                           </button>
                         );
                       })}
@@ -517,7 +776,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <section className="mt-5">
                     <div className="mb-2 flex items-center justify-between">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
-                        Short note
+                        {copy.shortNote}
                       </h3>
                       <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-neutral-400">03</span>
                     </div>
@@ -526,7 +785,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       value={message}
                       onChange={(event) => setMessage(event.target.value)}
                       rows={4}
-                      placeholder="Offer, audience, timeline, current page, or what should become clearer..."
+                      placeholder={copy.mobileNotePlaceholder}
                       className="min-h-[116px] w-full resize-none rounded-[20px] border border-neutral-300/70 bg-white/48 px-4 py-3 text-[14px] leading-6 text-neutral-900 outline-none shadow-[0_10px_26px_rgba(0,0,0,0.035)] transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                     />
                   </section>
@@ -537,13 +796,13 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       onChange={(event) => setEmail(event.target.value)}
                       type="email"
                       inputMode="email"
-                      placeholder="Email for reply"
+                      placeholder={copy.emailPlaceholder}
                       className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/54 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                     />
                     <input
                       value={name}
                       onChange={(event) => setName(event.target.value)}
-                      placeholder="Name / company, optional"
+                      placeholder={copy.optionalNamePlaceholder}
                       className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/40 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                     />
                   </section>
@@ -555,7 +814,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                     onMouseEnter={() => playRole("hover")}
                     className="flex h-12 w-full items-center justify-between rounded-full bg-neutral-950 px-5 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-white shadow-[0_16px_36px_rgba(0,0,0,0.14)] transition active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                   >
-                    <span>Send project signal</span>
+                    <span>{copy.submit}</span>
                     <span aria-hidden>{"->"}</span>
                   </button>
 
@@ -566,7 +825,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       onClick={() => playRole("success")}
                       className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/46 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-700 transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
-                      Email directly
+                      {copy.emailDirectly}
                     </a>
                     <button
                       type="button"
@@ -574,7 +833,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       onClick={copyEmail}
                       className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/46 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-700 transition active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
-                      {copiedEmail ? "Copied" : "Copy email"}
+                      {copiedEmail ? copy.copied : copy.copyEmail}
                     </button>
                   </div>
                 </footer>
@@ -584,7 +843,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                 <div className="flex items-start justify-between gap-3 sm:gap-5">
                   <div className="min-w-0">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500 sm:tracking-[0.3em]">
-                      Project signal
+                      {copy.projectSignal}
                     </p>
                     <h2
                       id="project-signal-title"
@@ -604,20 +863,18 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                 </div>
 
                 <p className="mt-4 max-w-[39rem] text-[13px] leading-6 text-neutral-600 sm:mt-5 sm:text-[14px]">
-                  Tell me what you want to build. I'll respond with the best next
-                  format: landing page, micro-site, product surface, immersive
-                  prototype, or creative technology direction.
+                  {copy.desktopIntro}
                 </p>
 
                 <div className="mt-4 border-t border-neutral-300/70 pt-3 sm:mt-5">
                   <div className="grid grid-cols-2 gap-3 text-[9px] uppercase tracking-[0.14em] text-neutral-500 sm:gap-4 sm:text-[10px] sm:tracking-[0.2em]">
                     <div>
-                      <span className="block text-neutral-400">01 / Signal intake</span>
-                      <span className="mt-1 block text-neutral-800">Direction + need</span>
+                      <span className="block text-neutral-400">{copy.signalIntake}</span>
+                      <span className="mt-1 block text-neutral-800">{copy.directionNeed}</span>
                     </div>
                     <div className="text-right">
-                      <span className="block text-neutral-400">Response</span>
-                      <span className="mt-1 block text-neutral-800">Next format + route</span>
+                      <span className="block text-neutral-400">{copy.response}</span>
+                      <span className="mt-1 block text-neutral-800">{copy.nextFormatRoute}</span>
                     </div>
                   </div>
                 </div>
@@ -628,13 +885,13 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <section className="border-t border-neutral-300/70 pt-5">
                     <div className="flex items-center justify-between gap-4">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
-                        What are we building?
+                        {copy.whatBuilding}
                       </h3>
                       <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">01</span>
                     </div>
 
                     <div className="mt-4 grid grid-cols-2 gap-2.5">
-                      {projectDirections.map((option) => {
+                      {copy.directions.map((option) => {
                         const active = selectedDirection === option.value;
 
                         return (
@@ -655,7 +912,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                             ].join(" ")}
                           >
                             <span className="block text-[13px] font-semibold leading-4">
-                              {desktopDirectionLabels[option.value] ?? option.label}
+                              {copy.desktopDirectionLabels[option.value] ?? option.label}
                             </span>
                             <span className={["mt-2 block text-[11px] leading-4", active ? "text-white/58" : "text-neutral-500"].join(" ")}>
                               {option.helper}
@@ -669,14 +926,14 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <section className="mt-6">
                     <div className="flex items-center justify-between gap-4">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
-                        Current need
+                        {copy.currentNeed}
                       </h3>
                       <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">02</span>
                     </div>
 
                     <div className="mt-3 flex flex-wrap gap-2">
                       {mobileSignalOptions.map((value) => {
-                        const option = getSignal(value);
+                        const option = getSignal(value, copy.signals);
                         const active = selectedSignal === value;
 
                         return (
@@ -696,7 +953,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                                 : "border-neutral-300/70 bg-white/46 text-neutral-600 hover:border-neutral-500 hover:bg-white/72",
                             ].join(" ")}
                           >
-                            {mobileSignalLabels[value] ?? option.label}
+                            {copy.mobileSignalLabels[value] ?? option.label}
                           </button>
                         );
                       })}
@@ -722,22 +979,22 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       >
                         <div className="flex items-center justify-between gap-4">
                           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-                            Route preview
+                            {copy.routePreview}
                           </p>
-                          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">Live</span>
+                          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">{copy.live}</span>
                         </div>
 
                         <div className="mt-3 grid grid-cols-[1fr_auto] gap-4">
                           <div className="min-w-0">
                             <p className="text-[24px] leading-[1.02] text-neutral-950">
-                              {desktopDirectionLabels[direction.value] ?? direction.label}
+                              {copy.desktopDirectionLabels[direction.value] ?? direction.label}
                             </p>
                             <p className="mt-2 text-[12px] leading-5 text-neutral-600">
                               {direction.firstFormat}
                             </p>
                           </div>
                           <div className="self-start rounded-full border border-neutral-300/80 bg-white/55 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-neutral-500">
-                            {mobileSignalLabels[signal.value] ?? signal.label}
+                            {copy.mobileSignalLabels[signal.value] ?? signal.label}
                           </div>
                         </div>
 
@@ -751,7 +1008,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                   <section className="mt-6 border-t border-neutral-300/70 pt-5">
                     <div className="flex items-center justify-between gap-4">
                       <h3 className="text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
-                        Project note
+                        {copy.projectNote}
                       </h3>
                       <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">03</span>
                     </div>
@@ -760,7 +1017,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       <input
                         value={name}
                         onChange={(event) => setName(event.target.value)}
-                        placeholder="Name / company"
+                        placeholder={copy.namePlaceholder}
                         className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/48 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                       />
                       <input
@@ -768,7 +1025,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                         onChange={(event) => setEmail(event.target.value)}
                         type="email"
                         inputMode="email"
-                        placeholder="Email for reply"
+                        placeholder={copy.emailPlaceholder}
                         className="h-12 rounded-[16px] border border-neutral-300/70 bg-white/48 px-4 text-[14px] text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-0"
                       />
                     </div>
@@ -794,7 +1051,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                         : "border-neutral-950/80 bg-neutral-950/88 text-white/86 hover:bg-neutral-950",
                     ].join(" ")}
                   >
-                    <span>Send project signal</span>
+                    <span>{copy.submit}</span>
                     <span aria-hidden>{"->"}</span>
                   </button>
 
@@ -805,7 +1062,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       onClick={() => playRole("success")}
                       className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/42 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/76 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
-                      Email directly
+                      {copy.emailDirectly}
                     </a>
                     <button
                       type="button"
@@ -813,7 +1070,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
                       onMouseEnter={() => playRole("hover")}
                       className="flex h-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/42 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700 transition duration-300 hover:border-neutral-700 hover:bg-white/76 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-800 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f2eb]"
                     >
-                      {copiedEmail ? "Email copied" : "Copy email"}
+                      {copiedEmail ? copy.emailCopied : copy.copyEmail}
                     </button>
                   </div>
                 </footer>

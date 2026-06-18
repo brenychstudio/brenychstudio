@@ -1410,9 +1410,9 @@ function PresenceOsCaseLayout({
         className="relative min-h-[100svh] scroll-mt-[5.5rem] overflow-hidden bg-[#030706] pt-[72px] md:scroll-mt-28"
       >
         <PresenceEntryHeroBackdrop />
-        <div className="pointer-events-none absolute inset-0 z-[7] bg-[radial-gradient(circle_at_58%_28%,rgba(119,207,184,0.11),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(246,219,165,0.055),transparent_24%),linear-gradient(90deg,#030706_0%,rgba(3,7,6,0.88)_25%,rgba(3,7,6,0.34)_56%,rgba(3,7,6,0.68)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 z-[8] bg-[linear-gradient(180deg,rgba(3,7,6,0.16),rgba(3,7,6,0.22)_40%,rgba(3,7,6,0.74)_84%,#030706)]" />
-        <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:74px_74px]" />
+        <div className="pointer-events-none absolute inset-0 z-[7] bg-[radial-gradient(circle_at_58%_28%,rgba(119,207,184,0.16),transparent_28%),radial-gradient(circle_at_82%_12%,rgba(246,219,165,0.09),transparent_24%),linear-gradient(90deg,#030706_0%,rgba(3,7,6,0.78)_25%,rgba(3,7,6,0.18)_56%,rgba(3,7,6,0.46)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 z-[8] bg-[linear-gradient(180deg,rgba(3,7,6,0.08),rgba(3,7,6,0.12)_40%,rgba(3,7,6,0.58)_84%,#030706)]" />
+        <div className="pointer-events-none absolute inset-0 z-[9] opacity-[0.16] [background-image:linear-gradient(to_right,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.085)_1px,transparent_1px)] [background-size:74px_74px]" />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-[min(94vw,1640px)] flex-col justify-between py-8 md:py-12">
           <div className="flex flex-wrap items-center justify-between gap-3">

@@ -2144,22 +2144,201 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
   },
   webhero: {
     tagline:
-      "Un sistema visual web-first para modulos cinematicos, Living Images, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
+      "Un sistema visual web-first para módulos cinematográficos, Living Images, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
     medium: "Visual web",
     mode: "R&D avanzado",
     stack: "Vite, React, TypeScript, WebGL, GLSL / Canvas, Gaussian Splat viewer, SHARP / 3DGS pipeline",
     description:
-      "WEBHERO explora el futuro de las webs premium como entornos vivos. Reune WebGL Stage System, backdrops cinematograficos, Living Images, obras Living Splat, Art Room y una ruta controlada hacia XR.",
+      "WEBHERO explora el futuro de las webs premium como entornos vivos. Reúne WebGL Stage System, backdrops cinematográficos, Living Images, obras Living Splat, Art Room y una ruta controlada hacia XR.",
     status: "Prototipo avanzado",
     statusNote:
-      "Stage System, Backdrops, Living Images, Living Splat y Art Room funcionan como modulos demostrables. Living Art Mixer sigue en investigacion activa.",
+      "Stage System, Backdrops, Living Images, Living Splat y Art Room funcionan como módulos demostrables. Living Art Mixer sigue en investigación activa.",
     supportLabel: "Sistema R&D",
     ctaLabel: "Abrir caso WEBHERO",
+    videos: [
+      {
+        index: 0,
+        alt: "Recorrido WEBHERO del campo visual y Stage System",
+        label: "Campo / Stage System",
+        caption:
+          "Campo principal de WEBHERO: umbral, lenguaje de stage, overview del sistema e infraestructura visual viva en una sola ruta.",
+      },
+      {
+        index: 1,
+        alt: "Recorrido del módulo Cinematic Backdrops de WEBHERO",
+        label: "Backdrops cinematográficos",
+        caption:
+          "Backdrops atmosféricos que funcionan como infraestructura visual del sitio, no como decoración aislada.",
+      },
+      {
+        index: 2,
+        alt: "Recorrido WEBHERO de Living Images y Living Splat",
+        label: "Living Images / Splat",
+        caption:
+          "Living Images Classic y Splat Pro prueban superficies espaciales con fuente visual, profundidad y viewers controlados.",
+      },
+      {
+        index: 3,
+        alt: "Recorrido del módulo Art Room de WEBHERO",
+        label: "Art Room",
+        caption:
+          "Capa curatorial donde las obras exponen escena, living image, splat y futuros modos XR sin sobrecargar la ruta pública.",
+      },
+    ],
+    frames: [
+      {
+        index: 0,
+        alt: "WEBHERO umbral de entrada del sistema",
+        label: "Umbral",
+        caption:
+          "Módulo de intro-gate registrado como parte de la capa de identidad del Stage System.",
+      },
+      {
+        index: 1,
+        alt: "WEBHERO hero de entornos vivos",
+        label: "Entornos vivos",
+        caption:
+          "Superficie hero donde imagen, interfaz, atmósfera y motion se leen como un sistema vivo.",
+      },
+      {
+        index: 2,
+        alt: "WEBHERO pantalla de lenguaje de stage",
+        label: "Lenguaje de stage",
+        caption:
+          "Señal, estado, atmósfera, revelado y memoria se convierten en vocabulario reutilizable de interfaz.",
+      },
+      {
+        index: 3,
+        alt: "WEBHERO índice del Stage System",
+        label: "Stage System",
+        caption:
+          "Lenguaje WebGL reutilizable para héroes, intro gates, objetos de señal y futuras instalaciones XR.",
+      },
+      {
+        index: 4,
+        alt: "WEBHERO prueba de campo morphing",
+        label: "Morph de señal",
+        caption:
+          "Fragmento de prueba donde objetos abstractos de señal operan como parte del stage, no como motion decorativo.",
+      },
+      {
+        index: 5,
+        alt: "WEBHERO gráfico de entrega y readout de sistema",
+        label: "Grafico de entrega",
+        caption:
+          "Readout que presenta la plataforma como infraestructura visual desplegable con lógica de módulos y outputs controlados.",
+      },
+      {
+        index: 6,
+        alt: "WEBHERO pantalla de infraestructura atmosférica",
+        label: "Backdrops",
+        caption:
+          "Los backdrops cinematográficos sostienen páginas y transiciones sin competir con el contenido principal.",
+      },
+      {
+        index: 7,
+        alt: "WEBHERO módulo signal object backdrop",
+        label: "Objeto de señal",
+        caption:
+          "Prueba de backdrop donde un objeto de señal ancla la atmósfera sin dominar la capa primaria de contenido.",
+      },
+      {
+        index: 8,
+        alt: "WEBHERO variante Arcwave de signal backdrop",
+        label: "Variante de backdrop",
+        caption:
+          "Variante de marca que muestra cómo el mismo motor atmosférico se adapta a mundos visuales y contextos de cliente distintos.",
+      },
+      {
+        index: 9,
+        alt: "WEBHERO página Living Spatial Images",
+        label: "Living Images",
+        caption:
+          "La espacializacion de imagen unica transforma visuales fuente en superficies web con profundidad y motion.",
+      },
+      {
+        index: 10,
+        alt: "WEBHERO grid Villa Atlas",
+        label: "Atlas visual",
+        caption:
+          "Vista atlas donde imágenes de arquitectura premium se organizan como candidatas espaciales listas para modo.",
+      },
+      {
+        index: 11,
+        alt: "WEBHERO grid de estudios splat",
+        label: "Estudios splat",
+        caption:
+          "Candidatos splat poster-first mantienen listados ligeros y conservan acceso a modos Pro de profundidad.",
+      },
+      {
+        index: 12,
+        alt: "WEBHERO estudio splat Nascita di Venere",
+        label: "Splat pictorico",
+        caption:
+          "Material fine-art convertido en objeto espacial navegable dentro de la vertical Living Splat.",
+      },
+      {
+        index: 13,
+        alt: "WEBHERO estudio splat de interior Villa",
+        label: "Splat interior",
+        caption:
+          "Imagen de interior usada para probar el valor de presentación espacial y property storytelling del modo Pro Splat.",
+      },
+      {
+        index: 14,
+        alt: "WEBHERO grid Art Room",
+        label: "Art Room",
+        caption:
+          "Art Room reúne pinturas, candidatos generados y obras splat dentro de una sola capa de exposición.",
+      },
+      {
+        index: 15,
+        alt: "WEBHERO obra splat Van Gogh",
+        label: "Splat Van Gogh",
+        caption:
+          "Prueba con fuente pictorica canonica para demostrar obra espacial navegable sin perder claridad autoral.",
+      },
+      {
+        index: 16,
+        alt: "WEBHERO obra espacial Matisse",
+        label: "Obra espacial Matisse",
+        caption:
+          "Segunda prueba fine-art que muestra soporte para distintos estilos de fuente con control de profundidad.",
+      },
+      {
+        index: 17,
+        alt: "WEBHERO overview del sistema",
+        label: "Overview del sistema",
+        caption:
+          "La plataforma se presenta como infraestructura spatial web, no como template ni demo WebGL aislada.",
+      },
+      {
+        index: 18,
+        alt: "WEBHERO matriz de prueba del proyecto",
+        label: "Matriz de prueba",
+        caption:
+          "La matriz define valor comercial: fidelidad de fuente, gramática de motion, módulos escalables y sistemas visuales privados.",
+      },
+      {
+        index: 19,
+        alt: "WEBHERO estados de threshold grid",
+        label: "Grid de umbral",
+        caption:
+          "Lectura compacta de estados intro-gate que muestra como el umbral escala hacia una familia de escenas.",
+      },
+      {
+        index: 20,
+        alt: "WEBHERO estudio splat editorial azul",
+        label: "Splat editorial",
+        caption:
+          "Candidato fashion/editorial que prueba que Pro mode puede extenderse más allá de arte y arquitectura.",
+      },
+    ],
     searchContent: {
       shortDescription:
-        "Plataforma R&D para modulos de stage cinematico, imagenes vivas, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
+        "Plataforma R&D para módulos de stage cinematográfico, imágenes vivas, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
       longDescription:
-        "WEBHERO demuestra infraestructura visual reusable para webs premium: stages WebGL, backdrops, living image modules, estudios 3DGS y presentacion Art Room dentro de un mismo sistema.",
+        "WEBHERO demuestra infraestructura visual reutilizable para webs premium: stages WebGL, backdrops, living image modules, estudios 3DGS y presentación Art Room dentro de un mismo sistema.",
       tags: ["WebGL stage system", "Living Images", "Gaussian Splat", "Spatial web"],
       type: "Sistemas visuales vivos / infraestructura spatial web.",
       audience:
@@ -2167,7 +2346,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
       problem:
         "Muchas webs visuales premium dependen de fondos decorativos o bloques media aislados que no escalan como sistema.",
       approach:
-        "WEBHERO organiza threshold gates, lenguaje de stage, backdrops, living images, splat studies, Art Room y direccion XR en una plataforma modular.",
+        "WEBHERO organiza threshold gates, lenguaje de stage, backdrops, living images, splat studies, Art Room y dirección XR en una plataforma modular.",
       outcome:
         "El caso muestra como la infraestructura visual inmersiva puede sostener webs premium y archivos espaciales sin volverse un truco aislado.",
       productionFacts: ["Vite", "React", "TypeScript", "WebGL", "GLSL / Canvas", "Gaussian Splat", "SHARP / 3DGS"],
@@ -2176,47 +2355,107 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     seo: {
       title: "WEBHERO - sistema visual web-first",
       description:
-        "WEBHERO explora WebGL stages, Living Images, Gaussian Splat, Art Room y direccion XR para webs premium.",
+        "WEBHERO explora WebGL stages, Living Images, Gaussian Splat, Art Room y dirección XR para webs premium.",
       ogTitle: "WEBHERO - sistemas visuales vivos",
       ogDescription:
-        "Una plataforma R&D para convertir imagenes, WebGL y obras espaciales en experiencias web controladas.",
+        "Una plataforma R&D para convertir imágenes, WebGL y obras espaciales en experiencias web controladas.",
       alt: "Sistema visual WEBHERO",
     },
   },
   "kool-berk": {
     tagline:
-      "Un Sonic Object OS para artista electronico donde releases, tracks, EPK y escucha se convierten en una sala WebGL audio-reactiva.",
+      "Un Sonic Object OS para artista electrónico donde releases, tracks, EPK y escucha se convierten en una sala WebGL audio-reactiva.",
     medium: "Artist OS sonoro",
     mode: "Prototipo sonoro",
     stack: "Vite, React, TypeScript, R3F, Web Audio, GLSL, Cloudflare Pages",
     description:
-      "Kool Berk replantea el sitio de artista como sistema de objeto sonoro: releases inspeccionables, estudios de senal, EPK, contacto y una sala inmersiva de escucha.",
+      "Kool Berk replantea el sitio de artista como sistema de objeto sonoro: releases inspeccionables, estudios de señal, EPK, contacto y una sala inmersiva de escucha.",
     status: "MVP art-tech",
     statusNote:
       "La ruta principal, el objeto sonoro, walkthrough, sala WebGL y capas de contacto funcionan como prototipo presentable.",
     supportLabel: "Sala sonora WebGL",
     ctaLabel: "Abrir caso Kool Berk",
+    videos: [
+      {
+        index: 0,
+        alt: "Recorrido desktop de Kool Berk Sonic Object OS",
+        label: "Recorrido Sonic Object OS",
+        caption:
+          "Recorrido desktop del sistema de artista guiado por cubo: objetos de release, Album Dossier, Track Detail, Visual Archive, Sonic Room y capa de contacto.",
+      },
+    ],
+    frames: [
+      {
+        index: 0,
+        alt: "Kool Berk Sonic Object Stage con interfaz de cubo central",
+        label: "Sonic Object Stage",
+        caption:
+          "La identidad del artista abre como un cubo sonoro central: objeto de navegación, archivo de releases, centro visual y entrada a modos más profundos.",
+      },
+      {
+        index: 1,
+        alt: "Kool Berk inspección de objeto release ZMINA",
+        label: "Object Inspect",
+        caption:
+          "ReleaseUnfold presenta el álbum como inspector rápido de objeto con cover, metadatos de archivo, tracklist, preview local y handoff a plataformas.",
+      },
+      {
+        index: 2,
+        alt: "Kool Berk dossier MONAH con detalle de track",
+        label: "Track Detail",
+        caption:
+          "Los tracks se convierten en objetos de señal con mood, energía, duración, etiqueta visual, preview local y preparación para Sonic Room.",
+      },
+      {
+        index: 3,
+        alt: "Kool Berk inspección de release MONAH con preview local",
+        label: "Release MONAH",
+        caption:
+          "El objeto MONAH mantiene la preview local cerca de la nota de release, haciendo que la escucha forme parte del artefacto.",
+      },
+      {
+        index: 4,
+        alt: "Kool Berk objeto release MONAH en cubo rojo",
+        label: "Objeto de release",
+        caption:
+          "El cover del álbum se convierte en una cara de cubo rojo-negro, preservando el tono ritual electrónico sin perder contención.",
+      },
+      {
+        index: 5,
+        alt: "Kool Berk MONAH Sonic Room modo inmersivo de escucha",
+        label: "Sonic Room",
+        caption:
+          "MONAH Room es una cámara WebGL fullscreen con HUD mínimo, playback local, atmósfera audio-reactiva y base futura WebXR.",
+      },
+      {
+        index: 6,
+        alt: "Kool Berk panel de contacto y booking",
+        label: "Senal de contacto",
+        caption:
+          "El contacto funciona como una capa interna de señal para fechas, formatos, colaboraciones, prensa y proyectos audiovisuales.",
+      },
+    ],
     searchContent: {
       shortDescription:
-        "Sistema audiovisual para artista electronico con releases como objetos, Web Audio y sala WebGL.",
+        "Sistema audiovisual para artista electrónico con releases como objetos, Web Audio y sala WebGL.",
       longDescription:
         "Kool Berk demuestra como un artist site puede dejar de ser link hub y convertirse en archivo de releases, EPK y entorno inmersivo de escucha.",
       tags: ["R3F", "Web Audio", "GLSL", "EPK", "Sonic Room"],
       type: "Artist OS audiovisual / sistema de objeto sonoro.",
-      audience: "Artistas electronicos, music labels, EPK premium y proyectos audio-visuales.",
+      audience: "Artistas electrónicos, music labels, EPK premium y proyectos audio-visuales.",
       problem:
         "Los sitios de artistas suelen reducirse a enlaces, embeds y biografia, perdiendo presencia y estructura de release.",
       approach:
-        "La interfaz trata releases como objetos, tracks como estudios de senal y escucha como experiencia WebGL audio-reactiva.",
+        "La interfaz trata releases como objetos, tracks como estudios de señal y escucha como experiencia WebGL audio-reactiva.",
       outcome:
-        "El caso convierte presencia musical, EPK y contacto en una superficie inmersiva con logica de producto.",
+        "El caso convierte presencia musical, EPK y contacto en una superficie inmersiva con lógica de producto.",
       productionFacts: ["React", "TypeScript", "R3F", "Web Audio", "GLSL", "Cloudflare Pages"],
       relatedServices: ["Sistemas web interactivos", "Landing page de producto"],
     },
     seo: {
       title: "Kool Berk - Sonic Object OS",
       description:
-        "Caso audiovisual donde un artista electronico se presenta mediante releases objeto, EPK y sala WebGL audio-reactiva.",
+        "Caso audiovisual donde un artista electrónico se presenta mediante releases objeto, EPK y sala WebGL audio-reactiva.",
       ogTitle: "Kool Berk - musica como objeto sonoro",
       ogDescription:
         "Un artist OS inmersivo para releases, tracks, EPK y escucha WebGL.",
@@ -2225,29 +2464,152 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
   },
   "presence-os-memory-atlas": {
     tagline:
-      "Una interfaz privada de memoria espacial donde fragmentos de archivo personal se revelan por quietud, retorno y atencion.",
+      "Una interfaz privada de memoria espacial donde fragmentos de archivo personal se revelan por quietud, retorno y atención.",
     medium: "Archivo espacial",
     mode: "MVP funcional",
     stack: "Vite, React, TypeScript, WebGL, WebXR direction, local-first archive logic",
     description:
-      "Presence OS / Memory Atlas transforma archivo personal en campo de memoria vivo: presencia, stillness, cinematic inspect, sala XR y artefactos exportables.",
+      "Presence OS / Memory Atlas transforma un archivo personal en campo de memoria vivo: presencia, stillness, cinematic inspect, sala XR y artefactos exportables.",
     status: "MVP funcional",
     statusNote:
-      "La ruta web, campo de memoria, inspeccion y direccion XR funcionan como prueba MVP. La capa XR final continua en desarrollo.",
+      "La ruta web, campo de memoria, inspección y dirección XR funcionan como prueba MVP. La capa XR final continúa en desarrollo.",
     supportLabel: "Memoria privada",
     ctaLabel: "Abrir caso Presence OS",
+    videos: [
+      {
+        index: 0,
+        alt: "Recorrido desktop de Presence OS Memory Atlas",
+        label: "Recorrido Memory Atlas",
+        caption:
+          "Recorrido desktop de intake local, campo de memoria, cinematic inspect, resultado humano, Memory Reel y exportación local de artefactos.",
+      },
+      {
+        index: 1,
+        alt: "Captura VR de Presence OS XR Memory Room",
+        label: "Captura XR Memory Room",
+        caption:
+          "Captura VR donde los fragmentos de memoria se organizan como una sala espacial calma con foco por mirada, presencia de manos y comandos comodos.",
+      },
+    ],
+    frames: [
+      {
+        index: 0,
+        alt: "Presence OS ritual de entrada con fragmentos de archivo privado",
+        label: "Ritual de entrada",
+        caption:
+          "La apertura fija la fórmula: soltar un archivo y dejar que los fragmentos respondan a quietud, retorno y atención.",
+      },
+      {
+        index: 1,
+        alt: "Presence OS entrada de archivo local",
+        label: "Entrada de archivo",
+        caption:
+          "Los archivos permanecen locales en el navegador mientras un archivo pequeno se convierte en material del campo de memoria.",
+      },
+      {
+        index: 2,
+        alt: "Presence OS campo de memoria espacial",
+        label: "Campo de memoria",
+        caption:
+          "Los fragmentos pasan a un campo espacial silencioso donde atención, retorno y duda revelan contexto.",
+      },
+      {
+        index: 3,
+        alt: "Presence OS cinematic inspect para memoria de playa",
+        label: "Cinematic inspect",
+        caption:
+          "Los recuerdos seleccionados se abren como superficies de inspección cinematográfica, no como lightbox común.",
+      },
+      {
+        index: 4,
+        alt: "Presence OS claridad recuperada en memoria familiar",
+        label: "Claridad recuperada",
+        caption:
+          "La capa inspect mantiene la memoria privada legible, contenida y humana, lejos del ruido de dashboard.",
+      },
+      {
+        index: 5,
+        alt: "Presence OS resultado Synthetic Weather",
+        label: "Synthetic Weather",
+        caption:
+          "Una capa de resultado humano convierte el archivo en clima emocional: calidez, densidad, señal y estabilidad.",
+      },
+      {
+        index: 6,
+        alt: "Presence OS grid de fragmentos recuperados",
+        label: "Grid de fragmentos",
+        caption:
+          "Los fragmentos recuperados se pueden leer como candidatos seleccionados sin aplanar el campo en una galería estática.",
+      },
+      {
+        index: 7,
+        alt: "Presence OS constelacion de fragmentos de memoria",
+        label: "Constelacion de fragmentos",
+        caption:
+          "No todo fragmento necesita abrirse completo; el sistema admite señales parciales, memoria periférica y contexto quieto.",
+      },
+      {
+        index: 8,
+        alt: "Presence OS XR Memory Room",
+        label: "XR Memory Room",
+        caption:
+          "La Memory Room lleva el mismo archivo a una cámara espacial comfort-first para mirada, presencia de manos y profundidad.",
+      },
+      {
+        index: 9,
+        alt: "Presence OS Memory Reel exportable",
+        label: "Memory Reel",
+        caption:
+          "El campo puede convertirse en artefacto exportable: Memory Reel tipo movil, replay preview y material local de handoff.",
+      },
+      {
+        index: 10,
+        alt: "Presence OS VR con presencia de manos",
+        label: "Presencia de manos VR",
+        caption:
+          "La presencia de manos se usa como señal encarnada, no como gimmick ni interfaz de juego agresiva.",
+      },
+      {
+        index: 11,
+        alt: "Presence OS VR bandas de profundidad de memoria",
+        label: "Bandas de profundidad VR",
+        caption:
+          "Bandas de distancia legibles mantienen los fragmentos personales espaciales sin forzar locomocion.",
+      },
+      {
+        index: 12,
+        alt: "Presence OS VR foco por mirada",
+        label: "Foco por mirada",
+        caption:
+          "El foco por mirada aparece antes que la complejidad manual, manteniendo la sala comoda y legible en Quest.",
+      },
+      {
+        index: 13,
+        alt: "Presence OS VR command rail",
+        label: "Command rail",
+        caption:
+          "Return, reset y exit permanecen claros mediante un command rail espacial tranquilo.",
+      },
+      {
+        index: 14,
+        alt: "Presence OS VR retorno espacial",
+        label: "Retorno espacial",
+        caption:
+          "El retorno añade profundidad al archivo: la atención repetida puede hacer más presente un fragmento.",
+      },
+    ],
     searchContent: {
       shortDescription:
-        "Interfaz de memoria espacial donde archivo personal, presencia y atencion forman un campo vivo.",
+        "Interfaz de memoria espacial donde archivo personal, presencia y atención forman un campo vivo.",
       longDescription:
-        "Presence OS / Memory Atlas demuestra como un archivo local-first puede convertirse en campo cinematico, sala XR y sistema de artefactos exportables.",
+        "Presence OS / Memory Atlas demuestra cómo un archivo local-first puede convertirse en campo cinemático, sala XR y sistema de artefactos exportables.",
       tags: ["Local-first", "Presence OS", "WebXR", "Memory Reel", "Archivo espacial"],
       type: "Interfaz de memoria espacial / archivo personal.",
       audience: "Archivos personales, memoria cultural, artistas, familias, colecciones privadas y productos de presencia.",
       problem:
-        "Los archivos personales suelen quedar como carpetas o galerias, sin presencia, retorno ni contexto emocional.",
+        "Los archivos personales suelen quedar como carpetas o galerías, sin presencia, retorno ni contexto emocional.",
       approach:
-        "El sistema revela fragmentos mediante quietud, atencion, memoria, inspeccion cinematografica y direccion XR.",
+        "El sistema revela fragmentos mediante quietud, atención, memoria, inspección cinematográfica y dirección XR.",
       outcome:
         "El caso prueba una ruta sensible para convertir memoria privada en interfaz viva sin ruido de dashboard.",
       productionFacts: ["React", "TypeScript", "WebGL", "Cinematic inspect", "Local-first logic", "WebXR direction"],
@@ -2256,7 +2618,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     seo: {
       title: "Presence OS / Memory Atlas - archivo espacial",
       description:
-        "Interfaz local-first donde memoria personal, presencia, inspeccion cinematografica y direccion XR forman un archivo vivo.",
+        "Interfaz local-first donde memoria personal, presencia, inspección cinematográfica y dirección XR forman un archivo vivo.",
       ogTitle: "Presence OS - memoria privada como campo espacial",
       ogDescription:
         "Un sistema de memoria espacial para archivo personal, stillness, retorno y artefactos exportables.",
@@ -2276,20 +2638,94 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
       "La experiencia principal, fields, Inspect Optics, Reference Orbit y prueba WebXR funcionan como prototipo de producto ficticio.",
     supportLabel: "Producto espacial",
     ctaLabel: "Abrir caso Orbit Lens",
+    videos: [
+      {
+        index: 0,
+        alt: "Recorrido desktop de Orbit Lens Product OS",
+        label: "Recorrido Product OS",
+        caption:
+          "Recorrido desktop de la narrativa de siete campos, capa de copy persistente, Cinematic Inspect Optics, Reference Orbit y terminal de acceso.",
+      },
+      {
+        index: 1,
+        alt: "Prueba espacial WebXR de Orbit Lens",
+        label: "Prueba espacial WebXR",
+        caption:
+          "Captura VR de la ruta Spatial Mode opcional, posicionando la misma interfaz como prueba WebXR en Quest, no como sistema VR final.",
+      },
+    ],
+    frames: [
+      {
+        index: 0,
+        alt: "Orbit Lens visión y claridad espacial",
+        label: "Vision / claridad espacial",
+        caption:
+          "El hero presenta gafas AI ficticias como objeto premium: profundidad óptica, ruido mínimo de UI y confianza de producto.",
+      },
+      {
+        index: 1,
+        alt: "Orbit Lens capa de lenguaje transparente",
+        label: "Lenguaje transparente",
+        caption:
+          "La traduccion en vivo se vuelve una capa contextual transparente sobre el mundo, no una superficie de app separada.",
+      },
+      {
+        index: 2,
+        alt: "Orbit Lens campo Recall",
+        label: "Recall",
+        caption:
+          "La memoria se inicia por el usuario: recall empieza cuando se pide, evitando el marco de vigilancia pasiva.",
+      },
+      {
+        index: 3,
+        alt: "Orbit Lens Reference Orbit para captura visual",
+        label: "Reference Orbit",
+        caption:
+          "Creator capture se convierte en una orbita pseudo-3D donde notas visuales flotan, retroceden y se resuelven alrededor de la capa activa.",
+      },
+      {
+        index: 4,
+        alt: "Orbit Lens calma de foco",
+        label: "Calma de foco",
+        caption:
+          "La interfaz elimina ruido en vez de añadir información, manteniendo la atención calmada e intencional.",
+      },
+      {
+        index: 5,
+        alt: "Orbit Lens limite de confianza y privacidad",
+        label: "Limite de confianza",
+        caption:
+          "La privacidad aparece dentro de la interfaz: consentimiento visible, frontera publico/privado y acceso manual.",
+      },
+      {
+        index: 6,
+        alt: "Orbit Lens consola de acceso",
+        label: "Consola de acceso",
+        caption:
+          "El cierre funciona como terminal controlado de producto para preview, GitHub y handoff del estudio.",
+      },
+      {
+        index: 7,
+        alt: "Orbit Lens capas de producto suspendidas",
+        label: "Capas de producto",
+        caption:
+          "Las capas del producto quedan suspendidas en el campo, reforzando que el sitio opera como sistema, no como landing convencional.",
+      },
+    ],
     searchContent: {
       shortDescription:
         "Concepto de gafas AI espaciales con campos contextuales, Inspect Optics, Reference Orbit y prueba WebXR.",
       longDescription:
-        "Orbit Lens demuestra como una web de producto puede adoptar el lenguaje del dispositivo: contexto espacial, optica, privacidad, orbitas de referencia y prueba XR.",
+        "Orbit Lens demuestra cómo una web de producto puede adoptar el lenguaje del dispositivo: contexto espacial, óptica, privacidad, órbitas de referencia y prueba XR.",
       tags: ["AI eyewear", "WebXR", "Inspect Optics", "Reference Orbit", "GLSL"],
       type: "Product OS espacial / sistema de producto ficticio.",
       audience: "Productos hardware, AI devices, wearables, demos premium y lanzamientos conceptuales.",
       problem:
         "Las landing pages de hardware suelen explicar features desde fuera, sin hacer sentir la interfaz del producto.",
       approach:
-        "La experiencia convierte features en campos contextuales, inspeccion optica, orbitas y una prueba WebXR opcional.",
+        "La experiencia convierte features en campos contextuales, inspección óptica, órbitas y una prueba WebXR opcional.",
       outcome:
-        "El caso prueba una forma mas inmersiva de presentar producto espacial sin perder claridad comercial.",
+        "El caso prueba una forma más inmersiva de presentar producto espacial sin perder claridad comercial.",
       productionFacts: ["React", "TypeScript", "WebGL", "GLSL", "WebXR", "Responsive product interface"],
       relatedServices: ["Landing page de producto", "Sistemas web interactivos"],
     },

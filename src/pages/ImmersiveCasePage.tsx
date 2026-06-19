@@ -39,14 +39,57 @@ function useCinematicImmersiveLabels() {
   const isSpanish = locale === "es";
 
   return {
+    locale,
     isSpanish,
     backToImmersive: isSpanish ? "<- Volver a Immersive" : "<- Back to immersive",
     desktopProof: isSpanish ? "prueba desktop" : "desktop proof",
+    inspect: isSpanish ? "Inspeccionar" : "Inspect",
     openGithub: isSpanish ? "Ver GitHub ->" : "Open GitHub ->",
     openLiveSite: isSpanish ? "Ver sitio ->" : "Open live site ->",
+    repo: isSpanish ? "Repositorio" : "Repository",
     startProject: isSpanish ? "Iniciar proyecto ->" : "Start a project ->",
     startProjectShort: isSpanish ? "Iniciar proyecto" : "Start a project",
+    indexMode: isSpanish ? "Índice" : "Index",
+    fieldMode: isSpanish ? "Campo" : "Field",
   };
+}
+
+function isLiveSiteLink(link: { label: string; href: string }) {
+  const value = `${link.label} ${link.href}`.toLowerCase();
+  return !value.includes("github") && /live|site|sitio|pages\.dev/.test(value);
+}
+
+function isRepositoryLink(link: { label: string; href: string }) {
+  const value = `${link.label} ${link.href}`.toLowerCase();
+  return /repo|repository|repositorio|github/.test(value);
+}
+
+const sectionRailSpanishLabels: Record<string, string> = {
+  Archive: "Archivo",
+  Artifacts: "Artefactos",
+  Depth: "Profundidad",
+  Fields: "Campos",
+  Modules: "Módulos",
+  Object: "Objeto",
+  Orbit: "Órbita",
+  Presence: "Presencia",
+  Proof: "Prueba",
+  Room: "Sala",
+  Technical: "Técnico",
+  Threshold: "Umbral",
+  Walkthrough: "Recorrido",
+  "Product OS": "Product OS",
+  "XR room": "Sala XR",
+  WebXR: "WebXR",
+};
+
+function localizeSectionRailItems(items: SectionRailItem[], isSpanish: boolean): SectionRailItem[] {
+  if (!isSpanish) return items;
+
+  return items.map((item) => ({
+    ...item,
+    label: sectionRailSpanishLabels[item.label] ?? item.label,
+  }));
 }
 
 const cinematicToneTokens: Record<
@@ -258,7 +301,7 @@ function ImmersiveSeoMeta({
     },
     keywords: item.searchContent?.tags.join(", ") ?? item.highlights?.join(", "),
     genre: item.searchContent?.category ?? item.medium,
-    workExample: item.links?.find((link) => link.label.toLowerCase().includes("live"))?.href,
+    workExample: item.links?.find(isLiveSiteLink)?.href,
   };
 
   return (
@@ -575,6 +618,37 @@ const webHeroVideoChapters = [
   },
 ];
 
+const webHeroVideoChaptersEs = [
+  {
+    eyebrow: "Módulo 01 / Campo",
+    title: "El campo fija el lenguaje operativo.",
+    text:
+      "La ruta inicial presenta WEBHERO como un campo de interfaz vivo: umbral, vocabulario de stage, overview del sistema y matriz de prueba funcionan como un entorno controlado, no como pantallas de portfolio separadas.",
+    signals: ["Umbral de entrada", "Vocabulario de stage", "Overview del sistema", "Ruta de prueba R&D"],
+  },
+  {
+    eyebrow: "Módulo 02 / Backdrops",
+    title: "Backdrops cinematográficos",
+    text:
+      "Los backdrops funcionan como infraestructura visual. Sostienen atmósfera, transiciones de sección y mundo de marca mientras permanecen detrás del contenido, sin convertirse en ruido decorativo.",
+    signals: ["Runtime atmosférico", "Objetos de señal", "Familias visuales reutilizables", "Soporte de transición"],
+  },
+  {
+    eyebrow: "Módulo 03 / Living Images",
+    title: "Las imágenes se vuelven superficies espaciales.",
+    text:
+      "Living Images Classic conserva la fidelidad de la fuente y añade profundidad, movimiento y presentación controlada. Living Splat / Pro Mode extiende imágenes seleccionadas hacia obras espaciales basadas en SHARP / 3DGS.",
+    signals: ["Modo imagen classic", "Candidatos Splat / Pro", "Carga poster-first", "Viewer controlado"],
+  },
+  {
+    eyebrow: "Módulo 04 / Art Room",
+    title: "Art Room",
+    text:
+      "Art Room es la capa de exposición. Permite mostrar modos disponibles, separar la presentación pública de rutas pesadas de viewer y preparar adaptadores XR sin convertir XR en el núcleo inestable.",
+    signals: ["Modos curatoriales", "Capa de presentación", "Viewer separado", "Ruta futura WebXR"],
+  },
+];
+
 const webHeroTechnicalReadouts = [
   "Vite / React / TypeScript",
   "WebGL / GLSL / Canvas",
@@ -588,6 +662,21 @@ const webHeroTechnicalReadouts = [
   "Living Art Mixer active R&D compiler path",
   "Reduced-motion and camera-safety guardrails",
   "Desktop proof package / mobile not packaged yet",
+];
+
+const webHeroTechnicalReadoutsEs = [
+  "Vite / React / TypeScript",
+  "WebGL / GLSL / Canvas",
+  "Composición de stage tridimensional",
+  "Vertical de prueba SHARP / 3DGS / Gaussian Splat",
+  "Rutas de viewer splat controladas",
+  "Arquitectura de adaptadores WebXR",
+  "Capa Art Room sensible a modos",
+  "Runtime de escenas basado en manifest",
+  "Estrategia poster-first para listados ligeros",
+  "Living Art Mixer como ruta R&D activa",
+  "Guardrails de reduced motion y seguridad de cámara",
+  "Paquete de prueba desktop / mobile no empaquetado todavía",
 ];
 
 const webHeroFieldFrameClasses = [
@@ -665,6 +754,37 @@ const koolBerkDepthLayers = [
   },
 ];
 
+const koolBerkDepthLayersEs = [
+  {
+    index: "01",
+    title: "Sonic Object Stage",
+    text:
+      "La entrada se organiza alrededor de un cubo central. Funciona como identidad, objeto de navegación, archivo de releases y artefacto sonoro, no como una homepage estándar de artista.",
+    signal: "Navegación por cubo / archivo de releases / superficie de identidad",
+  },
+  {
+    index: "02",
+    title: "Object Inspect",
+    text:
+      "ReleaseUnfold abre los álbumes como objetos compactos: cover, nota de release, preview local, tracklist, enlaces de plataforma y ruta de dossier conviven en una sola superficie.",
+    signal: "Objeto de release / inspección rápida / handoff a plataformas",
+  },
+  {
+    index: "03",
+    title: "Album Dossier",
+    text:
+      "El dossier funciona como un terminal oscuro de museo para concepto, tracks, visuales, créditos, plataformas, notas y puntos de entrada inmersivos.",
+    signal: "Modo terminal / mapa de tracks / archivo visual",
+  },
+  {
+    index: "04",
+    title: "Signal Tracks",
+    text:
+      "Los tracks no son filas de playlist. Cada uno conserva mood, duración, energía, etiqueta visual, fuente de preview local y preparación para Sonic Room.",
+    signal: "Tanec Monaha / audio local / sala preparada",
+  },
+];
+
 const koolBerkTechnicalReadouts = [
   "Vite / React / React Router",
   "Three.js / React Three Fiber / Drei",
@@ -678,6 +798,21 @@ const koolBerkTechnicalReadouts = [
   "Lazy-loaded Home / Dossier / Room / EPK",
   "Manual Vite chunks for React, Three and R3F",
   "Mobile and tablet survival pass completed",
+];
+
+const koolBerkTechnicalReadoutsEs = [
+  "Vite / React / React Router",
+  "Three.js / React Three Fiber / Drei",
+  "CSS Modules en el proyecto fuente",
+  "Web Audio API / AudioContext / AnalyserNode",
+  "Atmósfera shader GLSL personalizada",
+  "Respuesta audio-reactiva del material del cubo",
+  "Audio preview local para análisis real",
+  "Sonic Room como overlay WebGL fullscreen",
+  "Capa EPK / Press Dossier con deep links",
+  "Home / Dossier / Room / EPK cargados bajo demanda",
+  "Chunks manuales de Vite para React, Three y R3F",
+  "Pase de supervivencia mobile y tablet completado",
 ];
 
 const presenceOsRailItems: SectionRailItem[] = [
@@ -729,6 +864,7 @@ const presenceEntryImages = [
 ];
 
 function PresenceEntryHeroBackdrop() {
+  const { isSpanish } = useCinematicImmersiveLabels();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const noteRef = useRef<HTMLParagraphElement | null>(null);
 
@@ -737,11 +873,17 @@ function PresenceEntryHeroBackdrop() {
     if (!root) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const labels = {
-      forming: "signal forming",
-      stable: "entry available",
-      unstable: "signal unstable",
-    };
+    const labels = isSpanish
+      ? {
+          forming: "señal formándose",
+          stable: "entrada disponible",
+          unstable: "señal inestable",
+        }
+      : {
+          forming: "signal forming",
+          stable: "entry available",
+          unstable: "signal unstable",
+        };
 
     if (prefersReducedMotion) {
       root.style.setProperty("--presence-entry-signal", "0.82");
@@ -851,7 +993,7 @@ function PresenceEntryHeroBackdrop() {
       window.removeEventListener("scroll", markInteraction);
       window.removeEventListener("keydown", markInteraction);
     };
-  }, []);
+  }, [isSpanish]);
 
   return (
     <div ref={rootRef} data-presence-entry-hero data-signal-state="forming" aria-hidden="true">
@@ -915,10 +1057,18 @@ function PresenceEntryHeroBackdrop() {
       </div>
 
       <div className="presence-entry-traces" aria-hidden="true">
-        <span className="presence-entry-trace-a">stillness opens the deeper layer</span>
-        <span className="presence-entry-trace-b">speed reduces the field</span>
-        <span className="presence-entry-trace-c">return forms memory</span>
-        <span className="presence-entry-trace-d">local session only</span>
+        <span className="presence-entry-trace-a">
+          {isSpanish ? "la quietud abre la capa profunda" : "stillness opens the deeper layer"}
+        </span>
+        <span className="presence-entry-trace-b">
+          {isSpanish ? "la velocidad reduce el campo" : "speed reduces the field"}
+        </span>
+        <span className="presence-entry-trace-c">
+          {isSpanish ? "el retorno forma memoria" : "return forms memory"}
+        </span>
+        <span className="presence-entry-trace-d">
+          {isSpanish ? "solo sesion local" : "local session only"}
+        </span>
       </div>
 
       <div className="presence-entry-memory-constellation" aria-hidden="true">
@@ -936,14 +1086,23 @@ function PresenceEntryHeroBackdrop() {
             }
           >
             <img src={image.src} alt="" loading="eager" decoding="async" />
-            <figcaption>{image.label}</figcaption>
+            <figcaption>
+              {isSpanish
+                ? {
+                    "coast signal": "señal de costa",
+                    "rain trace": "rastro de lluvia",
+                    "lake memory": "memoria de lago",
+                    "object memory": "memoria de objeto",
+                  }[image.label] ?? image.label
+                : image.label}
+            </figcaption>
           </figure>
         ))}
       </div>
 
       <div className="presence-entry-note">
         <span />
-        <p ref={noteRef}>signal forming</p>
+        <p ref={noteRef}>{isSpanish ? "señal formándose" : "signal forming"}</p>
       </div>
     </div>
   );
@@ -980,6 +1139,37 @@ const presenceOsRules = [
   },
 ];
 
+const presenceOsRulesEs = [
+  {
+    index: "01",
+    title: "Quietud = claridad",
+    text:
+      "La interfaz recompensa la atención calma. Cuando el usuario baja el ritmo, el campo de memoria se vuelve más legible en lugar de añadir más controles.",
+    signal: "Presencia antes que presión de clic",
+  },
+  {
+    index: "02",
+    title: "Retorno = profundidad",
+    text:
+      "La atención repetida puede hacer que un fragmento se sienta más presente, convirtiendo el retorno en una señal de interfaz.",
+    signal: "La memoria gana contexto con el retorno",
+  },
+  {
+    index: "03",
+    title: "Velocidad = interfaz mínima",
+    text:
+      "El movimiento rápido reduce la interfaz. El sistema evita ruido de dashboard y deja que etiquetas y controles aparezcan solo cuando tienen sentido.",
+    signal: "Archivo silencioso / interfaz reducida",
+  },
+  {
+    index: "04",
+    title: "Atención = estabilización",
+    text:
+      "Fragmentos, clima y estados de inspección se estabilizan alrededor de la atención, creando un campo sensible sin fingir que comprende los recuerdos.",
+    signal: "Reconstrucción algorítmica, no memoria de IA",
+  },
+];
+
 const presenceOsTechnicalReadouts = [
   "Vite / React / TypeScript",
   "Three.js / React Three Fiber / Drei",
@@ -995,15 +1185,32 @@ const presenceOsTechnicalReadouts = [
   "Mobile and tablet pass still in development",
 ];
 
+const presenceOsTechnicalReadoutsEs = [
+  "Vite / React / TypeScript",
+  "Three.js / React Three Fiber / Drei",
+  "WebXR / ruta de sala orientada a Quest",
+  "Object URLs locales / sessionStorage",
+  "Render Canvas / preview tipo Memory Reel",
+  "MediaRecorder / export local WebM",
+  "Capa ambiental WebAudio",
+  "Paquete local de artefactos con JSZip",
+  "Synthetic Weather como clima de memoria",
+  "Logger de sesión VR",
+  "Constructor de replay timeline",
+  "Mobile y tablet siguen en desarrollo",
+];
+
 function PresenceOsVideoProof({
   video,
   index,
+  eyebrow,
   title,
   description,
   signals,
 }: {
   video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
   index: number;
+  eyebrow: string;
   title: string;
   description: string;
   signals: string[];
@@ -1078,7 +1285,7 @@ function PresenceOsVideoProof({
       </div>
       <div className="grid gap-5 border-t border-white/10 p-5 md:p-7 lg:grid-cols-[0.36fr_0.42fr_0.22fr] lg:items-end">
         <div>
-          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">Directed proof</div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">{eyebrow}</div>
           <h3 className="mt-4 max-w-[10ch] text-[clamp(2.5rem,4.8vw,5.2rem)] font-normal leading-[0.9] text-white">
             {title}
           </h3>
@@ -1337,6 +1544,8 @@ function PresenceOsFrameCard({
   className?: string;
   imageClassName?: string;
 }) {
+  const labels = useCinematicImmersiveLabels();
+
   return (
     <motion.button
       type="button"
@@ -1360,7 +1569,7 @@ function PresenceOsFrameCard({
         />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),transparent_55%,rgba(0,0,0,0.34))]" />
         <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
-          Inspect
+          {labels.inspect}
         </div>
       </div>
       <div className="border-t border-white/10 p-4 md:p-5">
@@ -1382,20 +1591,146 @@ function PresenceOsCaseLayout({
   onBack: () => void;
   onOpenProject?: () => void;
 }) {
-  const activeSection = useSectionRailActive(presenceOsRailItems, "presence-os-threshold");
-  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
   const labels = useCinematicImmersiveLabels();
+  const railItems = localizeSectionRailItems(presenceOsRailItems, labels.isSpanish);
+  const activeSection = useSectionRailActive(railItems, "presence-os-threshold");
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
   const videos = item.videos ?? [];
   const frames = item.frames ?? [];
   const desktopFrames = frames.filter((frame) => frame.device !== "vr");
   const vrFrames = frames.filter((frame) => frame.device === "vr");
-  const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
+  const liveLink = item.links?.find(isLiveSiteLink);
+  const rules = labels.isSpanish ? presenceOsRulesEs : presenceOsRules;
+  const technicalReadouts = labels.isSpanish ? presenceOsTechnicalReadoutsEs : presenceOsTechnicalReadouts;
+  const copy = labels.isSpanish
+    ? {
+        sectionLabel: "Secciones de Presence OS Memory Atlas",
+        heroEyebrow: "Memoria privada espacial / prototipo MVP WebXR",
+        heroDetails: [
+          "Prototipo avanzado / desarrollo activo",
+          "Ruta MVP funcional documentada",
+          "Procesado local / nada se sube por defecto",
+        ],
+        bottomSignals: [
+          "Entrada local-first de archivo",
+          "Capa cinematic inspect",
+          "XR Memory Room",
+          "Export de artefacto Memory Reel",
+        ],
+        walkthroughEyebrow: "Prueba dirigida",
+        walkthroughTitle: "Suelta un archivo. Deja que se convierta en campo.",
+        walkthroughDescription:
+          "El primer recorrido se lee como una sola historia de producto: intake local, campo de presencia, cinematic inspect, resultado humano, Memory Reel y ruta de artefacto exportable. El proyecto sigue siendo local-first y no promete comprensión cloud ni estado final de producción.",
+        walkthroughSignals: ["Preview local-first", "Campo de memoria", "Reel + ruta de export"],
+        presenceEyebrow: "Logica de presencia",
+        presenceTitle: "Interfaz como campo de atención.",
+        presenceBody:
+          "Presence OS explora interfaces que responden a presencia, no solo a clics. Memory Atlas es el primer caso: un archivo privado se convierte en un campo vivo modelado por quietud, retorno, atención, velocidad y duda.",
+        proofEyebrow: "Campo de prueba visual",
+        proofTitle: "Fragmentos privados se vuelven clima legible.",
+        proofBody:
+          "Los frames desktop se ordenan como sistema editorial, no como grid denso: entrada, intake, campo, inspect, resultado, fragmentos, sala y salida de artefacto.",
+        xrEyebrow: "XR Memory Room",
+        xrTitle: "Una sala, no un gimmick.",
+        xrBody:
+          "La capa XR es un modo más profundo del mismo sistema de memoria. Usa una cámara fija comfort-first, bandas de distancia legibles, foco por mirada antes que complejidad manual y un command rail simple para return, reset y exit.",
+        xrVideoTitle: "La memoria gana distancia espacial.",
+        xrVideoDescription:
+          "La captura VR documenta la dirección funcional actual: fragmentos de memoria se organizan alrededor del usuario con presencia de manos, foco por mirada y comportamiento calmado de sala. Sigue siendo un prototipo avanzado, con estabilización de interacción Quest en curso.",
+        xrVideoSignals: ["Prueba orientada a Quest", "Presencia de manos", "Sin locomocion forzada"],
+        artifactsEyebrow: "Confianza local-first",
+        artifactsTitle: "Nada se sube. Nada se almacena.",
+        artifactsBody:
+          "El prototipo se disena alrededor de la confianza del archivo privado. Los archivos se procesan localmente en el navegador por defecto y luego se convierten en artefactos de preview: Memory Reel, replay timeline, export WebM y paquete ZIP local de handoff.",
+        artifactItems: [
+          "Preview Memory Reel",
+          "Export local WebM",
+          "Replay timeline builder",
+          "Traza de sesion VR",
+          "Paquete ZIP de artefactos",
+          "Salida futura PDF booklet",
+        ],
+        technicalEyebrow: "Dossier técnico",
+        technicalTitle: "Motor de memoria local-first.",
+        technicalBody:
+          "El stack sostiene un MVP funcional sin exagerar el producto: intake local en navegador, presentación espacial WebGL, investigación de sala XR, generación canvas de artefactos y tooling de export en un sistema experimental.",
+        footer: {
+          headline: "Construye una interfaz privada de memoria espacial.",
+          description:
+            "Presence OS cierra como prueba MVP: intake local de archivo, comportamiento basado en presencia, cinematic inspect, investigación XR room y export de artefactos dentro de un sistema de memoria tranquilo.",
+          signal: "sistemas de memoria basados en presencia",
+          intake: "disponible",
+          nextStep: "iniciar prototipo de memoria espacial",
+          bottomLine: "Construido como sistema de interfaz inmersiva local-first.",
+        },
+      }
+    : {
+        sectionLabel: "Presence OS Memory Atlas sections",
+        heroEyebrow: "Private spatial memory / WebXR prototype MVP",
+        heroDetails: [
+          "Advanced prototype / in active development",
+          "Fully functional MVP path documented",
+          "Processed locally / nothing uploaded by default",
+        ],
+        bottomSignals: [
+          "Local-first archive intake",
+          "Cinematic inspect layer",
+          "XR Memory Room",
+          "Memory Reel artifact export",
+        ],
+        walkthroughEyebrow: "Directed proof",
+        walkthroughTitle: "Drop an archive. Let it become a field.",
+        walkthroughDescription:
+          "The first walkthrough reads as one product story: local intake, presence field, cinematic inspect, human result, Memory Reel and exportable artifact path. The project stays local-first and does not claim cloud understanding or finished production status.",
+        walkthroughSignals: ["Local-first preview", "Memory field", "Reel + export path"],
+        presenceEyebrow: "Presence logic",
+        presenceTitle: "Interface as attention field.",
+        presenceBody:
+          "Presence OS explores interfaces that respond to presence, not only clicks. Memory Atlas is the first use case: a private archive becomes a living field shaped by stillness, return, attention, speed and hesitation.",
+        proofEyebrow: "Visual proof field",
+        proofTitle: "Private fragments become readable weather.",
+        proofBody:
+          "The desktop frames are arranged as an editorial system rather than a dense grid: entry, intake, field, inspect, result, fragments, room and artifact output.",
+        xrEyebrow: "XR Memory Room",
+        xrTitle: "A room, not a gimmick.",
+        xrBody:
+          "The XR layer is a deeper mode of the same memory system. It uses a fixed comfort-first chamber, readable distance bands, gaze focus before hand complexity and a simple command rail for return, reset and exit.",
+        xrVideoTitle: "Memory gains spatial distance.",
+        xrVideoDescription:
+          "The VR capture documents the current working direction: memory fragments are staged around the viewer with hand presence, gaze focus and calm room behavior. It remains an advanced prototype, with Quest interaction stabilization still underway.",
+        xrVideoSignals: ["Quest-oriented proof", "Hand presence", "No forced locomotion"],
+        artifactsEyebrow: "Local-first trust",
+        artifactsTitle: "Nothing uploaded. Nothing stored.",
+        artifactsBody:
+          "The prototype is designed around private archive trust. Files are processed locally in the browser by default, then converted into preview artifacts: Memory Reel, replay timeline, WebM export and a local ZIP handoff pack.",
+        artifactItems: [
+          "Memory Reel preview",
+          "Local WebM export",
+          "Replay timeline builder",
+          "VR session trace",
+          "Artifact ZIP pack",
+          "Future PDF booklet output",
+        ],
+        technicalEyebrow: "Technical dossier",
+        technicalTitle: "Local-first memory engine.",
+        technicalBody:
+          "The stack supports a working MVP without overstating the product: browser-local intake, WebGL spatial presentation, XR room research, canvas artifact generation and export tooling stay in one experimental system.",
+        footer: {
+          headline: "Build a private spatial memory interface.",
+          description:
+            "Presence OS closes as an MVP proof: local archive intake, presence-based behavior, cinematic inspect, XR room research and artifact export stay inside one quiet memory system.",
+          signal: "presence-based memory systems",
+          intake: "available",
+          nextStep: "start a spatial memory prototype",
+          bottomLine: "Built as a local-first immersive interface system.",
+        },
+      };
   const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
     id: `presence-os-frame-${String(index + 1).padStart(2, "0")}`,
     kind: "image",
     src: frame.src,
     alt: frame.alt,
-    label: frame.label ?? `Frame ${index + 1}`,
+    label: frame.label ?? `${labels.isSpanish ? "Fotograma" : "Frame"} ${index + 1}`,
     caption: frame.caption,
     role: frame.device === "vr" ? "detail" : index < 2 ? "hero" : "proof",
     fit: "contain",
@@ -1411,12 +1746,12 @@ function PresenceOsCaseLayout({
   return (
     <CinematicImmersiveCaseShell tone="presence-os">
     <div className="min-h-screen bg-[#030706] text-white">
-      <ImmersiveSeoMeta item={item} imageAlt="Presence OS Memory Atlas immersive case" />
+      <ImmersiveSeoMeta item={item} imageAlt="Presence OS Memory Atlas immersive case" locale={labels.locale} />
       <SectionRail
-        items={presenceOsRailItems}
+        items={railItems}
         activeId={activeSection}
         onSelect={scrollToSection}
-        label="Presence OS Memory Atlas sections"
+        label={copy.sectionLabel}
         tone="dark"
       />
 
@@ -1445,7 +1780,7 @@ function PresenceOsCaseLayout({
           <div className="grid gap-8 py-10 lg:grid-cols-[0.58fr_0.42fr] lg:items-end">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
-                Private spatial memory / WebXR prototype MVP
+                {copy.heroEyebrow}
               </div>
               <h1 className="mt-6 max-w-[10ch] text-[clamp(3.8rem,10vw,9.8rem)] font-normal leading-[0.82] tracking-[-0.07em] text-white">
                 Presence OS / Memory Atlas
@@ -1460,9 +1795,9 @@ function PresenceOsCaseLayout({
             <div className="border-y border-white/14 bg-black/28 p-5 backdrop-blur md:p-6">
               <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
               <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/46">
-                <span>Advanced prototype / in active development</span>
-                <span>Fully functional MVP path documented</span>
-                <span>Processed locally / nothing uploaded by default</span>
+                {copy.heroDetails.map((detail) => (
+                  <span key={detail}>{detail}</span>
+                ))}
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {liveLink ? (
@@ -1483,10 +1818,9 @@ function PresenceOsCaseLayout({
           </div>
 
           <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
-            <span>Local-first archive intake</span>
-            <span>Cinematic inspect layer</span>
-            <span>XR Memory Room</span>
-            <span>Memory Reel artifact export</span>
+            {copy.bottomSignals.map((signal) => (
+              <span key={signal}>{signal}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -1501,9 +1835,10 @@ function PresenceOsCaseLayout({
             <PresenceOsVideoProof
               video={videos[0]}
               index={0}
-              title="Drop an archive. Let it become a field."
-              description="The first walkthrough reads as one product story: local intake, presence field, cinematic inspect, human result, Memory Reel and exportable artifact path. The project stays local-first and does not claim cloud understanding or finished production status."
-              signals={["Local-first preview", "Memory field", "Reel + export path"]}
+              eyebrow={copy.walkthroughEyebrow}
+              title={copy.walkthroughTitle}
+              description={copy.walkthroughDescription}
+              signals={copy.walkthroughSignals}
             />
           ) : null}
         </section>
@@ -1515,18 +1850,16 @@ function PresenceOsCaseLayout({
         >
           <div className="grid gap-8 lg:grid-cols-[0.4fr_0.6fr]">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Presence logic</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.presenceEyebrow}</div>
               <h2 className="mt-5 max-w-[9ch] text-[clamp(3rem,6.4vw,6.5rem)] font-normal leading-[0.86] text-white">
-                Interface as attention field.
+                {copy.presenceTitle}
               </h2>
               <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-                Presence OS explores interfaces that respond to presence, not only clicks. Memory Atlas is the first use
-                case: a private archive becomes a living field shaped by stillness, return, attention, speed and
-                hesitation.
+                {copy.presenceBody}
               </p>
             </div>
             <div className="grid gap-px bg-white/10 md:grid-cols-2">
-              {presenceOsRules.map((rule) => (
+              {rules.map((rule) => (
                 <div key={rule.title} className="bg-[#030706] p-5 md:p-6">
                   <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">{rule.index}</div>
                   <h3 className="mt-6 text-[clamp(1.8rem,2.8vw,3rem)] font-normal leading-[0.94] text-white">{rule.title}</h3>
@@ -1541,14 +1874,13 @@ function PresenceOsCaseLayout({
 
           <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-white/10 pt-10">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.proofEyebrow}</div>
               <h2 className="mt-4 max-w-[11ch] text-[clamp(3.2rem,6.2vw,6.5rem)] font-normal leading-[0.84] text-white">
-                Private fragments become readable weather.
+                {copy.proofTitle}
               </h2>
             </div>
             <p className="max-w-[32rem] text-[14px] leading-7 text-white/54">
-              The desktop frames are arranged as an editorial system rather than a dense grid: entry, intake, field,
-              inspect, result, fragments, room and artifact output.
+              {copy.proofBody}
             </p>
           </div>
 
@@ -1582,22 +1914,22 @@ function PresenceOsCaseLayout({
         >
           <div className="grid gap-8 lg:grid-cols-[0.45fr_0.55fr] lg:items-end">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">XR Memory Room</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.xrEyebrow}</div>
               <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6.3vw,6.4rem)] font-normal leading-[0.86] text-white">
-                A room, not a gimmick.
+                {copy.xrTitle}
               </h2>
               <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-                The XR layer is a deeper mode of the same memory system. It uses a fixed comfort-first chamber, readable
-                distance bands, gaze focus before hand complexity and a simple command rail for return, reset and exit.
+                {copy.xrBody}
               </p>
             </div>
             {videos[1] ? (
               <PresenceOsVideoProof
                 video={videos[1]}
                 index={1}
-                title="Memory gains spatial distance."
-                description="The VR capture documents the current working direction: memory fragments are staged around the viewer with hand presence, gaze focus and calm room behavior. It remains an advanced prototype, with Quest interaction stabilization still underway."
-                signals={["Quest-oriented proof", "Hand presence", "No forced locomotion"]}
+                eyebrow={copy.walkthroughEyebrow}
+                title={copy.xrVideoTitle}
+                description={copy.xrVideoDescription}
+                signals={copy.xrVideoSignals}
               />
             ) : null}
           </div>
@@ -1626,25 +1958,16 @@ function PresenceOsCaseLayout({
           className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.52fr_0.48fr]"
         >
           <div className="border-y border-white/10 bg-white/[0.025] p-5 md:p-7">
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Local-first trust</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.artifactsEyebrow}</div>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6.1rem)] font-normal leading-[0.86] text-white">
-              Nothing uploaded. Nothing stored.
+              {copy.artifactsTitle}
             </h2>
             <p className="mt-6 text-[15px] leading-8 text-white/62">
-              The prototype is designed around private archive trust. Files are processed locally in the browser by
-              default, then converted into preview artifacts: Memory Reel, replay timeline, WebM export and a local ZIP
-              handoff pack.
+              {copy.artifactsBody}
             </p>
           </div>
           <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-            {[
-              "Memory Reel preview",
-              "Local WebM export",
-              "Replay timeline builder",
-              "VR session trace",
-              "Artifact ZIP pack",
-              "Future PDF booklet output",
-            ].map((item, index) => (
+            {copy.artifactItems.map((item, index) => (
               <div key={item} className="bg-[#030706] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
                 <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
                 {item}
@@ -1659,19 +1982,17 @@ function PresenceOsCaseLayout({
           className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.46fr_0.54fr]"
         >
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical dossier</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.technicalEyebrow}</div>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6.2rem)] font-normal leading-[0.86] text-white">
-              Local-first memory engine.
+              {copy.technicalTitle}
             </h2>
             <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-              The stack supports a working MVP without overstating the product: browser-local intake, WebGL spatial
-              presentation, XR room research, canvas artifact generation and export tooling stay in one experimental
-              system.
+              {copy.technicalBody}
             </p>
           </div>
 
           <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-            {presenceOsTechnicalReadouts.map((item, index) => (
+            {technicalReadouts.map((item, index) => (
               <div key={item} className="bg-[#030706] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
                 <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
                 {item}
@@ -1685,13 +2006,12 @@ function PresenceOsCaseLayout({
         onOpenProject={onOpenProject}
         variant="immersiveCase"
         immersiveCaseContent={{
-          headline: "Build a private spatial memory interface.",
-          description:
-            "Presence OS closes as an MVP proof: local archive intake, presence-based behavior, cinematic inspect, XR room research and artifact export stay inside one quiet memory system.",
-          signal: "presence-based memory systems",
-          intake: "available",
-          nextStep: "start a spatial memory prototype",
-          bottomLine: "Built as a local-first immersive interface system.",
+          headline: copy.footer.headline,
+          description: copy.footer.description,
+          signal: copy.footer.signal,
+          intake: copy.footer.intake,
+          nextStep: copy.footer.nextStep,
+          bottomLine: copy.footer.bottomLine,
           ctaLabel: labels.startProjectShort,
         }}
       />
@@ -1776,6 +2096,51 @@ const orbitLensFields = [
   },
 ];
 
+const orbitLensFieldsEs = [
+  {
+    index: "01",
+    title: "Visión / claridad espacial",
+    text:
+      "El producto aparece como un objeto premium de gafas AI: profundidad óptica silenciosa, controles contenidos y menos ruido de interfaz.",
+    signal: "Claridad espacial sin ruido",
+  },
+  {
+    index: "02",
+    title: "Lenguaje transparente",
+    text:
+      "La traducción funciona como una capa contextual sobre el mundo, con jerarquía de fuente y traducción dentro de la misma superficie óptica.",
+    signal: "El lenguaje se vuelve transparente",
+  },
+  {
+    index: "03",
+    title: "Recall",
+    text:
+      "La memoria se presenta como recall iniciado por el usuario, no como grabación pasiva. El sistema solo empieza cuando se solicita.",
+    signal: "La memoria empieza cuando tú lo pides",
+  },
+  {
+    index: "04",
+    title: "Calma de foco",
+    text:
+      "La interfaz elimina capas sobrantes y conserva solo la señal prioritaria, haciendo que la atención se sienta más calma y premium.",
+    signal: "Menos interfaz / más atención",
+  },
+  {
+    index: "05",
+    title: "Límite de confianza",
+    text:
+      "La privacidad aparece como comportamiento visible del producto: consentimiento, frontera público/privado y acceso manual a memoria forman parte de la interfaz.",
+    signal: "La confianza es parte de la interfaz",
+  },
+  {
+    index: "06",
+    title: "Terminal de acceso",
+    text:
+      "El campo final se convierte en un terminal controlado de producto para preview en vivo, prueba de repositorio y handoff de estudio.",
+    signal: "Acceso a producto / estudio",
+  },
+];
+
 const orbitLensTechnicalReadouts = [
   "Next.js / App Router",
   "React / TypeScript",
@@ -1791,6 +2156,21 @@ const orbitLensTechnicalReadouts = [
   "Mobile and tablet polish deferred",
 ];
 
+const orbitLensTechnicalReadoutsEs = [
+  "Next.js / App Router",
+  "React / TypeScript",
+  "Sistema material Tailwind CSS",
+  "Arquitectura de motion",
+  "Three.js / ruta WebXR",
+  "Atmósfera GLSL / WebGL canvas",
+  "Sistema Cinematic Inspect Reveal",
+  "Scroll-Driven Spatial Reference Orbit",
+  "Transición persistente de copy de campo",
+  "Material premium de-HUD",
+  "Metadata / OG / favicon / manifest",
+  "Pulido mobile y tablet diferido",
+];
+
 function OrbitLensCaseLayout({
   item,
   onBack,
@@ -1800,19 +2180,161 @@ function OrbitLensCaseLayout({
   onBack: () => void;
   onOpenProject?: () => void;
 }) {
-  const activeSection = useSectionRailActive(orbitLensRailItems, "orbit-lens-threshold");
-  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
   const labels = useCinematicImmersiveLabels();
+  const railItems = localizeSectionRailItems(orbitLensRailItems, labels.isSpanish);
+  const activeSection = useSectionRailActive(railItems, "orbit-lens-threshold");
+  const [inspectIndex, setInspectIndex] = useState<number | null>(null);
   const videos = item.videos ?? [];
   const frames = item.frames ?? [];
-  const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
-  const repoLink = item.links?.find((link) => link.label.toLowerCase().includes("repo"));
+  const liveLink = item.links?.find(isLiveSiteLink);
+  const repoLink = item.links?.find(isRepositoryLink);
+  const fields = labels.isSpanish ? orbitLensFieldsEs : orbitLensFields;
+  const technicalReadouts = labels.isSpanish ? orbitLensTechnicalReadoutsEs : orbitLensTechnicalReadouts;
+  const copy = labels.isSpanish
+    ? {
+        sectionLabel: "Secciones de Orbit Lens",
+        heroEyebrow: "Gafas AI ficticias / interfaz premium de producto",
+        heroDetails: [
+          "Concepto de producto ficticio / sin claim de hardware comercial",
+          "Prototipo web-first / Spatial Mode como prueba WebXR",
+          "Procesado AI conceptual / navegación manual experimental",
+        ],
+        bottomSignals: [
+          "Siete campos de inteligencia contextual",
+          "Cinematic Inspect Reveal",
+          "Reference Orbit guiado por scroll",
+          "Modo opcional de prueba WebXR",
+        ],
+        walkthrough: {
+          eyebrow: "Modulo dirigido / Product OS",
+          title: "El sitio se comporta como el dispositivo.",
+          description:
+            "El primer recorrido se lee como un campo operativo de producto: claridad óptica marca el tono y luego lenguaje, recall, creator capture, foco, privacidad y acceso se resuelven como capas contextuales del mismo sistema imaginado de gafas AI.",
+          signals: ["Narrativa de producto por campos", "Transicion persistente de copy", "Material premium de-HUD"],
+        },
+        fieldsEyebrow: "Campos de producto",
+        fieldsTitle: "Siete modos, un Product OS.",
+        fieldsBody:
+          "Orbit Lens reemplaza el patron esperado de hero/features/benefits por campos de inteligencia contextual. Cada campo muestra como unas gafas AI ficticias podrian superponer contexto util al mundo sin convertirse en ruido cyberpunk de HUD.",
+        proofEyebrow: "Campo de prueba visual",
+        proofTitle: "Lujo futurista tranquilo, no HUD gamer.",
+        proofBody:
+          "Los frames se secuencian como historia de producto: hero óptico, lenguaje transparente, recall iniciado por el usuario, órbita de referencias, foco silencioso, límite de confianza, terminal de acceso e inspección de producto.",
+        orbitEyebrow: "Interaccion signature",
+        orbitTitle: "Las referencias se mueven como objetos.",
+        orbitBody:
+          "El campo 04 implementa Scroll-Driven Spatial Reference Orbit: un carrusel pseudo-3D donde notas visuales flotan, retroceden y se resuelven alrededor de la capa activa de captura. Lo importante no es la novedad; es hacer que creator capture se sienta como capa de interfaz espacial.",
+        orbitSignals: [
+          "Estado activo por wheel",
+          "Scale / opacity / z-depth",
+          "Inspect Optics como capa persistente",
+          "HUD reducido / material óptico",
+        ],
+        xrEyebrow: "Capa de prueba WebXR",
+        xrTitle: "Spatial Mode es una prueba, no un claim VR final.",
+        xrBody:
+          "Orbit Lens incluye una ruta opcional `/spatial` con Enter VR, captura probada en Quest, paneles espaciales, Inspect Optics en modo XR y presencia de manos experimental. Se posiciona como capa de prueba WebXR mientras el producto central sigue siendo web-first.",
+        xrCards: [
+          { label: "Captura", text: "Grabacion espacial probada en Quest." },
+          { label: "Modo", text: "Capa de prueba WebXR, no sala de control final." },
+          { label: "Presencia", text: "La navegación con manos sigue experimental." },
+        ],
+        xrVideo: {
+          eyebrow: "Prueba WebXR / Spatial Mode",
+          title: "La interfaz puede salir de la página.",
+          description:
+            "La captura VR demuestra que el mismo sistema ficticio de producto puede convertirse en una capa de presentación espacial. La navegación con manos es experimental, así que el caso se mantiene honesto: prueba WebXR, no sistema VR final de producción.",
+          signals: ["Captura probada en Quest", "Inspect Optics en XR", "Presencia de manos experimental"],
+        },
+        technicalEyebrow: "Dossier técnico",
+        technicalTitle: "Stack de interfaz óptica de producto.",
+        technicalBody:
+          "La implementación está construida como interfaz de producto por modos: overlays persistentes, narrativa guiada por campos, capa atmosférica GLSL ligera, ruta WebXR e higiene de metadata/repo cercana a producción.",
+        footer: {
+          headline: "Construye la siguiente superficie Product OS.",
+          description:
+            "Orbit Lens cierra como prueba de gafas AI ficticias: narrativa de producto por campos, materiales de interfaz óptica, inspección cinematográfica, reference orbit y prueba WebXR dentro de un sistema premium web-first.",
+          signal: "sistemas premium de producto espacial",
+          intake: "disponible",
+          nextStep: "iniciar prototipo de interfaz de producto",
+          bottomLine: "Construido como concepto de interfaz para gafas AI espaciales ficticias.",
+        },
+      }
+    : {
+        sectionLabel: "Orbit Lens sections",
+        heroEyebrow: "Fictional AI eyewear / premium product interface",
+        heroDetails: [
+          "Fictional product concept / no commercial hardware claim",
+          "Web-first prototype / Spatial Mode as WebXR proof",
+          "AI processing conceptual / hand navigation experimental",
+        ],
+        bottomSignals: [
+          "Seven contextual intelligence fields",
+          "Cinematic Inspect Reveal",
+          "Scroll-driven Reference Orbit",
+          "Optional WebXR proof mode",
+        ],
+        walkthrough: {
+          eyebrow: "Directed module / product OS",
+          title: "The site behaves like the device.",
+          description:
+            "The first walkthrough reads as one product operating field: optical clarity sets the tone, then language, recall, creator capture, focus, privacy and access resolve as contextual layers of the same imagined AI eyewear system.",
+          signals: ["Field-driven product narrative", "Persistent copy transition", "De-HUD material pass"],
+        },
+        fieldsEyebrow: "Product fields",
+        fieldsTitle: "Seven modes, one product OS.",
+        fieldsBody:
+          "Orbit Lens replaces the expected hero/features/benefits pattern with contextual intelligence fields. Each field demonstrates how fictional AI glasses could layer useful context over the world without becoming cyberpunk HUD clutter.",
+        proofEyebrow: "Visual proof field",
+        proofTitle: "Quiet futuristic luxury, not a gamer HUD.",
+        proofBody:
+          "The frames are sequenced as an authored product story: optical hero, transparent language, user-led recall, creator orbit, quiet focus, trust boundary, access terminal and product inspection.",
+        orbitEyebrow: "Signature interaction",
+        orbitTitle: "References move like objects.",
+        orbitBody:
+          "Field 04 implements a Scroll-Driven Spatial Reference Orbit: a pseudo-3D carousel where visual notes float, recede and resolve around the active capture layer. The important part is not novelty; it is making creator capture feel like a spatial interface layer.",
+        orbitSignals: [
+          "Wheel-driven active state",
+          "Scale / opacity / z-depth",
+          "Inspect Optics as persistent layer",
+          "Reduced HUD / optical material pass",
+        ],
+        xrEyebrow: "WebXR proof layer",
+        xrTitle: "Spatial Mode is a proof, not a final VR claim.",
+        xrBody:
+          "Orbit Lens includes an optional `/spatial` route with Enter VR capability, Quest-tested session capture, spatial panels, Inspect Optics in XR mode and experimental hand presence. It is positioned as a WebXR proof layer while the core product remains web-first.",
+        xrCards: [
+          { label: "Capture", text: "Quest-tested spatial recording." },
+          { label: "Mode", text: "WebXR proof layer, not final control room." },
+          { label: "Presence", text: "Hand navigation stays experimental." },
+        ],
+        xrVideo: {
+          eyebrow: "WebXR proof / spatial mode",
+          title: "The interface can leave the page.",
+          description:
+            "The VR capture demonstrates that the same fictional product system can become a spatial presentation layer. Hand navigation is experimental, so the case stays honest: WebXR proof, not a finished production VR control system.",
+          signals: ["Quest-tested capture", "Inspect Optics in XR", "Experimental hand presence"],
+        },
+        technicalEyebrow: "Technical dossier",
+        technicalTitle: "Optical product interface stack.",
+        technicalBody:
+          "The implementation is built as a mode-based product interface: persistent overlays, field-driven narrative, a lightweight GLSL atmospheric layer, WebXR route and production-like metadata/repo hygiene.",
+        footer: {
+          headline: "Build the next product OS surface.",
+          description:
+            "Orbit Lens closes as a fictional AI eyewear proof: field-driven product narrative, optical interface materials, cinematic inspection, reference orbit and WebXR proof mode stay inside one premium web-first system.",
+          signal: "premium spatial product systems",
+          intake: "available",
+          nextStep: "start a product-interface prototype",
+          bottomLine: "Built as a fictional AI spatial glasses interface concept.",
+        },
+      };
   const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
     id: `orbit-lens-frame-${String(index + 1).padStart(2, "0")}`,
     kind: "image",
     src: frame.src,
     alt: frame.alt,
-    label: frame.label ?? `Frame ${index + 1}`,
+    label: frame.label ?? `${labels.isSpanish ? "Fotograma" : "Frame"} ${index + 1}`,
     caption: frame.caption,
     role: index < 1 ? "hero" : index >= 7 ? "detail" : "proof",
     fit: "contain",
@@ -1828,12 +2350,12 @@ function OrbitLensCaseLayout({
   return (
     <CinematicImmersiveCaseShell tone="orbit-lens">
     <div className="min-h-screen bg-[#03070a] text-white">
-      <ImmersiveSeoMeta item={item} imageAlt="Orbit Lens immersive product interface case" />
+      <ImmersiveSeoMeta item={item} imageAlt="Orbit Lens immersive product interface case" locale={labels.locale} />
       <SectionRail
-        items={orbitLensRailItems}
+        items={railItems}
         activeId={activeSection}
         onSelect={scrollToSection}
-        label="Orbit Lens sections"
+        label={copy.sectionLabel}
         tone="dark"
       />
 
@@ -1900,7 +2422,7 @@ function OrbitLensCaseLayout({
           <div className="grid gap-8 py-10 lg:grid-cols-[0.56fr_0.44fr] lg:items-end">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
-                Fictional AI eyewear / premium product interface
+                {copy.heroEyebrow}
               </div>
               <h1 className="mt-6 max-w-[8ch] text-[clamp(4.5rem,12vw,11rem)] font-normal leading-[0.8] tracking-[-0.075em] text-white">
                 Orbit Lens
@@ -1915,9 +2437,9 @@ function OrbitLensCaseLayout({
             <div className="border-y border-white/14 bg-black/10 p-5 backdrop-blur-2xl md:p-6">
               <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
               <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/46">
-                <span>Fictional product concept / no commercial hardware claim</span>
-                <span>Web-first prototype / Spatial Mode as WebXR proof</span>
-                <span>AI processing conceptual / hand navigation experimental</span>
+                {copy.heroDetails.map((detail) => (
+                  <span key={detail}>{detail}</span>
+                ))}
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 {liveLink ? (
@@ -1948,10 +2470,9 @@ function OrbitLensCaseLayout({
           </div>
 
           <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
-            <span>Seven contextual intelligence fields</span>
-            <span>Cinematic Inspect Reveal</span>
-            <span>Scroll-driven Reference Orbit</span>
-            <span>Optional WebXR proof mode</span>
+            {copy.bottomSignals.map((signal) => (
+              <span key={signal}>{signal}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -1966,10 +2487,10 @@ function OrbitLensCaseLayout({
             <OrbitLensNarrativeVideoCard
               video={videos[0]}
               index={0}
-              eyebrow="Directed module / product OS"
-              title="The site behaves like the device."
-              description="The first walkthrough reads as one product operating field: optical clarity sets the tone, then language, recall, creator capture, focus, privacy and access resolve as contextual layers of the same imagined AI eyewear system."
-              signals={["Field-driven product narrative", "Persistent copy transition", "De-HUD material pass"]}
+              eyebrow={copy.walkthrough.eyebrow}
+              title={copy.walkthrough.title}
+              description={copy.walkthrough.description}
+              signals={copy.walkthrough.signals}
             />
           ) : null}
         </section>
@@ -1981,18 +2502,16 @@ function OrbitLensCaseLayout({
         >
           <div className="grid gap-8 lg:grid-cols-[0.4fr_0.6fr]">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Product fields</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.fieldsEyebrow}</div>
               <h2 className="mt-5 max-w-[9ch] text-[clamp(3rem,6.4vw,6.5rem)] font-normal leading-[0.86] text-white">
-                Seven modes, one product OS.
+                {copy.fieldsTitle}
               </h2>
               <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-                Orbit Lens replaces the expected hero/features/benefits pattern with contextual intelligence fields.
-                Each field demonstrates how fictional AI glasses could layer useful context over the world without becoming
-                cyberpunk HUD clutter.
+                {copy.fieldsBody}
               </p>
             </div>
             <div className="grid gap-px bg-white/10 md:grid-cols-2">
-              {orbitLensFields.map((field) => (
+              {fields.map((field) => (
                 <div key={field.title} className="bg-[#03070a] p-5 md:p-6">
                   <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">{field.index}</div>
                   <h3 className="mt-6 text-[clamp(1.8rem,2.8vw,3rem)] font-normal leading-[0.94] text-white">{field.title}</h3>
@@ -2007,14 +2526,13 @@ function OrbitLensCaseLayout({
 
           <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-white/10 pt-10">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.proofEyebrow}</div>
               <h2 className="mt-4 max-w-[11ch] text-[clamp(3.2rem,6.2vw,6.5rem)] font-normal leading-[0.84] text-white">
-                Quiet futuristic luxury, not a gamer HUD.
+                {copy.proofTitle}
               </h2>
             </div>
             <p className="max-w-[32rem] text-[14px] leading-7 text-white/54">
-              The frames are sequenced as an authored product story: optical hero, transparent language, user-led recall,
-              creator orbit, quiet focus, trust boundary, access terminal and product inspection.
+              {copy.proofBody}
             </p>
           </div>
 
@@ -2064,20 +2582,17 @@ function OrbitLensCaseLayout({
           </button>
 
           <div className="border-y border-cyan-100/12 bg-cyan-950/[0.06] p-5 md:p-7">
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-cyan-100/42">Signature interaction</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-cyan-100/42">{copy.orbitEyebrow}</div>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6rem)] font-normal leading-[0.86] text-white">
-              References move like objects.
+              {copy.orbitTitle}
             </h2>
             <p className="mt-6 text-[15px] leading-8 text-white/62">
-              Field 04 implements a Scroll-Driven Spatial Reference Orbit: a pseudo-3D carousel where visual notes float,
-              recede and resolve around the active capture layer. The important part is not novelty; it is making creator
-              capture feel like a spatial interface layer.
+              {copy.orbitBody}
             </p>
             <div className="mt-6 grid gap-2 border-t border-cyan-100/10 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-cyan-100/38">
-              <span>Wheel-driven active state</span>
-              <span>Scale / opacity / z-depth</span>
-              <span>Inspect Optics as persistent layer</span>
-              <span>Reduced HUD / optical material pass</span>
+              {copy.orbitSignals.map((signal) => (
+                <span key={signal}>{signal}</span>
+              ))}
             </div>
           </div>
         </section>
@@ -2090,39 +2605,31 @@ function OrbitLensCaseLayout({
           <div className="grid gap-8 lg:grid-cols-[0.32fr_0.68fr] lg:items-start">
             <div className="flex h-full flex-col justify-between gap-8">
               <div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">WebXR proof layer</div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.xrEyebrow}</div>
                 <h2 className="mt-5 max-w-[10ch] text-[clamp(2.8rem,5.4vw,5.6rem)] font-normal leading-[0.88] text-white">
-                  Spatial Mode is a proof, not a final VR claim.
+                  {copy.xrTitle}
                 </h2>
                 <p className="mt-6 max-w-[28rem] text-[15px] leading-8 text-white/58">
-                  Orbit Lens includes an optional `/spatial` route with Enter VR capability, Quest-tested session
-                  capture, spatial panels, Inspect Optics in XR mode and experimental hand presence. It is positioned
-                  as a WebXR proof layer while the core product remains web-first.
+                  {copy.xrBody}
                 </p>
               </div>
               <div className="grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-3 lg:grid-cols-1">
-                <div className="border border-white/10 bg-white/[0.03] p-4">
-                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">Capture</div>
-                  <p className="mt-3 text-[14px] leading-7 text-white/66">Quest-tested spatial recording.</p>
-                </div>
-                <div className="border border-white/10 bg-white/[0.03] p-4">
-                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">Mode</div>
-                  <p className="mt-3 text-[14px] leading-7 text-white/66">WebXR proof layer, not final control room.</p>
-                </div>
-                <div className="border border-white/10 bg-white/[0.03] p-4">
-                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">Presence</div>
-                  <p className="mt-3 text-[14px] leading-7 text-white/66">Hand navigation stays experimental.</p>
-                </div>
+                {copy.xrCards.map((card) => (
+                  <div key={card.label} className="border border-white/10 bg-white/[0.03] p-4">
+                    <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/34">{card.label}</div>
+                    <p className="mt-3 text-[14px] leading-7 text-white/66">{card.text}</p>
+                  </div>
+                ))}
               </div>
             </div>
             {videos[1] ? (
               <OrbitLensSpatialVideoCard
                 video={videos[1]}
                 index={1}
-                eyebrow="WebXR proof / spatial mode"
-                title="The interface can leave the page."
-                description="The VR capture demonstrates that the same fictional product system can become a spatial presentation layer. Hand navigation is experimental, so the case stays honest: WebXR proof, not a finished production VR control system."
-                signals={["Quest-tested capture", "Inspect Optics in XR", "Experimental hand presence"]}
+                eyebrow={copy.xrVideo.eyebrow}
+                title={copy.xrVideo.title}
+                description={copy.xrVideo.description}
+                signals={copy.xrVideo.signals}
               />
             ) : null}
           </div>
@@ -2134,18 +2641,17 @@ function OrbitLensCaseLayout({
           className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.46fr_0.54fr]"
         >
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical dossier</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.technicalEyebrow}</div>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6.2rem)] font-normal leading-[0.86] text-white">
-              Optical product interface stack.
+              {copy.technicalTitle}
             </h2>
             <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-              The implementation is built as a mode-based product interface: persistent overlays, field-driven narrative,
-              a lightweight GLSL atmospheric layer, WebXR route and production-like metadata/repo hygiene.
+              {copy.technicalBody}
             </p>
           </div>
 
           <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-            {orbitLensTechnicalReadouts.map((item, index) => (
+            {technicalReadouts.map((item, index) => (
               <div key={item} className="bg-[#03070a] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
                 <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
                 {item}
@@ -2159,13 +2665,12 @@ function OrbitLensCaseLayout({
         onOpenProject={onOpenProject}
         variant="immersiveCase"
         immersiveCaseContent={{
-          headline: "Build the next product OS surface.",
-          description:
-            "Orbit Lens closes as a fictional AI eyewear proof: field-driven product narrative, optical interface materials, cinematic inspection, reference orbit and WebXR proof mode stay inside one premium web-first system.",
-          signal: "premium spatial product systems",
-          intake: "available",
-          nextStep: "start a product-interface prototype",
-          bottomLine: "Built as a fictional AI spatial glasses interface concept.",
+          headline: copy.footer.headline,
+          description: copy.footer.description,
+          signal: copy.footer.signal,
+          intake: copy.footer.intake,
+          nextStep: copy.footer.nextStep,
+          bottomLine: copy.footer.bottomLine,
           ctaLabel: labels.startProjectShort,
         }}
       />
@@ -2186,6 +2691,7 @@ function KoolBerkVideoProof({
 }: {
   video: NonNullable<(typeof immersiveItems)[number]["videos"]>[number];
 }) {
+  const labels = useCinematicImmersiveLabels();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -2252,33 +2758,35 @@ function KoolBerkVideoProof({
           <source src={video.src} type="video/mp4" />
         </video>
         <div className="pointer-events-none absolute left-4 top-4 border-y border-white/16 bg-black/28 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/58 backdrop-blur">
-          01 / Walkthrough
+          01 / {labels.isSpanish ? "Recorrido" : "Walkthrough"}
         </div>
       </div>
       <div className="grid gap-5 border-t border-white/10 p-5 md:p-7 lg:grid-cols-[0.26fr_0.4fr_0.34fr] lg:items-end">
         <div>
           <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/36">{video.label}</div>
           <h2 className="mt-4 max-w-[9ch] text-[clamp(2.2rem,4.4vw,4.4rem)] font-normal leading-[0.92] text-white">
-            One route. Multiple depths.
+            {labels.isSpanish ? "Una ruta. Varias profundidades." : "One route. Multiple depths."}
           </h2>
         </div>
         <p className="max-w-[38rem] text-[14px] leading-7 text-white/62 md:text-[15px] md:leading-8">
-          {video.caption} The recording is intentionally kept as a single product story: the cube opens the artist
-          identity, releases unfold as inspectable objects, MONAH enters dossier mode, and the Sonic Room becomes the
-          first immersive listening state.
+          {video.caption}{" "}
+          {labels.isSpanish
+            ? "La grabación se mantiene como una sola historia de producto: el cubo abre la identidad del artista, los releases se despliegan como objetos inspeccionables, MONAH entra en modo dossier y Sonic Room se convierte en el primer estado inmersivo de escucha."
+            : "The recording is intentionally kept as a single product story: the cube opens the artist identity, releases unfold as inspectable objects, MONAH enters dossier mode, and the Sonic Room becomes the first immersive listening state."}
         </p>
         <div className="border border-white/10 bg-black/18 p-4 md:p-5">
           <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">
-            Demo build / active development presentation
+            {labels.isSpanish ? "Demo build / presentación en desarrollo activo" : "Demo build / active development presentation"}
           </div>
           <p className="mt-4 text-[13px] leading-6 text-white/56 md:text-[14px] md:leading-7">
-            This case is shown as a public development proof: the core interaction system is already legible, while the
-            final launch polish, platform handoff details, and future animation passes are still being completed.
+            {labels.isSpanish
+              ? "El caso se presenta como prueba pública de desarrollo: el sistema de interacción principal ya es legible, mientras el pulido final, el handoff de plataformas y los futuros pases de animación siguen en cierre."
+              : "This case is shown as a public development proof: the core interaction system is already legible, while the final launch polish, platform handoff details, and future animation passes are still being completed."}
           </p>
           <div className="mt-4 grid gap-2 border-t border-white/10 pt-3 font-mono text-[8px] uppercase tracking-[0.16em] text-white/36">
-            <span>Cube-led identity surface</span>
-            <span>Release inspect + dossier path</span>
-            <span>Audio-reactive room prototype</span>
+            <span>{labels.isSpanish ? "Superficie de identidad guiada por cubo" : "Cube-led identity surface"}</span>
+            <span>{labels.isSpanish ? "Inspect de release + ruta dossier" : "Release inspect + dossier path"}</span>
+            <span>{labels.isSpanish ? "Prototipo de sala audio-reactiva" : "Audio-reactive room prototype"}</span>
           </div>
         </div>
       </div>
@@ -2299,6 +2807,8 @@ function KoolBerkEditorialFrame({
   className?: string;
   imageClassName?: string;
 }) {
+  const labels = useCinematicImmersiveLabels();
+
   return (
     <motion.button
       type="button"
@@ -2321,7 +2831,7 @@ function KoolBerkEditorialFrame({
           decoding="async"
         />
         <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
-          Inspect
+          {labels.inspect}
         </div>
       </div>
       <div className="border-t border-white/10 p-4 md:p-5">
@@ -2381,17 +2891,153 @@ function KoolBerkCaseLayout({
   onBack: () => void;
   onOpenProject?: () => void;
 }) {
+  const labels = useCinematicImmersiveLabels();
+  const railItems = localizeSectionRailItems(koolBerkRailItems, labels.isSpanish);
   const video = item.videos?.[0];
   const frames = item.frames ?? [];
-  const activeSection = useSectionRailActive(koolBerkRailItems, "kool-berk-threshold");
+  const activeSection = useSectionRailActive(railItems, "kool-berk-threshold");
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
-  const labels = useCinematicImmersiveLabels();
+  const depthLayers = labels.isSpanish ? koolBerkDepthLayersEs : koolBerkDepthLayers;
+  const technicalReadouts = labels.isSpanish ? koolBerkTechnicalReadoutsEs : koolBerkTechnicalReadouts;
+  const copy = labels.isSpanish
+    ? {
+        sectionLabel: "Secciones de Kool Berk",
+        heroEyebrow: "Interfaz de artista audiovisual / entorno musical inmersivo",
+        heroDetails: [
+          "Electronica experimental / techno ritual / diseno sonoro dark minimal",
+          "Una interfaz / varias profundidades",
+          "Prototipo avanzado / pulido de public launch en curso",
+        ],
+        bottomSignals: ["Sonic Object Stage", "Album Dossier", "Analisis Web Audio", "Ruta futura WebXR room"],
+        architectureEyebrow: "Arquitectura del sistema",
+        architectureTitle: "De página de artista a sistema de objeto sonoro.",
+        architectureBody:
+          "El proyecto evita template de DJ, clon de streaming, press kit estándar o visualizer neon. Funciona como entorno oscuro de investigación artística: parte archivo de releases, parte EPK, parte instalación audio-reactiva.",
+        presentationEyebrow: "Nota de presentación / demo build en desarrollo activo",
+        presentationBody:
+          "El caso público se enmarca intencionalmente como presentación de desarrollo. Ya muestra la lógica central del producto con suficiente claridad para evaluar la dirección, mientras el pulido de launch y futuros pases de animación siguen en progreso.",
+        proofEyebrow: "Campo de prueba visual",
+        proofTitle: "La demo se despliega como historia de release.",
+        proofBody:
+          "El media pack es compacto, así que el movimiento más fuerte no es un archivo denso. Presentamos los frames funcionales como secuencia editorial dirigida: objeto, inspect, dossier, track de señal, ruta room y booking.",
+        noteOne: {
+          eyebrow: "Modo de lectura / lógica de objeto release",
+          title: "Un sistema oscuro de artista, no una página de links.",
+          body:
+            "El primer frame establece la premisa de inmediato: identidad, navegación, archivo de releases y centro visual se fusionan en una superficie guiada por cubo. Esto da al caso una entrada más autoral que una homepage de artista común o una landing musical suelta.",
+          signals: [
+            "Presentacion demo / build activo",
+            "Superficie de identidad antes de profundidad de archivo",
+            "Pase futuro de animación previsto para el umbral",
+          ],
+        },
+        noteTwo: {
+          eyebrow: "Marco de caso publico / por que este layout",
+          title: "Ya hay suficiente prueba para juzgar la dirección.",
+          body:
+            "La presentación no se sobrecarga con estados secundarios. Muestra las capas funcionales más fuertes con claridad para evaluar el sistema artístico ahora, dejando espacio para el siguiente pase: animación de threshold, refinamiento de room y pulido final de launch.",
+          signals: [
+            "Demo pública antes del pulido final",
+            "Archivo de releases + lógica EPK ya visible",
+            "La ruta room queda separada y más fuerte abajo",
+          ],
+        },
+        roomEyebrow: "Sonic Room",
+        roomTitle: "Un track se convierte en estado.",
+        roomBody:
+          "MONAH Room es el primer modo inmersivo del proyecto: una cámara WebGL rojo-negra con HUD mínimo, Play / Pause / Seek, cierre con Escape, niebla audio-reactiva, pulso de borde, shimmer y drift estructural. Aún no es WebXR, pero forma la base de una futura sala.",
+        roomSignals: [
+          "Bass -> presion de niebla / profundidad",
+          "Beat -> pulso de borde y rim",
+          "Highs -> shimmer de vidrio",
+          "Progress -> drift estructural",
+        ],
+        technicalEyebrow: "Dossier técnico",
+        technicalTitle: "Audio-reactivo sin convertirse en visualizer.",
+        technicalBody:
+          "La implementación usa análisis de audio local para reactividad real mientras mantiene la atmósfera contenida. Embeds de SoundCloud, Spotify y Apple no se analizan intencionalmente por seguridad del navegador y restricciones CORS.",
+        footer: {
+          headline: "Construye el siguiente entorno de artista.",
+          description:
+            "Kool Berk cierra como prueba sonora: objetos de release, tracks de señal, análisis Web Audio, WebGL audio-reactivo y capas EPK dentro de un Artist OS.",
+          signal: "sistemas de objeto sonoro",
+          intake: "disponible",
+          nextStep: "iniciar sistema audiovisual",
+          bottomLine: "Construido como sistema de interfaz sonora.",
+        },
+      }
+    : {
+        sectionLabel: "Kool Berk sections",
+        heroEyebrow: "Audio-visual artist interface / immersive music environment",
+        heroDetails: [
+          "Experimental electronic / ritual techno / dark minimal sound design",
+          "One interface / multiple depths",
+          "Advanced prototype / public launch polish pending",
+        ],
+        bottomSignals: ["Sonic Object Stage", "Album Dossier", "Web Audio analysis", "Future WebXR room path"],
+        architectureEyebrow: "System architecture",
+        architectureTitle: "From artist page to sonic object system.",
+        architectureBody:
+          "The project avoids a DJ template, streaming clone, standard press kit, or neon visualizer. It behaves as a dark artist research environment: part release archive, part EPK, part audio-reactive installation.",
+        presentationEyebrow: "Presentation note / demo build in active development",
+        presentationBody:
+          "The current public case is intentionally framed as a development presentation. It already shows the core product logic clearly enough to evaluate the direction, while launch polish and future animation passes are still in progress.",
+        proofEyebrow: "Visual proof field",
+        proofTitle: "The demo unfolds as a release story.",
+        proofBody:
+          "The media pack is compact, so the strongest presentation move is not a dense archive. We stage the same working frames as a directed editorial sequence: object, inspect, dossier, signal track, room path, booking.",
+        noteOne: {
+          eyebrow: "Reading mode / release object logic",
+          title: "A dark artist system, not a link page.",
+          body:
+            "The first frame establishes the main premise immediately: identity, navigation, release archive and visual center are fused into one cube-led surface. That gives the case a stronger authored entry than a standard artist homepage or a loose music landing page.",
+          signals: [
+            "Demo presentation / active build",
+            "Identity surface before archive depth",
+            "Future animation pass planned for threshold",
+          ],
+        },
+        noteTwo: {
+          eyebrow: "Public case framing / why this layout",
+          title: "Enough proof to judge the direction already.",
+          body:
+            "This presentation is intentionally not overloaded with secondary states. It shows the strongest working layers clearly enough to evaluate the artistic system now, while keeping room for the next pass: threshold animation, room refinement, and final launch polish.",
+          signals: [
+            "Public demo before final polish",
+            "Release archive + EPK logic already visible",
+            "Room path remains separate and stronger below",
+          ],
+        },
+        roomEyebrow: "Sonic Room",
+        roomTitle: "A track becomes a state.",
+        roomBody:
+          "MONAH Room is the first immersive mode of the project: a red-black WebGL chamber with minimal HUD, Play / Pause / Seek, Escape-close behavior, audio-reactive fog, edge pulse, shimmer and structural drift. It is not WebXR yet, but it forms the foundation for a future room.",
+        roomSignals: [
+          "Bass -> fog pressure / depth",
+          "Beat -> rim and edge pulse",
+          "Highs -> glass shimmer",
+          "Progress -> structural drift",
+        ],
+        technicalEyebrow: "Technical dossier",
+        technicalTitle: "Audio-reactive without becoming a visualizer.",
+        technicalBody:
+          "The implementation uses local audio analysis for real reactivity while keeping the atmosphere restrained. SoundCloud, Spotify and Apple embeds are intentionally not analyzed because of browser security and CORS restrictions.",
+        footer: {
+          headline: "Build the next artist environment.",
+          description:
+            "Kool Berk closes as a sonic proof: release objects, signal tracks, Web Audio analysis, audio-reactive WebGL and EPK layers stay inside one artist OS.",
+          signal: "sonic object systems",
+          intake: "available",
+          nextStep: "start an audiovisual system",
+          bottomLine: "Built as a sonic interface system.",
+        },
+      };
   const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
     id: `kool-berk-frame-${String(index + 1).padStart(2, "0")}`,
     kind: "image",
     src: frame.src,
     alt: frame.alt,
-    label: frame.label ?? `Frame ${index + 1}`,
+    label: frame.label ?? `${labels.isSpanish ? "Fotograma" : "Frame"} ${index + 1}`,
     caption: frame.caption,
     role: index === 0 ? "hero" : index === 5 ? "detail" : "proof",
     fit: "contain",
@@ -2414,12 +3060,12 @@ function KoolBerkCaseLayout({
   return (
     <CinematicImmersiveCaseShell tone="kool-berk">
     <div className="min-h-screen bg-[#04070d] text-white">
-      <ImmersiveSeoMeta item={item} imageAlt="Kool Berk Sonic Object OS immersive case" />
+      <ImmersiveSeoMeta item={item} imageAlt="Kool Berk Sonic Object OS immersive case" locale={labels.locale} />
       <SectionRail
-        items={koolBerkRailItems}
+        items={railItems}
         activeId={activeSection}
         onSelect={scrollToSection}
-        label="Kool Berk sections"
+        label={copy.sectionLabel}
         tone="dark"
       />
 
@@ -2449,7 +3095,7 @@ function KoolBerkCaseLayout({
           <div className="grid gap-8 py-10 lg:grid-cols-[0.56fr_0.44fr] lg:items-end">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
-                Audio-visual artist interface / immersive music environment
+                {copy.heroEyebrow}
               </div>
               <h1 className="mt-6 max-w-[8ch] text-[clamp(4.4rem,12vw,11rem)] font-normal leading-[0.82] text-white">
                 Kool Berk
@@ -2464,9 +3110,9 @@ function KoolBerkCaseLayout({
             <div className="border-y border-white/14 bg-black/26 p-5 backdrop-blur md:p-6">
               <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
               <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/46">
-                <span>Experimental electronic / ritual techno / dark minimal sound design</span>
-                <span>One interface / multiple depths</span>
-                <span>Advanced prototype / public launch polish pending</span>
+                {copy.heroDetails.map((detail) => (
+                  <span key={detail}>{detail}</span>
+                ))}
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
@@ -2485,10 +3131,9 @@ function KoolBerkCaseLayout({
           </div>
 
           <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
-            <span>Sonic Object Stage</span>
-            <span>Album Dossier</span>
-            <span>Web Audio analysis</span>
-            <span>Future WebXR room path</span>
+            {copy.bottomSignals.map((signal) => (
+              <span key={signal}>{signal}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -2511,28 +3156,25 @@ function KoolBerkCaseLayout({
         >
           <div className="grid gap-8 lg:grid-cols-[0.4fr_0.6fr]">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">System architecture</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.architectureEyebrow}</div>
               <h2 className="mt-5 max-w-[9ch] text-[clamp(3rem,6.2vw,6.2rem)] font-normal leading-[0.88] text-white">
-                From artist page to sonic object system.
+                {copy.architectureTitle}
               </h2>
               <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-                The project avoids a DJ template, streaming clone, standard press kit, or neon visualizer. It behaves as a
-                dark artist research environment: part release archive, part EPK, part audio-reactive installation.
+                {copy.architectureBody}
               </p>
               <div className="mt-7 border-y border-white/10 py-4">
                 <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">
-                  Presentation note / demo build in active development
+                  {copy.presentationEyebrow}
                 </div>
                 <p className="mt-3 max-w-[34rem] text-[14px] leading-7 text-white/54">
-                  The current public case is intentionally framed as a development presentation. It already shows the core
-                  product logic clearly enough to evaluate the direction, while launch polish and future animation passes
-                  are still in progress.
+                  {copy.presentationBody}
                 </p>
               </div>
             </div>
 
             <div className="grid gap-px bg-white/10 md:grid-cols-2">
-              {koolBerkDepthLayers.map((layer) => (
+              {depthLayers.map((layer) => (
                 <div key={layer.title} className="bg-[#04070d] p-5 md:p-6">
                   <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">{layer.index}</div>
                   <h3 className="mt-6 text-[clamp(1.8rem,2.8vw,3rem)] font-normal leading-[0.94] text-white">{layer.title}</h3>
@@ -2547,14 +3189,13 @@ function KoolBerkCaseLayout({
 
           <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-white/10 pt-10">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.proofEyebrow}</div>
               <h2 className="mt-4 max-w-[11ch] text-[clamp(3.2rem,6.2vw,6.4rem)] font-normal leading-[0.86] text-white">
-                The demo unfolds as a release story.
+                {copy.proofTitle}
               </h2>
             </div>
             <p className="max-w-[32rem] text-[14px] leading-7 text-white/54">
-              The media pack is compact, so the strongest presentation move is not a dense archive. We stage the same
-              working frames as a directed editorial sequence: object, inspect, dossier, signal track, room path, booking.
+              {copy.proofBody}
             </p>
           </div>
 
@@ -2569,14 +3210,10 @@ function KoolBerkCaseLayout({
               />
             ) : null}
             <KoolBerkEditorialNote
-              eyebrow="Reading mode / release object logic"
-              title="A dark artist system, not a link page."
-              body="The first frame establishes the main premise immediately: identity, navigation, release archive and visual center are fused into one cube-led surface. That gives the case a stronger authored entry than a standard artist homepage or a loose music landing page."
-              signals={[
-                "Demo presentation / active build",
-                "Identity surface before archive depth",
-                "Future animation pass planned for threshold",
-              ]}
+              eyebrow={copy.noteOne.eyebrow}
+              title={copy.noteOne.title}
+              body={copy.noteOne.body}
+              signals={copy.noteOne.signals}
               className="lg:col-span-4"
             />
 
@@ -2615,14 +3252,10 @@ function KoolBerkCaseLayout({
             ) : null}
 
             <KoolBerkEditorialNote
-              eyebrow="Public case framing / why this layout"
-              title="Enough proof to judge the direction already."
-              body="This presentation is intentionally not overloaded with secondary states. It shows the strongest working layers clearly enough to evaluate the artistic system now, while keeping room for the next pass: threshold animation, room refinement, and final launch polish."
-              signals={[
-                "Public demo before final polish",
-                "Release archive + EPK logic already visible",
-                "Room path remains separate and stronger below",
-              ]}
+              eyebrow={copy.noteTwo.eyebrow}
+              title={copy.noteTwo.title}
+              body={copy.noteTwo.body}
+              signals={copy.noteTwo.signals}
               className="lg:col-span-4"
             />
             {contactFrame ? (
@@ -2663,20 +3296,17 @@ function KoolBerkCaseLayout({
             </button>
 
             <div className="border-y border-red-200/14 bg-red-950/[0.08] p-5 md:p-7">
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-100/42">Sonic Room</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-100/42">{copy.roomEyebrow}</div>
               <h2 className="mt-5 max-w-[10ch] text-[clamp(3rem,6vw,6rem)] font-normal leading-[0.86] text-white">
-                A track becomes a state.
+                {copy.roomTitle}
               </h2>
               <p className="mt-6 text-[15px] leading-8 text-white/62">
-                MONAH Room is the first immersive mode of the project: a red-black WebGL chamber with minimal HUD,
-                Play / Pause / Seek, Escape-close behavior, audio-reactive fog, edge pulse, shimmer and structural drift.
-                It is not WebXR yet, but it forms the foundation for a future room.
+                {copy.roomBody}
               </p>
               <div className="mt-6 grid gap-2 border-t border-red-100/10 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-red-100/38">
-                <span>{"Bass -> fog pressure / depth"}</span>
-                <span>{"Beat -> rim and edge pulse"}</span>
-                <span>{"Highs -> glass shimmer"}</span>
-                <span>{"Progress -> structural drift"}</span>
+                {copy.roomSignals.map((signal) => (
+                  <span key={signal}>{signal}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -2688,19 +3318,17 @@ function KoolBerkCaseLayout({
           className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.46fr_0.54fr]"
         >
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical dossier</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.technicalEyebrow}</div>
             <h2 className="mt-5 max-w-[11ch] text-[clamp(3rem,6vw,6.2rem)] font-normal leading-[0.86] text-white">
-              Audio-reactive without becoming a visualizer.
+              {copy.technicalTitle}
             </h2>
             <p className="mt-6 max-w-[36rem] text-[15px] leading-8 text-white/58">
-              The implementation uses local audio analysis for real reactivity while keeping the atmosphere restrained.
-              SoundCloud, Spotify and Apple embeds are intentionally not analyzed because of browser security and CORS
-              restrictions.
+              {copy.technicalBody}
             </p>
           </div>
 
           <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-            {koolBerkTechnicalReadouts.map((item, index) => (
+            {technicalReadouts.map((item, index) => (
               <div key={item} className="bg-[#04070d] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
                 <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
                 {item}
@@ -2714,13 +3342,12 @@ function KoolBerkCaseLayout({
         onOpenProject={onOpenProject}
         variant="immersiveCase"
         immersiveCaseContent={{
-          headline: "Build the next artist environment.",
-          description:
-            "Kool Berk closes as a sonic proof: release objects, signal tracks, Web Audio analysis, audio-reactive WebGL and EPK layers stay inside one artist OS.",
-          signal: "sonic object systems",
-          intake: "available",
-          nextStep: "start an audiovisual system",
-          bottomLine: "Built as a sonic interface system.",
+          headline: copy.footer.headline,
+          description: copy.footer.description,
+          signal: copy.footer.signal,
+          intake: copy.footer.intake,
+          nextStep: copy.footer.nextStep,
+          bottomLine: copy.footer.bottomLine,
           ctaLabel: labels.startProjectShort,
         }}
       />
@@ -2747,6 +3374,7 @@ function WebHeroVideoCard({
   chapter: (typeof webHeroVideoChapters)[number];
   lead?: boolean;
 }) {
+  const labels = useCinematicImmersiveLabels();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -2815,7 +3443,7 @@ function WebHeroVideoCard({
             <source src={video.src} type="video/mp4" />
           </video>
           <div className="pointer-events-none absolute left-4 top-4 border-y border-white/18 bg-black/20 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/62 backdrop-blur">
-            Module {String(index + 1).padStart(2, "0")}
+            {labels.isSpanish ? "Modulo" : "Module"} {String(index + 1).padStart(2, "0")}
           </div>
         </div>
         <div className="grid gap-5 border-t border-white/10 p-5 md:grid-cols-[0.42fr_0.58fr] md:p-7">
@@ -2871,7 +3499,7 @@ function WebHeroVideoCard({
         </video>
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.24)_72%,rgba(0,0,0,0.54))]" />
         <div className="pointer-events-none absolute left-4 top-4 border-y border-white/18 bg-black/20 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.18em] text-white/62 backdrop-blur">
-          Module {String(index + 1).padStart(2, "0")}
+          {labels.isSpanish ? "Modulo" : "Module"} {String(index + 1).padStart(2, "0")}
         </div>
       </div>
       <div className="webhero-video-copy flex flex-col justify-between gap-10 border-t border-white/10 p-5 md:p-7 lg:border-l lg:border-t-0">
@@ -2907,20 +3535,112 @@ function WebHeroCaseLayout({
   onBack: () => void;
   onOpenProject?: () => void;
 }) {
+  const labels = useCinematicImmersiveLabels();
+  const railItems = localizeSectionRailItems(webHeroRailItems, labels.isSpanish);
   const videos = item.videos ?? [];
   const frames = item.frames ?? [];
-  const activeSection = useSectionRailActive(webHeroRailItems, "webhero-threshold");
+  const activeSection = useSectionRailActive(railItems, "webhero-threshold");
   const [proofMode, setProofMode] = useState<WebHeroProofMode>("index");
   const [proofExpanded, setProofExpanded] = useState(false);
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
-  const labels = useCinematicImmersiveLabels();
-  const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
+  const liveLink = item.links?.find(isLiveSiteLink);
+  const chapters = labels.isSpanish ? webHeroVideoChaptersEs : webHeroVideoChapters;
+  const technicalReadouts = labels.isSpanish ? webHeroTechnicalReadoutsEs : webHeroTechnicalReadouts;
+  const copy = labels.isSpanish
+    ? {
+        sectionLabel: "Secciones de WEBHERO",
+        heroDetails: [
+          "Plataforma R&D interna de Brenych Studio",
+          "Prototipo avanzado / desarrollo activo",
+          "Versión mobile no empaquetada todavía",
+        ],
+        bottomSignals: [
+          "Lenguaje de stage + motores de imagen espacial",
+          "Capa de presentación Art Room",
+          "Living Art Mixer en R&D",
+          "Adaptadores XR despues de la prueba web",
+        ],
+        proofEyebrow: "Campo de prueba visual",
+        proofTitle: "Modulos mostrados como superficies funcionales.",
+        proofBody:
+          "El media pack actual es desktop-only. Por eso el caso presenta la prueba real más fuerte: pantallas de stage, páginas Living Image, candidatos splat, estados Art Room y readouts del sistema.",
+        proofInstruction: "Haz clic en cualquier frame de prueba para inspeccionar",
+        fieldEyebrow: "Modo campo / spread editorial",
+        fieldBody:
+          "El mismo set de prueba se abre como campo de lectura espacial: superficies de stage, backdrops, estudios splat y materiales Art Room se convierten en un mapa editorial dirigido, no en un archivo compacto.",
+        extendedMobileLabel: "Mas prueba",
+        extendedDesktopLabel: "Campo extendido",
+        extendedBody:
+          "Los primeros doce frames establecen el campo principal de lectura. El set extendido abre más variantes de backdrop, estados atlas, pruebas splat y evidencia secundaria del sistema sin sobrecargar la primera pasada.",
+        closeMobile: "Cerrar ->",
+        closeDesktop: "Cerrar campo ->",
+        openMobile: "Mas prueba ->",
+        openDesktop: "Abrir campo extendido ->",
+        expandedTitle: "Campo de prueba expandido / superficies WEBHERO adicionales",
+        technicalEyebrow: "Detalles técnicos",
+        technicalTitle: "Web-first antes que XR-first.",
+        technicalBody:
+          "Los assets espaciales pesados permanecen detrás de rutas dedicadas de viewer, los listados usan previews poster-first y XR queda como dirección de adaptador, no como núcleo inestable de la plataforma.",
+        footer: {
+          headline: "Construye el siguiente sistema visual vivo.",
+          description:
+            "WEBHERO cierra como prueba R&D flagship: lenguaje de stage, sistemas de backdrop, living images, rutas splat y presentación Art Room dentro de una plataforma visual web-first.",
+          signal: "sistemas visuales vivos",
+          intake: "disponible",
+          nextStep: "iniciar proyecto WebGL-stage",
+          bottomLine: "Construido como sistema de interfaz espacial web-first.",
+        },
+      }
+    : {
+        sectionLabel: "WEBHERO sections",
+        heroDetails: [
+          "Internal Brenych Studio R&D platform",
+          "Advanced prototype / active development",
+          "Mobile version not packaged yet",
+        ],
+        bottomSignals: [
+          "Stage language + spatial image engines",
+          "Art Room presentation layer",
+          "Living Art Mixer in R&D",
+          "XR adapters after web proof",
+        ],
+        proofEyebrow: "Visual proof field",
+        proofTitle: "Modules shown as working surfaces.",
+        proofBody:
+          "The current media pack is desktop-only. The case therefore presents the strongest real proof: stage screens, living image pages, splat candidates, Art Room states and system readouts.",
+        proofInstruction: "Click any proof frame to inspect",
+        fieldEyebrow: "Field mode / editorial spread",
+        fieldBody:
+          "The same proof set opens into a spatial reading field: stage surfaces, backdrops, splat studies and Art Room materials become a directed editorial map instead of a compact archive.",
+        extendedMobileLabel: "More proof",
+        extendedDesktopLabel: "Extended field",
+        extendedBody:
+          "The first twelve frames establish the main reading field. The extended set opens more backdrop variants, atlas states, splat proofs, and secondary system evidence without overloading the first pass.",
+        closeMobile: "Close ->",
+        closeDesktop: "Close field ->",
+        openMobile: "More proof ->",
+        openDesktop: "Open extended field ->",
+        expandedTitle: "Expanded proof field / additional WEBHERO surfaces",
+        technicalEyebrow: "Technical details",
+        technicalTitle: "Web-first before XR-first.",
+        technicalBody:
+          "Heavy spatial assets stay behind dedicated viewer routes, listing pages use poster previews, and XR remains an adapter direction rather than the unstable core of the platform.",
+        footer: {
+          headline: "Build the next living visual system.",
+          description:
+            "WEBHERO closes as a flagship R&D proof: stage language, backdrop systems, living images, splat routes, and Art Room presentation stay inside one web-first visual platform.",
+          signal: "living visual systems",
+          intake: "available",
+          nextStep: "start a webgl-stage project",
+          bottomLine: "Built as a web-first spatial interface system.",
+        },
+      };
   const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
     id: `webhero-frame-${String(index + 1).padStart(2, "0")}`,
     kind: "image",
     src: frame.src,
     alt: frame.alt,
-    label: frame.label ?? `Frame ${index + 1}`,
+    label: frame.label ?? `${labels.isSpanish ? "Fotograma" : "Frame"} ${index + 1}`,
     caption: frame.caption,
     role: index < 2 ? "hero" : index >= 9 ? "detail" : "proof",
     fit: "contain",
@@ -2938,12 +3658,12 @@ function WebHeroCaseLayout({
   return (
     <CinematicImmersiveCaseShell tone="webhero">
     <div className="min-h-screen bg-[#05070b] text-white">
-      <ImmersiveSeoMeta item={item} imageAlt="WEBHERO Living Visual Systems immersive case" />
+      <ImmersiveSeoMeta item={item} imageAlt="WEBHERO Living Visual Systems immersive case" locale={labels.locale} />
       <SectionRail
-        items={webHeroRailItems}
+        items={railItems}
         activeId={activeSection}
         onSelect={scrollToSection}
-        label="WEBHERO sections"
+        label={copy.sectionLabel}
         tone="dark"
       />
 
@@ -2986,9 +3706,9 @@ function WebHeroCaseLayout({
             <div className="border-y border-white/14 bg-black/18 p-5 backdrop-blur md:p-6">
               <p className="text-[15px] leading-8 text-white/72">{item.description}</p>
               <div className="mt-5 grid gap-2 border-t border-white/12 pt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-white/48">
-                <span>Internal Brenych Studio R&D platform</span>
-                <span>Advanced prototype / active development</span>
-                <span>Mobile version not packaged yet</span>
+                {copy.heroDetails.map((detail) => (
+                  <span key={detail}>{detail}</span>
+                ))}
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
                 {liveLink ? (
@@ -3009,10 +3729,9 @@ function WebHeroCaseLayout({
           </div>
 
           <div className="grid gap-3 border-t border-white/12 pt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/42 md:grid-cols-4">
-            <span>Stage language + spatial image engines</span>
-            <span>Art Room presentation layer</span>
-            <span>Living Art Mixer in R&D</span>
-            <span>XR adapters after web proof</span>
+            {copy.bottomSignals.map((signal) => (
+              <span key={signal}>{signal}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -3024,7 +3743,7 @@ function WebHeroCaseLayout({
           className="grid scroll-mt-[5.5rem] gap-8 md:scroll-mt-28"
         >
           {videos.map((video, index) => {
-            const chapter = webHeroVideoChapters[index] ?? webHeroVideoChapters[0];
+            const chapter = chapters[index] ?? chapters[0];
 
             return (
               <WebHeroVideoCard
@@ -3045,20 +3764,20 @@ function WebHeroCaseLayout({
         >
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Visual proof field</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.proofEyebrow}</div>
               <h2 className="mt-4 max-w-[12ch] text-[clamp(3.5rem,7vw,7.2rem)] font-normal leading-[0.84] tracking-[-0.06em] text-white">
-                Modules shown as working surfaces.
+                {copy.proofTitle}
               </h2>
             </div>
             <p className="max-w-[31rem] text-[14px] leading-7 text-white/54">
-              The current media pack is desktop-only. The case therefore presents the strongest real proof: stage
-              screens, living image pages, splat candidates, Art Room states and system readouts.
+              {copy.proofBody}
             </p>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-y border-white/10 py-3">
             <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/34">
-              Click any proof frame to inspect / {String(frames.length).padStart(2, "0")} desktop surfaces
+              {copy.proofInstruction} / {String(frames.length).padStart(2, "0")}{" "}
+              {labels.isSpanish ? "superficies desktop" : "desktop surfaces"}
             </div>
             <div className="flex rounded-full border border-white/12 bg-white/[0.035] p-1">
               {(["index", "field"] as WebHeroProofMode[]).map((mode) => (
@@ -3071,7 +3790,7 @@ function WebHeroCaseLayout({
                     proofMode === mode ? "bg-white text-[#05070b]" : "text-white/44 hover:text-white/78",
                   ].join(" ")}
                 >
-                  {mode}
+                  {mode === "index" ? labels.indexMode : labels.fieldMode}
                 </button>
               ))}
             </div>
@@ -3099,7 +3818,7 @@ function WebHeroCaseLayout({
                       decoding="async"
                     />
                     <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
-                      Inspect
+                      {labels.inspect}
                     </div>
                   </div>
                   <div className="border-t border-white/10 p-4">
@@ -3118,10 +3837,9 @@ function WebHeroCaseLayout({
               <div className="pointer-events-none absolute right-[8%] top-[48%] h-[32rem] w-[32rem] rounded-full border border-cyan-200/[0.055]" />
 
               <div className="relative z-10 mb-8 max-w-[40rem] lg:absolute lg:left-[6%] lg:top-[8%]">
-                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/34">Field mode / editorial spread</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/34">{copy.fieldEyebrow}</div>
                 <p className="mt-4 text-[15px] leading-8 text-white/58">
-                  The same proof set opens into a spatial reading field: stage surfaces, backdrops, splat studies and
-                  Art Room materials become a directed editorial map instead of a compact archive.
+                  {copy.fieldBody}
                 </p>
               </div>
 
@@ -3166,12 +3884,17 @@ function WebHeroCaseLayout({
               <div className="hidden lg:block" />
               <div className="max-w-[28rem] lg:justify-self-end">
                 <div className="font-mono text-[9px] uppercase leading-5 tracking-[0.16em] text-white/34">
-                  <span className="xl:hidden">More proof / {String(extendedFrames.length).padStart(2, "0")} extra surfaces</span>
-                  <span className="hidden xl:inline">Extended field / {String(extendedFrames.length).padStart(2, "0")} more proof surfaces</span>
+                  <span className="xl:hidden">
+                    {copy.extendedMobileLabel} / {String(extendedFrames.length).padStart(2, "0")}{" "}
+                    {labels.isSpanish ? "superficies extra" : "extra surfaces"}
+                  </span>
+                  <span className="hidden xl:inline">
+                    {copy.extendedDesktopLabel} / {String(extendedFrames.length).padStart(2, "0")}{" "}
+                    {labels.isSpanish ? "superficies de prueba adicionales" : "more proof surfaces"}
+                  </span>
                 </div>
                 <p className="mt-3 hidden text-[14px] leading-7 text-white/56 xl:block">
-                  The first twelve frames establish the main reading field. The extended set opens more backdrop variants,
-                  atlas states, splat proofs, and secondary system evidence without overloading the first pass.
+                  {copy.extendedBody}
                 </p>
                 <button
                   type="button"
@@ -3180,13 +3903,13 @@ function WebHeroCaseLayout({
                 >
                   {proofExpanded ? (
                     <>
-                      <span className="xl:hidden">Close -&gt;</span>
-                      <span className="hidden xl:inline">Close field -&gt;</span>
+                      <span className="xl:hidden">{copy.closeMobile}</span>
+                      <span className="hidden xl:inline">{copy.closeDesktop}</span>
                     </>
                   ) : (
                     <>
-                      <span className="xl:hidden">More proof -&gt;</span>
-                      <span className="hidden xl:inline">Open extended field -&gt;</span>
+                      <span className="xl:hidden">{copy.openMobile}</span>
+                      <span className="hidden xl:inline">{copy.openDesktop}</span>
                     </>
                   )}
                 </button>
@@ -3206,7 +3929,7 @@ function WebHeroCaseLayout({
               >
                 <div className="mx-auto mb-8 grid w-[min(94vw,1640px)] gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
                   <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/34">
-                    Expanded proof field / additional WEBHERO surfaces
+                    {copy.expandedTitle}
                   </div>
                 </div>
                 {proofMode === "field" ? (
@@ -3278,7 +4001,7 @@ function WebHeroCaseLayout({
                               decoding="async"
                             />
                             <div className="pointer-events-none absolute right-3 top-3 border border-white/14 bg-black/34 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/46 opacity-0 backdrop-blur transition group-hover:opacity-100">
-                              Inspect
+                              {labels.inspect}
                             </div>
                           </div>
                           <div className="border-t border-white/10 p-4">
@@ -3303,18 +4026,17 @@ function WebHeroCaseLayout({
           className="mt-20 grid scroll-mt-[5.5rem] gap-8 border-t border-white/10 pt-12 md:scroll-mt-28 lg:grid-cols-[0.48fr_0.52fr]"
         >
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">Technical details</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/42">{copy.technicalEyebrow}</div>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(3.2rem,6vw,6.4rem)] font-normal leading-[0.84] tracking-[-0.055em] text-white">
-              Web-first before XR-first.
+              {copy.technicalTitle}
             </h2>
             <p className="mt-6 max-w-[35rem] text-[15px] leading-8 text-white/58">
-              Heavy spatial assets stay behind dedicated viewer routes, listing pages use poster previews, and XR remains
-              an adapter direction rather than the unstable core of the platform.
+              {copy.technicalBody}
             </p>
           </div>
 
           <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-              {webHeroTechnicalReadouts.map((item, index) => (
+              {technicalReadouts.map((item, index) => (
                 <div key={item} className="bg-[#05070b] p-5 font-mono text-[10px] uppercase leading-5 tracking-[0.16em] text-white/58">
                   <span className="mr-4 text-white/24">{String(index + 1).padStart(2, "0")}</span>
                   {item}
@@ -3327,13 +4049,12 @@ function WebHeroCaseLayout({
         onOpenProject={onOpenProject}
         variant="immersiveCase"
         immersiveCaseContent={{
-          headline: "Build the next living visual system.",
-          description:
-            "WEBHERO closes as a flagship R&D proof: stage language, backdrop systems, living images, splat routes, and Art Room presentation stay inside one web-first visual platform.",
-          signal: "living visual systems",
-          intake: "available",
-          nextStep: "start a webgl-stage project",
-          bottomLine: "Built as a web-first spatial interface system.",
+          headline: copy.footer.headline,
+          description: copy.footer.description,
+          signal: copy.footer.signal,
+          intake: copy.footer.intake,
+          nextStep: copy.footer.nextStep,
+          bottomLine: copy.footer.bottomLine,
           ctaLabel: labels.startProjectShort,
         }}
       />
@@ -3486,12 +4207,12 @@ export default function ImmersiveCasePage({
       ? {
           back: "Volver a immersive",
           direction: "Direccion",
-          interaction: "Gramatica de interaccion",
+          interaction: "Gramática de interacción",
           build: "Ruta de desarrollo",
           rhythm: "Ritmo de interfaz",
-          rhythmTitle: "Estructura de presentacion por secuencia.",
+          rhythmTitle: "Estructura de presentación por secuencia.",
           rhythmBody:
-            "Una secuencia minima de estados reemplaza navegacion densa y permite que atmosfera, jerarquia y claridad avancen progresivamente.",
+            "Una secuencia mínima de estados reemplaza navegación densa y permite que atmósfera, jerarquía y claridad avancen progresivamente.",
           entry: "Estado de entrada",
           entryBody: "Frame de introduccion calmado que establece tono sin ruido de UI.",
           hierarchy: "Frame de jerarquia",
@@ -3500,22 +4221,22 @@ export default function ImmersiveCasePage({
           transitionBody: "Las transiciones mantienen continuidad mientras cambian contexto y significado.",
           media: "Estructura de medios",
           mediaBody:
-            "Un hero en loop establece atmosfera, mientras los frames fijos aislan jerarquia y estados clave de interfaz.",
-          logic: "Logica de interaccion",
-          logicBody: "La navegacion se integra en el ritmo en lugar de exponerse como capas de UI.",
+            "Un hero en loop establece atmósfera, mientras los frames fijos aíslan jerarquía y estados clave de interfaz.",
+          logic: "Lógica de interacción",
+          logicBody: "La navegación se integra en el ritmo en lugar de exponerse como capas de UI.",
           potential: "Potencial del sistema",
           potentialBody: "La misma estructura puede escalar hacia superficies de producto sin perder claridad.",
-          relevance: "Relevancia de produccion",
-          relevanceTitle: "Concepto que se traduce en sistemas listos para produccion.",
+          relevance: "Relevancia de producción",
+          relevanceTitle: "Concepto que se traduce en sistemas listos para producción.",
           reusable: "Logica reusable",
-          reusableBody: "Los patrones de interaccion pueden reutilizarse en varias superficies y flujos.",
+          reusableBody: "Los patrones de interacción pueden reutilizarse en varias superficies y flujos.",
           modular: "Estructura modular",
           modularBody: "Disenado como componentes componibles, no como escenas visuales aisladas.",
           launch: "Preparado para lanzamiento",
-          launchBody: "Equilibra atmosfera visual con claridad, rendimiento y usabilidad.",
+          launchBody: "Equilibra atmósfera visual con claridad, rendimiento y usabilidad.",
           next: "Siguiente paso",
           nextTitle:
-            "Si esta direccion encaja, el siguiente paso es definir scope, gramatica de motion y profundidad de produccion.",
+            "Si esta dirección encaja, el siguiente paso es definir scope, gramática de motion y profundidad de producción.",
           prevStudy: "Caso anterior",
           nextStudy: "Caso siguiente",
         }

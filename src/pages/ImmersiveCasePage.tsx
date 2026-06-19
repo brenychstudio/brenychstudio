@@ -3374,7 +3374,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (locale !== "es" && data.slug === "webhero") {
+  if (data.slug === "webhero") {
     return (
       <div className="min-h-screen bg-[#05070b] text-white">
         <Header
@@ -3391,7 +3391,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (locale !== "es" && data.slug === "kool-berk") {
+  if (data.slug === "kool-berk") {
     return (
       <div className="min-h-screen bg-[#04070d] text-white">
         <Header
@@ -3408,7 +3408,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (locale !== "es" && data.slug === "presence-os-memory-atlas") {
+  if (data.slug === "presence-os-memory-atlas") {
     return (
       <div className="min-h-screen bg-[#030706] text-white">
         <Header
@@ -3425,7 +3425,7 @@ export default function ImmersiveCasePage({
     );
   }
 
-  if (locale !== "es" && data.slug === "orbit-lens") {
+  if (data.slug === "orbit-lens") {
     return (
       <div className="min-h-screen bg-[#03070a] text-white">
         <Header

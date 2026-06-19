@@ -34,6 +34,21 @@ type PageProps = {
 
 type CinematicImmersiveTone = "webhero" | "kool-berk" | "presence-os" | "orbit-lens";
 
+function useCinematicImmersiveLabels() {
+  const { locale } = useI18n();
+  const isSpanish = locale === "es";
+
+  return {
+    isSpanish,
+    backToImmersive: isSpanish ? "<- Volver a Immersive" : "<- Back to immersive",
+    desktopProof: isSpanish ? "prueba desktop" : "desktop proof",
+    openGithub: isSpanish ? "Ver GitHub ->" : "Open GitHub ->",
+    openLiveSite: isSpanish ? "Ver sitio ->" : "Open live site ->",
+    startProject: isSpanish ? "Iniciar proyecto ->" : "Start a project ->",
+    startProjectShort: isSpanish ? "Iniciar proyecto" : "Start a project",
+  };
+}
+
 const cinematicToneTokens: Record<
   CinematicImmersiveTone,
   { rail: string; scan: string; accent: string; label: string }
@@ -1369,6 +1384,7 @@ function PresenceOsCaseLayout({
 }) {
   const activeSection = useSectionRailActive(presenceOsRailItems, "presence-os-threshold");
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const labels = useCinematicImmersiveLabels();
   const videos = item.videos ?? [];
   const frames = item.frames ?? [];
   const desktopFrames = frames.filter((frame) => frame.device !== "vr");
@@ -1421,7 +1437,7 @@ function PresenceOsCaseLayout({
               onClick={onBack}
               className="border-y border-white/16 bg-black/24 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
             >
-              &lt;- Back to immersive
+              {labels.backToImmersive}
             </button>
             <CaseStatusPill kind={item.statusKind} label={item.status} />
           </div>
@@ -1435,7 +1451,9 @@ function PresenceOsCaseLayout({
                 Presence OS / Memory Atlas
               </h1>
               <p className="mt-7 max-w-[43rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
-                A private archive that responds to presence: stillness, return, attention and synthetic weather.
+                {labels.isSpanish
+                  ? item.tagline
+                  : "A private archive that responds to presence: stillness, return, attention and synthetic weather."}
               </p>
             </div>
 
@@ -1454,11 +1472,11 @@ function PresenceOsCaseLayout({
                     rel="noreferrer"
                     className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/18 bg-white px-5 text-[11px] uppercase tracking-[0.14em] text-[#030706] transition hover:-translate-y-0.5 hover:bg-white/90"
                   >
-                    Open live site -&gt;
+                    {labels.openLiveSite}
                   </a>
                 ) : null}
                 <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
-                  Start a project -&gt;
+                  {labels.startProject}
                 </ActionPill>
               </div>
             </div>
@@ -1674,7 +1692,7 @@ function PresenceOsCaseLayout({
           intake: "available",
           nextStep: "start a spatial memory prototype",
           bottomLine: "Built as a local-first immersive interface system.",
-          ctaLabel: "Start a project",
+          ctaLabel: labels.startProjectShort,
         }}
       />
 
@@ -1784,6 +1802,7 @@ function OrbitLensCaseLayout({
 }) {
   const activeSection = useSectionRailActive(orbitLensRailItems, "orbit-lens-threshold");
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const labels = useCinematicImmersiveLabels();
   const videos = item.videos ?? [];
   const frames = item.frames ?? [];
   const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
@@ -1873,7 +1892,7 @@ function OrbitLensCaseLayout({
               onClick={onBack}
               className="border-y border-white/16 bg-black/24 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
             >
-              &lt;- Back to immersive
+              {labels.backToImmersive}
             </button>
             <CaseStatusPill kind={item.statusKind} label={item.status} />
           </div>
@@ -1887,7 +1906,9 @@ function OrbitLensCaseLayout({
                 Orbit Lens
               </h1>
               <p className="mt-7 max-w-[43rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
-                A cinematic web interface for fictional AI spatial glasses, where the website behaves like the product OS.
+                {labels.isSpanish
+                  ? item.tagline
+                  : "A cinematic web interface for fictional AI spatial glasses, where the website behaves like the product OS."}
               </p>
             </div>
 
@@ -1906,7 +1927,7 @@ function OrbitLensCaseLayout({
                     rel="noreferrer"
                     className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/18 bg-white px-5 text-[11px] uppercase tracking-[0.14em] text-[#03070a] transition hover:-translate-y-0.5 hover:bg-white/90"
                   >
-                    Open live site -&gt;
+                    {labels.openLiveSite}
                   </a>
                 ) : null}
                 {repoLink ? (
@@ -1916,11 +1937,11 @@ function OrbitLensCaseLayout({
                     rel="noreferrer"
                     className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/16 bg-white/[0.04] px-5 text-[11px] uppercase tracking-[0.14em] text-white/74 transition hover:-translate-y-0.5 hover:border-white/34 hover:bg-white/8 hover:text-white"
                   >
-                    Open GitHub -&gt;
+                    {labels.openGithub}
                   </a>
                 ) : null}
                 <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
-                  Start a project -&gt;
+                  {labels.startProject}
                 </ActionPill>
               </div>
             </div>
@@ -2145,7 +2166,7 @@ function OrbitLensCaseLayout({
           intake: "available",
           nextStep: "start a product-interface prototype",
           bottomLine: "Built as a fictional AI spatial glasses interface concept.",
-          ctaLabel: "Start a project",
+          ctaLabel: labels.startProjectShort,
         }}
       />
 
@@ -2364,6 +2385,7 @@ function KoolBerkCaseLayout({
   const frames = item.frames ?? [];
   const activeSection = useSectionRailActive(koolBerkRailItems, "kool-berk-threshold");
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const labels = useCinematicImmersiveLabels();
   const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
     id: `kool-berk-frame-${String(index + 1).padStart(2, "0")}`,
     kind: "image",
@@ -2419,7 +2441,7 @@ function KoolBerkCaseLayout({
               onClick={onBack}
               className="border-y border-white/16 bg-black/24 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
             >
-              &lt;- Back to immersive
+              {labels.backToImmersive}
             </button>
             <CaseStatusPill kind={item.statusKind} label={item.status} />
           </div>
@@ -2433,8 +2455,9 @@ function KoolBerkCaseLayout({
                 Kool Berk
               </h1>
               <p className="mt-7 max-w-[42rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
-                A Sonic Object OS where releases become digital artifacts, tracks become signal studies, and listening
-                becomes an audio-reactive WebGL room.
+                {labels.isSpanish
+                  ? item.tagline
+                  : "A Sonic Object OS where releases become digital artifacts, tracks become signal studies, and listening becomes an audio-reactive WebGL room."}
               </p>
             </div>
 
@@ -2452,10 +2475,10 @@ function KoolBerkCaseLayout({
                   rel="noreferrer"
                   className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/18 bg-transparent px-5 text-[11px] uppercase tracking-[0.14em] text-white/78 transition hover:-translate-y-0.5 hover:border-white/34 hover:bg-white/5 hover:text-white"
                 >
-                  Open live site -&gt;
+                  {labels.openLiveSite}
                 </a>
                 <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
-                  Start a project -&gt;
+                  {labels.startProject}
                 </ActionPill>
               </div>
             </div>
@@ -2698,7 +2721,7 @@ function KoolBerkCaseLayout({
           intake: "available",
           nextStep: "start an audiovisual system",
           bottomLine: "Built as a sonic interface system.",
-          ctaLabel: "Start a project",
+          ctaLabel: labels.startProjectShort,
         }}
       />
 
@@ -2890,6 +2913,7 @@ function WebHeroCaseLayout({
   const [proofMode, setProofMode] = useState<WebHeroProofMode>("index");
   const [proofExpanded, setProofExpanded] = useState(false);
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
+  const labels = useCinematicImmersiveLabels();
   const liveLink = item.links?.find((link) => link.label.toLowerCase().includes("live"));
   const inspectFrames: CaseStoryMedia[] = frames.map((frame, index) => ({
     id: `webhero-frame-${String(index + 1).padStart(2, "0")}`,
@@ -2939,7 +2963,7 @@ function WebHeroCaseLayout({
               onClick={onBack}
               className="border-y border-white/16 bg-black/18 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/62 transition hover:border-white/36 hover:text-white"
             >
-              &lt;- Back to immersive
+              {labels.backToImmersive}
             </button>
             <CaseStatusPill kind={item.statusKind} label={item.status} />
           </div>
@@ -2947,14 +2971,15 @@ function WebHeroCaseLayout({
           <div className="grid gap-8 py-10 lg:grid-cols-[0.58fr_0.42fr] lg:items-end">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/48">
-                {item.supportLabel} / desktop proof
+                {item.supportLabel} / {labels.desktopProof}
               </div>
               <h1 className="mt-6 max-w-[7.6ch] text-[clamp(4.8rem,13vw,12rem)] font-normal leading-[0.78] tracking-[-0.075em] text-white">
                 WEBHERO
               </h1>
               <p className="mt-7 max-w-[40rem] text-[18px] leading-8 text-white/76 md:text-[21px] md:leading-9">
-                Living Visual Systems for cinematic WebGL stages, spatial images, Gaussian Splat works, Art Room
-                presentation and future XR adapters.
+                {labels.isSpanish
+                  ? item.tagline
+                  : "Living Visual Systems for cinematic WebGL stages, spatial images, Gaussian Splat works, Art Room presentation and future XR adapters."}
               </p>
             </div>
 
@@ -2973,11 +2998,11 @@ function WebHeroCaseLayout({
                     rel="noreferrer"
                     className="inline-flex min-h-11 items-center rounded-full border border-white/16 bg-white/8 px-5 text-[11px] uppercase tracking-[0.14em] text-white/74 transition hover:border-white/40 hover:bg-white/12 hover:text-white"
                   >
-                    Open live site -&gt;
+                    {labels.openLiveSite}
                   </a>
                 ) : null}
                 <ActionPill onClick={() => onOpenProject?.()} aria-haspopup="dialog">
-                  Start a project -&gt;
+                  {labels.startProject}
                 </ActionPill>
               </div>
             </div>
@@ -3309,7 +3334,7 @@ function WebHeroCaseLayout({
           intake: "available",
           nextStep: "start a webgl-stage project",
           bottomLine: "Built as a web-first spatial interface system.",
-          ctaLabel: "Start a project",
+          ctaLabel: labels.startProjectShort,
         }}
       />
       <CinematicInspectReveal

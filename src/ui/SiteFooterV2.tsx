@@ -700,7 +700,7 @@ export default function SiteFooterV2({
               </h2>
             </div>
 
-            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:col-span-4 lg:col-start-8 lg:w-full lg:max-w-none xl:ml-12">
+            <div className="border-y border-neutral-950/14 bg-white/20 py-4 backdrop-blur-sm lg:col-span-4 lg:col-start-8 lg:w-full lg:max-w-none xl:ml-24 2xl:ml-28">
               <div className="grid gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                 <div className="flex items-center justify-between gap-5">
                   <span>{footerLabels.studioSignal}</span>

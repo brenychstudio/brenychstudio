@@ -8,6 +8,8 @@ export type SeoMetaProps = {
   path: string;
   image?: string;
   imageAlt?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   type?: "website" | "article";
   noIndex?: boolean;
   alternates?: SeoAlternate[];
@@ -63,6 +65,8 @@ export default function SeoMeta({
   path,
   image = DEFAULT_OG_IMAGE,
   imageAlt,
+  ogTitle,
+  ogDescription,
   type = "website",
   noIndex = false,
   alternates = [],
@@ -80,8 +84,8 @@ export default function SeoMeta({
 
     setMeta("property", "og:type", type);
     setMeta("property", "og:site_name", SITE_NAME);
-    setMeta("property", "og:title", title);
-    setMeta("property", "og:description", description);
+    setMeta("property", "og:title", ogTitle ?? title);
+    setMeta("property", "og:description", ogDescription ?? description);
     setMeta("property", "og:url", canonicalUrl);
     setMeta("property", "og:image", imageUrl);
     setMeta("property", "og:image:width", "1200");
@@ -89,10 +93,10 @@ export default function SeoMeta({
     setMeta("property", "og:image:alt", resolvedImageAlt);
 
     setMeta("name", "twitter:card", "summary_large_image");
-    setMeta("name", "twitter:title", title);
-    setMeta("name", "twitter:description", description);
+    setMeta("name", "twitter:title", ogTitle ?? title);
+    setMeta("name", "twitter:description", ogDescription ?? description);
     setMeta("name", "twitter:image", imageUrl);
-  }, [alternates, description, image, imageAlt, noIndex, path, title, type]);
+  }, [alternates, description, image, imageAlt, noIndex, ogDescription, ogTitle, path, title, type]);
 
   return null;
 }

@@ -262,11 +262,19 @@ function CinematicImmersiveCaseShell({
 }
 
 function getImmersiveMetaTitle(item: ImmersiveItem, locale: LocaleCode = "en") {
+  if (item.slug === "webhero" && locale === "en") {
+    return "WEBHERO — Premium WebGL Interface System | Brenych Studio";
+  }
+
   const category = locale === "es" ? "Sistema inmersivo" : item.searchContent?.category ?? "Immersive System";
   return `${item.title} - ${category} | Brenych Studio`;
 }
 
-function getImmersiveMetaDescription(item: ImmersiveItem) {
+function getImmersiveMetaDescription(item: ImmersiveItem, locale: LocaleCode = "en") {
+  if (item.slug === "webhero" && locale === "en") {
+    return "A production-minded WebGL system for premium hero stages, interactive product surfaces, cinematic visual storytelling, and spatial interface experiences.";
+  }
+
   return item.searchContent?.shortDescription ?? item.tagline;
 }
 
@@ -282,9 +290,9 @@ function ImmersiveSeoMeta({
   locale?: LocaleCode;
 }) {
   const title = getImmersiveMetaTitle(item, locale);
-  const description = getImmersiveMetaDescription(item);
+  const description = getImmersiveMetaDescription(item, locale);
   const path = getLocalizedPath(`/immersive/${item.slug}`, locale);
-  const image = item.previewPoster;
+  const image = item.slug === "webhero" ? "/og/webhero.png" : item.previewPoster;
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -312,6 +320,7 @@ function ImmersiveSeoMeta({
         path={path}
         image={image}
         imageAlt={imageAlt ?? `${item.title} immersive case`}
+        ogTitle={item.slug === "webhero" && locale === "en" ? "WEBHERO — Premium WebGL Interface System" : undefined}
         type="article"
         noIndex={noIndex}
         alternates={getSeoAlternates(path)}

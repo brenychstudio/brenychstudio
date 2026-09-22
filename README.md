@@ -512,7 +512,7 @@ If you are reviewing this profile for collaboration, engineering work, research,
 - Website: [https://brenychstudio.com](https://brenychstudio.com)
 - LinkedIn: [https://www.linkedin.com/in/brenych/](https://www.linkedin.com/in/brenych/)
 - GitHub: [https://github.com/brenychstudio](https://github.com/brenychstudio)
-- Instagram: [https://www.instagram.com/koolberk/](https://www.instagram.com/koolberk/)
+- Instagram: [https://www.instagram.com/koolberk/](https://www.instagram.com/rostyslavbrenych/)
 
 ## Notes
 

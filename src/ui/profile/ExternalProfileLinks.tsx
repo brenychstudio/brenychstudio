@@ -16,7 +16,7 @@ export const externalProfiles = [
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/koolberk/",
+    href: "https://www.instagram.com/rostyslavbrenych/",
     meta: "Visual stream",
   },
 ] as const;

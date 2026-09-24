@@ -102,7 +102,7 @@ const MOBILE_SWIPE_DISTANCE = 42;
 const MOBILE_SWIPE_VELOCITY = 360;
 
 function getCaseNarrative(story: CaseStory) {
-  const isSpanishPreviewStory = story.translations?.es?.headline === story.headline;
+  const isSpanishPreviewStory = isSpanishCaseStory(story);
 
   if (isSpanishPreviewStory && story.slug === "creatorops") {
     return {
@@ -920,8 +920,19 @@ function getAvailabilitySignal(story: CaseStory) {
   return "Case reference";
 }
 
+// The page locale is attached when the story is localized, so UI labels follow the route locale
+// instead of guessing from content (EN and ES headlines can be identical).
+const caseStoryLocaleKey = Symbol("caseStoryLocale");
+
+type LocalizedCaseStory = CaseStory & { [caseStoryLocaleKey]?: LocaleCode };
+
+function withCaseStoryLocale(story: CaseStory, locale: LocaleCode): CaseStory {
+  const localizedStory: LocalizedCaseStory = { ...story, [caseStoryLocaleKey]: locale };
+  return localizedStory;
+}
+
 function isSpanishCaseStory(story: CaseStory) {
-  return story.translations?.es?.headline === story.headline;
+  return (story as LocalizedCaseStory)[caseStoryLocaleKey] === "es";
 }
 
 function getCaseTypeLabel(story: CaseStory) {
@@ -3581,7 +3592,7 @@ export default function CasePageV2({
   const isUnavailableSpanishStory =
     locale === "es" && (!isSpanishPublicCaseStorySlug(slug) || !sourceStory?.translations?.es);
   const story = useMemo(
-    () => (sourceStory ? localizeCaseStory(sourceStory, locale) : null),
+    () => (sourceStory ? withCaseStoryLocale(localizeCaseStory(sourceStory, locale), locale) : null),
     [locale, sourceStory],
   );
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);

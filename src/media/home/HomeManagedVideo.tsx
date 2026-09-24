@@ -85,19 +85,28 @@ export default function HomeManagedVideo({
     video.play().catch(() => {});
   }, [shouldPlay]);
 
+  // Confirm a decoded frame only after playback has begun, so a paused first frame (or a
+  // rejected play()) never replaces the approved poster.
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !shouldPlay || frameReady || typeof video.requestVideoFrameCallback !== "function") return;
+    if (!video || !shouldPlay || !hasPlayed || frameReady || typeof video.requestVideoFrameCallback !== "function") {
+      return;
+    }
 
     const handle = video.requestVideoFrameCallback(() => setFrameReady(true));
 
     return () => video.cancelVideoFrameCallback(handle);
-  }, [shouldPlay, frameReady]);
+  }, [shouldPlay, hasPlayed, frameReady]);
 
   const markFrameReadyWithoutFrameCallback = () => {
     const video = videoRef.current;
-    if (!video || typeof video.requestVideoFrameCallback === "function") return;
+    if (!video || typeof video.requestVideoFrameCallback === "function" || video.paused) return;
     if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) setFrameReady(true);
+  };
+
+  const handlePlaying = () => {
+    setHasPlayed(true);
+    markFrameReadyWithoutFrameCallback();
   };
 
   return (
@@ -120,7 +129,7 @@ export default function HomeManagedVideo({
           style={resolvedStyle}
           onLoadedData={markFrameReadyWithoutFrameCallback}
           onCanPlay={markFrameReadyWithoutFrameCallback}
-          onPlaying={() => setHasPlayed(true)}
+          onPlaying={handlePlaying}
           onError={() => setFailed(true)}
         />
       </div>

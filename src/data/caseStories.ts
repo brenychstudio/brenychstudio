@@ -643,11 +643,11 @@ const authoredCaseStories: CaseStory[] = [
   {
     slug: "creatorops",
     caseType: "workflow-tool",
-    label: "CASE SYSTEM / WORKFLOW TOOL / CREATOR PUBLISHING",
-    headline: "CreatorOps",
-    subheadline: "Creator workflow interface system.",
+    label: "CONTROLLED BETA / WORKFLOW TOOL / CREATOR PUBLISHING",
+    headline: "Weekfield",
+    subheadline: "Formerly presented as CreatorOps",
     summary:
-      "CreatorOps is an export-first creator workflow system that turns scattered visual assets into a ready-to-publish Week Pack: Library, Smart Mix, planning, captions, ZIP export direction, client review, profile handoff and media conversion.",
+      "Creator content intelligence and planning system with structured creative workflows, Week Packs and human-controlled AI-assisted review/apply patterns.",
     proofClaim:
       "Creator workflow becomes a system when scattered assets, planning, captions, export, review, and handoff move toward one ready-to-publish Week Pack.",
     evidencePoints: [

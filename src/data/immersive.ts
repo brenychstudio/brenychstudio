@@ -16,8 +16,9 @@ export type ImmersiveCaseKey =
   | "thresholdMemory";
 
 export type ImmersiveStatus =
-  | "Advanced V1 / In progress"
-  | "Advanced internal prototype / active development"
+  | "PUBLIC IMMERSIVE PROOF · ACTIVE DEVELOPMENT"
+  | "R&D"
+  | "R&D PROTOTYPE"
   | "Advanced interactive prototype / premium art-tech MVP"
   | "Advanced prototype / in development"
   | "Flagship concept"
@@ -95,7 +96,7 @@ export const immersiveItems: ImmersiveItem[] = [
     stack: "React, Vite, Three.js, WebXR, Quest VR, AR preview, Cloudflare Pages",
     description:
       "WHISPER combines conceptual photography, an editorial art website, browser-based WebXR, Quest VR hand-navigation, a collector print catalog, shareable print paths, and AR preview for framed editions.",
-    status: "Advanced V1 / In progress",
+    status: "PUBLIC IMMERSIVE PROOF · ACTIVE DEVELOPMENT",
     statusKind: "in_progress",
     statusNote:
       "Public site, WebXR experience, Quest hand navigation, print catalog, and first AR print preview flow are working. Final XR polish, additional AR assets, and mobile/tablet refinements continue.",
@@ -349,7 +350,7 @@ export const immersiveItems: ImmersiveItem[] = [
       "Vite, React, TypeScript, WebGL, GLSL / Canvas, Gaussian Splat viewer, SHARP / 3DGS generation pipeline",
     description:
       "WEBHERO is an internal Brenych Studio R&D platform exploring the future of premium visual websites as living environments. It combines a WebGL Stage System, cinematic backdrops, Living Images, SHARP/3DGS-based Living Splat works, Art Room presentation and a controlled path toward XR.",
-    status: "Advanced internal prototype / active development",
+    status: "R&D",
     statusKind: "in_progress",
     statusNote:
       "Stage System, Backdrops, Living Images, Living Splat and Art Room are demonstrated as functional modules. Living Art Mixer remains in active R&D, and mobile-specific screenshots are not part of the current package yet.",
@@ -760,7 +761,7 @@ export const immersiveItems: ImmersiveItem[] = [
       "Vite, React, TypeScript, Three.js, React Three Fiber, Drei, WebXR, Canvas rendering, MediaRecorder/WebM, WebAudio, JSZip, local object URLs, sessionStorage",
     description:
       "Presence OS / Memory Atlas transforms a private photo archive into a living spatial memory field, cinematic inspect experience, XR room and exportable memory artifact system.",
-    status: "Advanced prototype / in development",
+    status: "R&D PROTOTYPE",
     statusKind: "in_progress",
     statusNote:
       "The web experience, memory field, cinematic inspect layer, local archive intake, Memory Reel, XR Memory Room, VR session trace and replay artifact pipeline are functioning as an MVP. Quest interaction stabilization, artifact styling, mobile/tablet pass and PDF booklet output remain in active development.",

@@ -18,7 +18,8 @@ export type CaseProofType =
   | "Immersive Proof"
   | "Interface System"
   | "Internal System"
-  | "Private Concept";
+  | "Private Concept"
+  | "Authored Concept";
 
 export type CaseFrameKind = "image" | "video";
 export type CaseFrameDevice = "desktop" | "mobile";
@@ -140,7 +141,7 @@ const caseItems: CaseBase[] = [
     tagline: "Living automotive product experience for a fictional electric grand tourer.",
     roleLabel: "Concept / Creative Direction / Interaction Systems / Front-end",
     stackLabel: "Vite / React / TypeScript / Tailwind v4",
-    statusLabel: "Advanced prototype",
+    statusLabel: "AUTHORED CONCEPT",
     statusKind: "in_progress",
     statusNote:
       "Near-production fictional automotive concept case with the core visual system, interaction logic, responsive experience, media pipeline, and metadata already implemented.",
@@ -423,7 +424,7 @@ const caseItems: CaseBase[] = [
     tagline: "Boutique hotel concept website for a quieter Barcelona stay.",
     roleLabel: "Concept / UX / Visual System / Front-end",
     stackLabel: "Astro 5 / TypeScript / Tailwind v4",
-    statusLabel: "Concept case",
+    statusLabel: "AUTHORED CONCEPT",
     statusKind: "shipped",
     statusNote:
       "Portfolio-ready hotel concept website built around stay atmosphere, room comparison, experience paths, booking contact, responsive proof, and Cloudflare-ready media.",
@@ -806,7 +807,7 @@ const caseItems: CaseBase[] = [
     tagline: "A premium internal CRM for focused outreach workflows.",
     roleLabel: "Product Direction / UX / Front-end",
     stackLabel: "React / TypeScript / Vite / Supabase",
-    statusLabel: "Portfolio-ready core",
+    statusLabel: "INTERNAL SYSTEM",
     statusKind: "shipped",
     statusNote:
       "Personal-use internal CRM core with lead imports, daily outreach actions, pipeline tracking, reports, multilingual UI, light/dark themes, Supabase-backed data, and an AI-ready outreach foundation.",
@@ -1731,7 +1732,7 @@ const caseItems: CaseBase[] = [
       "Infrastructure interface system for technical installation services.",
     roleLabel: "Creative Developer / Front-end Systems",
     stackLabel: "Astro / TypeScript / React",
-    statusLabel: "Shipped",
+    statusLabel: "AUTHORED CONCEPT",
     statusKind: "shipped",
     statusNote:
       "Deployed concept demo built as an infrastructure-first service system with connected-service logic, quote flow, technical specification, and Cloudflare delivery.",
@@ -2013,7 +2014,7 @@ const caseItems: CaseBase[] = [
           label: "Stack",
           value: "Astro / TypeScript / React / Cloudflare Pages",
         },
-        { label: "Status", value: "Shipped" },
+        { label: "Status", value: "AUTHORED CONCEPT" },
       ],
       links: [
         {
@@ -2036,7 +2037,7 @@ const caseItems: CaseBase[] = [
     tagline: "Premium multilingual café website concept for Barcelona.",
     roleLabel: "Concept / UX / Front-end",
     stackLabel: "Next.js / next-intl / Tailwind",
-    statusLabel: "Shipped",
+    statusLabel: "AUTHORED CONCEPT",
     statusKind: "shipped",
     statusNote:
       "Public live hospitality website demo built as a reusable premium café vertical.",
@@ -2200,7 +2201,7 @@ const caseItems: CaseBase[] = [
           value:
             "Next.js / TypeScript / Tailwind CSS / next-intl / Cloudflare Pages",
         },
-        { label: "Status", value: "Shipped" },
+        { label: "Status", value: "AUTHORED CONCEPT" },
       ],
       links: [
         {
@@ -2367,7 +2368,7 @@ const caseItems: CaseBase[] = [
       index: "10",
       title: "House of Lune",
       year: "2026",
-      tagline: "A cinematic digital maison for high jewelry.",
+      tagline: "Authored product and visual-world system exploring masks, jewelry and collectible objects.",
       roleLabel: "Creative Developer / Front-end System Builder",
       stackLabel: "Next.js / TypeScript / Motion",
       statusLabel: "Shipped",
@@ -2572,12 +2573,12 @@ const caseItems: CaseBase[] = [
       slug: "creatorops",
       code: "CO-11",
       index: "11",
-      title: "CreatorOps",
+      title: "Weekfield",
       year: "2026",
       tagline: "Creator workflow interface system.",
       roleLabel: "Workflow Tool / Creator Publishing System",
       stackLabel: "React / TypeScript / Vite / Tailwind",
-      statusLabel: "Beta-ready prototype",
+      statusLabel: "CONTROLLED BETA",
       statusKind: "in_progress",
       statusNote:
         "Beta-ready export-first workspace with Library, Smart Mix, Planner, Captions, Export, Client Review, Profile Handoff / Bio Builder, and Media Converter layers.",
@@ -2839,7 +2840,7 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     proofType: "Internal System",
     status: "prototype",
     shortDescription:
-      "A premium internal CRM prototype for focused outreach workflows, lead import, pipeline control and operator-facing reporting.",
+      "Internal CRM and workflow software for lead operations, pipeline management and AI-ready outreach workflows.",
     longDescription:
       "SprintCRM proves product-interface thinking for internal operations: data states, daily workflow, reporting and operator trust are shaped into a focused CRM surface rather than a generic admin dashboard.",
     tags: ["CRM", "Internal system", "Workflow UX", "Operator console"],
@@ -2940,7 +2941,7 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
   },
   "casa-nube": {
     category: "Premium Website",
-    proofType: "Live Website",
+    proofType: "Authored Concept",
     status: "live",
     shortDescription:
       "A premium multilingual hospitality surface with editorial structure, mobile-first service flow and clear local business presentation.",
@@ -2977,7 +2978,7 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     proofType: "Live Website",
     status: "live",
     shortDescription:
-      "A premium product-world presentation surface for luxury objects, private inquiry and visual storytelling.",
+      "Authored product and visual-world system exploring masks, jewelry and collectible objects.",
     longDescription:
       "House of Lune proves how luxury objects, jewelry, fashion or collectible products can move beyond generic ecommerce grids into a controlled product world with editorial pacing, private inquiry, multilingual structure and stronger trust.",
     tags: ["Luxury product", "Private inquiry", "Product presentation", "Multilingual"],
@@ -3013,7 +3014,7 @@ const caseRegistryBySlug: Record<string, CaseRegistryEntry> = {
     proofType: "Product Prototype",
     status: "in_progress",
     shortDescription:
-      "CreatorOps is an export-first creator workflow system that turns scattered visual assets into a ready-to-publish Week Pack: Library, Smart Mix, planning, captions, ZIP export, client review and profile handoff.",
+      "Creator content intelligence and planning system with structured creative workflows, Week Packs and human-controlled AI-assisted review/apply patterns.",
     longDescription:
       "CreatorOps proves how creator tooling can become a calm export-first operating system instead of another noisy scheduler dashboard. It is positioned as a prototype direction, not a production SaaS with live billing, accounts, backend storage or direct Instagram publishing.",
     tags: ["Creator workflow", "Product interface", "Smart Mix", "Export workflow"],

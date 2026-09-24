@@ -1093,7 +1093,7 @@ function ChamberEntryField({
               }}
               className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
-              {copy?.ctas?.[0] ?? labels.explore} →
+              {labels.explore} →
             </button>
 
             <button
@@ -1102,7 +1102,7 @@ function ChamberEntryField({
               onClick={() => openChamber("whisper")}
               className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              {copy?.ctas?.[1] ?? labels.openWhisper} →
+              {copy?.ctas?.[0] ?? labels.openWhisper} →
             </button>
 
             <button
@@ -1114,7 +1114,7 @@ function ChamberEntryField({
               }}
               className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              {copy?.ctas?.[2] ?? labels.start} →
+              {copy?.ctas?.[1] ?? labels.start} →
             </button>
           </div>
 

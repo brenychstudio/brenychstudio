@@ -35,6 +35,7 @@ export type ServicePageTranslation = {
 };
 
 export type CaseRegistryTranslation = {
+  statusLabel?: string;
   shortDescription: string;
   longDescription: string;
   tags: string[];
@@ -216,9 +217,9 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   work: {
     route: "/work",
     eyebrow: "Archivo de proyectos",
-    title: "Sistemas en movimiento.",
+    title: "Trabajo seleccionado entre productos, sistemas y experiencias interactivas.",
     body:
-      "Un archivo de proyectos donde cada caso funciona como objeto con imagen, leyenda, profundidad, prueba y señales de adaptación.",
+      "Un registro curado de productos de Brenych Studio, sistemas internos, trabajos para clientes, conceptos de autor y entornos experimentales. Cada proyecto se presenta según lo que realmente es: desde software en producción y prototipos funcionales hasta investigación y trabajos históricos de referencia.",
     ctas: ["Ver caso", "Adaptar este sistema", "Abrir campo extendido"],
     labels: {
       archiveLens: "Lente de archivo",
@@ -594,6 +595,7 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
 
 export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTranslation> = {
   "aurel-eon-gt": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Una experiencia de lanzamiento para un gran turismo electrico ficticio, con estados cinematograficos, inspeccion visual y preview privada.",
     longDescription:
@@ -622,6 +624,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   "oria-house-barcelona": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Un sistema hospitality para hotel boutique en Barcelona, con atmosfera, comparacion de habitaciones, experiencias y contacto de reserva.",
     longDescription:
@@ -650,8 +653,9 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   sprintcrm: {
+    statusLabel: "SISTEMA INTERNO",
     shortDescription:
-      "Un CRM interno premium para outreach, importacion de leads, pipeline, accion diaria y reporting orientado al operador.",
+      "Software interno de CRM y workflow para operaciones de leads, gestión de pipeline y flujos de outreach preparados para asistencia de IA.",
     longDescription:
       "SprintCRM demuestra pensamiento de producto para operaciones internas: estados de datos, importacion, seguimiento diario, pipeline y reportes se convierten en una superficie de trabajo enfocada.",
     tags: ["CRM", "Sistema interno", "Workflow UX", "Consola de operador"],
@@ -734,6 +738,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   "arcwave-integrations": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Un sistema de servicios tecnicos que convierte telecom, redes, electricidad, seguridad, EV charging, smart home y audio en una ruta legible.",
     longDescription:
@@ -762,6 +767,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   "casa-nube": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Una superficie hospitality multilingue con estructura editorial, flujo mobile-first y presentacion clara para negocio local.",
     longDescription:
@@ -819,7 +825,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
   },
   "house-of-lune": {
     shortDescription:
-      "Una superficie premium de presentación de producto para objetos de lujo, consulta privada y storytelling visual.",
+      "Sistema de producto y mundo visual de autor que explora máscaras, joyería y objetos coleccionables.",
     longDescription:
       "House of Lune demuestra cómo objetos de lujo, joyería, moda o productos coleccionables pueden ir más allá de grids ecommerce genéricos y convertirse en un universo de producto controlado, con ritmo editorial, consulta privada, estructura preparada para varios idiomas y mayor confianza.",
     tags: ["Producto de lujo", "Consulta privada", "Presentación de producto", "Varios idiomas"],
@@ -888,18 +894,19 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   creatorops: {
+    statusLabel: "BETA CONTROLADA",
     shortDescription:
-      "CreatorOps es un sistema de flujo de trabajo para creadores orientado a la exportación que convierte recursos visuales dispersos en un Week Pack listo para publicar.",
+      "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
     longDescription:
       "CreatorOps demuestra cómo una herramienta para creadores puede convertirse en un sistema operativo calmado y orientado a exportación, no en otro dashboard de planificación ruidoso. Es una dirección de prototipo, no una promesa de SaaS en producción con facturación, cuentas, almacenamiento backend o publicación directa en Instagram.",
     tags: ["Flujo de trabajo para creadores", "Interfaz de producto", "Smart Mix", "Flujo de exportación"],
     ctaLabel: "Ver caso",
     alt: "Interfaz de producto CreatorOps para flujo de trabajo de creadores",
     clientType: "Creadores / marcas pequeñas / equipos de contenido",
-    seoTitle: "CreatorOps - sistema de flujo de trabajo para creadores",
+    seoTitle: "Weekfield - sistema de flujo de trabajo para creadores",
     seoDescription:
-      "Caso de producto CreatorOps: un espacio de trabajo orientado a exportación para convertir recursos visuales dispersos en un Week Pack listo para publicar.",
-    ogTitle: "CreatorOps - flujo de trabajo de creadores como sistema",
+      "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
+    ogTitle: "Weekfield - flujo de trabajo de creadores como sistema",
     ogDescription:
       "Library, Smart Mix, planificación, captions, exportación ZIP, revisión para cliente y entrega de perfil en una sola superficie.",
     searchContent: {
@@ -1790,11 +1797,11 @@ export const spanishCaseStoryTranslations: Record<string, CaseStoryTranslation> 
     },
   },
   creatorops: {
-    label: "CASE SYSTEM / WORKFLOW TOOL / CREATOR PUBLISHING",
-    headline: "CreatorOps",
-    subheadline: "Sistema de interfaz para flujo de trabajo de creadores.",
+    label: "BETA CONTROLADA / WORKFLOW TOOL / CREATOR PUBLISHING",
+    headline: "Weekfield",
+    subheadline: "Presentado anteriormente como CreatorOps",
     summary:
-      "CreatorOps es un sistema de flujo de trabajo para creadores orientado a la exportación. Convierte recursos visuales dispersos en un Week Pack listo para publicar: Library, Smart Mix, planificación, captions, exportación ZIP, revisión para cliente y entrega de perfil.",
+      "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
     proofClaim:
       "El flujo de trabajo de creadores se convierte en sistema cuando recursos dispersos, planificación, captions, exportación, revisión y entrega avanzan hacia un Week Pack listo para publicar.",
     evidencePoints: [
@@ -1987,10 +1994,10 @@ export const spanishCaseStoryTranslations: Record<string, CaseStoryTranslation> 
       },
     ],
     seo: {
-      title: "CreatorOps - sistema de flujo de trabajo para creadores",
+      title: "Weekfield - sistema de flujo de trabajo para creadores",
       description:
-        "CreatorOps convierte recursos visuales dispersos en un Week Pack listo para publicar con Library, Smart Mix, exportación y revisión.",
-      ogTitle: "CreatorOps - flujo de trabajo de creadores como sistema",
+        "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
+      ogTitle: "Weekfield - flujo de trabajo de creadores como sistema",
       ogDescription:
         "Un prototipo de interfaz de producto orientado a exportación para equipos de contenido y creadores.",
       alt: "Interfaz CreatorOps para flujo de trabajo de creadores",
@@ -2007,7 +2014,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     stack: "React, Vite, Three.js, WebXR, Quest VR, AR preview, Cloudflare Pages",
     description:
       "WHISPER combina fotografía conceptual, un sitio web editorial de arte, WebXR en navegador, navegación con manos en Quest VR, catálogo de prints para coleccionistas, rutas de print compartibles y preview AR para ediciones enmarcadas.",
-    status: "V1 avanzada / en progreso",
+    status: "PRUEBA INMERSIVA PÚBLICA · DESARROLLO ACTIVO",
     statusNote:
       "El sitio público, la experiencia WebXR, la navegación con manos en Quest, el catálogo de prints y el primer flujo de preview AR funcionan. El pulido XR final, recursos AR adicionales y refinamientos móvil/tablet siguen en curso.",
     supportLabel: "Caso inmersivo insignia",
@@ -2150,7 +2157,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     stack: "Vite, React, TypeScript, WebGL, GLSL / Canvas, Gaussian Splat viewer, SHARP / 3DGS pipeline",
     description:
       "WEBHERO explora el futuro de las webs premium como entornos vivos. Reúne WebGL Stage System, backdrops cinematográficos, Living Images, obras Living Splat, Art Room y una ruta controlada hacia XR.",
-    status: "Prototipo avanzado",
+    status: "I+D",
     statusNote:
       "Stage System, Backdrops, Living Images, Living Splat y Art Room funcionan como módulos demostrables. Living Art Mixer sigue en investigación activa.",
     supportLabel: "Sistema R&D",
@@ -2470,7 +2477,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     stack: "Vite, React, TypeScript, WebGL, WebXR direction, local-first archive logic",
     description:
       "Presence OS / Memory Atlas transforma un archivo personal en campo de memoria vivo: presencia, stillness, cinematic inspect, sala XR y artefactos exportables.",
-    status: "MVP funcional",
+    status: "PROTOTIPO DE I+D",
     statusNote:
       "La ruta web, campo de memoria, inspección y dirección XR funcionan como prueba MVP. La capa XR final continúa en desarrollo.",
     supportLabel: "Memoria privada",

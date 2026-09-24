@@ -74,9 +74,9 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     statusLabel: "PUBLIC IMMERSIVE PROOF · ACTIVE DEVELOPMENT",
     role: "Cinematic web / XR exhibition",
     summary:
-      "A completed spatial proof connecting public website, mobile presentation, print logic, AR preview, and Quest-tested spatial experience.",
+      "A public immersive proof in active development, connecting web, mobile presentation, print logic, AR preview and Quest-tested spatial experience.",
     proofLine:
-      "The first finished chamber: photography becomes a public surface, collector system, and room-scale proof.",
+      "The first public chamber: photography becomes a public surface, collector system, and room-scale proof.",
     visualRole: "chamber",
     media: {
       poster: "/immersive/Whisper/desktop/whisper-hero.jpg",
@@ -91,7 +91,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     ctaLabel: "Enter WHISPER",
     tags: ["Web exhibition", "Mobile", "Print", "AR", "Quest"],
     mood: "forest",
-    chamberSignal: "First completed proof",
+    chamberSignal: "Public immersive proof",
     engineIds: ["cinematic-frame-field", "living-atmosphere", "spatial-reference-orbit", "ar-collector"],
     position: {
       x: 48,
@@ -482,12 +482,12 @@ const spanishImmersiveSystemCopy: Record<ImmersiveChamberId, SpanishImmersiveSys
     statusLabel: "PRUEBA INMERSIVA PÚBLICA · DESARROLLO ACTIVO",
     role: "Exposicion cinematografica web / XR",
     summary:
-      "Una prueba espacial completada que conecta sitio publico, mobile, prints, preview AR y experiencia Quest.",
+      "Una prueba inmersiva pública en desarrollo activo que conecta web, presentación móvil, lógica de impresión, preview AR y una experiencia espacial probada en Quest.",
     proofLine:
-      "La primera camara terminada: fotografia como superficie publica, sistema collector y prueba room-scale.",
+      "La primera camara publica: fotografia como superficie publica, sistema collector y prueba room-scale.",
     ctaLabel: "Entrar en WHISPER",
     tags: ["Exposicion web", "Mobile", "Print", "AR", "Quest"],
-    chamberSignal: "Primera prueba completada",
+    chamberSignal: "Prueba inmersiva pública",
   },
   webhero: {
     room: "Sala 02",

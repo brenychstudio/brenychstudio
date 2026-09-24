@@ -942,6 +942,27 @@ function getCaseTypeLabel(story: CaseStory) {
   return labels[story.caseType] ?? story.caseType.replace("-", " ");
 }
 
+const canonicalMaturityLabels = new Set([
+  "PUBLIC PRODUCT", "PRODUCTO PÚBLICO",
+  "CONTROLLED BETA", "BETA CONTROLADA",
+  "INTERNAL SYSTEM", "SISTEMA INTERNO",
+  "WORKING PROTOTYPE", "PROTOTIPO FUNCIONAL",
+  "R&D", "I+D",
+  "ACTIVE PRIVATE PRODUCTION", "PRODUCCIÓN PRIVADA ACTIVA",
+  "AUTHORED CONCEPT", "CONCEPTO DE AUTOR",
+  "HISTORICAL PROOF", "REFERENCIA HISTÓRICA",
+  "COMPLETED PROJECT", "PROYECTO COMPLETADO",
+]);
+
+// Project maturity comes from the case registry and stays separate from the availability signal.
+function getCaseMaturityLabel(story: CaseStory, locale: LocaleCode) {
+  const registryCase = getCaseBySlug(story.slug);
+  if (!registryCase) return null;
+
+  const statusLabel = localizeCase(registryCase, locale).statusLabel;
+  return canonicalMaturityLabels.has(statusLabel) ? statusLabel : null;
+}
+
 function localizeCaseSpineItems(items: SectionRailItem[], story: CaseStory | null) {
   if (!story || !isSpanishCaseStory(story)) return items;
 
@@ -2841,6 +2862,7 @@ function MobileCaseHero({
   story: CaseStory;
   liveLink?: { label: string; href: string };
 }) {
+  const { locale } = useI18n();
   const titleLines = getTitleLines(story.headline);
 
   return (
@@ -2850,10 +2872,11 @@ function MobileCaseHero({
       <div className="relative md:mx-auto md:w-[min(100%,46rem)]">
         <div className="flex max-w-[20rem] flex-wrap gap-2 sm:max-w-none md:max-w-[44rem]">
           {[
+            getCaseMaturityLabel(story, locale),
             isSpanishCaseStory(story) ? "Sistema de caso" : "Case system",
             getAvailabilitySignal(story),
             getCaseTypeLabel(story),
-          ].map((item) => (
+          ].filter((item): item is string => Boolean(item)).map((item) => (
             <span
               key={item}
               className="rounded-full border border-neutral-950/10 bg-white/48 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm"
@@ -3751,10 +3774,11 @@ export default function CasePageV2({
             >
               <div className="flex flex-wrap items-center gap-2">
                 {[
+                  getCaseMaturityLabel(story, locale),
                   isSpanishCaseStory(story) ? "Sistema de caso" : "Case system",
                   getAvailabilitySignal(story),
                   getCaseTypeLabel(story),
-                ].map(
+                ].filter((item): item is string => Boolean(item)).map(
                   (item) => (
                     <span
                       key={item}

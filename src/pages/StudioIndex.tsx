@@ -28,6 +28,8 @@ import { startSpaPageTransition } from "../ui/pageTransition";
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
 import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
+import HomeManagedVideo from "../media/home/HomeManagedVideo";
+import HomeMediaRuntimeProvider from "../media/home/HomeMediaRuntimeProvider";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -850,19 +852,18 @@ function MobileAssetMedia({
   const classes = `h-full w-full object-cover ${className}`;
 
   if (asset.kind === "video") {
+    if (!asset.poster) {
+      throw new Error(`Home video requires an approved poster: ${asset.src}`);
+    }
+
     return (
-      <video
-        className={classes}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
+      <HomeManagedVideo
+        key={asset.src}
+        src={asset.src}
         poster={asset.poster}
-        style={{ objectPosition }}
-      >
-        <source src={asset.src} type="video/mp4" />
-      </video>
+        className={classes}
+        objectPosition={objectPosition}
+      />
     );
   }
 
@@ -2715,7 +2716,7 @@ export default function StudioIndex({
   };
 
   return (
-    <>
+    <HomeMediaRuntimeProvider>
       {noIndex ? <StudioNoIndexMeta /> : null}
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
@@ -2767,6 +2768,6 @@ export default function StudioIndex({
 
         {routeContentReady ? <SiteFooterV2 onOpenProject={onOpenProject} variant="living" /> : null}
       </PageSurface>
-    </>
+    </HomeMediaRuntimeProvider>
   );
 }

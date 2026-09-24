@@ -152,44 +152,44 @@ export type WorkEvidenceTranslation = {
 
 export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
   "/": {
-    title: "Brenych Studio - sistemas front-end premium",
+    title: "Brenych Studio — Ingeniería de producto y tecnología creativa",
     description:
-      "Estudio con base en Barcelona para sistemas front-end premium, sitios web de producto e interfaces inmersivas con claridad, presencia y prueba real.",
-    ogTitle: "Brenych Studio - sistemas front-end premium",
+      "Estudio independiente en Barcelona que desarrolla productos de software AI-native, sistemas de agentes controlados, software interactivo, experiencias 3D / XR en tiempo real y mundos digitales.",
+    ogTitle: "Brenych Studio — Ingeniería de producto y tecnología creativa",
     ogDescription:
-      "Sistemas de interfaz desde Barcelona: superficies de producto y experiencias web inmersivas con dirección editorial y front-end listo para producción.",
+      "Estudio independiente en Barcelona que desarrolla productos de software AI-native, sistemas de agentes controlados, software interactivo, experiencias 3D / XR en tiempo real y mundos digitales.",
   },
   "/work": {
-    title: "Proyectos seleccionados - Brenych Studio",
+    title: "Trabajo — Productos, sistemas y experiencias interactivas | Brenych Studio",
     description:
-      "Archivo de proyectos con casos reales: sistemas de producto, sitios premium, herramientas de flujo de trabajo e interfaces web interactivas.",
-    ogTitle: "Proyectos seleccionados - Brenych Studio",
+      "Trabajo seleccionado de Brenych Studio entre productos de software, sistemas internos, tecnología creativa, 3D en tiempo real, experiencias inmersivas y proyectos digitales de autor.",
+    ogTitle: "Trabajo — Productos, sistemas y experiencias interactivas | Brenych Studio",
     ogDescription:
-      "Casos reales y pruebas de sistemas front-end premium, desde CreatorOps hasta House of Lune y Barcelona Private Advisory.",
+      "Trabajo seleccionado de Brenych Studio entre productos de software, sistemas internos, tecnología creativa, 3D en tiempo real, experiencias inmersivas y proyectos digitales de autor.",
   },
   "/offer": {
-    title: "Servicios de interfaz premium - Brenych Studio",
+    title: "Ingeniería de producto, sistemas de IA y tecnología creativa | Brenych Studio",
     description:
-      "Servicios de interfaz premium desde Barcelona: landing pages, demos de producto y sistemas web interactivos con prueba visual.",
-    ogTitle: "Servicios de interfaz premium - Brenych Studio",
+      "Desarrollo de producto, sistemas controlados de IA y agentes, software interactivo, 3D / XR en tiempo real y tecnología creativa para proyectos digitales ambiciosos.",
+    ogTitle: "Ingeniería de producto, sistemas de IA y tecnología creativa | Brenych Studio",
     ogDescription:
-      "Tres rutas de entrada comercial: landing pages premium, landing pages de producto y sistemas web interactivos.",
+      "Desarrollo de producto, sistemas controlados de IA y agentes, software interactivo, 3D / XR en tiempo real y tecnología creativa para proyectos digitales ambiciosos.",
   },
   "/about": {
-    title: "Estudio - Brenych Studio",
+    title: "Acerca de — Rostyslav Brenych / Brenych Studio",
     description:
-      "Brenych Studio es una práctica con base en Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz.",
-    ogTitle: "Estudio - Brenych Studio",
+      "Rostyslav Brenych es fundador de Brenych Studio, una práctica independiente en Barcelona entre ingeniería de producto, sistemas de IA, tecnología creativa e interacción espacial.",
+    ogTitle: "Acerca de — Rostyslav Brenych / Brenych Studio",
     ogDescription:
-      "Una práctica independiente en Barcelona para sistemas front-end premium, superficies de producto y experiencias digitales precisas.",
+      "Rostyslav Brenych es fundador de Brenych Studio, una práctica independiente en Barcelona entre ingeniería de producto, sistemas de IA, tecnología creativa e interacción espacial.",
   },
   "/immersive": {
-    title: "Sistemas de interfaz inmersiva - Brenych Studio",
+    title: "Sistemas inmersivos y espaciales — XR, 3D en tiempo real y mundos interactivos | Brenych Studio",
     description:
-      "Hub de sistemas inmersivos: archivos espaciales, pruebas WebGL, presentaciones cinematográficas y capas web / XR para proyectos premium.",
-    ogTitle: "Sistemas de interfaz inmersiva",
+      "Interfaces espaciales, WebGL / WebGPU, entornos XR, exposiciones digitales y sistemas interactivos experimentales desarrollados por Brenych Studio.",
+    ogTitle: "Sistemas inmersivos y espaciales — XR, 3D en tiempo real y mundos interactivos | Brenych Studio",
     ogDescription:
-      "WHISPER, WEBHERO y futuros chambers como pruebas de interfaz espacial, archivo vivo y presentación inmersiva.",
+      "Interfaces espaciales, WebGL / WebGPU, entornos XR, exposiciones digitales y sistemas interactivos experimentales desarrollados por Brenych Studio.",
   },
 };
 

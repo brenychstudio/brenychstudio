@@ -32,6 +32,11 @@ type MethodItem = {
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+const aboutTitle = "A studio between product engineering, intelligent systems and visual culture.";
+
+const aboutIntro =
+  "Brenych Studio is an independent product engineering and creative technology practice founded by Rostyslav Brenych in Barcelona. The studio develops its own software products, agent and production infrastructure, real-time 3D / XR systems, interactive worlds, and selected client work. The practice grows from a long visual background in photography, art and creative direction, but its current work extends through product architecture, application engineering, cloud systems, controlled AI agents, native and desktop software, spatial computing and game technology.";
+
 const practiceLayers = [
   {
     label: "Commercial Systems",
@@ -134,12 +139,10 @@ function getAboutUi(locale: LocaleCode) {
         ]
       : aboutRailItems,
     railLabel: isSpanish ? "Secciones de estudio" : "About sections",
-    studioPosition: isSpanish ? "Posicion del estudio" : "Studio position",
-    mobileStudioPosition: isSpanish ? "01 / Posicion del estudio" : "01 / Studio position",
-    mobileHeroTitle: isSpanish ? "Construyo sistemas de interfaz premium." : "I build premium interface systems.",
-    mobileHeroBody: isSpanish
-      ? "Desde Barcelona, sitios web, superficies de producto, sistemas multilingües y experiencias digitales inmersivas como una interfaz coherente."
-      : "From Barcelona, websites, product surfaces, multilingual systems, and immersive digital experiences shaped as one coherent interface.",
+    studioPosition: "Brenych Studio / Barcelona",
+    mobileStudioPosition: "01 / Brenych Studio / Barcelona",
+    mobileHeroTitle: isSpanish ? spanishCorePageContent.about.title : aboutTitle,
+    mobileHeroBody: isSpanish ? spanishCorePageContent.about.body : aboutIntro,
     locationSignal: isSpanish ? "Base en Barcelona / trabajo internacional" : "Barcelona-based / international work",
     viewWork: isSpanish ? "Ver proyectos ->" : "View work ->",
     exploreImmersive: isSpanish ? "Explorar inmersivo ->" : "Explore immersive ->",
@@ -155,19 +158,15 @@ function getAboutUi(locale: LocaleCode) {
     mobileMethodLabel: isSpanish ? "02 / Metodo" : "02 / Method",
     methodTitle: isSpanish ? "Estructura primero. Atmosfera despues." : "Structure first. Atmosphere after.",
     methodBody: isSpanish
-      ? "El metodo de trabajo avanza de senal a estructura, y luego hacia atmosfera, interfaz y memoria de proyecto."
-      : "The working method moves from signal to structure, then into atmosphere, interface, and project memory.",
-    methodFormula: isSpanish ? "Senal -> estructura -> atmosfera -> interfaz -> memoria." : "Signal -> structure -> atmosphere -> interface -> memory.",
+      ? "El mismo principio atraviesa el trabajo técnico y visual del estudio: construir un sistema claro, hacer visible su estado, preservar la autoridad humana allí donde las acciones importan y tratar la interacción y la calidad visual como parte de la calidad de ingeniería."
+      : "The same principle runs through the studio’s technical and visual work: build a clear system, make its state visible, preserve human authority where actions matter, and treat interaction and visual quality as part of engineering quality.",
     technicalLabel: isSpanish ? "04 / Base tecnica" : "04 / Technical foundation",
     mobileTechnicalLabel: isSpanish ? "03 / Base tecnica" : "03 / Technical foundation",
     technicalTitle: isSpanish ? "La superficie tiene que sostenerse." : "The surface has to hold up.",
     technicalTitleParts: isSpanish ? ["La superficie", "tiene que", "sostenerse."] : ["The surface", "has to", "hold up."],
     technicalBody: isSpanish
-      ? "La misma superficie puede sostener claridad de producto, interaccion, motion, estructura multilingue, stages WebGL y entrega lista para launch solo cuando la arquitectura es fuerte."
-      : "The same surface can carry product clarity, interaction, motion, multilingual structure, WebGL stages, and launch-ready delivery only when the architecture is strong.",
-    mobileTechnicalBody: isSpanish
-      ? "El sistema tiene que sostener claridad, motion, rutas y entrega lista para launch sin colapsar."
-      : "The system has to carry clarity, motion, routes, and launch-ready delivery without collapsing.",
+      ? "La IA se utiliza de forma intensiva en investigación, desarrollo y producción, pero no como una autoridad invisible. Las acciones de los agentes están delimitadas, los cambios con consecuencias permanecen sujetos a revisión y la evidencia se mantiene separada de la interpretación cuando el producto lo requiere."
+      : "AI is used extensively across research, development and production, but not as invisible authority. Agent actions are bounded, consequential changes remain reviewable, and evidence is separated from interpretation wherever the product requires it.",
     technicalNote: isSpanish
       ? "Las capas multilingues e inmersivas se anaden solo cuando fortalecen el proyecto."
       : "Multilingual and immersive layers are added only when they strengthen the project.",
@@ -178,8 +177,8 @@ function getAboutUi(locale: LocaleCode) {
       : "A practice between engineering, image, and interface research.",
     humanSignal: isSpanish ? "Senal humana / posicion de practica" : "Human signal / practice position",
     authorialBody: isSpanish
-      ? "Mi trabajo se desarrolla desde Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinemáticos e investigación experimental de interfaz. Me interesan webs precisas, atmosféricas y vivas, pero también usables, rápidas y claras."
-      : "My work is based in Barcelona and sits between front-end engineering, visual direction, photography, cinematic media, and experimental interface research. I am interested in websites that feel precise, atmospheric, and alive, while remaining usable, fast, and clear.",
+      ? "Al mismo tiempo, la tecnología no se entiende como sustituto de la autoría. La composición espacial, la imagen, el movimiento, el sonido y la atmósfera siguen siendo partes dirigidas y deliberadas del trabajo. Brenych Studio trabaja con fundadores, equipos, marcas y proyectos culturales, mientras continúa desarrollando productos independientes, herramientas y propiedad intelectual propia dentro del estudio."
+      : "At the same time, technology is not treated as a replacement for authorship. Spatial composition, image, motion, sound and atmosphere remain authored parts of the work. Brenych Studio works with founders, teams, brands and cultural projects — while continuing to develop independent products, tools and original IP inside the studio.",
     principlesLabel: isSpanish ? "06 / Campo de principios" : "06 / Principle field",
     mobilePrinciplesLabel: isSpanish ? "05 / Principios" : "05 / Principles",
     principlesTitle: isSpanish ? "Reglas calmadas para sistemas expresivos." : "Calm rules for expressive systems.",
@@ -508,7 +507,7 @@ function MobileAboutMethod() {
         <span>{methodTitleParts[1] ?? ""}</span>
       </h2>
       <p className="mobile-about-method__summary mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
-        {ui.methodFormula}
+        {ui.methodBody}
       </p>
 
       <div data-sound-safe-area className="mobile-about-method__spine mt-8">
@@ -550,7 +549,7 @@ function MobileAboutTechnical() {
         {ui.technicalTitleParts.map((part) => <span key={part}>{part}</span>)}
       </h2>
       <p className="mobile-about-technical__summary mt-6 max-w-[21rem] text-[16px] leading-7 text-neutral-600">
-        {ui.mobileTechnicalBody}
+        {ui.technicalBody}
       </p>
 
       <div data-sound-safe-area className="mobile-about-technical__stack mt-8">
@@ -746,11 +745,10 @@ export default function AboutV2({
             >
               <SectionLabel>{ui.studioPosition}</SectionLabel>
               <h1 className="mt-6 max-w-[10ch] text-[46px] font-normal leading-[0.92] tracking-[-0.055em] text-neutral-950 sm:max-w-[13ch] sm:text-[76px] sm:leading-[0.9] sm:tracking-[-0.06em] lg:text-[74px] xl:text-[78px] 2xl:text-[100px]">
-                {copy?.title ?? "I build interface systems for premium web, product surfaces, and immersive digital experiences."}
+                {copy?.title ?? aboutTitle}
               </h1>
               <p className="mt-6 max-w-[34ch] text-[16px] leading-7 text-neutral-600 sm:max-w-[43rem] sm:text-[17px]">
-                {copy?.body ??
-                  "Brenych Studio is a Barcelona-based creative development practice focused on premium front-end systems, interactive storytelling, multilingual websites, WebGL stages, and spatial interface research."}
+                {copy?.body ?? aboutIntro}
               </p>
               <div className="mt-5 inline-flex rounded-full border border-neutral-300 bg-white/58 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
                 {ui.locationSignal}

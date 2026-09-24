@@ -238,9 +238,9 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   offer: {
     route: "/offer",
     eyebrow: "Modelo de servicios",
-    title: "Tres rutas de interfaz.",
+    title: "Ingeniería de producto y tecnología creativa para sistemas digitales ambiciosos.",
     body:
-      "Desde Barcelona, tres rutas de interfaz para proyectos que necesitan estructura comercial, prueba visual y front-end listo para producción: landing pages premium, demos de producto y sistemas web interactivos.",
+      "Trabajamos con fundadores, equipos, marcas y organizaciones culturales en productos y experiencias que requieren más que un sitio web o una interfaz estándar. Una colaboración puede comenzar con un nuevo producto, con un sistema existente que necesita una dirección técnica más sólida o con una idea espacial / interactiva que debe convertirse en software real.",
     ctas: ["Iniciar proyecto", "Ver proyectos relacionados"],
     labels: {
       premiumLandingPages: "Landing pages premium",
@@ -258,9 +258,9 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   about: {
     route: "/about",
     eyebrow: "Posición del estudio",
-    title: "Una práctica entre ingeniería, imagen e investigación de interfaz.",
+    title: "Un estudio entre la ingeniería de producto, los sistemas inteligentes y la cultura visual.",
     body:
-      "Brenych Studio es una práctica con base en Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz para construir superficies precisas, atmosféricas y usables.",
+      "Brenych Studio es una práctica independiente de ingeniería de producto y tecnología creativa fundada por Rostyslav Brenych en Barcelona. El estudio desarrolla sus propios productos de software, infraestructura para agentes y producción, sistemas 3D / XR en tiempo real, mundos interactivos y una selección de proyectos para clientes. La práctica nace de una trayectoria visual de más largo recorrido en fotografía, arte y dirección creativa, pero el trabajo actual se extiende a arquitectura de producto, ingeniería de aplicaciones, sistemas cloud, agentes de IA controlados, software nativo y de escritorio, computación espacial y tecnología para videojuegos.",
     ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
     labels: {
       practiceLayers: "Capas de práctica",

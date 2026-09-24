@@ -28,9 +28,6 @@ type BuildSystem = {
   title: string;
   signal: string;
   what: string;
-  forWhom: string;
-  result: string;
-  focus: string[];
 };
 
 type Format = {
@@ -48,6 +45,11 @@ type DeliveryStage = {
 };
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+const offerTitle = "Product engineering and creative technology for ambitious digital systems.";
+
+const offerIntro =
+  "We work with founders, teams, brands and cultural organisations on products and experiences that require more than a standard website or interface. Engagements can begin with a new product, an existing system that needs a stronger technical direction, or a spatial / interactive idea that needs to become real software.";
 
 const heroObjectLayers = [
   {
@@ -88,44 +90,24 @@ const focusedEntryRoutes = [
 
 const buildSystems: BuildSystem[] = [
   {
-    title: "Premium Websites",
-    signal: "Editorial public surface",
-    what: "Editorial websites that organize the offer, proof, media rhythm, and conversion route into one clear premium surface.",
-    forWhom: "Brands, studios, founders, hospitality, advisory, culture, and service-led businesses.",
-    result: "A clear public surface that explains the offer, builds trust, and feels authored rather than generic.",
-    focus: ["Offer hierarchy", "Proof rhythm", "Calm conversion"],
+    title: "Product & Application Engineering",
+    signal: "SaaS · workflow software · internal tools · product prototypes",
+    what: "From early product architecture to working web, desktop and native applications — with interface, state, data and delivery designed as one system.",
   },
   {
-    title: "Interactive Product Surfaces",
-    signal: "Product logic made visible",
-    what: "Product demos and workflow interfaces that make logic, states, and decisions understandable through interaction.",
-    forWhom: "Products, operators, internal tools, startups, creator systems, and commercial prototypes.",
-    result: "A working interface layer that turns product logic into visible states, flows, and decisions.",
-    focus: ["Demo states", "Guided flows", "Decision clarity"],
+    title: "AI & Agent Systems",
+    signal: "AI-native products · MCP / WebMCP · agent workflows · evaluation systems",
+    what: "Controlled AI workflows and agent-facing systems with explicit tools, evidence, approval boundaries and human review where actions have consequences.",
   },
   {
-    title: "Multilingual Front-end Systems",
-    signal: "One system across locales",
-    what: "Language-aware site systems with repeatable sections, locale-safe UI, and content structure that travels cleanly.",
-    forWhom: "International services, property, hospitality, product launches, and cross-market brand systems.",
-    result: "A front-end structure that can support more than one language without losing rhythm or clarity.",
-    focus: ["Locale-safe UI", "Repeatable sections", "Cross-market rhythm"],
-  },
-  {
-    title: "Immersive Prototypes",
-    signal: "Controlled future-facing proof",
-    what: "Contained WebGL, spatial, WebXR, or cinematic prototypes tied to a real commercial or cultural goal.",
-    forWhom: "Brands, creators, institutions, exhibitions, product stories, and future-facing digital experiences.",
-    result: "A controlled prototype that shows what the next interface layer could become without turning the project into chaos.",
-    focus: ["WebGL / spatial", "Cinematic object", "Prototype scope"],
+    title: "Interactive & Spatial Systems",
+    signal: "Spatial product experiences · XR · immersive web · digital exhibitions",
+    what: "Real-time 3D, WebGL / WebGPU, XR and cinematic interfaces for products, exhibitions, archives and authored digital environments.",
   },
   {
     title: "Creative Technology Direction",
-    signal: "Sharper build before production",
-    what: "Concept, interface architecture, motion grammar, prototype direction, and production guidance before or during a high-stakes build.",
-    forWhom: "Teams that need a senior digital direction before build, during redesign, or around a flagship launch.",
-    result: "A clear model for what to build, why it matters, and how the system should behave.",
-    focus: ["Concept model", "Motion grammar", "Production guidance"],
+    signal: "Creative direction · prototyping · interaction systems · visual R&D",
+    what: "Technical and visual direction for projects where interaction, image, motion, sound and system behaviour need to form one coherent experience.",
   },
 ];
 
@@ -145,33 +127,33 @@ const optionalSystemLayers = [
 const deliveryStages: DeliveryStage[] = [
   {
     label: "01",
-    title: "Concept",
-    text: "Define the commercial thesis, audience, proof claims, references, constraints, and the shape of the offer.",
-    output: "Project direction and priority map",
+    title: "Define",
+    text: "Clarify the product, audience, constraints and real decision that the system must support.",
+    output: "Define",
   },
   {
     label: "02",
-    title: "Visual Direction",
-    text: "Translate the offer into interface language: hierarchy, media rhythm, typography, composition, and motion tone.",
-    output: "Approved surface direction",
+    title: "Architect",
+    text: "Establish the product model, interfaces, authority boundaries and technical direction.",
+    output: "Architect",
   },
   {
     label: "03",
-    title: "Front-end Build",
-    text: "Build the responsive React interface with section logic, states, motion behavior, and production-ready structure.",
-    output: "Working front-end system",
+    title: "Build",
+    text: "Implement the working system through small, reviewable production increments.",
+    output: "Build",
   },
   {
     label: "04",
-    title: "QA / Launch",
-    text: "Check responsive layouts, content rhythm, interaction states, metadata basics, performance risks, and launch readiness.",
-    output: "Launch-ready delivery",
+    title: "Validate",
+    text: "Test behaviour, evidence, accessibility, responsive states and intended runtime conditions.",
+    output: "Validate",
   },
   {
     label: "05",
-    title: "Support / Handoff",
-    text: "Prepare handoff notes, clarify maintenance logic, support launch adjustments, and leave the system understandable.",
-    output: "Handoff and support layer",
+    title: "Deliver",
+    text: "Release a verified product, prototype or production surface with clear ownership and next steps.",
+    output: "Deliver",
   },
 ];
 
@@ -227,13 +209,6 @@ const mobileThesisPoints = [
   ["03", "Production delivery", "Responsive front-end, motion states, QA, and handoff."],
 ];
 
-const mobileDeliverySpine = [
-  ["01", "Direction", "Commercial thesis locked."],
-  ["02", "Visual system", "Interface language defined."],
-  ["03", "Build", "Responsive front-end assembled."],
-  ["04", "Launch", "QA, handoff, and next-step clarity."],
-];
-
 const mobileReceiveLedger = [
   ["01", "Front-end surface", "Production-ready responsive interface."],
   ["02", "Content structure", "Section logic, hierarchy, and route clarity."],
@@ -275,7 +250,7 @@ function getOfferUi(locale: LocaleCode) {
       : offerRailItems,
     railLabel: isSpanish ? "Secciones de oferta" : "Offer sections",
     focusedEntryRoutes: isSpanish ? "Rutas de entrada enfocadas" : "Focused entry routes",
-    thresholdLabel: isSpanish ? "Umbral comercial / Oferta V2" : "Commercial Threshold / Offer V2",
+    thresholdLabel: isSpanish ? "Trabajar con Brenych Studio" : "Work with Brenych Studio",
     liveSignal: isSpanish ? "Senal de oferta en vivo" : "Live offer signal",
     commercialSurface: isSpanish ? "superficie comercial" : "commercial surface",
     activeLayer: isSpanish ? "capa activa" : "active layer",
@@ -290,8 +265,6 @@ function getOfferUi(locale: LocaleCode) {
       ? "No son servicios genericos. Cada formato es un sistema de interfaz comercial con rol, audiencia y resultado claros."
       : "Not generic services. Each format is a commercial interface system with a clear role, audience, and result.",
     selectedFormat: isSpanish ? "Formato seleccionado" : "Selected format",
-    forLabel: isSpanish ? "Para" : "For",
-    resultLabel: isSpanish ? "Resultado" : "Result",
     coreLayers: isSpanish ? "Capas core" : "Core layers",
     optionalLayers: isSpanish ? "Capas opcionales" : "Optional layers",
     addWhenUseful: isSpanish ? "Anadir cuando aporta" : "Add when useful",
@@ -382,44 +355,24 @@ function getBuildSystems(locale: LocaleCode): BuildSystem[] {
 
   return [
     {
-      title: "Websites premium",
-      signal: "Superficie publica editorial",
-      what: "Sitios editoriales que organizan oferta, prueba, ritmo media y ruta de conversion en una superficie premium clara.",
-      forWhom: "Marcas, estudios, founders, hospitality, advisory, cultura y negocios liderados por servicio.",
-      result: "Una superficie publica clara que explica la oferta, construye confianza y se siente autoral en vez de generica.",
-      focus: ["Jerarquia de oferta", "Ritmo de prueba", "Conversion calmada"],
+      title: "Ingeniería de Producto y Aplicaciones",
+      signal: "SaaS · software de workflow · herramientas internas · prototipos de producto",
+      what: "Desde la arquitectura inicial del producto hasta aplicaciones web, de escritorio y nativas plenamente funcionales, diseñando interfaz, estado, datos y entrega como un único sistema.",
     },
     {
-      title: "Superficies interactivas de producto",
-      signal: "Logica de producto visible",
-      what: "Demos de producto e interfaces workflow que hacen comprensibles la logica, los estados y las decisiones mediante interaccion.",
-      forWhom: "Productos, operadores, herramientas internas, startups, sistemas creator y prototipos comerciales.",
-      result: "Una capa de interfaz funcional que convierte logica de producto en estados, flujos y decisiones visibles.",
-      focus: ["Estados demo", "Flujos guiados", "Claridad de decision"],
+      title: "IA y Sistemas de Agentes",
+      signal: "Productos AI-native · MCP / WebMCP · workflows de agentes · sistemas de evaluación",
+      what: "Workflows de IA controlados y sistemas orientados a agentes con herramientas explícitas, evidencia, límites de aprobación y revisión humana allí donde las acciones tienen consecuencias.",
     },
     {
-      title: "Sistemas front-end multilingues",
-      signal: "Un sistema entre idiomas",
-      what: "Sistemas web sensibles al idioma con secciones repetibles, UI segura por locale y estructura de contenido que viaja con claridad.",
-      forWhom: "Servicios internacionales, property, hospitality, lanzamientos de producto y sistemas de marca cross-market.",
-      result: "Una estructura front-end que soporta mas de un idioma sin perder ritmo ni claridad.",
-      focus: ["UI segura por locale", "Secciones repetibles", "Ritmo cross-market"],
+      title: "Sistemas Interactivos y Espaciales",
+      signal: "Experiencias espaciales de producto · XR · web inmersiva · exposiciones digitales",
+      what: "3D en tiempo real, WebGL / WebGPU, XR e interfaces cinematográficas para productos, exposiciones, archivos y entornos digitales de autor.",
     },
     {
-      title: "Prototipos inmersivos",
-      signal: "Prueba de futuro controlada",
-      what: "Prototipos WebGL, espaciales, WebXR o cinematicos contenidos y conectados con un objetivo comercial o cultural real.",
-      forWhom: "Marcas, creadores, instituciones, exhibiciones, historias de producto y experiencias digitales de futuro.",
-      result: "Un prototipo controlado que muestra la siguiente capa de interfaz sin convertir el proyecto en caos.",
-      focus: ["WebGL / espacial", "Objeto cinematico", "Scope prototipo"],
-    },
-    {
-      title: "Direccion creative technology",
-      signal: "Mejor build antes de producir",
-      what: "Concepto, arquitectura de interfaz, gramatica de motion, direccion de prototipo y guia de produccion antes o durante un build exigente.",
-      forWhom: "Equipos que necesitan direccion digital senior antes de construir, durante un redesign o alrededor de un launch principal.",
-      result: "Un modelo claro de que construir, por que importa y como debe comportarse el sistema.",
-      focus: ["Modelo conceptual", "Gramatica de motion", "Guia de produccion"],
+      title: "Dirección de Tecnología Creativa",
+      signal: "Dirección creativa · prototipado · sistemas de interacción · I+D visual",
+      what: "Dirección técnica y visual para proyectos donde interacción, imagen, movimiento, sonido y comportamiento del sistema deben formar una experiencia coherente.",
     },
   ];
 }
@@ -451,33 +404,33 @@ function getDeliveryStages(locale: LocaleCode): DeliveryStage[] {
   return [
     {
       label: "01",
-      title: "Concepto",
-      text: "Definir tesis comercial, audiencia, claims de prueba, referencias, restricciones y forma de la oferta.",
-      output: "Direccion de proyecto y mapa de prioridades",
+      title: "Definir",
+      text: "Clarificar el producto, la audiencia, las restricciones y la decisión real que el sistema debe ayudar a resolver.",
+      output: "Definir",
     },
     {
       label: "02",
-      title: "Direccion visual",
-      text: "Traducir la oferta a lenguaje de interfaz: jerarquia, ritmo media, tipografia, composicion y tono de motion.",
-      output: "Direccion de superficie aprobada",
+      title: "Arquitectar",
+      text: "Establecer el modelo de producto, las interfaces, los límites de autoridad y la dirección técnica.",
+      output: "Arquitectar",
     },
     {
       label: "03",
-      title: "Build front-end",
-      text: "Construir la interfaz React responsive con logica de secciones, estados, motion y estructura lista para produccion.",
-      output: "Sistema front-end funcional",
+      title: "Construir",
+      text: "Implementar el sistema funcional mediante incrementos pequeños, verificables y revisables.",
+      output: "Construir",
     },
     {
       label: "04",
-      title: "QA / Launch",
-      text: "Revisar responsive, ritmo de contenido, estados de interaccion, metadata base, riesgos de performance y readiness.",
-      output: "Entrega lista para launch",
+      title: "Validar",
+      text: "Comprobar comportamiento, evidencia, accesibilidad, estados responsive y condiciones reales de ejecución.",
+      output: "Validar",
     },
     {
       label: "05",
-      title: "Soporte / Handoff",
-      text: "Preparar notas de handoff, aclarar mantenimiento, apoyar ajustes de launch y dejar el sistema comprensible.",
-      output: "Capa de handoff y soporte",
+      title: "Entregar",
+      text: "Publicar un producto, prototipo o superficie de producción verificada, con propiedad, límites y próximos pasos claramente definidos.",
+      output: "Entregar",
     },
   ];
 }
@@ -546,14 +499,7 @@ function getMobileThesisPoints(locale: LocaleCode) {
 }
 
 function getMobileDeliverySpine(locale: LocaleCode) {
-  if (locale !== "es") return mobileDeliverySpine;
-
-  return [
-    ["01", "Direccion", "Tesis comercial cerrada."],
-    ["02", "Sistema visual", "Lenguaje de interfaz definido."],
-    ["03", "Build", "Front-end responsive montado."],
-    ["04", "Launch", "QA, handoff y claridad del siguiente paso."],
-  ];
+  return getDeliveryStages(locale).map((stage) => [stage.label, stage.title, stage.text]);
 }
 
 function getMobileReceiveLedger(locale: LocaleCode) {
@@ -593,7 +539,7 @@ function getMobileRoutes(locale: LocaleCode): MobileRoute[] {
 function OfferV2Meta() {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Offer V2 - Rostyslav Brenych";
+    document.title = "Product Engineering, AI Systems & Creative Technology | Brenych Studio";
 
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
     const previousContent = existing?.getAttribute("content") ?? null;
@@ -921,19 +867,8 @@ function BuildSystemsInterface() {
               {active.what}
             </p>
 
-            <div className="mt-7 grid border-y border-neutral-950/10">
-              <div className="grid gap-3 border-b border-neutral-950/10 py-4 sm:grid-cols-[8rem_1fr]">
-                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">{ui.forLabel}</div>
-                <p className="text-[14px] leading-6 text-neutral-600">{active.forWhom}</p>
-              </div>
-              <div className="grid gap-3 py-4 sm:grid-cols-[8rem_1fr]">
-                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">{ui.resultLabel}</div>
-                <p className="text-[14px] leading-6 text-neutral-700">{active.result}</p>
-              </div>
-            </div>
-
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              {active.focus.map((focus, index) => (
+              {active.signal.split(" · ").map((focus, index) => (
                 <div key={focus} className="border-t border-neutral-950/10 pt-3">
                   <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-300">
                     {String(index + 1).padStart(2, "0")}
@@ -1114,11 +1049,10 @@ function MobileOfferHero({
     >
       <SectionLabel>{ui.thresholdLabel}</SectionLabel>
       <h1 className="mt-7 max-w-[11ch] text-[58px] font-normal leading-[0.9] text-neutral-950">
-        {copy?.title ?? "Premium interface systems for real projects."}
+        {copy?.title ?? offerTitle}
       </h1>
       <p className="mt-7 max-w-[21rem] text-[17px] leading-7 text-neutral-600">
-        {copy?.body ??
-          "Premium websites, product surfaces, multilingual systems, and focused prototypes shaped around strategy, proof, motion, and production-ready front-end delivery."}
+        {copy?.body ?? offerIntro}
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -1503,11 +1437,10 @@ export default function OfferV2({
             >
               <SectionLabel>{ui.thresholdLabel}</SectionLabel>
               <h1 className="mt-6 max-w-[11ch] text-[58px] font-normal leading-[0.88] tracking-[-0.06em] text-neutral-950 sm:text-[88px] lg:text-[112px] xl:text-[128px]">
-                {copy?.title ?? "Premium interface systems for real projects."}
+                {copy?.title ?? offerTitle}
               </h1>
               <p className="mt-8 max-w-[43rem] text-[17px] leading-8 text-neutral-600 sm:text-[20px]">
-                {copy?.body ??
-                  "Premium websites, product surfaces, multilingual systems, and immersive prototypes built with strategy, visual direction, motion grammar, and production-ready front-end delivery."}
+                {copy?.body ?? offerIntro}
               </p>
 
               <div className="mt-9 flex flex-wrap gap-3">
@@ -1718,7 +1651,7 @@ export default function OfferV2({
       <AnimatePresence>
         {deliveryInterfaceOpen ? (
           <OfferDeliveryInterfaceOverlay
-            stages={deliveryStages}
+            stages={getDeliveryStages(locale)}
             activeStage={activeStage}
             setActiveStage={setActiveStageWithSound}
             onClose={() => {

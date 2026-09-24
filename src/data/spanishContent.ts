@@ -196,11 +196,11 @@ export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
 export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" | "immersive", CorePageTranslation> = {
   home: {
     route: "/",
-    eyebrow: "Studio signal",
-    title: "Sistemas de interfaz vivos.",
+    eyebrow: "Estudio independiente de ingeniería de producto y tecnología creativa — Barcelona",
+    title: "Productos, sistemas inteligentes y mundos interactivos.",
     body:
-      "Desde Barcelona, Brenych Studio crea sistemas de interfaz para sitios premium, lanzamientos de producto, superficies comerciales, archivos espaciales y experiencias digitales que necesitan claridad, presencia y prueba real.",
-    ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
+      "Brenych Studio desarrolla software diseñado de forma nativa para IA, sistemas de agentes con control explícito, herramientas nativas y de escritorio, experiencias 3D / XR en tiempo real y mundos interactivos de autor. Combinamos ingeniería de producto, dirección visual e IA bajo control humano para construir sistemas pensados para funcionar más allá de la demostración.",
+    ctas: ["Explorar el trabajo", "Iniciar un proyecto"],
     labels: {
       liveSignal: "Señal activa",
       selectedWork: "Proyectos seleccionados",

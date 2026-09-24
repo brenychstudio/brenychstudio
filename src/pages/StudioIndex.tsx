@@ -17,7 +17,6 @@ import { immersiveItems } from "../data/immersive";
 import { spanishCorePageContent, type CorePageTranslation } from "../data/spanishContent";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
-import LiveBuildSignal from "../ui/studio-index/LiveBuildSignal";
 import MobileChapter from "../ui/MobileChapter";
 import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
 import PageSurface from "../ui/PageSurface";
@@ -302,11 +301,21 @@ const grammar = [
 ];
 
 const practiceRows = [
-  ["Premium Websites", "Editorial, high-trust websites for brands, studios, products, hospitality, advisory, culture, and creative professionals."],
-  ["Interactive Product Surfaces", "Interfaces that explain products through staged proof, media, motion, and guided decision flows."],
-  ["Multilingual Front-end Systems", "Structured EN / ES / UA / RU layers for international websites, case systems, and product surfaces."],
-  ["Immersive / XR Prototypes", "WebGL, WebXR, Quest-tested spatial demos, AR preview flows, and future-facing presentation systems."],
-  ["Creative Technology Direction", "Concept, interface architecture, motion grammar, prototype systems, and production-ready delivery."],
+  [
+    "Product & Technology",
+    "Software products, agent systems and production tools built around explicit state, evidence, authority and reliable execution.",
+    "Web · Desktop · Native · Cloud · AI / Agents",
+  ],
+  [
+    "Art, Culture & Immersive",
+    "Spatial interfaces, WebGL / XR environments, digital exhibitions and authored experiences where interaction, image and technology operate as one system.",
+    "Real-time 3D · XR · Spatial interaction · Visual systems",
+  ],
+  [
+    "Games & Interactive Worlds",
+    "Original interactive worlds combining real-time systems, asset pipelines, simulation, AI and authored visual direction.",
+    "WebGPU · Game systems · Simulation · World building",
+  ],
 ];
 
 const proofSurfaceAssets: StoryMediaAsset[] = [
@@ -380,9 +389,6 @@ function getStudioHomeUi(locale: LocaleCode) {
   const isSpanish = locale === "es";
 
   return {
-    openingChips: isSpanish
-      ? ["Indice de estudio", "Base en Barcelona", "Sistemas vivos"]
-      : ["Studio Index", "Barcelona-based", "Living systems"],
     railItems: isSpanish
       ? [
           { index: "01", label: "Inicio", id: "opening" },
@@ -482,21 +488,21 @@ function getPracticeRows(locale: LocaleCode) {
   if (locale !== "es") return practiceRows;
 
   return [
-    ["Websites premium", "Sitios editoriales de alta confianza para marcas, estudios, productos, hospitality, advisory, cultura y profesionales creativos."],
-    ["Superficies interactivas de producto", "Interfaces que explican productos mediante prueba escenificada, media, motion y flujos de decision guiados."],
-    ["Sistemas front-end multilingues", "Capas EN / ES / UA / RU estructuradas para webs internacionales, sistemas de casos y superficies de producto."],
-    ["Prototipos inmersivos / XR", "Demos WebGL, WebXR, pruebas Quest, previews AR y sistemas de presentacion orientados al futuro."],
-    ["Direccion creative technology", "Concepto, arquitectura de interfaz, gramatica de motion, sistemas prototipo y entrega lista para produccion."],
-  ];
-}
-
-function getMobilePracticeBridgeRows(locale: LocaleCode) {
-  if (locale !== "es") return mobilePracticeBridgeRows;
-
-  return [
-    ["01", "Website premium", "Una interfaz de alta confianza con direccion editorial, prueba y claridad de conversion."],
-    ["02", "Superficie de producto", "Un producto, oferta o ruta advisory presentado como evidencia guiada."],
-    ["03", "Prototipo inmersivo", "Un prototipo espacial o cinematico para archivo, exhibicion o prueba de futuro."],
+    [
+      "Producto y Tecnología",
+      "Productos de software, sistemas de agentes y herramientas de producción construidos sobre estado explícito, evidencia, autoridad y ejecución fiable.",
+      "Web · Escritorio · Nativo · Cloud · IA / Agentes",
+    ],
+    [
+      "Arte, Cultura e Inmersión",
+      "Interfaces espaciales, entornos WebGL / XR, exposiciones digitales y experiencias de autor donde interacción, imagen y tecnología funcionan como un único sistema.",
+      "3D en tiempo real · XR · Interacción espacial · Sistemas visuales",
+    ],
+    [
+      "Juegos y Mundos Interactivos",
+      "Mundos interactivos originales que combinan sistemas en tiempo real, pipelines de producción de assets, simulación, IA y dirección visual de autor.",
+      "WebGPU · Sistemas de juego · Simulación · World building",
+    ],
   ];
 }
 
@@ -565,12 +571,6 @@ const whisperProofAssets: StoryMediaAsset[] = [
     label: "Print logic",
     route: "/immersive/whisper",
   },
-];
-
-const mobilePracticeBridgeRows = [
-  ["01", "Premium website", "A high-trust interface with editorial direction, proof, and conversion clarity."],
-  ["02", "Product surface", "A product, offer, or advisory flow staged as guided evidence."],
-  ["03", "Immersive prototype", "A spatial or cinematic prototype for archive, exhibition, or future-facing proof."],
 ];
 
 const mobilePrimaryCta =
@@ -1510,22 +1510,17 @@ function MobileFormulaPanel({ compact = false, locale = "en" }: { compact?: bool
 
 function OpeningChapter({
   copy,
-  onSystems,
   onWork,
-  onImmersive,
-  locale,
+  onStartProject,
 }: {
   copy?: CorePageTranslation;
-  onSystems: () => void;
   onWork: () => void;
-  onImmersive: () => void;
-  locale: LocaleCode;
+  onStartProject?: () => void;
 }) {
   const sound = useSound();
-  const ui = getStudioHomeUi(locale);
-  const systemsCta = copy ? "Explorar sistemas" : "Explore systems";
-  const workCta = copy?.ctas?.[0] ?? "View work";
-  const immersiveCta = copy?.ctas?.[1] ?? "Enter immersive";
+  const eyebrow = copy?.eyebrow ?? "Independent Product Engineering & Creative Technology Studio — Barcelona";
+  const workCta = copy?.ctas?.[0] ?? "Explore the work";
+  const startCta = copy?.ctas?.[1] ?? "Start a project";
 
   return (
     <Chapter
@@ -1544,29 +1539,20 @@ function OpeningChapter({
         />
       </div>
 
-      <div className="absolute right-[clamp(5.5rem,7vw,10rem)] top-[43%] z-10 hidden w-[19rem] xl:block 2xl:right-[11vw] 2xl:w-[21rem]">
-        <LiveBuildSignal readiness={78} locale={locale} />
-      </div>
-
       <div className="relative z-10 mx-auto grid min-h-[calc(100svh-7rem)] w-full content-center gap-8 py-10 lg:hidden">
         <div className="flex flex-wrap gap-2">
-          {ui.openingChips.map((chip, index) => (
-            <span
-              key={chip}
-              className={`rounded-full border border-neutral-300/70 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur ${index === 0 ? "bg-white/62" : "bg-white/42"}`}
-            >
-              {chip}
-            </span>
-          ))}
+          <span className="rounded-full border border-neutral-300/70 bg-white/62 px-3 py-1.5 text-[9px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur">
+            {eyebrow}
+          </span>
         </div>
 
         <div>
           <h1 className="max-w-[9ch] text-[clamp(4.25rem,18vw,6.9rem)] font-normal leading-[0.78] tracking-[-0.085em] text-neutral-950">
-            {copy?.title ?? "Living interface systems."}
+            {copy?.title ?? "Products, intelligent systems and interactive worlds."}
           </h1>
           <p className="mt-7 max-w-[36rem] text-[15px] leading-7 text-neutral-600">
             {copy?.body ??
-              "Barcelona-based premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences built as one coherent interface system."}
+              "Brenych Studio builds AI-native software, controlled agent systems, native and desktop tools, real-time 3D / XR experiences, and authored interactive worlds. We combine product engineering, visual direction and human-controlled AI into systems designed to work beyond the demo."}
           </p>
         </div>
 
@@ -1575,86 +1561,57 @@ function OpeningChapter({
             <button
               type="button"
               onMouseEnter={() => sound.playRole("hover")}
-              onClick={onSystems}
+              onClick={onWork}
               className={mobilePrimaryCta}
             >
-              {systemsCta} -&gt;
+              {workCta} -&gt;
             </button>
             <button
               type="button"
               onMouseEnter={() => sound.playRole("hover")}
-              onClick={onWork}
+              onClick={onStartProject}
               className={mobileSecondaryCta}
             >
-              {workCta} -&gt;
+              {startCta} -&gt;
             </button>
           </div>
-          <button
-            type="button"
-            onMouseEnter={() => sound.playRole("hover")}
-            onClick={onImmersive}
-            className={mobileSecondaryCta}
-          >
-            {immersiveCta} -&gt;
-          </button>
-        </div>
-
-        <div className="max-w-[24rem]">
-          <LiveBuildSignal readiness={78} compact locale={locale} />
         </div>
       </div>
 
       <div className="relative z-10 mx-auto hidden min-h-[calc(100vh-7rem)] w-[min(94vw,1640px)] items-center lg:flex">
         <div className="max-w-[56rem]">
           <div className="flex flex-wrap gap-2">
-            {ui.openingChips.map((chip, index) => (
-              <span
-                key={chip}
-                className={`rounded-full border border-neutral-300/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur ${index === 0 ? "bg-white/56" : "bg-white/38"}`}
-              >
-                {chip}
-              </span>
-            ))}
+            <span className="rounded-full border border-neutral-300/70 bg-white/56 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur">
+              {eyebrow}
+            </span>
           </div>
 
           <h1 className="mt-8 max-w-[10ch] text-[78px] font-normal leading-[0.78] tracking-[-0.09em] text-neutral-950 sm:text-[112px] md:text-[150px] xl:text-[176px] 2xl:text-[206px]">
-            {copy?.title ?? "Living interface systems."}
+            {copy?.title ?? "Products, intelligent systems and interactive worlds."}
           </h1>
 
           <p className="mt-9 max-w-[45rem] text-[17px] leading-[1.85] text-neutral-600 sm:text-[19px]">
             {copy?.body ??
-              "From Barcelona, I build premium websites, cinematic web environments, multilingual product surfaces, and spatial digital experiences where motion, media, language, and technical structure work as one environment."}
+              "Brenych Studio builds AI-native software, controlled agent systems, native and desktop tools, real-time 3D / XR experiences, and authored interactive worlds. We combine product engineering, visual direction and human-controlled AI into systems designed to work beyond the demo."}
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
             <button
               type="button"
               onMouseEnter={() => sound.playRole("hover")}
-              onClick={onSystems}
-              className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
-            >
-              {systemsCta} -&gt;
-            </button>
-            <button
-              type="button"
-              onMouseEnter={() => sound.playRole("hover")}
               onClick={onWork}
-              className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
+              className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
               {workCta} -&gt;
             </button>
             <button
               type="button"
               onMouseEnter={() => sound.playRole("hover")}
-              onClick={onImmersive}
-              className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
+              onClick={onStartProject}
+              className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              {immersiveCta} -&gt;
+              {startCta} -&gt;
             </button>
-          </div>
-
-          <div className="mt-6 xl:hidden">
-            <LiveBuildSignal readiness={78} compact locale={locale} />
           </div>
         </div>
       </div>
@@ -1721,11 +1678,16 @@ function SystemsChapter({ goTo, locale }: { goTo: (path: string) => void; locale
 
       <MobileChapter
         label={isSpanish ? "03 / Indice de sistemas" : "03 / Systems Index"}
-        heading={isSpanish ? "Sistemas, no tarjetas." : "Systems, not cards."}
-        summary={isSpanish ? "El trabajo se organiza como sistemas de interfaz reutilizables. WHISPER es la prueba; la columna inferior es el lenguaje operativo del sitio." : "The work is organized as reusable interface systems. WHISPER is proof; the spine below is the operating language behind the site."}
+        heading={isSpanish ? "Construimos sistemas, no pantallas aisladas." : "Build systems, not isolated screens."}
+        summary={isSpanish ? "La IA puede interpretar, proponer y asistir. La autoridad permanece explícita. La evidencia, la validación y el criterio humano siguen formando parte del sistema." : "AI can interpret, propose and assist. Authority remains explicit. Evidence, validation and human judgment stay part of the system."}
         className="relative z-10 lg:hidden"
       >
         <div className="grid gap-5">
+          <p className="border-t border-neutral-950/10 pt-3 text-[10px] uppercase tracking-[0.14em] text-neutral-500">
+            {isSpanish
+              ? "Sitios web como escenas. Archivos como espacios. Productos como mundos. Interfaces como campos vivos."
+              : "Websites as scenes. Archives as rooms. Products as worlds. Interfaces as living fields."}
+          </p>
           <div className="relative overflow-hidden border-y border-neutral-950/14 py-3" data-sound-safe-area>
             <div className="mb-3 flex items-center justify-between text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
               <span>{isSpanish ? "Ledger operativo" : "Operating ledger"}</span>
@@ -1779,12 +1741,17 @@ function SystemsChapter({ goTo, locale }: { goTo: (path: string) => void; locale
           <div className="xl:sticky xl:top-28">
             <div className="text-[10px] uppercase tracking-[0.24em] text-neutral-500">{isSpanish ? "Sistemas de interfaz" : "Interface systems"}</div>
             <h2 className="mt-5 max-w-[9.5ch] text-[58px] font-normal leading-[0.84] tracking-[-0.075em] sm:text-[90px] xl:text-[122px]">
-              {isSpanish ? "Sistemas, no tarjetas." : "Systems, not cards."}
+              {isSpanish ? "Construimos sistemas, no pantallas aisladas." : "Build systems, not isolated screens."}
             </h2>
             <p className="mt-8 max-w-[35rem] text-[17px] leading-[1.85] text-neutral-600">
               {isSpanish
-                ? "El trabajo se organiza como sistemas de interfaz reutilizables: logica de stage, campos de presencia, salas espaciales, estructuras de archivo, capas multilingues y superficies comerciales de producto."
-                : "The work is organized as reusable interface systems: stage logic, presence fields, spatial rooms, archive structures, multilingual layers, and commercial product surfaces."}
+                ? "La IA puede interpretar, proponer y asistir. La autoridad permanece explícita. La evidencia, la validación y el criterio humano siguen formando parte del sistema."
+                : "AI can interpret, propose and assist. Authority remains explicit. Evidence, validation and human judgment stay part of the system."}
+            </p>
+            <p className="mt-5 max-w-[35rem] border-t border-neutral-950/12 pt-5 text-[12px] uppercase tracking-[0.16em] text-neutral-400">
+              {isSpanish
+                ? "Sitios web como escenas. Archivos como espacios. Productos como mundos. Interfaces como campos vivos."
+                : "Websites as scenes. Archives as rooms. Products as worlds. Interfaces as living fields."}
             </p>
 
             <div className="mt-10 max-w-[30rem] border-y border-neutral-950/14 py-5">
@@ -2563,7 +2530,6 @@ function PracticeChapter({
 }) {
   const ui = getStudioHomeUi(locale);
   const localizedPracticeRows = getPracticeRows(locale);
-  const localizedMobilePracticeRows = getMobilePracticeBridgeRows(locale);
   const isSpanish = locale === "es";
   const { targetRef, activeIndex } = useScrollActiveIndex(localizedPracticeRows.length);
 
@@ -2581,12 +2547,13 @@ function PracticeChapter({
       >
         <div className="grid gap-4" data-sound-safe-area>
           <div className="border-y border-neutral-950/14 py-2">
-            {localizedMobilePracticeRows.map(([index, title, text]) => (
+            {localizedPracticeRows.map(([title, text, support], index) => (
               <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-neutral-950/10 py-4 last:border-b-0">
-                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{index}</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-neutral-400">{String(index + 1).padStart(2, "0")}</div>
                 <div>
                   <h3 className="!text-[21px] !leading-[1.02] tracking-[-0.035em] text-neutral-950">{title}</h3>
                   <p className="mt-2 text-[12px] leading-5 text-neutral-600">{text}</p>
+                  <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.13em] text-neutral-400">{support}</p>
                 </div>
               </div>
             ))}
@@ -2621,7 +2588,7 @@ function PracticeChapter({
         </div>
 
         <div ref={targetRef} className="border-y border-neutral-950/14">
-          {localizedPracticeRows.map(([title, text], index) => {
+          {localizedPracticeRows.map(([title, text, support], index) => {
             const active = activeIndex === index;
 
             return (
@@ -2647,7 +2614,10 @@ function PracticeChapter({
               <h3 className={active ? "text-[32px] font-normal leading-none tracking-[-0.06em] text-neutral-950 md:text-[42px]" : "text-[32px] font-normal leading-none tracking-[-0.06em] text-neutral-950/76 md:text-[42px]"}>
                 {title}
               </h3>
-              <p className={active ? "text-[15px] leading-7 text-neutral-800" : "text-[15px] leading-7 text-neutral-600"}>{text}</p>
+              <div>
+                <p className={active ? "text-[15px] leading-7 text-neutral-800" : "text-[15px] leading-7 text-neutral-600"}>{text}</p>
+                <p className="mt-3 text-[11px] uppercase tracking-[0.16em] text-neutral-400">{support}</p>
+              </div>
             </motion.div>
             );
           })}
@@ -2763,10 +2733,8 @@ export default function StudioIndex({
           <MobileMotionSection variant="threshold">
             <OpeningChapter
               copy={copy}
-              onSystems={() => scrollTo("systems")}
               onWork={() => goTo("/work")}
-              onImmersive={() => goTo("/immersive")}
-              locale={locale}
+              onStartProject={onOpenProject}
             />
           </MobileMotionSection>
 

@@ -25,36 +25,36 @@ const defaultImage = "/og-default.png";
 const pageMetadata: StaticRouteMetadata[] = [
   {
     path: "/",
-    title: "Brenych Studio — Premium Front-end Systems & Interactive Web",
+    title: "Brenych Studio — Product Engineering & Creative Technology",
     description:
-      "Barcelona-based premium front-end systems, interactive websites, product presentations and immersive digital surfaces for brands, creators, founders and cultural projects.",
+      "Independent Barcelona studio building AI-native products, controlled agent systems, interactive software, real-time 3D / XR experiences and digital worlds.",
     image: defaultImage,
-    imageAlt: "Brenych Studio — Premium Front-end Systems & Interactive Web",
+    imageAlt: "Brenych Studio — Product Engineering & Creative Technology",
     type: "website",
   },
   {
     path: "/work",
-    title: "Work — Premium Websites, Product Interfaces & Interactive Systems | Brenych Studio",
+    title: "Work — Products, Systems & Interactive Experiences | Brenych Studio",
     description:
-      "Selected Brenych Studio work across premium websites, product interfaces, creator tools, advisory surfaces and immersive web systems.",
+      "Selected Brenych Studio work across software products, internal systems, creative technology, real-time 3D, immersive experiences and authored digital projects.",
     image: defaultImage,
     imageAlt: "Selected work from Brenych Studio",
     type: "website",
   },
   {
     path: "/immersive",
-    title: "Immersive Interface Systems — WebGL, Spatial Archives & Cinematic Web | Brenych Studio",
+    title: "Immersive & Spatial Systems — XR, Real-time 3D & Interactive Worlds | Brenych Studio",
     description:
-      "Interactive and immersive web systems for spatial archives, cinematic storytelling, WebGL-ready presentations and experimental digital experiences.",
+      "Spatial interfaces, WebGL / WebGPU, XR environments, digital exhibitions and experimental interactive systems by Brenych Studio.",
     image: defaultImage,
     imageAlt: "Immersive interface systems from Brenych Studio",
     type: "website",
   },
   {
     path: "/offer",
-    title: "Offer — Premium Landing Pages, Product Demo Pages & Interactive Web Systems | Brenych Studio",
+    title: "Product Engineering, AI Systems & Creative Technology | Brenych Studio",
     description:
-      "Focused premium web systems from a Barcelona-based studio for launches, products, creators, advisory services and immersive digital presentations.",
+      "Product development, controlled AI and agent systems, interactive software, real-time 3D / XR and creative technology for ambitious digital projects.",
     image: defaultImage,
     imageAlt: "Brenych Studio offer",
     type: "website",
@@ -63,7 +63,7 @@ const pageMetadata: StaticRouteMetadata[] = [
     path: "/about",
     title: "About — Rostyslav Brenych / Brenych Studio",
     description:
-      "Barcelona-based creative developer and interactive front-end systems builder working across premium websites, product prototypes, visual storytelling and immersive interfaces.",
+      "Rostyslav Brenych is the founder of Brenych Studio, an independent Barcelona practice spanning product engineering, AI systems, creative technology and spatial interaction.",
     image: defaultImage,
     imageAlt: "About Brenych Studio",
     type: "website",
@@ -112,9 +112,7 @@ const immersiveMetadata: StaticRouteMetadata[] = immersiveItems.map((item) => {
     title: isWebhero
       ? "WEBHERO — Premium WebGL Interface System | Brenych Studio"
       : `${item.title} — ${item.searchContent?.category ?? "Immersive System"} | ${SITE_NAME}`,
-    description: isWebhero
-      ? "A production-minded WebGL system for premium hero stages, interactive product surfaces, cinematic visual storytelling, and spatial interface experiences."
-      : item.searchContent?.shortDescription ?? item.tagline,
+    description: item.searchContent?.shortDescription ?? item.tagline,
     image: `/og/${item.slug}.png`,
     imageAlt: `${item.title} immersive case`,
     type: "article",

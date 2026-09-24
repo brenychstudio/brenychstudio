@@ -55,7 +55,7 @@ function getHeaderUi(locale: LocaleCode) {
   const isSpanish = locale === "es";
 
   return {
-    logoSubtitle: isSpanish ? "Sistemas de interfaz" : "Interface systems",
+    logoSubtitle: isSpanish ? "Ingeniería de producto · Tecnología creativa" : "Product Engineering · Creative Technology",
     signal: isSpanish ? "Senal" : "Signal",
     liveSignal: isSpanish ? "Senal activa" : "Live signal",
     routeTerminal: isSpanish ? "Terminal de rutas" : "Route terminal",

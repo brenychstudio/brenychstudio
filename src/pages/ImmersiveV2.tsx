@@ -1093,7 +1093,7 @@ function ChamberEntryField({
               }}
               className="rounded-full border border-neutral-950 bg-neutral-950 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800"
             >
-              {copy?.ctas?.[0] ?? labels.explore} →
+              {labels.explore} →
             </button>
 
             <button
@@ -1102,7 +1102,7 @@ function ChamberEntryField({
               onClick={() => openChamber("whisper")}
               className="rounded-full border border-neutral-300 bg-white/60 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              {copy?.ctas?.[1] ?? labels.openWhisper} →
+              {copy?.ctas?.[0] ?? labels.openWhisper} →
             </button>
 
             <button
@@ -1114,7 +1114,7 @@ function ChamberEntryField({
               }}
               className="rounded-full border border-neutral-300 bg-white/36 px-5 py-3 text-[11px] uppercase tracking-[0.16em] text-neutral-700 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
             >
-              {copy?.ctas?.[2] ?? labels.start} →
+              {copy?.ctas?.[1] ?? labels.start} →
             </button>
           </div>
 
@@ -1372,7 +1372,7 @@ function PracticeMapScene({
           section: "Mapa de practica espacial",
           title: "Atlas de camaras.",
           body:
-            "Una prueba completada ancla el sistema. Las proximas salas no son filas de roadmap; son coordenadas espaciales preparadas para producto, archivo, collector e instalacion.",
+            "Una prueba publica ancla el sistema. Las proximas salas no son filas de roadmap; son coordenadas espaciales preparadas para producto, archivo, collector e instalacion.",
           activeSystem: "Sistema de camara activa",
           openAtlas: "Abrir atlas cinematico",
           engineSignal: "Senal de motor",
@@ -1399,7 +1399,7 @@ function PracticeMapScene({
           section: "Spatial practice map",
           title: "Chamber atlas.",
           body:
-            "One completed proof anchors the system. The next rooms are not roadmap rows; they are prepared spatial coordinates for product, archive, collector, and installation work.",
+            "One public proof anchors the system. The next rooms are not roadmap rows; they are prepared spatial coordinates for product, archive, collector, and installation work.",
           activeSystem: "Active chamber system",
           openAtlas: "Open cinematic atlas",
           engineSignal: "Engine signal",
@@ -2288,8 +2288,8 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
   const labels =
     locale === "es"
       ? {
-          eyebrow: "Prueba completada / WHISPER",
-          title: "La primera prueba espacial completada.",
+          eyebrow: "Prueba inmersiva pública / WHISPER",
+          title: "Una prueba espacial pública en desarrollo activo.",
           body:
             "WHISPER prueba que un archivo fotografico puede moverse por web, mobile, print, AR y presencia a escala de sala sin perder atmosfera.",
           formula: "Formula de prueba",
@@ -2299,8 +2299,8 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
           surface: "Superficie",
         }
       : {
-          eyebrow: "Completed proof / WHISPER",
-          title: "The first completed spatial proof.",
+          eyebrow: "Public immersive proof / WHISPER",
+          title: "A public spatial proof in active development.",
           body:
             "WHISPER proves that one photographic archive can move across web, mobile, print, AR, and room-scale presence without losing atmosphere.",
           formula: "Proof formula",
@@ -3248,7 +3248,7 @@ function MobileChamberField({
           next: "Siguiente",
           title: "Atlas de proyectos inmersivos.",
           body:
-            "WHISPER y WEBHERO anclan el sistema: uno como prueba espacial completada, el otro como plataforma visual viva para WebGL, imagenes espaciales, Art Room y futuros adaptadores XR.",
+            "WHISPER y WEBHERO anclan el sistema: uno como prueba espacial pública en desarrollo activo, el otro como plataforma visual viva para WebGL, imagenes espaciales, Art Room y futuros adaptadores XR.",
         }
       : {
           section: "02 / Chamber field",
@@ -3260,7 +3260,7 @@ function MobileChamberField({
           next: "Next",
           title: "Immersive project atlas.",
           body:
-            "WHISPER and WEBHERO now anchor the system: one as completed spatial proof, the other as a living visual R&D platform for WebGL stages, spatial images, Art Room work, and future XR adapters.",
+            "WHISPER and WEBHERO now anchor the system: one as a public spatial proof in active development, the other as a living visual R&D platform for WebGL stages, spatial images, Art Room work, and future XR adapters.",
         };
   const [mode, setMode] = useState<MobileChamberFieldMode>("field");
   const [activeId, setActiveId] = useState<MobileChamberFieldId>("whisper");
@@ -3593,7 +3593,7 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
     locale === "es"
       ? {
           section: "03 / Prueba destacada / WHISPER",
-          title: "La primera prueba espacial completada.",
+          title: "Una prueba espacial pública en desarrollo activo.",
           body:
             "WHISPER prueba que un archivo fotografico puede moverse por web, mobile, print, AR y presencia a escala de sala sin perder atmosfera.",
           viewer: "Visor de superficies",
@@ -3606,7 +3606,7 @@ function MobileSurfaceRelay({ onOpenWhisper }: { onOpenWhisper: () => void }) {
         }
       : {
           section: "03 / Featured proof / WHISPER",
-          title: "The first completed spatial proof.",
+          title: "A public spatial proof in active development.",
           body:
             "WHISPER proves that one photographic archive can move across web, mobile, print, AR, and room-scale presence without losing atmosphere.",
           viewer: "Surface viewer",

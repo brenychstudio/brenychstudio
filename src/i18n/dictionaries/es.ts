@@ -5,7 +5,7 @@ export const es: Dictionary = {
     home: "Inicio",
     work: "Casos",
     immersive: "XR",
-    offer: "Oferta",
+    offer: "Servicios",
     about: "Estudio",
     startProject: "Iniciar",
     startProjectShort: "Iniciar",

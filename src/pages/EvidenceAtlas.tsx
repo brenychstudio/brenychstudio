@@ -228,6 +228,9 @@ function getEvidenceUi(locale: LocaleCode) {
     open: isSpanish ? "Abrir ->" : "Open ->",
     openVisualCase: isSpanish ? "Abrir caso visual ->" : "Open visual case ->",
     switchArchiveView: isSpanish ? "Cambiar vista de archivo ->" : "Switch archive view ->",
+    archiveNote: isSpanish
+      ? "Los proyectos web y de interfaz anteriores se mantienen como evidencia de la práctica visual e interactiva del estudio, pero ya no definen por sí solos el alcance del trabajo actual."
+      : "Earlier web and interface projects remain as evidence of the studio’s visual and interaction practice, but they no longer define the full scope of current work.",
     livingCaseField: isSpanish ? "Campo de casos vivos" : "Living case field",
     terminalSignal: isSpanish ? "Senal terminal" : "Terminal signal",
     close: isSpanish ? "Cerrar ->" : "Close ->",
@@ -1170,18 +1173,14 @@ export default function EvidenceAtlas({
               <div className="min-w-0">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">{copy?.eyebrow ?? "Work Archive / Living Case Atlas"}</div>
                 <h1 className="mt-6 max-w-[10.5ch] text-[50px] font-normal leading-[0.92] tracking-[-0.045em] text-neutral-950 [overflow-wrap:anywhere] sm:text-[92px] sm:leading-[0.9] sm:tracking-[-0.06em] xl:text-[124px]">
-                  {copy ? copy.title : (
-                    <>
-                      <span className="block sm:inline">Selected work, </span>
-                      <span className="block sm:inline">built as </span>
-                      <span className="block sm:inline">interface </span>
-                      <span className="block sm:inline">systems.</span>
-                    </>
-                  )}
+                  {copy?.title ?? "Selected work across products, systems and interactive experiences."}
                 </h1>
                 <p className="mt-7 max-w-[44rem] text-[15px] leading-7 text-neutral-600 sm:mt-8 sm:text-[17px] sm:leading-8">
                   {copy?.body ??
-                    "A curated atlas of premium websites, product systems, tools, multilingual surfaces, and immersive interface experiments, presented as visual systems, available foundations, and proof layers."}
+                    "A curated record of Brenych Studio products, internal systems, commissioned work, authored concepts and experimental environments. Each project is presented according to what it actually is — from production software and working prototypes to research and historical proof."}
+                </p>
+                <p className="mt-5 max-w-[44rem] border-t border-neutral-950/10 pt-4 text-[12px] leading-6 text-neutral-500">
+                  {ui.archiveNote}
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3 sm:mt-10" data-sound-safe-area>
                   <a className="inline-flex min-h-10 items-center rounded-full border border-neutral-950 bg-neutral-950 px-5 text-[11px] uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-neutral-800" href="#evidence-featured">

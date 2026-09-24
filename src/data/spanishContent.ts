@@ -35,6 +35,7 @@ export type ServicePageTranslation = {
 };
 
 export type CaseRegistryTranslation = {
+  statusLabel?: string;
   shortDescription: string;
   longDescription: string;
   tags: string[];
@@ -152,55 +153,55 @@ export type WorkEvidenceTranslation = {
 
 export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
   "/": {
-    title: "Brenych Studio - sistemas front-end premium",
+    title: "Brenych Studio — Ingeniería de producto y tecnología creativa",
     description:
-      "Estudio con base en Barcelona para sistemas front-end premium, sitios web de producto e interfaces inmersivas con claridad, presencia y prueba real.",
-    ogTitle: "Brenych Studio - sistemas front-end premium",
+      "Estudio independiente en Barcelona que desarrolla productos de software AI-native, sistemas de agentes controlados, software interactivo, experiencias 3D / XR en tiempo real y mundos digitales.",
+    ogTitle: "Brenych Studio — Ingeniería de producto y tecnología creativa",
     ogDescription:
-      "Sistemas de interfaz desde Barcelona: superficies de producto y experiencias web inmersivas con dirección editorial y front-end listo para producción.",
+      "Estudio independiente en Barcelona que desarrolla productos de software AI-native, sistemas de agentes controlados, software interactivo, experiencias 3D / XR en tiempo real y mundos digitales.",
   },
   "/work": {
-    title: "Proyectos seleccionados - Brenych Studio",
+    title: "Trabajo — Productos, sistemas y experiencias interactivas | Brenych Studio",
     description:
-      "Archivo de proyectos con casos reales: sistemas de producto, sitios premium, herramientas de flujo de trabajo e interfaces web interactivas.",
-    ogTitle: "Proyectos seleccionados - Brenych Studio",
+      "Trabajo seleccionado de Brenych Studio entre productos de software, sistemas internos, tecnología creativa, 3D en tiempo real, experiencias inmersivas y proyectos digitales de autor.",
+    ogTitle: "Trabajo — Productos, sistemas y experiencias interactivas | Brenych Studio",
     ogDescription:
-      "Casos reales y pruebas de sistemas front-end premium, desde CreatorOps hasta House of Lune y Barcelona Private Advisory.",
+      "Trabajo seleccionado de Brenych Studio entre productos de software, sistemas internos, tecnología creativa, 3D en tiempo real, experiencias inmersivas y proyectos digitales de autor.",
   },
   "/offer": {
-    title: "Servicios de interfaz premium - Brenych Studio",
+    title: "Ingeniería de producto, sistemas de IA y tecnología creativa | Brenych Studio",
     description:
-      "Servicios de interfaz premium desde Barcelona: landing pages, demos de producto y sistemas web interactivos con prueba visual.",
-    ogTitle: "Servicios de interfaz premium - Brenych Studio",
+      "Desarrollo de producto, sistemas controlados de IA y agentes, software interactivo, 3D / XR en tiempo real y tecnología creativa para proyectos digitales ambiciosos.",
+    ogTitle: "Ingeniería de producto, sistemas de IA y tecnología creativa | Brenych Studio",
     ogDescription:
-      "Tres rutas de entrada comercial: landing pages premium, landing pages de producto y sistemas web interactivos.",
+      "Desarrollo de producto, sistemas controlados de IA y agentes, software interactivo, 3D / XR en tiempo real y tecnología creativa para proyectos digitales ambiciosos.",
   },
   "/about": {
-    title: "Estudio - Brenych Studio",
+    title: "Acerca de — Rostyslav Brenych / Brenych Studio",
     description:
-      "Brenych Studio es una práctica con base en Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz.",
-    ogTitle: "Estudio - Brenych Studio",
+      "Rostyslav Brenych es fundador de Brenych Studio, una práctica independiente en Barcelona entre ingeniería de producto, sistemas de IA, tecnología creativa e interacción espacial.",
+    ogTitle: "Acerca de — Rostyslav Brenych / Brenych Studio",
     ogDescription:
-      "Una práctica independiente en Barcelona para sistemas front-end premium, superficies de producto y experiencias digitales precisas.",
+      "Rostyslav Brenych es fundador de Brenych Studio, una práctica independiente en Barcelona entre ingeniería de producto, sistemas de IA, tecnología creativa e interacción espacial.",
   },
   "/immersive": {
-    title: "Sistemas de interfaz inmersiva - Brenych Studio",
+    title: "Sistemas inmersivos y espaciales — XR, 3D en tiempo real y mundos interactivos | Brenych Studio",
     description:
-      "Hub de sistemas inmersivos: archivos espaciales, pruebas WebGL, presentaciones cinematográficas y capas web / XR para proyectos premium.",
-    ogTitle: "Sistemas de interfaz inmersiva",
+      "Interfaces espaciales, WebGL / WebGPU, entornos XR, exposiciones digitales y sistemas interactivos experimentales desarrollados por Brenych Studio.",
+    ogTitle: "Sistemas inmersivos y espaciales — XR, 3D en tiempo real y mundos interactivos | Brenych Studio",
     ogDescription:
-      "WHISPER, WEBHERO y futuros chambers como pruebas de interfaz espacial, archivo vivo y presentación inmersiva.",
+      "Interfaces espaciales, WebGL / WebGPU, entornos XR, exposiciones digitales y sistemas interactivos experimentales desarrollados por Brenych Studio.",
   },
 };
 
 export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" | "immersive", CorePageTranslation> = {
   home: {
     route: "/",
-    eyebrow: "Studio signal",
-    title: "Sistemas de interfaz vivos.",
+    eyebrow: "Estudio independiente de ingeniería de producto y tecnología creativa — Barcelona",
+    title: "Productos, sistemas inteligentes y mundos interactivos.",
     body:
-      "Desde Barcelona, Brenych Studio crea sistemas de interfaz para sitios premium, lanzamientos de producto, superficies comerciales, archivos espaciales y experiencias digitales que necesitan claridad, presencia y prueba real.",
-    ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
+      "Brenych Studio desarrolla software diseñado de forma nativa para IA, sistemas de agentes con control explícito, herramientas nativas y de escritorio, experiencias 3D / XR en tiempo real y mundos interactivos de autor. Combinamos ingeniería de producto, dirección visual e IA bajo control humano para construir sistemas pensados para funcionar más allá de la demostración.",
+    ctas: ["Explorar el trabajo", "Iniciar un proyecto"],
     labels: {
       liveSignal: "Señal activa",
       selectedWork: "Proyectos seleccionados",
@@ -216,9 +217,9 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   work: {
     route: "/work",
     eyebrow: "Archivo de proyectos",
-    title: "Sistemas en movimiento.",
+    title: "Trabajo seleccionado entre productos, sistemas y experiencias interactivas.",
     body:
-      "Un archivo de proyectos donde cada caso funciona como objeto con imagen, leyenda, profundidad, prueba y señales de adaptación.",
+      "Un registro curado de productos de Brenych Studio, sistemas internos, trabajos para clientes, conceptos de autor y entornos experimentales. Cada proyecto se presenta según lo que realmente es: desde software en producción y prototipos funcionales hasta investigación y trabajos históricos de referencia.",
     ctas: ["Ver caso", "Adaptar este sistema", "Abrir campo extendido"],
     labels: {
       archiveLens: "Lente de archivo",
@@ -238,9 +239,9 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   offer: {
     route: "/offer",
     eyebrow: "Modelo de servicios",
-    title: "Tres rutas de interfaz.",
+    title: "Ingeniería de producto y tecnología creativa para sistemas digitales ambiciosos.",
     body:
-      "Desde Barcelona, tres rutas de interfaz para proyectos que necesitan estructura comercial, prueba visual y front-end listo para producción: landing pages premium, demos de producto y sistemas web interactivos.",
+      "Trabajamos con fundadores, equipos, marcas y organizaciones culturales en productos y experiencias que requieren más que un sitio web o una interfaz estándar. Una colaboración puede comenzar con un nuevo producto, con un sistema existente que necesita una dirección técnica más sólida o con una idea espacial / interactiva que debe convertirse en software real.",
     ctas: ["Iniciar proyecto", "Ver proyectos relacionados"],
     labels: {
       premiumLandingPages: "Landing pages premium",
@@ -258,9 +259,9 @@ export const spanishCorePageContent: Record<"home" | "work" | "offer" | "about" 
   about: {
     route: "/about",
     eyebrow: "Posición del estudio",
-    title: "Una práctica entre ingeniería, imagen e investigación de interfaz.",
+    title: "Un estudio entre la ingeniería de producto, los sistemas inteligentes y la cultura visual.",
     body:
-      "Brenych Studio es una práctica con base en Barcelona entre ingeniería front-end, dirección visual, fotografía, medios cinematográficos e investigación de interfaz para construir superficies precisas, atmosféricas y usables.",
+      "Brenych Studio es una práctica independiente de ingeniería de producto y tecnología creativa fundada por Rostyslav Brenych en Barcelona. El estudio desarrolla sus propios productos de software, infraestructura para agentes y producción, sistemas 3D / XR en tiempo real, mundos interactivos y una selección de proyectos para clientes. La práctica nace de una trayectoria visual de más largo recorrido en fotografía, arte y dirección creativa, pero el trabajo actual se extiende a arquitectura de producto, ingeniería de aplicaciones, sistemas cloud, agentes de IA controlados, software nativo y de escritorio, computación espacial y tecnología para videojuegos.",
     ctas: ["Ver proyectos", "Explorar inmersivo", "Iniciar proyecto"],
     labels: {
       practiceLayers: "Capas de práctica",
@@ -594,6 +595,7 @@ export const spanishServicePageTranslations: Record<string, ServicePageTranslati
 
 export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTranslation> = {
   "aurel-eon-gt": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Una experiencia de lanzamiento para un gran turismo electrico ficticio, con estados cinematograficos, inspeccion visual y preview privada.",
     longDescription:
@@ -622,6 +624,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   "oria-house-barcelona": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Un sistema hospitality para hotel boutique en Barcelona, con atmosfera, comparacion de habitaciones, experiencias y contacto de reserva.",
     longDescription:
@@ -650,8 +653,9 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   sprintcrm: {
+    statusLabel: "SISTEMA INTERNO",
     shortDescription:
-      "Un CRM interno premium para outreach, importacion de leads, pipeline, accion diaria y reporting orientado al operador.",
+      "Software interno de CRM y workflow para operaciones de leads, gestión de pipeline y flujos de outreach preparados para asistencia de IA.",
     longDescription:
       "SprintCRM demuestra pensamiento de producto para operaciones internas: estados de datos, importacion, seguimiento diario, pipeline y reportes se convierten en una superficie de trabajo enfocada.",
     tags: ["CRM", "Sistema interno", "Workflow UX", "Consola de operador"],
@@ -734,6 +738,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   "arcwave-integrations": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Un sistema de servicios tecnicos que convierte telecom, redes, electricidad, seguridad, EV charging, smart home y audio en una ruta legible.",
     longDescription:
@@ -762,6 +767,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   "casa-nube": {
+    statusLabel: "CONCEPTO DE AUTOR",
     shortDescription:
       "Una superficie hospitality multilingue con estructura editorial, flujo mobile-first y presentacion clara para negocio local.",
     longDescription:
@@ -819,7 +825,7 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
   },
   "house-of-lune": {
     shortDescription:
-      "Una superficie premium de presentación de producto para objetos de lujo, consulta privada y storytelling visual.",
+      "Sistema de producto y mundo visual de autor que explora máscaras, joyería y objetos coleccionables.",
     longDescription:
       "House of Lune demuestra cómo objetos de lujo, joyería, moda o productos coleccionables pueden ir más allá de grids ecommerce genéricos y convertirse en un universo de producto controlado, con ritmo editorial, consulta privada, estructura preparada para varios idiomas y mayor confianza.",
     tags: ["Producto de lujo", "Consulta privada", "Presentación de producto", "Varios idiomas"],
@@ -888,18 +894,19 @@ export const spanishCaseRegistryTranslations: Record<string, CaseRegistryTransla
     },
   },
   creatorops: {
+    statusLabel: "BETA CONTROLADA",
     shortDescription:
-      "CreatorOps es un sistema de flujo de trabajo para creadores orientado a la exportación que convierte recursos visuales dispersos en un Week Pack listo para publicar.",
+      "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
     longDescription:
       "CreatorOps demuestra cómo una herramienta para creadores puede convertirse en un sistema operativo calmado y orientado a exportación, no en otro dashboard de planificación ruidoso. Es una dirección de prototipo, no una promesa de SaaS en producción con facturación, cuentas, almacenamiento backend o publicación directa en Instagram.",
     tags: ["Flujo de trabajo para creadores", "Interfaz de producto", "Smart Mix", "Flujo de exportación"],
     ctaLabel: "Ver caso",
     alt: "Interfaz de producto CreatorOps para flujo de trabajo de creadores",
     clientType: "Creadores / marcas pequeñas / equipos de contenido",
-    seoTitle: "CreatorOps - sistema de flujo de trabajo para creadores",
+    seoTitle: "Weekfield - sistema de flujo de trabajo para creadores",
     seoDescription:
-      "Caso de producto CreatorOps: un espacio de trabajo orientado a exportación para convertir recursos visuales dispersos en un Week Pack listo para publicar.",
-    ogTitle: "CreatorOps - flujo de trabajo de creadores como sistema",
+      "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
+    ogTitle: "Weekfield - flujo de trabajo de creadores como sistema",
     ogDescription:
       "Library, Smart Mix, planificación, captions, exportación ZIP, revisión para cliente y entrega de perfil en una sola superficie.",
     searchContent: {
@@ -1790,11 +1797,11 @@ export const spanishCaseStoryTranslations: Record<string, CaseStoryTranslation> 
     },
   },
   creatorops: {
-    label: "CASE SYSTEM / WORKFLOW TOOL / CREATOR PUBLISHING",
-    headline: "CreatorOps",
-    subheadline: "Sistema de interfaz para flujo de trabajo de creadores.",
+    label: "BETA CONTROLADA / WORKFLOW TOOL / CREATOR PUBLISHING",
+    headline: "Weekfield",
+    subheadline: "Presentado anteriormente como CreatorOps",
     summary:
-      "CreatorOps es un sistema de flujo de trabajo para creadores orientado a la exportación. Convierte recursos visuales dispersos en un Week Pack listo para publicar: Library, Smart Mix, planificación, captions, exportación ZIP, revisión para cliente y entrega de perfil.",
+      "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
     proofClaim:
       "El flujo de trabajo de creadores se convierte en sistema cuando recursos dispersos, planificación, captions, exportación, revisión y entrega avanzan hacia un Week Pack listo para publicar.",
     evidencePoints: [
@@ -1987,10 +1994,10 @@ export const spanishCaseStoryTranslations: Record<string, CaseStoryTranslation> 
       },
     ],
     seo: {
-      title: "CreatorOps - sistema de flujo de trabajo para creadores",
+      title: "Weekfield - sistema de flujo de trabajo para creadores",
       description:
-        "CreatorOps convierte recursos visuales dispersos en un Week Pack listo para publicar con Library, Smart Mix, exportación y revisión.",
-      ogTitle: "CreatorOps - flujo de trabajo de creadores como sistema",
+        "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano.",
+      ogTitle: "Weekfield - flujo de trabajo de creadores como sistema",
       ogDescription:
         "Un prototipo de interfaz de producto orientado a exportación para equipos de contenido y creadores.",
       alt: "Interfaz CreatorOps para flujo de trabajo de creadores",
@@ -2007,7 +2014,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     stack: "React, Vite, Three.js, WebXR, Quest VR, AR preview, Cloudflare Pages",
     description:
       "WHISPER combina fotografía conceptual, un sitio web editorial de arte, WebXR en navegador, navegación con manos en Quest VR, catálogo de prints para coleccionistas, rutas de print compartibles y preview AR para ediciones enmarcadas.",
-    status: "V1 avanzada / en progreso",
+    status: "PRUEBA INMERSIVA PÚBLICA · DESARROLLO ACTIVO",
     statusNote:
       "El sitio público, la experiencia WebXR, la navegación con manos en Quest, el catálogo de prints y el primer flujo de preview AR funcionan. El pulido XR final, recursos AR adicionales y refinamientos móvil/tablet siguen en curso.",
     supportLabel: "Caso inmersivo insignia",
@@ -2150,7 +2157,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     stack: "Vite, React, TypeScript, WebGL, GLSL / Canvas, Gaussian Splat viewer, SHARP / 3DGS pipeline",
     description:
       "WEBHERO explora el futuro de las webs premium como entornos vivos. Reúne WebGL Stage System, backdrops cinematográficos, Living Images, obras Living Splat, Art Room y una ruta controlada hacia XR.",
-    status: "Prototipo avanzado",
+    status: "I+D",
     statusNote:
       "Stage System, Backdrops, Living Images, Living Splat y Art Room funcionan como módulos demostrables. Living Art Mixer sigue en investigación activa.",
     supportLabel: "Sistema R&D",
@@ -2470,7 +2477,7 @@ export const spanishImmersiveTranslations: Record<string, ImmersiveTranslation> 
     stack: "Vite, React, TypeScript, WebGL, WebXR direction, local-first archive logic",
     description:
       "Presence OS / Memory Atlas transforma un archivo personal en campo de memoria vivo: presencia, stillness, cinematic inspect, sala XR y artefactos exportables.",
-    status: "MVP funcional",
+    status: "PROTOTIPO DE I+D",
     statusNote:
       "La ruta web, campo de memoria, inspección y dirección XR funcionan como prueba MVP. La capa XR final continúa en desarrollo.",
     supportLabel: "Memoria privada",

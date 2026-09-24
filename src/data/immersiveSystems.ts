@@ -71,12 +71,12 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     title: "WHISPER",
     shortTitle: "WHISPER",
     status: "completed",
-    statusLabel: "Completed spatial proof",
+    statusLabel: "PUBLIC IMMERSIVE PROOF · ACTIVE DEVELOPMENT",
     role: "Cinematic web / XR exhibition",
     summary:
-      "A completed spatial proof connecting public website, mobile presentation, print logic, AR preview, and Quest-tested spatial experience.",
+      "A public immersive proof in active development, connecting web, mobile presentation, print logic, AR preview and Quest-tested spatial experience.",
     proofLine:
-      "The first finished chamber: photography becomes a public surface, collector system, and room-scale proof.",
+      "The first public chamber: photography becomes a public surface, collector system, and room-scale proof.",
     visualRole: "chamber",
     media: {
       poster: "/immersive/Whisper/desktop/whisper-hero.jpg",
@@ -91,7 +91,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     ctaLabel: "Enter WHISPER",
     tags: ["Web exhibition", "Mobile", "Print", "AR", "Quest"],
     mood: "forest",
-    chamberSignal: "First completed proof",
+    chamberSignal: "Public immersive proof",
     engineIds: ["cinematic-frame-field", "living-atmosphere", "spatial-reference-orbit", "ar-collector"],
     position: {
       x: 48,
@@ -106,7 +106,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     title: "WEBHERO",
     shortTitle: "WEBHERO",
     status: "prototype",
-    statusLabel: "Advanced R&D system",
+    statusLabel: "R&D",
     role: "Living visual systems platform",
     summary:
       "A web-first visual system for cinematic stage modules, living images, Gaussian Splat spatial works, Art Room presentation and future XR adapters.",
@@ -190,7 +190,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     title: "Presence OS / Memory Atlas",
     shortTitle: "Presence OS",
     status: "prototype",
-    statusLabel: "Functional MVP prototype",
+    statusLabel: "R&D PROTOTYPE",
     role: "Presence-based spatial memory interface",
     summary:
       "A private spatial memory interface where personal archive fragments reveal themselves through stillness, return and attention.",
@@ -479,19 +479,19 @@ type SpanishImmersiveSystemCopy = Partial<Pick<
 const spanishImmersiveSystemCopy: Record<ImmersiveChamberId, SpanishImmersiveSystemCopy> = {
   whisper: {
     room: "Sala 01",
-    statusLabel: "Prueba espacial completada",
+    statusLabel: "PRUEBA INMERSIVA PÚBLICA · DESARROLLO ACTIVO",
     role: "Exposicion cinematografica web / XR",
     summary:
-      "Una prueba espacial completada que conecta sitio publico, mobile, prints, preview AR y experiencia Quest.",
+      "Una prueba inmersiva pública en desarrollo activo que conecta web, presentación móvil, lógica de impresión, preview AR y una experiencia espacial probada en Quest.",
     proofLine:
-      "La primera camara terminada: fotografia como superficie publica, sistema collector y prueba room-scale.",
+      "La primera camara publica: fotografia como superficie publica, sistema collector y prueba room-scale.",
     ctaLabel: "Entrar en WHISPER",
     tags: ["Exposicion web", "Mobile", "Print", "AR", "Quest"],
-    chamberSignal: "Primera prueba completada",
+    chamberSignal: "Prueba inmersiva pública",
   },
   webhero: {
     room: "Sala 02",
-    statusLabel: "Sistema R&D avanzado",
+    statusLabel: "I+D",
     role: "Plataforma de sistemas visuales vivos",
     summary:
       "Sistema visual web-first para stages cinematicos, Living Images, obras Gaussian Splat, Art Room y futuros adaptadores XR.",
@@ -515,7 +515,7 @@ const spanishImmersiveSystemCopy: Record<ImmersiveChamberId, SpanishImmersiveSys
   },
   "presence-os-memory-atlas": {
     room: "Sala 04",
-    statusLabel: "Prototipo MVP funcional",
+    statusLabel: "PROTOTIPO DE I+D",
     role: "Interfaz de memoria espacial basada en presencia",
     summary:
       "Interfaz privada donde fragmentos de archivo personal se revelan por quietud, retorno y atencion.",

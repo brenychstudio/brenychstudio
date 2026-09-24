@@ -81,7 +81,7 @@ const profileLinks: FooterExternalLink[] = externalProfiles
 const footerCopyByVariant: Record<FooterVariant, FooterCopy> = {
   living: {
     headline: "Start with the system.",
-    signal: "interface systems",
+    signal: "Product Engineering · AI / Agents · Creative Technology · Real-time 3D / XR",
     intake: "available",
     nextStep: "start a project",
     bottomLine: "Built as a living interface system.",
@@ -133,7 +133,7 @@ const footerCopyByVariant: Record<FooterVariant, FooterCopy> = {
 const spanishFooterCopyByVariant: Record<FooterVariant, FooterCopy> = {
   living: {
     headline: "Empieza por el sistema.",
-    signal: "sistemas de interfaz",
+    signal: "Ingeniería de producto · IA / Agentes · Tecnología creativa · 3D / XR en tiempo real",
     intake: "disponible",
     nextStep: "iniciar proyecto",
     bottomLine: "Construido como sistema de interfaz vivo.",
@@ -195,7 +195,7 @@ function localizeFooterLinks(links: FooterLink[], locale: LocaleCode, group: "ro
     "/": "Inicio",
     "/work": "Casos",
     "/immersive": "XR",
-    "/offer": "Oferta",
+    "/offer": "Servicios",
     "/about": "Estudio",
   };
   const systemLabels: Record<string, string> = {
@@ -292,12 +292,14 @@ export default function SiteFooterV2({
     studioSignal: isSpanish ? "Senal de estudio" : "Studio signal",
     projectIntake: isSpanish ? "Entrada de proyecto" : "Project intake",
     nextStep: isSpanish ? "Siguiente paso" : "Next step",
-    brandLine: isSpanish ? "Brenych Studio / Sistemas de interfaz" : "Brenych Studio / Interface Systems",
+    brandLine: isSpanish
+      ? "Brenych Studio / Ingeniería de producto + Tecnología creativa"
+      : "Brenych Studio / Product Engineering + Creative Technology",
     base: isSpanish ? "Base del estudio" : "Studio base",
     location: isSpanish ? STUDIO_LOCATION_ES : STUDIO_LOCATION,
     locationDescription: isSpanish
-      ? "Estudio de sistemas de interfaz con base en Barcelona para fundadores, marcas, creadores y proyectos culturales en Europa y más allá."
-      : "Barcelona-based interface systems studio for founders, brands, creators, and cultural projects across Europe and beyond.",
+      ? "Estudio independiente en Barcelona que desarrolla productos de software, sistemas inteligentes, experiencias espaciales y mundos interactivos para clientes, colaboradores y audiencias internacionales."
+      : "Independent studio in Barcelona building software products, intelligent systems, spatial experiences and interactive worlds for international clients, partners and audiences.",
     spatialHandoff: isSpanish ? "Entrega espacial" : "Spatial handoff",
     caseCanon: isSpanish ? "Canon de caso" : "Case canon",
     signal: isSpanish ? "Senal" : "Signal",

@@ -36,33 +36,33 @@ const LegalV2 = lazy(() => import("./pages/LegalV2"));
 
 const routeSeo = {
   home: {
-    title: "Brenych Studio - Premium Front-end Systems & Interactive Web",
+    title: "Brenych Studio — Product Engineering & Creative Technology",
     description:
-      "Barcelona-based premium front-end systems, interactive websites, product presentations and immersive digital surfaces for brands, creators, founders and cultural projects.",
+      "Independent Barcelona studio building AI-native products, controlled agent systems, interactive software, real-time 3D / XR experiences and digital worlds.",
     path: "/",
   },
   work: {
-    title: "Work - Premium Websites, Product Interfaces & Interactive Systems",
+    title: "Work — Products, Systems & Interactive Experiences | Brenych Studio",
     description:
-      "Selected Brenych Studio work across premium websites, product interfaces, creator tools, advisory surfaces and immersive web systems.",
+      "Selected Brenych Studio work across software products, internal systems, creative technology, real-time 3D, immersive experiences and authored digital projects.",
     path: "/work",
   },
   immersive: {
-    title: "Immersive Interface Systems - WebGL, Spatial Archives & Cinematic Web",
+    title: "Immersive & Spatial Systems — XR, Real-time 3D & Interactive Worlds | Brenych Studio",
     description:
-      "Interactive and immersive web systems for spatial archives, cinematic storytelling, WebGL-ready presentations and experimental digital experiences.",
+      "Spatial interfaces, WebGL / WebGPU, XR environments, digital exhibitions and experimental interactive systems by Brenych Studio.",
     path: "/immersive",
   },
   offer: {
-    title: "Offer - Premium Landing Pages, Product Demo Pages & Interactive Web Systems",
+    title: "Product Engineering, AI Systems & Creative Technology | Brenych Studio",
     description:
-      "Focused premium web systems from a Barcelona-based studio for launches, products, creators, advisory services and immersive digital presentations.",
+      "Product development, controlled AI and agent systems, interactive software, real-time 3D / XR and creative technology for ambitious digital projects.",
     path: "/offer",
   },
   about: {
-    title: "About - Rostyslav Brenych / Brenych Studio",
+    title: "About — Rostyslav Brenych / Brenych Studio",
     description:
-      "Barcelona-based creative developer and interactive front-end systems builder working across premium websites, product prototypes, visual storytelling and immersive interfaces.",
+      "Rostyslav Brenych is the founder of Brenych Studio, an independent Barcelona practice spanning product engineering, AI systems, creative technology and spatial interaction.",
     path: "/about",
   },
   privacy: {
@@ -79,71 +79,79 @@ const routeSeo = {
   },
 } satisfies Record<string, SeoMetaProps>;
 
-const organizationSchema: StructuredDataValue = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: SITE_NAME,
-  url: SITE_URL,
-  logo: toAbsoluteSiteUrl(DEFAULT_OG_IMAGE),
-  slogan: "Barcelona-based interface systems studio",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: STUDIO_CITY,
-    addressCountry: STUDIO_COUNTRY,
-  },
-  areaServed: [
-    {
-      "@type": "Place",
-      name: STUDIO_CITY,
-    },
-    {
-      "@type": "Country",
-      name: STUDIO_COUNTRY,
-    },
-    {
-      "@type": "Place",
-      name: STUDIO_REGION,
-    },
-    {
-      "@type": "Place",
-      name: "International",
-    },
-  ],
-  availableLanguage: ["en", "es"],
-  founder: {
-    "@type": "Person",
-    name: "Rostyslav Brenych",
-  },
+type PublicSchemaLocale = "en" | "es";
+
+const organizationDescriptions: Record<PublicSchemaLocale, string> = {
+  en: "Independent product engineering and creative technology studio in Barcelona building intelligent software, controlled agent systems, spatial experiences and interactive worlds.",
+  es: "Estudio independiente de ingeniería de producto y tecnología creativa en Barcelona que desarrolla software inteligente, sistemas de agentes con control explícito, experiencias espaciales y mundos interactivos.",
 };
 
-const websiteSchema: StructuredDataValue = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-  description: routeSeo.home.description,
+const organizationSlogans: Record<PublicSchemaLocale, string> = {
+  en: "Product Engineering & Creative Technology Studio",
+  es: "Estudio de ingeniería de producto y tecnología creativa",
 };
 
-const aboutSchema: StructuredDataValue = {
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  name: "About - Rostyslav Brenych / Brenych Studio",
-  url: toAbsoluteSiteUrl("/about"),
-  mainEntity: {
-    "@type": "Person",
-    name: "Rostyslav Brenych",
+function getOrganizationSchema(locale: PublicSchemaLocale): StructuredDataValue {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_NAME,
     url: SITE_URL,
-    jobTitle: "Creative Developer / Interactive Front-end Systems Builder",
-    homeLocation: {
-      "@type": "Place",
-      name: STUDIO_LOCATION,
+    logo: toAbsoluteSiteUrl(DEFAULT_OG_IMAGE),
+    slogan: organizationSlogans[locale],
+    description: organizationDescriptions[locale],
+    inLanguage: locale,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: STUDIO_CITY,
+      addressCountry: STUDIO_COUNTRY,
     },
-    workLocation: {
-      "@type": "Place",
-      name: STUDIO_LOCATION,
+    areaServed: [
+      { "@type": "Place", name: STUDIO_CITY },
+      { "@type": "Country", name: STUDIO_COUNTRY },
+      { "@type": "Place", name: STUDIO_REGION },
+      { "@type": "Place", name: "International" },
+    ],
+    availableLanguage: ["en", "es"],
+    founder: {
+      "@type": "Person",
+      name: "Rostyslav Brenych",
     },
-  },
-};
+  };
+}
+
+function getWebsiteSchema(locale: PublicSchemaLocale): StructuredDataValue {
+  const meta = locale === "es" ? spanishPageSeoDrafts["/"] : routeSeo.home;
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: locale === "es" ? toAbsoluteSiteUrl("/es") : SITE_URL,
+    description: meta.description,
+    inLanguage: locale,
+  };
+}
+
+function getAboutSchema(locale: PublicSchemaLocale): StructuredDataValue {
+  const isSpanish = locale === "es";
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: isSpanish
+      ? "Acerca de — Rostyslav Brenych / Brenych Studio"
+      : "About — Rostyslav Brenych / Brenych Studio",
+    url: toAbsoluteSiteUrl(isSpanish ? "/es/about" : "/about"),
+    inLanguage: locale,
+    mainEntity: {
+      "@type": "Person",
+      name: "Rostyslav Brenych",
+      url: SITE_URL,
+      jobTitle: "Founder & Creative Developer",
+      homeLocation: { "@type": "Place", name: STUDIO_LOCATION },
+      workLocation: { "@type": "Place", name: STUDIO_LOCATION },
+    },
+  };
+}
 
 function getSpanishMeta(path: string, fallback: SeoMetaProps): SeoMetaProps {
   const draft = spanishPageSeoDrafts[path];
@@ -153,6 +161,8 @@ function getSpanishMeta(path: string, fallback: SeoMetaProps): SeoMetaProps {
     ...fallback,
     title: draft?.title ?? fallback.title,
     description: draft?.description ?? fallback.description,
+    ogTitle: draft?.ogTitle ?? fallback.ogTitle,
+    ogDescription: draft?.ogDescription ?? fallback.ogDescription,
     imageAlt: draft?.ogTitle ?? fallback.imageAlt,
     path: spanishPath,
     alternates: getSeoAlternates(spanishPath),
@@ -255,7 +265,7 @@ export default function App() {
               <Route
                 path="/es"
                 element={
-                  <SeoRoute meta={getSpanishMeta("/", routeSeo.home)} structuredData={[organizationSchema, websiteSchema]}>
+                  <SeoRoute meta={getSpanishMeta("/", routeSeo.home)} structuredData={[getOrganizationSchema("es"), getWebsiteSchema("es")]}>
                     <StudioIndex
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -311,7 +321,7 @@ export default function App() {
               <Route
                 path="/es/about"
                 element={
-                  <SeoRoute meta={getSpanishMeta("/about", routeSeo.about)} structuredData={aboutSchema}>
+                  <SeoRoute meta={getSpanishMeta("/about", routeSeo.about)} structuredData={getAboutSchema("es")}>
                     <AboutV2
                       drawerOpen={drawerOpen}
                       onOpenProject={openProject}
@@ -361,7 +371,7 @@ export default function App() {
           <Route
             path="/"
             element={
-              <SeoRoute meta={withSeoAlternates(routeSeo.home)} structuredData={[organizationSchema, websiteSchema]}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.home)} structuredData={[getOrganizationSchema("en"), getWebsiteSchema("en")]}>
                 <StudioIndex
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
@@ -466,7 +476,7 @@ export default function App() {
           <Route
             path="/about"
             element={
-              <SeoRoute meta={withSeoAlternates(routeSeo.about)} structuredData={aboutSchema}>
+              <SeoRoute meta={withSeoAlternates(routeSeo.about)} structuredData={getAboutSchema("en")}>
                 <AboutV2
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}

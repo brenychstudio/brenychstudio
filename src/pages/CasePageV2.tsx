@@ -102,7 +102,7 @@ const MOBILE_SWIPE_DISTANCE = 42;
 const MOBILE_SWIPE_VELOCITY = 360;
 
 function getCaseNarrative(story: CaseStory) {
-  const isSpanishPreviewStory = story.translations?.es?.headline === story.headline;
+  const isSpanishPreviewStory = isSpanishCaseStory(story);
 
   if (isSpanishPreviewStory && story.slug === "creatorops") {
     return {
@@ -920,8 +920,19 @@ function getAvailabilitySignal(story: CaseStory) {
   return "Case reference";
 }
 
+// The page locale is attached when the story is localized, so UI labels follow the route locale
+// instead of guessing from content (EN and ES headlines can be identical).
+const caseStoryLocaleKey = Symbol("caseStoryLocale");
+
+type LocalizedCaseStory = CaseStory & { [caseStoryLocaleKey]?: LocaleCode };
+
+function withCaseStoryLocale(story: CaseStory, locale: LocaleCode): CaseStory {
+  const localizedStory: LocalizedCaseStory = { ...story, [caseStoryLocaleKey]: locale };
+  return localizedStory;
+}
+
 function isSpanishCaseStory(story: CaseStory) {
-  return story.translations?.es?.headline === story.headline;
+  return (story as LocalizedCaseStory)[caseStoryLocaleKey] === "es";
 }
 
 function getCaseTypeLabel(story: CaseStory) {
@@ -940,6 +951,27 @@ function getCaseTypeLabel(story: CaseStory) {
   };
 
   return labels[story.caseType] ?? story.caseType.replace("-", " ");
+}
+
+const canonicalMaturityLabels = new Set([
+  "PUBLIC PRODUCT", "PRODUCTO PÚBLICO",
+  "CONTROLLED BETA", "BETA CONTROLADA",
+  "INTERNAL SYSTEM", "SISTEMA INTERNO",
+  "WORKING PROTOTYPE", "PROTOTIPO FUNCIONAL",
+  "R&D", "I+D",
+  "ACTIVE PRIVATE PRODUCTION", "PRODUCCIÓN PRIVADA ACTIVA",
+  "AUTHORED CONCEPT", "CONCEPTO DE AUTOR",
+  "HISTORICAL PROOF", "REFERENCIA HISTÓRICA",
+  "COMPLETED PROJECT", "PROYECTO COMPLETADO",
+]);
+
+// Project maturity comes from the case registry and stays separate from the availability signal.
+function getCaseMaturityLabel(story: CaseStory, locale: LocaleCode) {
+  const registryCase = getCaseBySlug(story.slug);
+  if (!registryCase) return null;
+
+  const statusLabel = localizeCase(registryCase, locale).statusLabel;
+  return canonicalMaturityLabels.has(statusLabel) ? statusLabel : null;
 }
 
 function localizeCaseSpineItems(items: SectionRailItem[], story: CaseStory | null) {
@@ -2841,6 +2873,7 @@ function MobileCaseHero({
   story: CaseStory;
   liveLink?: { label: string; href: string };
 }) {
+  const { locale } = useI18n();
   const titleLines = getTitleLines(story.headline);
 
   return (
@@ -2850,10 +2883,11 @@ function MobileCaseHero({
       <div className="relative md:mx-auto md:w-[min(100%,46rem)]">
         <div className="flex max-w-[20rem] flex-wrap gap-2 sm:max-w-none md:max-w-[44rem]">
           {[
+            getCaseMaturityLabel(story, locale),
             isSpanishCaseStory(story) ? "Sistema de caso" : "Case system",
             getAvailabilitySignal(story),
             getCaseTypeLabel(story),
-          ].map((item) => (
+          ].filter((item): item is string => Boolean(item)).map((item) => (
             <span
               key={item}
               className="rounded-full border border-neutral-950/10 bg-white/48 px-3 py-2 font-mono text-[8px] uppercase tracking-[0.16em] text-neutral-500 backdrop-blur-sm"
@@ -3558,7 +3592,7 @@ export default function CasePageV2({
   const isUnavailableSpanishStory =
     locale === "es" && (!isSpanishPublicCaseStorySlug(slug) || !sourceStory?.translations?.es);
   const story = useMemo(
-    () => (sourceStory ? localizeCaseStory(sourceStory, locale) : null),
+    () => (sourceStory ? withCaseStoryLocale(localizeCaseStory(sourceStory, locale), locale) : null),
     [locale, sourceStory],
   );
   const [inspectIndex, setInspectIndex] = useState<number | null>(null);
@@ -3751,10 +3785,11 @@ export default function CasePageV2({
             >
               <div className="flex flex-wrap items-center gap-2">
                 {[
+                  getCaseMaturityLabel(story, locale),
                   isSpanishCaseStory(story) ? "Sistema de caso" : "Case system",
                   getAvailabilitySignal(story),
                   getCaseTypeLabel(story),
-                ].map(
+                ].filter((item): item is string => Boolean(item)).map(
                   (item) => (
                     <span
                       key={item}

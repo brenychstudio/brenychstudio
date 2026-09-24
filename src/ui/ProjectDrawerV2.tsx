@@ -11,13 +11,13 @@ type Props = {
 };
 
 type ProjectDirection =
-  | "available-system"
-  | "premium-website"
-  | "product-surface"
-  | "multilingual-system"
-  | "immersive-prototype"
+  | "product-application"
+  | "ai-agent-system"
+  | "interactive-spatial"
+  | "website-digital-experience"
   | "creative-technology"
-  | "not-sure";
+  | "game-interactive-world"
+  | "other";
 
 type ProjectSignal =
   | "specific-case"
@@ -90,67 +90,66 @@ const CONTACT_EMAIL = "info@brenych.com";
 
 const englishProjectDirections: DirectionOption[] = [
   {
-    value: "available-system",
-    label: "Adapt an available system",
-    helper: "Commissioned adaptation of a studio foundation",
-    readout:
-      "Start from an authored Brenych Studio concept and adapt it into a production-ready client system.",
-    firstFormat: "Available system adaptation",
-    nextStep: "Send the case you like, brand context, market, content state, and timeline.",
-    tags: ["Foundation", "Adaptation", "Commission"],
+    value: "product-application",
+    label: "Product / Application",
+    helper: "Web, desktop, native, SaaS, or internal software",
+    readout: "A product or application engagement spanning architecture, interface, state, data, and delivery.",
+    firstFormat: "Product architecture or working application increment",
+    nextStep: "Send the product context, target users, current state, constraints, and the first outcome that must work.",
+    tags: ["Product", "Application", "Engineering"],
   },
   {
-    value: "premium-website",
-    label: "Premium website",
-    helper: "Editorial / high-trust commercial surface",
-    readout: "A precise commercial surface with strong offer, trust, and conversion logic.",
-    firstFormat: "Landing system or premium micro-site",
-    nextStep: "Send the offer, audience, current page, and launch timing.",
-    tags: ["Offer", "Trust", "Launch"],
+    value: "ai-agent-system",
+    label: "AI / Agent System",
+    helper: "Controlled AI workflows, tools, evidence, and approvals",
+    readout: "An AI-native or agent-facing system with explicit tools, evidence, bounded actions, and human review where required.",
+    firstFormat: "Agent workflow or AI-native product slice",
+    nextStep: "Send the user goal, available data/tools, action boundaries, and what must remain under human control.",
+    tags: ["AI", "Agents", "Authority"],
   },
   {
-    value: "product-surface",
-    label: "Product surface",
-    helper: "Product, service, or demo interface",
-    readout: "A product-facing layer that makes a service, demo, workflow, or product idea easier to understand.",
-    firstFormat: "Product surface or demo interface",
-    nextStep: "Send the product context, key user action, and what needs to be proven.",
-    tags: ["Product", "Demo", "UX"],
+    value: "interactive-spatial",
+    label: "Interactive / Spatial",
+    helper: "Real-time 3D, WebGL / WebGPU, XR, or spatial experience",
+    readout: "An interactive or spatial system where real-time behaviour, image, motion, and presence need to operate together.",
+    firstFormat: "Spatial prototype or real-time interactive surface",
+    nextStep: "Send the concept, target device, source media/assets, references, and the interaction that matters most.",
+    tags: ["Spatial", "3D", "XR"],
   },
   {
-    value: "multilingual-system",
-    label: "Multilingual system",
-    helper: "International presentation layer",
-    readout: "A structured surface for brands, offers, or content that needs to work across languages.",
-    firstFormat: "Multilingual site architecture",
-    nextStep: "Send the languages, core pages, content state, and regional priorities.",
-    tags: ["Language", "Structure", "Scale"],
-  },
-  {
-    value: "immersive-prototype",
-    label: "Immersive prototype",
-    helper: "Interactive / spatial / experimental proof",
-    readout: "A cinematic, spatial, or interaction-led prototype for presentation, mood, and proof.",
-    firstFormat: "Immersive prototype or motion surface",
-    nextStep: "Send the world, reference material, interaction idea, and intended audience.",
-    tags: ["Motion", "Spatial", "Proof"],
+    value: "website-digital-experience",
+    label: "Website / Digital Experience",
+    helper: "Focused public website, launch, product presentation, or digital surface",
+    readout: "A high-trust public digital experience with clear positioning, proof, interaction, and conversion logic.",
+    firstFormat: "Website, launch surface, or product presentation",
+    nextStep: "Send the offer or project, audience, current content, references, and launch timing.",
+    tags: ["Web", "Launch", "Experience"],
   },
   {
     value: "creative-technology",
-    label: "Creative technology direction",
-    helper: "Concept, system, prototype strategy",
-    readout: "A technical and visual direction for unusual web, motion, spatial, or generative work.",
-    firstFormat: "Creative technology route",
-    nextStep: "Send the concept, constraints, references, and what the first prototype should clarify.",
-    tags: ["Concept", "System", "Prototype"],
+    label: "Creative Technology",
+    helper: "Technical and visual direction for unusual digital work",
+    readout: "A technical and visual direction where interaction, image, motion, sound, and system behaviour need one coherent language.",
+    firstFormat: "Creative technology concept or prototype",
+    nextStep: "Send the concept, constraints, references, source material, and what the first prototype should clarify.",
+    tags: ["Direction", "System", "Prototype"],
   },
   {
-    value: "not-sure",
-    label: "Not sure yet",
-    helper: "I'll help define the route",
-    readout: "A short note is enough. The first response can define the cleanest route before scope.",
+    value: "game-interactive-world",
+    label: "Game / Interactive World",
+    helper: "Game systems, interactive world, simulation, or realtime prototype",
+    readout: "An original interactive-world engagement combining realtime systems, simulation, assets, and authored visual direction.",
+    firstFormat: "Playable or interactive-world proof",
+    nextStep: "Send the world premise, target platform, core interaction, available assets, and the first playable proof you need.",
+    tags: ["Game", "World", "Simulation"],
+  },
+  {
+    value: "other",
+    label: "Other",
+    helper: "Define the right route before scope",
+    readout: "A short note is enough when the project does not fit a standard category.",
     firstFormat: "Route definition before scope",
-    nextStep: "Send a short note about the offer, product, audience, timeline, or current challenge.",
+    nextStep: "Send the goal, current situation, constraints, and what you want to make possible.",
     tags: ["Open", "Scope", "Signal"],
   },
 ];
@@ -199,12 +198,13 @@ const englishProjectSignals: SignalOption[] = [
 ];
 
 const mobileDirectionOptions: ProjectDirection[] = [
-  "premium-website",
-  "product-surface",
-  "multilingual-system",
-  "immersive-prototype",
-  "available-system",
-  "not-sure",
+  "product-application",
+  "ai-agent-system",
+  "interactive-spatial",
+  "website-digital-experience",
+  "creative-technology",
+  "game-interactive-world",
+  "other",
 ];
 
 const mobileSignalOptions: ProjectSignal[] = [
@@ -215,14 +215,7 @@ const mobileSignalOptions: ProjectSignal[] = [
   "not-sure",
 ];
 
-const englishMobileDirectionLabels: Partial<Record<ProjectDirection, string>> = {
-  "available-system": "Adapt system",
-  "premium-website": "Website",
-  "product-surface": "Product",
-  "multilingual-system": "Multilingual",
-  "immersive-prototype": "Immersive",
-  "not-sure": "Not sure",
-};
+const englishMobileDirectionLabels: Partial<Record<ProjectDirection, string>> = {};
 
 const englishMobileSignalLabels: Partial<Record<ProjectSignal, string>> = {
   "new-launch": "New launch",
@@ -232,79 +225,70 @@ const englishMobileSignalLabels: Partial<Record<ProjectSignal, string>> = {
   "not-sure": "Not sure",
 };
 
-const englishDesktopDirectionLabels: Partial<Record<ProjectDirection, string>> = {
-  "available-system": "Adapt system",
-  "premium-website": "Website",
-  "product-surface": "Product surface",
-  "multilingual-system": "Multilingual",
-  "immersive-prototype": "Immersive",
-  "creative-technology": "Creative tech",
-  "not-sure": "Not sure",
-};
+const englishDesktopDirectionLabels: Partial<Record<ProjectDirection, string>> = {};
 
 const spanishProjectDirections: DirectionOption[] = [
   {
-    value: "available-system",
-    label: "Adaptar un sistema disponible",
-    helper: "Adaptación comisionada desde una base del estudio",
-    readout:
-      "Partimos de un concepto autoral de Brenych Studio y lo adaptamos como sistema de producción para cliente.",
-    firstFormat: "Adaptación de sistema disponible",
-    nextStep: "Envía el caso que te interesa, contexto de marca, mercado, estado del contenido y calendario.",
-    tags: ["Base", "Adaptación", "Comisión"],
+    value: "product-application",
+    label: "Producto / Aplicación",
+    helper: "Software web, de escritorio, nativo, SaaS o herramienta interna",
+    readout: "Un proyecto de producto o aplicación que integra arquitectura, interfaz, estado, datos y entrega.",
+    firstFormat: "Arquitectura de producto o incremento funcional de aplicación",
+    nextStep: "Envía el contexto del producto, usuarios objetivo, estado actual, restricciones y el primer resultado que debe funcionar.",
+    tags: ["Producto", "Aplicación", "Ingeniería"],
   },
   {
-    value: "premium-website",
-    label: "Sitio premium",
-    helper: "Superficie editorial / comercial de alta confianza",
-    readout: "Una superficie comercial precisa, con oferta, confianza y lógica de conversión.",
-    firstFormat: "Sistema landing o micro-sitio premium",
-    nextStep: "Envía la oferta, audiencia, página actual y fecha objetivo de lanzamiento.",
-    tags: ["Oferta", "Confianza", "Launch"],
+    value: "ai-agent-system",
+    label: "IA / Sistema de agentes",
+    helper: "Workflows de IA controlados, herramientas, evidencia y aprobaciones",
+    readout: "Un sistema AI-native u orientado a agentes con herramientas explícitas, evidencia, acciones delimitadas y revisión humana cuando sea necesaria.",
+    firstFormat: "Workflow de agentes o slice de producto AI-native",
+    nextStep: "Envía el objetivo del usuario, datos y herramientas disponibles, límites de acción y qué debe permanecer bajo control humano.",
+    tags: ["IA", "Agentes", "Autoridad"],
   },
   {
-    value: "product-surface",
-    label: "Superficie de producto",
-    helper: "Interfaz de producto, servicio o demo",
-    readout: "Una capa de producto que vuelve más claro un servicio, demo, workflow o idea.",
-    firstFormat: "Superficie de producto o interfaz demo",
-    nextStep: "Envía el contexto del producto, acción principal del usuario y qué debe quedar probado.",
-    tags: ["Producto", "Demo", "UX"],
+    value: "interactive-spatial",
+    label: "Interactivo / Espacial",
+    helper: "3D en tiempo real, WebGL / WebGPU, XR o experiencia espacial",
+    readout: "Un sistema interactivo o espacial donde comportamiento en tiempo real, imagen, movimiento y presencia deben funcionar juntos.",
+    firstFormat: "Prototipo espacial o superficie interactiva en tiempo real",
+    nextStep: "Envía el concepto, dispositivo objetivo, medios o assets disponibles, referencias y la interacción más importante.",
+    tags: ["Espacial", "3D", "XR"],
   },
   {
-    value: "multilingual-system",
-    label: "Sistema multilingüe",
-    helper: "Capa de presentación internacional",
-    readout: "Una superficie estructurada para marcas, ofertas o contenido que debe funcionar en varios idiomas.",
-    firstFormat: "Arquitectura de sitio multilingüe",
-    nextStep: "Envía idiomas, páginas principales, estado del contenido y prioridades regionales.",
-    tags: ["Idioma", "Estructura", "Escala"],
-  },
-  {
-    value: "immersive-prototype",
-    label: "Prototipo inmersivo",
-    helper: "Prueba interactiva / espacial / experimental",
-    readout: "Un prototipo cinematográfico, espacial o guiado por interacción para presentación, atmósfera y prueba.",
-    firstFormat: "Prototipo inmersivo o superficie motion",
-    nextStep: "Envía el mundo, material de referencia, idea de interacción y audiencia prevista.",
-    tags: ["Motion", "Espacial", "Prueba"],
+    value: "website-digital-experience",
+    label: "Sitio web / Experiencia digital",
+    helper: "Sitio público, lanzamiento, presentación de producto o superficie digital",
+    readout: "Una experiencia digital pública de alta confianza con posicionamiento, prueba, interacción y lógica de conversión claras.",
+    firstFormat: "Sitio web, superficie de lanzamiento o presentación de producto",
+    nextStep: "Envía la oferta o proyecto, audiencia, contenido actual, referencias y calendario de lanzamiento.",
+    tags: ["Web", "Lanzamiento", "Experiencia"],
   },
   {
     value: "creative-technology",
-    label: "Dirección creative tech",
-    helper: "Estrategia de concepto, sistema o prototipo",
-    readout: "Una dirección técnica y visual para web, motion, espacial o trabajo generativo no convencional.",
-    firstFormat: "Ruta de creative technology",
-    nextStep: "Envía concepto, límites, referencias y qué debe aclarar el primer prototipo.",
-    tags: ["Concepto", "Sistema", "Prototipo"],
+    label: "Tecnología creativa",
+    helper: "Dirección técnica y visual para trabajo digital no convencional",
+    readout: "Una dirección técnica y visual donde interacción, imagen, movimiento, sonido y comportamiento del sistema necesitan un lenguaje coherente.",
+    firstFormat: "Concepto o prototipo de tecnología creativa",
+    nextStep: "Envía el concepto, restricciones, referencias, material disponible y qué debe aclarar el primer prototipo.",
+    tags: ["Dirección", "Sistema", "Prototipo"],
   },
   {
-    value: "not-sure",
-    label: "Aún no lo sé",
-    helper: "Te ayudo a definir la ruta",
-    readout: "Una nota breve basta. La primera respuesta puede definir la ruta más limpia antes del alcance.",
+    value: "game-interactive-world",
+    label: "Juego / Mundo interactivo",
+    helper: "Sistemas de juego, mundo interactivo, simulación o prototipo en tiempo real",
+    readout: "Un proyecto de mundo interactivo original que combina sistemas en tiempo real, simulación, assets y dirección visual de autor.",
+    firstFormat: "Prueba jugable o de mundo interactivo",
+    nextStep: "Envía la premisa del mundo, plataforma objetivo, interacción principal, assets disponibles y la primera prueba jugable que necesitas.",
+    tags: ["Juego", "Mundo", "Simulación"],
+  },
+  {
+    value: "other",
+    label: "Otro",
+    helper: "Definir la ruta adecuada antes del alcance",
+    readout: "Una nota breve es suficiente cuando el proyecto no encaja en una categoría estándar.",
     firstFormat: "Definición de ruta antes del alcance",
-    nextStep: "Envía una nota breve sobre oferta, producto, audiencia, calendario o reto actual.",
+    nextStep: "Envía el objetivo, situación actual, restricciones y qué quieres hacer posible.",
     tags: ["Abierto", "Alcance", "Señal"],
   },
 ];
@@ -398,14 +382,7 @@ const englishDrawerCopy: DrawerLocaleCopy = {
 const spanishDrawerCopy: DrawerLocaleCopy = {
   directions: spanishProjectDirections,
   signals: spanishProjectSignals,
-  mobileDirectionLabels: {
-    "available-system": "Adaptar sistema",
-    "premium-website": "Sitio web",
-    "product-surface": "Producto",
-    "multilingual-system": "Multilingüe",
-    "immersive-prototype": "Inmersivo",
-    "not-sure": "No lo sé",
-  },
+  mobileDirectionLabels: {},
   mobileSignalLabels: {
     "new-launch": "Nuevo launch",
     "existing-offer": "Mejorar",
@@ -413,15 +390,7 @@ const spanishDrawerCopy: DrawerLocaleCopy = {
     "specific-case": "Caso concreto",
     "not-sure": "No lo sé",
   },
-  desktopDirectionLabels: {
-    "available-system": "Adaptar sistema",
-    "premium-website": "Sitio web",
-    "product-surface": "Superficie de producto",
-    "multilingual-system": "Multilingüe",
-    "immersive-prototype": "Inmersivo",
-    "creative-technology": "Creative tech",
-    "not-sure": "No lo sé",
-  },
+  desktopDirectionLabels: {},
   projectSignal: "Señal de proyecto",
   mobileIntro: "Elige una dirección, añade una nota breve y responderé con el siguiente paso más limpio.",
   desktopIntro:
@@ -496,7 +465,7 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
   const copyTimerRef = useRef<number | null>(null);
 
   const [selectedDirection, setSelectedDirection] =
-    useState<ProjectDirection>("not-sure");
+    useState<ProjectDirection>("other");
   const [selectedSignal, setSelectedSignal] = useState<ProjectSignal>("not-sure");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -506,12 +475,12 @@ export default function ProjectDrawerV2({ open, onClose }: Props) {
   const direction = getDirection(selectedDirection, copy.directions);
   const signal = getSignal(selectedSignal, copy.signals);
   const projectNotePlaceholder =
-    selectedDirection === "available-system" || selectedSignal === "specific-case"
+    selectedSignal === "specific-case"
       ? copy.availableSystemPlaceholder
       : copy.projectNotePlaceholder;
 
   const hasInteraction =
-    selectedDirection !== "not-sure" ||
+    selectedDirection !== "other" ||
     selectedSignal !== "not-sure" ||
     name.trim().length > 0 ||
     email.trim().length > 0 ||

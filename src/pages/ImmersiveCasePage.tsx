@@ -270,11 +270,7 @@ function getImmersiveMetaTitle(item: ImmersiveItem, locale: LocaleCode = "en") {
   return `${item.title} - ${category} | Brenych Studio`;
 }
 
-function getImmersiveMetaDescription(item: ImmersiveItem, locale: LocaleCode = "en") {
-  if (item.slug === "webhero" && locale === "en") {
-    return "A production-minded WebGL system for premium hero stages, interactive product surfaces, cinematic visual storytelling, and spatial interface experiences.";
-  }
-
+function getImmersiveMetaDescription(item: ImmersiveItem) {
   return item.searchContent?.shortDescription ?? item.tagline;
 }
 
@@ -290,7 +286,7 @@ function ImmersiveSeoMeta({
   locale?: LocaleCode;
 }) {
   const title = getImmersiveMetaTitle(item, locale);
-  const description = getImmersiveMetaDescription(item, locale);
+  const description = getImmersiveMetaDescription(item);
   const path = getLocalizedPath(`/immersive/${item.slug}`, locale);
   const image = item.slug === "webhero" ? "/og/webhero.png" : item.previewPoster;
   const structuredData = {

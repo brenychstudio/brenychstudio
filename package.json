@@ -11,7 +11,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "media:portfolio": "node scripts/generate-portfolio-media.mjs"
+    "media:portfolio": "node scripts/generate-portfolio-media.mjs",
+    "video:validate": "node --experimental-strip-types scripts/validate-video-assets.mts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

@@ -20,6 +20,7 @@ import PageSurface from "../ui/PageSurface";
 import SiteFooterV2 from "../ui/SiteFooterV2";
 import StructuredData from "../ui/StructuredData";
 import CinematicInspectReveal from "../ui/work/CinematicInspectReveal";
+import PortfolioImage from "../ui/media/PortfolioImage";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailActive";
 import { useSound } from "../stage/audio/useSound";
@@ -1477,6 +1478,7 @@ function CaseMediaView({
   objectPosition,
   scrollPlayback = false,
   className = "",
+  sizes,
 }: {
   media: CaseStoryMedia;
   priority?: boolean;
@@ -1485,6 +1487,7 @@ function CaseMediaView({
   objectPosition?: "top" | "center" | "bottom";
   scrollPlayback?: boolean;
   className?: string;
+  sizes?: string;
 }) {
   const resolvedFit = fit ?? media.fit ?? "contain";
   const resolvedObjectPosition = objectPosition ?? media.objectPosition;
@@ -1531,12 +1534,14 @@ function CaseMediaView({
   }
 
   return (
-    <img
-      className={frameClass}
+    <PortfolioImage
       src={media.src}
       alt={media.alt}
+      sizes={sizes ?? "(min-width: 1280px) 68vw, (min-width: 768px) 82vw, 94vw"}
       loading={priority ? "eager" : "lazy"}
-      decoding="async"
+      fetchPriority={priority ? "high" : "auto"}
+      containerClassName="h-full w-full"
+      imageClassName={frameClass}
     />
   );
 }
@@ -3858,6 +3863,7 @@ export default function CasePageV2({
                   priority
                   ambient
                   className={heroPrimaryMediaClass}
+                  sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 52vw, 94vw"
                 />
                 <div className={["absolute inset-0", heroPrimaryOverlayClass].join(" ")} />
                 <div className={["absolute left-5 top-5 font-mono text-[9px] uppercase tracking-[0.18em]", heroPrimaryMetaClass].join(" ")}>
@@ -3928,7 +3934,10 @@ export default function CasePageV2({
                   <span
                     className={["block h-full w-full", heroFragmentMediaClass].join(" ")}
                   >
-                    <CaseMediaView media={media} />
+                    <CaseMediaView
+                      media={media}
+                      sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 24vw, 30vw"
+                    />
                   </span>
                   <div className={["absolute inset-0", heroFragmentOverlayClass].join(" ")} />
                   <div className={["absolute bottom-3 left-3 font-mono text-[8px] uppercase tracking-[0.14em]", heroFragmentMetaClass].join(" ")}>

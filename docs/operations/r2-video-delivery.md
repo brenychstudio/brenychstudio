@@ -20,10 +20,9 @@ Storage class:        Standard
 Custom domain:        media.brenychstudio.com
 r2.dev:               disabled for production
 CORS source:          ops/cloudflare/r2-video-cors.json
-Cache rule hostname:  media.brenychstudio.com
-Cache rule path:      /video/*
-Cache eligibility:    Eligible
-Origin Cache-Control respected
+Edge caching:         Cloudflare default (.mp4 is default-cacheable)
+Cache-Control:        object metadata, authoritative
+/video/* Cache Rule:  optional (see "Optional explicit cache rule")
 ```
 
 Production traffic always uses `https://media.brenychstudio.com`. The origin is
@@ -55,6 +54,27 @@ Cache-Control: public, max-age=31536000, immutable
 
 Because keys are versioned, a normal release never needs a cache purge; purge is
 an exception.
+
+## Cache policy
+
+Current canonical video delivery uses versioned `.mp4` objects. Cloudflare caches
+`.mp4` through the custom-domain CDN by default. Object metadata remains
+authoritative:
+
+```text
+Cache-Control: public, max-age=31536000, immutable
+```
+
+A dedicated `/video/*` Cache Rule is **optional** for the current MP4-only
+contract. It may be added later (see "Optional explicit cache rule") if:
+
+- non-default-cacheable extensions are introduced;
+- cache eligibility needs to be forced independently of extension;
+- future policy requires explicit path-scoped cache behavior.
+
+The current production foundation has been verified live on the smoke object
+(`.bin`, also default-cacheable) with `CF-Cache-Status: MISS → HIT`, `Age: 0 → 11`
+and the immutable `Cache-Control` above, without a dedicated rule.
 
 ## Registry and resolver
 
@@ -109,23 +129,13 @@ Dashboard: Cloudflare → R2 Object Storage.
    the wildcard Pages-preview origin, `HEAD`, or the `Range` header), record the
    exact error and apply the smallest supported equivalent that still allows
    GET, Range and those origins.
-5. Zone `brenychstudio.com` → Caching → Cache Rules → create one rule:
-
-   ```text
-   Hostname equals media.brenychstudio.com
-   AND URI Path starts with /video/
-   → Cache eligibility: Eligible
-   → Edge TTL: use cache-control header if present (respect origin)
-   ```
-
-   Do not add a site-wide cache rule.
-6. Create the smoke object locally (4096 deterministic bytes):
+5. Create the smoke object locally (4096 deterministic bytes):
 
    ```bash
    node -e "const fs=require('fs'); const b=Buffer.alloc(4096); for(let i=0;i<b.length;i++) b[i]=i%251; fs.writeFileSync('/tmp/r2-foundation-smoke-v001.bin',b)"
    ```
 
-7. Upload it as `video/_system/r2-foundation-smoke-v001.bin` with:
+6. Upload it as `video/_system/r2-foundation-smoke-v001.bin` with:
 
    ```text
    Content-Type:  application/octet-stream
@@ -147,6 +157,24 @@ Dashboard: Cloudflare → R2 Object Storage.
 The smoke object is not production content. It may stay as a health object or
 be removed after verification.
 
+No cache rule is part of the required setup; see "Cache policy".
+
+## Optional explicit cache rule
+
+Not required for the current MP4-only contract. Add it only when one of the
+conditions in "Cache policy" applies. Zone `brenychstudio.com` → Caching →
+Cache Rules → create one rule:
+
+```text
+Hostname equals media.brenychstudio.com
+AND URI Path starts with /video/
+→ Cache eligibility: Eligible
+→ Edge TTL: use cache-control header if present (respect origin)
+```
+
+Do not add a site-wide cache rule, and do not modify unrelated cache rules.
+Creating it needs zone Cache Rules edit permission.
+
 ## Verification
 
 ```bash
@@ -164,7 +192,8 @@ The script requires HEAD and GET `200`, `Content-Type: application/octet-stream`
 It prints `R2_FOUNDATION_VERIFY=PASS`.
 It also records `Accept-Ranges`, `ETag`, `CF-Cache-Status` and `Age`. A MISS then
 HIT is expected across two GETs but not required; when a POP does not show a stable
-HIT, confirm in the dashboard that the `/video/*` rule is active.
+HIT, confirm the object's `Cache-Control` metadata and, only if the optional
+`/video/*` rule has been added, that it is active.
 
 Finally list the bucket: under `video/` only
 `video/_system/r2-foundation-smoke-v001.bin` may exist during BSW-VIDEO-01A.

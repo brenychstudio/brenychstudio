@@ -6,8 +6,11 @@ import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import { MobileMotionLedgerRow } from "../ui/mobile-motion/MobileMotionLedger";
 import MobileMotionSection from "../ui/mobile-motion/MobileMotionSection";
-import OfferDeliveryModelEngine, { OfferDeliveryInterfaceOverlay } from "../ui/OfferDeliveryModelEngine";
-import OfferScrollArtifactHero from "../ui/OfferScrollArtifactHero";
+import {
+  DeferredOfferDeliveryInterfaceOverlay,
+  DeferredOfferDeliveryModelEngine,
+  DeferredOfferScrollArtifactHero,
+} from "../ui/offer/OfferDeferredWebGL";
 import PageSurface from "../ui/PageSurface";
 import SectionRail, { type SectionRailItem } from "../ui/SectionRail";
 import SiteFooterV2 from "../ui/SiteFooterV2";
@@ -995,7 +998,7 @@ function DeliveryModelEngine({
           </div>
 
           <div className="absolute inset-0 pt-14">
-            <OfferDeliveryModelEngine
+            <DeferredOfferDeliveryModelEngine
               stages={localizedDeliveryStages}
               activeStage={activeStage}
               onSelectStage={setActiveStage}
@@ -1339,7 +1342,7 @@ function MobileOfferLayout({
       </MobileMotionSection>
       <MobileMotionSection variant="media" delay="soft">
         <div className="py-7">
-          <OfferScrollArtifactHero compact />
+          <DeferredOfferScrollArtifactHero compact />
         </div>
       </MobileMotionSection>
       <MobileMotionSection variant="ledger" delay="soft">
@@ -1486,7 +1489,7 @@ export default function OfferV2({
             <OfferSignalReadout />
           </section>
 
-          <OfferScrollArtifactHero />
+          <DeferredOfferScrollArtifactHero />
 
           <section id="offer-systems" ref={systemsRef} data-header-scene="practice-build" className="relative z-10 mx-auto w-[min(94vw,1640px)] py-16 lg:py-20">
             <div className="grid gap-10 border-y border-neutral-950/14 py-9 lg:grid-cols-[0.3fr_0.7fr]">
@@ -1650,7 +1653,7 @@ export default function OfferV2({
 
       <AnimatePresence>
         {deliveryInterfaceOpen ? (
-          <OfferDeliveryInterfaceOverlay
+          <DeferredOfferDeliveryInterfaceOverlay
             stages={getDeliveryStages(locale)}
             activeStage={activeStage}
             setActiveStage={setActiveStageWithSound}

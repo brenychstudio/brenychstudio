@@ -1,3 +1,4 @@
+import { resolveVideoAsset } from "../media/video/videoResolver";
 import type { CaseStatusKind } from "../ui/status/status.types";
 import { spanishImmersiveTranslations, type ImmersiveTranslation } from "./spanishContent";
 
@@ -128,7 +129,7 @@ export const immersiveItems: ImmersiveItem[] = [
       relatedServices: ["Interactive web systems", "Product demo landing"],
     },
     tone: "nocturne",
-    previewVideo: "/immersive/Whisper/Video/whisper-hero-poster.mp4",
+    previewVideo: resolveVideoAsset("whisper.immersive.hero"),
     previewPoster: "/immersive/Whisper/desktop/whisper-hero.jpg",
     featured: true,
     supportLabel: "Flagship immersive case",
@@ -145,7 +146,7 @@ export const immersiveItems: ImmersiveItem[] = [
     ],
     videos: [
       {
-        src: "/immersive/Whisper/Video/whisper-desktop-video.mp4",
+        src: resolveVideoAsset("whisper.immersive.desktop"),
         poster: "/immersive/Whisper/desktop/whisper-8.jpg",
         alt: "WHISPER desktop website walkthrough video",
         label: "Desktop website walkthrough",
@@ -154,7 +155,7 @@ export const immersiveItems: ImmersiveItem[] = [
         device: "desktop",
       },
       {
-        src: "/immersive/Whisper/Video/whisper-vr-video.mp4",
+        src: resolveVideoAsset("whisper.immersive.vr"),
         poster: "/immersive/Whisper/desktop/whisper-vr-1.jpg",
         alt: "WHISPER Meta Quest 3 VR exhibition capture",
         label: "Meta Quest 3 exhibition capture",
@@ -383,7 +384,7 @@ export const immersiveItems: ImmersiveItem[] = [
       relatedServices: ["Interactive web systems", "Premium landing page"],
     },
     tone: "signal",
-    previewVideo: "/immersive/webhero/video/webhero-video-field.mp4",
+    previewVideo: resolveVideoAsset("webhero.immersive.field"),
     previewPoster: "/immersive/webhero/desktop/webhero-threshold.webp",
     featured: true,
     supportLabel: "Flagship R&D system",
@@ -396,7 +397,7 @@ export const immersiveItems: ImmersiveItem[] = [
     ],
     videos: [
       {
-        src: "/immersive/webhero/video/webhero-video-field.mp4",
+        src: resolveVideoAsset("webhero.immersive.field"),
         poster: "/immersive/webhero/video/webhero-video-field-poster.webp",
         alt: "WEBHERO field and stage system walkthrough",
         label: "Field / Stage System",
@@ -405,7 +406,7 @@ export const immersiveItems: ImmersiveItem[] = [
         device: "desktop",
       },
       {
-        src: "/immersive/webhero/video/webhero-video-backdrops.mp4",
+        src: resolveVideoAsset("webhero.immersive.backdrops"),
         poster: "/immersive/webhero/video/webhero-video-backdrops-poster.webp",
         alt: "WEBHERO cinematic backdrops module walkthrough",
         label: "Cinematic Backdrops",
@@ -414,7 +415,7 @@ export const immersiveItems: ImmersiveItem[] = [
         device: "desktop",
       },
       {
-        src: "/immersive/webhero/video/webhero-video-living-images.mp4",
+        src: resolveVideoAsset("webhero.immersive.living-images"),
         poster: "/immersive/webhero/video/webhero-video-living-images-poster.webp",
         alt: "WEBHERO Living Images and Living Splat walkthrough",
         label: "Living Images / Splat",
@@ -423,7 +424,7 @@ export const immersiveItems: ImmersiveItem[] = [
         device: "desktop",
       },
       {
-        src: "/immersive/webhero/video/webhero-video-art-room.mp4",
+        src: resolveVideoAsset("webhero.immersive.art-room"),
         poster: "/immersive/webhero/video/webhero-video-art-room-poster.webp",
         alt: "WEBHERO Art Room module walkthrough",
         label: "Art Room",
@@ -660,14 +661,14 @@ export const immersiveItems: ImmersiveItem[] = [
       relatedServices: ["Interactive web systems", "Product demo landing"],
     },
     tone: "nocturne",
-    previewVideo: "/immersive/kool-berk/video/kool-berk-video.mp4",
+    previewVideo: resolveVideoAsset("kool-berk.immersive.walkthrough"),
     previewPoster: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
     featured: true,
     supportLabel: "Sonic object system",
     ctaLabel: "Open Kool Berk case",
     videos: [
       {
-        src: "/immersive/kool-berk/video/kool-berk-video.mp4",
+        src: resolveVideoAsset("kool-berk.immersive.walkthrough"),
         poster: "/immersive/kool-berk/video/kool-berk-video-poster.webp",
         alt: "Kool Berk Sonic Object OS desktop walkthrough",
         label: "Sonic Object OS walkthrough",
@@ -797,7 +798,7 @@ export const immersiveItems: ImmersiveItem[] = [
       relatedServices: ["Interactive web systems", "Product demo landing"],
     },
     tone: "nocturne",
-    previewVideo: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
+    previewVideo: resolveVideoAsset("presence-os.immersive.walkthrough"),
     previewPoster: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
     featured: true,
     supportLabel: "Presence-based memory system",
@@ -810,7 +811,7 @@ export const immersiveItems: ImmersiveItem[] = [
     ],
     videos: [
       {
-        src: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
+        src: resolveVideoAsset("presence-os.immersive.walkthrough"),
         poster: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video-poster.webp",
         alt: "Presence OS Memory Atlas desktop walkthrough",
         label: "Memory Atlas walkthrough",
@@ -819,7 +820,7 @@ export const immersiveItems: ImmersiveItem[] = [
         device: "desktop",
       },
       {
-        src: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-vr-video.mp4",
+        src: resolveVideoAsset("presence-os.immersive.vr"),
         poster: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-vr-video-poster.webp",
         alt: "Presence OS Memory Atlas XR Memory Room VR capture",
         label: "XR Memory Room capture",
@@ -1010,7 +1011,7 @@ export const immersiveItems: ImmersiveItem[] = [
       relatedServices: ["Product demo landing", "Interactive web systems"],
     },
     tone: "nocturne",
-    previewVideo: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
+    previewVideo: resolveVideoAsset("orbit-lens.immersive.walkthrough"),
     previewPoster: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
     featured: true,
     supportLabel: "Fictional AI eyewear product OS",
@@ -1027,7 +1028,7 @@ export const immersiveItems: ImmersiveItem[] = [
     ],
     videos: [
       {
-        src: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
+        src: resolveVideoAsset("orbit-lens.immersive.walkthrough"),
         poster: "/immersive/orbit-lens/video/orbit-lens-video-poster.webp",
         alt: "Orbit Lens desktop product interface walkthrough",
         label: "Product OS walkthrough",
@@ -1036,7 +1037,7 @@ export const immersiveItems: ImmersiveItem[] = [
         device: "desktop",
       },
       {
-        src: "/immersive/orbit-lens/video/orbit-lens-vr-video.mp4",
+        src: resolveVideoAsset("orbit-lens.immersive.vr"),
         poster: "/immersive/orbit-lens/video/orbit-lens-vr-video-poster.webp",
         alt: "Orbit Lens WebXR spatial mode VR capture",
         label: "WebXR spatial proof",

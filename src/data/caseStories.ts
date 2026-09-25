@@ -1,3 +1,4 @@
+import { resolveVideoAsset } from "../media/video/videoResolver";
 import { getAvailableSystem } from "./availableSystems";
 import { cases, type Case, type CaseFrame } from "./cases";
 import { spanishCaseStoryTranslations, type CaseStoryTranslation } from "./spanishContent";
@@ -135,7 +136,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         id: "walkthrough",
         kind: "video",
-        src: "/cases/house-of-lune/video/house-of-lune-video.mp4",
+        src: resolveVideoAsset("house-of-lune.case.walkthrough"),
         poster: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
         alt: "House of Lune walkthrough video",
         label: "System walkthrough",
@@ -363,7 +364,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         id: "walkthrough",
         kind: "video",
-        src: "/cases/bcn-advisory/v2/bcn-advisory-video.mp4",
+        src: resolveVideoAsset("bcn-advisory.case.walkthrough"),
         poster: "/cases/bcn-advisory/v2/bcn-advisory-video-poster.webp",
         alt: "Barcelona Private Advisory walkthrough video",
         label: "Intelligence walkthrough",
@@ -699,7 +700,7 @@ const authoredCaseStories: CaseStory[] = [
       {
         id: "walkthrough",
         kind: "video",
-        src: "/cases/creatorops/v2/creatorops-video.mp4",
+        src: resolveVideoAsset("weekfield.case.walkthrough"),
         poster: "/cases/creatorops/v2/creatorops-video-poster.webp",
         alt: "CreatorOps walkthrough video",
         label: "System walkthrough",

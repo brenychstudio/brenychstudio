@@ -16,6 +16,7 @@ import type { CaseStoryMedia } from "../../data/caseStories";
 import type { ImmersiveItem, ImmersiveMedia } from "../../data/immersive";
 import { getChamberEngines } from "../../data/immersiveSystems";
 import { whisperCaseI18n } from "../../data/whisperCaseI18n";
+import { resolveVideoAsset } from "../../media/video/videoResolver";
 import { useSound } from "../../stage/audio/useSound";
 import SectionRail, { type SectionRailItem } from "../SectionRail";
 import SiteFooterV2 from "../SiteFooterV2";
@@ -41,10 +42,10 @@ type VideoProof = {
 
 type LayerId = "web" | "xr" | "collector" | "mobile";
 
-const WHISPER_HERO_VIDEO = "/immersive/Whisper/Video/whisper-hero-poster.mp4";
-const WHISPER_HOME_VIDEO = "/immersive/Whisper/Video/hero-home-video.mp4";
-const WHISPER_DESKTOP_VIDEO = "/immersive/Whisper/Video/whisper-desktop-video.mp4";
-const WHISPER_VR_VIDEO = "/immersive/Whisper/Video/whisper-vr-video.mp4";
+const WHISPER_HERO_VIDEO = resolveVideoAsset("whisper.immersive.hero");
+const WHISPER_HOME_VIDEO = resolveVideoAsset("whisper.home.hero");
+const WHISPER_DESKTOP_VIDEO = resolveVideoAsset("whisper.immersive.desktop");
+const WHISPER_VR_VIDEO = resolveVideoAsset("whisper.immersive.vr");
 const WHISPER_LIVE_URL = "https://whisper-sg8.pages.dev/";
 const WHISPER_REPO_URL = "https://github.com/brenychstudio/Whisper";
 

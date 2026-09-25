@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "AllowedOrigins": [
+        "https://brenychstudio.com",
+        "https://www.brenychstudio.com",
+        "https://*.brenychstudio.pages.dev",
+        "http://localhost:5173"
+      ],
+      "AllowedMethods": ["GET", "HEAD"],
+      "AllowedHeaders": ["Range"],
+      "ExposeHeaders": [
+        "Content-Length",
+        "Content-Range",
+        "Accept-Ranges",
+        "ETag",
+        "Content-Type",
+        "Cache-Control"
+      ],
+      "MaxAgeSeconds": 86400
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTran
 import { useNavigate } from "react-router-dom";
 
 import { immersiveItems } from "../data/immersive";
+import { resolveVideoAsset } from "../media/video/videoResolver";
 import Header from "../ui/Header";
 import PageSurface from "../ui/PageSurface";
 import { startSpaPageTransition } from "../ui/pageTransition";
@@ -39,12 +40,12 @@ const findVideoPoster = (device: "desktop" | "vr", fallback: string) =>
 
 const media = {
   heroPoster: whisper?.previewPoster ?? "/immersive/Whisper/desktop/whisper-hero.jpg",
-  heroVideo: whisper?.previewVideo ?? "/immersive/Whisper/Video/whisper-hero-poster.mp4",
+  heroVideo: whisper?.previewVideo ?? resolveVideoAsset("whisper.immersive.hero"),
 
-  desktopVideo: findVideo("desktop", "/immersive/Whisper/Video/whisper-desktop-video.mp4"),
+  desktopVideo: findVideo("desktop", resolveVideoAsset("whisper.immersive.desktop")),
   desktopPoster: findVideoPoster("desktop", "/immersive/Whisper/desktop/whisper-8.jpg"),
 
-  vrVideo: findVideo("vr", "/immersive/Whisper/Video/whisper-vr-video.mp4"),
+  vrVideo: findVideo("vr", resolveVideoAsset("whisper.immersive.vr")),
   vrPoster: findVideoPoster("vr", "/immersive/Whisper/desktop/whisper-vr-1.jpg"),
 
   hero: findFrame("Hero", "/immersive/Whisper/desktop/whisper-hero.jpg"),

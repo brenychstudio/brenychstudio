@@ -1,14 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState, type ReactNode } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 
-import OfferV2 from "./pages/OfferV2";
-import ImmersiveV2 from "./pages/ImmersiveV2";
-import ImmersiveCasePage from "./pages/ImmersiveCasePage";
-import AboutV2 from "./pages/AboutV2";
-import StudioIndex from "./pages/StudioIndex";
-import EvidenceAtlas from "./pages/EvidenceAtlas";
-import CasePageV2 from "./pages/CasePageV2";
-import ServicePage from "./pages/ServicePage";
 import ProjectDrawerV2 from "./ui/ProjectDrawerV2";
 import ScrollToTop from "./ui/ScrollToTop";
 import PageTransitionOverlay from "./ui/PageTransitionOverlay";
@@ -29,10 +21,19 @@ import { I18nProvider } from "./i18n";
 import { spanishPageSeoDrafts } from "./data/spanishContent";
 import { getSeoAlternates, withSeoAlternates } from "./seo/alternates";
 import { SoundProvider } from "./stage/audio/SoundProvider";
+import { routeModules } from "./routing/routeModules";
 
-const SpatialProof = lazy(() => import("./pages/SpatialProof"));
-const PrivacyV2 = lazy(() => import("./pages/PrivacyV2"));
-const LegalV2 = lazy(() => import("./pages/LegalV2"));
+const StudioIndex = lazy(routeModules.studio);
+const EvidenceAtlas = lazy(routeModules.work);
+const CasePageV2 = lazy(routeModules.case);
+const ImmersiveV2 = lazy(routeModules.immersive);
+const ImmersiveCasePage = lazy(routeModules.immersiveCase);
+const OfferV2 = lazy(routeModules.offer);
+const AboutV2 = lazy(routeModules.about);
+const ServicePage = lazy(routeModules.service);
+const PrivacyV2 = lazy(routeModules.privacy);
+const LegalV2 = lazy(routeModules.legal);
+const SpatialProof = lazy(routeModules.spatialProof);
 
 const routeSeo = {
   home: {

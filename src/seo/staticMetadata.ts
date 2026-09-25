@@ -18,6 +18,8 @@ export type StaticRouteMetadata = {
   ogTitle?: string;
   ogDescription?: string;
   language?: "en" | "es";
+  /** Pre-release / controlled routes: emit a robots noindex tag in the static HTML. */
+  noIndex?: boolean;
 };
 
 const defaultImage = "/og-default.png";
@@ -85,6 +87,44 @@ const pageMetadata: StaticRouteMetadata[] = [
     image: defaultImage,
     imageAlt: "Brenych Studio legal notice",
     type: "website",
+  },
+];
+
+/**
+ * Living Atlas release surface (LA-WEB-RELEASE-01).
+ * Publicly reachable App Store trust URLs, kept noindex and outside the sitemap
+ * until the owner authorises the public reveal.
+ */
+const livingAtlasMetadata: StaticRouteMetadata[] = [
+  {
+    path: "/living-atlas",
+    title: "Living Atlas — Photography, Place & Light | Brenych Studio",
+    description:
+      "Living Atlas is a local-first photographic memory tool for preserving place, visits and light context around your captures.",
+    image: defaultImage,
+    imageAlt: "Living Atlas — photography, place and light",
+    type: "website",
+    noIndex: true,
+  },
+  {
+    path: "/living-atlas/privacy",
+    title: "Living Atlas Privacy Policy | Brenych Studio",
+    description:
+      "Privacy information for Living Atlas, including local photo and location storage, Atlas Pro purchases and third-party services.",
+    image: defaultImage,
+    imageAlt: "Living Atlas privacy policy",
+    type: "website",
+    noIndex: true,
+  },
+  {
+    path: "/living-atlas/support",
+    title: "Living Atlas Support | Brenych Studio",
+    description:
+      "Support for Living Atlas captures, locations, light planning, Atlas Pro and local app data.",
+    image: defaultImage,
+    imageAlt: "Living Atlas support",
+    type: "website",
+    noIndex: true,
   },
 ];
 
@@ -203,6 +243,7 @@ const spanishServiceMetadata: StaticRouteMetadata[] = servicePages.map((item) =>
 export const staticRouteMetadata: readonly StaticRouteMetadata[] = [
   ...pageMetadata,
   ...serviceMetadata,
+  ...livingAtlasMetadata,
   ...caseMetadata,
   ...immersiveMetadata,
   ...spanishPageMetadata,

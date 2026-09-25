@@ -1,3 +1,5 @@
+import { resolveVideoAsset } from "../media/video/videoResolver";
+
 export type ImmersiveStatus = "completed" | "prototype" | "research" | "upcoming";
 
 export type ImmersiveChamberId =
@@ -80,7 +82,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     visualRole: "chamber",
     media: {
       poster: "/immersive/Whisper/desktop/whisper-hero.jpg",
-      video: "/immersive/Whisper/Video/whisper-hero-poster.mp4",
+      video: resolveVideoAsset("whisper.immersive.hero"),
       stills: [
         "/immersive/Whisper/desktop/whisper-8.jpg",
         "/immersive/Whisper/desktop/whisper-vr-1.jpg",
@@ -115,7 +117,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     visualRole: "chamber",
     media: {
       poster: "/immersive/webhero/desktop/webhero-threshold.webp",
-      video: "/immersive/webhero/video/webhero-video-field.mp4",
+      video: resolveVideoAsset("webhero.immersive.field"),
       stills: [
         "/immersive/webhero/desktop/webhero-art-room-grid.webp",
         "/immersive/webhero/desktop/webhero-splat-study-grid.webp",
@@ -157,7 +159,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     visualRole: "chamber",
     media: {
       poster: "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp",
-      video: "/immersive/kool-berk/video/kool-berk-video.mp4",
+      video: resolveVideoAsset("kool-berk.immersive.walkthrough"),
       stills: [
         "/immersive/kool-berk/desktop/kool-berk-monah-track-dossier.webp",
         "/immersive/kool-berk/desktop/kool-berk-sonic-room.webp",
@@ -199,7 +201,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     visualRole: "chamber",
     media: {
       poster: "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp",
-      video: "/immersive/presence-os-memory-atlas/video/presence-os-memory-atlas-video.mp4",
+      video: resolveVideoAsset("presence-os.immersive.walkthrough"),
       stills: [
         "/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field.webp",
         "/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room.webp",
@@ -241,7 +243,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     visualRole: "chamber",
     media: {
       poster: "/immersive/orbit-lens/desktop/orbit-lens-hero.webp",
-      video: "/immersive/orbit-lens/video/orbit-lens-video.mp4",
+      video: resolveVideoAsset("orbit-lens.immersive.walkthrough"),
       stills: [
         "/immersive/orbit-lens/desktop/orbit-lens-reference-orbit.webp",
         "/immersive/orbit-lens/desktop/orbit-lens-inspect-optics.webp",
@@ -282,7 +284,7 @@ export const immersiveChambers: ImmersiveSystemItem[] = [
     visualRole: "signal",
     media: {
       poster: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
-      video: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-video.mp4",
+      video: resolveVideoAsset("collective-presence.immersive.walkthrough"),
       stills: [
         "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
         "/immersive/future/collective-presence-interface/Collective-Presence-Interface-2.png",

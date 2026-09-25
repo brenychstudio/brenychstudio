@@ -1,3 +1,4 @@
+import { resolveVideoAsset } from "../media/video/videoResolver";
 import type { CaseCoverFocus, CaseCoverTone } from "../ui/work/caseCover.types";
 import type { CaseStatusKind } from "../ui/status/status.types";
 import { spanishCaseRegistryTranslations, type CaseRegistryTranslation } from "./spanishContent";
@@ -160,7 +161,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/aurel-eon-gt/aurel-eon-gt-video.mp4",
+        src: resolveVideoAsset("aurel-eon-gt.case.walkthrough"),
         poster: "/cases/aurel-eon-gt/aurel-eon-gt-video-poster.webp",
         alt: "AUREL EON GT full automotive concept walkthrough video",
         caption:
@@ -443,7 +444,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/oria-house-barcelona/oria-house-video.mp4",
+        src: resolveVideoAsset("oria-house.case.walkthrough"),
         poster: "/cases/oria-house-barcelona/oria-house-video-poster.webp",
         alt: "Oria House Barcelona walkthrough video",
         caption:
@@ -826,7 +827,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/sprintcrm/video/sprintcrm-video.mp4",
+        src: resolveVideoAsset("sprintcrm.case.walkthrough"),
         poster: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
         alt: "SprintCRM walkthrough video",
         caption:
@@ -1050,7 +1051,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/bcn-advisory/v2/bcn-advisory-video.mp4",
+        src: resolveVideoAsset("bcn-advisory.case.walkthrough"),
         poster: "/cases/bcn-advisory/v2/bcn-advisory-video-poster.webp",
         alt: "Barcelona Private Advisory walkthrough video",
         caption:
@@ -1379,7 +1380,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/fluid-exhibition/video/fluid-video.mp4",
+        src: resolveVideoAsset("fluid-exhibition.case.walkthrough"),
         poster: "/cases/fluid-exhibition/desktop/fluid-hero.webp",
         alt: "FLUID - exhibition walkthrough video",
         caption:
@@ -1525,7 +1526,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/form-index/video/fr-video.mp4",
+        src: resolveVideoAsset("form-index.case.walkthrough"),
         poster: "/cases/form-index/desktop/fr-hero.webp",
         alt: "FORM INDEX walkthrough video",
         caption:
@@ -1751,7 +1752,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/arcwave-integrations/v2/arcwave-video.mp4",
+        src: resolveVideoAsset("arcwave.case.walkthrough"),
         poster: "/cases/arcwave-integrations/v2/arcwave-video-poster.webp",
         alt: "ARCWAVE walkthrough video",
         caption:
@@ -2056,7 +2057,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/casa-nube/video/casa-video.mp4",
+        src: resolveVideoAsset("casa-nube.case.walkthrough"),
         poster: "/cases/casa-nube/desktop/casa-hero.webp",
         alt: "Casa Nube walkthrough video",
         caption:
@@ -2244,7 +2245,7 @@ const caseItems: CaseBase[] = [
         kind: "video",
         device: "desktop",
         aspect: "landscape",
-        src: "/cases/print-border-studio/video/psb-video.mp4",
+        src: resolveVideoAsset("print-border.case.walkthrough"),
         poster: "/cases/print-border-studio/desktop/psb-hero.webp",
         alt: "Print Border Studio walkthrough video",
         caption:
@@ -2390,7 +2391,7 @@ const caseItems: CaseBase[] = [
           kind: "video",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/house-of-lune/video/house-of-lune-video.mp4",
+          src: resolveVideoAsset("house-of-lune.case.walkthrough"),
           poster: "/cases/house-of-lune/desktop/house-of-lune-hero.webp",
           alt: "House of Lune walkthrough video",
           caption:
@@ -2597,7 +2598,7 @@ const caseItems: CaseBase[] = [
           kind: "video",
           device: "desktop",
           aspect: "landscape",
-          src: "/cases/creatorops/v2/creatorops-video.mp4",
+          src: resolveVideoAsset("weekfield.case.walkthrough"),
           poster: "/cases/creatorops/v2/creatorops-video-poster.webp",
           alt: "CreatorOps walkthrough video",
           caption:

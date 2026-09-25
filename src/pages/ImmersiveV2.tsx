@@ -45,6 +45,7 @@ import {
   getPortfolioImageCandidate,
   preloadPortfolioImage,
 } from "../media/portfolio/portfolioImage";
+import { resolveVideoAsset } from "../media/video/videoResolver";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -112,7 +113,7 @@ const futureChamberDetails: Record<FutureChamberId, {
   "collective-presence-interface": {
     coverMedia: {
       type: "video",
-      src: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-video.mp4",
+      src: resolveVideoAsset("collective-presence.immersive.walkthrough"),
       poster: "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png",
     },
     role: "Anonymous presence becomes a collective interface field.",
@@ -219,7 +220,7 @@ const whisperProofStates: WhisperProofState[] = [
     readout: "The public website becomes the first threshold: image, motion, text, and navigation behave as one exhibition field.",
     media: {
       type: "video",
-      src: "/immersive/Whisper/Video/whisper-desktop-video.mp4",
+      src: resolveVideoAsset("whisper.immersive.desktop"),
       poster: "/immersive/Whisper/desktop/whisper-hero.jpg",
     },
     traces: [
@@ -288,7 +289,7 @@ const whisperProofStates: WhisperProofState[] = [
     readout: "The archive becomes a spatial room with photographic memory around the viewer.",
     media: {
       type: "video",
-      src: "/immersive/Whisper/Video/whisper-vr-video.mp4",
+      src: resolveVideoAsset("whisper.immersive.vr"),
       poster: "/immersive/Whisper/desktop/whisper-vr-1.jpg",
     },
     traces: [

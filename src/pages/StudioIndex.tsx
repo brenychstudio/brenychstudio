@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { cases } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
 import { spanishCorePageContent, type CorePageTranslation } from "../data/spanishContent";
+import { resolveVideoAsset } from "../media/video/videoResolver";
 import AtmosphericSiteShell from "../ui/atmosphere/AtmosphericSiteShell";
 import Header from "../ui/Header";
 import MobileChapter from "../ui/MobileChapter";
@@ -82,9 +83,9 @@ const whisper = immersiveItems.find((item) => item.slug === "whisper");
 
 const media = {
   whisperPoster: whisper?.previewPoster ?? "/immersive/Whisper/desktop/whisper-hero.jpg",
-  whisperVideo: "/immersive/Whisper/Video/hero-home-video.mp4",
-  whisperDesktopVideo: "/immersive/Whisper/Video/whisper-desktop-video.mp4",
-  whisperVrVideo: "/immersive/Whisper/Video/whisper-vr-video.mp4",
+  whisperVideo: resolveVideoAsset("whisper.home.hero"),
+  whisperDesktopVideo: resolveVideoAsset("whisper.immersive.desktop"),
+  whisperVrVideo: resolveVideoAsset("whisper.immersive.vr"),
   whisperVrPoster: "/immersive/Whisper/desktop/whisper-vr-1.jpg",
   whisperVrWide: "/immersive/Whisper/desktop/whisper-vr-2.jpg",
   whisperHeroImage: "/immersive/Whisper/desktop/whisper-hero.jpg",
@@ -93,18 +94,18 @@ const media = {
   whisperMobile: "/immersive/Whisper/mobile/whisper-mb-3.jpg",
 
   house: casePoster("house-of-lune", "/cases/house-of-lune/desktop/house-of-lune-hero.webp"),
-  houseVideo: "/cases/house-of-lune/video/house-of-lune-video.mp4",
+  houseVideo: resolveVideoAsset("house-of-lune.case.walkthrough"),
   houseDetail: "/cases/house-of-lune/desktop/house-of-lune-3.webp",
 
   oria: casePoster("oria-house-barcelona", "/cases/oria-house-barcelona/oria-house-hero.webp"),
-  oriaVideo: "/cases/oria-house-barcelona/oria-house-video.mp4",
+  oriaVideo: resolveVideoAsset("oria-house.case.walkthrough"),
 
   advisory: casePoster("bcn-advisory", "/cases/bcn-advisory/v2/bcn-advisory-hero.webp"),
-  advisoryVideo: "/cases/bcn-advisory/v2/bcn-advisory-video.mp4",
+  advisoryVideo: resolveVideoAsset("bcn-advisory.case.walkthrough"),
   advisoryDetail: "/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field.webp",
 
   creatorops: casePoster("creatorops", "/cases/creatorops/v2/creatorops-hero.webp"),
-  creatoropsVideo: "/cases/creatorops/v2/creatorops-video.mp4",
+  creatoropsVideo: resolveVideoAsset("weekfield.case.walkthrough"),
   creatoropsMechanics: "/cases/creatorops/v2/creatorops-library-expanded.webp",
 
   sprintcrmHero: "/cases/sprintcrm/desktop/sprintcrm-hero.webp",
@@ -112,21 +113,21 @@ const media = {
   aurel: casePoster("aurel-eon-gt", "/cases/aurel-eon-gt/aurel-eon-gt-hero.webp"),
 
   print: casePoster("print-border-studio", "/cases/print-border-studio/desktop/psb-hero.webp"),
-  printVideo: "/cases/print-border-studio/video/psb-video.mp4",
+  printVideo: resolveVideoAsset("print-border.case.walkthrough"),
   printPrepCover: "/cases/print-border-studio/desktop/psb-4.webp",
   printDetail: "/cases/print-border-studio/desktop/psb-3.webp",
 
   casa: casePoster("casa-nube", "/cases/casa-nube/desktop/casa-hero.webp"),
-  casaVideo: "/cases/casa-nube/video/casa-video.mp4",
+  casaVideo: resolveVideoAsset("casa-nube.case.walkthrough"),
 
   fluid: casePoster("fluid-exhibition", "/cases/fluid-exhibition/desktop/fluid-hero.webp"),
-  fluidVideo: "/cases/fluid-exhibition/video/fluid-video.mp4",
+  fluidVideo: resolveVideoAsset("fluid-exhibition.case.walkthrough"),
 
   form: casePoster("form-index", "/cases/form-index/desktop/fr-hero.webp"),
-  formVideo: "/cases/form-index/video/fr-video.mp4",
+  formVideo: resolveVideoAsset("form-index.case.walkthrough"),
 
   arcwave: casePoster("arcwave-integrations", "/cases/arcwave-integrations/v2/arcwave-hero.webp"),
-  arcwaveVideo: "/cases/arcwave-integrations/v2/arcwave-video.mp4",
+  arcwaveVideo: resolveVideoAsset("arcwave.case.walkthrough"),
 };
 
 const systems: SystemItem[] = [

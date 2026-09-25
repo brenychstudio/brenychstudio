@@ -26,9 +26,16 @@ const SOURCE_FILES = [
   "src/pages/ImmersiveV2.tsx",
 ];
 
-const TARGET_WIDTHS = [64, 640, 960, 1600];
+const TARGET_WIDTHS = [64, 640, 960, 1600, 2560];
 const PLACEHOLDER_WIDTH = 64;
 const DISPLAY_WIDTHS = TARGET_WIDTHS.filter((width) => width !== PLACEHOLDER_WIDTH);
+// Presentation delivery is capped here; wider originals stay reserved for inspect/fullscreen.
+const MAX_PRESENTATION_WIDTH = 2560;
+
+const PLACEHOLDER_WEBP = { quality: 45, effort: 4 };
+const DISPLAY_WEBP = { quality: 86, effort: 4 };
+// The terminal candidate is what DPR 2 layouts land on, so UI text must hold up at 1:1.
+const TERMINAL_WEBP = { quality: 95, effort: 4, smartSubsample: true };
 
 const IMAGE_RE =
   /["'`](\/(?:cases|immersive)\/[^"'`\s)]+\.(?:jpe?g|png|webp))["'`]/gi;
@@ -70,15 +77,23 @@ function toHex({ r, g, b }) {
   return `#${[r, g, b].map((value) => value.toString(16).padStart(2, "0")).join("")}`;
 }
 
-async function encode(sourcePath, width, targetPath) {
+async function encode(sourcePath, width, targetPath, webpOptions) {
   await fs.mkdir(path.dirname(targetPath), { recursive: true });
   await sharp(sourcePath)
     .resize({ width, withoutEnlargement: true })
-    .webp({
-      quality: width === PLACEHOLDER_WIDTH ? 45 : 86,
-      effort: 4,
-    })
+    .webp(webpOptions)
     .toFile(targetPath);
+}
+
+// Canonical tiers that fit inside the source, plus a terminal tier at the source's own width
+// (capped at MAX_PRESENTATION_WIDTH) so a source between tiers is never delivered below its
+// native density. Below the smallest display width the original itself is the display image.
+function displayWidthsFor(sourceWidth) {
+  const canonical = DISPLAY_WIDTHS.filter((target) => target <= sourceWidth);
+  if (!canonical.length) return [];
+
+  const terminal = Math.min(sourceWidth, MAX_PRESENTATION_WIDTH);
+  return canonical.includes(terminal) ? canonical : [...canonical, terminal];
 }
 
 async function buildEntry(url) {
@@ -88,17 +103,21 @@ async function buildEntry(url) {
   const width = metadata.width;
   const height = metadata.height;
 
-  // Never upscale: only target widths that fit inside the source. Below the smallest display
-  // width the original itself is the display image, so no display variants are emitted.
+  // Never upscale: every emitted width fits inside the source.
   const placeholder = width >= PLACEHOLDER_WIDTH ? derivativeUrl(url, PLACEHOLDER_WIDTH) : null;
-  const variants = DISPLAY_WIDTHS.filter((target) => target <= width).map((target) => ({
+  const displayWidths = displayWidthsFor(width);
+  const terminalWidth = displayWidths.at(-1);
+  const variants = displayWidths.map((target) => ({
     src: derivativeUrl(url, target),
     width: target,
   }));
 
   if (!checkOnly) {
-    if (placeholder) await encode(sourcePath, PLACEHOLDER_WIDTH, toPublicFile(placeholder));
-    for (const variant of variants) await encode(sourcePath, variant.width, toPublicFile(variant.src));
+    if (placeholder) await encode(sourcePath, PLACEHOLDER_WIDTH, toPublicFile(placeholder), PLACEHOLDER_WEBP);
+    for (const variant of variants) {
+      const options = variant.width === terminalWidth ? TERMINAL_WEBP : DISPLAY_WEBP;
+      await encode(sourcePath, variant.width, toPublicFile(variant.src), options);
+    }
   }
 
   return {
@@ -171,6 +190,7 @@ function renderQaManifest(images) {
       generator: "scripts/generate-portfolio-media.mjs",
       sourceFiles: SOURCE_FILES,
       targetWidths: TARGET_WIDTHS,
+      maxPresentationWidth: MAX_PRESENTATION_WIDTH,
       images: Object.fromEntries(images.map((image) => [image.original, image])),
     },
     null,
@@ -178,9 +198,15 @@ function renderQaManifest(images) {
   )}\n`;
 }
 
+async function listFiles(dir) {
+  const entries = await fs.readdir(dir, { withFileTypes: true, recursive: true });
+  return entries.filter((entry) => entry.isFile()).map((entry) => path.join(entry.parentPath, entry.name));
+}
+
 async function check(urls) {
   const errors = [];
   const fail = (message) => errors.push(message);
+  const expectedFiles = new Set();
 
   for (const url of urls) {
     if (!(await exists(toPublicFile(url)))) fail(`missing source: ${url}`);
@@ -204,17 +230,34 @@ async function check(urls) {
     if (!(await exists(toPublicFile(image.original)))) fail(`manifest entry source missing: ${image.original}`);
     if (image.original.startsWith(`${outputPublicPath}/`)) fail(`original inside ${outputPublicPath}: ${image.original}`);
 
-    const derived = [image.placeholder, ...image.variants.map((variant) => variant.src)].filter(Boolean);
-    for (const src of derived) {
+    const derived = [
+      ...(image.placeholder ? [{ src: image.placeholder, width: PLACEHOLDER_WIDTH }] : []),
+      ...image.variants,
+    ];
+    for (const { src, width } of derived) {
+      expectedFiles.add(toPublicFile(src));
       if (!src.startsWith(`${outputPublicPath}/`)) fail(`derivative outside ${outputPublicPath}: ${src}`);
-      if (!(await exists(toPublicFile(src)))) fail(`missing derivative: ${src}`);
+      if (!(await exists(toPublicFile(src)))) {
+        fail(`missing derivative: ${src}`);
+        continue;
+      }
+      const actual = (await sharp(toPublicFile(src)).metadata()).width;
+      if (actual !== width) fail(`derivative is ${actual}px, manifest says ${width}px: ${src}`);
     }
 
     const widths = image.variants.map((variant) => variant.width);
     widths.forEach((width, index) => {
       if (index > 0 && width <= widths[index - 1]) fail(`variant widths not ascending/unique: ${image.original}`);
       if (width > image.width) fail(`variant wider than source (${width} > ${image.width}): ${image.original}`);
+      if (width > MAX_PRESENTATION_WIDTH) fail(`variant wider than ${MAX_PRESENTATION_WIDTH}: ${image.original}`);
     });
+    if (JSON.stringify(widths) !== JSON.stringify(displayWidthsFor(image.width))) {
+      fail(`variants do not match the tier policy (${widths.join("/")}): ${image.original}`);
+    }
+  }
+
+  for (const file of await listFiles(outputDir)) {
+    if (file !== qaManifestPath && !expectedFiles.has(file)) fail(`orphan derivative: ${path.relative(root, file)}`);
   }
 
   const runtime = await fs.readFile(runtimeManifestPath, "utf8");

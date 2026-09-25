@@ -25,6 +25,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-commercial-infrastructure-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-commercial-infrastructure-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-commercial-infrastructure-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-commercial-infrastructure-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-connected-layer.webp": {
@@ -37,6 +38,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-connected-layer-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-connected-layer-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-connected-layer-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-connected-layer-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-decision-interface.webp": {
@@ -49,6 +51,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-decision-interface-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-decision-interface-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-decision-interface-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-decision-interface-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-engineering-clarity.webp": {
@@ -61,6 +64,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-engineering-clarity-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-engineering-clarity-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-engineering-clarity-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-engineering-clarity-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-hero.webp": {
@@ -73,6 +77,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-infrastructure-modules.webp": {
@@ -85,6 +90,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-infrastructure-modules-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-infrastructure-modules-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-infrastructure-modules-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-infrastructure-modules-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-install-brief.webp": {
@@ -97,6 +103,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-brief-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-brief-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-brief-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-brief-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-install-flow.webp": {
@@ -109,6 +116,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-flow-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-flow-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-flow-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-flow-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-install-paths.webp": {
@@ -121,6 +129,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-paths-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-paths-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-paths-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-install-paths-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-connected-services.webp": {
@@ -132,6 +141,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-connected-services-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-connected-services-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-connected-services-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-hero.webp": {
@@ -143,6 +153,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-hero-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-hero-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-menu.webp": {
@@ -154,6 +165,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-menu-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-menu-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-menu-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-need-card.webp": {
@@ -165,6 +177,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-need-card-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-need-card-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-need-card-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-process.webp": {
@@ -176,6 +189,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-process-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-process-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-process-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-proof-metrics.webp": {
@@ -187,6 +201,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-proof-metrics-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-proof-metrics-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-proof-metrics-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-quote-cta.webp": {
@@ -198,6 +213,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-quote-cta-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-quote-cta-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-quote-cta-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-service-grid.webp": {
@@ -209,6 +225,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-service-grid-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-service-grid-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-service-grid-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-mobile-telecom-detail.webp": {
@@ -220,6 +237,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-telecom-detail-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-telecom-detail-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-mobile-telecom-detail-w1080.webp", width: 1080 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-networks-wifi.webp": {
@@ -232,6 +250,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-networks-wifi-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-networks-wifi-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-networks-wifi-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-networks-wifi-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-proof-metrics.webp": {
@@ -244,6 +263,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-proof-metrics-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-proof-metrics-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-proof-metrics-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-proof-metrics-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-quote-form.webp": {
@@ -256,6 +276,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-quote-form-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-quote-form-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-quote-form-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-quote-form-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-service-system.webp": {
@@ -268,6 +289,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-service-system-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-service-system-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-service-system-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-service-system-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-technical-spec.webp": {
@@ -280,6 +302,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-technical-spec-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-technical-spec-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-technical-spec-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-technical-spec-w2560.webp", width: 2560 },
     ],
   },
   "/cases/arcwave-integrations/v2/arcwave-video-poster.webp": {
@@ -292,6 +315,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-video-poster-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-video-poster-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-video-poster-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/arcwave-integrations/v2/arcwave-video-poster-w1920.webp", width: 1920 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-cabin-quiet.webp": {
@@ -304,6 +328,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-cabin-quiet-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-cabin-quiet-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-cabin-quiet-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-cabin-quiet-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-case-exit.webp": {
@@ -316,6 +341,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-case-exit-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-case-exit-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-case-exit-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-case-exit-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-drive-character-composer.webp": {
@@ -328,6 +354,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-drive-character-composer-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-drive-character-composer-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-drive-character-composer-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-drive-character-composer-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-exterior-field.webp": {
@@ -340,6 +367,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-exterior-field-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-exterior-field-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-exterior-field-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-exterior-field-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-gallery-archive.webp": {
@@ -352,6 +380,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-gallery-archive-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-gallery-archive-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-gallery-archive-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-gallery-archive-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-hero.webp": {
@@ -364,6 +393,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-light-signature.webp": {
@@ -376,6 +406,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-light-signature-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-light-signature-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-light-signature-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-light-signature-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-materiality.webp": {
@@ -388,6 +419,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-materiality-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-materiality-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-materiality-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-materiality-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-cabin-quiet.webp": {
@@ -399,6 +431,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-cabin-quiet-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-cabin-quiet-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-cabin-quiet-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-case-exit.webp": {
@@ -410,6 +443,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-case-exit-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-case-exit-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-case-exit-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-drive-character.webp": {
@@ -421,6 +455,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-drive-character-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-drive-character-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-drive-character-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-gallery-archive.webp": {
@@ -432,6 +467,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-gallery-archive-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-gallery-archive-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-gallery-archive-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-hero.webp": {
@@ -443,6 +479,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-hero-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-hero-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-drive.webp": {
@@ -454,6 +491,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-drive-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-drive-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-drive-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-exterior.webp": {
@@ -465,6 +503,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-exterior-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-exterior-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-inspect-exterior-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-interface-intelligence.webp": {
@@ -476,6 +515,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-interface-intelligence-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-interface-intelligence-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-interface-intelligence-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-light-signature.webp": {
@@ -487,6 +527,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-light-signature-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-light-signature-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-light-signature-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-mobile-private-preview.webp": {
@@ -498,6 +539,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-private-preview-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-private-preview-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-mobile-private-preview-w1080.webp", width: 1080 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-private-preview.webp": {
@@ -510,6 +552,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-private-preview-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-private-preview-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-private-preview-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-private-preview-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-product-view-expansion.webp": {
@@ -522,6 +565,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-product-view-expansion-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-product-view-expansion-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-product-view-expansion-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-product-view-expansion-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-rear-light-signature.webp": {
@@ -534,6 +578,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-rear-light-signature-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-rear-light-signature-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-rear-light-signature-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-rear-light-signature-w2560.webp", width: 2560 },
     ],
   },
   "/cases/aurel-eon-gt/aurel-eon-gt-video-poster.webp": {
@@ -546,6 +591,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-video-poster-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-video-poster-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-video-poster-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/aurel-eon-gt/aurel-eon-gt-video-poster-w1920.webp", width: 1920 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-advisory-shortlist.webp": {
@@ -558,6 +604,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-advisory-shortlist-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-advisory-shortlist-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-advisory-shortlist-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-advisory-shortlist-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field.webp": {
@@ -570,6 +617,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-barcelona-lens-field-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-gallery-review.webp": {
@@ -582,6 +630,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-gallery-review-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-gallery-review-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-gallery-review-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-gallery-review-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-hero.webp": {
@@ -594,6 +643,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-inquiry-handoff.webp": {
@@ -606,6 +656,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inquiry-handoff-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inquiry-handoff-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inquiry-handoff-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inquiry-handoff-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-inspection-preview.webp": {
@@ -618,6 +669,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inspection-preview-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inspection-preview-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inspection-preview-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-inspection-preview-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-intent-lens.webp": {
@@ -630,6 +682,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-intent-lens-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-intent-lens-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-intent-lens-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-intent-lens-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-lens-expanded.webp": {
@@ -642,6 +695,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-lens-expanded-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-lens-expanded-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-lens-expanded-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-lens-expanded-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-media-led-acquisition.webp": {
@@ -654,6 +708,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-media-led-acquisition-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-media-led-acquisition-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-media-led-acquisition-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-media-led-acquisition-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-advisory-method.webp": {
@@ -665,6 +720,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-advisory-method-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-advisory-method-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-advisory-method-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-dossier-ready.webp": {
@@ -676,6 +732,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-dossier-ready-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-dossier-ready-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-dossier-ready-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-field-card.webp": {
@@ -687,6 +744,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-field-card-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-field-card-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-field-card-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-hero-lens.webp": {
@@ -698,6 +756,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-hero-lens-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-hero-lens-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-hero-lens-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-inspection-gallery.webp": {
@@ -709,6 +768,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-inspection-gallery-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-inspection-gallery-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-inspection-gallery-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-media-signal.webp": {
@@ -720,6 +780,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-media-signal-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-media-signal-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-media-signal-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-menu.webp": {
@@ -731,6 +792,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-menu-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-menu-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-menu-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-property-detail.webp": {
@@ -742,6 +804,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-property-detail-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-property-detail-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-property-detail-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-request-brief.webp": {
@@ -753,6 +816,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-request-brief-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-request-brief-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-request-brief-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-shortlist-dossier.webp": {
@@ -764,6 +828,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-shortlist-dossier-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-shortlist-dossier-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-shortlist-dossier-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-mobile-viewing-path.webp": {
@@ -775,6 +840,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-viewing-path-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-viewing-path-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-mobile-viewing-path-w1080.webp", width: 1080 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-private-advisory-method.webp": {
@@ -787,6 +853,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-private-advisory-method-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-private-advisory-method-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-private-advisory-method-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-private-advisory-method-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-property-detail.webp": {
@@ -799,6 +866,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-property-detail-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-property-detail-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-property-detail-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-property-detail-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-shortlist-dossier.webp": {
@@ -811,6 +879,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-dossier-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-dossier-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-dossier-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-dossier-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-shortlist-grid.webp": {
@@ -823,6 +892,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-grid-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-grid-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-grid-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-shortlist-grid-w2560.webp", width: 2560 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-video-poster.webp": {
@@ -835,6 +905,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-video-poster-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-video-poster-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-video-poster-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-video-poster-w1920.webp", width: 1920 },
     ],
   },
   "/cases/bcn-advisory/v2/bcn-advisory-visual-proof-send.webp": {
@@ -847,6 +918,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-visual-proof-send-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-visual-proof-send-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-visual-proof-send-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/bcn-advisory/v2/bcn-advisory-visual-proof-send-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/desktop/casa-1.webp": {
@@ -859,6 +931,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-1-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/casa-nube/desktop/casa-1-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/desktop/casa-2.webp": {
@@ -871,6 +944,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-2-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-2-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/casa-nube/desktop/casa-2-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/desktop/casa-3.webp": {
@@ -883,6 +957,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-3-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-3-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/casa-nube/desktop/casa-3-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/desktop/casa-4.webp": {
@@ -895,6 +970,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-4-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-4-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/casa-nube/desktop/casa-4-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/desktop/casa-5.webp": {
@@ -907,6 +983,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-5-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-5-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/casa-nube/desktop/casa-5-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/desktop/casa-hero.webp": {
@@ -919,6 +996,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/casa-nube/desktop/casa-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/casa-nube/desktop/casa-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/casa-nube/mobile/casa-mob-1.webp": {
@@ -930,6 +1008,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-1-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-1-w1080.webp", width: 1080 },
     ],
   },
   "/cases/casa-nube/mobile/casa-mob-2.webp": {
@@ -941,6 +1020,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-2-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-2-w1080.webp", width: 1080 },
     ],
   },
   "/cases/casa-nube/mobile/casa-mob-3.webp": {
@@ -952,6 +1032,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-3-w1080.webp", width: 1080 },
     ],
   },
   "/cases/casa-nube/mobile/casa-mob-4.webp": {
@@ -963,6 +1044,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-4-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-4-w1080.webp", width: 1080 },
     ],
   },
   "/cases/casa-nube/mobile/casa-mob-5.webp": {
@@ -974,6 +1056,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-5-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/casa-nube/mobile/casa-mob-5-w1080.webp", width: 1080 },
     ],
   },
   "/cases/creatorops/v2/creatorops-artwork-detail.webp": {
@@ -986,6 +1069,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-artwork-detail-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-artwork-detail-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-artwork-detail-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-artwork-detail-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-client-feedback.webp": {
@@ -998,6 +1082,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-feedback-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-feedback-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-feedback-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-feedback-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-client-review.webp": {
@@ -1010,6 +1095,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-review-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-review-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-review-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-client-review-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-hero.webp": {
@@ -1022,6 +1108,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-library-expanded.webp": {
@@ -1034,6 +1121,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-expanded-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-expanded-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-expanded-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-expanded-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-library-grid.webp": {
@@ -1046,6 +1134,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-grid-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-grid-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-grid-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-library-grid-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-media-converter.webp": {
@@ -1058,6 +1147,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-media-converter-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-media-converter-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-media-converter-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-media-converter-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-pricing-plans.webp": {
@@ -1070,6 +1160,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-pricing-plans-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-pricing-plans-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-pricing-plans-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-pricing-plans-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-profile-handoff.webp": {
@@ -1082,6 +1173,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-profile-handoff-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-profile-handoff-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-profile-handoff-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-profile-handoff-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-publishing-flow.webp": {
@@ -1094,6 +1186,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-publishing-flow-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-publishing-flow-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-publishing-flow-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-publishing-flow-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-roadmap.webp": {
@@ -1106,6 +1199,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-roadmap-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-roadmap-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-roadmap-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-roadmap-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-video-poster.webp": {
@@ -1118,6 +1212,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-video-poster-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-video-poster-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-video-poster-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-video-poster-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-waitlist.webp": {
@@ -1130,6 +1225,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-waitlist-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-waitlist-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-waitlist-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-waitlist-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-week-focus.webp": {
@@ -1142,6 +1238,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-week-focus-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-week-focus-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-week-focus-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-week-focus-w2560.webp", width: 2560 },
     ],
   },
   "/cases/creatorops/v2/creatorops-workflow-overview.webp": {
@@ -1154,6 +1251,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-workflow-overview-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-workflow-overview-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/creatorops/v2/creatorops-workflow-overview-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/creatorops/v2/creatorops-workflow-overview-w2560.webp", width: 2560 },
     ],
   },
   "/cases/fluid-exhibition/desktop/fluid-1.webp": {
@@ -1165,6 +1263,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-1-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-1-w1400.webp", width: 1400 },
     ],
   },
   "/cases/fluid-exhibition/desktop/fluid-2.webp": {
@@ -1176,6 +1275,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-2-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-2-w1400.webp", width: 1400 },
     ],
   },
   "/cases/fluid-exhibition/desktop/fluid-3.webp": {
@@ -1187,6 +1287,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/desktop/fluid-3-w1400.webp", width: 1400 },
     ],
   },
   "/cases/fluid-exhibition/desktop/fluid-hero.webp": {
@@ -1210,6 +1311,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-1-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-1-w1080.webp", width: 1080 },
     ],
   },
   "/cases/fluid-exhibition/mobile/fluid-mb-2.webp": {
@@ -1221,6 +1323,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-2-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-2-w1080.webp", width: 1080 },
     ],
   },
   "/cases/fluid-exhibition/mobile/fluid-mb-3.webp": {
@@ -1232,6 +1335,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-3-w1080.webp", width: 1080 },
     ],
   },
   "/cases/fluid-exhibition/mobile/fluid-mb-4.webp": {
@@ -1243,6 +1347,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-4-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/fluid-exhibition/mobile/fluid-mb-4-w1080.webp", width: 1080 },
     ],
   },
   "/cases/form-index/desktop/fr-1.webp": {
@@ -1254,6 +1359,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-1-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-1-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-2.webp": {
@@ -1265,6 +1371,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-2-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-2-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-3.webp": {
@@ -1276,6 +1383,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-3-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-4.webp": {
@@ -1287,6 +1395,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-4-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-4-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-5.webp": {
@@ -1298,6 +1407,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-5-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-5-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-6.webp": {
@@ -1309,6 +1419,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-6-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-6-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-6-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-7.webp": {
@@ -1320,6 +1431,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-7-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-7-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-7-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-8.webp": {
@@ -1331,6 +1443,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-8-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-8-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-8-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-9.webp": {
@@ -1342,6 +1455,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/desktop/fr-9-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/desktop/fr-9-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/desktop/fr-9-w1400.webp", width: 1400 },
     ],
   },
   "/cases/form-index/desktop/fr-hero.webp": {
@@ -1365,6 +1479,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-1-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/mobile/fr-mob-1-w1080.webp", width: 1080 },
     ],
   },
   "/cases/form-index/mobile/fr-mob-2.webp": {
@@ -1376,6 +1491,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-2-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/mobile/fr-mob-2-w1080.webp", width: 1080 },
     ],
   },
   "/cases/form-index/mobile/fr-mob-3.webp": {
@@ -1387,6 +1503,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/mobile/fr-mob-3-w1080.webp", width: 1080 },
     ],
   },
   "/cases/form-index/mobile/fr-mob-4.webp": {
@@ -1398,6 +1515,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-4-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/mobile/fr-mob-4-w1080.webp", width: 1080 },
     ],
   },
   "/cases/form-index/mobile/fr-mob-5.webp": {
@@ -1409,6 +1527,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/form-index/mobile/fr-mob-5-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/form-index/mobile/fr-mob-5-w1080.webp", width: 1080 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-1.webp": {
@@ -1421,6 +1540,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-1-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-1-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-2.webp": {
@@ -1433,6 +1553,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-2-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-2-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-2-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-3.webp": {
@@ -1445,6 +1566,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-3-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-3-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-3-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-4.webp": {
@@ -1457,6 +1579,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-4-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-4-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-4-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-5.webp": {
@@ -1469,6 +1592,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-5-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-5-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-5-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-6.webp": {
@@ -1481,6 +1605,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-6-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-6-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-6-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-6-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-7.webp": {
@@ -1493,6 +1618,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-7-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-7-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-7-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-7-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/desktop/house-of-lune-hero.webp": {
@@ -1505,6 +1631,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/house-of-lune/desktop/house-of-lune-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/house-of-lune/mobile/house-of-lune-mb-1.webp": {
@@ -1516,6 +1643,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-1-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-1-w1080.webp", width: 1080 },
     ],
   },
   "/cases/house-of-lune/mobile/house-of-lune-mb-2.webp": {
@@ -1527,6 +1655,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-2-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-2-w1080.webp", width: 1080 },
     ],
   },
   "/cases/house-of-lune/mobile/house-of-lune-mb-3.webp": {
@@ -1538,6 +1667,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-3-w1080.webp", width: 1080 },
     ],
   },
   "/cases/house-of-lune/mobile/house-of-lune-mb-4.webp": {
@@ -1549,6 +1679,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-4-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-4-w1080.webp", width: 1080 },
     ],
   },
   "/cases/house-of-lune/mobile/house-of-lune-mb-5.webp": {
@@ -1560,6 +1691,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-5-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/house-of-lune/mobile/house-of-lune-mb-5-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-arrival-mood.webp": {
@@ -1572,6 +1704,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-arrival-mood-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-arrival-mood-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-arrival-mood-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-arrival-mood-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-booking-contact.webp": {
@@ -1584,6 +1717,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-booking-contact-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-booking-contact-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-booking-contact-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-booking-contact-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-deluxe-comfort.webp": {
@@ -1596,6 +1730,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-deluxe-comfort-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-deluxe-comfort-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-deluxe-comfort-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-deluxe-comfort-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-dining-evening.webp": {
@@ -1608,6 +1743,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-dining-evening-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-dining-evening-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-dining-evening-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-dining-evening-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-experience-card.webp": {
@@ -1620,6 +1756,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-experience-card-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-experience-card-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-experience-card-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-experience-card-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-hero.webp": {
@@ -1632,6 +1769,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-local-rhythm.webp": {
@@ -1644,6 +1782,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-local-rhythm-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-local-rhythm-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-local-rhythm-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-local-rhythm-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-location-map.webp": {
@@ -1656,6 +1795,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-location-map-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-location-map-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-location-map-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-location-map-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-booking-contact.webp": {
@@ -1667,6 +1807,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-booking-contact-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-booking-contact-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-booking-contact-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-courtyard-arrival.webp": {
@@ -1678,6 +1819,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-courtyard-arrival-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-courtyard-arrival-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-courtyard-arrival-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-deluxe-comfort.webp": {
@@ -1689,6 +1831,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-deluxe-comfort-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-deluxe-comfort-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-deluxe-comfort-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-deluxe-gallery.webp": {
@@ -1700,6 +1843,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-deluxe-gallery-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-deluxe-gallery-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-deluxe-gallery-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-dining-evening.webp": {
@@ -1711,6 +1855,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-dining-evening-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-dining-evening-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-dining-evening-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-hero.webp": {
@@ -1722,6 +1867,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-hero-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-hero-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-romance-weekend.webp": {
@@ -1733,6 +1879,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-romance-weekend-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-romance-weekend-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-romance-weekend-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-room-compare.webp": {
@@ -1744,6 +1891,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-room-compare-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-room-compare-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-room-compare-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-room-rhythm.webp": {
@@ -1755,6 +1903,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-room-rhythm-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-room-rhythm-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-room-rhythm-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-signature-breakfast.webp": {
@@ -1766,6 +1915,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-signature-breakfast-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-signature-breakfast-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-signature-breakfast-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-spa-ritual.webp": {
@@ -1777,6 +1927,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-spa-ritual-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-spa-ritual-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-spa-ritual-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-studio-courtyard.webp": {
@@ -1788,6 +1939,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-studio-courtyard-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-studio-courtyard-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-studio-courtyard-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-mobile-terrace-breakfast.webp": {
@@ -1799,6 +1951,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-terrace-breakfast-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-terrace-breakfast-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-mobile-terrace-breakfast-w1080.webp", width: 1080 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-room-collection.webp": {
@@ -1811,6 +1964,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-collection-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-collection-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-collection-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-collection-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-room-compare.webp": {
@@ -1823,6 +1977,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-compare-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-compare-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-compare-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-compare-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-room-detail.webp": {
@@ -1835,6 +1990,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-detail-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-detail-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-detail-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-detail-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-room-grid.webp": {
@@ -1847,6 +2003,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-grid-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-grid-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-grid-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-grid-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-room-rhythm.webp": {
@@ -1859,6 +2016,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-rhythm-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-rhythm-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-rhythm-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-room-rhythm-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-signature-breakfast.webp": {
@@ -1871,6 +2029,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-signature-breakfast-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-signature-breakfast-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-signature-breakfast-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-signature-breakfast-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-spa-ritual.webp": {
@@ -1883,6 +2042,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-spa-ritual-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-spa-ritual-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-spa-ritual-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-spa-ritual-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-stay-before-city.webp": {
@@ -1895,6 +2055,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-stay-before-city-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-stay-before-city-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-stay-before-city-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-stay-before-city-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-suite-gallery.webp": {
@@ -1907,6 +2068,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-gallery-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-gallery-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-gallery-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-gallery-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-suite-story.webp": {
@@ -1919,6 +2081,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-story-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-story-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-story-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-suite-story-w2560.webp", width: 2560 },
     ],
   },
   "/cases/oria-house-barcelona/oria-house-video-poster.webp": {
@@ -1931,6 +2094,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-video-poster-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-video-poster-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-video-poster-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/oria-house-barcelona/oria-house-video-poster-w1920.webp", width: 1920 },
     ],
   },
   "/cases/print-border-studio/desktop/psb-1.webp": {
@@ -1943,6 +2107,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-1-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb-1-w2560.webp", width: 2560 },
     ],
   },
   "/cases/print-border-studio/desktop/psb-2.webp": {
@@ -1955,6 +2120,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-2-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-2-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb-2-w2560.webp", width: 2560 },
     ],
   },
   "/cases/print-border-studio/desktop/psb-3.webp": {
@@ -1967,6 +2133,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-3-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-3-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb-3-w2560.webp", width: 2560 },
     ],
   },
   "/cases/print-border-studio/desktop/psb-4.webp": {
@@ -1979,6 +2146,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-4-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-4-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb-4-w2560.webp", width: 2560 },
     ],
   },
   "/cases/print-border-studio/desktop/psb-5.webp": {
@@ -1991,6 +2159,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-5-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-5-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb-5-w2560.webp", width: 2560 },
     ],
   },
   "/cases/print-border-studio/desktop/psb-hero.webp": {
@@ -2003,6 +2172,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb-hero-w2560.webp", width: 2560 },
     ],
   },
   "/cases/print-border-studio/desktop/psb6.webp": {
@@ -2015,6 +2185,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb6-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb6-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/print-border-studio/desktop/psb6-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/print-border-studio/desktop/psb6-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-1.webp": {
@@ -2027,6 +2198,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-1-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-1-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-1-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-10.webp": {
@@ -2039,6 +2211,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-10-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-10-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-10-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-10-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-11.webp": {
@@ -2051,6 +2224,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-11-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-11-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-11-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-11-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-12.webp": {
@@ -2063,6 +2237,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-12-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-12-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-12-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-12-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-13.webp": {
@@ -2075,6 +2250,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-13-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-13-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-13-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-13-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-14.webp": {
@@ -2087,6 +2263,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-14-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-14-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-14-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-14-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-2.webp": {
@@ -2099,6 +2276,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-2-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-2-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-2-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-2-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-3.webp": {
@@ -2111,6 +2289,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-3-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-3-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-3-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-3-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-4.webp": {
@@ -2123,6 +2302,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-4-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-4-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-4-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-4-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-5.webp": {
@@ -2135,6 +2315,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-5-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-5-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-5-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-5-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-6.webp": {
@@ -2147,6 +2328,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-6-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-6-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-6-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-6-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-7.webp": {
@@ -2159,6 +2341,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-7-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-7-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-7-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-7-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-8.webp": {
@@ -2171,6 +2354,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-8-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-8-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-8-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-8-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-9.webp": {
@@ -2183,6 +2367,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-9-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-9-w960.webp", width: 960 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-9-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-9-w2560.webp", width: 2560 },
     ],
   },
   "/cases/sprintcrm/desktop/sprintcrm-hero.webp": {
@@ -2194,6 +2379,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-hero-w960.webp", width: 960 },
+      { src: "/media/portfolio/cases/sprintcrm/desktop/sprintcrm-hero-w1597.webp", width: 1597 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-1.jpg": {
@@ -2206,6 +2392,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-1-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-1-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-1-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-10.jpg": {
@@ -2218,6 +2405,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-10-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-10-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-10-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-10-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-5.jpg": {
@@ -2230,6 +2418,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-5-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-5-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-5-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-5-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-7.jpg": {
@@ -2242,6 +2431,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-7-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-7-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-7-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-7-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-8.jpg": {
@@ -2254,6 +2444,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-8-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-8-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-8-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-8-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-9.jpg": {
@@ -2266,6 +2457,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-9-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-9-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-9-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-9-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-hero.jpg": {
@@ -2278,6 +2470,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-hero-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-vr-1.jpg": {
@@ -2290,6 +2483,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-1-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-1-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-1-w2209.webp", width: 2209 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-vr-2.jpg": {
@@ -2302,6 +2496,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-2-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-2-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-2-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-2-w2213.webp", width: 2213 },
     ],
   },
   "/immersive/Whisper/desktop/whisper-vr-3.jpg": {
@@ -2314,6 +2509,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-3-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-3-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-3-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/Whisper/desktop/whisper-vr-3-w2214.webp", width: 2214 },
     ],
   },
   "/immersive/Whisper/mobile/whisper-mb-3.jpg": {
@@ -2325,6 +2521,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/immersive/Whisper/mobile/whisper-mb-3-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/mobile/whisper-mb-3-w960.webp", width: 960 },
+      { src: "/media/portfolio/immersive/Whisper/mobile/whisper-mb-3-w1080.webp", width: 1080 },
     ],
   },
   "/immersive/Whisper/mobile/whisper-mb-6.jpg": {
@@ -2336,6 +2533,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
     variants: [
       { src: "/media/portfolio/immersive/Whisper/mobile/whisper-mb-6-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/Whisper/mobile/whisper-mb-6-w960.webp", width: 960 },
+      { src: "/media/portfolio/immersive/Whisper/mobile/whisper-mb-6-w1080.webp", width: 1080 },
     ],
   },
   "/immersive/future/collective-presence-interface/Collective-Presence-Interface-1.png": {
@@ -2348,6 +2546,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-1-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-1-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-1-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-1-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/future/collective-presence-interface/Collective-Presence-Interface-2.png": {
@@ -2360,6 +2559,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-2-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-2-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-2-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-2-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/future/collective-presence-interface/Collective-Presence-Interface-3.png": {
@@ -2372,6 +2572,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-3-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-3-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-3-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/future/collective-presence-interface/Collective-Presence-Interface-3-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/kool-berk/desktop/kool-berk-contact-signal-panel.webp": {
@@ -2384,6 +2585,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-contact-signal-panel-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-contact-signal-panel-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-contact-signal-panel-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-contact-signal-panel-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/kool-berk/desktop/kool-berk-monah-track-dossier.webp": {
@@ -2396,6 +2598,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-monah-track-dossier-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-monah-track-dossier-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-monah-track-dossier-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-monah-track-dossier-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/kool-berk/desktop/kool-berk-sonic-object-stage.webp": {
@@ -2408,6 +2611,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-object-stage-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-object-stage-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-object-stage-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-object-stage-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/kool-berk/desktop/kool-berk-sonic-room.webp": {
@@ -2420,6 +2624,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-room-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-room-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-room-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/kool-berk/desktop/kool-berk-sonic-room-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/orbit-lens/desktop/orbit-lens-hero.webp": {
@@ -2432,6 +2637,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-hero-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/orbit-lens/desktop/orbit-lens-inspect-optics.webp": {
@@ -2444,6 +2650,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-inspect-optics-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-inspect-optics-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-inspect-optics-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-inspect-optics-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary.webp": {
@@ -2456,6 +2663,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-privacy-boundary-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/orbit-lens/desktop/orbit-lens-reference-orbit.webp": {
@@ -2468,6 +2676,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-reference-orbit-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-reference-orbit-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-reference-orbit-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/orbit-lens/desktop/orbit-lens-reference-orbit-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/presence-os-memory-atlas/desktop/presence-os-hero.webp": {
@@ -2480,6 +2689,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-hero-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-hero-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-hero-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-hero-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field.webp": {
@@ -2492,6 +2702,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-memory-field-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room.webp": {
@@ -2504,6 +2715,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/presence-os-memory-atlas/desktop/presence-os-xr-memory-room-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence.webp": {
@@ -2516,6 +2728,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/presence-os-memory-atlas/vr-screenshot/presence-os-vr-hand-presence-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/webhero/desktop/webhero-art-room-grid.webp": {
@@ -2528,6 +2741,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-art-room-grid-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-art-room-grid-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-art-room-grid-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/webhero/desktop/webhero-art-room-grid-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/webhero/desktop/webhero-atmosphere-infrastructure.webp": {
@@ -2540,6 +2754,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-atmosphere-infrastructure-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-atmosphere-infrastructure-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-atmosphere-infrastructure-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/webhero/desktop/webhero-atmosphere-infrastructure-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/webhero/desktop/webhero-splat-study-grid.webp": {
@@ -2552,6 +2767,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-splat-study-grid-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-splat-study-grid-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-splat-study-grid-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/webhero/desktop/webhero-splat-study-grid-w2560.webp", width: 2560 },
     ],
   },
   "/immersive/webhero/desktop/webhero-threshold.webp": {
@@ -2564,6 +2780,7 @@ export const generatedPortfolioImages: Record<string, GeneratedPortfolioImage> =
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-threshold-w640.webp", width: 640 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-threshold-w960.webp", width: 960 },
       { src: "/media/portfolio/immersive/webhero/desktop/webhero-threshold-w1600.webp", width: 1600 },
+      { src: "/media/portfolio/immersive/webhero/desktop/webhero-threshold-w2560.webp", width: 2560 },
     ],
   },
 };

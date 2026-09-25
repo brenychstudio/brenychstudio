@@ -933,10 +933,13 @@ function SpatialChamberOrbit({
                   <source src={activeVideo} type="video/mp4" />
                 </video>
               ) : (
-                <img
+                <PortfolioImage
                   src={poster}
                   alt=""
-                  className={`absolute inset-[-3%] h-[106%] w-[106%] object-cover contrast-[1.04] transition duration-500 group-hover:scale-[1.035] ${
+                  sizes="(min-width: 768px) 40vw, 64vw"
+                  loading="eager"
+                  containerClassName="absolute inset-0"
+                  imageClassName={`absolute inset-[-3%] h-[106%] w-[106%] object-cover contrast-[1.04] transition duration-500 group-hover:scale-[1.035] ${
                     active ? "opacity-100 saturate-[1.04] brightness-[1.04]" : "opacity-[0.97] saturate-[1.03] brightness-[1.02]"
                   }`}
                 />
@@ -968,7 +971,14 @@ function SpatialChamberOrbit({
 
       <div className="grid gap-4 md:hidden">
         <div className="relative min-h-[25rem] overflow-hidden border border-white/70 bg-neutral-950 text-white shadow-[0_30px_100px_rgba(0,0,0,0.12)]">
-          <img src={activePoster} alt="" className="absolute inset-0 h-full w-full object-cover opacity-88" />
+          <PortfolioImage
+            src={activePoster}
+            alt=""
+            sizes="(min-width: 768px) 320px, 94vw"
+            loading="eager"
+            containerClassName="absolute inset-0"
+            imageClassName="absolute inset-0 h-full w-full object-cover opacity-88"
+          />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,5,0.04),rgba(5,5,5,0.68))]" />
           <div className="absolute bottom-5 left-5 right-5">
             <div className="font-mono text-[10px] uppercase tracking-[0.17em] text-white/56">{activeChamber.statusLabel}</div>
@@ -1656,11 +1666,14 @@ function PracticeMapScene({
         </div>
 
         <div className="relative min-h-[720px] overflow-hidden border-y border-neutral-950 bg-neutral-950 text-white shadow-[0_48px_160px_rgba(0,0,0,0.18)]">
-          <img
+          <PortfolioImage
             key={`${activeChamber.id}-backdrop`}
             src={activePoster}
             alt=""
-            className="pointer-events-none absolute inset-[-6%] h-[112%] w-[112%] object-cover opacity-20 blur-xl saturate-[1.15] contrast-[1.08]"
+            sizes="100vw"
+            loading="eager"
+            containerClassName="pointer-events-none absolute inset-0 opacity-20"
+            imageClassName="pointer-events-none absolute inset-[-6%] h-[112%] w-[112%] object-cover blur-xl saturate-[1.15] contrast-[1.08]"
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_46%_42%,rgba(255,255,255,0.1),transparent_31%),linear-gradient(90deg,rgba(5,5,4,0.94),rgba(12,12,11,0.76)_45%,rgba(5,5,4,0.94))]" />
           <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:86px_86px]" />
@@ -1746,7 +1759,14 @@ function PracticeMapScene({
                         clipPath: isActive ? "polygon(2% 0, 100% 5%, 94% 94%, 0 100%)" : "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)",
                       }}
                     >
-                      <img src={poster} alt="" className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover saturate-[1.08] contrast-[1.05] brightness-[1.06] transition duration-700 group-hover:scale-[1.06] group-hover:brightness-[1.1] ${isActive ? "opacity-100" : "opacity-92"}`} />
+                      <PortfolioImage
+                        src={poster}
+                        alt=""
+                        sizes="(min-width: 768px) 536px, 346px"
+                        loading="eager"
+                        containerClassName="absolute inset-0"
+                        imageClassName={`absolute inset-[-4%] h-[108%] w-[108%] object-cover saturate-[1.08] contrast-[1.05] brightness-[1.06] transition duration-700 group-hover:scale-[1.06] group-hover:brightness-[1.1] ${isActive ? "opacity-100" : "opacity-92"}`}
+                      />
                       <span className={`absolute inset-0 transition duration-500 ${isActive ? "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.16)_62%,rgba(0,0,0,0.48))]" : "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.2)_64%,rgba(0,0,0,0.5))] group-hover:bg-black/18"}`} />
                       <span className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] text-white/60">
                         {chamber.room.replace("Room ", "")}
@@ -1819,11 +1839,14 @@ function PracticeMapScene({
                 dragStartRef.current = null;
               }}
             >
-          <img
+          <PortfolioImage
             key={`${activeChamber.id}-inspect-backdrop`}
             src={activePoster}
             alt=""
-            className="pointer-events-none absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-30 blur-md saturate-[1.18] contrast-[1.06] brightness-[1.08]"
+            sizes="116vw"
+            loading="eager"
+            containerClassName="pointer-events-none absolute inset-0 opacity-30"
+            imageClassName="pointer-events-none absolute inset-[-8%] h-[116%] w-[116%] object-cover blur-md saturate-[1.18] contrast-[1.06] brightness-[1.08]"
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,rgba(255,255,255,0.18),transparent_30%),linear-gradient(90deg,rgba(4,4,4,0.9),rgba(12,12,10,0.58)_48%,rgba(4,4,4,0.9))]" />
           <div className="pointer-events-none absolute inset-0 opacity-[0.09] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:94px_94px]" />
@@ -1981,7 +2004,14 @@ function PracticeMapScene({
                       } ${sizeClass}`}
                       style={{ clipPath: selected ? "polygon(2% 0, 100% 5%, 94% 94%, 0 100%)" : index % 2 === 0 ? "polygon(4% 0, 100% 7%, 94% 100%, 0 90%)" : "polygon(0 10%, 94% 0, 100% 86%, 8% 100%)" }}
                     >
-                      <img src={poster} alt="" className={`absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-100 saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.055] group-hover:brightness-[1.07] ${selected ? "scale-[1.015]" : ""}`} />
+                      <PortfolioImage
+                        src={poster}
+                        alt=""
+                        sizes="(min-width: 1024px) 52vw, 320px"
+                        loading="eager"
+                        containerClassName="absolute inset-0"
+                        imageClassName={`absolute inset-[-4%] h-[108%] w-[108%] object-cover opacity-100 saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.055] group-hover:brightness-[1.07] ${selected ? "scale-[1.015]" : ""}`}
+                      />
                       <span className={`absolute inset-0 transition duration-500 ${selected ? "bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.22)_70%,rgba(0,0,0,0.44))]" : "bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.22)_72%,rgba(0,0,0,0.42))] group-hover:bg-black/10"}`} />
                       <span className="absolute left-4 top-4 text-[10px] uppercase tracking-[0.18em] text-white/58">
                         {chamber.room.replace("Room ", "")}
@@ -2167,10 +2197,13 @@ function PracticeMapScene({
                                     : "polygon(0 7%, 96% 0, 100% 92%, 5% 100%)",
                               }}
                             >
-                              <img
+                              <PortfolioImage
                                 src={poster}
                                 alt=""
-                                className="absolute inset-[-3%] h-[106%] w-[106%] object-cover saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.045] group-hover:brightness-[1.07]"
+                                sizes="(min-width: 1024px) 50vw, 94vw"
+                                loading="eager"
+                                containerClassName="absolute inset-0"
+                                imageClassName="absolute inset-[-3%] h-[106%] w-[106%] object-cover saturate-[1.08] contrast-[1.03] brightness-[1.04] transition duration-700 group-hover:scale-[1.045] group-hover:brightness-[1.07]"
                               />
                               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.25)_66%,rgba(0,0,0,0.58))]" />
                               <div className="absolute bottom-5 left-5 right-5">
@@ -2909,11 +2942,13 @@ function FutureChambersScene() {
                                   <source src={coverMedia.src} type="video/mp4" />
                                 </video>
                               ) : (
-                                <img
+                                <PortfolioImage
                                   src={coverMedia.src}
                                   alt={`${item.title} trace cover`}
-                                  className="h-full w-full object-cover opacity-88 grayscale-[0.18] contrast-[0.98] transition duration-300 group-hover/cover:scale-[1.025] group-hover/cover:opacity-100 group-focus-visible/cover:opacity-100"
+                                  sizes="(min-width: 1024px) 24vw, 90vw"
                                   loading="lazy"
+                                  containerClassName="h-full w-full"
+                                  imageClassName="h-full w-full object-cover opacity-88 grayscale-[0.18] contrast-[0.98] transition duration-300 group-hover/cover:scale-[1.025] group-hover/cover:opacity-100 group-focus-visible/cover:opacity-100"
                                 />
                               )}
                               <span className="absolute bottom-2 left-2 border border-white/25 bg-black/42 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.14em] text-white/78">
@@ -2964,11 +2999,13 @@ function FutureChambersScene() {
                                         setPreviewTrace({ chamberTitle: item.title, trace });
                                       }}
                                     >
-                                      <img
+                                      <PortfolioImage
                                         src={trace.src}
                                         alt={`${item.title} ${trace.label.toLowerCase()} expanded ${traceIndex + 1}`}
-                                        className="h-full w-full object-cover opacity-82 grayscale-[0.32] contrast-[0.96] transition duration-300 group-hover/trace:scale-[1.025] group-hover/trace:opacity-100 group-focus-visible/trace:opacity-100"
+                                        sizes="(min-width: 640px) 200px, 240px"
                                         loading="lazy"
+                                        containerClassName="h-full w-full"
+                                        imageClassName="h-full w-full object-cover opacity-82 grayscale-[0.32] contrast-[0.96] transition duration-300 group-hover/trace:scale-[1.025] group-hover/trace:opacity-100 group-focus-visible/trace:opacity-100"
                                       />
                                     </button>
                                     <figcaption className="mt-1.5">
@@ -3498,14 +3535,16 @@ function MobileChamberField({
                         }}
                         transition={{ duration: 0.64, ease }}
                       >
-                        <img
+                        <PortfolioImage
                           src={entry.mediaSrc}
                           alt=""
-                          className={`absolute ${posterOffset} h-[110%] w-[110%] object-cover saturate-[1.08] contrast-[1.06] brightness-[1.03] transition duration-700 ${
-                            active ? "opacity-95" : "opacity-72 grayscale-[0.12]"
-                          }`}
+                          sizes="(min-width: 640px) 31rem, 95vw"
                           loading="lazy"
                           draggable={false}
+                          containerClassName="absolute inset-0"
+                          imageClassName={`absolute ${posterOffset} h-[110%] w-[110%] object-cover saturate-[1.08] contrast-[1.06] brightness-[1.03] transition duration-700 ${
+                            active ? "opacity-95" : "opacity-72 grayscale-[0.12]"
+                          }`}
                         />
                         <span className="absolute inset-0 bg-[radial-gradient(circle_at_52%_32%,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.18)_52%,rgba(0,0,0,0.72))]" />
                         <span className="pointer-events-none absolute inset-x-4 top-4 flex items-center justify-between border-y border-white/15 py-2 font-mono text-[8px] uppercase tracking-[0.17em] text-white/58">
@@ -4084,14 +4123,16 @@ function MobileChamberAtlas({
                         }}
                         transition={{ duration: 0.5, ease }}
                       >
-                        <img
+                        <PortfolioImage
                           src={trace.src}
                           alt=""
-                          className={`absolute inset-0 h-full w-full object-cover transition duration-500 ${
-                            active ? "opacity-95 saturate-[1.04] contrast-[1.04]" : "opacity-70 saturate-[0.9]"
-                          }`}
+                          sizes="(min-width: 640px) 31rem, 76vw"
                           loading="lazy"
                           draggable={false}
+                          containerClassName="absolute inset-0"
+                          imageClassName={`absolute inset-0 h-full w-full object-cover transition duration-500 ${
+                            active ? "opacity-95 saturate-[1.04] contrast-[1.04]" : "opacity-70 saturate-[0.9]"
+                          }`}
                         />
                         <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.46))]" />
                         <span className="pointer-events-none absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">

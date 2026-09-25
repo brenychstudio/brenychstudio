@@ -15,6 +15,7 @@ type PortfolioImageProps = {
   containerClassName?: string;
   imageClassName?: string;
   style?: CSSProperties;
+  draggable?: boolean;
 };
 
 const POSITIONED_CLASS = /(^|\s)(absolute|fixed|sticky|relative)(\s|$)/;
@@ -34,6 +35,7 @@ export default function PortfolioImage({
   containerClassName = "",
   imageClassName = "",
   style,
+  draggable,
 }: PortfolioImageProps) {
   const entry = getPortfolioImageEntry(src);
   const srcSet = getPortfolioImageSrcSet(src);
@@ -131,6 +133,7 @@ export default function PortfolioImage({
             decoding="async"
             className={imageClassName}
             style={style}
+            draggable={draggable}
             onError={() => setPreviewFailed(true)}
           />
         </span>
@@ -156,6 +159,7 @@ export default function PortfolioImage({
             decoding="async"
             className={imageClassName}
             style={style}
+            draggable={draggable}
             onLoad={(event: SyntheticEvent<HTMLImageElement>) => markReady(event.currentTarget)}
             onError={handleFailure}
           />

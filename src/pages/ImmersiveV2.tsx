@@ -40,6 +40,11 @@ import { useImmersiveProofChromeActive } from "../hooks/useImmersiveProofChromeA
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
 import { spanishCorePageContent, type CorePageTranslation } from "../data/spanishContent";
 import { getLocalizedPath, useI18n } from "../i18n";
+import PortfolioImage from "../ui/media/PortfolioImage";
+import {
+  getPortfolioImageCandidate,
+  preloadPortfolioImage,
+} from "../media/portfolio/portfolioImage";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -375,14 +380,28 @@ function WhisperProofMedia({
         loop
         playsInline
         preload="metadata"
-        poster={proof.media.poster}
+        poster={
+          proof.media.poster
+            ? getPortfolioImageCandidate(proof.media.poster, 1600)
+            : undefined
+        }
       >
         <source src={proof.media.src} type="video/mp4" />
       </video>
     );
   }
 
-  return <img src={proof.media.src} alt="" className={`${fitClass} ${className ?? ""}`} />;
+  return (
+    <PortfolioImage
+      src={proof.media.src}
+      alt=""
+      sizes="(min-width: 1280px) 44vw, (min-width: 768px) 58vw, 82vw"
+      loading="eager"
+      fetchPriority="auto"
+      containerClassName="h-full w-full"
+      imageClassName={`${fitClass} ${className ?? ""}`}
+    />
+  );
 }
 
 function WhisperProofTrace({
@@ -394,7 +413,17 @@ function WhisperProofTrace({
 }) {
   if (!src) return null;
 
-  return <img src={src} alt="" className={`object-cover ${className ?? ""}`} />;
+  return (
+    <PortfolioImage
+      src={src}
+      alt=""
+      sizes="(min-width: 1280px) 20vw, (min-width: 768px) 24vw, 34vw"
+      loading="lazy"
+      fetchPriority="low"
+      containerClassName={className}
+      imageClassName="absolute inset-0 h-full w-full object-cover"
+    />
+  );
 }
 
 function SurfaceProofStage({
@@ -2317,6 +2346,26 @@ function CompletedProofScene({ onOpenWhisper }: { onOpenWhisper: () => void }) {
   const activeProof = localizedProofStates[activeProofIndex] ?? localizedProofStates[0];
   const reduceMotion = useReducedMotion();
   const proofCount = localizedProofStates.length;
+
+  // Prewarm the active proof and the one after it so a proof change never waits on a cold image.
+  useEffect(() => {
+    const current = localizedProofStates[activeProofIndex];
+    const next = localizedProofStates[(activeProofIndex + 1) % localizedProofStates.length];
+
+    const sourceFor = (proof: WhisperProofState) =>
+      proof.media.type === "video" ? proof.media.poster : proof.media.src;
+
+    [current, next].forEach((proof) => {
+      const src = proof ? sourceFor(proof) : undefined;
+      if (!src) return;
+
+      void preloadPortfolioImage(
+        src,
+        "(min-width: 1280px) 44vw, (min-width: 768px) 58vw, 82vw",
+        proof === current ? "auto" : "low",
+      );
+    });
+  }, [activeProofIndex, localizedProofStates]);
 
   const selectProofIndex = (index: number) => {
     const nextIndex = (index + proofCount) % proofCount;

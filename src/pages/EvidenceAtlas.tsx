@@ -874,7 +874,14 @@ function WorkIndexTransformList({
                 aria-label={`Open ${item.title}`}
               >
                 <span className="absolute inset-2 border border-neutral-950/6 bg-[radial-gradient(circle_at_50%_22%,rgba(255,255,255,0.55),transparent_38%),rgba(246,244,238,0.62)]" />
-                <img src={getPreviewFrame(item)} alt="" className={`absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] object-contain object-center opacity-100 transition duration-700 group-hover:scale-[1.015] ${getCoverImageTreatment(item, "hero")}`} />
+                <PortfolioImage
+                  src={getPreviewFrame(item)}
+                  alt=""
+                  sizes="(min-width: 1280px) 20vw, 34vw"
+                  loading="eager"
+                  containerClassName="absolute inset-0"
+                  imageClassName={`absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] object-contain object-center opacity-100 transition duration-700 group-hover:scale-[1.015] ${getCoverImageTreatment(item, "hero")}`}
+                />
                 <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0),rgba(0,0,0,0)_64%,rgba(0,0,0,0.08))]" />
                 <span className="absolute left-4 top-4 bg-neutral-950/28 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/78 backdrop-blur-sm">
                   {getCaseCode(item, index)} / {item.evidence.workType}
@@ -1253,7 +1260,14 @@ export default function EvidenceAtlas({
                         transition={{ duration: 0.58, delay: index * 0.05, ease }}
                         aria-label={`Open ${item.title}`}
                       >
-                        <img src={getPreviewFrame(item)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04] ${getCoverImageTreatment(item, "hero")}`} />
+                        <PortfolioImage
+                          src={getPreviewFrame(item)}
+                          alt=""
+                          sizes="(min-width: 1280px) 28vw, 56vw"
+                          loading="eager"
+                          containerClassName="absolute inset-0"
+                          imageClassName={`absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.04] ${getCoverImageTreatment(item, "hero")}`}
+                        />
                         <div className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.28))] xl:block" />
                         <div className="absolute left-2 top-2 border-y border-neutral-950/10 bg-[#f8f6f0]/78 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-600 backdrop-blur-sm xl:hidden">
                           {String(index + 1).padStart(2, "0")}
@@ -1314,7 +1328,14 @@ export default function EvidenceAtlas({
                             exit={{ opacity: 0, scale: 0.92, y: 14, filter: "blur(7px)" }}
                             transition={{ duration: 0.62, ease }}
                           >
-                            <img src={getPreviewFrame(focusedHeroCase)} alt="" className={`absolute inset-0 h-full w-full object-contain object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`} />
+                            <PortfolioImage
+                              src={getPreviewFrame(focusedHeroCase)}
+                              alt=""
+                              sizes="(min-width: 1280px) 46vw, 92vw"
+                              loading="eager"
+                              containerClassName="absolute inset-0"
+                              imageClassName={`absolute inset-0 h-full w-full object-contain object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`}
+                            />
                           </motion.button>
 
                           <motion.div
@@ -1356,7 +1377,14 @@ export default function EvidenceAtlas({
                           exit={{ opacity: 0, scale: 0.86, y: 24, rotate: 1.2, filter: "blur(7px)" }}
                           transition={{ duration: 0.72, ease }}
                         >
-                          <img src={getPreviewFrame(focusedHeroCase)} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`} />
+                          <PortfolioImage
+                            src={getPreviewFrame(focusedHeroCase)}
+                            alt=""
+                            sizes="(min-width: 1280px) 46vw, 76vw"
+                            loading="eager"
+                            containerClassName="absolute inset-0"
+                            imageClassName={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(focusedHeroCase, "hero")}`}
+                          />
                           <span className="absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(0,0,0,0.01),rgba(0,0,0,0.1)_62%,rgba(0,0,0,0.3))] xl:block" />
                           <span className="absolute left-5 top-5 hidden font-mono text-[10px] uppercase tracking-[0.18em] text-white/62 xl:block">
                             {ui.focusedSystem}

@@ -20,7 +20,9 @@ type PortfolioImageProps = {
 const POSITIONED_CLASS = /(^|\s)(absolute|fixed|sticky|relative)(\s|$)/;
 
 // Presentation image with a source-derived loading state: dominant color, then the 64 px
-// preview, then the srcset-selected display image once it has loaded and decoded.
+// preview, then the srcset-selected display image once it has loaded and decoded. The
+// loading color clears on reveal so contain-fit letterboxing and translucent images
+// composite over the authored background exactly as a plain <img> would.
 // Authored classes go on both images so crop and treatment stay identical; the handoff
 // opacity lives on wrapper layers so authored opacity/transition classes are untouched.
 export default function PortfolioImage({
@@ -107,7 +109,7 @@ export default function PortfolioImage({
   return (
     <span
       className={containerClasses}
-      style={{ backgroundColor: entry?.dominantColor }}
+      style={{ backgroundColor: ready ? undefined : entry?.dominantColor }}
       data-portfolio-image={src}
       data-portfolio-image-ready={ready ? "true" : "false"}
       data-portfolio-image-fallback={failed ? "failed" : useOriginal ? "original" : "derivative"}

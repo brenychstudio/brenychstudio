@@ -928,7 +928,7 @@ function SpatialChamberOrbit({
                   loop
                   playsInline
                   preload="metadata"
-                  poster={poster}
+                  poster={getPortfolioImageCandidate(poster, 640)}
                 >
                   <source src={activeVideo} type="video/mp4" />
                 </video>
@@ -2937,7 +2937,7 @@ function FutureChambersScene() {
                                   loop
                                   playsInline
                                   preload="metadata"
-                                  poster={coverMedia.poster}
+                                  poster={coverMedia.poster && getPortfolioImageCandidate(coverMedia.poster, 960)}
                                 >
                                   <source src={coverMedia.src} type="video/mp4" />
                                 </video>

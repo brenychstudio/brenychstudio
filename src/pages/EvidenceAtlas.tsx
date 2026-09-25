@@ -24,6 +24,7 @@ import { scrollToRailSection, useSectionRailActive } from "../ui/useSectionRailA
 import { useSound } from "../stage/audio/useSound";
 import { useDeferredRouteContent } from "../hooks/useDeferredRouteContent";
 import { getLocalizedPath, useI18n, type LocaleCode } from "../i18n";
+import PortfolioImage from "../ui/media/PortfolioImage";
 
 type PageProps = {
   drawerOpen?: boolean;
@@ -629,7 +630,15 @@ function FeaturedFlowItem({
             }`}
             style={reducedMotion ? undefined : { x: imageX, y: imageY, scale: imageScale, rotate: imageRotate }}
           >
-            <img src={visuals[0]} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 transition duration-700 group-hover:scale-[1.025] ${getCoverImageTreatment(item, "hero")}`} />
+            <PortfolioImage
+              src={visuals[0]}
+              alt=""
+              sizes="(min-width: 1280px) 52vw, (min-width: 768px) 68vw, 86vw"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
+              containerClassName="absolute inset-0"
+              imageClassName={`absolute inset-0 h-full w-full object-cover object-center opacity-100 transition duration-700 group-hover:scale-[1.025] ${getCoverImageTreatment(item, "hero")}`}
+            />
             <span className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.035),rgba(0,0,0,0)_46%),linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.12)_58%,rgba(0,0,0,0.26))]" />
             <span className="absolute left-4 top-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/66">{getCaseCode(item, index)}</span>
             <span className="absolute bottom-4 left-4 font-mono text-[9px] uppercase tracking-[0.16em] text-white/58">
@@ -646,7 +655,15 @@ function FeaturedFlowItem({
                 className={`absolute ${visualIndex === 2 ? "hidden sm:block" : ""} ${fragmentPositions[visualIndex] ?? fragmentPositions[0]} md:aspect-[4/3] md:h-auto overflow-hidden border border-white/40 bg-white/18 shadow-[0_20px_54px_rgba(10,10,10,0.14)] backdrop-blur-sm`}
                 style={reducedMotion ? undefined : { x: motionStyle.x, y: motionStyle.y, scale: motionStyle.scale, rotate: fragmentRotations[visualIndex] ?? 0 }}
               >
-                <img src={visual} alt="" className={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(item)}`} />
+                <PortfolioImage
+                  src={visual}
+                  alt=""
+                  sizes="(min-width: 1280px) 22vw, (min-width: 768px) 25vw, 28vw"
+                  loading="lazy"
+                  fetchPriority="auto"
+                  containerClassName="absolute inset-0"
+                  imageClassName={`absolute inset-0 h-full w-full object-cover object-center opacity-100 ${getCoverImageTreatment(item)}`}
+                />
                 <span className="absolute bottom-2 left-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/70">{ui.signal} {visualIndex + 1}</span>
               </motion.span>
             );

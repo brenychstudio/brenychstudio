@@ -114,10 +114,12 @@ function createMetadataTags(metadata: StaticRouteMetadata) {
   const ogTitle = escapeHtml(metadata.ogTitle ?? metadata.title);
   const ogDescription = escapeHtml(metadata.ogDescription ?? metadata.description);
   const imageAlt = escapeHtml(metadata.imageAlt);
+  const robots = metadata.noIndex ? `
+    <meta name="robots" content="noindex, nofollow" />` : "";
 
   return `
     <title>${title}</title>
-    <meta name="description" content="${description}" />
+    <meta name="description" content="${description}" />${robots}
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="${metadata.type}" />
     <meta property="og:site_name" content="Brenych Studio" />

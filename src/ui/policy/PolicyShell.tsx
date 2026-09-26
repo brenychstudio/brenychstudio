@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 
 import AtmosphericSiteShell from "../atmosphere/AtmosphericSiteShell";
+import type { AtmospherePreset } from "../atmosphere/atmospherePresets";
 import Header from "../Header";
 import PageSurface from "../PageSurface";
 import SiteFooterV2 from "../SiteFooterV2";
@@ -13,8 +14,16 @@ type PolicyShellProps = {
   sceneId: string;
   label: string;
   title: string;
+  titleClassName?: string;
   intro: string;
-  updated: string;
+  updated?: string;
+  /** Sidebar meta rows. Defaults to the studio "Last updated" / trust-surface pair. */
+  meta?: string[];
+  /** Optional block rendered beneath the meta rows in the sticky column (contact, CTA). */
+  aside?: ReactNode;
+  /** Optional replacement for the default closing strip content. */
+  closing?: ReactNode;
+  atmospherePreset?: AtmospherePreset;
   metaTitle?: string;
   children: ReactNode;
 };
@@ -26,12 +35,18 @@ export default function PolicyShell({
   sceneId,
   label,
   title,
+  titleClassName = "max-w-[11ch]",
   intro,
   updated,
+  meta,
+  aside,
+  closing,
+  atmospherePreset = "practice",
   metaTitle,
   children,
 }: PolicyShellProps) {
   const { setScene, stopAmbient } = useSound();
+  const metaRows = meta ?? [...(updated ? [`Last updated: ${updated}`] : []), "Studio Trust Surface"];
 
   useEffect(() => {
     setScene("trust");
@@ -52,7 +67,7 @@ export default function PolicyShell({
       <Header drawerOpen={drawerOpen} onOpenProject={onOpenProject} onCloseProject={onCloseProject} />
 
       <PageSurface className="tablet-reader-surface relative min-h-screen overflow-x-hidden bg-transparent text-neutral-950">
-        <AtmosphericSiteShell preset="practice" />
+        <AtmosphericSiteShell preset={atmospherePreset} />
 
         <main className="relative z-10 pt-24">
           <section
@@ -62,16 +77,20 @@ export default function PolicyShell({
           >
             <div className="min-w-0 lg:sticky lg:top-28">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">{label}</div>
-              <h1 className="mt-6 max-w-[11ch] text-[48px] font-normal leading-[0.92] tracking-[-0.055em] text-neutral-950 sm:text-[70px] lg:text-[82px]">
+              <h1
+                className={`mt-6 ${titleClassName} text-[48px] font-normal leading-[0.92] tracking-[-0.055em] text-neutral-950 sm:text-[70px] lg:text-[82px]`}
+              >
                 {title}
               </h1>
               <p className="mt-6 max-w-[42rem] text-[16px] leading-7 text-neutral-600 sm:text-[17px] sm:leading-8">
                 {intro}
               </p>
               <div className="mt-8 grid w-fit gap-2 border-y border-neutral-950/12 py-3 font-mono text-[10px] uppercase tracking-[0.17em] text-neutral-400">
-                <span>Last updated: {updated}</span>
-                <span>Studio Trust Surface</span>
+                {metaRows.map((row) => (
+                  <span key={row}>{row}</span>
+                ))}
               </div>
+              {aside ? <div className="mt-8">{aside}</div> : null}
             </div>
 
             <div className="min-w-0 border-y border-neutral-950/10 bg-white/18 px-0 backdrop-blur-[2px]">
@@ -81,8 +100,12 @@ export default function PolicyShell({
 
           <section className="mx-auto w-[min(92vw,1500px)] py-10 sm:py-12">
             <div className="flex flex-wrap items-center justify-between gap-4 border-y border-neutral-950/10 py-5 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-400">
-              <span>Policy Surface</span>
-              <span className="text-neutral-950">Built as a living interface system.</span>
+              {closing ?? (
+                <>
+                  <span>Policy Surface</span>
+                  <span className="text-neutral-950">Built as a living interface system.</span>
+                </>
+              )}
             </div>
           </section>
         </main>

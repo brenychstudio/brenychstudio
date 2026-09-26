@@ -33,6 +33,9 @@ import { SoundProvider } from "./stage/audio/SoundProvider";
 const SpatialProof = lazy(() => import("./pages/SpatialProof"));
 const PrivacyV2 = lazy(() => import("./pages/PrivacyV2"));
 const LegalV2 = lazy(() => import("./pages/LegalV2"));
+const LivingAtlasPage = lazy(() => import("./pages/LivingAtlasPage"));
+const LivingAtlasPrivacy = lazy(() => import("./pages/LivingAtlasPrivacy"));
+const LivingAtlasSupport = lazy(() => import("./pages/LivingAtlasSupport"));
 
 const routeSeo = {
   home: {
@@ -76,6 +79,27 @@ const routeSeo = {
     description:
       "Terms for using the Brenych Studio website, viewing portfolio materials, and contacting the studio about projects.",
     path: "/legal",
+  },
+  livingAtlas: {
+    title: "Living Atlas — Photography, Place & Light | Brenych Studio",
+    description:
+      "Living Atlas is a local-first photographic memory tool for preserving place, visits and light context around your captures.",
+    path: "/living-atlas",
+    noIndex: true,
+  },
+  livingAtlasPrivacy: {
+    title: "Living Atlas Privacy Policy | Brenych Studio",
+    description:
+      "Privacy information for Living Atlas, including local photo and location storage, Atlas Pro purchases and third-party services.",
+    path: "/living-atlas/privacy",
+    noIndex: true,
+  },
+  livingAtlasSupport: {
+    title: "Living Atlas Support | Brenych Studio",
+    description:
+      "Support for Living Atlas captures, locations, light planning, Atlas Pro and local app data.",
+    path: "/living-atlas/support",
+    noIndex: true,
   },
 } satisfies Record<string, SeoMetaProps>;
 
@@ -153,6 +177,22 @@ function getAboutSchema(locale: PublicSchemaLocale): StructuredDataValue {
   };
 }
 
+const livingAtlasSchema: StructuredDataValue = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Living Atlas",
+  applicationCategory: "Photography",
+  operatingSystem: "iOS",
+  url: toAbsoluteSiteUrl(routeSeo.livingAtlas.path),
+  description: routeSeo.livingAtlas.description,
+  inLanguage: "en",
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+};
+
 function getSpanishMeta(path: string, fallback: SeoMetaProps): SeoMetaProps {
   const draft = spanishPageSeoDrafts[path];
   const spanishPath = `/es${path === "/" ? "" : path}`;
@@ -192,10 +232,12 @@ function RoutePendingSurface() {
   const isWorkCase = pathname.startsWith("/work/");
   const isImmersiveCase = pathname.startsWith("/immersive/");
   const isPolicy = pathname === "/privacy" || pathname === "/legal";
+  const isLivingAtlas = pathname === "/living-atlas" || pathname.startsWith("/living-atlas/");
 
   let background = "bg-[#f2efe8]";
 
-  if (pathname === "/work") background = "bg-[#f3f1ec]";
+  if (isLivingAtlas) background = "bg-[#f5f3ee]";
+  else if (pathname === "/work") background = "bg-[#f3f1ec]";
   else if (pathname === "/immersive") background = "bg-[#f1eee7]";
   else if (pathname === "/offer" || pathname === "/about") background = "bg-[#f3f0e9]";
   else if (pathname.startsWith("/services/")) background = "bg-[#f4f1ea]";
@@ -333,6 +375,10 @@ export default function App() {
               />
 
               <Route path="/es/services" element={<Navigate to="/es/offer" replace />} />
+
+              <Route path="/es/living-atlas" element={<Navigate to="/living-atlas" replace />} />
+              <Route path="/es/living-atlas/privacy" element={<Navigate to="/living-atlas/privacy" replace />} />
+              <Route path="/es/living-atlas/support" element={<Navigate to="/living-atlas/support" replace />} />
 
               <Route
                 path="/es/services/:slug"
@@ -505,6 +551,45 @@ export default function App() {
             element={
               <SeoRoute meta={routeSeo.legal}>
                 <LegalV2
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </SeoRoute>
+            }
+          />
+
+          <Route
+            path="/living-atlas"
+            element={
+              <SeoRoute meta={routeSeo.livingAtlas} structuredData={livingAtlasSchema}>
+                <LivingAtlasPage
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </SeoRoute>
+            }
+          />
+
+          <Route
+            path="/living-atlas/privacy"
+            element={
+              <SeoRoute meta={routeSeo.livingAtlasPrivacy}>
+                <LivingAtlasPrivacy
+                  drawerOpen={drawerOpen}
+                  onOpenProject={openProject}
+                  onCloseProject={closeProject}
+                />
+              </SeoRoute>
+            }
+          />
+
+          <Route
+            path="/living-atlas/support"
+            element={
+              <SeoRoute meta={routeSeo.livingAtlasSupport}>
+                <LivingAtlasSupport
                   drawerOpen={drawerOpen}
                   onOpenProject={openProject}
                   onCloseProject={closeProject}

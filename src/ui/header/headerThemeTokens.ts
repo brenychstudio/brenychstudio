@@ -178,6 +178,25 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
     ...lightDense,
     surface: "rgba(250, 249, 245, 0.78)",
   },
+  "living-atlas-release": {
+    id: "living-atlas-release",
+    signalLabel: "LIVING ATLAS",
+    ...lightDefault,
+    surface: "rgba(250, 249, 245, 0.74)",
+    elevation: 0.035,
+  },
+  "living-atlas-privacy": {
+    id: "living-atlas-privacy",
+    signalLabel: "ATLAS PRIVACY",
+    ...lightDense,
+    surface: "rgba(250, 249, 245, 0.78)",
+  },
+  "living-atlas-support": {
+    id: "living-atlas-support",
+    signalLabel: "ATLAS SUPPORT",
+    ...lightDense,
+    surface: "rgba(250, 249, 245, 0.78)",
+  },
   "immersive-threshold": {
     id: "immersive-threshold",
     signalLabel: "IMMERSIVE SYSTEMS",
@@ -521,7 +540,9 @@ export function getHeaderMoodForPath(pathname: string) {
     pathname === "/privacy" ||
     pathname === "/privacy-v2" ||
     pathname === "/legal" ||
-    pathname === "/legal-v2"
+    pathname === "/legal-v2" ||
+    pathname === "/living-atlas" ||
+    pathname.startsWith("/living-atlas/")
   ) {
     return headerThemeTokens.studio;
   }

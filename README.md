@@ -343,24 +343,34 @@ Selected older website and interface cases remain in the public archive for hist
 
 ## Public Site Architecture
 
-Primary public routes:
+The site is public in English (default) and Spanish. Spanish routes live under `/es` with self-canonical URLs and bidirectional `hreflang`; Ukrainian and Russian dictionaries exist but are not enabled.
+
+Primary public routes (English, with `/es` equivalents):
 
 - `/`
 - `/work`
 - `/immersive`
 - `/offer`
 - `/about`
-- `/privacy`
-- `/legal`
 - `/work/:slug`
 - `/immersive/:slug`
 - `/services/:slug`
+
+Website policy pages: `/privacy`, `/legal`.
 
 Service-entry routes currently live:
 
 - `/services/premium-landing-page`
 - `/services/product-demo-landing`
 - `/services/interactive-web-systems`
+
+Living Atlas pre-release trust pages (App Store privacy and support URLs), reachable by direct URL, `noindex, nofollow`, not in the sitemap or the main navigation:
+
+- `/living-atlas`
+- `/living-atlas/privacy`
+- `/living-atlas/support`
+
+See `docs/living-atlas-release-pages.md`.
 
 The codebase also includes hidden no-index routes used for alternate surfaces, labs, and controlled previews such as `/work-lab/:slug`, `/studio-index`, `/evidence-atlas`, `/offer-v2`, `/about-v2`, `/immersive-v2`, `/privacy-v2`, `/legal-v2`, and `/spatial-proof`.
 
@@ -379,14 +389,19 @@ This keeps content, proof structure, and visual systems separate enough to evolv
 ## Technical Highlights
 
 - React 19 + TypeScript + Vite front-end application
-- Route-level SEO metadata and canonical URLs
+- Route-level SEO metadata and canonical URLs, plus static per-route HTML metadata generated at build time (`docs/static-route-seo.md`)
 - Structured data / JSON-LD output for organization, profile, cases, and service routes
 - Sitemap and robots configuration in `public/`
 - Dedicated service-entry pages that stay outside the main navigation
 - Shared project inquiry drawer across major public routes
-- Immersive and case-specific media systems for image, video, inspection, and walkthrough proof
-- Locale content layer with English, Ukrainian, Spanish, and Russian dictionaries in `src/i18n/`
-- Sound preference and interface audio system via `SoundProvider`, `useSound`, and the signal dock
+- Lazy route loading through one memoized registry (`src/routing/routeModules.ts`); SPA transitions preload the destination module
+- Three.js / R3F / Drei stay out of non-WebGL routes; Offer's WebGL scenes load near the viewport
+- `build.cssCodeSplit: false` keeps one CSS bundle, which the build inlines into every HTML page
+- Final-dist integrity guard and route bundle guard (see Local Development)
+- Responsive portfolio image pipeline: derivatives in `public/media/portfolio` with a typed runtime manifest in `src/media/portfolio`
+- Video registry in `src/media/video` with a Cloudflare R2 delivery foundation (`docs/operations/r2-video-delivery.md`)
+- Locale content layer in `src/i18n/`: English and Spanish public, Ukrainian and Russian dictionaries prepared
+- Sound preference and interface audio system via `SoundProvider`, `useSound`, and the signal dock; Tone.js loads only after sound is enabled
 - Cloudflare Pages deployment with pinned Node runtime via `.node-version`
 
 ## Website Stack
@@ -413,23 +428,33 @@ src/
   data/
   hooks/
   i18n/
+  media/        home video runtime, portfolio image manifest, video registry
   pages/
+  routing/      lazy route-module registry
+  seo/          static route metadata, hreflang alternates
   stage/audio/
-  store/
+  styles/
   ui/
 
 public/
   cases/
   immersive/
+  media/portfolio/
+  audio/
   docs/
   og-default.png
   robots.txt
   sitemap.xml
 
 scripts/
-  optimize-case-images-to-webp.mjs
-  relink-case-images-to-webp.mjs
-  generate-development-playbooks.mjs
+  generate-portfolio-media.mjs
+  validate-video-assets.mts
+  validate-route-bundles.mjs
+  validate-dist-integrity.mjs
+  verify-r2-video-foundation.mjs
+
+ops/cloudflare/  R2 CORS policy
+docs/            reference patterns, i18n, SEO, Living Atlas, operations
 ```
 
 ## Local Development
@@ -458,6 +483,21 @@ Build production assets:
 npm run build
 ```
 
+`npm run build` runs `tsc -b`, `vite build`, and then the final-dist integrity guard. The guard fails the build if any preload dependency, JS import, or generated-HTML asset reference is missing from `dist`, or if a runtime CSS dependency remains.
+
+Validation commands:
+
+```bash
+npm run video:validate          # video registry checks
+npm run media:portfolio         # regenerate responsive portfolio derivatives + manifests
+npm run perf:routes             # route bundle boundaries and Brotli budgets
+npm run perf:routes:self-test
+npm run verify:dist             # final-dist integrity on an existing dist
+npm run verify:dist:self-test
+```
+
+`node scripts/generate-portfolio-media.mjs --check` validates the portfolio media without writing.
+
 Preview the production build:
 
 ```bash
@@ -476,26 +516,18 @@ The site is deployed on **Cloudflare Pages**.
 
 For production-safe publishing, the important checks are:
 
-- successful `npm ci` and `npm run build`
+- successful `npm ci` and `npm run build` (including the dist integrity guard)
+- `npm run perf:routes` and `npm run lint`
+- the PR's Cloudflare preview loaded in a fresh browser context with no console errors and no failed JS or CSS
 - healthy public route responses
 - correct canonical domain
 - valid `sitemap.xml` and `robots.txt`
 - working media assets on desktop and mobile
 - stable no-overflow layout on public routes
 
-## Canonical Baseline
+## Baseline
 
-Current approved baseline tag:
-
-```txt
-v1.0.0
-```
-
-Use it as a stable restore point when needed:
-
-```bash
-git checkout v1.0.0
-```
+`main` is the production authority; Cloudflare Pages deploys it. Restore points come from `main`'s history. Older tags such as `v1.0.0` predate the current history and must not be used to restore production.
 
 ## Public / Private Work
 

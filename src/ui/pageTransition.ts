@@ -1,8 +1,6 @@
 import type { NavigateFunction } from "react-router-dom";
 import { flushSync } from "react-dom";
 
-import { preloadRouteModule } from "../routing/routeModules";
-
 const HARD_TRANSITION_KEY = "app:page-transition-hard";
 const EXIT_MS = 110;
 const REVEAL_BUFFER_MS = 240;
@@ -72,9 +70,6 @@ export function startSpaPageTransition(
 ) {
   if (typeof window === "undefined") return;
   if (!acquireLock()) return;
-
-  // Fetch the destination route module during the authored exit; navigation never waits for it.
-  preloadRouteModule(to);
 
   onBeforeNavigate?.();
 

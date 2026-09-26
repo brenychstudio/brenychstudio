@@ -8,11 +8,13 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/validate-dist-integrity.mjs dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "media:portfolio": "node scripts/generate-portfolio-media.mjs",
-    "video:validate": "node --experimental-strip-types scripts/validate-video-assets.mts"
+    "video:validate": "node --experimental-strip-types scripts/validate-video-assets.mts",
+    "verify:dist": "node scripts/validate-dist-integrity.mjs dist",
+    "verify:dist:self-test": "node scripts/validate-dist-integrity.mjs --self-test"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

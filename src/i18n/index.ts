@@ -10,7 +10,6 @@ export {
   isLocaleCode,
   isRuntimeLocaleEnabled,
 } from "./locales";
-export { spanishPreviewEnabled } from "./preview";
 export {
   getLocaleFromPathname,
   getLocalizedPath,

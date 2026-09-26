@@ -189,6 +189,9 @@ function staticRouteMetadataPlugin(): Plugin {
 export default defineConfig({
   plugins: [react(), tailwindcss(), inlineBuiltCss(), staticRouteMetadataPlugin()],
   build: {
+    // One CSS bundle for inlineBuiltCss(): split chunks never record per-chunk CSS, so no lazy
+    // import can list a stylesheet that inlining deletes.
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
         manualChunks(id) {

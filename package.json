@@ -12,8 +12,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "media:portfolio": "node scripts/generate-portfolio-media.mjs",
-    "video:validate": "node --experimental-strip-types scripts/validate-video-assets.mts",
-    "perf:routes": "node scripts/validate-route-bundles.mjs"
+    "video:validate": "node --experimental-strip-types scripts/validate-video-assets.mts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

@@ -14,7 +14,9 @@
     "media:portfolio": "node scripts/generate-portfolio-media.mjs",
     "video:validate": "node --experimental-strip-types scripts/validate-video-assets.mts",
     "verify:dist": "node scripts/validate-dist-integrity.mjs dist",
-    "verify:dist:self-test": "node scripts/validate-dist-integrity.mjs --self-test"
+    "verify:dist:self-test": "node scripts/validate-dist-integrity.mjs --self-test",
+    "perf:routes": "node scripts/validate-route-bundles.mjs",
+    "perf:routes:self-test": "node scripts/validate-route-bundles.mjs --self-test"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

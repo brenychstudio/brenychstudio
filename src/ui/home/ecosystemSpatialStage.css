@@ -301,6 +301,7 @@
   .ecosystem-home .eco-spatial-stage { padding: 62px 0 66px; }
   .ecosystem-home .eco-spatial-stage .eco-spatial-field {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 68px;
     width: min(calc(100% - 64px), 840px);
     margin-inline: auto;

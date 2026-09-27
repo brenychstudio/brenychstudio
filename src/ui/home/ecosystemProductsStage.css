@@ -1,0 +1,228 @@
+/* The Product Stage keeps the same canonical project markup at every width. */
+.ecosystem-home .eco-products-stage { padding-bottom: 0; }
+.ecosystem-home .eco-products-stage__timeline,
+.ecosystem-home .eco-products-stage__sticky { position: relative; }
+.ecosystem-home .eco-products-stage__scenes { display: grid; gap: clamp(4rem, 8vw, 8rem); }
+.ecosystem-home .eco-products-stage__project {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-top: 1px solid var(--eco-line);
+  padding-top: 1.25rem;
+}
+.ecosystem-home .eco-products-stage__heading { min-width: 0; }
+.ecosystem-home .eco-products-stage__index {
+  display: block;
+  width: max-content;
+  border: 1px solid var(--eco-line);
+  padding: 0.45rem 0.55rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+.ecosystem-home .eco-products-stage__heading .eco-project-signal { margin: 1.5rem 0 0.7rem; }
+.ecosystem-home .eco-products-stage__heading h3 {
+  margin: 0;
+  font-size: clamp(2.8rem, 5vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.07em;
+  font-weight: 400;
+}
+.ecosystem-home .eco-products-stage__media { min-width: 0; margin: 0; }
+.ecosystem-home .eco-products-stage__poster-link { display: block; color: inherit; text-decoration: none; }
+.ecosystem-home .eco-products-stage__poster {
+  position: relative;
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1.25;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(34, 41, 33, 0.12);
+  background: #d9dfd3;
+  isolation: isolate;
+}
+.ecosystem-home .eco-products-stage__project[data-product-index="1"] .eco-products-stage__poster { background: #ded6cb; }
+.ecosystem-home .eco-products-stage__poster::before,
+.ecosystem-home .eco-products-stage__poster::after { content: ""; position: absolute; pointer-events: none; }
+.ecosystem-home .eco-products-stage__poster::before {
+  inset: 8% 10%;
+  z-index: 0;
+  border: 1px solid rgba(34, 41, 33, 0.14);
+  transform: translate(3%, -3%);
+}
+.ecosystem-home .eco-products-stage__poster::after {
+  right: 0;
+  bottom: 12%;
+  left: 0;
+  height: 1px;
+  background: rgba(34, 41, 33, 0.18);
+  transform: rotate(-8deg) scaleX(1.2);
+}
+.ecosystem-home .eco-products-stage__image {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 83%;
+  height: 80%;
+  max-height: 100%;
+  box-shadow: 0 1.5rem 3rem rgba(32, 40, 30, 0.14);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ecosystem-home .eco-products-stage__image-element {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ecosystem-home .eco-products-stage__poster-link:hover .eco-products-stage__image,
+.ecosystem-home .eco-products-stage__poster-link:focus-visible .eco-products-stage__image { transform: scale(1.025); }
+.ecosystem-home .eco-products-stage__poster-index {
+  position: absolute;
+  z-index: 2;
+  top: 1rem;
+  left: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+}
+.ecosystem-home .eco-products-stage__media-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--eco-line);
+  padding: 0.8rem 0;
+  color: var(--eco-muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ecosystem-home .eco-products-stage__detail { min-width: 0; padding-bottom: 2rem; }
+.ecosystem-home .eco-products-stage__detail .eco-project-description {
+  margin: 0;
+  max-width: 31rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.ecosystem-home .eco-products-stage__detail .eco-project-actions { margin-top: 1.5rem; }
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ecosystem-home .eco-products-stage__scenes { gap: 5.5rem; }
+  .ecosystem-home .eco-products-stage__project {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    min-height: 28rem;
+  }
+  .ecosystem-home .eco-products-stage__media { grid-column: 2; grid-row: 1 / 3; }
+  .ecosystem-home .eco-products-stage__detail { grid-column: 1; grid-row: 2; }
+  .ecosystem-home .eco-products-stage__poster { aspect-ratio: 0.92; }
+  .ecosystem-home .eco-products-stage__heading h3 { font-size: clamp(2.6rem, 5.7vw, 3.9rem); }
+}
+
+@media (min-width: 1024px) {
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] { height: 235svh; }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__sticky {
+    position: sticky;
+    top: 76px;
+    display: grid;
+    height: calc(100svh - 76px);
+    align-items: center;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__scenes {
+    position: relative;
+    height: min(74svh, 46rem);
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.68fr) minmax(0, 1.32fr);
+    grid-template-rows: 1fr auto;
+    column-gap: clamp(3rem, 7vw, 10rem);
+    align-items: center;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(0, 1.5rem, 0) scale(0.985);
+    transition: opacity 650ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project[data-product-active="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__heading { align-self: end; }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__heading h3 { font-size: clamp(3.5rem, 5.2vw, 7rem); }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__media {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__poster {
+    height: min(63svh, 42rem);
+    aspect-ratio: auto;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__detail {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+    padding: 1.5rem 0 0;
+  }
+  .ecosystem-home .eco-products-stage__navigation {
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .ecosystem-home .eco-products-stage__navigation-line { display: block; width: 3rem; height: 1px; background: var(--eco-line); }
+  .ecosystem-home .eco-products-stage__navigation-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 0;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    color: var(--eco-muted);
+    cursor: pointer;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+  .ecosystem-home .eco-products-stage__navigation-item span:first-child {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.62rem;
+  }
+  .ecosystem-home .eco-products-stage__navigation-item[aria-pressed="true"] {
+    border-bottom-color: currentColor;
+    color: var(--eco-ink);
+  }
+}
+
+@media (max-width: 767px) {
+  .ecosystem-home .eco-products-stage__scenes { gap: 4.5rem; }
+  .ecosystem-home .eco-products-stage__project { gap: 1.15rem; }
+  .mobile-interface-surface .ecosystem-home .eco-products-stage__heading h3 {
+    max-width: none;
+    font-size: clamp(2.65rem, 12vw, 4.2rem) !important;
+    line-height: 0.96 !important;
+    letter-spacing: -0.055em !important;
+  }
+  .ecosystem-home .eco-products-stage__poster { aspect-ratio: 1.08; }
+  .ecosystem-home .eco-products-stage__image { width: 88%; height: 76%; }
+  .ecosystem-home .eco-products-stage__media-caption { font-size: 0.6rem; }
+  .ecosystem-home .eco-products-stage__detail { border-top: 1px solid var(--eco-line); padding-top: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-home .eco-products-stage__project,
+  .ecosystem-home .eco-products-stage__image { transition: none !important; transform: none !important; }
+}

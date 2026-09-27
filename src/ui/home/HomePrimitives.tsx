@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import type { ProjectRecord, PublicLocale } from "../../data/projectRegistry.types";
 
 export type HomeSectionProps = { locale: PublicLocale; navigate: (path: string) => void };
@@ -16,11 +15,8 @@ export function HomeLink({ href, navigate, children, className = "" }: {
 export function HomeSection({ id, children, className = "", scene = "living-threshold" }: {
   id: string; children: ReactNode; className?: string; scene?: string;
 }) {
-  const reduced = useReducedMotion();
-  return <motion.section id={id} aria-labelledby={`${id}-title`} data-header-scene={scene}
-    className={`eco-section ${className}`} initial={reduced ? false : { opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.08 }}
-    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>{children}</motion.section>;
+  return <section id={id} tabIndex={-1} aria-labelledby={`${id}-title`} data-header-scene={scene}
+    className={`eco-section ${className}`}>{children}</section>;
 }
 
 export function SectionLabel({ number, children }: { number: string; children: ReactNode }) {

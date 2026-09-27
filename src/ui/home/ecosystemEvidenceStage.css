@@ -1,0 +1,291 @@
+/* Evidence is one sequence of canonical cases, with a separate composition per device class. */
+.ecosystem-home .eco-evidence {
+  position: relative;
+  border-top: 1px solid var(--eco-line);
+}
+
+.ecosystem-home .eco-evidence .eco-section-heading {
+  margin-bottom: 30px;
+}
+
+.ecosystem-home .eco-evidence-stage,
+.ecosystem-home .eco-evidence-chapter-shell,
+.ecosystem-home .eco-evidence-chapter,
+.ecosystem-home .eco-evidence-link {
+  min-width: 0;
+}
+
+.ecosystem-home .eco-evidence-chapter-shell + .eco-evidence-chapter-shell {
+  margin-top: 26px;
+}
+
+.ecosystem-home .eco-evidence-chapter {
+  border-top: 1px solid var(--eco-line);
+  padding: 28px 0 42px;
+}
+
+.ecosystem-home .eco-evidence-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ecosystem-home .eco-evidence-link:focus-visible {
+  outline-offset: 8px;
+}
+
+.ecosystem-home .eco-evidence-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 1.2;
+  overflow: hidden;
+  background: #d6d8d2;
+}
+
+.ecosystem-home .eco-evidence-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #d6d8d2;
+}
+
+.ecosystem-home .eco-evidence-poster,
+.ecosystem-home .eco-evidence-poster > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ecosystem-home .eco-evidence-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 680ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.ecosystem-home .eco-evidence-frame-index {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  min-width: 38px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 8px;
+  background: rgba(17, 24, 21, .77);
+  color: #f6f6f0;
+  font-size: 10px;
+  letter-spacing: .12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ecosystem-home .eco-evidence-caption {
+  position: relative;
+  padding-top: 22px;
+}
+
+.ecosystem-home .eco-evidence-count {
+  display: block;
+  color: var(--eco-muted);
+  font-size: 10px;
+  letter-spacing: .17em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ecosystem-home .eco-evidence h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 12px 0 0;
+  font-size: clamp(29px, 7vw, 40px);
+  line-height: 1.08;
+  letter-spacing: -.058em;
+}
+
+.ecosystem-home .eco-evidence .eco-project-signal {
+  margin: 15px 0 0;
+}
+
+.ecosystem-home .eco-evidence .eco-project-description {
+  max-width: 34rem;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ecosystem-home .eco-evidence .eco-section-heading {
+    margin-bottom: 45px;
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell + .eco-evidence-chapter-shell {
+    margin-top: 5vw;
+  }
+
+  .ecosystem-home .eco-evidence-chapter {
+    min-height: min(770px, 76svh);
+    padding: 32px 0 64px;
+  }
+
+  .ecosystem-home .eco-evidence-media {
+    width: 76%;
+    aspect-ratio: 1.42;
+  }
+
+  .ecosystem-home .eco-evidence-caption {
+    width: min(52%, 390px);
+    margin: -6vw 0 0 auto;
+    padding: 24px 28px;
+    background: #f3f4ee;
+    border-left: 1px solid var(--eco-line);
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(2) .eco-evidence-media {
+    margin-left: auto;
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(2) .eco-evidence-caption {
+    margin-left: 0;
+    margin-right: auto;
+    border-left: 0;
+    border-right: 1px solid var(--eco-line);
+  }
+
+  .ecosystem-home .eco-evidence h3 {
+    font-size: clamp(31px, 4vw, 42px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ecosystem-home .eco-evidence {
+    padding-bottom: clamp(130px, 13vw, 230px);
+  }
+
+  .ecosystem-home .eco-evidence .eco-section-heading {
+    position: relative;
+    z-index: 4;
+    margin-bottom: 0;
+  }
+
+  .ecosystem-home .eco-evidence-stage {
+    position: relative;
+    padding-top: clamp(45px, 6vw, 105px);
+  }
+
+  .ecosystem-home .eco-evidence-stage::before {
+    position: absolute;
+    top: 0;
+    bottom: 6%;
+    left: 50%;
+    width: 1px;
+    background: var(--eco-line);
+    content: "";
+    pointer-events: none;
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell {
+    position: relative;
+    min-height: clamp(610px, 77svh, 940px);
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell + .eco-evidence-chapter-shell {
+    margin-top: clamp(-170px, -13svh, -90px);
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(1) { z-index: 1; }
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(2) { z-index: 2; }
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(3) { z-index: 3; }
+
+  .ecosystem-home .eco-evidence-chapter {
+    min-height: inherit;
+    border: 0;
+    padding: 0;
+  }
+
+  .ecosystem-home .eco-evidence-link {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: center;
+    min-height: inherit;
+  }
+
+  .ecosystem-home .eco-evidence-media {
+    grid-column: 1 / 10;
+    grid-row: 1;
+    width: 100%;
+    aspect-ratio: 1.53;
+    box-shadow: 0 22px 60px rgba(31, 40, 32, .1);
+  }
+
+  .ecosystem-home .eco-evidence-image {
+    top: -60px;
+    bottom: -60px;
+    height: auto;
+  }
+
+  .ecosystem-home .eco-evidence-caption {
+    grid-column: 8 / 13;
+    grid-row: 1;
+    z-index: 2;
+    align-self: end;
+    min-width: 0;
+    margin-bottom: 9%;
+    padding: clamp(26px, 3.5vw, 58px);
+    background: #f3f4ee;
+    border-left: 1px solid var(--eco-line);
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(2) .eco-evidence-media {
+    grid-column: 5 / 13;
+    aspect-ratio: 1.43;
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(2) .eco-evidence-caption {
+    grid-column: 1 / 7;
+    align-self: center;
+    margin: 12% 0 0;
+    border-left: 0;
+    border-right: 1px solid var(--eco-line);
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(3) .eco-evidence-media {
+    grid-column: 1 / 10;
+    aspect-ratio: 1.58;
+  }
+
+  .ecosystem-home .eco-evidence-chapter-shell:nth-child(3) .eco-evidence-caption {
+    align-self: start;
+    margin: 14% 0 0;
+  }
+
+  .ecosystem-home .eco-evidence h3 {
+    font-size: clamp(35px, 3.5vw, 58px);
+  }
+
+  .ecosystem-home .eco-evidence .eco-project-description {
+    font-size: 14px;
+  }
+
+  .ecosystem-home .eco-evidence-link:hover img {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-home .eco-evidence-image img {
+    transition: none;
+  }
+
+  .ecosystem-home .eco-evidence-link:hover img {
+    transform: none;
+  }
+}

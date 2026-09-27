@@ -9,7 +9,7 @@ export default function EcosystemHero({ locale, onOpenProject }: {
 }) {
   const copy = homeCopy[locale];
   const { playRole } = useSound();
-  return <section id="opening" aria-labelledby="opening-title" className="eco-hero" data-header-scene="living-threshold">
+  return <section id="opening" tabIndex={-1} aria-labelledby="opening-title" className="eco-hero" data-header-scene="living-threshold">
     <div className="eco-hero-field" aria-hidden="true"><StudioHeroField assets={[]} /></div>
     <div className="eco-hero-content eco-wrap">
       <p className="eco-label">{copy.eyebrow}</p>
@@ -21,7 +21,7 @@ export default function EcosystemHero({ locale, onOpenProject }: {
           <button className="eco-text-link" onClick={onOpenProject} onPointerEnter={() => playRole("hover")}>{copy.start}<Arrow /></button>
         </div>
       </div>
-      <div className="eco-hero-footnote" aria-hidden="true"><span>Brenych Studio</span><span>01 — 06</span></div>
+      <div className="eco-hero-footnote" aria-hidden="true"><span>Brenych Studio</span><span>01 — 07</span></div>
     </div>
   </section>;
 }

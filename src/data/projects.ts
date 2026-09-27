@@ -353,6 +353,342 @@ export const projects = [
       lastReviewed: "2026-09-27",
       owner: "studio-owner"
     }
+  },
+  // Second batch (BSW-CORE-01F): controller-approved classifications; exact source copy.
+  // Weekfield retains CreatorOps evidence. Living Atlas stays EN-only, unlisted and noindex.
+  {
+    id: "sprintcrm",
+    publicName: "SprintCRM",
+    aliases: [],
+    vertical: "product",
+    origin: "internal-system",
+    maturity: "prototype",
+    deployment: "private-environment",
+    commercialAvailability: "not-offered",
+    visibility: "public-listed",
+    copy: {
+      oneLiner: {
+        en: "Internal CRM and workflow software for lead operations, pipeline management and AI-ready outreach workflows.",
+        es: "Software interno de CRM y workflow para operaciones de leads, gestión de pipeline y flujos de outreach preparados para asistencia de IA."
+      }
+    },
+    limitations: [],
+    evidence: [
+      {
+        kind: "work-case",
+        slug: "sprintcrm",
+        proves: {
+          en: "A premium internal CRM proving import logic, pipeline control, reporting structure, and operator-facing product clarity.",
+          es: "Un CRM interno premium que prueba importacion, pipeline, reporting y claridad de producto para trabajo diario."
+        },
+        visibility: "public"
+      }
+    ],
+    links: [
+      {
+        id: "repository",
+        kind: "repository",
+        href: "https://github.com/brenychstudio/SprintCRM"
+      }
+    ],
+    routes: [
+      {
+        surface: "work",
+        path: "/work/sprintcrm",
+        locales: [
+          "en",
+          "es"
+        ]
+      }
+    ],
+    media: [
+      {
+        id: "poster",
+        purpose: "poster",
+        asset: {
+          kind: "case-poster",
+          caseSlug: "sprintcrm"
+        },
+        alt: {
+          en: "SprintCRM Signal Gate login poster cover",
+          es: "Interfaz SprintCRM para workflow de operador"
+        }
+      }
+    ],
+    review: {
+      lastReviewed: "2026-09-27",
+      owner: "studio-owner"
+    }
+  },
+  {
+    id: "weekfield",
+    publicName: "Weekfield",
+    aliases: [
+      "CreatorOps"
+    ],
+    vertical: "product",
+    origin: "studio-product",
+    maturity: "beta",
+    deployment: "public-demo",
+    commercialAvailability: "controlled-access",
+    visibility: "public-listed",
+    copy: {
+      oneLiner: {
+        en: "Creator content intelligence and planning system with structured creative workflows, Week Packs and human-controlled AI-assisted review/apply patterns.",
+        es: "Sistema de inteligencia y planificación de contenido para creadores, con workflows creativos estructurados, Week Packs y patrones de revisión y aplicación asistidos por IA bajo control humano."
+      }
+    },
+    limitations: [],
+    evidence: [
+      {
+        kind: "work-case",
+        slug: "creatorops",
+        proves: {
+          en: "A beta-ready export-first workspace for turning scattered creator assets into a ready-to-publish Week Pack with review, handoff, and media conversion inside one calm workflow.",
+          es: "Un espacio export-first para transformar assets dispersos en un Week Pack listo para publicar con revision, handoff y utilidad."
+        },
+        visibility: "public"
+      }
+    ],
+    links: [
+      {
+        id: "historical-demo",
+        kind: "live",
+        href: "https://creatorops.pages.dev/"
+      },
+      {
+        id: "repository",
+        kind: "repository",
+        href: "https://github.com/brenychstudio/CreatorOps"
+      }
+    ],
+    routes: [
+      {
+        surface: "work",
+        path: "/work/creatorops",
+        locales: [
+          "en",
+          "es"
+        ]
+      }
+    ],
+    media: [
+      {
+        id: "poster",
+        purpose: "poster",
+        asset: {
+          kind: "case-poster",
+          caseSlug: "creatorops"
+        },
+        alt: {
+          en: "CreatorOps workflow interface hero screen",
+          es: "Interfaz de producto CreatorOps para flujo de trabajo de creadores"
+        }
+      }
+    ],
+    review: {
+      lastReviewed: "2026-09-27",
+      owner: "studio-owner"
+    }
+  },
+  {
+    id: "living-atlas",
+    publicName: "Living Atlas",
+    aliases: [],
+    vertical: "product",
+    origin: "studio-product",
+    maturity: "pre-release",
+    deployment: "store-preparation",
+    commercialAvailability: "not-offered",
+    visibility: "public-unlisted",
+    copy: {
+      oneLiner: {
+        en: "Living Atlas is a local-first photographic memory tool for preserving place, visits and light context around your captures."
+      }
+    },
+    limitations: [
+      {
+        en: "App Store release in preparation"
+      }
+    ],
+    evidence: [],
+    links: [],
+    routes: [
+      {
+        surface: "trust",
+        path: "/living-atlas",
+        locales: [
+          "en"
+        ],
+        noIndex: true
+      },
+      {
+        surface: "trust",
+        path: "/living-atlas/privacy",
+        locales: [
+          "en"
+        ],
+        noIndex: true
+      },
+      {
+        surface: "trust",
+        path: "/living-atlas/support",
+        locales: [
+          "en"
+        ],
+        noIndex: true
+      }
+    ],
+    media: [],
+    review: {
+      lastReviewed: "2026-09-27",
+      owner: "studio-owner"
+    }
+  },
+  {
+    id: "whisper",
+    publicName: "WHISPER",
+    aliases: [
+      "Whisper XR"
+    ],
+    vertical: "spatial-interactive",
+    origin: "research",
+    maturity: "prototype",
+    deployment: "public-demo",
+    commercialAvailability: "reference-only",
+    visibility: "public-listed",
+    copy: {
+      oneLiner: {
+        en: "A cinematic web / XR exhibition system for photographic archives, spatial storytelling and collector-facing presentation.",
+        es: "Un sistema cinematográfico web / XR para archivos fotográficos, storytelling espacial y presentación orientada a coleccionistas."
+      }
+    },
+    limitations: [
+      {
+        en: "Public site, WebXR experience, Quest hand navigation, print catalog, and first AR print preview flow are working. Final XR polish, additional AR assets, and mobile/tablet refinements continue.",
+        es: "El sitio público, la experiencia WebXR, la navegación con manos en Quest, el catálogo de prints y el primer flujo de preview AR funcionan. El pulido XR final, recursos AR adicionales y refinamientos móvil/tablet siguen en curso."
+      }
+    ],
+    evidence: [
+      {
+        kind: "immersive-case",
+        slug: "whisper",
+        proves: {
+          en: "WHISPER proves how a photography archive can become a living digital exhibition surface through editorial web, WebXR, Quest VR proof, collector print paths and AR preview direction.",
+          es: "WHISPER demuestra cómo un archivo fotográfico puede convertirse en una superficie viva de exposición digital mediante web editorial, WebXR, prueba Quest VR, rutas de print para coleccionistas y dirección AR preview."
+        },
+        visibility: "public"
+      }
+    ],
+    links: [
+      {
+        id: "live-demo",
+        kind: "live",
+        href: "https://whisper-sg8.pages.dev/"
+      },
+      {
+        id: "repository",
+        kind: "repository",
+        href: "https://github.com/brenychstudio/Whisper"
+      }
+    ],
+    routes: [
+      {
+        surface: "immersive",
+        path: "/immersive/whisper",
+        locales: [
+          "en",
+          "es"
+        ]
+      }
+    ],
+    media: [
+      {
+        id: "poster",
+        purpose: "poster",
+        asset: {
+          kind: "immersive-poster",
+          immersiveSlug: "whisper"
+        },
+        alt: {
+          en: "WHISPER desktop hero",
+          es: "Hero de escritorio WHISPER"
+        }
+      }
+    ],
+    review: {
+      lastReviewed: "2026-09-27",
+      owner: "studio-owner"
+    }
+  },
+  {
+    id: "print-border-studio",
+    publicName: "Print Border Studio",
+    aliases: [],
+    vertical: "product",
+    origin: "studio-product",
+    maturity: "prototype",
+    deployment: "public-demo",
+    commercialAvailability: "adaptation-available",
+    visibility: "public-listed",
+    copy: {
+      oneLiner: {
+        en: "A creative production tool for print borders, export logic, artwork inspection and collector-facing presentation.",
+        es: "Una herramienta creativa para bordes de impresion, preview de obra, cola de trabajo, inspeccion y preparacion de export."
+      }
+    },
+    limitations: [],
+    evidence: [
+      {
+        kind: "work-case",
+        slug: "print-border-studio",
+        proves: {
+          en: "Print Border Studio proves how a specialist creative utility can combine precise production controls, artwork preview, queue logic and presentation value in one focused product interface.",
+          es: "Print Border Studio demuestra como una utilidad creativa especializada puede combinar precision de produccion, preview de artwork, logica de cola y valor de presentacion en una interfaz enfocada."
+        },
+        visibility: "public"
+      }
+    ],
+    links: [
+      {
+        id: "live-demo",
+        kind: "live",
+        href: "https://print-border-studio.pages.dev/"
+      },
+      {
+        id: "repository",
+        kind: "repository",
+        href: "https://github.com/brenychstudio/print-border-studio"
+      }
+    ],
+    routes: [
+      {
+        surface: "work",
+        path: "/work/print-border-studio",
+        locales: [
+          "en",
+          "es"
+        ]
+      }
+    ],
+    media: [
+      {
+        id: "poster",
+        purpose: "poster",
+        asset: {
+          kind: "case-poster",
+          caseSlug: "print-border-studio"
+        },
+        alt: {
+          en: "Print Border Studio poster cover",
+          es: "Herramienta Print Border Studio para preparacion de impresion"
+        }
+      }
+    ],
+    review: {
+      lastReviewed: "2026-09-27",
+      owner: "studio-owner"
+    }
   }
 ] as const satisfies readonly ProjectRecord[];
 

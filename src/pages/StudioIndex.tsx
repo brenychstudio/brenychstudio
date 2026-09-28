@@ -14,6 +14,7 @@ import { useSectionRailActive } from "../ui/useSectionRailActive";
 import { startSpaPageTransition } from "../ui/pageTransition";
 import EcosystemHero from "../ui/home/EcosystemHero";
 import EcosystemMap from "../ui/home/EcosystemMap";
+import HomeSignalSpine from "../ui/home/HomeSignalSpine";
 import EcosystemProducts from "../ui/home/EcosystemProducts";
 import EcosystemEvidence from "../ui/home/EcosystemEvidence";
 import EcosystemSpatial from "../ui/home/EcosystemSpatial";
@@ -132,6 +133,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
           buttonLabel={locale === "es" ? "Elegir capítulo" : "Choose chapter"} />
       </>}
       <main className="ecosystem-home relative z-10" lang={locale}>
+        {ready && <HomeSignalSpine locale={locale} />}
         <EcosystemHero locale={locale} onOpenProject={onOpenProject} />
         {ready ? <>
           <EcosystemMap locale={locale} navigate={navigate} />

@@ -5,56 +5,52 @@ import MobileMotionSection from "../mobile-motion/MobileMotionSection";
 import { useMobileMotion } from "../mobile-motion/useMobileMotion";
 import { homeCopy } from "./homeCopy";
 import { Arrow, HomeLink, HomeSection, SectionLabel, type HomeSectionProps } from "./HomePrimitives";
-import { copyPhase, copyStackHeight, homeSignalManual, manualCopyHeight, signalPathFromPressure, smoothPressure, territoryStops } from "./ecosystemFlow";
+import { copyPhase, copyStackHeight, signalPathFromPressure, signalThread, smoothPressure, smoothStep, territoryStops } from "./ecosystemFlow";
 
 const destinations = ["#products", "#research", "#worlds", "/work", "/immersive", "/offer"] as const;
 const settle = { duration: 0.64, ease: [0.22, 1, 0.36, 1] as const };
 const wrap = (index: number) => (index + destinations.length) % destinations.length;
 // The same clock includes the approach from Hero, the pinned field, and its exit.
+const boundaryDeadband = 0.012;
 
 function territoryAt(progress: number, current: number) {
   let next = current;
-  while (next < 5 && progress > (territoryStops[next] + territoryStops[next + 1]) / 2) next++;
-  while (next > 0 && progress < (territoryStops[next - 1] + territoryStops[next]) / 2) next--;
+  while (next < 5 && progress > (territoryStops[next] + territoryStops[next + 1]) / 2 + boundaryDeadband) next++;
+  while (next > 0 && progress < (territoryStops[next - 1] + territoryStops[next]) / 2 - boundaryDeadband) next--;
   return next;
 }
 
-function SignalPath({ lane, compact, progress, drawing }: {
-  lane: number; compact: boolean; progress: MotionValue<number>; drawing: MotionValue<number> | number;
+function SignalPath({ lane, compact, progress, drawing, primary = false }: {
+  lane: number; compact: boolean; progress: MotionValue<number>; drawing: MotionValue<number> | number; primary?: boolean;
 }) {
   const geometry = useTransform(progress, (value) => signalPathFromPressure(lane, smoothPressure(value), compact));
-  return <motion.path d={geometry} initial={false}
+  return <motion.path className={primary ? "eco-system-signal" : undefined} d={geometry} initial={false}
     style={{ pathLength: drawing }} stroke="currentColor" vectorEffect="non-scaling-stroke"
-    strokeWidth={lane === 6 ? 1.2 : 0.65}
-    strokeOpacity={lane === 6 ? 0.16 : 0.04 + (6 - Math.abs(lane - 6)) * 0.012} />;
+    strokeWidth={primary ? 2 : lane === 6 ? 1.6 : 0.65}
+    strokeOpacity={primary ? 0.32 : lane === 6 ? 0.5 : 0.07 + (6 - Math.abs(lane - 6)) * 0.019} />;
 }
 
-function CopyLayer({ title, description, index, active, weights }: {
-  title: string; description: string; index: number; active: boolean; weights: MotionValue<number[]>;
+function CopyLayer({ title, description, index, active, progress }: {
+  title: string; description: string; index: number; active: boolean; progress: MotionValue<number>;
 }) {
-  const opacity = useTransform(weights, (value) => value[index]);
+  const opacity = useTransform(progress, (value) => copyPhase(value, index).opacity);
   const detailOpacity = useTransform(opacity, (value) => value * value);
-  const y = useTransform(opacity, (value) => 5 * (1 - value));
+  const y = useTransform(progress, (value) => copyPhase(value, index).y);
   return <motion.div className="eco-territory-copy eco-territory-copy-layer" data-copy-index={index}
     aria-hidden={!active} style={{ opacity, y }}>
     <h3><TerritoryTitle title={title} /></h3><motion.p style={{ opacity: detailOpacity }}>{description}</motion.p>
   </motion.div>;
 }
 
-function DesktopCopy({ chambers, activeIndex, progress, focusIndex, focusHeight, weights, manualIndex, manualFrom, manualMix }: {
+function DesktopCopy({ chambers, activeIndex, progress, focusIndex }: {
   chambers: readonly (readonly [string, string])[]; activeIndex: number; progress: MotionValue<number>; focusIndex: number | null;
-  weights: MotionValue<number[]>; manualIndex: MotionValue<number>; manualFrom: MotionValue<number[]>; manualMix: MotionValue<number>;
-  focusHeight: number | null;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const heights = useMotionValue<number[]>([]);
   // Explicit keyboard focus holds the copy WITH its protected destination. This
   // is an accessibility hold, not another animated clock or a semantic trigger.
   const presentation = useTransform(progress, (value) => focusIndex === null ? value : territoryStops[focusIndex]);
-  const height = useTransform(() => focusIndex !== null
-    ? Math.max(focusHeight ?? 0, heights.get()[focusIndex] ?? 0)
-    : manualIndex.get() < 0 ? copyStackHeight(presentation.get(), heights.get())
-      : manualCopyHeight(heights.get(), manualFrom.get(), manualIndex.get(), manualMix.get()));
+  const height = useTransform(() => copyStackHeight(presentation.get(), heights.get()));
   useLayoutEffect(() => {
     const layers = Array.from(ref.current?.children ?? []) as HTMLElement[];
     const measure = () => heights.set(layers.map((layer) => layer.getBoundingClientRect().height));
@@ -65,8 +61,23 @@ function DesktopCopy({ chambers, activeIndex, progress, focusIndex, focusHeight,
   }, [chambers, heights]);
   return <motion.div ref={ref} className="eco-territory-copy-stack" style={{ height }}>
     {chambers.map(([title, description], index) => <CopyLayer key={index} title={title} description={description}
-      index={index} active={index === activeIndex} weights={weights} />)}
+      index={index} active={index === activeIndex} progress={presentation} />)}
   </motion.div>;
+}
+
+function PrimaryThread({ compact, extended, progress, x, endY }: {
+  compact: boolean; extended: boolean; progress: MotionValue<number>; x: MotionValue<number>; endY: number;
+}) {
+  const shape = useTransform(progress, (value) => signalThread(value, endY));
+  const geometry = useTransform(() => extended ? shape.get().path : signalPathFromPressure(6, smoothPressure(progress.get()), compact));
+  const drawing = useTransform(() => extended ? shape.get().drawing : 1);
+  const opacity = useTransform(progress, (value) => extended ? 0.32 * (0.3 + 0.7 * smoothStep(value / 0.3)) : 0.32);
+  return <motion.svg className="eco-system-thread" data-extended={extended} data-home-signal-exit="ecosystem"
+    viewBox={compact ? "0 0 600 720" : "0 0 1200 640"} preserveAspectRatio="none" fill="none" aria-hidden="true" style={{ x }}>
+    <motion.path className="eco-system-signal" d={geometry} initial={false}
+      style={{ pathLength: drawing, opacity }} stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+    {extended && <g data-home-signal-entry="products" transform={`translate(760 ${endY})`} />}
+  </motion.svg>;
 }
 
 function TerritoryTitle({ title }: { title: string }) {
@@ -78,18 +89,13 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   const copy = homeCopy[locale];
   const stageRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const [threadEndY, setThreadEndY] = useState(1400);
   const suppressOpenUntil = useRef(0);
   const selectionIndex = useRef(0);
   const manualTarget = useRef<number | null>(null);
-  const manualAnimation = useRef<ReturnType<typeof animate> | null>(null);
-  const manualIndex = useMotionValue(-1);
-  const manualFrom = useMotionValue([1, 0, 0, 0, 0, 0]);
-  const manualMix = useMotionValue(1);
-  const [visualMode, setVisualMode] = useState<"scroll" | "manual">("scroll");
   const [selection, setSelection] = useState({ index: 0, direction: 1 });
   const [announcement, setAnnouncement] = useState("");
   const [focusedCopy, setFocusedCopy] = useState<number | null>(null);
-  const [focusedHeight, setFocusedHeight] = useState<number | null>(null);
   const [input, setInput] = useState(() => ({ phone: window.matchMedia("(max-width: 767px)").matches, touch: window.matchMedia("(pointer: coarse)").matches, short: window.matchMedia("(max-height: 559px)").matches }));
   useEffect(() => {
     const phone = window.matchMedia("(max-width: 767px)");
@@ -113,26 +119,30 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   const rangeScale = useMotionValue(1);
   const boundedProgress = useTransform(() => Math.max(0, Math.min(1.4, scrollYProgress.get() * rangeScale.get())));
   useLayoutEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const measure = () => rangeScale.set((stage.offsetHeight + window.innerHeight) / Math.max(1, stage.offsetHeight));
+    const stage = stageRef.current, scene = sceneRef.current;
+    const field = scene?.querySelector<SVGSVGElement>(".eco-system-thread");
+    const products = document.querySelector<HTMLElement>(".eco-products-stage__timeline");
+    if (!stage || !scene || !field || !products) return;
+    const measure = () => {
+      const s = stage.getBoundingClientRect(), c = scene.getBoundingClientRect(), f = field.getBoundingClientRect();
+      rangeScale.set((s.height + window.innerHeight) / Math.max(1, s.height));
+      // Measure the field at its eventual sticky release, independent of current scroll.
+      const releasedTop = s.top + s.height - c.height + (f.top - c.top);
+      const destination = products.getBoundingClientRect().top + window.innerHeight * 0.28;
+      setThreadEndY(Math.max(1000, (destination - releasedTop) * 640 / Math.max(1, f.height)));
+    };
     const observer = new ResizeObserver(measure);
-    observer.observe(stage);
+    [stage, scene, field, products].forEach((element) => observer.observe(element));
     window.addEventListener("resize", measure);
     measure();
     return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
-  }, [rangeScale]);
+  }, [locale, rangeScale, scrollDriven]);
   // Overdamped and precise at unit progress scale: no overshoot or early rounding at boundaries.
   const scrollClock = useSpring(boundedProgress, { stiffness: 180, damping: 28, mass: 0.48, restDelta: 0.0001, restSpeed: 0.001 });
   // A persistent scene value follows the scroll clock without another smoothing stage.
   // Manual modes animate this same value from its current position, never a stale clock.
   const progress = useMotionValue(territoryStops[0]);
-  useMotionValueEvent(scrollClock, "change", (value) => { if (scrollDriven && manualTarget.current === null) progress.set(value); });
-  const weights = useTransform(() => {
-    if (focusedCopy !== null) return territoryStops.map((_, i) => Number(i === focusedCopy));
-    if (manualIndex.get() >= 0) return manualFrom.get().map((weight, i) => weight * (1 - manualMix.get()) + Number(i === manualIndex.get()) * manualMix.get());
-    return territoryStops.map((_, i) => copyPhase(progress.get(), i).opacity);
-  });
+  useMotionValueEvent(scrollClock, "change", (value) => { if (scrollDriven) progress.set(value); });
   const carrierDraw = useTransform(progress, [0, 0.32, 0.96, 1], [0.08, 0.42, 1, 1]);
   const coreScale = useTransform(progress, [0, 0.23, 0.3], [0.8, 0.98, 1]);
   const coreOpacity = useTransform(progress, [0, 0.2, 0.3], [0.12, 0.9, 1]);
@@ -148,7 +158,7 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   const dragRotate = useTransform(dragX, [-160, 0, 160], [-9, 0, 9]);
 
   const syncSelection = useCallback((value: number) => {
-    if (!scrollDriven || !sceneRef.current || manualTarget.current !== null) return;
+    if (!scrollDriven || !sceneRef.current) return;
     // Keep a keyboard user's destination mounted while it has focus.
     if (sceneRef.current.querySelector(".eco-territory-content")?.contains(document.activeElement)) return;
     const next = territoryAt(value, selectionIndex.current);
@@ -159,62 +169,36 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   }, [scrollDriven]);
   useMotionValueEvent(progress, "change", (value) => {
     syncSelection(value);
-
+    if (manualTarget.current !== null && Math.abs(value - territoryStops[manualTarget.current]) < 0.0005) manualTarget.current = null;
   });
 
-  useMotionValueEvent(manualMix, "change", (mix) => {
-    const target = manualTarget.current;
-    if (target === null) return;
-    homeSignalManual({ phase: "mix", mix });
-    const blend = manualFrom.get().map((weight, i) => weight * (1 - mix) + Number(i === target) * mix);
-    const next = blend.reduce((winner, weight, i) => weight > blend[winner] ? i : winner, selectionIndex.current);
-    if (next === selectionIndex.current) return;
-    const direction = next >= selectionIndex.current ? 1 : -1;
-    selectionIndex.current = next;
-    setSelection({ index: next, direction });
-  });
-  const cancelManual = useCallback(() => {
-    if (manualTarget.current === null) return;
-    manualAnimation.current?.stop();
-    homeSignalManual({ phase: "release" });
-    manualTarget.current = null;
-    manualIndex.set(-1);
-    setVisualMode("scroll");
-    const rect = stageRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const actual = Math.max(0, Math.min(1.4, (window.innerHeight - rect.top) / rect.height));
-    scrollClock.jump(actual);
-    progress.set(actual);
-    syncSelection(actual);
-  }, [manualIndex, progress, scrollClock, syncSelection]);
   useEffect(() => {
+    const cancelRequest = () => { manualTarget.current = null; };
     const inNavigation = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest(".eco-territory-navigation"));
     const onKey = (event: globalThis.KeyboardEvent) => {
-      if (!event.defaultPrevented && !(inNavigation(event.target) && ["Enter", " ", "ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key))) cancelManual();
+      if (!event.defaultPrevented && !(inNavigation(event.target) && (event.key === "Enter" || event.key === " "))) cancelRequest();
     };
-    const isCopyLink = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest(".eco-territory-link"));
-    const onPointer = (event: PointerEvent) => { if (!inNavigation(event.target) && !isCopyLink(event.target)) cancelManual(); };
-    const onTouch = (event: TouchEvent) => { if (!inNavigation(event.target) && !isCopyLink(event.target)) cancelManual(); };
-    const onScroll = () => {
+    const onPointer = (event: PointerEvent) => { if (!inNavigation(event.target)) cancelRequest(); };
+    const onScrollEnd = () => {
       const stage = stageRef.current;
       if (manualTarget.current === null || !stage) return;
       const rect = stage.getBoundingClientRect();
-      if (Math.abs((window.innerHeight - rect.top) / rect.height - territoryStops[manualTarget.current]) > 0.002) cancelManual();
+      const actual = (window.innerHeight - rect.top) / rect.height;
+      if (Math.abs(actual - territoryStops[manualTarget.current]) > 0.002) cancelRequest();
     };
-    window.addEventListener("wheel", cancelManual, { passive: true });
-    window.addEventListener("touchstart", onTouch, { passive: true });
+    window.addEventListener("wheel", cancelRequest, { passive: true });
+    window.addEventListener("touchstart", cancelRequest, { passive: true });
     window.addEventListener("keydown", onKey);
     window.addEventListener("pointerdown", onPointer, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scrollend", onScrollEnd);
     return () => {
-      window.removeEventListener("wheel", cancelManual);
-      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("wheel", cancelRequest);
+      window.removeEventListener("touchstart", cancelRequest);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("pointerdown", onPointer);
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scrollend", onScrollEnd);
     };
-  }, [cancelManual]);
-  useEffect(() => () => manualAnimation.current?.stop(), []);
+  }, []);
 
   const scrollToTerritory = useCallback((index: number, behavior: ScrollBehavior) => {
     const stage = stageRef.current;
@@ -226,17 +210,13 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   // Reconcile a touch selection with the new timeline when the layout crosses 1024px.
   useLayoutEffect(() => {
     if (scrollDriven) {
-      if (manualTarget.current === null) progress.set(scrollClock.get());
+      progress.set(scrollClock.get());
       return;
     }
-    manualAnimation.current?.stop();
-    homeSignalManual({ phase: "release" });
     manualTarget.current = null;
-    manualIndex.set(-1);
-    setVisualMode("scroll");
     const animation = animate(progress, territoryStops[activeIndex], reducedMotion ? { duration: 0 } : settle);
     return () => animation.stop();
-  }, [activeIndex, reducedMotion, scrollDriven, progress, scrollClock, manualIndex]);
+  }, [activeIndex, reducedMotion, scrollDriven, progress, scrollClock]);
 
   useEffect(() => {
     if (!scrollDriven) return;
@@ -252,31 +232,8 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   function select(index: number, nextDirection = index >= activeIndex ? 1 : -1) {
     const next = wrap(index);
     if (scrollDriven) {
-      // Capture the current blend before changing document position. Only these
-      // outgoing weights and the requested destination participate in this take.
-      const from = weights.get().slice();
-      manualAnimation.current?.stop();
-      homeSignalManual({ phase: "capture" });
       manualTarget.current = next;
-      manualFrom.set(from);
-      manualMix.set(0);
-      manualIndex.set(next);
-      setVisualMode("manual");
-      scrollToTerritory(next, "instant");
-      scrollClock.jump(territoryStops[next]);
-      progress.set(territoryStops[next]);
-      manualAnimation.current = animate(manualMix, 1, {
-        duration: 0.78, ease: [0.4, 0, 0.2, 1],
-        onComplete: () => {
-          if (manualTarget.current !== next) return;
-          selectionIndex.current = next;
-          setSelection({ index: next, direction: nextDirection });
-          manualTarget.current = null;
-          homeSignalManual({ phase: "release" });
-          manualIndex.set(-1);
-          setVisualMode("scroll");
-        },
-      });
+      scrollToTerritory(next, "smooth");
     }
     else {
       selectionIndex.current = next;
@@ -318,7 +275,7 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
 
   return <HomeSection id="ecosystem" className="eco-system">
     <div ref={stageRef} className="eco-system-stage">
-      <div ref={sceneRef} className="eco-system-scene" data-active-index={activeIndex} data-visual-mode={visualMode}
+      <div ref={sceneRef} className="eco-system-scene" data-active-index={activeIndex}
         onPointerMove={onPointerMove} onPointerLeave={() => { pointerX.set(0); pointerY.set(0); }}>
         <header className="eco-system-heading">
           <SectionLabel number="02">{copy.index}</SectionLabel>
@@ -333,7 +290,8 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
                   progress={progress} drawing={scrollDriven ? carrierDraw : 1} />)}
               </svg>
             </motion.div>
-            <motion.div className="eco-system-origin" data-home-signal-anchor="ecosystem-core" style={reducedMotion ? undefined : { x: depthX, y: depthY }}>
+            <PrimaryThread compact={input.phone} extended={scrollDriven} progress={progress} x={fieldX} endY={threadEndY} />
+            <motion.div className="eco-system-origin" style={reducedMotion ? undefined : { x: depthX, y: depthY }}>
               <motion.div className="eco-system-mark" style={scrollDriven ? { scale: coreScale, opacity: coreOpacity } : undefined}>
                 <img src="/brand/brenych-monogram.png" width="404" height="427" alt="Brenych Studio" decoding="async" draggable="false" />
               </motion.div>
@@ -348,24 +306,13 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
                 style={{ x: dragX, rotateY: reducedMotion ? 0 : dragRotate, touchAction: "pan-y" }}
                 onClickCapture={(event) => { if (Date.now() < suppressOpenUntil.current) { event.preventDefault(); event.stopPropagation(); } }}>
                 <div className="eco-territory-meta"><span className="eco-territory-count">0{activeIndex + 1}<span> / 06</span></span><span className="eco-territory-instruction">{isMobile ? controls.swipe : copy.chamberHint}</span></div>
-                <div className="eco-territory-content" onFocusCapture={(event) => {
-                  // Pointer focus must protect the destination that was visible
-                  // on pointerdown, before the browser dispatches its click.
-                  setFocusedCopy(selectionIndex.current);
-                  setFocusedHeight(event.currentTarget.querySelector(".eco-territory-copy-stack")?.getBoundingClientRect().height ?? null);
-                  manualAnimation.current?.stop();
-                  manualTarget.current = null;
-                  manualIndex.set(-1);
-                  setVisualMode("scroll");
-                  homeSignalManual({ phase: "release" });
-                }}
+                <div className="eco-territory-content" onFocusCapture={() => setFocusedCopy(selectionIndex.current)}
                   onBlur={() => requestAnimationFrame(() => {
                     if (sceneRef.current?.querySelector(".eco-territory-content")?.contains(document.activeElement)) return;
                     setFocusedCopy(null);
-                    setFocusedHeight(null);
                     syncSelection(progress.get());
                   })}>
-                  {scrollDriven ? <DesktopCopy chambers={copy.chambers} activeIndex={activeIndex} progress={progress} focusIndex={focusedCopy} focusHeight={focusedHeight} weights={weights} manualIndex={manualIndex} manualFrom={manualFrom} manualMix={manualMix} />
+                  {scrollDriven ? <DesktopCopy chambers={copy.chambers} activeIndex={activeIndex} progress={progress} focusIndex={focusedCopy} />
                     : <motion.div key={`${locale}-${activeIndex}`} className="eco-territory-copy" custom={direction}
                     variants={{
                       enter: (way: number) => ({ opacity: 0, x: reducedMotion ? 0 : way * (isMobile ? 38 : 0), y: reducedMotion || isMobile ? 0 : 8, rotateY: reducedMotion || !isMobile ? 0 : way * 7, rotateZ: reducedMotion || !isMobile ? 0 : way * 1.5 }),

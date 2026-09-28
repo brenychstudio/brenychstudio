@@ -5,12 +5,12 @@ import MobileMotionSection from "../mobile-motion/MobileMotionSection";
 import { useMobileMotion } from "../mobile-motion/useMobileMotion";
 import { homeCopy } from "./homeCopy";
 import { Arrow, HomeLink, HomeSection, SectionLabel, type HomeSectionProps } from "./HomePrimitives";
+import { copyPhase, copyStackHeight, signalPathFromPressure, signalThread, smoothPressure, smoothStep, territoryStops } from "./ecosystemFlow";
 
 const destinations = ["#products", "#research", "#worlds", "/work", "/immersive", "/offer"] as const;
 const settle = { duration: 0.64, ease: [0.22, 1, 0.36, 1] as const };
 const wrap = (index: number) => (index + destinations.length) % destinations.length;
 // The same clock includes the approach from Hero, the pinned field, and its exit.
-const territoryStops = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
 const boundaryDeadband = 0.012;
 
 function territoryAt(progress: number, current: number) {
@@ -20,22 +20,64 @@ function territoryAt(progress: number, current: number) {
   return next;
 }
 
-// Continuous carriers fold through the brand origin; each territory changes their pressure.
-function signalPath(lane: number, territory: number, compact: boolean) {
-  const d = lane - 6;
-  const pressure = [0, 42, -34, 24, -50, 8][territory];
-  if (compact) return `M${-100 + d * 9} -60 C${80 + d * 8} ${40 + pressure} ${180 + d * 3} ${168 + d * 5} 300 ${168 + d * 4} C${450 + d * 4} ${168 + d * 4} ${540 + d * 10} ${320 + pressure} ${490 + d * 7} 420 S${210 + d * 10} 600 ${420 + d * 7} 760`;
-  return `M-140 ${56 + d * 17} C${80 + d * 10} ${30 + pressure + d * 14} ${85 + d * 8} ${316 + d * 5} 324 ${316 + d * 4} C${520 + d * 8} ${316 + d * 4} ${438 + d * 8} ${568 + pressure + d * 10} 730 ${548 + pressure + d * 9} S1100 ${384 + pressure + d * 13} 1360 ${460 + d * 20}`;
-}
-
 function SignalPath({ lane, compact, progress, drawing, primary = false }: {
   lane: number; compact: boolean; progress: MotionValue<number>; drawing: MotionValue<number> | number; primary?: boolean;
 }) {
-  const geometry = useTransform(progress, territoryStops, territoryStops.map((_, index) => signalPath(lane, index, compact)));
+  const geometry = useTransform(progress, (value) => signalPathFromPressure(lane, smoothPressure(value), compact));
   return <motion.path className={primary ? "eco-system-signal" : undefined} d={geometry} initial={false}
     style={{ pathLength: drawing }} stroke="currentColor" vectorEffect="non-scaling-stroke"
     strokeWidth={primary ? 2 : lane === 6 ? 1.6 : 0.65}
     strokeOpacity={primary ? 0.32 : lane === 6 ? 0.5 : 0.07 + (6 - Math.abs(lane - 6)) * 0.019} />;
+}
+
+function CopyLayer({ title, description, index, active, progress }: {
+  title: string; description: string; index: number; active: boolean; progress: MotionValue<number>;
+}) {
+  const opacity = useTransform(progress, (value) => copyPhase(value, index).opacity);
+  const detailOpacity = useTransform(opacity, (value) => value * value);
+  const y = useTransform(progress, (value) => copyPhase(value, index).y);
+  return <motion.div className="eco-territory-copy eco-territory-copy-layer" data-copy-index={index}
+    aria-hidden={!active} style={{ opacity, y }}>
+    <h3><TerritoryTitle title={title} /></h3><motion.p style={{ opacity: detailOpacity }}>{description}</motion.p>
+  </motion.div>;
+}
+
+function DesktopCopy({ chambers, activeIndex, progress, focusIndex }: {
+  chambers: readonly (readonly [string, string])[]; activeIndex: number; progress: MotionValue<number>; focusIndex: number | null;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const heights = useMotionValue<number[]>([]);
+  // Explicit keyboard focus holds the copy WITH its protected destination. This
+  // is an accessibility hold, not another animated clock or a semantic trigger.
+  const presentation = useTransform(progress, (value) => focusIndex === null ? value : territoryStops[focusIndex]);
+  const height = useTransform(() => copyStackHeight(presentation.get(), heights.get()));
+  useLayoutEffect(() => {
+    const layers = Array.from(ref.current?.children ?? []) as HTMLElement[];
+    const measure = () => heights.set(layers.map((layer) => layer.getBoundingClientRect().height));
+    const observer = new ResizeObserver(measure);
+    layers.forEach((layer) => observer.observe(layer));
+    measure();
+    return () => observer.disconnect();
+  }, [chambers, heights]);
+  return <motion.div ref={ref} className="eco-territory-copy-stack" style={{ height }}>
+    {chambers.map(([title, description], index) => <CopyLayer key={index} title={title} description={description}
+      index={index} active={index === activeIndex} progress={presentation} />)}
+  </motion.div>;
+}
+
+function PrimaryThread({ compact, extended, progress, x, endY }: {
+  compact: boolean; extended: boolean; progress: MotionValue<number>; x: MotionValue<number>; endY: number;
+}) {
+  const shape = useTransform(progress, (value) => signalThread(value, endY));
+  const geometry = useTransform(() => extended ? shape.get().path : signalPathFromPressure(6, smoothPressure(progress.get()), compact));
+  const drawing = useTransform(() => extended ? shape.get().drawing : 1);
+  const opacity = useTransform(progress, (value) => extended ? 0.32 * (0.3 + 0.7 * smoothStep(value / 0.3)) : 0.32);
+  return <motion.svg className="eco-system-thread" data-extended={extended} data-home-signal-exit="ecosystem"
+    viewBox={compact ? "0 0 600 720" : "0 0 1200 640"} preserveAspectRatio="none" fill="none" aria-hidden="true" style={{ x }}>
+    <motion.path className="eco-system-signal" d={geometry} initial={false}
+      style={{ pathLength: drawing, opacity }} stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+    {extended && <g data-home-signal-entry="products" transform={`translate(760 ${endY})`} />}
+  </motion.svg>;
 }
 
 function TerritoryTitle({ title }: { title: string }) {
@@ -47,11 +89,13 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   const copy = homeCopy[locale];
   const stageRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const [threadEndY, setThreadEndY] = useState(1400);
   const suppressOpenUntil = useRef(0);
   const selectionIndex = useRef(0);
   const manualTarget = useRef<number | null>(null);
   const [selection, setSelection] = useState({ index: 0, direction: 1 });
   const [announcement, setAnnouncement] = useState("");
+  const [focusedCopy, setFocusedCopy] = useState<number | null>(null);
   const [input, setInput] = useState(() => ({ phone: window.matchMedia("(max-width: 767px)").matches, touch: window.matchMedia("(pointer: coarse)").matches, short: window.matchMedia("(max-height: 559px)").matches }));
   useEffect(() => {
     const phone = window.matchMedia("(max-width: 767px)");
@@ -69,15 +113,36 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
   const { index: activeIndex, direction } = selection;
   const title = copy.chambers[activeIndex][0];
   const destination = destinations[activeIndex];
-  const { scrollYProgress } = useScroll({ target: stageRef, offset: ["start end", "end end"] });
-  const boundedProgress = useTransform(scrollYProgress, (value) => Math.max(0, Math.min(1, value)));
+  // Extend the same measured clock past the sticky release into early Products.
+  // Scaling preserves the original canonical territory positions and scroll inverse.
+  const { scrollYProgress } = useScroll({ target: stageRef, offset: ["start end", "end start"] });
+  const rangeScale = useMotionValue(1);
+  const boundedProgress = useTransform(() => Math.max(0, Math.min(1.4, scrollYProgress.get() * rangeScale.get())));
+  useLayoutEffect(() => {
+    const stage = stageRef.current, scene = sceneRef.current;
+    const field = scene?.querySelector<SVGSVGElement>(".eco-system-thread");
+    const products = document.querySelector<HTMLElement>(".eco-products-stage__timeline");
+    if (!stage || !scene || !field || !products) return;
+    const measure = () => {
+      const s = stage.getBoundingClientRect(), c = scene.getBoundingClientRect(), f = field.getBoundingClientRect();
+      rangeScale.set((s.height + window.innerHeight) / Math.max(1, s.height));
+      // Measure the field at its eventual sticky release, independent of current scroll.
+      const releasedTop = s.top + s.height - c.height + (f.top - c.top);
+      const destination = products.getBoundingClientRect().top + window.innerHeight * 0.28;
+      setThreadEndY(Math.max(1000, (destination - releasedTop) * 640 / Math.max(1, f.height)));
+    };
+    const observer = new ResizeObserver(measure);
+    [stage, scene, field, products].forEach((element) => observer.observe(element));
+    window.addEventListener("resize", measure);
+    measure();
+    return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
+  }, [locale, rangeScale, scrollDriven]);
   // Overdamped and precise at unit progress scale: no overshoot or early rounding at boundaries.
   const scrollClock = useSpring(boundedProgress, { stiffness: 180, damping: 28, mass: 0.48, restDelta: 0.0001, restSpeed: 0.001 });
   // A persistent scene value follows the scroll clock without another smoothing stage.
   // Manual modes animate this same value from its current position, never a stale clock.
   const progress = useMotionValue(territoryStops[0]);
   useMotionValueEvent(scrollClock, "change", (value) => { if (scrollDriven) progress.set(value); });
-  const draw = useTransform(progress, [0, 0.3, ...territoryStops, 1], [0.03, 0.18, 0.24, 0.37, 0.51, 0.66, 0.8, 0.94, 1]);
   const carrierDraw = useTransform(progress, [0, 0.32, 0.96, 1], [0.08, 0.42, 1, 1]);
   const coreScale = useTransform(progress, [0, 0.23, 0.3], [0.8, 0.98, 1]);
   const coreOpacity = useTransform(progress, [0, 0.2, 0.3], [0.12, 0.9, 1]);
@@ -223,9 +288,9 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
               <svg viewBox={input.phone ? "0 0 600 720" : "0 0 1200 640"} preserveAspectRatio="none" fill="none">
                 {Array.from({ length: 13 }, (_, lane) => <SignalPath key={lane} lane={lane} compact={input.phone}
                   progress={progress} drawing={scrollDriven ? carrierDraw : 1} />)}
-                <SignalPath lane={6} primary compact={input.phone} progress={progress} drawing={scrollDriven ? draw : 1} />
               </svg>
             </motion.div>
+            <PrimaryThread compact={input.phone} extended={scrollDriven} progress={progress} x={fieldX} endY={threadEndY} />
             <motion.div className="eco-system-origin" style={reducedMotion ? undefined : { x: depthX, y: depthY }}>
               <motion.div className="eco-system-mark" style={scrollDriven ? { scale: coreScale, opacity: coreOpacity } : undefined}>
                 <img src="/brand/brenych-monogram.png" width="404" height="427" alt="Brenych Studio" decoding="async" draggable="false" />
@@ -241,14 +306,20 @@ export default function EcosystemMap({ locale, navigate }: HomeSectionProps) {
                 style={{ x: dragX, rotateY: reducedMotion ? 0 : dragRotate, touchAction: "pan-y" }}
                 onClickCapture={(event) => { if (Date.now() < suppressOpenUntil.current) { event.preventDefault(); event.stopPropagation(); } }}>
                 <div className="eco-territory-meta"><span className="eco-territory-count">0{activeIndex + 1}<span> / 06</span></span><span className="eco-territory-instruction">{isMobile ? controls.swipe : copy.chamberHint}</span></div>
-                <div className="eco-territory-content" onBlur={() => requestAnimationFrame(() => syncSelection(progress.get()))}>
-                  <motion.div key={`${locale}-${activeIndex}`} className="eco-territory-copy" custom={direction}
+                <div className="eco-territory-content" onFocusCapture={() => setFocusedCopy(selectionIndex.current)}
+                  onBlur={() => requestAnimationFrame(() => {
+                    if (sceneRef.current?.querySelector(".eco-territory-content")?.contains(document.activeElement)) return;
+                    setFocusedCopy(null);
+                    syncSelection(progress.get());
+                  })}>
+                  {scrollDriven ? <DesktopCopy chambers={copy.chambers} activeIndex={activeIndex} progress={progress} focusIndex={focusedCopy} />
+                    : <motion.div key={`${locale}-${activeIndex}`} className="eco-territory-copy" custom={direction}
                     variants={{
                       enter: (way: number) => ({ opacity: 0, x: reducedMotion ? 0 : way * (isMobile ? 38 : 0), y: reducedMotion || isMobile ? 0 : 8, rotateY: reducedMotion || !isMobile ? 0 : way * 7, rotateZ: reducedMotion || !isMobile ? 0 : way * 1.5 }),
                       active: { opacity: 1, x: 0, y: 0, rotateY: 0, rotateZ: 0 },
                     }} initial="enter" animate="active" transition={transition}>
                     <h3><TerritoryTitle title={title} /></h3><p>{copy.chambers[activeIndex][1]}</p>
-                  </motion.div>
+                  </motion.div>}
                     {destination.startsWith("#") ? <a href={destination} className="eco-territory-link">{copy.chamberHint}<Arrow /></a>
                       : <HomeLink href={getLocalizedPath(destination, locale)} navigate={navigate} className="eco-territory-link">{copy.chamberHint}<Arrow /></HomeLink>}
                 </div>

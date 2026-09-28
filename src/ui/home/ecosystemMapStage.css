@@ -11,6 +11,9 @@
 .eco-system-composition { position:relative; min-height:545px; isolation:isolate; }
 .eco-system-field { position:absolute; inset:-38px -20px -46px; z-index:-1; overflow:hidden; pointer-events:none; mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent); }
 .eco-system-field svg { width:100%; height:100%; overflow:visible; }
+.eco-system-thread { position:absolute; inset:-38px -20px -46px; width:calc(100% + 40px); max-width:none; height:calc(100% + 84px); z-index:-1; pointer-events:none; overflow:hidden; color:var(--system-ink); }
+.eco-territory-copy-stack { position:relative; width:100%; }
+.eco-territory-copy-layer { position:absolute; inset:0 0 auto; display:flow-root; pointer-events:none; }
 .eco-system-origin { position:relative; display:flex; flex-direction:column; align-items:center; padding-top:43px; pointer-events:none; }
 .eco-system-mark { width:126px; filter:drop-shadow(0 16px 14px rgb(0 0 0 / .08)); }
 .eco-system-mark img { display:block; width:100%; height:auto; user-select:none; }
@@ -85,6 +88,7 @@
   .eco-territory-content { min-height:218px; }
   .eco-territory-ghost { inset:auto 2px -41px 36px; min-height:85px; padding:22px 24px 13px; align-items:flex-end; color:#71756e; font-size:10px; transform:rotate(3deg); }
   .eco-system-field { inset:-10px -32px -20px; opacity:.8; }
+  .eco-system-thread { inset:-10px -32px -20px; width:calc(100% + 64px); height:calc(100% + 30px); }
   .eco-territory-navigation { margin-top:0; gap:34px; }
   .eco-territory-step { min-width:90px; }
   .eco-territory-pagination button { width:48px; }
@@ -102,6 +106,8 @@
   .eco-system-reveal { flex:1; min-height:0; }
   .eco-system-composition { display:grid; grid-template-columns:43% minmax(0,1fr); align-items:center; height:100%; min-height:0; }
   .eco-system-field { inset:-12% -9% -10%; mask-image:linear-gradient(90deg,transparent,#000 12%,#000 89%,transparent); }
+  .eco-system-thread { inset:-12% -9% -10%; width:118%; height:122%; }
+  .eco-system-thread[data-extended="true"] { overflow:visible; clip-path:inset(-100px 0 -2400px); }
   .eco-system-origin { padding:0 0 12px; align-self:center; }
   .eco-system-mark { width:clamp(170px,15vw,260px); }
   .eco-system-origin-caption { font-size:9px; margin-top:28px; }

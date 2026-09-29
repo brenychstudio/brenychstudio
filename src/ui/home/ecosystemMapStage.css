@@ -11,6 +11,11 @@
 .eco-system-composition { position:relative; min-height:545px; isolation:isolate; }
 .eco-system-field { position:absolute; inset:-38px -20px -46px; z-index:-1; overflow:hidden; pointer-events:none; mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent); }
 .eco-system-field svg { width:100%; height:100%; overflow:visible; }
+/* Persistent desktop layers share intrinsic title/description rows. Hidden
+   copies reserve the largest text without measurement or per-frame layout. */
+.eco-territory-copy-stack { display:grid; grid-template-rows:auto auto; width:100%; }
+.eco-territory-copy-layer { grid-column:1; grid-row:1 / 3; display:grid; grid-template-rows:subgrid; min-width:0; pointer-events:none; }
+.eco-territory-copy-layer:not([data-copy-index="0"]) { opacity:0; }
 .eco-system-origin { position:relative; display:flex; flex-direction:column; align-items:center; padding-top:43px; pointer-events:none; }
 .eco-system-mark { width:126px; filter:drop-shadow(0 16px 14px rgb(0 0 0 / .08)); }
 .eco-system-mark img { display:block; width:100%; height:auto; user-select:none; }
@@ -102,6 +107,9 @@
   .eco-system-reveal { flex:1; min-height:0; }
   .eco-system-composition { display:grid; grid-template-columns:43% minmax(0,1fr); align-items:center; height:100%; min-height:0; }
   .eco-system-field { inset:-12% -9% -10%; mask-image:linear-gradient(90deg,transparent,#000 12%,#000 89%,transparent); }
+  /* Keep the original left fade in SVG coordinates; allow only right overflow
+     to reach the page's existing viewport clip without resizing the field. */
+  .eco-system-field[data-scroll-driven="true"] { mask-image:none; overflow:visible; clip-path:inset(0 -100vw 0 0); }
   .eco-system-origin { padding:0 0 12px; align-self:center; }
   .eco-system-mark { width:clamp(170px,15vw,260px); }
   .eco-system-origin-caption { font-size:9px; margin-top:28px; }

@@ -56,6 +56,8 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
   const { playRole, setScene, stopAmbient } = useSound();
   const groups = getEcosystemHomeProjects();
   const [spatialDarkActive, setSpatialDarkActive] = useState(false);
+  const [productDarkActive, setProductDarkActive] = useState(false);
+  const darkChromeActive = spatialDarkActive || productDarkActive;
   const railItems = useMemo<SectionRailItem[]>(() => locale === "es" ? [
     { id: "opening", index: "01", label: "Señal" },
     { id: "ecosystem", index: "02", label: "Ecosistema" },
@@ -85,7 +87,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
     return () => window.cancelAnimationFrame(frame);
   }, [ready]);
 
-  // Preserve Home's adaptive header/dock chrome over the dark spatial surface.
+  // Preserve the Spatial contract and include active product environments.
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -94,16 +96,33 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
       const active = Boolean(rect && rect.top <= 76 && rect.bottom >= Math.max(76, window.innerHeight - 150));
       document.documentElement.dataset.studioWhisperChrome = active ? "active" : "inactive";
       setSpatialDarkActive(active);
+      const productActive = Array.from(document.querySelectorAll<HTMLElement>('[data-home-dark-chrome="active"]'))
+        .some((element) => {
+          const productRect = element.getBoundingClientRect();
+          return productRect.top <= 76 && productRect.bottom >= Math.max(76, window.innerHeight - 150);
+        });
+      document.documentElement.dataset.homeProductChrome = productActive ? "active" : "inactive";
+      setProductDarkActive(productActive);
     };
     const requestUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
+    // Focus can switch products without producing a scroll event.
+    const observer = new MutationObserver(requestUpdate);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-home-dark-chrome"],
+    });
     requestUpdate();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
+      observer.disconnect();
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
       delete document.documentElement.dataset.studioWhisperChrome;
+      delete document.documentElement.dataset.homeProductChrome;
     };
   }, [ready]);
 
@@ -125,9 +144,9 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
       {ready && <>
         <SectionRail items={railItems} activeId={activeId} onSelect={selectSection}
           label={locale === "es" ? "Secciones de inicio" : "Home chapters"}
-          tone={spatialDarkActive ? "dark" : "light"} className="home-section-rail" />
+          tone={darkChromeActive ? "dark" : "light"} className="home-section-rail" />
         <HomeChapterNavigation items={railItems} activeId={activeId} onSelect={selectSection}
-          tone={spatialDarkActive ? "dark" : "light"}
+          tone={darkChromeActive ? "dark" : "light"}
           label={locale === "es" ? "Secciones de inicio" : "Home chapters"}
           buttonLabel={locale === "es" ? "Elegir capítulo" : "Choose chapter"} />
       </>}

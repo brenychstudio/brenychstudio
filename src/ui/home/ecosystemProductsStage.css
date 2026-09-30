@@ -226,3 +226,294 @@
   .ecosystem-home .eco-products-stage__project,
   .ecosystem-home .eco-products-stage__image { transition: none !important; transform: none !important; }
 }
+
+/* Weekfield is a full stage environment; the original product frame stays intact
+   below 1024px and for Print Border at every width. */
+@media (min-width: 1024px) {
+  /* Paint the reserved root scrollbar gutter as part of the active environment. */
+  html[data-home-product-chrome="active"] {
+    background-color: #0d0f0e;
+    scrollbar-color: #68716b #0d0f0e;
+  }
+  .ecosystem-home .eco-products-stage { --weekfield-inset: clamp(50px, 3.9vw, 80px); }
+  .ecosystem-home .eco-products-threshold {
+    position: relative;
+    left: calc(-1 * var(--weekfield-inset));
+    width: 100vw;
+    height: 22svh;
+    /* The environment reaches 76px above the original composition. */
+    margin-bottom: 76px;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+      rgba(247, 246, 241, 0) 0%,
+      rgba(221, 221, 217, 0.78) 19%,
+      #a1a3a1 39%,
+      #626563 59%,
+      #303431 77%,
+      #202421 87%,
+      #0d0f0e 100%);
+  }
+  .ecosystem-home .eco-products-stage__project--weekfield {
+    --weekfield-content-inset: clamp(78px, 5.5vw, 126px);
+    position: relative;
+    min-height: calc(100svh - 76px);
+    border: 0;
+    padding: 0;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project--weekfield {
+    display: block;
+    min-height: 0;
+    transform: none;
+  }
+  .ecosystem-home .weekfield-environment {
+    position: relative;
+    left: calc(-1 * var(--weekfield-inset));
+    width: 100vw;
+    height: 100svh;
+    margin-top: -76px;
+    padding-top: 76px;
+    background: #0d0f0e;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .weekfield-environment {
+    position: absolute;
+    top: calc(50% - 38px);
+    margin-top: 0;
+    transform: translateY(-50%);
+  }
+  /* Preserve the approved cover's geometry inside the full viewport surface. */
+  .ecosystem-home .weekfield-cover {
+    position: relative;
+    width: calc(100vw - 188px);
+    height: calc(100svh - 76px);
+    min-height: 620px;
+    color: #e9eae6;
+    background: #0d0f0e;
+    overflow: clip;
+    isolation: isolate;
+  }
+  .ecosystem-home .weekfield-cover__ambient {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 76% 53%, rgba(137, 154, 166, 0.14), transparent 60%), linear-gradient(125deg, #181b19 0%, transparent 52%);
+  }
+  .ecosystem-home .weekfield-cover::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: var(--weekfield-inset);
+    width: 1px;
+    background: linear-gradient(transparent 9%, rgba(218, 226, 222, 0.09) 9%, rgba(218, 226, 222, 0.09) 95%, transparent 95%);
+    pointer-events: none;
+  }
+  .ecosystem-home .weekfield-cover__edition {
+    position: absolute;
+    top: 10%;
+    right: 3.4%;
+    left: var(--weekfield-inset);
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(223, 230, 226, 0.2);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .ecosystem-home .weekfield-cover__edition > span:nth-child(2),
+  .ecosystem-home .weekfield-cover__muted { color: #89908d; }
+  .ecosystem-home .weekfield-cover__edition .eco-project-signal {
+    margin: 0 0 0 auto;
+    color: #c1c8c3;
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+  .ecosystem-home .weekfield-cover__identity {
+    position: absolute;
+    z-index: 2;
+    top: 17%;
+    left: var(--weekfield-content-inset);
+    pointer-events: none;
+  }
+  .ecosystem-home .weekfield-cover__identity h3 {
+    margin: 0;
+    font-size: clamp(70px, 6.7vw, 148px);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+  }
+  .ecosystem-home .weekfield-cover__descriptor {
+    margin: clamp(36px, 6svh, 76px) 0 0;
+    font-size: clamp(24px, 2vw, 42px);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+    color: #cad0cb;
+  }
+  .ecosystem-home .weekfield-cover__detail {
+    display: grid;
+    gap: 15px;
+    width: clamp(210px, 18.3vw, 310px);
+    margin: clamp(32px, 3.6svh, 48px) 0 0;
+    padding: 22px 0 0;
+    border-top: 1px solid #67716e;
+    list-style: none;
+    font-size: clamp(15px, 1.15vw, 18px);
+    line-height: 1.4;
+    color: #c1c9c3;
+  }
+  .ecosystem-home .weekfield-cover__detail-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: clamp(11px, 0.7vw, 12px);
+    line-height: 1.4;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #969f9a;
+  }
+  .ecosystem-home .weekfield-cover__spatial {
+    position: absolute;
+    z-index: 1;
+    top: 53%;
+    right: 3.4%;
+    width: 66%;
+    transform: translateY(-42%);
+    perspective: 1800px;
+  }
+  /* The enclosing figure must not intercept the tilted plane's link hit area. */
+  .ecosystem-home .weekfield-cover__approach { margin: 0; transform-style: preserve-3d; pointer-events: none; }
+  .ecosystem-home .weekfield-cover__plane {
+    position: relative;
+    padding: 8px;
+    border: 1px solid rgba(216, 226, 233, 0.22);
+    border-radius: 5px;
+    background: #121513;
+    box-shadow: 0 2px 0 #39403c, 0 8px 0 -4px #1a201d, 0 36px 70px -20px rgba(0, 0, 0, 0.72), 0 80px 110px -64px rgba(171, 190, 195, 0.2);
+    transform-style: preserve-3d;
+  }
+  .ecosystem-home .weekfield-cover__plate {
+    position: absolute;
+    right: -1px;
+    bottom: calc(100% + 12px);
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 17px;
+    color: #9aa6a0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 9px;
+    line-height: 1.5;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transform: translateZ(12px);
+  }
+  .ecosystem-home .weekfield-cover__plate > span:first-child { color: #d6dcd7; }
+  .ecosystem-home .weekfield-cover__plate > span:last-child { font-size: 15px; }
+  .ecosystem-home .weekfield-cover__screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #080c0f;
+    border: 1px solid rgba(221, 229, 229, 0.08);
+  }
+  .ecosystem-home .weekfield-cover__pixels { position: absolute; inset: 7px; }
+  .ecosystem-home .weekfield-cover__static { display: block; width: 100%; height: 100%; }
+  .ecosystem-home .weekfield-cover__video { position: absolute; inset: 0; }
+  .ecosystem-home .weekfield-cover__image { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .ecosystem-home .weekfield-cover__sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    transform: translateZ(2px);
+  }
+  .ecosystem-home .weekfield-cover__caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px 4px;
+    color: #9aa39e;
+    font-size: 9px;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .ecosystem-home .weekfield-cover__proof {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 26px;
+    padding: 4px 0;
+    color: #d8dfd9;
+    text-decoration: none;
+  }
+  .ecosystem-home .weekfield-cover__proof .eco-arrow { font-size: 15px; }
+  .ecosystem-home .weekfield-cover__actions {
+    position: absolute;
+    pointer-events: none;
+    right: 3.4%;
+    bottom: 11%;
+    left: var(--weekfield-content-inset);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .ecosystem-home .weekfield-cover__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 14px 0;
+    border-block: 1px solid rgba(219, 229, 223, 0.28);
+    color: #d8dfd9;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 250ms, border-color 250ms;
+  }
+  .ecosystem-home .eco-products-stage__project--weekfield[data-product-active="true"] :is(.weekfield-cover__plane, .weekfield-cover__proof, .weekfield-cover__action) { pointer-events: auto; }
+  .ecosystem-home .weekfield-cover__action:hover { color: #fff; border-color: #a8b7ae; }
+  .ecosystem-home .eco-products-stage__timeline[data-weekfield-active="true"] .eco-products-stage__navigation {
+    top: 1rem;
+    bottom: auto;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-weekfield-active="true"] .eco-products-stage__navigation-item { color: #8a948e; }
+  .ecosystem-home .eco-products-stage__timeline[data-weekfield-active="true"] .eco-products-stage__navigation-item[aria-pressed="true"] { color: #d8dfd9; }
+  .ecosystem-home .eco-products-stage__timeline[data-weekfield-active="true"] .eco-products-stage__navigation-line { background: #45504a; }
+}
+
+@media (min-width: 1280px) and (min-height: 761px) {
+  .ecosystem-home .weekfield-cover__identity h3 {
+    font-size: clamp(64px, calc(6vw - 20px), 126px);
+    /* Keep the original title line box so the descriptor stays in place. */
+    height: calc(clamp(70px, 6.7vw, 148px) * 0.95);
+    letter-spacing: -0.06em;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .ecosystem-home .eco-products-stage { --weekfield-inset: 32px; }
+  .ecosystem-home .weekfield-cover { width: calc(100vw - 82px); }
+  .ecosystem-home .weekfield-cover__identity h3 { font-size: 72px; }
+}
+
+@media (min-width: 1024px) and (max-height: 760px) {
+  .ecosystem-home .weekfield-cover { min-height: 0; }
+  .ecosystem-home .weekfield-cover__edition { top: 5%; }
+  .ecosystem-home .weekfield-cover__identity { top: 14%; }
+  .ecosystem-home .weekfield-cover__identity h3 { font-size: clamp(64px, 5.5vw, 94px); }
+  .ecosystem-home .weekfield-cover__descriptor { margin-top: 24px; font-size: 24px; }
+  .ecosystem-home .weekfield-cover__spatial { width: min(66%, 105svh); }
+  .ecosystem-home .weekfield-cover__detail { gap: 10px; margin-top: 24px; padding-top: 16px; font-size: 15px; }
+  .ecosystem-home .weekfield-cover__actions { bottom: 10%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-home .weekfield-cover__action { transition: none; }
+}

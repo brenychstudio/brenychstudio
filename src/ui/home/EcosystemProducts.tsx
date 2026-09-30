@@ -8,6 +8,7 @@ import MobileMotionSection from "../mobile-motion/MobileMotionSection";
 import { homeCopy } from "./homeCopy";
 import { Arrow, HomeLink, HomeSection, ProjectSignal, SectionLabel, type HomeSectionProps } from "./HomePrimitives";
 import { projectPath, projectText } from "./homeProjectPresentation";
+import WeekfieldLivingCover from "./WeekfieldLivingCover";
 
 function useDesktopStage() {
   const [desktop, setDesktop] = useState(() =>
@@ -52,7 +53,8 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
   return <HomeSection id="products" className="eco-products eco-wrap eco-products-stage">
     <SectionLabel number="03">{copy.products}</SectionLabel>
     <div className="eco-section-heading"><h2 id="products-title">{copy.productsTitle}</h2><p>{copy.productsIntro}</p></div>
-    <div ref={timelineRef} className="eco-products-stage__timeline" data-staged={staged ? "true" : "false"}>
+    {desktop && projects[0]?.id === "weekfield" && <div className="eco-products-threshold" aria-hidden="true" />}
+    <div ref={timelineRef} className="eco-products-stage__timeline" data-staged={staged ? "true" : "false"} data-weekfield-active={desktop && projects[visibleIndex]?.id === "weekfield" ? "true" : "false"}>
       <div className="eco-products-stage__sticky">
         {staged && <nav className="eco-products-stage__navigation" aria-label={copy.products}>
           <span className="eco-products-stage__navigation-line" aria-hidden="true" />
@@ -76,7 +78,7 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
               key={project.id}
               variant="media"
               delay={index === 0 ? "soft" : "staged"}
-              className="eco-products-stage__project"
+              className={`eco-products-stage__project${desktop && project.id === "weekfield" ? " eco-products-stage__project--weekfield" : ""}`}
               data-product-index={index}
               data-product-active={active ? "true" : "false"}
               data-project-id={project.id}
@@ -87,7 +89,15 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
                 if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocusIndex(null);
               }}
             >
-              <div className="eco-products-stage__heading">
+              {desktop && project.id === "weekfield" ? <WeekfieldLivingCover
+                project={project}
+                locale={locale}
+                navigate={navigate}
+                progress={scrollYProgress}
+                staged={staged && focusIndex === null}
+                active={active}
+                total={projects.length}
+              /> : <><div className="eco-products-stage__heading">
                 <span className="eco-products-stage__index" aria-hidden="true">P / 0{index + 1}</span>
                 <ProjectSignal project={project} locale={locale} />
                 <h3>{project.publicName}</h3>
@@ -114,7 +124,7 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
                   <HomeLink href={casePath} navigate={navigate} className="eco-text-link">{copy.case}<Arrow /></HomeLink>
                   {live && <a href={live.href} target="_blank" rel="noreferrer" className="eco-text-link eco-secondary-link">{copy.proof}<Arrow /></a>}
                 </div>
-              </div>
+              </div></>}
             </MobileMotionSection>;
           })}
         </div>

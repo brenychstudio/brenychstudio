@@ -123,7 +123,7 @@
 }
 
 @media (min-width: 1024px) {
-  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] { height: 235svh; }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] { height: 330svh; }
   .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__sticky {
     position: sticky;
     top: 76px;
@@ -146,16 +146,28 @@
     margin: 0;
     border: 0;
     padding: 0;
-    opacity: 0;
     pointer-events: none;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project:not(.eco-products-stage__project--weekfield):not(.eco-products-stage__project--print-border) {
+    opacity: 0;
     transform: translate3d(0, 1.5rem, 0) scale(0.985);
     transition: opacity 650ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project[data-product-active="true"] {
-    opacity: 1;
     pointer-events: auto;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project[data-product-active="true"]:not(.eco-products-stage__project--weekfield):not(.eco-products-stage__project--print-border) {
+    opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
   }
+  /* The Living Covers share a continuous playhead. Semantic activity controls
+     hit testing only; it never switches either specialized scene's opacity. */
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project--weekfield { opacity: var(--weekfield-scene-opacity, 1); }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project--print-border { opacity: var(--print-border-scene-opacity, 0); }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project[data-product-interactive="true"] { pointer-events: auto; }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project--weekfield[data-product-interactive="true"] :is(.weekfield-cover__plane, .weekfield-cover__proof, .weekfield-cover__action) { pointer-events: auto; }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project[data-product-interactive="false"],
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project[data-product-interactive="false"] * { pointer-events: none; }
   .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__heading { align-self: end; }
   .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__heading h3 { font-size: clamp(3.5rem, 5.2vw, 7rem); }
   .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__media {
@@ -228,7 +240,7 @@
 }
 
 /* Weekfield is a full stage environment; the original product frame stays intact
-   below 1024px and for Print Border at every width. */
+   below 1024px. Its approved geometry and visual treatment remain unchanged. */
 @media (min-width: 1024px) {
   /* Paint the reserved root scrollbar gutter as part of the active environment. */
   html[data-home-product-chrome="active"] {
@@ -516,4 +528,280 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ecosystem-home .weekfield-cover__action { transition: none; }
+}
+
+/* Print Border is a separate material preset. Its field blends independently
+   of the product content; every cover rule below belongs to the second product. */
+@media (min-width: 1024px) {
+  html[data-active-header-scene="living-threshold"]:not([data-home-product-chrome="active"]):has(.print-border-environment[data-material-visible="true"]) {
+    background-color: #f3f0e8;
+    scrollbar-color: #b9ad9d #f3f0e8;
+  }
+  .ecosystem-home .eco-products-stage__material-handoff {
+    position: absolute;
+    top: calc(50% - 38px);
+    left: calc(-1 * var(--weekfield-inset));
+    width: 100vw;
+    height: 100svh;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .ecosystem-home .eco-products-stage__project--print-border {
+    position: relative;
+    min-height: calc(100svh - 76px);
+    border: 0;
+    padding: 0;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .eco-products-stage__project--print-border {
+    display: block;
+    min-height: 0;
+    transform: none;
+  }
+  .ecosystem-home .print-border-environment {
+    position: relative;
+    left: calc(-1 * var(--weekfield-inset));
+    width: 100vw;
+    height: 100svh;
+    margin-top: -76px;
+    padding-top: 76px;
+    background: #f3f0e8;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .print-border-environment {
+    position: absolute;
+    top: calc(50% - 38px);
+    margin-top: 0;
+    transform: translateY(-50%);
+  }
+  .ecosystem-home .print-border-cover {
+    position: relative;
+    width: 100%;
+    height: calc(100svh - 76px);
+    min-height: 620px;
+    color: #332f2a;
+    overflow: clip;
+    isolation: isolate;
+    background: radial-gradient(ellipse at 61% 45%, #faf8f1 0%, rgba(243, 240, 232, 0) 67%), linear-gradient(115deg, #e8e2d7 0%, #f3f0e8 29%, #f3f0e8 77%, #ebe5da 100%);
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] :is(.print-border-environment, .print-border-cover) { background: transparent; }
+  .ecosystem-home .eco-products-stage__timeline[data-staged="true"] .print-border-cover::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--print-border-field-opacity, 1);
+    background: radial-gradient(ellipse at 61% 45%, #faf8f1 0%, rgba(243, 240, 232, 0) 67%), linear-gradient(115deg, #e8e2d7 0%, #f3f0e8 29%, #f3f0e8 77%, #ebe5da 100%);
+  }
+  .ecosystem-home .print-border-cover__edition {
+    position: absolute;
+    top: 8%;
+    right: clamp(208px, 12vw, 300px);
+    left: clamp(78px, 5.5vw, 140px);
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+  .ecosystem-home .print-border-cover__edition > span:nth-child(2),
+  .ecosystem-home .print-border-cover__muted { color: #81776a; }
+  .ecosystem-home .print-border-cover__edition .eco-project-signal {
+    margin: 0 0 0 auto;
+    color: #6f6457;
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+  .ecosystem-home .print-border-cover__identity {
+    position: absolute;
+    z-index: 2;
+    top: 12%;
+    right: 12%;
+    left: clamp(78px, 5.5vw, 140px);
+    pointer-events: none;
+  }
+  .ecosystem-home .print-border-cover__identity h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(58px, 5.4vw, 132px);
+    line-height: 0.96;
+    font-weight: 400;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .ecosystem-home .print-border-cover__identity h3 span { margin-inline-start: 0.12em; font-style: italic; }
+  .ecosystem-home .print-border-cover__identity > p {
+    max-width: clamp(220px, 19vw, 390px);
+    margin: clamp(17px, 2svh, 30px) 0 0;
+    color: #71675b;
+    font-size: clamp(15px, 1.12vw, 24px);
+    line-height: 1.45;
+    letter-spacing: -0.02em;
+  }
+  .ecosystem-home .print-border-cover__production {
+    position: absolute;
+    z-index: 2;
+    bottom: 12%;
+    left: clamp(78px, 5.5vw, 140px);
+    width: clamp(190px, 15.5vw, 300px);
+  }
+  .ecosystem-home .print-border-cover__production-label {
+    display: block;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(91, 76, 56, 0.26);
+    color: #81776a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .ecosystem-home .print-border-cover__production ul {
+    display: grid;
+    gap: 13px;
+    margin: 21px 0 0;
+    padding: 0;
+    list-style: none;
+    color: #61574a;
+    font-size: clamp(10px, 0.74vw, 14px);
+    line-height: 1.5;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .ecosystem-home .print-border-cover__actions { margin-top: clamp(34px, 6svh, 74px); }
+  .ecosystem-home .print-border-cover__action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 44px;
+    padding-block: 13px;
+    border-bottom: 1px solid rgba(91, 76, 56, 0.26);
+    color: #44392c;
+    font-size: 10px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 220ms, border-color 220ms;
+  }
+  .ecosystem-home .print-border-cover__action:first-child { border-top: 1px solid rgba(91, 76, 56, 0.26); }
+  .ecosystem-home .print-border-cover__action:hover { color: #171410; border-color: #8c7963; }
+  .ecosystem-home .print-border-cover__action .eco-arrow { font-size: 18px; }
+  .ecosystem-home .print-border-cover__spatial {
+    position: absolute;
+    z-index: 1;
+    top: 25%;
+    right: max(12%, 238px);
+    bottom: 6%;
+    left: max(24%, calc(clamp(78px, 5.5vw, 140px) + clamp(190px, 15.5vw, 300px) + 32px));
+    display: grid;
+    place-items: center;
+    perspective: 2200px;
+  }
+  .ecosystem-home .print-border-cover__approach {
+    position: relative;
+    /* Six percent more authority, capped by the reserved identity/rail space. */
+    width: min(100%, calc((73.14svh - 132.5px) * 1.6));
+    margin: 0;
+    transform-style: preserve-3d;
+  }
+  .ecosystem-home .print-border-cover__proof-approach {
+    position: absolute;
+    z-index: 0;
+    /* A lower preparation proof: most of its physical area stays beneath the
+       main sheet. The bottom offset compensates for its rear-plane perspective. */
+    inset: auto 3% -6%;
+    height: 30%;
+    pointer-events: none;
+  }
+  .ecosystem-home .print-border-cover__proof {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #cec5b5;
+    background: #eee8dc;
+    box-shadow: 0 2px 0 #c9bdab, 0 19px 35px -22px rgba(67, 51, 30, 0.2);
+  }
+  .ecosystem-home .print-border-cover__proof-media { display: block; width: 100%; height: 100%; overflow: hidden; }
+  .ecosystem-home .print-border-cover__proof-image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; opacity: 0.68; }
+  .ecosystem-home .print-border-cover__sheet {
+    position: relative;
+    z-index: 1;
+    padding: clamp(14px, 1.05vw, 26px) clamp(14px, 1.05vw, 26px) 0;
+    border: 1px solid #ded7ca;
+    background: #faf8f1;
+    box-shadow: 0 2px 0 #c7bdac, 0 4px 1px -1px #e6dfd1, 0 13px 17px -11px rgba(60, 45, 25, 0.35), 0 44px 60px -24px rgba(67, 51, 30, 0.24);
+    transform-style: preserve-3d;
+  }
+  .ecosystem-home .print-border-cover__registration {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    left: 5px;
+    display: flex;
+    justify-content: space-between;
+    color: #b9ad9d;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 9px;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .ecosystem-home .print-border-cover__surface {
+    position: relative;
+    aspect-ratio: 1.6;
+    background: #141514;
+  }
+  .ecosystem-home .print-border-cover__pixels { position: absolute; inset: 5px; }
+  .ecosystem-home .print-border-cover__static { display: block; width: 100%; height: 100%; }
+  .ecosystem-home .print-border-cover__video { position: absolute; inset: 0; }
+  .ecosystem-home .print-border-cover__image { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .ecosystem-home video.print-border-cover__image { background: #141514; }
+  .ecosystem-home .print-border-cover__light {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transform: translateZ(2px);
+  }
+  .ecosystem-home .print-border-cover__caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    min-height: clamp(28px, 2.2vw, 44px);
+    color: #857967;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .ecosystem-home .eco-products-stage__timeline[data-print-border-active="true"] .eco-products-stage__navigation-item { color: #81776a; }
+  .ecosystem-home .eco-products-stage__timeline[data-print-border-active="true"] .eco-products-stage__navigation-item[aria-pressed="true"] { color: #44392c; }
+  .ecosystem-home .eco-products-stage__timeline[data-print-border-active="true"] .eco-products-stage__navigation-line { background: #b9ad9d; }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .ecosystem-home .print-border-cover__edition { right: 90px; left: 54px; }
+  .ecosystem-home .print-border-cover__identity { right: 90px; left: 54px; }
+  .ecosystem-home .print-border-cover__production { left: 54px; width: 180px; }
+  .ecosystem-home .print-border-cover__spatial { right: 8%; left: 27%; }
+}
+
+@media (min-width: 1024px) and (max-height: 760px) {
+  .ecosystem-home .print-border-cover { min-height: 0; }
+  .ecosystem-home .print-border-cover__edition { top: 9%; }
+  .ecosystem-home .print-border-cover__identity { top: 16%; }
+  .ecosystem-home .print-border-cover__identity h3 { font-size: clamp(50px, 4.8vw, 82px); }
+  .ecosystem-home .print-border-cover__identity > p { margin-top: 12px; font-size: 15px; max-width: 240px; }
+  .ecosystem-home .print-border-cover__spatial { top: 31%; bottom: 4%; }
+  .ecosystem-home .print-border-cover__approach { width: min(100%, calc((68.9svh - 116.6px) * 1.6)); }
+  .ecosystem-home .print-border-cover__production { bottom: 8%; }
+  .ecosystem-home .print-border-cover__production ul { gap: 7px; margin-top: 12px; }
+  .ecosystem-home .print-border-cover__production-label { padding-bottom: 9px; }
+  .ecosystem-home .print-border-cover__actions { margin-top: 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-home .print-border-cover__action { transition: none; }
 }

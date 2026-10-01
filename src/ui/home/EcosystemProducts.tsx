@@ -10,6 +10,7 @@ import { Arrow, HomeLink, HomeSection, ProjectSignal, SectionLabel, type HomeSec
 import { projectPath, projectText } from "./homeProjectPresentation";
 import WeekfieldLivingCover from "./WeekfieldLivingCover";
 import PrintBorderLivingCover from "./PrintBorderLivingCover";
+import ProductsMobileDeck from "./ProductsMobileDeck";
 
 function useDesktopStage() {
   const [desktop, setDesktop] = useState(() =>
@@ -90,7 +91,7 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
     <div className="eco-section-heading"><h2 id="products-title">{copy.productsTitle}</h2><p>{copy.productsIntro}</p></div>
     {desktop && projects[0]?.id === "weekfield" && <div className="eco-products-threshold" aria-hidden="true" />}
     <div ref={timelineRef} className="eco-products-stage__timeline" data-staged={staged ? "true" : "false"} data-weekfield-active={desktop && projects[activeIndex]?.id === "weekfield" ? "true" : "false"} data-print-border-active={desktop && projects[activeIndex]?.id === "print-border-studio" ? "true" : "false"}>
-      <div className="eco-products-stage__sticky">
+      {!desktop ? <ProductsMobileDeck projects={projects} locale={locale} navigate={navigate} /> : <div className="eco-products-stage__sticky">
         {staged && <nav className="eco-products-stage__navigation" aria-label={copy.products}>
           <span className="eco-products-stage__navigation-line" aria-hidden="true" />
           {projects.map((project, index) => <button
@@ -170,7 +171,7 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
             </MobileMotionSection>;
           })}
         </motion.div>
-      </div>
+      </div>}
     </div>
   </HomeSection>;
 }

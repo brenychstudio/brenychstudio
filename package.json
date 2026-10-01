@@ -18,6 +18,8 @@
     "core:validate:integration": "node --experimental-strip-types scripts/validate-project-registry-integration.mts",
     "core:validate:integration:self-test": "node --experimental-strip-types scripts/validate-project-registry-integration.mts --self-test",
     "home:validate": "node --experimental-strip-types scripts/validate-ecosystem-home.mts",
+    "products:mobile:validate": "node --experimental-strip-types scripts/validate-products-mobile-deck.mts",
+    "products:mobile:validate:self-test": "node --experimental-strip-types scripts/validate-products-mobile-deck.mts --self-test",
     "verify:dist": "node scripts/validate-dist-integrity.mjs dist",
     "verify:dist:self-test": "node scripts/validate-dist-integrity.mjs --self-test",
     "perf:routes": "node scripts/validate-route-bundles.mjs",

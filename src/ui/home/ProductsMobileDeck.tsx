@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type KeyboardEvent, type RefObject } from "react";
+import { Fragment, useRef, useState, type CSSProperties, type KeyboardEvent, type RefObject } from "react";
 import { AnimatePresence, animate, motion, useIsPresent, useMotionValue, useReducedMotion, useTransform, type MotionValue, type PanInfo } from "framer-motion";
 import type { ProjectRecord } from "../../data/projectRegistry.types";
 import { resolveHomeProjectPoster } from "../../data/ecosystemHome";
@@ -8,6 +8,8 @@ import MobileMotionSection from "../mobile-motion/MobileMotionSection";
 import { mobileMotionDurations, mobileMotionEasing } from "../mobile-motion/motionTokens";
 import { Arrow, HomeLink, ProjectSignal, type HomeSectionProps } from "./HomePrimitives";
 import { projectPath } from "./homeProjectPresentation";
+import { getLocalizedPath } from "../../i18n";
+import { adjacentGhostIndex, formatMobileProductOrdinal, ghostDirectionFromOffset, mobileProductCaseRoute, mobileProductKeyTarget, mobileProductPresentation, resolveMobileProductPreset, selectMobileProduct, type GhostDirection } from "./productsMobileDeckModel";
 import "./productsMobileDeck.css";
 
 const SETTLE_SECONDS = mobileMotionDurations.section / 1000;
@@ -24,9 +26,10 @@ type CoverProps = HomeSectionProps & {
   suppressOpenUntil: RefObject<number>;
   select: (index: number) => void;
   onInteraction: () => void;
+  onGhostOffset: (offset: number) => void;
 };
 
-function MobileProductCover({ project, index, direction, locale, navigate, reducedMotion, ghostDrag, suppressOpenUntil, select, onInteraction }: CoverProps) {
+function MobileProductCover({ project, index, direction, locale, navigate, reducedMotion, ghostDrag, suppressOpenUntil, select, onInteraction, onGhostOffset }: CoverProps) {
   const present = useIsPresent();
   const planeRef = useRef<HTMLDivElement>(null);
   const meaningfulDrag = useRef(false);
@@ -36,15 +39,16 @@ function MobileProductCover({ project, index, direction, locale, navigate, reduc
   const rotateZ = useTransform(() => Math.max(-1.5, Math.min(1.5, x.get() / (width.get() * 0.22) * 1.5)));
   const scale = useTransform(() => 1 - Math.min(1, Math.abs(x.get()) / (width.get() * 0.22)) * 0.015);
   const backingX = useTransform(() => Math.max(-3, Math.min(3, x.get() / (width.get() * 0.22) * -3)));
-  const material = project.id === "print-border-studio";
+  const presentation = mobileProductPresentation(project, locale);
+  const material = presentation.preset === "print-border";
   const poster = resolveHomeProjectPoster(project, locale);
   const live = project.links.find((link) => link.kind === "live");
   const english = locale === "en";
-  const terms = material
-    ? english ? ["Print borders", "Export logic", "Artwork inspection"] : ["Bordes de impresión", "Lógica de exportación", "Inspección de obra"]
-    : english ? ["Creator content intelligence", "Week Packs", "Human-controlled AI"] : ["Inteligencia de contenido", "Week Packs", "IA bajo control humano"];
+  const route = mobileProductCaseRoute(project, locale);
+  const casePath = route ? route.surface === "work" ? projectPath(project, locale, "work") : getLocalizedPath(route.path, locale) : undefined;
 
   const release = () => {
+    onGhostOffset(0);
     suppressOpenUntil.current = meaningfulDrag.current ? Date.now() + 360 : 0;
     animate(ghostDrag, 0, { duration: SETTLE_SECONDS, ease: SETTLE_EASE });
   };
@@ -60,7 +64,7 @@ function MobileProductCover({ project, index, direction, locale, navigate, reduc
   };
 
   return <motion.article className="products-mobile-deck__card"
-    data-project-id={project.id} data-active={present ? "true" : "false"}
+    data-project-id={project.id} data-preset={presentation.preset} data-active={present ? "true" : "false"}
     aria-label={project.publicName} aria-hidden={!present || undefined} inert={!present}
     custom={direction}
     variants={{
@@ -73,9 +77,7 @@ function MobileProductCover({ project, index, direction, locale, navigate, reduc
   >
     <div className="products-mobile-deck__identity">
       <h3>{material ? <>Print Border<span>Studio</span></> : project.publicName}</h3>
-      <p>{material
-        ? english ? <>Print preparation<br />&amp; collector presentation</> : <>Preparación de impresión<br />y presentación para coleccionistas</>
-        : english ? <>Creator intelligence<br />&amp; planning system</> : <>Inteligencia creativa<br />y planificación</>}</p>
+      <p>{presentation.descriptor.map((line, lineIndex) => <Fragment key={lineIndex}>{lineIndex > 0 && <br />}{line}</Fragment>)}</p>
     </div>
     <MobileMotionMedia as="figure" delay="none" className="products-mobile-deck__media">
       <motion.div ref={planeRef} className="products-mobile-deck__plane"
@@ -85,9 +87,11 @@ function MobileProductCover({ project, index, direction, locale, navigate, reduc
         onDragStart={() => {
           width.set(planeRef.current?.offsetWidth ?? 360);
           meaningfulDrag.current = false;
+          onGhostOffset(0);
           onInteraction();
         }}
         onDrag={(_, info) => {
+          onGhostOffset(info.offset.x);
           if (Math.abs(info.offset.x) > 8) {
             meaningfulDrag.current = true;
             suppressOpenUntil.current = Infinity;
@@ -99,18 +103,18 @@ function MobileProductCover({ project, index, direction, locale, navigate, reduc
       >
         {material && <motion.div className="products-mobile-deck__backing" aria-hidden="true" style={{ x: reducedMotion ? 0 : backingX }}><span>+</span><span>+</span></motion.div>}
         <div className="products-mobile-deck__surface">
-          <div className="products-mobile-deck__plate" aria-hidden="true"><span>{material ? "Edition / 02" : "P / 01"}</span><span>{material ? "Artwork / Border / Export" : "Product / Interface"}</span><span>{material ? "+" : "↗"}</span></div>
+          <div className="products-mobile-deck__plate" aria-hidden="true"><span>{material ? "Edition" : "P"} / {formatMobileProductOrdinal(index + 1)}</span><span>{presentation.plate}</span><span>{material ? "+" : "↗"}</span></div>
           <PortfolioImage src={poster.src} alt={poster.alt} sizes="(min-width: 768px) 78vw, 90vw" loading="lazy" draggable={false}
             containerClassName="products-mobile-deck__image" imageClassName="products-mobile-deck__image-element" />
           <span className="products-mobile-deck__finish" aria-hidden="true" />
         </div>
       </motion.div>
-      <figcaption><span>{material ? "Material / Paper" : "Digital / Interface"}</span><span>BS — 0{index + 1}</span></figcaption>
+      <figcaption><span>{presentation.caption}</span><span>BS — {formatMobileProductOrdinal(index + 1)}</span></figcaption>
     </MobileMotionMedia>
     <div className="products-mobile-deck__detail">
-      <ul role="list">{terms.map((term) => <li key={term}>{term}</li>)}</ul>
+      {presentation.terms.length > 0 && <ul role="list">{presentation.terms.map((term) => <li key={term}>{term}</li>)}</ul>}
       <div className="products-mobile-deck__actions">
-        <HomeLink href={projectPath(project, locale, "work")} navigate={navigate} className="products-mobile-deck__case">{english ? "Explore case" : "Explorar caso"}<Arrow /></HomeLink>
+        {casePath && <HomeLink href={casePath} navigate={navigate} className="products-mobile-deck__case">{english ? "Explore case" : "Explorar caso"}<Arrow /></HomeLink>}
         {live && <a href={live.href} target="_blank" rel="noreferrer">{english ? "Live proof" : "Demo pública"}<Arrow /></a>}
       </div>
     </div>
@@ -120,6 +124,8 @@ function MobileProductCover({ project, index, direction, locale, navigate, reduc
 export default function ProductsMobileDeck({ projects, locale, navigate }: HomeSectionProps & { projects: readonly ProjectRecord[] }) {
   const [selection, setSelection] = useState({ index: 0, direction: 1 });
   const [interacted, setInteracted] = useState(false);
+  const [ghostDirection, setGhostDirection] = useState<GhostDirection>(0);
+  const ghostDirectionRef = useRef<GhostDirection>(0);
   const selectionRef = useRef(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const suppressOpenUntil = useRef(0);
@@ -128,34 +134,48 @@ export default function ProductsMobileDeck({ projects, locale, navigate }: HomeS
   const ghostX = useTransform(ghostDrag, [0, 1], [0, -7]);
   const ghostOpacity = useTransform(ghostDrag, [0, 1], [0.3, 0.46]);
   const ghostScale = useTransform(ghostDrag, [0, 1], [0.94, 0.97]);
-  const active = projects[selection.index];
-  const next = projects[selection.index === 0 ? 1 : 0];
-  const material = active?.id === "print-border-studio";
+  const activeIndex = selectMobileProduct(selection.index, selection.index, projects.length);
+  const active = activeIndex === null ? undefined : projects[activeIndex];
+  const ghostIndex = activeIndex === null ? null : adjacentGhostIndex(activeIndex, projects.length, ghostDirection);
+  const ghost = ghostIndex === null ? undefined : projects[ghostIndex];
+  const presentation = active ? mobileProductPresentation(active, locale) : null;
   const english = locale === "en";
 
-  const select = (index: number) => {
+  // React only updates when the discrete direction changes, never per drag frame.
+  const onGhostOffset = (offset: number) => {
+    const nextDirection = ghostDirectionFromOffset(offset);
+    if (nextDirection !== ghostDirectionRef.current) {
+      ghostDirectionRef.current = nextDirection;
+      setGhostDirection(nextDirection);
+    }
+  };
+  const select = (target: number) => {
     setInteracted(true);
-    if (index < 0 || index >= projects.length || index === selectionRef.current) return;
+    onGhostOffset(0);
+    const current = selectMobileProduct(selectionRef.current, selectionRef.current, projects.length);
+    const index = selectMobileProduct(current ?? 0, target, projects.length);
+    if (index === null || index === current) return;
     const departing = rootRef.current?.querySelector('[data-active="true"]');
     if (departing?.contains(document.activeElement)) {
       rootRef.current?.querySelectorAll<HTMLButtonElement>(".products-mobile-deck__selector button")[index]?.focus({ preventScroll: true });
     }
-    const direction = index > selectionRef.current ? 1 : -1;
+    const direction = index > (current ?? 0) ? 1 : -1;
     selectionRef.current = index;
     setSelection({ index, direction });
     animate(ghostDrag, 0, { duration: SETTLE_SECONDS, ease: SETTLE_EASE });
   };
   const keySelect = (event: KeyboardEvent<HTMLElement>) => {
-    const targets: Record<string, number> = { ArrowLeft: selectionRef.current - 1, ArrowRight: selectionRef.current + 1, Home: 0, End: projects.length - 1 };
-    if (!(event.key in targets)) return;
+    const current = selectMobileProduct(selectionRef.current, selectionRef.current, projects.length) ?? 0;
+    const target = mobileProductKeyTarget(event.key, current, projects.length);
+    if (target === undefined || target === null) return;
     event.preventDefault();
-    select(targets[event.key]);
+    select(target);
   };
-  if (!active) return null;
-  const ghostPoster = next ? resolveHomeProjectPoster(next, locale) : null;
+  if (!active || activeIndex === null || !presentation) return null;
+  const ghostPoster = ghost ? resolveHomeProjectPoster(ghost, locale) : null;
 
-  return <div ref={rootRef} className="products-mobile-deck" data-product-theme={material ? "material" : "graphite"}
-    data-active-product={active.id} data-active-index={selection.index} data-interacted={interacted ? "true" : "false"}
+  return <div ref={rootRef} className="products-mobile-deck" data-product-theme={presentation.theme}
+    data-active-product={active.id} data-active-index={activeIndex} data-interacted={interacted ? "true" : "false"}
     style={{ "--products-mobile-ease": mobileMotionEasing, "--products-mobile-settle": `${mobileMotionDurations.section}ms` } as CSSProperties}
     onClickCapture={(event) => {
       if (Date.now() < suppressOpenUntil.current && (event.target as Element).closest("a")) {
@@ -166,35 +186,35 @@ export default function ProductsMobileDeck({ projects, locale, navigate }: HomeS
   >
     <div className="products-mobile-deck__threshold" aria-hidden="true"><span /></div>
     <div className="products-mobile-deck__environment"
-      data-active-index={selection.index}
-      data-header-scene={material ? "living-threshold" : "living-product"}
-      data-home-dark-chrome={!material ? "active" : undefined}
+      data-active-index={activeIndex}
+      data-header-scene={presentation.theme === "graphite" ? "living-product" : "living-threshold"}
+      data-home-dark-chrome={presentation.theme === "graphite" ? "active" : undefined}
     >
       <MobileMotionSection variant="media" delay="soft" className="products-mobile-deck__composition">
-        <div className="products-mobile-deck__edition"><span>0{selection.index + 1}<span> / 0{projects.length}</span></span><ProjectSignal project={active} locale={locale} /></div>
+        <div className="products-mobile-deck__edition"><span>{formatMobileProductOrdinal(activeIndex + 1)}<span> / {formatMobileProductOrdinal(projects.length)}</span></span><ProjectSignal project={active} locale={locale} /></div>
         <div className="products-mobile-deck__stage" onKeyDown={keySelect}>
-          {ghostPoster && <motion.div className="products-mobile-deck__ghost" data-ghost-project={next.id} aria-hidden="true" inert
+          {ghost && ghostPoster && <motion.div className="products-mobile-deck__ghost" data-ghost-project={ghost.id} aria-hidden="true" inert
             style={{ x: reducedMotion ? 0 : ghostX, opacity: ghostOpacity, scale: reducedMotion ? 0.94 : ghostScale }}>
-            <span>{next.publicName}</span>
+            <span>{ghost.publicName}</span>
             <PortfolioImage src={ghostPoster.src} alt="" sizes="(min-width: 768px) 78vw, 90vw" loading="lazy" draggable={false}
               containerClassName="products-mobile-deck__ghost-image" imageClassName="products-mobile-deck__image-element" />
           </motion.div>}
           <AnimatePresence initial={false} custom={selection.direction} mode="sync">
-            <MobileProductCover key={active.id} project={active} index={selection.index} direction={selection.direction}
+            <MobileProductCover key={active.id} project={active} index={activeIndex} direction={selection.direction}
               locale={locale} navigate={navigate} reducedMotion={reducedMotion} ghostDrag={ghostDrag}
-              suppressOpenUntil={suppressOpenUntil} select={select} onInteraction={() => setInteracted(true)} />
+              suppressOpenUntil={suppressOpenUntil} select={select} onInteraction={() => setInteracted(true)} onGhostOffset={onGhostOffset} />
           </AnimatePresence>
         </div>
         <nav className="products-mobile-deck__navigation" aria-label={english ? "Choose a studio product" : "Elegir un producto del estudio"} onKeyDown={keySelect}>
-          <div className="products-mobile-deck__selector">{projects.map((project, index) => <button key={project.id} type="button"
-            aria-pressed={selection.index === index} onClick={() => select(index)}><span>0{index + 1}</span><span>{project.publicName}</span></button>)}</div>
+          <div className="products-mobile-deck__selector">{projects.map((project, index) => <button key={project.id} type="button" data-preset={resolveMobileProductPreset(project)}
+            aria-pressed={activeIndex === index} onClick={() => select(index)}><span>{formatMobileProductOrdinal(index + 1)}</span><span>{project.publicName}</span></button>)}</div>
           <div className="products-mobile-deck__navigation-bottom">
-            <button type="button" disabled={selection.index === 0} aria-label={english ? "Previous product" : "Producto anterior"} onClick={() => select(selection.index - 1)}>←</button>
+            <button type="button" disabled={activeIndex === 0} aria-label={english ? "Previous product" : "Producto anterior"} onClick={() => select(activeIndex - 1)}>←</button>
             <span className="products-mobile-deck__swipe-cue">{english ? "Swipe / Explore" : "Desliza / Explora"}<span aria-hidden="true">↔</span></span>
-            <button type="button" disabled={selection.index === projects.length - 1} aria-label={english ? "Next product" : "Siguiente producto"} onClick={() => select(selection.index + 1)}>→</button>
+            <button type="button" disabled={activeIndex === projects.length - 1} aria-label={english ? "Next product" : "Siguiente producto"} onClick={() => select(activeIndex + 1)}>→</button>
           </div>
         </nav>
-        <p className="products-mobile-deck__announcement" role="status" aria-live="polite" aria-atomic="true">{`0${selection.index + 1} / 0${projects.length} — ${active.publicName}`}</p>
+        <p className="products-mobile-deck__announcement" role="status" aria-live="polite" aria-atomic="true">{`${formatMobileProductOrdinal(activeIndex + 1)} / ${formatMobileProductOrdinal(projects.length)} — ${active.publicName}`}</p>
       </MobileMotionSection>
       <div className="products-mobile-deck__exit" aria-hidden="true"><span>03 / {english ? "Studio products" : "Productos del estudio"}</span><span>↓</span></div>
     </div>

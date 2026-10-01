@@ -205,3 +205,36 @@
   .ecosystem-home .products-mobile-deck__ghost { rotate: 0deg; }
   .ecosystem-home .products-mobile-deck__backing { rotate: 0deg; }
 }
+
+/* Technical fallback only. Neither approved flagship preset matches these rules. */
+@media (max-width: 1023px) {
+  .ecosystem-home .products-mobile-deck[data-product-theme="neutral"] {
+    --deck-ink: #252525;
+    --deck-muted: #626262;
+    --deck-line: #bcbcbc;
+    --deck-field: #eeeeee;
+  }
+  .ecosystem-home [data-product-theme="neutral"] .products-mobile-deck__threshold { background: linear-gradient(180deg, transparent, #eeeeee); }
+  .ecosystem-home [data-product-theme="neutral"] .products-mobile-deck__threshold span,
+  .ecosystem-home [data-product-theme="neutral"] .products-mobile-deck__environment::before,
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__finish { display: none; }
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__identity { padding-bottom: 24px; overflow-wrap: anywhere; }
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__identity h3 { text-wrap: wrap; overflow-wrap: anywhere; }
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__surface { background: #fafafa; border-color: #bcbcbc; box-shadow: 0 8px 20px -12px #555; }
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__plate { color: #626262; height: auto; min-height: 26px; overflow-wrap: anywhere; }
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__media figcaption { overflow-wrap: anywhere; }
+  .ecosystem-home [data-preset="generic"] .products-mobile-deck__detail { display: block; }
+  .ecosystem-home [data-product-theme="neutral"] .products-mobile-deck__ghost { top: auto; bottom: 75px; right: 0; background: #ddd; border-color: #aaa; }
+  .ecosystem-home [data-product-theme="neutral"] .products-mobile-deck__ghost > span:first-child { color: #444; overflow-wrap: anywhere; }
+  .ecosystem-home .products-mobile-deck__selector button[data-preset="generic"] { min-width: 0; overflow-wrap: anywhere; }
+}
+
+@layer components {
+  @media (max-width: 1023px) {
+    .ecosystem-home .products-mobile-deck__card[data-preset="generic"] .products-mobile-deck__identity h3 {
+      font-size: clamp(32px, 5vw, 48px) !important;
+      line-height: 1.08 !important;
+      letter-spacing: -.03em !important;
+    }
+  }
+}

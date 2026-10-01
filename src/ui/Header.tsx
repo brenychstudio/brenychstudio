@@ -20,6 +20,7 @@ type Props = {
   drawerOpen?: boolean;
   onOpenProject?: () => void;
   onCloseProject?: () => void;
+  compactAtTablet?: boolean;
 };
 
 type NavItem = {
@@ -151,6 +152,7 @@ export default function Header({
   drawerOpen = false,
   onOpenProject,
   onCloseProject,
+  compactAtTablet = false,
 }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -299,7 +301,7 @@ export default function Header({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="mobile-route-terminal-title"
-                className="fixed inset-0 z-[90] flex items-center justify-center px-4 pb-4 pt-[calc(4.25rem+env(safe-area-inset-top))] lg:hidden"
+                className={`fixed inset-0 z-[90] flex items-center justify-center px-4 pb-4 pt-[calc(4.25rem+env(safe-area-inset-top))] lg:hidden ${compactAtTablet ? "home-compact-menu" : ""}`}
                 initial="closed"
                 animate="open"
                 exit="closed"
@@ -451,9 +453,10 @@ export default function Header({
       ref={headerRef}
       className={[
         "site-header fixed inset-x-0 top-0 z-50 border-b",
+        compactAtTablet ? "home-compact-header" : "",
       ].join(" ")}
     >
-      <div className="relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:py-0 lg:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] lg:gap-3">
+      <div className="home-compact-header-grid relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:py-0 lg:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] lg:gap-3">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
         <div className="flex min-w-0 items-center gap-4">
           <button
@@ -464,7 +467,7 @@ export default function Header({
             <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] min-[420px]:text-[11px] min-[420px]:tracking-[0.18em]">
               BRENYCH STUDIO
             </span>
-            <span className="mt-1 hidden text-[9px] uppercase tracking-[0.22em] text-[color:var(--header-muted)] transition group-hover:text-[color:var(--header-text)] lg:block">
+            <span className="home-compact-header-subtitle mt-1 hidden text-[9px] uppercase tracking-[0.22em] text-[color:var(--header-muted)] transition group-hover:text-[color:var(--header-text)] lg:block">
               {headerUi.logoSubtitle}
             </span>
           </button>
@@ -480,7 +483,7 @@ export default function Header({
           </div>
         </div>
 
-        <nav className="hidden items-center justify-center gap-5 whitespace-nowrap text-[11px] text-[color:var(--header-muted)] lg:flex lg:gap-6">
+        <nav className="home-compact-header-links hidden items-center justify-center gap-5 whitespace-nowrap text-[11px] text-[color:var(--header-muted)] lg:flex lg:gap-6">
           {navItems.map((item) => {
             const isActive = activePath === item.to;
 
@@ -511,7 +514,7 @@ export default function Header({
         </nav>
 
         <div className="flex min-w-0 items-center justify-end gap-1 sm:gap-3">
-          <div className="hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 lg:flex">
+          <div className="home-compact-header-signal hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 lg:flex">
             <span className="relative h-1.5 w-1.5 rounded-full bg-[color:var(--header-progress)]" />
             <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
               {headerUi.liveSignal}
@@ -557,7 +560,7 @@ export default function Header({
             aria-controls="mobile-header-menu"
             aria-label={mobileMenuOpen ? headerUi.closeRouteTerminal : headerUi.openRouteTerminal}
             className={[
-              "inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:h-9 min-[420px]:px-3 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] lg:hidden",
+              "home-compact-header-menu-trigger inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--header-border)] bg-[color:var(--header-chip-bg)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[color:var(--header-text)] transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 min-[420px]:h-9 min-[420px]:px-3 min-[420px]:text-[10px] min-[420px]:tracking-[0.14em] lg:hidden",
               mobileMenuOpen ? "shadow-[0_10px_24px_rgba(0,0,0,0.07)]" : "opacity-88",
             ].join(" ")}
           >

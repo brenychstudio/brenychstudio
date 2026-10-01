@@ -13,6 +13,8 @@ dist-ssr
 *.local
 exports/
 qa-screenshots/
+__pycache__/
+*.pyc
 .tmp-chrome*/
 PROJECT_BRIEF.local.md
 *.local.md

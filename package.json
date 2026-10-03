@@ -7,8 +7,10 @@
     "node": ">=22.16.0"
   },
   "scripts": {
+    "products:index:validate": "node --experimental-strip-types scripts/validate-product-index.mts",
+    "products:index:validate:self-test": "node --experimental-strip-types scripts/validate-product-index.mts --self-test",
     "dev": "vite",
-    "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && vite build && node scripts/validate-dist-integrity.mjs dist",
+    "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && npm run products:validate && npm run products:routes:validate && vite build && node scripts/validate-dist-integrity.mjs dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "media:portfolio": "node scripts/generate-portfolio-media.mjs",
@@ -20,6 +22,8 @@
     "home:validate": "node --experimental-strip-types scripts/validate-ecosystem-home.mts",
     "products:validate": "node --experimental-strip-types scripts/validate-product-catalog.mts",
     "products:validate:self-test": "node --experimental-strip-types scripts/validate-product-catalog.mts --self-test",
+    "products:routes:validate": "node --experimental-strip-types scripts/validate-product-routes.mts",
+    "products:routes:validate:self-test": "node --experimental-strip-types scripts/validate-product-routes.mts --self-test",
     "products:mobile:validate": "node --experimental-strip-types scripts/validate-products-mobile-deck.mts",
     "products:mobile:validate:self-test": "node --experimental-strip-types scripts/validate-products-mobile-deck.mts --self-test",
     "verify:dist": "node scripts/validate-dist-integrity.mjs dist",

@@ -47,6 +47,7 @@ type FooterLocationLabels = {
 
 const routeLinks: FooterLink[] = [
   { label: "Home", to: "/" },
+  { label: "Products", to: "/products" },
   { label: "Work", to: "/work" },
   { label: "Immersive", to: "/immersive" },
   { label: "Offer", to: "/offer" },
@@ -193,6 +194,7 @@ function localizeFooterLinks(links: FooterLink[], locale: LocaleCode, group: "ro
 
   const routeLabels: Record<string, string> = {
     "/": "Inicio",
+    "/products": "Productos",
     "/work": "Casos",
     "/immersive": "XR",
     "/offer": "Servicios",

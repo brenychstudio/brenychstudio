@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
@@ -21,15 +21,17 @@ type Props = {
   onOpenProject?: () => void;
   onCloseProject?: () => void;
   compactAtTablet?: boolean;
+  productScenes?: Record<string, { label: string; treatment: "digital" | "material" | "generic" }>;
 };
 
 type NavItem = {
-  id: "home" | "work" | "immersive" | "offer" | "about";
-  to: "/" | "/work" | "/immersive" | "/offer" | "/about";
+  id: "home" | "products" | "work" | "immersive" | "offer" | "about";
+  to: "/" | "/products" | "/work" | "/immersive" | "/offer" | "/about";
 };
 
 const navItemDescriptions: Record<NavItem["id"], string> = {
   home: "Studio signal / opening system",
+  products: "Product system / studio-built tools",
   work: "Evidence atlas / case systems",
   immersive: "Spatial proof / Web XR field",
   offer: "Project model / service architecture",
@@ -38,6 +40,7 @@ const navItemDescriptions: Record<NavItem["id"], string> = {
 
 const spanishNavItemDescriptions: Record<NavItem["id"], string> = {
   home: "Senal de estudio / sistema inicial",
+  products: "Sistema de productos / herramientas del estudio",
   work: "Atlas de evidencia / sistemas de caso",
   immersive: "Prueba espacial / campo Web XR",
   offer: "Modelo de proyecto / arquitectura de servicio",
@@ -46,6 +49,7 @@ const spanishNavItemDescriptions: Record<NavItem["id"], string> = {
 
 const navItems: NavItem[] = [
   { id: "home", to: "/" },
+  { id: "products", to: "/products" },
   { id: "work", to: "/work" },
   { id: "immersive", to: "/immersive" },
   { id: "offer", to: "/offer" },
@@ -84,6 +88,7 @@ function getLocalizedSignalLabel(label: string, locale: LocaleCode) {
 
   const labels: Record<string, string> = {
     "LIVING SYSTEMS": "SISTEMAS VIVOS",
+    "PRODUCT SYSTEM": "SISTEMA DE PRODUCTOS",
     "EVIDENCE ATLAS": "ATLAS DE EVIDENCIA",
     "IMMERSIVE SYSTEMS": "SISTEMAS INMERSIVOS",
     "PRACTICE MODEL": "MODELO DE PRACTICA",
@@ -153,28 +158,34 @@ export default function Header({
   onOpenProject,
   onCloseProject,
   compactAtTablet = false,
+  productScenes,
 }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
   const { locale, t, allLocales } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const headerRef = useRef<HTMLElement | null>(null);
   const mobileMenuCloseRef = useRef<HTMLButtonElement | null>(null);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
   const cleanPathname = useMemo(() => stripLocaleFromPathname(location.pathname), [location.pathname]);
 
   const onHome = cleanPathname === "/";
   const activeSceneId = useActiveHeaderScene(cleanPathname);
   const routeTheme = useMemo(() => getHeaderMoodForPath(cleanPathname), [cleanPathname]);
   const headerTheme = useMemo(
-    () => resolveHeaderTheme({ routeTheme, activeSceneId }),
-    [activeSceneId, routeTheme],
+    () => resolveHeaderTheme({ routeTheme, activeSceneId, productScenes }),
+    [activeSceneId, routeTheme, productScenes],
   );
 
   useHeaderThemeMorph(headerRef, headerTheme, scrolled);
 
   const activePath = useMemo(() => {
     if (cleanPathname === "/") return "/";
+
+    if (cleanPathname === "/products" || cleanPathname.startsWith("/products/")) return "/products";
 
     if (cleanPathname === "/work" || cleanPathname.startsWith("/work/")) {
       return "/work";
@@ -218,22 +229,48 @@ export default function Header({
     if (!mobileMenuOpen) return;
 
     const previousOverflow = document.body.style.overflow;
+    const returnFocus = mobileMenuTriggerRef.current;
     document.body.style.overflow = "hidden";
 
     const focusFrame = window.requestAnimationFrame(() => {
       mobileMenuCloseRef.current?.focus();
     });
 
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMobileMenuOpen(false);
+    const handleMenuKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMobileMenuOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+      ) ?? []).filter(element => element.getClientRects().length > 0);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    const containFocus = (event: FocusEvent) => {
+      if (event.target instanceof Node && !mobileMenuRef.current?.contains(event.target)) {
+        mobileMenuCloseRef.current?.focus();
+      }
     };
 
-    window.addEventListener("keydown", closeOnEscape);
+    window.addEventListener("keydown", handleMenuKey);
+    document.addEventListener("focusin", containFocus);
 
     return () => {
       document.body.style.overflow = previousOverflow;
       window.cancelAnimationFrame(focusFrame);
-      window.removeEventListener("keydown", closeOnEscape);
+      window.removeEventListener("keydown", handleMenuKey);
+      document.removeEventListener("focusin", containFocus);
+      if (returnFocus?.isConnected) returnFocus.focus();
     };
   }, [mobileMenuOpen]);
 
@@ -269,7 +306,7 @@ export default function Header({
 
     if (!nextLocaleConfig.enabled || isUnavailableSpanishRoute || nextLocale === locale) return;
 
-    navigateWithTransition(getLocalizedPath(location.pathname, nextLocale));
+    navigateWithTransition(getLocalizedPath(location.pathname, nextLocale) + (cleanPathname === "/products" ? location.search + location.hash : ""));
   };
 
   const linkClass = (isActive: boolean) =>
@@ -288,7 +325,8 @@ export default function Header({
   const currentLocaleConfig = getLocaleConfig(locale);
   const headerUi = getHeaderUi(locale);
   const localizedSignalLabel = getLocalizedSignalLabel(headerTheme.signalLabel, locale);
-  const getNavItemLabel = (item: NavItem) => navLabels[item.id];
+  const getNavItemLabel = (item: NavItem) =>
+    item.id === "products" ? (locale === "es" ? "Productos" : "Products") : navLabels[item.id];
 
   const mobileRouteTerminal =
     typeof document === "undefined"
@@ -297,14 +335,15 @@ export default function Header({
           <AnimatePresence mode="wait">
             {mobileMenuOpen ? (
               <motion.div
+                ref={mobileMenuRef}
                 id="mobile-header-menu"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="mobile-route-terminal-title"
                 className={`fixed inset-0 z-[90] flex items-center justify-center px-4 pb-4 pt-[calc(4.25rem+env(safe-area-inset-top))] lg:hidden ${compactAtTablet ? "home-compact-menu" : ""}`}
-                initial="closed"
+                initial={prefersReducedMotion ? false : "closed"}
                 animate="open"
-                exit="closed"
+                exit={prefersReducedMotion ? undefined : "closed"}
                 variants={{
                   closed: { opacity: 0 },
                   open: { opacity: 1 },
@@ -402,7 +441,7 @@ export default function Header({
                                 ? "bg-white text-neutral-950"
                                 : "text-white/72 hover:bg-white/[0.07] hover:text-white",
                             ].join(" ")}
-                            initial={{ opacity: 0, x: -12 }}
+                            initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.34, delay: 0.12 + index * 0.045, ease: [0.22, 1, 0.36, 1] }}
                           >
@@ -456,7 +495,7 @@ export default function Header({
         compactAtTablet ? "home-compact-header" : "",
       ].join(" ")}
     >
-      <div className="home-compact-header-grid relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:py-0 lg:grid-cols-[minmax(16rem,1fr)_auto_minmax(20rem,1fr)] lg:gap-3">
+      <div className="home-compact-header-grid relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:py-0 lg:grid-cols-[minmax(10rem,1fr)_auto_minmax(24rem,1fr)] lg:gap-2 xl:gap-3">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
         <div className="flex min-w-0 items-center gap-4">
           <button
@@ -474,7 +513,7 @@ export default function Header({
 
           <div className="hidden min-w-0 items-center gap-2 border-l border-[color:var(--header-border)] pl-4 xl:flex">
             <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--header-progress)] opacity-20" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--header-progress)] opacity-20 motion-reduce:animate-none" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--header-progress)]" />
             </span>
             <span className="truncate text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
@@ -483,7 +522,7 @@ export default function Header({
           </div>
         </div>
 
-        <nav className="home-compact-header-links hidden items-center justify-center gap-5 whitespace-nowrap text-[11px] text-[color:var(--header-muted)] lg:flex lg:gap-6">
+        <nav className="home-compact-header-links hidden items-center justify-center gap-5 whitespace-nowrap text-[11px] text-[color:var(--header-muted)] lg:flex lg:gap-1.5 xl:gap-3 2xl:gap-6">
           {navItems.map((item) => {
             const isActive = activePath === item.to;
 
@@ -497,7 +536,7 @@ export default function Header({
               >
                 {isActive ? (
                   <motion.span
-                    layoutId="header-active-dot"
+                    layoutId={prefersReducedMotion ? undefined : "header-active-dot"}
                     className="h-1.5 w-1.5 rounded-full bg-[color:var(--header-progress)]"
                     transition={{
                       duration: 0.34,
@@ -514,7 +553,7 @@ export default function Header({
         </nav>
 
         <div className="flex min-w-0 items-center justify-end gap-1 sm:gap-3">
-          <div className="home-compact-header-signal hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 lg:flex">
+          <div className="home-compact-header-signal hidden items-center gap-2 border-r border-[color:var(--header-border)] pr-3 2xl:flex">
             <span className="relative h-1.5 w-1.5 rounded-full bg-[color:var(--header-progress)]" />
             <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
               {headerUi.liveSignal}
@@ -554,6 +593,7 @@ export default function Header({
           </div>
 
           <button
+            ref={mobileMenuTriggerRef}
             type="button"
             onClick={() => setMobileMenuOpen((value) => !value)}
             aria-expanded={mobileMenuOpen}

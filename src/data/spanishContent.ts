@@ -152,6 +152,12 @@ export type WorkEvidenceTranslation = {
 };
 
 export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
+  "/products": {
+    title: "Productos — Software y tecnología creativa del estudio | Brenych Studio",
+    description: "Productos de Brenych Studio para workflows creativos, producción y sistemas de software controlados.",
+    ogTitle: "Productos — Brenych Studio",
+    ogDescription: "Software, herramientas de producción y sistemas creativos desarrollados por Brenych Studio.",
+  },
   "/": {
     title: "Brenych Studio — Ingeniería de producto y tecnología creativa",
     description:

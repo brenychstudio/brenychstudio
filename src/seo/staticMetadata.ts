@@ -26,6 +26,15 @@ const defaultImage = "/og-default.png";
 
 const pageMetadata: StaticRouteMetadata[] = [
   {
+    path: "/products",
+    title: "Products — Studio-built Software & Creative Technology | Brenych Studio",
+    description:
+      "Brenych Studio products across creator workflows, production tools and controlled creative software systems.",
+    image: defaultImage,
+    imageAlt: "Products — Brenych Studio",
+    type: "website",
+  },
+  {
     path: "/",
     title: "Brenych Studio — Product Engineering & Creative Technology",
     description:
@@ -170,7 +179,7 @@ const serviceMetadata: StaticRouteMetadata[] = servicePages.map((item) => ({
 }));
 
 const spanishPageMetadata: StaticRouteMetadata[] = pageMetadata
-  .filter((item) => ["/", "/work", "/immersive", "/offer", "/about"].includes(item.path))
+  .filter((item) => ["/", "/products", "/work", "/immersive", "/offer", "/about"].includes(item.path))
   .map((item) => {
     const draft = spanishPageSeoDrafts[item.path];
     const path = item.path === "/" ? "/es" : `/es${item.path}`;

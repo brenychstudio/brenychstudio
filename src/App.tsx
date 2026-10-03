@@ -24,6 +24,7 @@ import { SoundProvider } from "./stage/audio/SoundProvider";
 import { routeModules } from "./routing/routeModules";
 
 const StudioIndex = lazy(routeModules.studio);
+const ProductIndex = lazy(routeModules.products);
 const EvidenceAtlas = lazy(routeModules.work);
 const CasePageV2 = lazy(routeModules.case);
 const ImmersiveV2 = lazy(routeModules.immersive);
@@ -39,6 +40,12 @@ const LivingAtlasPrivacy = lazy(routeModules.livingAtlasPrivacy);
 const LivingAtlasSupport = lazy(routeModules.livingAtlasSupport);
 
 const routeSeo = {
+  products: {
+    title: "Products — Studio-built Software & Creative Technology | Brenych Studio",
+    description:
+      "Brenych Studio products across creator workflows, production tools and controlled creative software systems.",
+    path: "/products",
+  },
   home: {
     title: "Brenych Studio — Product Engineering & Creative Technology",
     description:
@@ -234,10 +241,12 @@ function RoutePendingSurface() {
   const isImmersiveCase = pathname.startsWith("/immersive/");
   const isPolicy = pathname === "/privacy" || pathname === "/legal";
   const isLivingAtlas = pathname === "/living-atlas" || pathname.startsWith("/living-atlas/");
+  const isProducts = pathname === "/products" || pathname === "/es/products";
 
   let background = "bg-[#f2efe8]";
 
-  if (isLivingAtlas) background = "bg-[#f5f3ee]";
+  if (isProducts) background = "bg-[#f7f5ef]";
+  else if (isLivingAtlas) background = "bg-[#f5f3ee]";
   else if (pathname === "/work") background = "bg-[#f3f1ec]";
   else if (pathname === "/immersive") background = "bg-[#f1eee7]";
   else if (pathname === "/offer" || pathname === "/about") background = "bg-[#f3f0e9]";
@@ -304,6 +313,22 @@ export default function App() {
 
           <Suspense fallback={<RoutePendingSurface />}>
             <Routes>
+              <Route
+                path="/products"
+                element={
+                  <SeoRoute meta={withSeoAlternates(routeSeo.products)}>
+                    <ProductIndex drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />
+                  </SeoRoute>
+                }
+              />
+              <Route
+                path="/es/products"
+                element={
+                  <SeoRoute meta={getSpanishMeta("/products", routeSeo.products)}>
+                    <ProductIndex drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />
+                  </SeoRoute>
+                }
+              />
             <>
               <Route
                 path="/es"

@@ -1,4 +1,4 @@
-export type HeaderMoodId = "living" | "evidence" | "immersive" | "practice" | "studio";
+export type HeaderMoodId = "living" | "products" | "evidence" | "immersive" | "practice" | "studio";
 
 export type HeaderTheme = {
   id: string;
@@ -21,6 +21,7 @@ export type HeaderTheme = {
 export type HeaderThemeResolverInput = {
   routeTheme: HeaderTheme;
   activeSceneId: string | null;
+  productScenes?: Record<string, { label: string; treatment: "digital" | "material" | "generic" }>;
 };
 
 const lightDefault = {
@@ -88,6 +89,12 @@ const actionDark = {
 };
 
 export const headerThemeTokens: Record<HeaderMoodId, HeaderTheme> = {
+  products: {
+    id: "route-products",
+    signalLabel: "PRODUCT SYSTEM",
+    ...lightDense,
+    surface: "rgba(247, 245, 239, 0.86)",
+  },
   living: {
     id: "route-living",
     signalLabel: "LIVING SYSTEMS",
@@ -120,6 +127,11 @@ export const headerThemeTokens: Record<HeaderMoodId, HeaderTheme> = {
 };
 
 export const headerSceneThemes: Record<string, HeaderTheme> = {
+  "products-threshold": { id: "products-threshold", signalLabel: "PRODUCT SYSTEM", ...lightDense, surface: "rgba(247, 245, 239, 0.86)" },
+  "products-digital": { id: "products-digital", signalLabel: "PRODUCT SYSTEM", ...darkProof, surface: "rgba(18, 23, 23, 0.88)" },
+  "products-material": { id: "products-material", signalLabel: "PRODUCT SYSTEM", ...lightDense, surface: "rgba(234, 229, 216, 0.88)" },
+  "products-system": { id: "products-system", signalLabel: "PRODUCT SYSTEM", ...lightDense },
+  "products-closing": { id: "products-closing", signalLabel: "START SIGNAL", ...actionDark },
   "living-threshold": {
     id: "living-threshold",
     signalLabel: "LIVING SYSTEMS",
@@ -521,6 +533,9 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
 };
 
 export function getHeaderMoodForPath(pathname: string) {
+  if (pathname === "/products" || pathname.startsWith("/products/")) {
+    return headerThemeTokens.products;
+  }
   if (
     pathname === "/work" ||
     pathname.startsWith("/work/") ||
@@ -555,7 +570,9 @@ export function getHeaderMoodForPath(pathname: string) {
   return headerThemeTokens.living;
 }
 
-export function resolveHeaderTheme({ routeTheme, activeSceneId }: HeaderThemeResolverInput) {
+export function resolveHeaderTheme({ routeTheme, activeSceneId, productScenes }: HeaderThemeResolverInput) {
+  const product = activeSceneId ? productScenes?.[activeSceneId] : undefined;
+  if (product) return { ...headerSceneThemes[product.treatment === "generic" ? "products-system" : `products-${product.treatment}`], id: activeSceneId!, signalLabel: product.label };
   if (activeSceneId && headerSceneThemes[activeSceneId]) {
     return headerSceneThemes[activeSceneId];
   }

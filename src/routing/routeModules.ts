@@ -19,6 +19,7 @@ function memoizeModuleLoader<T>(loader: () => Promise<T>) {
 
 export const routeModules = {
   studio: memoizeModuleLoader(() => import("../pages/StudioIndex")),
+  products: memoizeModuleLoader(() => import("../pages/ProductIndex")),
   work: memoizeModuleLoader(() => import("../pages/EvidenceAtlas")),
   case: memoizeModuleLoader(() => import("../pages/CasePageV2")),
   immersive: memoizeModuleLoader(() => import("../pages/ImmersiveV2")),
@@ -48,6 +49,7 @@ type RouteMatcher = {
 // /es/living-atlas aliases) have no module of their own.
 const routeMatchers: readonly RouteMatcher[] = [
   { path: "/", key: "studio", spanish: true },
+  { path: "/products", key: "products", spanish: true },
   { path: "/studio-index", key: "studio" },
   { path: "/work", key: "work", spanish: true },
   { path: "/evidence-atlas", key: "work" },

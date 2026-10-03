@@ -16,12 +16,14 @@ export default function SectionRail({
   onSelect,
   label = "Page sections",
   tone = "auto",
+  className = "",
 }: {
   items: SectionRailItem[];
   activeId: string;
   onSelect?: (id: string) => void;
   label?: string;
   tone?: SectionRailTone;
+  className?: string;
 }) {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 96, damping: 30, mass: 0.42 });
@@ -95,9 +97,12 @@ export default function SectionRail({
     <nav
       className={[
         "pointer-events-none fixed right-5 top-1/2 z-[70] hidden -translate-y-1/2 items-center gap-3 transition duration-500 xl:flex",
+        className,
         footerVisible || closingActive ? "translate-x-3 opacity-0" : "opacity-100",
       ].join(" ")}
       aria-label={label}
+      aria-hidden={footerVisible || closingActive ? "true" : undefined}
+      inert={footerVisible || closingActive}
       data-rail-tone={darkActive ? "dark" : "light"}
     >
       <div
@@ -142,6 +147,7 @@ export default function SectionRail({
               key={item.id}
               type="button"
               onClick={() => onSelect?.(item.id)}
+              aria-label={`${item.index} ${item.label}`}
               aria-current={active ? "true" : undefined}
               className={[
                 "group grid grid-cols-[1.45rem_1fr] items-center gap-1.5 py-1 text-left text-[9px] uppercase tracking-[0.14em] transition-all duration-300",

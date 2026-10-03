@@ -139,6 +139,12 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
     ...darkProof,
     surface: "rgba(8, 8, 7, 0.68)",
   },
+  "living-product": {
+    id: "living-product",
+    signalLabel: "PRODUCT SYSTEM",
+    ...darkProof,
+    surface: "rgba(13, 15, 14, 0.72)",
+  },
   "living-atlas": {
     id: "living-atlas",
     signalLabel: "VISUAL ATLAS",

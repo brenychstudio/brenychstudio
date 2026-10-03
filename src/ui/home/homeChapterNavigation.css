@@ -1,0 +1,72 @@
+@media (min-width: 1024px) {
+  .home-section-rail { display: flex; }
+}
+
+/* Reserve an editorial margin for the portal rail instead of laying it over copy. */
+@media (min-width: 1280px) {
+  .ecosystem-home .eco-wrap {
+    width: min(calc(100% - 270px), 1600px);
+    margin-left: clamp(50px, 3.9vw, 80px);
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .home-compact-header .home-compact-header-grid { grid-template-columns: minmax(0, 1fr) auto; }
+  .home-compact-header .home-compact-header-links,
+  .home-compact-header .home-compact-header-signal,
+  .home-compact-header .home-compact-header-subtitle { display: none; }
+  .home-compact-header .home-compact-header-menu-trigger { display: inline-flex; }
+  .home-compact-menu { display: flex; }
+  .ecosystem-home .eco-wrap { width: calc(100% - 128px); margin-left: 32px; margin-right: auto; }
+  .home-section-rail { right: 12px; }
+  .home-section-rail > div:last-child { padding-right: 0; border-right: 0; }
+  .home-section-rail > div:last-child button { width: 44px; min-height: 44px; grid-template-columns: 1fr; place-items: center; padding: 0; }
+  .home-section-rail > div:last-child button > span:last-child { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+}
+
+.home-chapter-nav { display: none; }
+
+@media (max-width: 1023px) {
+  .home-chapter-nav {
+    display: block;
+    position: fixed;
+    z-index: 69;
+    top: calc(var(--mobile-header-height, 60px) + 10px);
+    right: var(--mobile-page-x, 24px);
+    width: min(250px, calc(100vw - 2 * var(--mobile-page-x, 24px)));
+    color: #242b23;
+    background: rgba(248, 247, 241, .93);
+    border: 1px solid rgba(43, 56, 40, .15);
+    box-shadow: 0 14px 38px rgba(27, 36, 27, .12);
+    backdrop-filter: blur(18px);
+  }
+  .home-chapter-nav[data-tone="dark"] { color: #f4f2e9; background: rgba(22, 30, 28, .95); border-color: rgba(255, 255, 255, .22); }
+  .home-chapter-nav__toggle { width: 100%; min-height: 44px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 13px; padding: 8px 13px; text-align: left; text-transform: uppercase; letter-spacing: .13em; font-size: 10px; }
+  .home-chapter-nav__index { font-variant-numeric: tabular-nums; opacity: .55; }
+  .home-chapter-nav__current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .home-chapter-nav__chevron { font-size: 17px; line-height: 1; }
+  .home-chapter-nav__progress { height: 2px; background: currentColor; opacity: .35; }
+  .home-chapter-nav__progress span { display: block; height: 100%; background: currentColor; opacity: 1; transition: width .38s cubic-bezier(.22,1,.36,1); }
+  .home-chapter-nav__list { padding: 5px 9px 9px; max-height: min(60svh, 420px); overflow-y: auto; }
+  .home-chapter-nav__list[hidden] { display: none; }
+  .home-chapter-nav__list a { display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 8px; min-height: 44px; padding: 0 6px; border-top: 1px solid currentColor; border-color: rgba(115, 128, 112, .18); font-size: 12px; text-decoration: none; }
+  .home-chapter-nav__list a[aria-current] { font-weight: 700; }
+  .home-chapter-nav__list a span:first-child { font-size: 9px; opacity: .55; font-variant-numeric: tabular-nums; }
+  .home-chapter-nav :is(button,a):focus-visible { outline: 2px solid currentColor; outline-offset: -3px; }
+}
+
+@media (max-width: 767px) {
+  .home-chapter-nav { top: calc(var(--mobile-header-height, 56px) + 8px); right: 10px; width: 46px; border-radius: 23px; }
+  .home-chapter-nav[data-expanded="true"] { width: min(250px, calc(100vw - 20px)); border-radius: 2px; }
+  .home-chapter-nav[data-expanded="false"] .home-chapter-nav__toggle { display: grid; grid-template-columns: 1fr; justify-items: center; gap: 0; min-height: 44px; padding: 0; }
+  .home-chapter-nav[data-expanded="false"] .home-chapter-nav__index { opacity: 1; font-size: 11px; font-weight: 700; }
+  .home-chapter-nav[data-expanded="false"] .home-chapter-nav__index span:last-child,
+  .home-chapter-nav[data-expanded="false"] .home-chapter-nav__current,
+  .home-chapter-nav[data-expanded="false"] .home-chapter-nav__chevron { display: none; }
+  .home-chapter-nav[data-expanded="false"] .home-chapter-nav__progress { width: 22px; height: 2px; margin: -5px auto 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-chapter-nav__progress span { transition: none; }
+}

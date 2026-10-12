@@ -1,349 +1,88 @@
-/* Spatial is one dark chamber with a light entrance and device-specific direction. */
-.ecosystem-home .eco-spatial {
-  position: relative;
-  padding-block: 0;
-  background: #e9ece2;
-  color: var(--eco-ink);
-  --eco-line: rgba(47, 57, 44, .2);
-  --eco-muted: #62665e;
+.ecosystem-home .eco-spatial { padding:0; color:#f4f2eb; background:#111b19; --eco-muted:#bdc6bd; }
+.ecosystem-home .eco-spatial-intro { padding-top:112px; padding-bottom:0; color:#222921; --eco-muted:#647161; }
+.ecosystem-home .eco-spatial:has(.eco-spatial-intro) { background:#f4f2eb; }
+.ecosystem-home .eco-spatial-threshold { height:120px; background:linear-gradient(#f4f2eb,#111b19); }
+.ecosystem-home .eco-spatial-surface { background:#111b19; color:#f4f2eb; padding-bottom:24px; }
+.ecosystem-home .eco-spatial-layout { width:min(calc(100% - 270px),1600px); margin-left:clamp(50px,3.9vw,80px); }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] { height:310svh; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-layout { width:var(--spatial-safe-width,calc(100% - 270px)); }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-stage { position:sticky; top:84px; height:calc(100svh - 84px); }
+.ecosystem-home .eco-spatial-top-row { position:relative; z-index:5; display:flex; align-items:center; gap:24px; height:32px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; }
+.ecosystem-home .eco-spatial-top-row button { margin-left:auto; min-height:44px; padding:8px 0; letter-spacing:0; text-transform:none; cursor:pointer; }
+.ecosystem-home .eco-spatial-index { opacity:.75; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-proof { position:absolute; inset:0; pointer-events:none; }
+/* Environment: the full browser stage under the fixed header. Content geometry stays in the safe stage. */
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-plane-window { position:absolute; left:var(--spatial-env-x,0); top:var(--spatial-env-y,0); width:var(--spatial-env-w,100%); height:var(--spatial-env-h,100%); overflow:hidden; z-index:1; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] [data-spatial-proof="webhero"] .eco-spatial-plane-window { z-index:2; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-frame { position:absolute; left:0; top:0; width:100%; height:100%; overflow:hidden; transform-origin:0 0; will-change:transform,opacity; background:none; }
+.ecosystem-home .eco-spatial-frame { background:#0a100e; }
+.ecosystem-home .eco-spatial-content { position:relative; width:100%; height:100%; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-content { position:absolute; transform-origin:0 0; will-change:transform; }
+/* Only a narrower-than-environment WEBHERO frame shows its matching dark extension. */
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] [data-spatial-proof="webhero"][data-spatial-banded="true"] .eco-spatial-frame { background:#02050c; }
+.ecosystem-home .eco-spatial-video { width:100%; height:100%; object-fit:contain; }
+.ecosystem-home .eco-spatial-caption { padding:0; color:#f4f2eb; display:grid; grid-template-columns:48% 36% 16%; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-caption { position:absolute; z-index:6; top:calc(100% - 160px); left:0; width:100%; height:136px; grid-template-columns:42% 34% 24%; will-change:opacity; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-caption::before { content:""; position:absolute; z-index:-1; inset:-64px var(--spatial-bleed-right,-1px) -24px var(--spatial-bleed-left,-1px); background:linear-gradient(transparent,#09120fd9 64px,#09120ff5 50%,#09120ffa); pointer-events:none; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-video { object-fit:cover; }
+/* A plane's video is drawn only while its scene may play; once hidden the poster has already covered it. */
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] [data-spatial-proof] video { transition:visibility 0s; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] [data-spatial-live="false"] video { visibility:hidden; transition:visibility 0s linear .45s; }
+.ecosystem-home .eco-spatial-field-shade,.ecosystem-home .eco-spatial-scan,.ecosystem-home .eco-spatial-feather,.ecosystem-home .eco-spatial-veil { display:none; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-field-shade { display:block; position:absolute; inset:0; background:#07110d; pointer-events:none; will-change:opacity; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-feather { display:block; position:absolute; inset:0; pointer-events:none; opacity:0; will-change:opacity; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-scan { display:block; position:absolute; z-index:4; top:calc(var(--spatial-env-y,0px) + var(--spatial-env-h,100%) / 2); left:var(--spatial-env-x,0); width:var(--spatial-env-w,100%); height:1px; background:linear-gradient(90deg,transparent,#bbd59a 20%,#f2ffe2 50%,#bbd59a 80%,transparent); transform-origin:center; pointer-events:none; will-change:transform,opacity; }
+/* Localized contrast for the top row and the Section Rail while an environment fills the stage. */
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-veil { display:block; position:absolute; z-index:3; left:var(--spatial-env-x,0); top:var(--spatial-env-y,0); width:var(--spatial-env-w,100%); height:var(--spatial-env-h,100%); pointer-events:none; }
+.ecosystem-home .eco-spatial-veil>span { position:absolute; opacity:0; will-change:opacity; }
+.ecosystem-home .eco-spatial-veil-top { left:0; top:0; width:100%; height:112px; background:linear-gradient(#030706c2,#0307066b 52px,#03070600); }
+.ecosystem-home .eco-spatial-veil-rail { left:calc(var(--spatial-rail-x,calc(100% - 106px)) - 150px); top:calc(var(--spatial-rail-y,50%) - 300px); width:300px; height:600px; background:radial-gradient(closest-side,#0307068c,#03070600); }
+/* WEBHERO's recording scrolls interface copy across its whole frame, so at its hold the top row and caption sit on
+   dense backdrops: no recorded copy shows beneath Section 05 chrome while the environment stays full-bleed. */
+.ecosystem-home .eco-spatial-stage[data-active-index="1"] .eco-spatial-veil-top { height:108px; background:linear-gradient(#030706fb,#030706f9 60px,#03070680 84px,#03070600); }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] [data-spatial-proof="webhero"] .eco-spatial-caption::before { background:linear-gradient(transparent,#09120f80 24px,#09120fe6 44px,#09120ff9 56px,#09120ffb); }
+.ecosystem-home .eco-spatial:has(.eco-spatial-track[data-mode="cinematic"]) .eco-spatial-threshold { position:relative; height:clamp(155px,25svh,290px); background:linear-gradient(#e9ece2,#bbc5b6 27%,#43534a 64%,#111918); overflow:hidden; }
+.ecosystem-home .eco-spatial:has(.eco-spatial-track[data-mode="cinematic"]) .eco-spatial-threshold::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent 0 6px,#0c180912 7px); }
+.ecosystem-home .eco-spatial:has(.eco-spatial-track[data-mode="cinematic"]) .eco-spatial-threshold span { position:absolute; bottom:16%; left:50%; width:3px; height:3px; border-radius:50%; background:#d7e9bc; box-shadow:0 0 18px #c5df9b; }
+.ecosystem-home .eco-spatial h3 { font-size:clamp(28px,2.5vw,44px); line-height:1.05; letter-spacing:-.045em; margin:0; }
+.ecosystem-home .eco-spatial-status { font-size:11px; line-height:1.5; margin-top:14px; color:#bdc6bd; }
+.ecosystem-home .eco-spatial-caption>p.eco-spatial-summary { font-size:14px; line-height:1.6; margin:0; padding-right:24px; color:#bdc6bd; max-width:none; }
+.ecosystem-home .eco-spatial-caption>div:first-child { padding-right:24px; }
+.ecosystem-home .eco-spatial-actions { display:grid; grid-template-rows:44px 44px 44px; row-gap:8px; align-content:start; }
+.ecosystem-home .eco-spatial-actions .eco-text-link { margin:0; min-height:44px; padding-block:0; gap:12px; font-size:12px; line-height:1.45; color:inherit; }
+.ecosystem-home .eco-spatial-archive { margin:0; grid-row:3; }
+.ecosystem-home .eco-spatial-archive .eco-text-link { width:100%; }
+.ecosystem-home .eco-spatial-control-slot { position:relative; height:44px; grid-row:2; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-actions { grid-template-columns:42% 58%; grid-template-rows:44px 44px; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-case-link { grid-column:1/-1; }
+.ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-archive { grid-row:2; grid-column:2; }
+.ecosystem-home .eco-spatial-preview-control { min-height:44px; min-width:44px; padding:8px 0; font-size:12px; text-align:left; cursor:pointer; }
+.ecosystem-home .eco-spatial-preview-status { display:block; font-size:12px; line-height:1.5; color:#bdc6bd; }
+.ecosystem-home .eco-spatial-proof:not([inert]) :is(a,button) { pointer-events:auto; }
+.ecosystem-home .eco-spatial :is(a,button,h3,[tabindex="-1"]):focus-visible { outline:2px solid #b9d59c; outline-offset:5px; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-stage { padding:32px 0 96px; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-top-row { margin-bottom:36px; height:auto; min-height:44px; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-proof { position:relative; max-width:1100px; margin-inline:auto; display:flex; flex-direction:column; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-proof+.eco-spatial-proof { border-top:1px solid #bdc6bd40; margin-top:36px; padding-top:36px; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-plane-window { order:0; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-frame { width:100%; aspect-ratio:16/9; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-caption { order:1; margin-top:24px; grid-template-columns:48% 52%; gap:20px 0; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-actions { grid-column:1/-1; display:flex; flex-direction:column; align-items:start; gap:8px; }
+.ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-archive { margin-top:28px; }
+.ecosystem-home .eco-spatial-empty { padding:48px 0 96px; }
+@media (min-width:1024px) and (max-width:1199px) { .ecosystem-home .eco-spatial-layout { width:calc(100% - 128px); margin-left:32px; } .ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-layout { width:var(--spatial-safe-width,calc(100% - 128px)); } }
+@media (min-width:1024px) and (max-width:1199px) {
+ .ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-caption { top:calc(100% - 224px); height:176px; }
+ .ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-actions { grid-template-columns:100%; grid-template-rows:44px 44px 44px; }
+ .ecosystem-home .eco-spatial-track[data-mode="cinematic"] .eco-spatial-archive { grid-row:3; grid-column:1; }
 }
-
-.ecosystem-home .eco-spatial-intro {
-  padding-top: clamp(95px, 12vw, 170px);
-  padding-bottom: 20px;
-}
-
-.ecosystem-home .eco-spatial-intro .eco-section-heading { margin-bottom: 0; }
-
-.ecosystem-home .eco-spatial-threshold {
-  position: relative;
-  height: clamp(155px, 25svh, 290px);
-  overflow: hidden;
-  background: linear-gradient(to bottom, #e9ece2 0%, #bbc5b6 38%, #43534a 73%, #111918 100%);
-}
-
-.ecosystem-home .eco-spatial-threshold::before,
-.ecosystem-home .eco-spatial-threshold::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 48%;
-  width: min(72vw, 980px);
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(35, 48, 40, .35), transparent);
-  transform: translateX(-50%);
-}
-
-.ecosystem-home .eco-spatial-threshold::after {
-  top: 58%;
-  width: min(40vw, 550px);
-  background: linear-gradient(to right, transparent, rgba(245, 248, 235, .52), transparent);
-}
-
-.ecosystem-home .eco-spatial-threshold span {
-  position: absolute;
-  left: 50%;
-  top: 54%;
-  width: 6px;
-  height: 6px;
-  border: 1px solid rgba(241, 245, 232, .7);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.ecosystem-home .eco-spatial-stage {
-  position: relative;
-  background: #111918;
-  color: #f4f2e9;
-  --eco-line: rgba(237, 243, 230, .26);
-  --eco-muted: #bcc6bb;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] { height: 245svh; }
-
-.ecosystem-home .eco-spatial-stage .eco-spatial-field {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-height: 0;
-  margin: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 52% 40%, rgba(60, 79, 68, .18), transparent 50%),
-    linear-gradient(148deg, #111918, #101514 68%, #17201d);
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-field {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-}
-
-.ecosystem-home .eco-spatial-field::before {
-  content: "";
-  position: absolute;
-  inset: 7% 5%;
-  border: 1px solid rgba(225, 235, 218, .045);
-  pointer-events: none;
-}
-
-.ecosystem-home .eco-spatial-scan {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  z-index: 4;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(243, 247, 236, .58), transparent);
-  transform-origin: center;
-  pointer-events: none;
-}
-
-.ecosystem-home .eco-spatial-plane,
-.ecosystem-home .eco-spatial-project,
-.ecosystem-home .eco-spatial-media-shell,
-.ecosystem-home .eco-spatial-caption { min-width: 0; }
-
-.ecosystem-home .eco-spatial-project-2 { margin: 0; }
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 2;
-  translate: -50% -50%;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-1:focus-within {
-  width: max(60vw, 600px) !important;
-  height: 62vh !important;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-1:focus-within .eco-spatial-caption {
-  opacity: 1 !important;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-2 {
-  position: absolute;
-  top: 14%;
-  right: 8%;
-  z-index: 3;
-  width: min(37vw, 620px);
-  pointer-events: none;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-2[data-active="true"],
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-2:focus-within {
-  pointer-events: auto;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-2:focus-within {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-plane-2:focus-within .eco-spatial-caption {
-  opacity: 1 !important;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-1,
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-1 .eco-spatial-media-shell,
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-1 .eco-spatial-media { height: 100%; }
-
-.ecosystem-home .eco-spatial-stage .eco-spatial-media-shell {
-  display: block;
-  width: 100%;
-}
-
-.ecosystem-home .eco-spatial-stage .eco-spatial-media {
-  position: relative;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  background: #202c28;
-  color: inherit;
-  text-decoration: none;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-1 .eco-spatial-media {
-  aspect-ratio: auto;
-  box-shadow: 0 38px 100px rgba(0, 0, 0, .26);
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-2 .eco-spatial-media {
-  aspect-ratio: 1.18;
-  border: 1px solid rgba(241, 246, 233, .3);
-  box-shadow: 0 35px 120px rgba(0, 0, 0, .45);
-}
-
-.ecosystem-home .eco-spatial-stage .eco-spatial-video,
-.ecosystem-home .eco-spatial-stage .eco-spatial-orbit-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ecosystem-home .eco-spatial-managed-video {
-  position: absolute;
-  inset: 0;
-}
-
-.ecosystem-home .eco-spatial-managed-video[data-reveal-open="false"] {
-  display: none;
-}
-
-.ecosystem-home .eco-spatial-stage .eco-spatial-orbit-image {
-  object-fit: contain;
-  padding: 3%;
-}
-
-.ecosystem-home .eco-spatial-handoff-shade {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(90deg, rgba(5, 10, 9, .18), rgba(5, 10, 9, .8));
-  pointer-events: none;
-}
-
-.ecosystem-home .eco-spatial-enter { z-index: 3; }
-.ecosystem-home .eco-spatial-caption { color: #f4f2e9; }
-.ecosystem-home .eco-spatial-caption .eco-text-link { color: inherit; }
-.ecosystem-home .eco-spatial-caption > p:not(.eco-project-signal) { color: #d8dfd5; }
-
-.ecosystem-home .eco-spatial-index {
-  display: block;
-  margin-bottom: 14px;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: #b6c7b7;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-1 .eco-spatial-caption {
-  position: absolute;
-  left: clamp(26px, 5vw, 90px);
-  bottom: clamp(20px, 4vw, 60px);
-  z-index: 5;
-  max-width: min(42vw, 520px);
-  text-shadow: 0 2px 26px rgba(0, 0, 0, .55);
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-1 .eco-spatial-caption > p:not(.eco-project-signal) { color: #f3f3ed; }
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-2 .eco-spatial-caption {
-  max-width: 410px;
-  padding-top: 20px;
-}
-
-.ecosystem-home .eco-spatial-stage[data-staged="true"] .eco-spatial-project-2 h3 { font-size: clamp(36px, 4vw, 60px); }
-
-.ecosystem-home .eco-spatial-stage-index {
-  position: absolute;
-  left: clamp(24px, 5vw, 92px);
-  top: clamp(88px, 10vh, 135px);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 10px;
-  letter-spacing: .17em;
-  color: rgba(236, 242, 229, .62);
-  pointer-events: none;
-}
-
-.ecosystem-home .eco-spatial-stage-index span:first-child {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  place-items: center;
-  border: 1px solid rgba(236, 242, 229, .3);
-  border-radius: 50%;
-}
-
-.ecosystem-home .eco-spatial-outro {
-  position: absolute;
-  bottom: 42px;
-  left: 50%;
-  display: flex;
-  justify-content: flex-end;
-  transform: translateX(-50%);
-}
-
-.ecosystem-home .eco-spatial-archive { margin: 0; color: #f4f2e9; }
-
-/* Static desktop fallback applies to short viewports and reduced-motion users. */
-@media (min-width: 1024px) {
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] { padding: 100px 0 70px; }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-field {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
-    gap: 6%;
-    align-items: start;
-    width: min(calc(100% - 112px), 1664px);
-    margin-inline: auto;
-    overflow: visible;
-    background: transparent;
-  }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-plane-2 { padding-top: 160px; }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-media { aspect-ratio: 1.2; }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-project-2 .eco-spatial-media { aspect-ratio: 1.1; }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-caption { padding-top: 25px; }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-scan,
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-stage-index { display: none; }
-  .ecosystem-home .eco-spatial-stage[data-staged="false"] .eco-spatial-outro { position: relative; bottom: auto; left: auto; margin: 65px auto 0; transform: none; }
-}
-
-@media (max-width: 1023px) {
-  .ecosystem-home .eco-spatial-intro { padding-top: 90px; }
-  .ecosystem-home .eco-spatial-threshold { height: 190px; }
-  .ecosystem-home .eco-spatial-stage { padding: 62px 0 66px; }
-  .ecosystem-home .eco-spatial-stage .eco-spatial-field {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 68px;
-    width: min(calc(100% - 64px), 840px);
-    margin-inline: auto;
-    overflow: visible;
-  }
-  .ecosystem-home .eco-spatial-scan,
-  .ecosystem-home .eco-spatial-stage-index { display: none; }
-  .ecosystem-home .eco-spatial-plane { position: relative; width: 100%; }
-  .ecosystem-home .eco-spatial-project { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 28px; align-items: end; }
-  .ecosystem-home .eco-spatial-project-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .ecosystem-home .eco-spatial-media { aspect-ratio: 1.1; }
-  .ecosystem-home .eco-spatial-project-2 .eco-spatial-media { aspect-ratio: 1; }
-  .ecosystem-home .eco-spatial-caption { padding-top: 0; }
-  .ecosystem-home .eco-spatial-caption h3 { font-size: clamp(38px, 5vw, 54px); }
-  .ecosystem-home .eco-spatial-handoff-shade { display: none; }
-  .ecosystem-home .eco-spatial-outro { position: relative; bottom: auto; left: auto; margin: 68px auto 0; transform: none; }
-}
-
-@media (max-width: 767px) {
-  .ecosystem-home .eco-spatial-intro { padding-top: 72px; padding-bottom: 4px; }
-  .ecosystem-home .eco-spatial-threshold { height: 140px; }
-  .ecosystem-home .eco-spatial-stage { padding: 25px 0 64px; }
-  .ecosystem-home .eco-spatial-stage .eco-spatial-field {
-    display: block;
-    width: calc(100% - 40px);
-  }
-  .ecosystem-home .eco-spatial-stage .eco-spatial-field::before { display: none; }
-  .ecosystem-home .eco-spatial-plane + .eco-spatial-plane { margin-top: 67px; }
-  .ecosystem-home .eco-spatial-project { display: block; border-top: 1px solid rgba(235, 244, 226, .24); padding-top: 19px; }
-  .ecosystem-home .eco-spatial-media { aspect-ratio: .98; }
-  .ecosystem-home .eco-spatial-project-2 .eco-spatial-media { aspect-ratio: 1.12; }
-  .ecosystem-home .eco-spatial-caption { padding-top: 25px; }
-  .ecosystem-home .eco-spatial-caption h3 { font-size: clamp(40px, 12vw, 56px); }
-  .ecosystem-home .eco-spatial-index { margin-bottom: 10px; }
-  .ecosystem-home .eco-spatial-caption > p:not(.eco-project-signal) { max-width: 34rem; font-size: 14px; }
-  .ecosystem-home .eco-spatial-enter { right: 13px; bottom: 13px; width: 42px; height: 42px; }
-  .ecosystem-home .eco-spatial-outro { margin-top: 62px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ecosystem-home .eco-spatial-stage .eco-spatial-scan { display: none; }
-  .ecosystem-home .eco-spatial-stage .eco-spatial-plane,
-  .ecosystem-home .eco-spatial-stage .eco-spatial-caption,
-  .ecosystem-home .eco-spatial-stage .eco-spatial-handoff-shade { transform: none !important; opacity: 1 !important; }
+@media (max-width:1023px) { .ecosystem-home .eco-spatial-layout { width:calc(100% - 64px); margin-left:32px; } .ecosystem-home .eco-spatial-intro { padding-top:85px; } .ecosystem-home .eco-spatial-top-row { padding-right:160px; gap:14px; } }
+@media (max-width:767px) {
+ .ecosystem-home .eco-spatial-layout { width:calc(100% - 40px); margin-left:20px; }
+ .ecosystem-home .eco-spatial-intro { padding-top:72px; }
+ .ecosystem-home .eco-spatial-top-row { padding-right:56px; font-size:10px; gap:12px; }
+ .ecosystem-home .eco-spatial-track[data-mode="reader"] .eco-spatial-caption { display:flex; flex-direction:column; gap:16px; }
+ .ecosystem-home .eco-spatial h3 { font-size:28px; }
+ .ecosystem-home .eco-spatial-caption>.eco-spatial-summary { padding-right:0; }
+ .ecosystem-home .eco-spatial-actions { padding-right:64px; }
 }

@@ -7,7 +7,6 @@ import type { ProjectRecord } from "./projectRegistry.types";
 export const homeProjectIds = {
   products: ["weekfield", "print-border-studio"],
   evidence: ["aurel-eon-gt", "oria-house-barcelona", "sprintcrm"],
-  spatial: ["whisper", "orbit-lens"],
 } as const;
 
 export function selectHomeProjects(
@@ -24,7 +23,6 @@ export function selectHomeProjects(
 export function getEcosystemHomeProjects(registry: readonly ProjectRecord[] = projects): {
   products: readonly ProjectRecord[];
   evidence: readonly ProjectRecord[];
-  spatial: readonly ProjectRecord[];
 } {
   const products = selectHomeProjects(homeProjectIds.products, registry);
   for (const project of products) {
@@ -35,7 +33,6 @@ export function getEcosystemHomeProjects(registry: readonly ProjectRecord[] = pr
   return {
     products,
     evidence: selectHomeProjects(homeProjectIds.evidence, registry),
-    spatial: selectHomeProjects(homeProjectIds.spatial, registry),
   };
 }
 

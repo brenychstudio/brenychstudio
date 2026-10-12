@@ -13,6 +13,7 @@ export type HomeMediaListener = (
 export type HomeMediaRuntimeValue = {
   mode: HomeMediaMode;
   pageVisible: boolean;
+  claimPlaybackGroup: (group: string, ownerId: string, pauseOwner: () => void) => () => void;
   observeTarget: (
     element: HTMLElement,
     listener: HomeMediaListener,

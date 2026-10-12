@@ -1,6 +1,8 @@
 // Structural Home language only. Project facts are resolved from the canonical registry.
 export const homeCopy = {
   en: {
+    viewBothProofs: "View both proofs", viewCinematicSpatial: "View cinematic sequence",
+    playPreview: "Play preview", pausePreview: "Pause", resumePreview: "Resume", replayPreview: "Replay", previewUnavailable: "Preview unavailable",
     eyebrow: "Independent studio · Barcelona",
     hero: ["Products.", "Systems.", "Worlds."],
     intro: "Product engineering meets creative technology. Software, controlled AI and spatial experiences — built with intention.",
@@ -32,6 +34,8 @@ export const homeCopy = {
     offer: "Explore ways to work together", top: "Back to the opening",
   },
   es: {
+    viewBothProofs: "Ver ambas pruebas", viewCinematicSpatial: "Ver secuencia cinematográfica",
+    playPreview: "Reproducir preview", pausePreview: "Pausar", resumePreview: "Reanudar", replayPreview: "Repetir", previewUnavailable: "Preview no disponible",
     eyebrow: "Estudio independiente · Barcelona",
     hero: ["Productos.", "Sistemas.", "Mundos."],
     intro: "Ingeniería de producto y tecnología creativa. Software, IA controlada y experiencias espaciales — construidos con intención.",

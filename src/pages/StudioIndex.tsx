@@ -17,6 +17,7 @@ import EcosystemMap from "../ui/home/EcosystemMap";
 import EcosystemProducts from "../ui/home/EcosystemProducts";
 import EcosystemEvidence from "../ui/home/EcosystemEvidence";
 import EcosystemSpatial from "../ui/home/EcosystemSpatial";
+import { getHomeSpatialProofs } from "../ui/home/homeSpatialPresentation";
 import EcosystemSignals from "../ui/home/EcosystemSignals";
 import HomeChapterNavigation from "../ui/home/HomeChapterNavigation";
 import "../ui/home/ecosystemHome.css";
@@ -55,6 +56,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
   const ready = useDeferredRouteContent();
   const { playRole, setScene, stopAmbient } = useSound();
   const groups = getEcosystemHomeProjects();
+  const spatialProofs = getHomeSpatialProofs(locale);
   const [spatialDarkActive, setSpatialDarkActive] = useState(false);
   const [productDarkActive, setProductDarkActive] = useState(false);
   const darkChromeActive = spatialDarkActive || productDarkActive;
@@ -92,7 +94,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
     let frame = 0;
     const update = () => {
       frame = 0;
-      const rect = document.querySelector<HTMLElement>("[data-studio-whisper-media]")?.getBoundingClientRect();
+      const rect = document.querySelector<HTMLElement>('[data-home-spatial-surface="dark"]')?.getBoundingClientRect();
       const active = Boolean(rect && rect.top <= 76 && rect.bottom >= Math.max(76, window.innerHeight - 150));
       document.documentElement.dataset.studioWhisperChrome = active ? "active" : "inactive";
       setSpatialDarkActive(active);
@@ -156,7 +158,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
           <EcosystemMap locale={locale} navigate={navigate} />
           <EcosystemProducts locale={locale} navigate={navigate} projects={groups.products} />
           <EcosystemEvidence locale={locale} navigate={navigate} projects={groups.evidence} />
-          <EcosystemSpatial locale={locale} navigate={navigate} projects={groups.spatial} />
+          <EcosystemSpatial locale={locale} navigate={navigate} proofs={spatialProofs} />
           <EcosystemSignals locale={locale} navigate={navigate} onOpenProject={onOpenProject} />
         </> : <div aria-hidden="true" className="min-h-[420vh]" />}
       </main>

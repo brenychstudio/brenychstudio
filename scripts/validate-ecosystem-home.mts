@@ -26,6 +26,7 @@ const { getEcosystemHomeProjects, resolveHomeProjectPoster, selectHomeProjects }
 const { projects } = await import("../src/data/projects.ts");
 const { cases } = await import("../src/data/cases.ts");
 const { immersiveItems } = await import("../src/data/immersive.ts");
+const { getHomeSpatialProofs, selectHomeSpatialProofs } = await import("../src/ui/home/homeSpatialPresentation.ts");
 
 let caseCount = 0;
 const failures: string[] = [];
@@ -57,7 +58,7 @@ test("Home resolves the approved, restrained groups in presentation order", () =
   const home = getEcosystemHomeProjects();
   deepStrictEqual(home.products.map(project => project.id), ["weekfield", "print-border-studio"]);
   deepStrictEqual(home.evidence.map(project => project.id), ["aurel-eon-gt", "oria-house-barcelona", "sprintcrm"]);
-  deepStrictEqual(home.spatial.map(project => project.id), ["whisper", "orbit-lens"]);
+  strictEqual("spatial" in home, false);
   for (const project of Object.values(home).flat()) {
     strictEqual(project, canonical(project.id));
     strictEqual(project.visibility, "public-listed");
@@ -83,7 +84,7 @@ test("All composed Home groups apply changed disclosure policy at read time", ()
   const home = getEcosystemHomeProjects(registry);
   deepStrictEqual(home.products.map(project => project.id), ["print-border-studio"]);
   deepStrictEqual(home.evidence.map(project => project.id), ["oria-house-barcelona", "sprintcrm"]);
-  deepStrictEqual(home.spatial.map(project => project.id), ["orbit-lens"]);
+  deepStrictEqual(selectHomeSpatialProofs("en", { projects: registry, immersive: immersiveItems }).map(proof => proof.key), ["webhero"]);
 });
 
 for (const change of [{ origin: "internal-system" }, { vertical: "web-systems" }] as const) {
@@ -97,8 +98,8 @@ for (const change of [{ origin: "internal-system" }, { vertical: "web-systems" }
 }
 
 test("Missing configured project fails in composed groups", () => {
-  const registry = projects.filter(project => project.id !== "whisper");
-  throws(() => getEcosystemHomeProjects(registry), /whisper/);
+  const registry = projects.filter(project => project.id !== "weekfield");
+  throws(() => getEcosystemHomeProjects(registry), /weekfield/);
 });
 
 test("Disclosure is a visibility allowlist, independent of approved-looking product facts", () => {
@@ -207,6 +208,36 @@ test("Canonical direct image and video-poster references resolve without inferre
   throws(() => resolveHomeProjectPoster(project, "en"), /direct-poster/);
 });
 
+test("Spatial is the exact public projection, with both locales and no raw fields", () => {
+  const keys = ["key", "source", "sourceId", "title", "summary", "statusLabel", "caseLabel", "posterAlt", "posterSrc", "videoAssetId", "videoSrc", "casePath"].sort();
+  for (const locale of ["en", "es"] as const) {
+    const proofs = getHomeSpatialProofs(locale);
+    deepStrictEqual(proofs.map(proof => [proof.key, proof.source]), [["whisper", "canonical-project"], ["webhero", "public-immersive"]]);
+    for (const proof of proofs) { deepStrictEqual(Object.keys(proof).sort(), keys); ok(proof.summary && proof.posterAlt); }
+    strictEqual(proofs[1].casePath, locale === "en" ? "/immersive/webhero" : "/es/immersive/webhero");
+    ok(existsSync(new URL(`../public${proofs[1].posterSrc}`, import.meta.url)));
+  }
+  ok(!projects.some(project => project.id === "webhero"));
+  strictEqual(canonical("orbit-lens").visibility, "public-listed");
+  ok(immersiveItems.some(item => item.slug === "orbit-lens"));
+});
+test("Spatial missing configured media or locale fails without a fallback", () => {
+  for (const field of ["previewPoster", "previewVideo", "translations"] as const) {
+    const immersive = structuredClone(immersiveItems);
+    delete immersive.find(item => item.slug === "webhero")![field];
+    throws(() => selectHomeSpatialProofs("en", { projects, immersive }), /webhero/);
+  }
+  throws(() => selectHomeSpatialProofs("en", { projects, immersive: immersiveItems.filter(item => item.slug !== "webhero") }), /webhero/);
+  throws(() => selectHomeSpatialProofs("en", { projects: projects.filter(item => item.id !== "whisper"), immersive: immersiveItems }), /whisper/);
+});
+test("Spatial policy mismatch fails closed and frozen sources remain intact", () => {
+  const registry = structuredClone(projects), immersive = structuredClone(immersiveItems);
+  registry.find(item => item.id === "whisper")!.visibility = "public-unlisted";
+  immersive.find(item => item.slug === "webhero")!.status = "Flagship concept";
+  freezeDeep(registry); freezeDeep(immersive);
+  deepStrictEqual(selectHomeSpatialProofs("es", { projects: registry, immersive }), []);
+});
+console.log(`HOME_SELECTOR_SELF_TEST=${process.argv.includes("--self-test") ? (failures.length ? "FAIL" : "PASS") : "included"}`);
 console.log(`HOME_SELECTOR_TEST_CASES=${caseCount}`);
 console.log(`HOME_SELECTOR_TEST_FAILURES=${failures.length}`);
 for (const failure of failures) console.error(`✗ ${failure}`);

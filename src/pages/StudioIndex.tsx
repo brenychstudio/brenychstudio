@@ -18,6 +18,8 @@ import EcosystemProducts from "../ui/home/EcosystemProducts";
 import EcosystemEvidence from "../ui/home/EcosystemEvidence";
 import EcosystemSpatial from "../ui/home/EcosystemSpatial";
 import { getHomeSpatialProofs } from "../ui/home/homeSpatialPresentation";
+import EcosystemResearch from "../ui/home/EcosystemResearch";
+import { PROGRAMMATIC_SCROLL_EVENT } from "../ui/home/homeResearchModel";
 import EcosystemSignals from "../ui/home/EcosystemSignals";
 import HomeChapterNavigation from "../ui/home/HomeChapterNavigation";
 import "../ui/home/ecosystemHome.css";
@@ -25,8 +27,12 @@ import "../ui/home/ecosystemMapStage.css";
 import "../ui/home/ecosystemProductsStage.css";
 import "../ui/home/ecosystemEvidenceStage.css";
 import "../ui/home/ecosystemSpatialStage.css";
+import "../ui/home/ecosystemResearchStage.css";
 import "../ui/home/ecosystemSignalsStage.css";
 import "../ui/home/homeChapterNavigation.css";
+
+// Navigation scrolls announce themselves so scroll-driven scenes show the destination instead of replaying it.
+const announceProgrammaticScroll = () => window.dispatchEvent(new CustomEvent(PROGRAMMATIC_SCROLL_EVENT));
 
 type PageProps = { drawerOpen?: boolean; onOpenProject?: () => void; onCloseProject?: () => void; noIndex?: boolean };
 
@@ -57,9 +63,8 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
   const { playRole, setScene, stopAmbient } = useSound();
   const groups = getEcosystemHomeProjects();
   const spatialProofs = getHomeSpatialProofs(locale);
-  const [spatialDarkActive, setSpatialDarkActive] = useState(false);
-  const [productDarkActive, setProductDarkActive] = useState(false);
-  const darkChromeActive = spatialDarkActive || productDarkActive;
+  const [railDark, setRailDark] = useState(false);
+  const [chapterDark, setChapterDark] = useState(false);
   const railItems = useMemo<SectionRailItem[]>(() => locale === "es" ? [
     { id: "opening", index: "01", label: "Señal" },
     { id: "ecosystem", index: "02", label: "Ecosistema" },
@@ -84,10 +89,23 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
   useEffect(() => {
     if (!ready || !window.location.hash) return;
     const frame = window.requestAnimationFrame(() => {
-      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: "instant", block: "start" });
+      const target = document.getElementById(window.location.hash.slice(1));
+      if (!target) return;
+      announceProgrammaticScroll();
+      target.scrollIntoView({ behavior: "instant", block: "start" });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [ready]);
+
+  // History traversal and fragment links restore or jump the scroll position.
+  useEffect(() => {
+    window.addEventListener("popstate", announceProgrammaticScroll);
+    window.addEventListener("hashchange", announceProgrammaticScroll);
+    return () => {
+      window.removeEventListener("popstate", announceProgrammaticScroll);
+      window.removeEventListener("hashchange", announceProgrammaticScroll);
+    };
+  }, []);
 
   // Preserve the Spatial contract and include active product environments.
   useEffect(() => {
@@ -97,14 +115,24 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
       const rect = document.querySelector<HTMLElement>('[data-home-spatial-surface="dark"]')?.getBoundingClientRect();
       const active = Boolean(rect && rect.top <= 76 && rect.bottom >= Math.max(76, window.innerHeight - 150));
       document.documentElement.dataset.studioWhisperChrome = active ? "active" : "inactive";
-      setSpatialDarkActive(active);
       const productActive = Array.from(document.querySelectorAll<HTMLElement>('[data-home-dark-chrome="active"]'))
         .some((element) => {
           const productRect = element.getBoundingClientRect();
           return productRect.top <= 76 && productRect.bottom >= Math.max(76, window.innerHeight - 150);
         });
       document.documentElement.dataset.homeProductChrome = productActive ? "active" : "inactive";
-      setProductDarkActive(productActive);
+      // Rail and chapter capsule have no surface of their own: each takes the tone of the surface under its centre,
+      // Spatial's dark surface or the dark part of the Research threshold, so 05 → 06 changes tone exactly once.
+      const darkSurfaces = [rect, document.querySelector<HTMLElement>("[data-home-research-dark]")?.getBoundingClientRect()];
+      const darkAt = (y: number) => darkSurfaces.some((surface) => Boolean(surface && surface.height > 0 && surface.top <= y && surface.bottom >= y));
+      const capsule = document.querySelector<HTMLElement>(".home-chapter-nav__toggle")?.getBoundingClientRect();
+      setRailDark(productActive || darkAt(window.innerHeight / 2));
+      setChapterDark(productActive || darkAt(capsule && capsule.height ? capsule.top + capsule.height / 2 : 92));
+      // While the single-tone Rail straddles the Research dark-to-paper band, its labels get a seam-local halo (CSS).
+      const rail = document.querySelector<HTMLElement>(".home-section-rail")?.getBoundingClientRect();
+      const band = document.querySelector<HTMLElement>("[data-home-rail-seam-band]")?.getBoundingClientRect();
+      const seam = Boolean(rail && band && rail.height && band.height && band.bottom > rail.top && band.top < rail.bottom);
+      document.documentElement.dataset.homeRailSeam = seam ? "research" : "none";
     };
     const requestUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
     // Focus can switch products without producing a scroll event.
@@ -125,6 +153,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
       window.removeEventListener("resize", requestUpdate);
       delete document.documentElement.dataset.studioWhisperChrome;
       delete document.documentElement.dataset.homeProductChrome;
+      delete document.documentElement.dataset.homeRailSeam;
     };
   }, [ready]);
 
@@ -136,6 +165,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
     const target = document.getElementById(id);
     if (!target) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    announceProgrammaticScroll();
     target.scrollIntoView({ behavior: reduced ? "instant" : "smooth", block: "start" });
   };
   return <HomeMediaRuntimeProvider>
@@ -146,9 +176,9 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
       {ready && <>
         <SectionRail items={railItems} activeId={activeId} onSelect={selectSection}
           label={locale === "es" ? "Secciones de inicio" : "Home chapters"}
-          tone={darkChromeActive ? "dark" : "light"} className="home-section-rail" />
+          tone={railDark ? "dark" : "light"} className="home-section-rail" />
         <HomeChapterNavigation items={railItems} activeId={activeId} onSelect={selectSection}
-          tone={darkChromeActive ? "dark" : "light"}
+          tone={chapterDark ? "dark" : "light"}
           label={locale === "es" ? "Secciones de inicio" : "Home chapters"}
           buttonLabel={locale === "es" ? "Elegir capítulo" : "Choose chapter"} />
       </>}
@@ -159,6 +189,7 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
           <EcosystemProducts locale={locale} navigate={navigate} projects={groups.products} />
           <EcosystemEvidence locale={locale} navigate={navigate} projects={groups.evidence} />
           <EcosystemSpatial locale={locale} navigate={navigate} proofs={spatialProofs} />
+          <EcosystemResearch key={locale} locale={locale} />
           <EcosystemSignals locale={locale} navigate={navigate} onOpenProject={onOpenProject} />
         </> : <div aria-hidden="true" className="min-h-[420vh]" />}
       </main>

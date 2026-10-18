@@ -290,7 +290,7 @@ export default function SoundSignalDock() {
     ? "immersive-proof"
     : activeSceneId === "living-whisper" && !studioWhisperChromeActive
       ? "living-atlas"
-      : activeSceneId;
+      : activeSceneId === "research-threshold" ? "research-field" : activeSceneId;
   const routeTheme = useMemo(() => getHeaderMoodForPath(location.pathname), [location.pathname]);
   const routeSoundScene = useMemo(() => getRouteSoundScene(location.pathname), [location.pathname]);
   const workCaseMode = location.pathname.startsWith("/work/") || location.pathname.startsWith("/work-lab/");

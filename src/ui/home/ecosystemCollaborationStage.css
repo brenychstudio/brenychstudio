@@ -1,0 +1,114 @@
+/* Home 07 · Final Exposure / Spatial Horizon (HOME-COMPLETION-01E-FIX1). The end title as a full-field composition on the light
+   surface Section 06 releases into: its warm paper fades over 160px into the living atmosphere, and 07 carries a faint veil of
+   the same paper (#f6f2e7, 06's --rf-paper) that is transparent at both edges, so 06's tail and the Footer meet it without a
+   step, block or dark band.
+   Field: the content edge clamp(50px, 3.9vw, 80px) to the Rail's 190px reserve (06's coordinates, uncapped). The inner box is
+   an inline-size container, so the title scales with the safe field (8.3cqw; ≤ 19svh on short screens, ≤ 280px on very wide
+   ones): line 1 starts at the content edge, line 2 is offset 2.6em towards the centre, and together they span ≈ 80% of the
+   field (ES ≈ 77%) wherever the caps allow.
+   The stage is fit-content, so the action column's right edge is the title's right edge; the body takes the lower-left zone.
+   Between them the horizon slot: its top edge is the resting horizon, its height the resting floor band. On landscape
+   screens the section height is the viewport under the header line (100svh − 84px), content-led beyond: at the hash target
+   the closing fills the screen and the Footer follows directly; on tall/portrait screens it is content-led. */
+.ecosystem-home .eco-fx {
+  --fx-left: clamp(50px, 3.9vw, 80px); --fx-rail: 190px; --fx-ink: #222921; --fx-muted: #545d52;
+  position: relative; display: flex; flex-direction: column; min-height: calc(100svh - 84px);
+  padding: clamp(48px, 8svh, 120px) 0 clamp(40px, 6.5svh, 96px); color: var(--fx-ink);
+  background: linear-gradient(180deg, rgba(246, 242, 231, 0) 0, rgba(246, 242, 231, .58) 26%, rgba(246, 242, 231, .58) 70%, rgba(246, 242, 231, 0) 100%);
+}
+.ecosystem-home .eco-fx-inner {
+  position: relative; flex: 1 0 auto; display: flex; flex-direction: column;
+  width: calc(100% - var(--fx-left) - var(--fx-rail)); margin-left: var(--fx-left); container-type: inline-size;
+}
+/* The motion writer's 1px sentinel on the section's top edge (see EcosystemCollaboration). */
+.ecosystem-home .eco-fx-sentinel { position: absolute; left: 0; top: 0; width: 1px; height: 1px; pointer-events: none; }
+.ecosystem-home .eco-fx-stage {
+  --fx-type: clamp(56px, min(8.3cqw, 19svh), 280px);
+  flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; width: fit-content; max-width: 100%;   /* height the slot cannot take is shared above and below */
+}
+.ecosystem-home .eco-fx .eco-label > span { color: var(--fx-muted); }
+
+/* Two authored lines; the second starts 2.6em in. Glyphs stay whole (nothing clips them). */
+.ecosystem-home .eco-fx-title {
+  position: relative; z-index: 1; max-width: none; margin: clamp(28px, 5svh, 72px) 0 0;
+  font-size: var(--fx-type); line-height: .98; letter-spacing: -.06em; font-weight: 400; white-space: nowrap;
+}
+.ecosystem-home .eco-fx-title > span { display: block; }
+.ecosystem-home .eco-fx-title > span + span { margin-left: 2.6em; }
+
+/* The horizon slot (layout only). Its gap under the title (.56em) leaves room for line 2 to emerge before the horizon lands
+   (model: glyph box + margin .1em + ramp .3em; the glyph box overhangs the line box by ≈ .12em in Inter, ≈ .17em in the
+   system fallback). */
+.ecosystem-home .eco-fx-horizon {
+  flex: 1 0 auto; min-height: clamp(64px, 11svh, 150px); max-height: clamp(120px, 21svh, 290px); margin-top: calc(var(--fx-type) * .56);
+}
+/* The drawing: a decorative track across the field (top/height/width set by the writer, from the horizon's arrival line to
+   its slot); inside it the drawing is sticky at the hold line, so the browser itself keeps the horizon on that line while
+   the section scrolls under it, then releases it onto the slot. Behind text, never a target; the section is not pinned. */
+.ecosystem-home .eco-fx-track { position: absolute; left: var(--fx-left); top: 0; z-index: 0; pointer-events: none; }
+.ecosystem-home .eco-fx-horizon-art { position: sticky; top: 0; display: block; max-width: none; overflow: visible; pointer-events: none; }
+.ecosystem-home .eco-fx-rule { fill: none; stroke: var(--fx-ink); stroke-opacity: .58; stroke-width: 1.25; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.ecosystem-home .eco-fx-floor { fill: none; stroke-width: 1; }   /* drawn 1:1; no vector-effect (WebKit drops gradient strokes with it) */
+.ecosystem-home .eco-fx-floor-far { stop-color: var(--fx-ink); stop-opacity: .24; }
+.ecosystem-home .eco-fx-floor-near { stop-color: var(--fx-ink); stop-opacity: 0; }
+
+/* Lower row: body (lower-left editorial zone) and the action column, whose right edge is the title's. */
+.ecosystem-home .eco-fx-row {
+  position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 36rem) clamp(280px, 19cqw, 380px);
+  justify-content: space-between; column-gap: clamp(32px, 4cqw, 96px); align-items: start; margin-top: clamp(20px, 3svh, 40px);
+  width: 0; min-width: 100%;   /* the title alone sets the stage width; the row stretches to it */
+}
+/* The body's two sentences are its two lines where they fit (then they wrap naturally). */
+.ecosystem-home .eco-fx-body { max-width: 36em; margin: 0; font-size: clamp(15px, .8cqw, 18px); line-height: 1.6; color: var(--fx-muted); }
+.ecosystem-home .eco-fx-body > span { display: block; text-wrap: pretty; }
+/* The Offer label sits under the button: its 44px target extends upward, the label and its rule sit at the bottom. */
+.ecosystem-home .eco-fx-actions { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+.ecosystem-home .eco-fx-cta { width: 100%; min-height: clamp(52px, 5.4svh, 68px); padding: 0 24px; font-size: clamp(13px, .66cqw, 15px); letter-spacing: .01em; }
+.ecosystem-home .eco-fx-offer { min-height: 44px; align-self: flex-start; align-items: flex-end; padding-block: 0 6px; }
+.ecosystem-home .eco-fx :is(.eco-fx-cta, .eco-fx-offer):focus-visible { outline: 2px solid var(--fx-ink); outline-offset: 7px; }
+
+/* The moving parts get their own layers only where the choreography runs. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .ecosystem-home .eco-fx-title > span, .ecosystem-home .eco-fx-row { will-change: transform, opacity; }
+}
+/* Tall or portrait desktops: content-led height (no long empty band before the Footer). */
+@media (max-aspect-ratio: 7/5) { .ecosystem-home .eco-fx { min-height: 0; } }
+
+/* Compact desktop (1024–1279): the Rail is number-only. */
+@media (max-width: 1279px) { .ecosystem-home .eco-fx { --fx-left: 32px; --fx-rail: 96px; } }
+
+/* Tablet: content-led height, a full-width stack (title, horizon with its resting floor, body, actions), the second line
+   offset 1.2em, the actions side by side under the body. */
+@media (max-width: 1023px) {
+  .ecosystem-home .eco-fx { --fx-left: 32px; --fx-rail: 32px; min-height: 0; padding: 80px 0 64px; }
+  .ecosystem-home .eco-fx-stage { --fx-type: clamp(52px, 9cqw, 88px); width: auto; }
+  .ecosystem-home .eco-fx-title > span + span { margin-left: 1.2em; }
+  .ecosystem-home .eco-fx-horizon { flex: none; min-height: 0; max-height: none; height: 72px; margin-top: calc(var(--fx-type) * .36); }
+  .ecosystem-home .eco-fx-row { display: block; width: auto; min-width: 0; margin-top: 32px; }
+  .ecosystem-home .eco-fx-body { max-width: 34rem; font-size: 15px; }
+  .ecosystem-home .eco-fx-actions { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 32px; row-gap: 8px; margin-top: 32px; }
+  .ecosystem-home .eco-fx-cta { width: auto; min-width: 300px; min-height: 52px; font-size: 13px; }
+}
+/* Phones: natural wrapping, the horizon as one rule between title and body, full-width button with the Offer under it. */
+@media (max-width: 767px) {
+  .ecosystem-home .eco-fx { --fx-left: 20px; --fx-rail: 20px; padding: 64px 0 48px; }
+  .ecosystem-home .eco-fx-title { margin-top: 32px; white-space: normal; }
+  .mobile-interface-surface .ecosystem-home .eco-fx-title { max-width: none; }
+  .ecosystem-home .eco-fx-title > span + span { margin-left: 0; }
+  .ecosystem-home .eco-fx-horizon { height: 8px; margin-top: 32px; }
+  .ecosystem-home .eco-fx-floor { display: none; }
+  .ecosystem-home .eco-fx-row { margin-top: 24px; }
+  .ecosystem-home .eco-fx-actions { flex-direction: column; align-items: stretch; }
+  .ecosystem-home .eco-fx-cta { width: 100%; min-width: 0; }
+}
+/* The global mobile surface sizes every h2 with !important inside @layer components, and important declarations in a layer
+   outrank unlayered ones; an important declaration in the earlier base layer is the scoped way to give this title its
+   contract size: 46px / 1.02 on phones, 48px from 420px. */
+@layer base {
+  @media (max-width: 767px) {
+    .mobile-interface-surface .ecosystem-home .eco-fx-title { font-size: 46px !important; line-height: 1.02 !important; letter-spacing: -.045em !important; }
+  }
+  @media (min-width: 420px) and (max-width: 767px) {
+    .mobile-interface-surface .ecosystem-home .eco-fx-title { font-size: 48px !important; }
+  }
+}

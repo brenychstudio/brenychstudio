@@ -142,14 +142,14 @@ def main() -> None:
                     assert focused_product_opacity >= .95, f"1440: focused product faded out: {focused_product_opacity}"
                     page.locator('.home-section-rail').get_by_role('button', name='06 Research / Worlds').focus()
                     page.evaluate("""() => {
-                      const stage = document.querySelector('.eco-transform-scroll');
-                      const rect = stage.getBoundingClientRect();
-                      scrollTo({top: rect.top + scrollY + (rect.height - innerHeight) * .78, behavior:'instant'});
+                      const track = document.querySelector('.eco-rf-track'), stage = document.querySelector('.eco-rf-stage');
+                      const rect = track.getBoundingClientRect();
+                      scrollTo({top: rect.top + scrollY - 84 + (rect.height - stage.getBoundingClientRect().height) * 232 / 450, behavior:'instant'});  // legacy p .9 (FIX3 pacing: 232 of 450 travel svh)
                     }""")
-                    page.wait_for_function("document.querySelector('.eco-transform-scroll').dataset.phase === 'worlds'", timeout=3000)
-                    page.wait_for_function("Number(getComputedStyle(document.querySelector('.eco-transform-research-copy')).opacity) <= .02", timeout=5000)
-                    research_opacity = page.locator(".eco-transform-research-copy").evaluate("e => Number(getComputedStyle(e).opacity)")
-                    assert research_opacity <= .02, f"worlds text obscured by previous research copy: opacity={research_opacity}"
+                    page.wait_for_function("document.querySelector('.eco-rf-stage').dataset.phase === '4'", timeout=3000)
+                    page.wait_for_function("Number(getComputedStyle(document.querySelector('.eco-rf-title > span:first-child')).opacity) <= .02", timeout=5000)
+                    research_opacity = page.locator(".eco-rf-title > span:first-child").evaluate("e => Number(getComputedStyle(e).opacity)")
+                    assert research_opacity <= .02, f"worlds title obscured by the rule-field title: opacity={research_opacity}"
 
             if args.screenshots and (width, height) != (1440, 650):
                 page.goto(args.url, wait_until="domcontentloaded")
@@ -172,12 +172,13 @@ def main() -> None:
             page = reduced.new_page()
             page.goto(args.url, wait_until="domcontentloaded")
             page.wait_for_selector("#collaboration", timeout=20000)
-            stages = page.evaluate("""() => Object.fromEntries(['.eco-map-stage', '.eco-transform-scroll'].map(selector => {
+            stages = page.evaluate("""() => Object.fromEntries(['.eco-map-stage'].map(selector => {
               const stage = document.querySelector(selector);
-              const sticky = stage.querySelector('.eco-map-field, .eco-transform-sticky');
+              const sticky = stage.querySelector('.eco-map-field');
               return [selector, {height:stage.getBoundingClientRect().height, position:getComputedStyle(sticky).position}];
             }))""")
             assert all(stage["height"] <= 1200 and stage["position"] != "sticky" for stage in stages.values()), f"reduced desktop retains idle pinned scroll: {stages}"
+            assert page.locator('.eco-rf-stage').count() == 0 and page.locator('.eco-rf-static').count() == 1, "reduced desktop retains the pinned Rule Field"
             print("REDUCED_MOTION_1440=PASS")
             reduced.close()
             media_context = browser.new_context(viewport={"width": 1440, "height": 900})

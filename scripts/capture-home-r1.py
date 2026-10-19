@@ -38,8 +38,11 @@ STAGE_CHECKPOINTS = {
              (".eco-evidence-chapter-shell-2", 0, "evidence-02"),
              (".eco-spatial-stage", .3, "spatial-whisper"),
              (".eco-spatial-stage", .75, "spatial-orbit"),
-             (".eco-transform-scroll", .45, "system-handoff"),
-             (".eco-transform-scroll", .78, "worlds-resolved")),
+             # The 06 track is 550svh (FIX3 RESEARCH_PACING); travel here is track - 100svh = 450svh. Each fraction is where
+             # the story reaches its landmark: legacy p .4 at 91 svh, p .9 at 232 svh, climax c .9 at ~433.8 svh.
+             (".eco-rf-track", 91 / 450, "rule-field-evaluate"),
+             (".eco-rf-track", 232 / 450, "worlds-terrain"),
+             (".eco-rf-track", 433.8 / 450, "worlds-climax")),
     "1920": ((".eco-spatial-stage", .42, "spatial-whisper"),),
 }
 RECORDINGS = {

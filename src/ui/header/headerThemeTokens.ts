@@ -162,6 +162,16 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
     signalLabel: "VISUAL ATLAS",
     ...lightDense,
   },
+  "research-threshold": {
+    id: "research-threshold",
+    signalLabel: "RULE FIELD",
+    ...darkProof,
+  },
+  "research-field": {
+    id: "research-field",
+    signalLabel: "RULE FIELD",
+    ...lightDense,
+  },
   "living-grammar": {
     id: "living-grammar",
     signalLabel: "INTERFACE GRAMMAR",

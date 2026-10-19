@@ -1,0 +1,285 @@
+/* Home 06 · Rule Field → Authored Terrain. Warm paper field after the dark Spatial surface; tokens from REV1. */
+.ecosystem-home .eco-rf {
+  --rf-paper: #f6f2e7; --rf-paper-deep: #ebe4d2; --rf-ink: #1f2a23; --rf-muted: #545d52; --rf-emerald: #123926;
+  --rf-emerald-deep: #072616; --rf-emerald-2: #2f5e45; --rf-dark: #111b19; --rf-band: 480px; --rf-rail: 190px;
+  --rf-left: clamp(50px, 3.9vw, 80px); --rf-col: clamp(300px, 24vw, 380px);
+  --rf-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+  position: relative; padding: 0; color: var(--rf-ink); --eco-ink: #1f2a23; --eco-muted: #545d52; --eco-line: rgba(31, 42, 35, .14);
+}
+@media (max-width: 1279px) { .ecosystem-home .eco-rf { --rf-rail: 96px; --rf-left: 32px; } }
+@media (max-width: 1023px) { .ecosystem-home .eco-rf { --rf-band: 320px; } }
+@media (max-width: 767px) { .ecosystem-home .eco-rf { --rf-band: 240px; } }
+
+/* Entrance: Spatial's dark surface dissolves into paper over one authored band; the six REV1 stops. */
+.ecosystem-home .eco-rf-entrance {
+  position: relative;
+  background: linear-gradient(180deg, #111b19 0, #131d1b calc(.2 * var(--rf-band)), #27302b calc(.44 * var(--rf-band)), #a8a697 calc(.6 * var(--rf-band)),
+    #e6e0d1 calc(.76 * var(--rf-band)), #f6f2e7 var(--rf-band), #f6f2e7 100%);
+}
+.ecosystem-home .eco-rf-threshold { position: relative; height: var(--rf-band); pointer-events: none; }
+/* Header scene marker (t ≤ .89, the header paints its own surface above its sensor) and the Rail / capsule dark probe (t ≤ .74). */
+.ecosystem-home .eco-rf-marker { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; }
+.ecosystem-home .eco-rf-marker--header { height: 89%; }
+.ecosystem-home .eco-rf-marker--rail { height: 74%; }
+.ecosystem-home .eco-rf-registration { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+.ecosystem-home .eco-rf-registration .rf-reg-cross { fill: none; stroke: #f4f2eb; stroke-opacity: .3; }
+.ecosystem-home .eco-rf-intro { position: relative; z-index: 1; padding: 40px 0 72px; }
+.ecosystem-home .eco-rf-intro .eco-label > span { color: var(--rf-muted); }
+.ecosystem-home .eco-rf-intro .eco-section-heading { margin: 40px 0 0; }
+.ecosystem-home .eco-rf-intro .eco-section-heading > p { max-width: 420px; font-size: 15px; color: var(--rf-muted); }
+
+/* Pinned track (FIX3 pacing, RESEARCH_PACING): 550svh, so travel = track − stage = 450svh + 84px, authored per beat; the
+   stage sits under the fixed header. The Worlds anchor sits where the story reaches legacy p .86 (221.6 of the 450 travel
+   svh), so cold #worlds still lands on the Worlds title. */
+.ecosystem-home .eco-rf-track { position: relative; height: 550svh; background: var(--rf-paper); }
+.ecosystem-home .eco-rf-stage { position: sticky; top: 84px; height: calc(100svh - 84px); overflow: clip; }
+.ecosystem-home .eco-rf-worlds-anchor { position: absolute; left: 0; top: calc((450svh + 84px) * 221.6 / 450); width: 1px; height: 1px; scroll-margin-top: 84px; pointer-events: none; }
+.ecosystem-home .eco-rf-art { display: block; touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; }
+.ecosystem-home .eco-rf-stage > .eco-rf-art { position: absolute; left: 0; top: 0; }
+.ecosystem-home .eco-rf-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.ecosystem-home .eco-rf-toprow { position: absolute; z-index: 2; top: 0; left: var(--rf-left); right: calc(var(--rf-rail) + 24px); min-height: 32px; padding-top: 3px; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 24px; row-gap: 4px; }
+.ecosystem-home .eco-rf-stage-label { flex: none; font-size: 10px; line-height: 1.5; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--rf-muted); }
+/* The slot follows the Worlds title (the note sits right after it); the Rules title overlays it and never shows with the note. */
+.ecosystem-home .eco-rf-title { position: relative; flex: none; margin: 0; font-size: 24px; line-height: 1.2; font-weight: 400; letter-spacing: -.045em; white-space: nowrap; }
+.ecosystem-home .eco-rf-title > span:first-child { position: absolute; left: 0; top: 0; }
+/* Settle note beside the title (board 05/06b); it only drops below when fewer than 280 px remain. */
+.ecosystem-home .eco-rf-note { flex: 1 1 280px; max-width: 600px; min-width: 0; margin: 0; font-size: 14px; line-height: 1.4; color: var(--rf-muted); text-shadow: 0 0 2px var(--rf-paper), 0 0 6px var(--rf-paper); }
+.ecosystem-home .eco-rf-phase { flex: none; margin-left: auto; font: 10px/1.5 var(--rf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--rf-muted); }
+@media (max-width: 1279px) { .ecosystem-home .eco-rf-phase { display: none; } }
+/* FIX2 practice statement: laid over the settle note's slot (the stage writes its box), handed over at the climax end. */
+.ecosystem-home .eco-rf-thesis { position: absolute; margin: 0; font-size: 14px; line-height: 1.4; color: var(--rf-muted); text-shadow: 0 0 2px var(--rf-paper), 0 0 6px var(--rf-paper); pointer-events: none; }
+.ecosystem-home .eco-rf-thesis > strong { display: block; margin-bottom: 1px; font-size: 15px; font-weight: 500; letter-spacing: -.01em; color: var(--rf-ink); text-wrap: balance; }
+.ecosystem-home .eco-rf-thesis[data-fit="lead"] > span { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* FIX2 studio domains: four real-text labels, one row placed by the scene above their structures; never interactive. */
+.ecosystem-home .eco-rf-domains { position: absolute; z-index: 2; left: 0; top: 0; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.ecosystem-home .eco-rf-domains > li { position: absolute; left: 0; top: 0; width: max-content; display: flex; flex-direction: column; align-items: center; row-gap: 2px; text-align: center;
+  text-shadow: 0 0 2px var(--rf-paper), 0 0 5px var(--rf-paper), 0 0 10px var(--rf-paper); }
+.ecosystem-home .eco-rf-domain-name { font-size: 17px; line-height: 1.25; font-weight: 500; letter-spacing: -.012em; color: var(--rf-ink); white-space: nowrap; }
+.ecosystem-home .eco-rf-domain-note { font-size: 13px; line-height: 1.35; letter-spacing: .01em; color: var(--rf-muted); white-space: nowrap; }
+.ecosystem-home .eco-rf-track[data-profile="compact"] .eco-rf-domain-name { font-size: 15px; }
+.ecosystem-home .eco-rf-track[data-profile="compact"] .eco-rf-domain-note { font-size: 12px; }
+
+/* Fine-pointer drag hint, placed by the writer beside the constraint until the first interaction. */
+.ecosystem-home .eco-rf-hint { position: absolute; z-index: 3; left: 0; top: 0; height: 32px; padding: 0 14px; border-radius: 16px; background: var(--rf-ink); color: var(--rf-paper);
+  font-size: 11px; line-height: 32px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; pointer-events: none; visibility: hidden; opacity: 0; }
+
+/* Decision map: the shipped constant, supplementary and hidden from assistive technology. */
+.ecosystem-home .eco-rf-map { position: absolute; z-index: 2; top: 56px; right: calc(var(--rf-rail) + 24px); pointer-events: none; }
+.ecosystem-home .eco-rf-map > p { margin: 0; font: 9px/1.4 var(--rf-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--rf-muted); }
+.ecosystem-home .eco-rf-map-art { display: block; margin: 2px 0 0 -10px; overflow: visible; }
+.ecosystem-home .eco-rf-map-legend { display: flex; gap: 12px; margin-top: -4px !important; }
+.ecosystem-home .eco-rf-map-legend > span { display: inline-flex; align-items: center; gap: 5px; text-transform: none; letter-spacing: .04em; }
+.ecosystem-home .eco-rf-map-legend > span::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--rf-emerald); }
+.ecosystem-home .eco-rf-map-legend > span[data-k="d"]::before { width: 3px; height: 3px; background: none; border: 1px solid rgba(31, 42, 35, .5); }
+.ecosystem-home .eco-rf-map-legend > span[data-k="b"]::before { border-radius: 0; background: var(--rf-emerald-2); }
+.ecosystem-home .rf-map-d { fill: none; stroke: var(--rf-ink); stroke-opacity: .38; stroke-width: .9; }
+.ecosystem-home .rf-map-a { fill: var(--rf-emerald); }
+.ecosystem-home .rf-map-b { fill: var(--rf-emerald-2); fill-opacity: .8; }
+.ecosystem-home .rf-map-marker { fill: none; stroke: var(--rf-ink); stroke-width: 1.1; }
+
+/* Controls: the FIX3 mission line, native range inputs with end labels, Evaluate and Reset, and the visible (not live)
+   result row. In the band all three rows keep one line inside the same 128 px (the art box above is unchanged). */
+.ecosystem-home .eco-rf-controls { position: relative; z-index: 2; color: var(--rf-ink); }
+.ecosystem-home .eco-rf-controls--band { position: absolute; left: var(--rf-left); right: calc(var(--rf-rail) + 24px); bottom: 24px; height: 128px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; grid-template-rows: auto auto auto; align-content: start; column-gap: 28px; row-gap: 6px; align-items: end; }
+/* Mission: the stage picks the richest wording that fits one line (data-fit); it wraps in the side column and the static flow. */
+.ecosystem-home .eco-rf-mission { position: relative; grid-column: 1 / -1; display: flex; align-items: baseline; column-gap: 14px; min-width: 0; height: 19px; margin: 0; overflow: hidden; white-space: nowrap; }
+.ecosystem-home .eco-rf-mission-eyebrow { flex: none; font: 10px/19px var(--rf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--rf-emerald-2); }
+.ecosystem-home .eco-rf-mission-title { flex: none; font-size: 14px; line-height: 19px; font-weight: 500; letter-spacing: -.01em; color: var(--rf-ink); }
+.ecosystem-home :is(.eco-rf-mission-body, .eco-rf-mission-short) { flex: none; font-size: 13px; line-height: 19px; color: var(--rf-muted); }
+.ecosystem-home .eco-rf-mission-short { display: none; }
+.ecosystem-home .eco-rf-mission[data-fit="short"] .eco-rf-mission-short { display: inline; }
+.ecosystem-home .eco-rf-mission:is([data-fit="body"], [data-fit="short"], [data-fit="title"]) .eco-rf-mission-eyebrow,
+.ecosystem-home .eco-rf-mission:is([data-fit="short"], [data-fit="title"]) .eco-rf-mission-body { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ecosystem-home .eco-rf-slider { position: relative; min-width: 0; }
+/* "Zone position · along the route   42%": the axis words give way (ellipsis) before the label would wrap. */
+.ecosystem-home .eco-rf-slider > label { display: flex; align-items: baseline; font-size: 12px; line-height: 1.4; letter-spacing: .02em; color: var(--rf-muted); white-space: nowrap; }
+.ecosystem-home .eco-rf-slider-name { flex: none; font-weight: 500; color: var(--rf-ink); }
+.ecosystem-home .eco-rf-slider-axis { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.ecosystem-home .eco-rf-slider-axis::before { content: "·"; content: "·" / ""; margin: 0 6px; }
+.ecosystem-home .eco-rf-slider > label b { flex: none; margin-left: auto; padding-left: 12px; font: 12px/1.4 var(--rf-mono); font-weight: 400; color: var(--rf-ink); }
+.ecosystem-home .eco-rf-slider::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 13px; height: 5px; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(31, 42, 35, .3) 0 1px, transparent 1px calc(10% - .1px)); }
+.ecosystem-home .eco-rf-slider input { display: block; width: 100%; height: 44px; margin: -6px 0 -8px; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; touch-action: pan-y pinch-zoom; }
+.ecosystem-home .eco-rf-slider input::-webkit-slider-runnable-track { height: 3px;
+  background: linear-gradient(90deg, var(--rf-emerald) 0 var(--rf-fill), transparent var(--rf-fill)) 0 0 / 100% 3px no-repeat, linear-gradient(rgba(31, 42, 35, .36), rgba(31, 42, 35, .36)) 0 1px / 100% 1px no-repeat; }
+.ecosystem-home .eco-rf-slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -8.5px; border-radius: 50%; background: var(--rf-paper); border: 2px solid var(--rf-emerald); }
+.ecosystem-home .eco-rf-slider input::-moz-range-track { height: 1px; background: rgba(31, 42, 35, .36); }
+.ecosystem-home .eco-rf-slider input::-moz-range-progress { height: 3px; background: var(--rf-emerald); }
+.ecosystem-home .eco-rf-slider input::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--rf-paper); border: 2px solid var(--rf-emerald); }
+/* The 44 px input overlaps its label and end labels; an inset ring frames the track and thumb without crossing either. */
+.ecosystem-home .eco-rf-slider input:focus-visible { outline: 2px solid var(--rf-ink); outline-offset: -10px; }
+.ecosystem-home .eco-rf-ends { display: flex; justify-content: space-between; gap: 12px; font: 9px/1.4 var(--rf-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--rf-muted); }
+.ecosystem-home .eco-rf-actions { display: flex; align-items: center; gap: 24px; padding-bottom: 14px; }
+.ecosystem-home .eco-rf-evaluate { min-height: 44px; padding: 0 26px; border-radius: 2px; background: var(--rf-ink); color: var(--rf-paper); font-size: 13px; letter-spacing: .02em; cursor: pointer; transition: background .25s; }
+.ecosystem-home .eco-rf-evaluate:hover { background: #33423a; }
+/* A previewed zone waits for Evaluate: a thin ring in the preview route's colour (no layout shift). */
+.ecosystem-home .eco-rf-evaluate[data-pending="true"] { box-shadow: 0 0 0 2px var(--rf-paper), 0 0 0 3px var(--rf-emerald); }
+.ecosystem-home .eco-rf-reset { min-height: 44px; padding: 0 4px; border-bottom: 1px solid var(--rf-ink); font-size: 13px; letter-spacing: .02em; color: var(--rf-ink); cursor: pointer; }
+.ecosystem-home .eco-rf-controls :is(button):focus-visible { outline: 2px solid var(--rf-ink); outline-offset: 4px; }
+/* Result row: status, consequence (route side · excluded links · cost), then the detail, which is the first to give way
+   (clipped onto a hidden second line) where the row is short. */
+.ecosystem-home .eco-rf-result { grid-column: 1 / -1; align-self: start; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 14px; row-gap: 0;
+  height: 30px; overflow: hidden; padding-top: 8px; border-top: 1px solid rgba(31, 42, 35, .14); }
+.ecosystem-home .eco-rf-result p { margin: 0; }
+.ecosystem-home .eco-rf-sentence { font-size: 15px; line-height: 21px; letter-spacing: -.01em; white-space: nowrap; }
+.ecosystem-home .eco-rf-readout { font: 11px/21px var(--rf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--rf-muted); }
+.ecosystem-home .eco-rf-status { flex: none; align-self: center; padding: 0 8px; border: 1px solid rgba(31, 42, 35, .34); border-radius: 10px;
+  font: 10px/17px var(--rf-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--rf-ink); white-space: nowrap; }
+/* The chip draws like the route it describes: dashed for the live preview, solid for the evaluated route. */
+.ecosystem-home .eco-rf-status[data-v="preview"] { border-style: dashed; border-color: var(--rf-emerald); color: var(--rf-emerald); }
+.ecosystem-home .eco-rf-status[data-v="result"] { border-color: var(--rf-emerald); background: var(--rf-emerald); color: var(--rf-paper); }
+.ecosystem-home .eco-rf-result [data-v] { display: none; }
+.ecosystem-home .eco-rf-result[data-mode="preview"] [data-v="preview"],
+.ecosystem-home .eco-rf-result[data-mode="result"] [data-v="result"],
+.ecosystem-home .eco-rf-result[data-mode="auto"][data-revealed="true"] [data-v="result"],
+.ecosystem-home .eco-rf-result[data-mode="auto"]:not([data-revealed="true"]) [data-v="idle"] { display: inline; }
+.ecosystem-home .eco-rf-result[data-mode="auto"]:not([data-revealed="true"]) .eco-rf-sentence { font-size: 14px; color: var(--rf-muted); }
+
+/* Compact (640–759 px tall) at ≥ 1440 px: a side column, a 64 px gap, then the art. */
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-controls--band { top: 56px; bottom: auto; right: auto; width: var(--rf-col); height: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto; row-gap: 16px; align-items: start; }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-actions { grid-column: 1 / -1; padding: 0; gap: 0; }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-evaluate { flex: 1; text-align: left; }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-reset { flex: 1; text-align: left; padding: 0 16px; margin-left: 28px; }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-result { flex-direction: column; align-items: flex-start; row-gap: 6px; height: auto; overflow: visible; }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-map { top: auto; bottom: 24px; right: auto; left: var(--rf-left); }
+/* Side column and static flow: the mission and the slider labels wrap instead of giving way. */
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-mission { flex-wrap: wrap; row-gap: 2px; height: auto; white-space: normal; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-mission-eyebrow { flex-basis: 100%; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) :is(.eco-rf-mission-title, .eco-rf-mission-body) { flex: 0 1 auto; min-width: 0; line-height: 1.45; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-slider > label { flex-wrap: wrap; white-space: normal; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-slider-axis { order: 3; flex-basis: 100%; overflow: visible; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-slider-axis::before { content: none; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-sentence { white-space: normal; }
+.ecosystem-home :is(.eco-rf-stage[data-layout="side"], .eco-rf-controls--static) .eco-rf-status { align-self: flex-start; }
+
+/* Content-fit probe: the longest strings of each slot at full size. Overflow recomposes as the static flow. */
+.ecosystem-home .eco-rf-fit { position: absolute; left: var(--rf-left); right: calc(var(--rf-rail) + 24px); top: 0; visibility: hidden; pointer-events: none; }
+.ecosystem-home .eco-rf-fit > div { overflow: hidden; }
+.ecosystem-home .eco-rf-fit-title { width: calc(100% - 360px); height: 32px; font-size: 24px; line-height: 1.2; letter-spacing: -.045em; white-space: nowrap; }
+.ecosystem-home .eco-rf-fit-result { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 14px; row-gap: 0; height: 21px; }
+.ecosystem-home .eco-rf-fit-result p { margin: 0; }
+@media (max-width: 1279px) { .ecosystem-home .eco-rf-fit-title { width: calc(100% - 160px); } }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-fit { right: auto; width: var(--rf-col); }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-fit-title { width: calc(100vw - var(--rf-left) - var(--rf-rail) - 400px); }
+.ecosystem-home .eco-rf-stage[data-layout="side"] .eco-rf-fit-result { flex-direction: column; height: 220px; }
+
+/* SVG layers (geometry is written by the scene; styles stay here). */
+.ecosystem-home .eco-rf-art .rf-hatch-line { stroke: var(--rf-emerald); stroke-opacity: .26; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-bleed { stroke: none; }
+.ecosystem-home .eco-rf-art .rf-bleed-dot { fill: var(--rf-ink); }
+.ecosystem-home .eco-rf-art .rf-land { fill: var(--rf-paper-deep); stroke: var(--rf-ink); stroke-width: 1; }
+/* FIX1 climax: the ground the tile dissolves into and its grid past the tile. FIX2: the four domain stems with their
+   leaders and structures; the route colour marks a vertex the drawn route passes through (stroke width is written). */
+.ecosystem-home .eco-rf-art .rf-ground { fill: var(--rf-paper-deep); stroke: none; }
+.ecosystem-home .eco-rf-art .rf-field { fill: none; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-guide { fill: none; stroke: var(--rf-emerald-2); stroke-opacity: .72; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-guide.is-route { stroke: var(--rf-emerald); stroke-opacity: .92; }
+.ecosystem-home .eco-rf-art .rf-domain { fill: none; stroke: var(--rf-emerald-2); stroke-opacity: .86; stroke-linejoin: round; stroke-linecap: round; }
+.ecosystem-home .eco-rf-art .rf-domain.is-route { stroke: var(--rf-emerald); stroke-opacity: 1; }
+.ecosystem-home .eco-rf-art .rf-grid { fill: none; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-orbit { fill: none; stroke: var(--rf-ink); stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-orbit--a { stroke-opacity: .2; stroke-dasharray: 14 4 2 4; }
+.ecosystem-home .eco-rf-art .rf-orbit--b { stroke-opacity: .16; stroke-dasharray: 1 6; }
+.ecosystem-home .eco-rf-art .rf-ticks { fill: none; stroke: var(--rf-ink); stroke-opacity: .3; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-register { fill: none; stroke: var(--rf-ink); stroke-opacity: .2; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-link { fill: none; stroke: var(--rf-ink); stroke-opacity: .38; stroke-width: 1; }
+/* FIX3: a link the zone excludes reads as a distinct dotted line (it was fainter than an open link). */
+.ecosystem-home .eco-rf-art .rf-link--blocked { stroke-opacity: .5; stroke-dasharray: 2 4; }
+.ecosystem-home .eco-rf-art .rf-cost { fill: none; stroke: var(--rf-emerald-2); stroke-width: 1; stroke-dasharray: 1 3.5; }
+.ecosystem-home .eco-rf-art .rf-cost--0 { stroke-opacity: .2; }
+.ecosystem-home .eco-rf-art .rf-cost--1 { stroke-opacity: .27; }
+.ecosystem-home .eco-rf-art .rf-cost--2 { stroke-opacity: .34; }
+.ecosystem-home .eco-rf-art .rf-core-fill { fill: var(--rf-emerald); fill-opacity: .05; }
+.ecosystem-home .eco-rf-art .rf-core { stroke: var(--rf-emerald-2); stroke-opacity: .78; }
+.ecosystem-home .eco-rf-art .rf-contour { fill: none; stroke: var(--rf-emerald-2); stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-clearance { fill: none; stroke: var(--rf-emerald-2); stroke-opacity: .72; stroke-width: 1.1; stroke-dasharray: 2 5; }
+.ecosystem-home .eco-rf-art .rf-annot { font: 9px var(--rf-mono); letter-spacing: .1em; fill: var(--rf-emerald-2); }
+.ecosystem-home .eco-rf-art .rf-selected { fill: none; stroke: var(--rf-emerald); stroke-opacity: .6; stroke-width: 1.6; }
+.ecosystem-home .eco-rf-art .rf-handle { fill: var(--rf-paper); stroke: var(--rf-emerald); stroke-width: 1.25; }
+.ecosystem-home .eco-rf-art .rf-handle-cross { fill: none; stroke: var(--rf-emerald); stroke-width: 1.25; }
+.ecosystem-home .eco-rf-art .rf-cand { fill: none; stroke: var(--rf-ink); stroke-opacity: .66; stroke-width: 1.4; }
+.ecosystem-home .eco-rf-art .rf-cand--blocked { stroke-dasharray: 7 5; }
+.ecosystem-home .eco-rf-art .rf-rejected { fill: none; stroke: var(--rf-ink); stroke-opacity: .72; stroke-width: 1.3; stroke-dasharray: 7 5; }
+.ecosystem-home .eco-rf-art .rf-xmarks { fill: none; stroke: var(--rf-ink); stroke-width: 1.7; }
+.ecosystem-home .eco-rf-art .rf-runner { fill: none; stroke: var(--rf-emerald-2); stroke-opacity: .72; stroke-width: 1.35; stroke-dasharray: 1.5 4.5; stroke-linecap: round; }
+.ecosystem-home .eco-rf-art .rf-runner-label { font: 10.5px var(--rf-mono); letter-spacing: .06em; fill: var(--rf-emerald-2); }
+.ecosystem-home .eco-rf-art .rf-ghost { fill: none; stroke: var(--rf-emerald); stroke-opacity: .45; stroke-width: 1.8; stroke-dasharray: .5 4.5; stroke-linecap: round; }
+.ecosystem-home .eco-rf-art .rf-preview { fill: none; stroke: var(--rf-emerald); stroke-opacity: .85; stroke-width: 1.5; stroke-dasharray: 6 4; }
+.ecosystem-home .eco-rf-art .rf-route-halo { fill: none; stroke: var(--rf-emerald); stroke-opacity: .12; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+.ecosystem-home .eco-rf-art .rf-route { fill: none; stroke: var(--rf-emerald); stroke-width: 2.7; stroke-linecap: round; stroke-linejoin: round; }
+.ecosystem-home .eco-rf-art .rf-signal-halo { fill: var(--rf-emerald); fill-opacity: .13; }
+.ecosystem-home .eco-rf-art .rf-signal { fill: var(--rf-emerald); }
+.ecosystem-home .eco-rf-art .rf-ring1 { fill: none; stroke: var(--rf-emerald); stroke-opacity: .3; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-ring2 { fill: none; stroke: var(--rf-emerald); stroke-opacity: .16; stroke-width: 1; stroke-dasharray: 1 4; }
+.ecosystem-home .eco-rf-art .rf-anchor { fill: var(--rf-emerald-deep); }
+.ecosystem-home .eco-rf-art .rf-relay { fill: var(--rf-emerald-2); fill-opacity: .8; }
+.ecosystem-home .eco-rf-art .rf-relay.is-route { fill: var(--rf-emerald); fill-opacity: 1; }
+.ecosystem-home .eco-rf-art .rf-hub-ring { fill: none; stroke: var(--rf-ink); stroke-opacity: .22; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-hub { fill: var(--rf-ink); stroke: var(--rf-ink); stroke-width: 1.25; }
+.ecosystem-home .eco-rf-art .rf-hub.is-route { fill: var(--rf-emerald); stroke: var(--rf-emerald); }
+.ecosystem-home .eco-rf-art .rf-hub.is-inside { fill: var(--rf-paper); stroke-dasharray: 2 2; }
+.ecosystem-home .eco-rf-art .rf-node { fill: var(--rf-paper); stroke: var(--rf-ink); stroke-opacity: .72; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-node.is-inside { stroke-opacity: .45; stroke-dasharray: 1.5 2; }
+.ecosystem-home .eco-rf-art .rf-node.is-route { fill: var(--rf-emerald); stroke: var(--rf-emerald); stroke-opacity: 1; stroke-dasharray: none; }
+.ecosystem-home .eco-rf-art .rf-crosses { fill: none; stroke: var(--rf-ink); stroke-opacity: .4; stroke-width: 1; }
+.ecosystem-home .eco-rf-art .rf-label { font: 9.5px var(--rf-mono); letter-spacing: .08em; fill: var(--rf-ink); fill-opacity: .62; }
+.ecosystem-home .eco-rf-art .rf-anchor-label { font: 10.5px var(--rf-mono); letter-spacing: .08em; fill: var(--rf-ink); fill-opacity: .86; }
+.ecosystem-home .eco-rf-art .rf-caption { font-size: 10px; letter-spacing: .16em; fill: var(--rf-muted); }
+
+/* Seam-local Rail legibility (05 → 06 only, measured on real glyphs): while the single-tone Rail straddles the
+   dark-to-paper band, its label buttons get a surface-coloured halo and firmer inactive colours. Chrome's UA stylesheet
+   resets text-shadow on <button>, so the halo is set on the buttons. Outside the band the Rail keeps its existing
+   styling: Home 01–05 and the settled field are unchanged, and the global D3-b restyle stays an owner decision. */
+html[data-home-rail-seam="research"] .home-section-rail[data-rail-tone="light"] button:not([aria-current]):not(:hover) { color: #545d52; }
+html[data-home-rail-seam="research"] .home-section-rail[data-rail-tone="dark"] button:not([aria-current]):not(:hover) { color: rgba(247, 243, 234, .78); }
+html[data-home-rail-seam="research"] .home-section-rail[data-rail-tone="light"] button { text-shadow: 0 0 1px #f6f2e7, 0 0 2px #f6f2e7; }
+html[data-home-rail-seam="research"] .home-section-rail[data-rail-tone="dark"] button { text-shadow: 0 0 1px #111b19, 0 0 2px #111b19; }
+
+/* Exit: the paper fades to transparent over 160 px, so Section 07's existing box sits on the living atmosphere. */
+.ecosystem-home .eco-rf-tail { height: 160px; background: linear-gradient(var(--rf-paper), rgba(246, 242, 231, 0)); }
+
+/* Static flow (< 1024 wide, < 640 tall, reduced motion, zoom or content overflow): field, controls, terrain, note. */
+.ecosystem-home .eco-rf-static { position: relative; padding: 8px 0 24px; background: var(--rf-paper); box-shadow: 0 0 0 100vmax var(--rf-paper); clip-path: inset(0 -100vmax); }
+.ecosystem-home .eco-rf-static > .eco-label { margin-top: 8px; }
+.ecosystem-home .eco-rf-static-title { margin: 12px 0 18px; font-size: 24px; line-height: 1.2; font-weight: 400; letter-spacing: -.045em; }
+.ecosystem-home .eco-rf-static-title--worlds { margin: 56px 0 22px; font-size: clamp(32px, 4.2vw, 44px); line-height: 1.05; letter-spacing: -.055em; scroll-margin-top: 84px; }
+.ecosystem-home .eco-rf-static-art { position: relative; width: 100%; }
+.ecosystem-home .eco-rf-static-art > svg { margin-inline: auto; overflow: hidden; }
+.ecosystem-home .eco-rf-controls--static { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 22px; max-width: 760px; }
+.ecosystem-home .eco-rf-controls--static .eco-rf-actions { gap: 16px; padding: 4px 0 0; }
+.ecosystem-home .eco-rf-controls--static .eco-rf-evaluate { flex: 1; }
+.ecosystem-home .eco-rf-controls--static .eco-rf-result { flex-direction: column; align-items: flex-start; row-gap: 6px; height: auto; overflow: visible; }
+.ecosystem-home .eco-rf-controls--static :is(.eco-rf-mission, .eco-rf-result) { grid-column: 1 / -1; }
+.ecosystem-home .eco-rf-static-note { max-width: 560px; margin: 22px 0 0; font-size: 14px; line-height: 1.6; color: var(--rf-muted); }
+/* FIX2 static practice: the statement, then the four studio domains as a plain list (2 × 2 from 768 px). */
+.ecosystem-home .eco-rf-static-practice { max-width: 980px; margin: 48px 0 0; }
+.ecosystem-home .eco-rf-static-thesis { max-width: 640px; margin: 0 0 22px; font-size: 15px; line-height: 1.55; color: var(--rf-muted); }
+.ecosystem-home .eco-rf-static-thesis > strong { display: block; margin-bottom: 8px; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.15; font-weight: 400; letter-spacing: -.04em; color: var(--rf-ink); text-wrap: balance; }
+.ecosystem-home .eco-rf-static-domains { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 32px; margin: 0; padding: 0; list-style: none; }
+.ecosystem-home .eco-rf-static-domains > li { position: relative; display: grid; grid-template-columns: 28px minmax(0, 1fr); row-gap: 3px; align-items: baseline; padding: 14px 0 16px; border-top: 1px solid rgba(31, 42, 35, .16); }
+.ecosystem-home .eco-rf-static-index { grid-row: 1 / 3; font: 10px/1.9 var(--rf-mono); letter-spacing: .1em; color: var(--rf-muted); }
+.ecosystem-home .eco-rf-static-domains .eco-rf-domain-name { grid-column: 2; white-space: normal; }
+.ecosystem-home .eco-rf-static-domains .eco-rf-domain-note { grid-column: 2; white-space: normal; }
+@media (min-width: 768px) { .ecosystem-home .eco-rf-static-domains { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .ecosystem-home .eco-rf-controls--static { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 28px; } .ecosystem-home .eco-rf-controls--static :is(.eco-rf-actions, .eco-rf-result) { grid-column: 1 / -1; } }
+/* The Section 06 intro keeps its approved tablet and mobile composition (heading above the paragraph). */
+@media (max-width: 1023px) {
+  .ecosystem-home .eco-rf-intro { max-width: 52rem; }
+  .ecosystem-home .eco-rf-intro .eco-section-heading { display: block; margin: 22px 0 0; }
+  .ecosystem-home .eco-rf-intro .eco-section-heading > p { max-width: 42rem; padding-top: 20px; }
+}
+@media (max-width: 767px) {
+  .ecosystem-home .eco-rf-intro { padding: 8px 0 32px; }
+  .mobile-interface-surface .ecosystem-home .eco-rf-intro h2 { font-size: clamp(44px, 11vw, 58px) !important; line-height: .98 !important; letter-spacing: -.05em !important; }
+  /* Board 07 hierarchy: a small field heading, then the Worlds chapter heading. */
+  .mobile-interface-surface .ecosystem-home .eco-rf-static-title { font-size: 24px !important; line-height: 1.2 !important; letter-spacing: -.045em !important; }
+  .mobile-interface-surface .ecosystem-home .eco-rf-static-title--worlds { font-size: clamp(32px, 8.4vw, 40px) !important; line-height: 1.05 !important; letter-spacing: -.055em !important; }
+  .ecosystem-home .eco-rf-tail { height: 96px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-home .eco-rf-evaluate { transition: none; }
+}

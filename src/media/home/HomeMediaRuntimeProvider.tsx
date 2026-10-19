@@ -26,6 +26,7 @@ type Registration = {
 
 type HomeMediaObserverStore = {
   observeTarget: HomeMediaRuntimeValue["observeTarget"];
+  claimPlaybackGroup: HomeMediaRuntimeValue["claimPlaybackGroup"];
   dispose: () => void;
 };
 
@@ -65,6 +66,15 @@ function measureWithoutObserver(element: Element): HomeMediaObservation {
 // target, or a single throttled scroll/resize loop when IntersectionObserver is unavailable.
 function createHomeMediaObserverStore(): HomeMediaObserverStore {
   const registrations = new Map<Element, Registration>();
+  const groups = new Map<string, { ownerId: string; pause: () => void }>();
+  const claimPlaybackGroup: HomeMediaRuntimeValue["claimPlaybackGroup"] = (group, ownerId, pause) => {
+    const previous = groups.get(group);
+    groups.delete(group);
+    previous?.pause();
+    const lease = { ownerId, pause };
+    groups.set(group, lease);
+    return () => { if (groups.get(group) === lease) groups.delete(group); };
+  };
   let warmObserver: IntersectionObserver | null = null;
   let activeObserver: IntersectionObserver | null = null;
   let removeFallback: (() => void) | null = null;
@@ -141,6 +151,8 @@ function createHomeMediaObserverStore(): HomeMediaObserverStore {
   };
 
   const dispose = () => {
+    for (const lease of groups.values()) lease.pause();
+    groups.clear();
     warmObserver?.disconnect();
     activeObserver?.disconnect();
     warmObserver = null;
@@ -148,7 +160,7 @@ function createHomeMediaObserverStore(): HomeMediaObserverStore {
     removeFallback?.();
   };
 
-  return { observeTarget, dispose };
+  return { observeTarget, claimPlaybackGroup, dispose };
 }
 
 export default function HomeMediaRuntimeProvider({ children }: { children: ReactNode }) {
@@ -188,7 +200,7 @@ export default function HomeMediaRuntimeProvider({ children }: { children: React
 
   const mode = resolveHomeMediaMode(reducedMotion, saveData);
   const value = useMemo<HomeMediaRuntimeValue>(
-    () => ({ mode, pageVisible, observeTarget: store.observeTarget }),
+    () => ({ mode, pageVisible, observeTarget: store.observeTarget, claimPlaybackGroup: store.claimPlaybackGroup }),
     [mode, pageVisible, store],
   );
 

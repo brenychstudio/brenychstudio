@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { startSpaPageTransition } from "./pageTransition";
+import BrandMonogram from "./brand/BrandMonogram";
 import {
   getLocalizedPath,
   getLocaleConfig,
@@ -15,6 +16,7 @@ import { useActiveHeaderScene } from "../hooks/useActiveHeaderScene";
 import { useHeaderThemeMorph } from "../hooks/useHeaderThemeMorph";
 import { getHeaderMoodForPath, resolveHeaderTheme } from "./header/headerThemeTokens";
 import "../styles/header-chameleon.css";
+import "../styles/header-layout.css";
 
 type Props = {
   drawerOpen?: boolean;
@@ -96,6 +98,7 @@ function getLocalizedSignalLabel(label: string, locale: LocaleCode) {
     "SYSTEMS INDEX": "INDICE DE SISTEMAS",
     "SPATIAL PROOF": "PRUEBA ESPACIAL",
     "VISUAL ATLAS": "ATLAS VISUAL",
+    "RULE FIELD": "CAMPO DE REGLAS",
     "INTERFACE GRAMMAR": "GRAMATICA DE INTERFAZ",
     "START SIGNAL": "SENAL DE INICIO",
     "CLOSING SIGNAL": "SENAL DE CIERRE",
@@ -493,32 +496,38 @@ export default function Header({
       className={[
         "site-header fixed inset-x-0 top-0 z-50 border-b",
         compactAtTablet ? "home-compact-header" : "",
+        onHome ? "site-header--home-field" : "",
       ].join(" ")}
     >
       <div className="home-compact-header-grid relative mx-auto grid min-h-[56px] w-[min(96vw,1640px)] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 py-2 sm:h-[60px] sm:w-[min(94vw,1640px)] sm:py-0 lg:grid-cols-[minmax(10rem,1fr)_auto_minmax(24rem,1fr)] lg:gap-2 xl:gap-3">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-[linear-gradient(90deg,transparent,var(--header-border),transparent)] sm:block" />
-        <div className="flex min-w-0 items-center gap-4">
+        <div className="flex min-w-0 items-center gap-4 xl:gap-3">
           <button
             type="button"
             onClick={onLogo}
-            className="group min-w-0 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
+            className="group flex min-w-0 items-center gap-2 text-left transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2 xl:shrink-0 xl:gap-2.5"
           >
-            <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] min-[420px]:text-[11px] min-[420px]:tracking-[0.18em]">
-              BRENYCH STUDIO
-            </span>
-            <span className="home-compact-header-subtitle mt-1 hidden text-[9px] uppercase tracking-[0.22em] text-[color:var(--header-muted)] transition group-hover:text-[color:var(--header-text)] lg:block">
-              {headerUi.logoSubtitle}
+            <BrandMonogram className="text-[color:var(--header-text)] [--brand-monogram-h:18px] sm:[--brand-monogram-h:20px] lg:[--brand-monogram-h:23px] xl:[--brand-monogram-h:29px]" />
+            <span className="block min-w-0">
+              <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--header-text)] min-[420px]:text-[11px] min-[420px]:tracking-[0.18em]">
+                BRENYCH STUDIO
+              </span>
+              <span className="home-compact-header-subtitle mt-1 hidden text-[9px] uppercase tracking-[0.22em] text-[color:var(--header-muted)] transition group-hover:text-[color:var(--header-text)] xl:block">
+                {headerUi.logoSubtitle}
+              </span>
             </span>
           </button>
 
-          <div className="hidden min-w-0 items-center gap-2 border-l border-[color:var(--header-border)] pl-4 xl:flex">
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--header-progress)] opacity-20 motion-reduce:animate-none" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--header-progress)]" />
-            </span>
-            <span className="truncate text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
-              {headerUi.signal} / {localizedSignalLabel}
-            </span>
+          <div className="site-header-signal hidden min-w-0 xl:flex">
+            <div className="flex shrink-0 items-center gap-2 border-l border-[color:var(--header-border)] pl-3">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--header-progress)] opacity-20 motion-reduce:animate-none" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--header-progress)]" />
+              </span>
+              <span className="whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.22em] text-[color:var(--header-muted)]">
+                {headerUi.signal} / {localizedSignalLabel}
+              </span>
+            </div>
           </div>
         </div>
 

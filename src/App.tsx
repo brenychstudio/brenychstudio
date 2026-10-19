@@ -29,6 +29,7 @@ const EvidenceAtlas = lazy(routeModules.work);
 const CasePageV2 = lazy(routeModules.case);
 const ImmersiveV2 = lazy(routeModules.immersive);
 const ImmersiveCasePage = lazy(routeModules.immersiveCase);
+const GamesPage = lazy(routeModules.games);
 const OfferV2 = lazy(routeModules.offer);
 const AboutV2 = lazy(routeModules.about);
 const ServicePage = lazy(routeModules.service);
@@ -63,6 +64,14 @@ const routeSeo = {
     description:
       "Spatial interfaces, WebGL / WebGPU, XR environments, digital exhibitions and experimental interactive systems by Brenych Studio.",
     path: "/immersive",
+  },
+  games: {
+    title: "Games — Original Worlds in Development | Brenych Studio",
+    description:
+      "Four original games in development at Brenych Studio: Black Start, Project Mars 2158, Shift World and Project Territories, each shown with its real development status.",
+    path: "/games",
+    // Review surface: noindex and outside the sitemap until the owner authorises the public reveal.
+    noIndex: true,
   },
   offer: {
     title: "Product Engineering, AI Systems & Creative Technology | Brenych Studio",
@@ -242,6 +251,7 @@ function RoutePendingSurface() {
   const isPolicy = pathname === "/privacy" || pathname === "/legal";
   const isLivingAtlas = pathname === "/living-atlas" || pathname.startsWith("/living-atlas/");
   const isProducts = pathname === "/products" || pathname === "/es/products";
+  const isGames = pathname === "/games" || pathname === "/es/games";
 
   let background = "bg-[#f2efe8]";
 
@@ -249,6 +259,7 @@ function RoutePendingSurface() {
   else if (isLivingAtlas) background = "bg-[#f5f3ee]";
   else if (pathname === "/work") background = "bg-[#f3f1ec]";
   else if (pathname === "/immersive") background = "bg-[#f1eee7]";
+  else if (isGames) background = "bg-[#0b0c0b]";
   else if (pathname === "/offer" || pathname === "/about") background = "bg-[#f3f0e9]";
   else if (pathname.startsWith("/services/")) background = "bg-[#f4f1ea]";
   else if (isPolicy || isWorkCase) background = "bg-[#f6f4ef]";
@@ -256,7 +267,7 @@ function RoutePendingSurface() {
 
   return (
     <div aria-hidden="true" className={`relative min-h-screen overflow-hidden transition-colors duration-300 ${background}`}>
-      {!isImmersiveCase ? (
+      {!isImmersiveCase && !isGames ? (
         <>
           <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,#111_1px,transparent_1px),linear-gradient(to_bottom,#111_1px,transparent_1px)] [background-size:88px_88px]" />
           <div className="absolute inset-0 bg-[radial-gradient(900px_520px_at_50%_0%,rgba(255,255,255,0.72),transparent_68%)]" />
@@ -373,6 +384,15 @@ export default function App() {
               />
 
               <Route
+                path="/es/games"
+                element={
+                  <SeoRoute meta={getSpanishMeta("/games", routeSeo.games)}>
+                    <GamesPage drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />
+                  </SeoRoute>
+                }
+              />
+
+              <Route
                 path="/es/offer"
                 element={
                   <SeoRoute meta={getSpanishMeta("/offer", routeSeo.offer)}>
@@ -478,6 +498,15 @@ export default function App() {
                   onCloseProject={closeProject}
                   noIndex={false}
                 />
+              </SeoRoute>
+            }
+          />
+
+          <Route
+            path="/games"
+            element={
+              <SeoRoute meta={withSeoAlternates(routeSeo.games)}>
+                <GamesPage drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject} />
               </SeoRoute>
             }
           />

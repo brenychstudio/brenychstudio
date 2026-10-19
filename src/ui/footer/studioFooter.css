@@ -1,7 +1,7 @@
 /* Site footer · Spatial Signature (HOME-COMPLETION-01F-FOOTER-02). The canonical footer on every page: the studio's compact
    signature after the page's last exposure, in three registers —
      1  identity: the B monogram and BRENYCH STUDIO, descriptor, studio base at the far safe edge
-     2  one navigation axis across the field with the six real sections as ports; a port and the axis segment it owns
+     2  one navigation axis across the field with the seven real sections as ports; a port and the axis segment it owns
         resolve when that link is hovered, focused or is the current page (finite CSS transitions, no motion at rest)
      3  utilities: services, profiles, legal and copyright on one compact line
    The field is the page's own centred column (min(94vw, 1640px)); after Home it is Section 07's safe field (content edge
@@ -50,7 +50,7 @@
 /* 2 · The navigation axis: one line across the field; each section link is a port on it (the mark and the segment to the
    next port live inside the link's own hit area, so the axis is never a separate target). */
 .studio-footer__spine { margin-top: clamp(20px, 1.8vw, 32px); }
-.studio-footer__ports { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.studio-footer__ports { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
 .studio-footer__ports::before { content: ""; position: absolute; left: 0; right: 0; top: var(--sf-axis); height: 1px; background: var(--sf-rule); pointer-events: none; }
 .studio-footer__port { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-height: 56px; padding: calc(var(--sf-axis) - 4px) 12px 6px 0; font-size: 16px; line-height: 1.25; }
 .studio-footer__port::after { content: ""; position: absolute; left: 0; right: 0; top: var(--sf-axis); height: 1px; background: var(--sf-ink); transform: scaleX(0); transform-origin: left center; transition: transform .26s cubic-bezier(.2, .7, .2, 1); pointer-events: none; }
@@ -73,7 +73,7 @@
 }
 /* Compact desktop (1024–1279): the Rail is number-only. */
 @media (max-width: 1279px) { .studio-footer { --sf-left: 32px; --sf-rail: 96px; } }
-/* Tablet: the closing line stacks; the six ports still share one axis. */
+/* Tablet: the closing line stacks; the seven ports still share one axis. */
 @media (max-width: 1023px) {
   .studio-footer { --sf-left: 32px; --sf-rail: 32px; }
   .studio-footer__field { width: min(92vw, 1640px); }
@@ -81,7 +81,7 @@
   .studio-footer__closing .studio-footer__action { justify-self: start; }
   .studio-footer__port { font-size: 15px; }
 }
-/* Phones: identity stacked; the ports in two short vertical spines (three each); utilities stacked by cluster. */
+/* Phones: identity stacked; the ports in two short vertical spines (four and three); utilities stacked by cluster. */
 @media (max-width: 767px) {
   .studio-footer { --sf-left: 20px; --sf-rail: 20px; --sf-fade: 32px; padding-top: 40px; }
   .studio-footer__field { width: calc(100% - 40px); }
@@ -91,7 +91,7 @@
   .studio-footer__brand { font-size: min(28px, calc((100vw - 40px) / 13.1)); }
   .studio-footer__brand .studio-footer__monogram { --sf-b: 1.3em; margin-block: 0; vertical-align: calc((var(--sf-cap) - var(--sf-b)) / 2); }
   .studio-footer__place { margin: 0; }
-  .studio-footer__ports { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, auto); grid-auto-flow: column; column-gap: 20px; }
+  .studio-footer__ports { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); grid-auto-flow: column; column-gap: 20px; }
   .studio-footer__ports::before { display: none; }
   .studio-footer__ports > li { position: relative; }
   .studio-footer__ports > li::before { content: ""; position: absolute; left: 4px; top: 0; bottom: 0; width: 1px; background: var(--sf-rule); pointer-events: none; }

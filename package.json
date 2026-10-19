@@ -9,6 +9,8 @@
   "scripts": {
     "products:index:validate": "node --experimental-strip-types scripts/validate-product-index.mts",
     "products:index:validate:self-test": "node --experimental-strip-types scripts/validate-product-index.mts --self-test",
+    "games:validate": "node --experimental-strip-types scripts/validate-games.mts",
+    "games:validate:self-test": "node --experimental-strip-types scripts/validate-games.mts --self-test",
     "dev": "vite",
     "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && npm run products:validate && npm run products:routes:validate && vite build && node scripts/validate-dist-integrity.mjs dist",
     "lint": "eslint .",

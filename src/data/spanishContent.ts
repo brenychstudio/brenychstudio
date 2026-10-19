@@ -182,6 +182,13 @@ export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
     ogDescription:
       "Desarrollo de producto, sistemas controlados de IA y agentes, software interactivo, 3D / XR en tiempo real y tecnología creativa para proyectos digitales ambiciosos.",
   },
+  "/games": {
+    title: "Juegos — Mundos originales en desarrollo | Brenych Studio",
+    description:
+      "Cuatro juegos originales en desarrollo en Brenych Studio: Black Start, Project Mars 2158, Shift World y Project Territories, cada uno con su estado real de desarrollo.",
+    ogTitle: "Juegos — Brenych Studio",
+    ogDescription: "Cuatro mundos originales en desarrollo, mostrados con su estado real.",
+  },
   "/about": {
     title: "Acerca de — Rostyslav Brenych / Brenych Studio",
     description:

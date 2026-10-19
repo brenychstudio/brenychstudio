@@ -137,6 +137,35 @@ const livingAtlasMetadata: StaticRouteMetadata[] = [
   },
 ];
 
+/**
+ * Games review surface (SITE-GAMES-01). Reachable for the owner's review, kept noindex and outside the sitemap
+ * until the owner authorises the public reveal.
+ */
+const gamesMetadata: StaticRouteMetadata[] = [
+  {
+    path: "/games",
+    title: "Games — Original Worlds in Development | Brenych Studio",
+    description:
+      "Four original games in development at Brenych Studio: Black Start, Project Mars 2158, Shift World and Project Territories, each shown with its real development status.",
+    image: defaultImage,
+    imageAlt: "Games — Brenych Studio",
+    type: "website",
+    noIndex: true,
+  },
+  {
+    path: "/es/games",
+    title: spanishPageSeoDrafts["/games"].title,
+    description: spanishPageSeoDrafts["/games"].description,
+    image: defaultImage,
+    imageAlt: "Juegos — Brenych Studio",
+    type: "website",
+    ogTitle: spanishPageSeoDrafts["/games"].ogTitle,
+    ogDescription: spanishPageSeoDrafts["/games"].ogDescription,
+    language: "es",
+    noIndex: true,
+  },
+];
+
 const caseMetadata: StaticRouteMetadata[] = cases.map((item) => {
   const path = getCasePath(item.slug);
 
@@ -253,6 +282,7 @@ export const staticRouteMetadata: readonly StaticRouteMetadata[] = [
   ...pageMetadata,
   ...serviceMetadata,
   ...livingAtlasMetadata,
+  ...gamesMetadata,
   ...caseMetadata,
   ...immersiveMetadata,
   ...spanishPageMetadata,

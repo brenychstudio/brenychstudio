@@ -14,9 +14,33 @@
     width: calc(100% - var(--header-field-left) - var(--header-field-right));
   }
 }
-/* On the wide Home field the six sections spread with the width: from the standard 24px at 1920 (no step) to 40px at 2560. */
+/* On the wide Home field the seven sections spread with the width: from the standard 10px at 1920 (no step) to 40px at 2560. */
 @media (min-width: 1920px) {
-  .site-header--home-field .home-compact-header-links { column-gap: clamp(24px, calc(2.5vw - 24px), 40px); }
+  .site-header.site-header--home-field .home-compact-header-links { column-gap: clamp(10px, calc(4.6875vw - 80px), 40px); }
+}
+
+/* Seven primary sections (SITE-GAMES-01). Measured fit, layout only:
+   - 1024–1279: every page uses the compact header Home already uses at these widths. The seven sections live in the route
+     terminal behind Menu; the brand, the locale chip and the project CTA stay in place. (Seven inline links need ~440px
+     here and the grid had ~400px, which pushed the CTA past the viewport edge.)
+   - The gap between sections eases from 6px at 1280 to 10px at 1440 and stays 10px above (six sections used 12px, then 24px
+     from 1536). Measured: the two-line brand never meets the nav, and every scene signal that fitted beside the brand with
+     six sections still fits with seven.
+   - The "Live signal" status shows from 1680px; below that it would wrap beside the seventh section. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .site-header .home-compact-header-grid { grid-template-columns: minmax(0, 1fr) auto; }
+  .site-header .home-compact-header-links { display: none; }
+  .site-header .home-compact-header-menu-trigger { display: inline-flex; }
+  #mobile-header-menu { display: flex; }
+}
+@media (min-width: 1280px) and (max-width: 1439px) {
+  .site-header .home-compact-header-links { column-gap: clamp(6px, calc(2.5vw - 26px), 10px); }
+}
+@media (min-width: 1440px) {
+  .site-header .home-compact-header-links { column-gap: 10px; }
+}
+@media (max-width: 1679px) {
+  .site-header .home-compact-header-signal { display: none; }
 }
 
 /* The scene signal beside the brand is shown whole or not at all. When it does not fit beside the brand it wraps onto a

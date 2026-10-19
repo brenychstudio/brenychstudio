@@ -1,0 +1,180 @@
+/* Games (SITE-GAMES-01). A dark stage for the selected world, a production file for the same selection, and the proof
+   standard on warm paper before the site footer. Layout and motion only: no scroll-linked effects, finite transitions,
+   and every motion disabled under prefers-reduced-motion. */
+.games-page { --g-bg: #0b0c0b; --g-bg-2: #111211; --g-ink: #f2efe6; --g-muted: rgba(242, 239, 230, .64); --g-faint: rgba(242, 239, 230, .56);
+  --g-rule: rgba(242, 239, 230, .14); --g-paper: #f4f0e6; --g-paper-ink: #1d211c; --g-paper-muted: #545d52; --g-paper-rule: rgba(29, 33, 28, .18);
+  --g-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; --g-ease: cubic-bezier(.2, .7, .2, 1);
+  /* Paper behind the page: the dark stage and file paint their own ground, and the site footer fades in over paper. */
+  background: var(--g-paper); color: var(--g-ink); }
+.games-main { --games-accent: #c9a14a; }
+.games-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.games-eyebrow { display: flex; align-items: baseline; gap: 14px; margin: 0; font: 600 11px/1.4 var(--g-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--g-muted); }
+.games-eyebrow > span:nth-child(2) { color: var(--g-faint); }
+
+/* Evidence label: what an image actually is. The mark differs per kind so the label never depends on colour alone. */
+.games-kind { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 9px; border: 1px solid currentColor; border-radius: 999px;
+  font: 600 10px/1 var(--g-mono); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
+.games-kind::before { content: ""; width: 7px; height: 7px; flex: none; border: 1px solid currentColor; border-radius: 50%; }
+.games-kind--gameplay-capture::before { background: currentColor; }
+.games-kind--prototype-capture::before { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.games-kind--realtime-render::before { border-style: dashed; }
+.games-kind--offline-render::before { border-radius: 1px; }
+.games-kind--concept::before { border-radius: 1px; background: linear-gradient(45deg, transparent 44%, currentColor 44% 56%, transparent 56%); }
+
+/* ── 1 · Stage ─────────────────────────────────────────────────────────────────────────────────────────────────────── */
+.games-stage { position: relative; overflow: hidden; isolation: isolate;
+  padding: calc(60px + clamp(24px, 2.8vw, 48px)) 0 clamp(24px, 2.6vw, 44px); background: var(--g-bg); }
+.games-stage__ambient { position: absolute; inset: -12%; z-index: -2; pointer-events: none; }
+.games-stage__ambient img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: blur(64px) saturate(1.15);
+  transform: scale(1.08); transition: opacity 1.1s var(--g-ease); }
+.games-stage__ambient img.is-active { opacity: .3; }
+.games-stage::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(120% 90% at 70% 40%, transparent 30%, rgba(11, 12, 11, .78) 78%), linear-gradient(180deg, rgba(11, 12, 11, .55), transparent 28%, transparent 70%, var(--g-bg)); }
+.games-stage__inner { width: min(94vw, 1640px); margin-inline: auto; display: grid; grid-template-areas: "intro" "tabs" "panel"; gap: clamp(20px, 2.2vw, 36px); }
+
+.games-stage__intro { grid-area: intro; display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, auto); align-items: baseline; gap: 10px clamp(20px, 2.4vw, 48px); }
+.games-stage__page-title { margin: 0; font-size: clamp(17px, 1.3vw, 24px); font-weight: 400; line-height: 1.25; letter-spacing: -.01em; }
+.games-stage__lede { margin: 0; max-width: 30em; font-size: 14px; line-height: 1.5; color: var(--g-muted); text-align: right; text-wrap: balance; }
+
+.games-panel { grid-area: panel; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "copy view"; align-items: center; gap: clamp(24px, 3.2vw, 72px); }
+.games-panel__copies { grid-area: copy; min-width: 0; display: grid; }
+.games-panel__copy { grid-area: 1 / 1; min-width: 0; visibility: hidden; }
+.games-panel__copy.is-active { visibility: visible; animation: games-rise .62s var(--g-ease) both; }
+.games-panel__index { margin: 0 0 18px; font: 600 11px/1 var(--g-mono); letter-spacing: .2em; color: var(--games-accent); }
+.games-panel__title { margin: 0; display: grid; gap: 10px; }
+.games-panel__prefix { font: 600 12px/1 var(--g-mono); letter-spacing: .38em; color: var(--g-muted); }
+.games-panel__main { font-size: clamp(44px, 5.2vw, 104px); font-weight: 600; line-height: .9; letter-spacing: -.035em; overflow-wrap: normal; word-break: keep-all; }
+.games-panel__genre { margin: clamp(16px, 1.6vw, 26px) 0 0; font-size: clamp(15px, 1.05vw, 19px); line-height: 1.35; color: var(--g-ink); }
+.games-panel__premise { margin: 10px 0 0; max-width: 34em; font-size: 15px; line-height: 1.6; color: var(--g-muted); }
+.games-panel__status { margin: clamp(20px, 2vw, 32px) 0 0; display: grid; border-top: 1px solid var(--g-rule); }
+.games-panel__status > div { display: grid; grid-template-columns: minmax(7.5em, auto) minmax(0, 1fr); gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--g-rule); }
+.games-panel__status dt { font: 600 10px/1.6 var(--g-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--g-faint); }
+.games-panel__status dd { margin: 0; font-size: 14px; line-height: 1.45; }
+.games-panel__demo { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; margin-top: 22px; padding: 0 20px; border: 1px solid var(--games-accent); border-radius: 999px;
+  color: var(--g-ink); text-decoration: none; font-size: 14px; transition: background-color .25s, color .25s; }
+.games-panel__demo:hover { background: var(--games-accent); color: var(--g-bg); }
+
+.games-panel__view { grid-area: view; margin: 0; min-width: 0; }
+.games-panel__frame { position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: max(260px, calc(100svh - 390px)); overflow: hidden; background: #000; border: 1px solid var(--g-rule); }
+.games-panel__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.035);
+  transition: opacity .7s var(--g-ease), transform 1.3s var(--g-ease); }
+.games-panel__frame img.is-active { opacity: 1; transform: none; }
+.games-panel__frame .games-kind { position: absolute; left: 14px; top: 14px; color: var(--g-ink); background: rgba(8, 9, 8, .62); border-color: rgba(242, 239, 230, .4);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.games-panel__captions { display: grid; margin-top: 12px; }
+.games-panel__caption { grid-area: 1 / 1; font-size: 13px; line-height: 1.5; color: var(--g-muted); visibility: hidden; }
+.games-panel__caption.is-active { visibility: visible; animation: games-fade .5s var(--g-ease) both; }
+
+/* The index of the four worlds sits above the stage at every width, so reading order, visual order and focus order agree. */
+.games-selector { grid-area: tabs; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--g-rule); border-bottom: 1px solid var(--g-rule); }
+.games-selector__tab { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; row-gap: 6px; align-content: start;
+  min-height: 64px; padding: 14px 18px 14px 0; border: 0; background: none; color: var(--g-muted); font: inherit; text-align: left; cursor: pointer; transition: color .25s; }
+.games-selector__tab::before { content: ""; position: absolute; left: 0; right: 18px; bottom: -1px; height: 2px; background: var(--games-tab-accent, var(--g-ink));
+  transform: scaleX(0); transform-origin: left center; transition: transform .45s var(--g-ease); }
+.games-selector__tab:hover, .games-selector__tab[aria-selected="true"] { color: var(--g-ink); }
+.games-selector__tab[aria-selected="true"]::before { transform: scaleX(1); }
+.games-selector__tab:focus-visible { outline: 2px solid var(--g-ink); outline-offset: 2px; }
+.games-selector__index { grid-row: 1 / span 2; font: 600 11px/1.5 var(--g-mono); letter-spacing: .14em; color: var(--g-faint); }
+.games-selector__title { font-size: 13px; font-weight: 600; letter-spacing: .14em; line-height: 1.3; }
+.games-selector__meta { font-size: 12px; line-height: 1.3; color: var(--g-faint); }
+
+/* ── 2 · Production file ──────────────────────────────────────────────────────────────────────────────────────────── */
+.games-file { position: relative; background: var(--g-bg-2); padding: clamp(64px, 6vw, 120px) 0 clamp(72px, 6.5vw, 128px); border-top: 1px solid var(--g-rule); }
+.games-file__inner { width: min(94vw, 1640px); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  grid-template-areas: "head facts" "head lists" "evidence evidence"; gap: clamp(28px, 3vw, 56px) clamp(32px, 4vw, 96px); animation: games-fade .55s var(--g-ease) both; }
+.games-file__head { grid-area: head; align-self: start; }
+.games-file__title { margin: 18px 0 0; font-size: clamp(30px, 2.8vw, 54px); font-weight: 600; line-height: .98; letter-spacing: -.03em; }
+.games-file__lead { margin: 14px 0 0; max-width: 24em; font-size: 15px; line-height: 1.55; color: var(--g-muted); }
+.games-file__facts { grid-area: facts; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 3vw, 56px); }
+.games-file__facts > div { padding: 14px 0 16px; border-top: 1px solid var(--g-rule); }
+.games-file__facts dt { font: 600 10px/1.6 var(--g-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--g-faint); }
+.games-file__facts dd { margin: 6px 0 0; font-size: 16px; line-height: 1.45; }
+.games-file__lists { grid-area: lists; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 3vw, 56px); }
+.games-file__lists h3 { margin: 0 0 12px; font: 600 11px/1.4 var(--g-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--g-muted); }
+.games-file__lists ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.games-file__lists li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.5; }
+.games-file__lists li::before { content: ""; position: absolute; left: 0; top: .55em; width: 8px; height: 8px; border-radius: 50%; background: var(--games-accent); }
+.games-file__planned li { color: var(--g-muted); }
+.games-file__planned li::before { background: transparent; border: 1px solid var(--g-faint); }
+.games-file__evidence { grid-area: evidence; display: grid; gap: 18px; padding-top: clamp(8px, 1vw, 16px); }
+.games-file__evidence > .games-eyebrow { font-size: 11px; }
+/* Each shot grows by its own aspect ratio, so the row shares one height and every frame stays whole (no crop of evidence). */
+.games-file__strip { display: flex; gap: clamp(12px, 1.4vw, 24px); align-items: flex-start; }
+.games-shot { margin: 0; min-width: 0; flex: var(--shot-ratio, 1.6) 1 0; }
+.games-shot__frame { overflow: hidden; background: #000; border: 1px solid var(--g-rule); }
+.games-shot__frame img { display: block; width: 100%; height: auto; }
+.games-shot figcaption { display: grid; justify-items: start; gap: 10px; margin-top: 12px; font-size: 13px; line-height: 1.5; color: var(--g-muted); }
+.games-shot figcaption .games-kind { color: var(--g-ink); }
+
+/* ── 3 · Proof standard, on warm paper before the footer ──────────────────────────────────────────────────────────── */
+.games-standard { background: var(--g-paper); color: var(--g-paper-ink); padding: clamp(72px, 7vw, 140px) 0 clamp(48px, 4.5vw, 88px); }
+.games-standard .games-eyebrow { color: var(--g-paper-muted); }
+.games-standard__inner { width: min(94vw, 1640px); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(32px, 4vw, 96px); }
+.games-standard__title { margin: 18px 0 0; font-size: clamp(32px, 3vw, 58px); font-weight: 500; line-height: 1; letter-spacing: -.03em; }
+.games-standard__body { margin: 18px 0 0; max-width: 30em; font-size: 16px; line-height: 1.6; }
+.games-standard__note { margin: 12px 0 0; max-width: 30em; font-size: 14px; line-height: 1.55; color: var(--g-paper-muted); }
+.games-standard__legend { margin: 0; display: grid; align-self: start; }
+.games-standard__legend > div { display: grid; grid-template-columns: minmax(13.5em, auto) minmax(0, 1fr); align-items: center; gap: 24px; padding: 16px 0; border-top: 1px solid var(--g-paper-rule); }
+.games-standard__legend > div:last-child { border-bottom: 1px solid var(--g-paper-rule); }
+.games-standard__legend dd { margin: 0; font-size: 15px; line-height: 1.5; }
+.games-standard__legend .is-excluded { color: var(--g-paper-muted); }
+.games-closing { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) auto; align-items: baseline; gap: 12px clamp(24px, 3vw, 64px);
+  margin-top: clamp(24px, 3vw, 56px); padding-top: clamp(20px, 2vw, 32px); border-top: 1px solid var(--g-paper-ink); }
+.games-closing__title { margin: 0; font-size: clamp(20px, 1.5vw, 28px); line-height: 1.25; letter-spacing: -.015em; }
+.games-closing__body { margin: 0; font-size: 15px; line-height: 1.55; color: var(--g-paper-muted); }
+.games-closing__action { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; padding: 0 0 4px; border: 0; border-bottom: 1px solid currentColor; background: none;
+  color: inherit; font: inherit; font-size: 15px; cursor: pointer; white-space: nowrap; }
+.games-closing__action span { transition: transform .25s; }
+.games-closing__action:hover span { transform: translate(2px, -2px); }
+.games-main :is(a, button):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+@keyframes games-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes games-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Wide screens: the frame takes more of the centred column. */
+@media (min-width: 1800px) {
+  .games-panel { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+}
+/* Compact desktop and tablet: the frame stacks above the copy; the four worlds stay one row of tabs. */
+@media (max-width: 1023px) {
+  .games-stage__intro { grid-template-columns: minmax(0, 1fr); }
+  .games-stage__lede { text-align: left; }
+  .games-panel { grid-template-columns: minmax(0, 1fr); grid-template-areas: "view" "copy"; }
+  .games-panel__frame { max-height: none; }
+  .games-file__inner { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "facts" "lists" "evidence"; }
+  .games-standard__inner { grid-template-columns: minmax(0, 1fr); }
+  .games-closing { grid-template-columns: minmax(0, 1fr); }
+  .games-closing__action { justify-self: start; }
+}
+/* Phones: two rows of two worlds; facts, lists and evidence in one column (portrait shots side by side). */
+@media (max-width: 767px) {
+  .games-stage { padding-top: calc(56px + 22px); }
+  .games-stage__inner, .games-file__inner, .games-standard__inner { width: calc(100% - 40px); }
+  .games-selector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .games-selector__tab { min-height: 56px; padding: 12px 12px 10px 0; }
+  .games-selector__title { font-size: 12px; letter-spacing: .1em; }
+  .games-panel__main { font-size: clamp(32px, 10.5vw, 64px); }
+  .games-panel__status > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .games-file__facts, .games-file__lists { grid-template-columns: minmax(0, 1fr); }
+  .games-file__strip { flex-wrap: wrap; }
+  .games-shot { flex: 1 1 100%; }
+  .games-shot--portrait { flex: 1 1 calc(50% - 12px); }
+  .games-standard__legend > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+/* The global phone heading scale (index.css, `!important` inside @layer components) is meant for page heroes. These headings
+   keep their own scale: an important declaration in an earlier layer (base) wins over one in a later layer. */
+@layer base {
+  @media (max-width: 767px) {
+    .games-page .games-stage__page-title { max-width: none !important; font-size: 21px !important; line-height: 1.25 !important; letter-spacing: -.01em !important; }
+    .games-page .games-panel__title, .games-page .games-file__title, .games-page .games-standard__title { max-width: none !important; }
+    .games-page .games-panel__title { font-size: inherit !important; line-height: inherit !important; }
+    .games-page .games-file__title { font-size: 34px !important; line-height: 1 !important; letter-spacing: -.03em !important; }
+    .games-page .games-standard__title { font-size: 38px !important; line-height: 1 !important; letter-spacing: -.03em !important; }
+    .games-page .games-file__lists h3, .games-page .games-file__evidence h3 { font-size: 11px !important; line-height: 1.4 !important; letter-spacing: .2em !important; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .games-panel__copy.is-active, .games-panel__caption.is-active, .games-file__inner { animation: none; }
+  .games-stage__ambient img, .games-panel__frame img, .games-selector__tab, .games-selector__tab::before, .games-panel__demo, .games-closing__action span { transition: none; }
+  .games-panel__frame img { transform: none; }
+}

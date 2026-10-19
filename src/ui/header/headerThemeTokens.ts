@@ -1,4 +1,4 @@
-export type HeaderMoodId = "living" | "products" | "evidence" | "immersive" | "practice" | "studio";
+export type HeaderMoodId = "living" | "products" | "evidence" | "immersive" | "games" | "practice" | "studio";
 
 export type HeaderTheme = {
   id: string;
@@ -112,6 +112,12 @@ export const headerThemeTokens: Record<HeaderMoodId, HeaderTheme> = {
     surface: "rgba(246, 245, 240, 0.76)",
     border: "rgba(15, 15, 15, 0.1)",
   },
+  games: {
+    id: "route-games",
+    signalLabel: "GAME WORLDS",
+    ...darkProof,
+    surface: "rgba(9, 10, 9, 0.74)",
+  },
   practice: {
     id: "route-practice",
     signalLabel: "PRACTICE MODEL",
@@ -187,6 +193,9 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
     signalLabel: "START SIGNAL",
     ...actionDark,
   },
+  "games-stage": { id: "games-stage", signalLabel: "WORLDS IN DEVELOPMENT", ...darkProof, surface: "rgba(9, 10, 9, 0.7)" },
+  "games-ledger": { id: "games-ledger", signalLabel: "GAME WORLDS", ...darkProof, surface: "rgba(14, 15, 14, 0.84)" },
+  "games-standard": { id: "games-standard", signalLabel: "PROOF STANDARD", ...lightDense, surface: "rgba(246, 242, 231, 0.86)" },
   "footer-closing": {
     id: "footer-closing",
     signalLabel: "CLOSING SIGNAL",
@@ -561,6 +570,9 @@ export function getHeaderMoodForPath(pathname: string) {
     pathname === "/spatial-proof"
   ) {
     return headerThemeTokens.immersive;
+  }
+  if (pathname === "/games") {
+    return headerThemeTokens.games;
   }
   if (pathname === "/offer" || pathname.startsWith("/offer") || pathname === "/offer-v2") {
     return headerThemeTokens.practice;

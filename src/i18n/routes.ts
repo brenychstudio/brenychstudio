@@ -7,6 +7,7 @@ const PUBLIC_SPANISH_BASE_PATHS = new Set([
   "/offer",
   "/about",
   "/immersive",
+  "/games",
   "/services/premium-landing-page",
   "/services/product-demo-landing",
   "/services/interactive-web-systems",

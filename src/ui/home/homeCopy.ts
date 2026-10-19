@@ -81,7 +81,7 @@ export const homeCopy = {
       direct: "Route evaluated: direct, {links}, cost {a}.", reset: "Reset to the default zone. {result}",
     },
     closing: "Commercial / Collaboration",
-    closingTitle: "What should\nwe build next?", closingBody: "A product. An interactive system. An immersive experience. Bring the ambition; we will shape the path together.",
+    closingTitle: "Bring the ambition.\nLet's give it form.", closingBody: "A product, an interactive system, an immersive experience. We shape the path together.",
     offer: "Explore ways to work together", top: "Back to the opening",
   },
   es: {
@@ -165,7 +165,7 @@ export const homeCopy = {
       direct: "Ruta evaluada: directa, {links}, coste {a}.", reset: "Zona restablecida. {result}",
     },
     closing: "Servicios / Colaboración",
-    closingTitle: "¿Qué construimos\na continuación?", closingBody: "Un producto. Un sistema interactivo. Una experiencia inmersiva. Trae la ambición; daremos forma al camino juntos.",
+    closingTitle: "Trae la ambición.\nDémosle forma.", closingBody: "Un producto, un sistema interactivo, una experiencia inmersiva. Damos forma al camino juntos.",
     offer: "Explorar cómo colaborar", top: "Volver al inicio",
   },
 } as const;

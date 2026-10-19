@@ -20,7 +20,7 @@ import EcosystemSpatial from "../ui/home/EcosystemSpatial";
 import { getHomeSpatialProofs } from "../ui/home/homeSpatialPresentation";
 import EcosystemResearch from "../ui/home/EcosystemResearch";
 import { PROGRAMMATIC_SCROLL_EVENT } from "../ui/home/homeResearchModel";
-import EcosystemSignals from "../ui/home/EcosystemSignals";
+import EcosystemCollaboration from "../ui/home/EcosystemCollaboration";
 import HomeChapterNavigation from "../ui/home/HomeChapterNavigation";
 import "../ui/home/ecosystemHome.css";
 import "../ui/home/ecosystemMapStage.css";
@@ -28,7 +28,7 @@ import "../ui/home/ecosystemProductsStage.css";
 import "../ui/home/ecosystemEvidenceStage.css";
 import "../ui/home/ecosystemSpatialStage.css";
 import "../ui/home/ecosystemResearchStage.css";
-import "../ui/home/ecosystemSignalsStage.css";
+import "../ui/home/ecosystemCollaborationStage.css";
 import "../ui/home/homeChapterNavigation.css";
 
 // Navigation scrolls announce themselves so scroll-driven scenes show the destination instead of replaying it.
@@ -190,10 +190,10 @@ export default function StudioIndex({ drawerOpen = false, onOpenProject, onClose
           <EcosystemEvidence locale={locale} navigate={navigate} projects={groups.evidence} />
           <EcosystemSpatial locale={locale} navigate={navigate} proofs={spatialProofs} />
           <EcosystemResearch key={locale} locale={locale} />
-          <EcosystemSignals locale={locale} navigate={navigate} onOpenProject={onOpenProject} />
+          <EcosystemCollaboration locale={locale} navigate={navigate} onOpenProject={onOpenProject} />
         </> : <div aria-hidden="true" className="min-h-[420vh]" />}
       </main>
-      {ready && <SiteFooterV2 onOpenProject={onOpenProject} variant="living" />}
+      {ready && <SiteFooterV2 onOpenProject={onOpenProject} variant="living" hideClosingSignal />}
     </PageSurface>
   </HomeMediaRuntimeProvider>;
 }

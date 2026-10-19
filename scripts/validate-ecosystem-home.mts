@@ -747,6 +747,136 @@ test("Section 06 mission (FIX3): the protected zone, its two axes and the solver
   // Every supported state excludes at least one link (so "{n} links excluded" is never empty).
   ok([...researchRows.values()].every(r => r.ev.blockedEdges.length >= 2), "a state excludes fewer than 2 links");
 });
+
+// ---------------------------------------------------------------- Section 07 Final Exposure / Spatial Horizon (HOME-COMPLETION-01E, 01E-FIX1)
+const F = await import("../src/ui/home/homeCollaborationModel.ts");
+test("Section 07 carries the locked Final Exposure copy in EN and ES", () => {
+  const en = homeCopy.en, es = homeCopy.es;
+  deepStrictEqual([en.closing, en.closingTitle, en.closingBody, en.start, en.offer], ["Commercial / Collaboration", "Bring the ambition.\nLet's give it form.",
+    "A product, an interactive system, an immersive experience. We shape the path together.", "Start a conversation", "Explore ways to work together"]);
+  deepStrictEqual([es.closing, es.closingTitle, es.closingBody, es.start, es.offer], ["Servicios / Colaboración", "Trae la ambición.\nDémosle forma.",
+    "Un producto, un sistema interactivo, una experiencia inmersiva. Damos forma al camino juntos.", "Iniciar una conversación", "Explorar cómo colaborar"]);
+  for (const c of [en, es]) strictEqual(c.closingTitle.split("\n").length, 2, "two authored title lines");
+});
+
+test("Section 07 choreography: arrive, resolve, hold, emerge (two moves), settle; final from landing", () => {
+  deepStrictEqual(F.CLOSING_MOTION, { header: 84, lead: 0.08, maxTarget: 0.86, emerge: { margin: 0.1, shift: 0.08, ramp: 0.3, lead1: 0.45 }, row: { shift: 28, opacity: 0.25 } });
+  deepStrictEqual(F.CLOSING_FLOOR, { rays: 6, spread: 1.25, depths: [1.6, 2.5, 3.9, 6.1, 9.5], capRatio: 1.7, capVh: 0.2 });
+  ok(F.CLOSING_MOTION.emerge.margin >= F.CLOSING_MOTION.emerge.shift, "a rising line never reaches the horizon (margin ≥ shift)");
+  // live layouts measured on the built page (2560×1270, 1536×720; section-local px, Inter metrics), and the same compact
+  // layout with the tighter title-to-horizon gap of the system fallback font (glyph box overhang ≈ .17em instead of ≈ .12em)
+  const layouts = [
+    { viewportHeight: 1270, labelBottom: 129, lines: [{ bottom: 399.5 }, { bottom: 584.5 }], font: 188.825, horizon: 668.3, band: 266.7, rowTop: 973.1 },
+    { viewportHeight: 720, labelBottom: 72.6, lines: [{ bottom: 223.6 }, { bottom: 327 }], font: 105.501, horizon: 374.4, band: 91.2, rowTop: 487.2 },
+    { viewportHeight: 720, labelBottom: 72.6, lines: [{ bottom: 223.6 }, { bottom: 333 }], font: 105.501, horizon: 368.4, band: 91.2, rowTop: 481.2 },
+  ];
+  for (const L of layouts) {
+    const P = F.closingPlan(L)!, fin = F.closingFinal(L);
+    ok(P !== null, "the choreography fits");
+    deepStrictEqual(fin, { h: L.horizon, pitch: 0, band: L.band, lines: [1, 1], row: 1 });
+    ok(P.emergeAt.every((at, i) => i === 0 || at >= L.lines[i].bottom + F.CLOSING_MOTION.emerge.margin * L.font - 1e-9), "each later line starts a full margin under its glyph box");
+    ok(P.target <= F.CLOSING_MOTION.maxTarget * L.viewportHeight + 1e-9 && P.landing >= F.CLOSING_MOTION.header, "settles before the header line, holds inside the viewport");
+    ok(P.h0 >= L.lines[0].bottom + F.CLOSING_MOTION.emerge.margin * L.font - 1e-9 && P.h0 < L.lines[1].bottom, "the horizon arrives just under the first line");
+    ok(P.emergeAt[1] > P.emergeAt[0] + P.emergeRamp[0] - 1e-9 && P.emergeAt[1] + P.emergeRamp[1] <= L.horizon + 1e-9, "line 1 is in before line 2 starts; line 2 is in before landing");
+    const start = F.closingState(P, L.viewportHeight + 50);
+    deepStrictEqual([start.h, start.pitch, start.lines, start.row], [P.h0, 1, [0, 0], 0], "arriving state below the viewport");
+    let prev = start;
+    for (let s = L.viewportHeight + 50; s >= -400; s -= 1) {
+      const st = F.closingState(P, s);
+      ok(st.h >= prev.h - 1e-9 && st.pitch <= prev.pitch + 1e-9 && st.row >= prev.row - 1e-9 && st.lines.every((v, i) => v >= prev.lines[i] - 1e-9), `not monotone at sectionTop ${s}`);
+      if (st.lines[0] > 0) strictEqual(st.pitch, 0, "the horizon is flat before the first line emerges");
+      if (st.h > P.h0) strictEqual(st.pitch, 0, "flat while it holds");
+      st.lines.forEach((v, i) => { if (v > 0) ok(L.lines[i].bottom + (1 - v) * P.shift < st.h, `line ${i} meets the horizon at sectionTop ${s}`); });
+      ok(st.h + st.band <= L.horizon + L.band + 1e-9 && L.horizon + L.band <= L.rowTop, "the floor never reaches the row");
+      if (s <= P.landing) deepStrictEqual(st, fin, `not final at sectionTop ${s}`);
+      prev = st;
+    }
+    ok(F.closingState(P, P.landing + 40).lines[1] < 1 || F.closingState(P, P.landing + 40).row < 1 || F.closingState(P, P.landing + 40).h < L.horizon, "something is still moving just before landing");
+  }
+  // too tall for the viewport, or no room between line 1 and the slot: no choreography, the final state is rendered
+  strictEqual(F.closingPlan({ ...layouts[1], viewportHeight: 600, horizon: 600, rowTop: 700 }), null);
+  strictEqual(F.closingPlan({ ...layouts[1], horizon: layouts[1].lines[0].bottom + 0.2 * layouts[1].font }), null);
+});
+
+test("Section 07 crest is derived from the default Section 06 terrain; horizon and floor stay in bounds", () => {
+  const H = F.CLOSING_HORIZON;
+  deepStrictEqual(H, { crestShare: 0.3, vanishing: 0.5, shares: [0.4, 0.2, 0.4], startAnglesDeg: [8, 0, -8] });
+  // Re-derive: the default hill's rise above its flat footprint per screen column in 06's final camera, fitted with a
+  // symmetric flank / crest / flank polyline (each segment ≥ 1/5 of the span) by least squares.
+  const c = R.DEFAULT_CONSTRAINT, view = R.climaxView({ s: 1, yaw: 0, pitch: 0, orient: "landscape" as const }, 1), cols = new Map<number, number>();
+  let x0 = Infinity, x1 = -Infinity;
+  for (let x = c.x - 200; x <= c.x + 200; x += 1) for (let y = c.y - 200; y <= c.y + 200; y += 1) {
+    if (Math.hypot(x - c.x, y - c.y) > 200) continue;
+    const p = R.project(x, y, R.height(x, y, c), view), g = R.project(x, y, 0, view), k = Math.round(p.x);
+    x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); cols.set(k, Math.max(cols.get(k) ?? -Infinity, g.y - p.y));
+  }
+  const N = 181, lo = Math.ceil(x0) + 4, hi = Math.floor(x1) - 4, X: number[] = [], Y: number[] = [];   // the provenance script's exact sampling
+  for (let i = 0; i < N; i++) {
+    const at = lo + ((hi - lo) * i) / (N - 1), v = [-1, 0, 1].map((d) => cols.get(Math.round(at) + d)).filter((n): n is number => n !== undefined);
+    X.push(at); Y.push(-v.reduce((s, n) => s + n, 0) / v.length);
+  }
+  const fitRms = (a: number, b: number) => {   // continuous 3-segment least squares on knots [0, a, b, N−1]
+    const K = [0, a, b, N - 1], A = [0, 1, 2, 3].map(() => [0, 0, 0, 0]), r = [0, 0, 0, 0];
+    for (let s = 0; s < 3; s++) for (let i = s ? K[s] + 1 : K[s]; i <= K[s + 1]; i++) {
+      const t = (X[i] - X[K[s]]) / (X[K[s + 1]] - X[K[s]]), w = [0, 0, 0, 0]; w[s] = 1 - t; w[s + 1] = t;
+      for (let j = 0; j < 4; j++) { r[j] += w[j] * Y[i]; for (let k = 0; k < 4; k++) A[j][k] += w[j] * w[k]; }
+    }
+    for (let col = 0; col < 4; col++) for (let row = 0; row < 4; row++) if (row !== col) { const f = A[row][col] / A[col][col]; for (let k = 0; k < 4; k++) A[row][k] -= f * A[col][k]; r[row] -= f * r[col]; }
+    const knotsY = r.map((v, j) => v / A[j][j]);
+    return { K, knotsY };
+  };
+  const peak = Y.reduce((m, v, i) => (v < Y[m] ? i : m), 0), MIN = Math.ceil(0.2 * (N - 1));
+  ok(Math.abs(peak - (N - 1) / 2) <= 2, "the hill outline peaks at its centre");
+  let best: { K: number[]; knotsY: number[]; rms: number } | null = null;
+  for (let k = Math.ceil(MIN / 2); peak - k >= MIN && peak + k <= N - 1 - MIN; k++) {
+    const f = fitRms(peak - k, peak + k);
+    let e = 0;
+    for (let s = 0; s < 3; s++) for (let i = f.K[s]; i <= f.K[s + 1]; i++) { const t = (X[i] - X[f.K[s]]) / (X[f.K[s + 1]] - X[f.K[s]]); e += (Y[i] - (f.knotsY[s] * (1 - t) + f.knotsY[s + 1] * t)) ** 2; }
+    if (!best || e < best.rms) best = { ...f, rms: e };
+  }
+  const span = X[N - 1] - X[0], shares = [0, 1, 2].map((s) => (X[best!.K[s + 1]] - X[best!.K[s]]) / span);
+  const angles = [0, 1, 2].map((s) => (Math.atan2(-(best!.knotsY[s + 1] - best!.knotsY[s]), X[best!.K[s + 1]] - X[best!.K[s]]) * 180) / Math.PI);
+  shares.forEach((v, i) => ok(Math.abs(v - H.shares[i]) < 0.011, `share ${i}: ${v.toFixed(3)} vs ${H.shares[i]}`));
+  ok(angles[0] > 10 && Math.abs(angles[1]) < 0.5 && angles[2] < -10 && Math.abs(angles[0] + angles[2]) < 0.5, `flank / crest / flank: ${angles.map((a) => a.toFixed(2))}`);
+  // The raw fitted flank (01E preflight/horizon-provenance.json: 18.6°) — pinned so the derivation cannot drift unnoticed.
+  ok(Math.abs(angles[0] - 18.6) < 0.05, `raw flank ${angles[0].toFixed(2)}° (provenance 18.6°)`);
+  const scaled = angles.map((a) => (a * 8) / Math.max(...angles.map(Math.abs)));
+  scaled.forEach((v, i) => ok(Math.abs(v - H.startAnglesDeg[i]) < 0.1, `start angle ${i}: ${v.toFixed(2)}°`));
+  // Geometry: one rule across the width with the crest centred on the vanishing point; ≤ 8°; flat at tilt 0; floor in bounds.
+  for (const w of [2275, 1271, 701, 350]) {
+    const p1 = F.horizonPoints(w, 40, 1), p0 = F.horizonPoints(w, 40, 0);
+    strictEqual(p1.length, 6); deepStrictEqual([p1[0], p1[5]], [[0, 40], [w, 40]], "spans the width on the rule");
+    ok(Math.abs(p1[4][1] - 40) < 1e-9 && Math.abs((p1[1][0] + p1[4][0]) / 2 - H.vanishing * w) < 1e-9, "crest returns to the rule, centred");
+    for (let s = 1; s < 4; s++) { const a = Math.abs(Math.atan2(p1[s + 1][1] - p1[s][1], p1[s + 1][0] - p1[s][0]) * 180 / Math.PI); ok(a <= 8 + 1e-9, `segment ${s} steeper than 8°`); }
+    ok(p0.every(([, y]) => y === 40), "flat at tilt 0");
+    ok(F.crestRise(w) >= Math.tan((8 * Math.PI) / 180) * 0.4 * H.crestShare * w - 1e-9, "the box holds the crest");
+    const segs = F.floorSegments(w, 40, 160);
+    strictEqual(segs.length, 2 * F.CLOSING_FLOOR.rays + 1 + F.CLOSING_FLOOR.depths.length);
+    ok(segs.every(([a, b, c2, d]) => [a, c2].every((x) => x >= -1e-9 && x <= w + 1e-9) && [b, d].every((y) => y >= 40 - 1e-9 && y <= 200 + 1e-9)), "floor inside the field, below the rule, within the band");
+    deepStrictEqual(F.floorSegments(w, 40, 0), [], "no band, no floor");
+  }
+});
+
+test("Section 07 is unpinned, reuses the existing drawer and localized Offer, and keeps the horizon decorative", () => {
+  const tsx = readFileSync(new URL("../src/ui/home/EcosystemCollaboration.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../src/ui/home/ecosystemCollaborationStage.css", import.meta.url), "utf8");
+  const index = readFileSync(new URL("../src/pages/StudioIndex.tsx", import.meta.url), "utf8");
+  ok(tsx.includes("onClick={onOpenProject}") && tsx.includes('aria-haspopup="dialog"'), "primary CTA opens the existing project drawer");
+  ok(tsx.includes('getLocalizedPath("/offer", locale)') && tsx.includes("<HomeLink"), "secondary action is the localized Offer via HomeLink");
+  ok(tsx.includes('id="collaboration"') || tsx.includes('<HomeSection id="collaboration"'), "#collaboration identity kept");
+  ok(tsx.includes('id="collaboration-title"'), "section labelled by its title");
+  ok(!/setInterval|setTimeout/.test(tsx), "no timers");
+  ok(/className="eco-fx-track" aria-hidden="true"/.test(tsx) && /className="eco-fx-horizon" aria-hidden="true"/.test(tsx) && /eco-fx-track \{[^}]*pointer-events:\s*none/.test(css), "horizon is decorative and never a target");
+  ok(!/@keyframes|animation\s*:|infinite/.test(css), "no keyframe loop");
+  const sticky = css.match(/[^{}]*\{[^}]*position:\s*sticky[^}]*\}/g) ?? [];
+  ok(sticky.length === 1 && sticky[0].trim().startsWith(".ecosystem-home .eco-fx-horizon-art {"), "the section is not pinned: only the decorative horizon drawing is sticky");
+  ok(/eco-fx-stage \{[^}]*--fx-type: clamp\(56px, min\(8\.3cqw, 19svh\), 280px\)/.test(css) && /eco-fx-inner \{[^}]*container-type: inline-size/.test(css), "title scales with the safe field");
+  ok(/eco-fx-title > span \+ span \{ margin-left: 2\.6em; \}/.test(css), "second line offset towards the centre");
+  ok(/eco-fx-row \{[^}]*width: 0; min-width: 100%/.test(css), "action column ends at the title's right edge");
+  ok(tsx.includes('.home-section-rail') && tsx.includes("rail.offsetLeft") && tsx.includes("railLeft - 24"), "the horizon stops short of the rendered Rail");
+  ok(index.includes('import EcosystemCollaboration from "../ui/home/EcosystemCollaboration"') && index.includes("<EcosystemCollaboration ") && !index.includes("EcosystemSignals"), "StudioIndex renders the new closing");
+  ok(!existsSync(new URL("../src/ui/home/EcosystemSignals.tsx", import.meta.url)) && !existsSync(new URL("../src/ui/home/ecosystemSignalsStage.css", import.meta.url)), "old closing removed");
+});
 console.log(`HOME_SELECTOR_SELF_TEST=${process.argv.includes("--self-test") ? (failures.length ? "FAIL" : "PASS") : "included"}`);
 console.log(`HOME_SELECTOR_TEST_CASES=${caseCount}`);
 console.log(`HOME_SELECTOR_TEST_FAILURES=${failures.length}`);

@@ -1,0 +1,35 @@
+/* Header layout on desktop (HOME-COMPLETION-01F-HEADER-01). Layout only: colours and transitions stay in header-chameleon.css.
+   Home: the Header widens into the Home field and never narrows. Each edge takes the smaller of two insets: the standard
+   centred column's and the Home field's — on the left the content edge of Sections 01–07 and the footer
+   (clamp(50px, 3.9vw, 80px)), on the right Section 07's 190px Rail reserve. Up to about 1750px nothing changes; from there
+   the brand sits on the Home content edge, and from about 2035px the actions line up with Section 07 and the footer.
+   Other pages keep the centred min(94vw, 1640px) column their content is built on. */
+@media (min-width: 1280px) {
+  .site-header--home-field .home-compact-header-grid {
+    --header-column-inset: calc((100% - min(94vw, 1640px)) / 2);
+    --header-field-left: min(clamp(50px, 3.9vw, 80px), var(--header-column-inset));
+    --header-field-right: min(190px, var(--header-column-inset));
+    margin-left: var(--header-field-left);
+    margin-right: 0;
+    width: calc(100% - var(--header-field-left) - var(--header-field-right));
+  }
+}
+/* On the wide Home field the six sections spread with the width: from the standard 24px at 1920 (no step) to 40px at 2560. */
+@media (min-width: 1920px) {
+  .site-header--home-field .home-compact-header-links { column-gap: clamp(24px, calc(2.5vw - 24px), 40px); }
+}
+
+/* The scene signal beside the brand is shown whole or not at all. When it does not fit beside the brand it wraps onto a
+   second flex line that this one-line box clips (the zero-width first item is what makes it wrap), instead of showing a
+   cut label. The grid tracks do not depend on it, so the nav and the actions never move when the scene label changes. */
+.site-header-signal {
+  flex: 1 1 0;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: center;
+  height: 18px;
+  overflow: hidden;
+}
+.site-header-signal::before { content: ""; width: 0; height: 100%; }
+/* clip is not a scroll container, so find-in-page cannot scroll a hidden label into view */
+@supports (overflow: clip) { .site-header-signal { overflow: clip; } }

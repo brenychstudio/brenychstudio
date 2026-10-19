@@ -1,0 +1,26 @@
+/* The B monogram (HOME-COMPLETION-01F-FOOTER-03). The silhouette is the alpha of public/brand/brenych-monogram.png
+   (404×427, already shipped for Section 02), a raster verified against the owner's original mark; it is never redrawn.
+   Color comes from currentColor. The host sets the height through --brand-monogram-h; the width follows the mark. */
+.brand-monogram {
+  display: inline-block;
+  flex: none;
+  height: var(--brand-monogram-h, 24px);
+  aspect-ratio: 404 / 427;
+  background-color: currentColor;
+  -webkit-mask: url("/brand/brenych-monogram.png") center / contain no-repeat;
+  mask: url("/brand/brenych-monogram.png") center / contain no-repeat;
+  pointer-events: none;
+}
+/* Whole-pixel box: Chrome snaps the box edges to device pixels and fits the mask into the snapped box, so a fractional
+   width at a fractional x can drop a pixel column and draw the small mark ~6% thinner. A rounded box keeps its weight. */
+@supports (width: round(1.5px, 1px)) {
+  .brand-monogram {
+    height: round(var(--brand-monogram-h, 24px), 1px);
+    width: round(calc(var(--brand-monogram-h, 24px) * 404 / 427), 1px);
+    aspect-ratio: auto;
+  }
+}
+/* Forced colours would repaint the fill as the page background and hide the mark: draw it in the text colour instead. */
+@media (forced-colors: active) {
+  .brand-monogram { forced-color-adjust: none; background-color: CanvasText; }
+}

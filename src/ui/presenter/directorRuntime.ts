@@ -130,7 +130,9 @@ async function showProduct(projectId: string, runtime: DirectorRuntime): Promise
     const travel = Math.max(0, timeline.offsetHeight - window.innerHeight);
     if (await glide(topOf(timeline) + travel * (index === 0 ? .24 : .77), runtime) === "user") return "interrupted";
     const flag = index === 0 ? "weekfieldActive" : "printBorderActive";
-    return await confirm(() => timeline.dataset[flag] === "true", runtime.signal, 2800) ? "done" : "failed";
+    // The damped scene can settle slowly on a frame-starved device. Keep the real
+    // DOM confirmation and cancellation, with a bounded settling budget.
+    return await confirm(() => timeline.dataset[flag] === "true", runtime.signal, 10000) ? "done" : "failed";
   }
   const article = timeline.querySelector<HTMLElement>(`[data-project-id="${projectId}"]`);
   if (!article) return "failed";

@@ -82,7 +82,9 @@ export default function StudioPresenterProvider({ children, onOpenProject }: { c
   // first frame, or the transcript's first line), run one after another, and report only what the page confirms; a new
   // run, Stop, Back or Close cancels whatever is still pending.
   useEffect(() => {
-    if (state.phase !== "playing_answer" || !answer || !position.started || position.run !== run) return;
+    // A delayed final frame can commit its last cue and natural completion together.
+    // Drain that cue too; Stop/Close and aborted runs still cannot start more actions.
+    if ((state.phase !== "playing_answer" && state.phase !== "completed") || !answer || !position.started || position.run !== run) return;
     if (!controllerRef.current || controllerRunRef.current !== run) {
       controllerRef.current?.abort();
       controllerRef.current = new AbortController();
@@ -141,13 +143,14 @@ export default function StudioPresenterProvider({ children, onOpenProject }: { c
 
   // Nobody is addressed in a hidden tab.
   useEffect(() => {
-    if (state.phase !== "playing_answer") return;
+    if (state.phase !== "playing_answer" && state.phase !== "completed") return;
     const onVisibility = () => {
       if (!document.hidden) return;
       controllerRef.current?.abort();
       dispatch({ type: "interrupt" });
     };
     document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [state.phase]);
 
@@ -220,7 +223,7 @@ export default function StudioPresenterProvider({ children, onOpenProject }: { c
     {touring && answer && <PresenterDock locale={locale} copy={copy} answer={answer} phase={state.phase} position={position}
       receipt={latest} clip={clip} muted={muted} plateRef={plateRef} origin={dockOrigin} mountMedia={mountMedia}
       onStop={() => { cancelTour(); dispatch({ type: "stop" }); }}
-      onReplay={() => dispatch({ type: "replay" })}
+      onReplay={() => { cancelTour(); dispatch({ type: "replay" }); }}
       onBack={back} onClose={() => close(true)} onCta={runCta} onToggleVoice={() => setMuted((value) => !value)} />}
   </PresenterContext.Provider>;
 }

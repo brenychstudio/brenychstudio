@@ -129,6 +129,10 @@ async function showProduct(projectId: string, runtime: DirectorRuntime): Promise
     // The scene's own holds (EcosystemProducts scrollToProduct): 24% of the travel for Weekfield, 77% for Print Border.
     const travel = Math.max(0, timeline.offsetHeight - window.innerHeight);
     if (await glide(topOf(timeline) + travel * (index === 0 ? .24 : .77), runtime) === "user") return "interrupted";
+    if (runtime.signal.aborted) throw abortError();
+    // Products reconciles its actual visual playhead to measured native geometry.
+    // No event is sent for cancelled or visitor-interrupted glides.
+    window.dispatchEvent(new Event("home:products-scroll-settled"));
     const flag = index === 0 ? "weekfieldActive" : "printBorderActive";
     // The damped scene can settle slowly on a frame-starved device. Keep the real
     // DOM confirmation and cancellation, with a bounded settling budget.

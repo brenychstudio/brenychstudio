@@ -129,6 +129,12 @@ export default function StudioPresenter() {
         });
       });
     };
+    // The deferred rail can mount after every initial measurement on a cold route.
+    // Its portal is a direct body child; subscribe to its arrival before observing its size.
+    const railMount = new MutationObserver(() => {
+      if (document.querySelector(".home-section-rail") !== watched) update();
+    });
+    railMount.observe(document.body, { childList: true });
     update();
     const timers = [250, 900, 2400].map((delay) => window.setTimeout(update, delay));
     document.fonts?.ready.then(update);
@@ -138,6 +144,7 @@ export default function StudioPresenter() {
       window.cancelAnimationFrame(frame);
       timers.forEach((timer) => window.clearTimeout(timer));
       resize.disconnect();
+      railMount.disconnect();
       window.removeEventListener("resize", update);
     };
   }, [locale, isOpen]);

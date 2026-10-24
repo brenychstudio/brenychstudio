@@ -50,7 +50,7 @@
 /* 2 · The navigation axis: one line across the field; each section link is a port on it (the mark and the segment to the
    next port live inside the link's own hit area, so the axis is never a separate target). */
 .studio-footer__spine { margin-top: clamp(20px, 1.8vw, 32px); }
-.studio-footer__ports { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.studio-footer__ports { position: relative; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
 .studio-footer__ports::before { content: ""; position: absolute; left: 0; right: 0; top: var(--sf-axis); height: 1px; background: var(--sf-rule); pointer-events: none; }
 .studio-footer__port { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-height: 56px; padding: calc(var(--sf-axis) - 4px) 12px 6px 0; font-size: 16px; line-height: 1.25; }
 .studio-footer__port::after { content: ""; position: absolute; left: 0; right: 0; top: var(--sf-axis); height: 1px; background: var(--sf-ink); transform: scaleX(0); transform-origin: left center; transition: transform .26s cubic-bezier(.2, .7, .2, 1); pointer-events: none; }
@@ -73,7 +73,7 @@
 }
 /* Compact desktop (1024–1279): the Rail is number-only. */
 @media (max-width: 1279px) { .studio-footer { --sf-left: 32px; --sf-rail: 96px; } }
-/* Tablet: the closing line stacks; the seven ports still share one axis. */
+/* Tablet: the closing line stacks; the eight ports still share one axis. */
 @media (max-width: 1023px) {
   .studio-footer { --sf-left: 32px; --sf-rail: 32px; }
   .studio-footer__field { width: min(92vw, 1640px); }
@@ -81,7 +81,7 @@
   .studio-footer__closing .studio-footer__action { justify-self: start; }
   .studio-footer__port { font-size: 15px; }
 }
-/* Phones: identity stacked; the ports in two short vertical spines (four and three); utilities stacked by cluster. */
+/* Phones: identity stacked; the ports in two short vertical spines of four; utilities stacked by cluster. */
 @media (max-width: 767px) {
   .studio-footer { --sf-left: 20px; --sf-rail: 20px; --sf-fade: 32px; padding-top: 40px; }
   .studio-footer__field { width: calc(100% - 40px); }

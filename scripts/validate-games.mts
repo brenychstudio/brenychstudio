@@ -1,5 +1,7 @@
 import { deepStrictEqual, ok, strictEqual } from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
+import ts from "typescript";
 import type { GameEntry } from "../src/data/games.ts";
 
 // Games surface guard (SITE-GAMES-01). The four owner-fixed games, truthful evidence labels, real image files, the
@@ -92,19 +94,70 @@ check("page copy: EN and ES carry the same keys and no unproven claims", () => {
 });
 
 const header = read("src/ui/Header.tsx");
+// Execute the actual Header selectors/handler with the actual locale helpers. Router's
+// hash deliberately lags behind window's hash, as it does after Games replaceState.
+function validateHeaderNavigation(source: string) {
+  const compile = (text: string) => ts.transpileModule(text, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  const localeExports = {};
+  runInNewContext(compile(read("src/i18n/locales.ts")), { exports: localeExports });
+  const routeExports = {};
+  runInNewContext(compile(read("src/i18n/routes.ts")), {
+    exports: routeExports,
+    require: (name: string) => { strictEqual(name, "./locales"); return localeExports; },
+  });
+  const ast = ts.createSourceFile("Header.tsx", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const declarations = new Map<string, string>();
+  const visit = (node: ts.Node) => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+      if (["cleanPathname", "activePath", "onLocale"].includes(node.name.text)) {
+        ok(!declarations.has(node.name.text), `duplicate ${node.name.text}`);
+        declarations.set(node.name.text, node.initializer.getText(ast));
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(ast);
+  const code = compile(["cleanPathname", "activePath", "onLocale"].map((name) => {
+    ok(declarations.has(name), `missing Header ${name}`);
+    return `const ${name} = ${declarations.get(name)};`;
+  }).join("\n") + "\nonLocale(nextLocale); ({ cleanPathname, activePath });");
+  for (const locale of ["en", "es"]) for (const slash of ["", "/"]) {
+    for (const slug of FIXED) {
+      const pathname = `${locale === "es" ? "/es" : ""}/games${slash}`;
+      let destination = "";
+      const result = runInNewContext(code, {
+        ...localeExports, ...routeExports,
+        useMemo: (callback: () => unknown) => callback(),
+        allLocales: [{ code: "en", enabled: true }, { code: "es", enabled: true }],
+        locale, nextLocale: locale === "en" ? "es" : "en",
+        location: { pathname, search: "", hash: "#stale-router-hash" },
+        window: { location: { hash: `#${slug}` } },
+        navigateWithTransition: (to: string) => { destination = to; },
+      }) as { cleanPathname: string; activePath: string };
+      strictEqual(result.cleanPathname, "/games", `${pathname}: normalized key`);
+      strictEqual(result.activePath, "/games", `${pathname}: current navigation`);
+      const url = new URL(destination, "https://example.test");
+      strictEqual(url.pathname.replace(/\/+$/, ""), locale === "en" ? "/es/games" : "/games", `${pathname}: locale destination`);
+      strictEqual(url.hash, `#${slug}`, `${pathname}: selected game survives locale switch`);
+    }
+  }
+}
+check("Header: Games active navigation and current browser hash across EN/ES and slash variants", () => validateHeaderNavigation(header));
 const footer = read("src/ui/SiteFooterV2.tsx");
-const navOrder = ["home", "products", "games", "immersive", "work", "offer", "about"];
-check("Header: seven sections in the owner order", () => {
+const navOrder = ["home", "products", "avatars", "games", "immersive", "work", "offer", "about"];
+check("Header: eight sections in the owner order", () => {
   const items = [...header.matchAll(/\{ id: "([a-z]+)", to: "([^"]+)" \}/g)].map((match) => match[1]);
   deepStrictEqual(items, navOrder);
   ok(/item\.id === "games"\) return locale === "es" \? "Juegos" : "Games"/.test(header), "Games / Juegos label");
   ok(/cleanPathname === "\/games"\) return "\/games"/.test(header), "active state for /games");
 });
-check("Footer: seven ports in the same order, Spanish label Juegos", () => {
+check("Footer: eight ports in the same order, Spanish label Juegos", () => {
   const ports = [...footer.slice(footer.indexOf("const sectionLinks"), footer.indexOf("const serviceLinks")).matchAll(/to: "([^"]+)"/g)].map((match) => match[1]);
-  deepStrictEqual(ports, ["/", "/products", "/games", "/immersive", "/work", "/offer", "/about"]);
+  deepStrictEqual(ports, ["/", "/products", "/avatars", "/games", "/immersive", "/work", "/offer", "/about"]);
   ok(/"\/games": "Juegos"/.test(footer), "Spanish footer label");
-  ok(/repeat\(7, minmax\(0, 1fr\)\)/.test(read("src/ui/footer/studioFooter.css")), "seven-column axis");
+  ok(/repeat\(8, minmax\(0, 1fr\)\)/.test(read("src/ui/footer/studioFooter.css")), "eight-column axis");
 });
 check("Routes: /games and /es/games resolve through the shared module loader", () => {
   const app = read("src/App.tsx"); const modules = read("src/routing/routeModules.ts"); const routes = read("src/i18n/routes.ts");
@@ -121,6 +174,20 @@ check("Review gate: noindex in runtime and static HTML, absent from the sitemap"
 });
 
 if (process.argv.includes("--self-test")) {
+  check("self-test rejects the released trailing-slash defect", () => {
+    const broken = header.replace(/const cleanPathname = useMemo\([\s\S]*?\[location\.pathname\]\);/, "const cleanPathname = useMemo(() => stripLocaleFromPathname(location.pathname), [location.pathname]);");
+    ok(broken !== header, "mutation must change the Header");
+    let rejected = false;
+    try { validateHeaderNavigation(broken); } catch { rejected = true; }
+    ok(rejected, "the navigation guard must reject the released defect");
+  });
+  check("self-test rejects a stale React Router hash", () => {
+    const broken = header.replace("window.location.hash", "location.hash");
+    ok(broken !== header, "mutation must change the Header");
+    let rejected = false;
+    try { validateHeaderNavigation(broken); } catch { rejected = true; }
+    ok(rejected, "the navigation guard must read the current browser hash");
+  });
   // Synthetic catalogs the guard must reject (tooling only; nothing here reaches production).
   const clone = () => structuredClone(games) as GameEntry[];
   // Mutations address games by slug, so they keep targeting the intended record whatever the display order.

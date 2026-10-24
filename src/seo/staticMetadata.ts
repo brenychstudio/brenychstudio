@@ -166,6 +166,36 @@ const gamesMetadata: StaticRouteMetadata[] = [
   },
 ];
 
+/**
+ * AI Digital Humans review surface (AVATARS-01). Reachable for the owner's review, noindex in the static HTML (and at
+ * runtime) and outside the sitemap until the owner authorises publication after the rights, media and claims review.
+ * The social image is cut from the founder's own approved portrait (the owner's likeness).
+ */
+const avatarsMetadata: StaticRouteMetadata[] = [
+  {
+    path: "/avatars",
+    title: "AI Digital Humans & Avatars | Brenych Studio",
+    description:
+      "Explore eight original digital character concepts and a new studio offering in portrait-led experiences, with full 3D spatial digital humans in development.",
+    image: "/og/avatars.png",
+    imageAlt: "AI Digital Humans — Brenych Studio",
+    type: "website",
+    noIndex: true,
+  },
+  {
+    path: "/es/avatars",
+    title: spanishPageSeoDrafts["/avatars"].title,
+    description: spanishPageSeoDrafts["/avatars"].description,
+    image: "/og/avatars.png",
+    imageAlt: "Humanos digitales con IA — Brenych Studio",
+    type: "website",
+    ogTitle: spanishPageSeoDrafts["/avatars"].ogTitle,
+    ogDescription: spanishPageSeoDrafts["/avatars"].ogDescription,
+    language: "es",
+    noIndex: true,
+  },
+];
+
 const caseMetadata: StaticRouteMetadata[] = cases.map((item) => {
   const path = getCasePath(item.slug);
 
@@ -283,6 +313,7 @@ export const staticRouteMetadata: readonly StaticRouteMetadata[] = [
   ...serviceMetadata,
   ...livingAtlasMetadata,
   ...gamesMetadata,
+  ...avatarsMetadata,
   ...caseMetadata,
   ...immersiveMetadata,
   ...spanishPageMetadata,
@@ -296,6 +327,8 @@ export function getStaticRouteMetadata(path: string) {
 }
 
 export function getStaticRouteSocialImageSource(path: string) {
+  if (path === "/avatars" || path === "/es/avatars") return "/avatars/avatar-01/portrait.webp";
+
   const caseItem = cases.find((item) => getCasePath(item.slug) === path || `/es${getCasePath(item.slug)}` === path);
   if (caseItem) return caseItem.ogImage;
 

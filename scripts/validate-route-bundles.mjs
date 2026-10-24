@@ -22,6 +22,7 @@ const FAMILIES = {
 
 const PAGES = [
   "StudioIndex",
+  "AvatarsPage",
   "EvidenceAtlas",
   "CasePageV2",
   "ImmersiveV2",
@@ -40,6 +41,7 @@ const PAGES = [
 
 // Routes that render no WebGL: their initial closure must stay free of the 3D stack and Tone.
 const NON_WEBGL_ROUTES = {
+  AVATARS: "AvatarsPage",
   WORK: "EvidenceAtlas",
   CASE: "CasePageV2",
   IMMERSIVE: "ImmersiveV2",

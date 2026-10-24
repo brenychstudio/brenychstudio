@@ -1,0 +1,339 @@
+/* AI Digital Humans (AVATARS-01). A dark presence chamber: the editorial column scrolls while one active portrait stays on
+   a sticky stage, with the cast trace under it. Then the technology ledger and applications on warm paper, the Spatial
+   Digital Humans horizon in the dark, and one closing step before the site footer. Layout and finite transitions only:
+   no scroll-linked effects and no animation loops of its own (a recorded idle clip plays only where the media layer allows
+   it), and every motion off under prefers-reduced-motion. */
+.avatars-page {
+  --av-bg: #0b0c0b; --av-ink: #f2efe6; --av-muted: rgba(242, 239, 230, .66); --av-faint: rgba(242, 239, 230, .58);
+  --av-rule: rgba(242, 239, 230, .14); --av-signal: #b7c7a0;
+  --av-paper: #f4f0e6; --av-paper-ink: #1d211c; --av-paper-muted: #545d52; --av-paper-rule: rgba(29, 33, 28, .18); --av-olive: #506044;
+  --av-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; --av-ease: cubic-bezier(.2, .7, .2, 1);
+  --av-header: 60px; --av-field: min(94vw, 1640px);
+  background: var(--av-paper); color: var(--av-ink);
+}
+.av-label { display: flex; align-items: baseline; gap: 14px; margin: 0; font: 600 11px/1.4 var(--av-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--av-muted); }
+.av-label > [aria-hidden="true"] { flex: none; white-space: nowrap; }
+.avatars-page :is(a, button):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+/* Filled buttons take the section colour as their text, so their ring takes the ink of the section instead. */
+.av-chamber .av-button:focus-visible { outline-color: var(--av-ink); }
+.av-closing .av-button:focus-visible { outline-color: var(--av-paper-ink); }
+
+/* ── 1 · Presence chamber ─────────────────────────────────────────────────────────────────────────────────────────── */
+.av-chamber { position: relative; isolation: isolate; background: var(--av-bg); }
+.av-chamber::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(70% 60% at 72% 34%, rgba(242, 239, 230, .045), transparent 70%), linear-gradient(180deg, rgba(11, 12, 11, 0) 70%, var(--av-bg)); }
+.av-chamber__inner { width: var(--av-field); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "intro" "stage" "lead" "cast"; }
+.av-threshold { display: contents; }
+
+.av-intro { grid-area: intro; padding-top: calc(var(--av-header) + clamp(28px, 6vw, 56px)); }
+.av-title { margin: clamp(18px, 2vw, 34px) 0 0; font-size: clamp(54px, 15vw, 96px); font-weight: 400; line-height: .9; letter-spacing: -.065em; color: var(--av-ink);
+  text-wrap: balance; }
+.av-lead { grid-area: lead; padding-top: clamp(24px, 3vw, 40px); }
+.av-supporting { margin: 0; max-width: 22em; font-size: clamp(20px, 1.55vw, 30px); line-height: 1.25; letter-spacing: -.015em; color: var(--av-ink); }
+.av-body { margin: 16px 0 0; max-width: 32em; font-size: clamp(15px, 1vw, 17px); line-height: 1.6; color: var(--av-muted); }
+.av-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin-top: clamp(24px, 2.4vw, 40px); }
+.av-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 48px; padding: 0 22px; border: 1px solid var(--av-ink);
+  border-radius: 2px; background: var(--av-ink); color: var(--av-bg); font-size: 13px; cursor: pointer; transition: background-color .3s, color .3s; }
+.av-button:hover { background: transparent; color: var(--av-ink); }
+.av-quiet { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; padding: 0; border: 0; border-bottom: 1px solid currentColor; background: none;
+  color: var(--av-ink); font-size: 13px; cursor: pointer; transition: opacity .3s; }
+.av-quiet:hover { opacity: .7; }
+.av-disclaimer { display: flex; gap: 10px; align-items: baseline; margin: clamp(22px, 2.4vw, 36px) 0 0; max-width: 34em; font: 500 11px/1.6 var(--av-mono); letter-spacing: .06em;
+  color: var(--av-faint); }
+.av-disclaimer::before { content: ""; flex: none; width: 7px; height: 7px; border: 1px solid currentColor; transform: rotate(45deg) translateY(-1px); }
+
+/* Stage: the active portrait, feathered into the chamber (no frame, no card), then its identity line and the cast trace. */
+.av-stage-col { grid-area: stage; min-width: 0; padding-top: clamp(28px, 6vw, 40px); }
+/* Scrolled to from the cast library or Explore the cast (phones): it lands below the fixed header, the hair uncut. */
+.av-stage { position: relative; display: grid; grid-template-rows: auto auto; scroll-margin-top: var(--av-header); }
+.av-stage__frame { position: relative; display: flex; justify-content: safe center; align-items: flex-end; min-width: 0; }
+.av-stage__ambient { position: absolute; inset: -14% -18%; z-index: -1; pointer-events: none; }
+.av-stage__ambient img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: blur(72px) saturate(1.1); transform: scale(1.05);
+  transition: opacity 1s var(--av-ease); }
+.av-stage__ambient img.is-active { opacity: .24; }
+/* The screen carries the stage's size; the figure fills it, so the presence overlay can sit on the portrait without being
+   faded by the figure's mask. */
+.av-stage__screen { position: relative; flex: none; width: 100%; aspect-ratio: 1; }
+/* The square source never shows its edges: a radial fade reaches full transparency at the sides and bottom, and a short
+   linear fade takes the top, so every backdrop (the founder's blue, the others' charcoal) dissolves into the chamber. */
+.av-stage__figure { position: absolute; inset: 0; margin: 0; overflow: hidden;
+  -webkit-mask-image: radial-gradient(ellipse 52% 60% at 50% 46%, #000 56%, transparent 97%), linear-gradient(180deg, transparent 0, #000 15%);
+  -webkit-mask-composite: source-in;
+  mask-image: radial-gradient(ellipse 52% 60% at 50% 46%, #000 56%, transparent 97%), linear-gradient(180deg, transparent 0, #000 15%);
+  mask-composite: intersect; }
+.av-stage__figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--focal, 50% 38%);
+  transform-origin: var(--focal, 50% 38%); transform: translateX(1.4%) scale(calc(var(--zoom, 1) * 1.025)); opacity: 0;
+  transition: opacity .5s var(--av-ease), transform .7s var(--av-ease); }
+.av-stage__figure img.is-active { opacity: 1; transform: scale(var(--zoom, 1)); }
+.av-stage__figure .av-stage__placeholder { opacity: .9; transform: scale(var(--zoom, 1)); filter: blur(10px) saturate(.9); transition: none; }
+/* Recorded media (AVATARS-02): exactly the still's frame and zoom, shown only once a decoded frame is playing, so the
+   still → video swap never shows an empty box or a jump. */
+.av-stage__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--focal, 50% 38%);
+  transform-origin: var(--focal, 50% 38%); transform: scale(var(--zoom, 1)); opacity: 0; transition: opacity .45s var(--av-ease); pointer-events: none; }
+.av-stage__video.is-on { opacity: 1; }
+
+/* The recorded introduction: a restrained band over the portrait's faded lower edge (below the face), like film subtitles.
+   Characters without a clip carry an honest status instead of a dead control. */
+.av-presence { position: absolute; left: 50%; bottom: 3.5%; z-index: 2; transform: translateX(-50%); width: min(88%, 560px); display: grid; justify-items: center;
+  gap: 10px; margin: 0; text-align: center; }
+/* One line where it fits, balanced lines where it does not (phones, long Spanish); never wider than the portrait. */
+.av-presence.av-presence--concept { width: max-content; max-width: 94%; text-wrap: balance; font: 500 10px/1.5 var(--av-mono); letter-spacing: .14em;
+  text-transform: uppercase; color: var(--av-muted); }
+.av-presence__play { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 18px 0 16px; border: 1px solid rgba(242, 239, 230, .34);
+  border-radius: 999px; background: rgba(11, 12, 11, .58); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--av-ink); font-size: 13px;
+  cursor: pointer; transition: border-color .3s, background-color .3s; }
+.av-presence__play:hover { border-color: var(--av-ink); background: rgba(11, 12, 11, .78); }
+.av-presence__glyph { flex: none; width: 0; height: 0; border-left: 9px solid currentColor; border-top: 5.5px solid transparent; border-bottom: 5.5px solid transparent; }
+.av-presence__meta { font: 500 10px/1 var(--av-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--av-muted); white-space: nowrap; }
+.av-presence__caption { margin: 0; min-height: 2.6em; max-width: 30em; font-size: clamp(15px, 1.15vw, 19px); line-height: 1.3; color: var(--av-ink); text-wrap: balance; }
+/* A soft dark backing under each caption line keeps it legible over bright skin, like film subtitles. */
+.av-presence__caption span { padding: .08em .42em; border-radius: 4px; background: rgba(11, 12, 11, .62); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.av-presence__bar { width: min(100%, 420px); height: 2px; overflow: hidden; background: rgba(242, 239, 230, .2); }
+.av-presence__bar span { display: block; height: 100%; background: var(--av-ink); transform-origin: left; transition: transform .25s linear; }
+.av-presence__controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.av-presence__button { min-height: 40px; padding: 0 16px; border: 1px solid rgba(242, 239, 230, .3); border-radius: 999px; background: rgba(11, 12, 11, .58);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--av-ink); font-size: 12px; cursor: pointer; transition: border-color .3s; }
+.av-presence__button:hover { border-color: var(--av-ink); }
+.av-presence__button[aria-disabled="true"] { opacity: .7; cursor: progress; }
+.av-presence__time { font: 500 11px/1 var(--av-mono); letter-spacing: .08em; color: var(--av-muted); font-variant-numeric: tabular-nums; }
+.av-presence__note { font-size: 13px; color: var(--av-ink); text-shadow: 0 1px 10px rgba(0, 0, 0, .9); }
+
+.av-stage__band { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "identity steps" "trace trace"; align-items: center;
+  gap: 12px 16px; padding: 14px 0 18px; border-top: 1px solid var(--av-rule); }
+.av-identity { grid-area: identity; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 0; min-width: 0; }
+.av-identity__count { font: 600 11px/1.4 var(--av-mono); letter-spacing: .18em; color: var(--av-signal); white-space: nowrap; }
+.av-identity__count span { color: var(--av-faint); }
+.av-identity__role { font-size: 15px; line-height: 1.3; color: var(--av-ink); }
+.av-identity__name { font-weight: 600; }
+.av-identity__name::after { content: " ·"; font-weight: 400; color: var(--av-faint); }
+.av-identity__scenario { font-size: 13px; line-height: 1.3; color: var(--av-muted); }
+.av-steps { grid-area: steps; display: flex; gap: 8px; }
+.av-step { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--av-rule); border-radius: 50%; background: none;
+  color: var(--av-ink); font-size: 16px; cursor: pointer; transition: border-color .3s, background-color .3s; }
+.av-step:hover { border-color: var(--av-ink); background: rgba(242, 239, 230, .06); }
+
+/* Cast trace: eight ports on one axis (the footer's navigation-axis language), never a grid of cards. */
+/* The axis is a background attached to the content, so it runs under all eight ports when the trace scrolls (< 360px). */
+.av-trace { --av-axis: 30px; grid-area: trace; position: relative; display: grid; grid-template-columns: repeat(8, minmax(44px, 1fr)); margin: 0 -6px; padding: 4px 6px 0;
+  overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+  background: linear-gradient(var(--av-rule), var(--av-rule)) 30px var(--av-axis) / calc(100% - 60px) 1px no-repeat local; }
+.av-trace::-webkit-scrollbar { display: none; }
+.av-port { position: relative; display: grid; justify-items: center; gap: 7px; min-width: 44px; padding: 4px 4px 2px; border: 0; background: none; color: var(--av-faint);
+  cursor: pointer; scroll-snap-align: center; }
+.av-port__thumb { position: relative; display: block; width: 44px; height: 44px; overflow: hidden; border-radius: 50%; background: #1a1c1a;
+  box-shadow: 0 0 0 1px var(--av-rule); transition: box-shadow .35s var(--av-ease), transform .35s var(--av-ease); }
+.av-port__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: grayscale(.55) brightness(.82);
+  transition: filter .35s var(--av-ease); }
+.av-port__number { font: 600 10px/1 var(--av-mono); letter-spacing: .16em; transition: color .3s; }
+.av-port:hover .av-port__thumb img, .av-port:focus-visible .av-port__thumb img { filter: none; }
+.av-port:hover { color: var(--av-muted); }
+.av-port[aria-selected="true"] { color: var(--av-ink); }
+.av-port[aria-selected="true"] .av-port__thumb { box-shadow: 0 0 0 2px var(--av-bg), 0 0 0 3px var(--av-ink); transform: scale(1.08); }
+.av-port[aria-selected="true"] .av-port__thumb img { filter: none; }
+/* Inside the port: the trace scrolls sideways, so it clips anything drawn outside its ports. */
+.avatars-page .av-port:focus-visible { outline-offset: -2px; }
+
+/* Cast narrative: the selected identity in words. */
+.av-cast { grid-area: cast; padding: clamp(40px, 6vw, 72px) 0 clamp(56px, 7vw, 96px); }
+.av-cast__heading { margin: 18px 0 0; max-width: 14em; font-size: clamp(34px, 3.4vw, 64px); font-weight: 400; line-height: 1.02; letter-spacing: -.05em; text-wrap: balance; }
+.av-cast__caption { margin: 18px 0 0; max-width: 34em; font-size: 15px; line-height: 1.6; color: var(--av-muted); }
+.av-now { margin-top: clamp(32px, 3.6vw, 56px); padding-top: 18px; border-top: 1px solid var(--av-rule); display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px clamp(20px, 2.4vw, 40px); }
+.av-now__label { grid-column: 1 / -1; }
+.av-now__number { margin: 0; font-size: clamp(64px, 6vw, 120px); font-weight: 300; line-height: .82; letter-spacing: -.06em; color: var(--av-ink);
+  font-variant-numeric: tabular-nums; }
+/* One label column for all rows (subgrid), so every value starts at the same edge. */
+.av-now__facts { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 16px; align-content: start; }
+.av-now__facts > div { display: grid; grid-column: 1 / -1; grid-template-columns: 11.5em minmax(0, 1fr); grid-template-columns: subgrid; column-gap: 16px; padding: 9px 0;
+  border-bottom: 1px solid var(--av-rule); }
+.av-now__facts dt { font: 600 10px/1.7 var(--av-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--av-faint); }
+.av-now__facts dd { margin: 0; font-size: 15px; line-height: 1.45; color: var(--av-ink); }
+.av-now__aside { font-size: 13px; color: var(--av-muted); }
+.av-now__disclosure { grid-column: 1 / -1; margin: 14px 0 0; font: 500 11px/1.6 var(--av-mono); letter-spacing: .05em; color: var(--av-faint); }
+.av-now__action { grid-column: 1 / -1; justify-self: start; margin-top: 18px; }
+
+/* ── 1b · The Cast (AVATARS-02): editorial discovery of the eight identities ─────────────────────────────────────── */
+/* A contact sheet, not a product grid: 4:5 portraits on one rhythm (alternate columns drop on desktop), names as the lead,
+   the working role and scenario beneath, and the real media state in the quietest voice. */
+.av-library { position: relative; background: var(--av-bg); color: var(--av-ink); padding: clamp(72px, 8vw, 140px) 0 clamp(72px, 8vw, 140px);
+  border-top: 1px solid var(--av-rule); }
+.av-library__inner { width: var(--av-field); margin-inline: auto; }
+.av-library__head { display: grid; gap: 18px; }
+.av-library__heading { margin: 0; font-size: clamp(44px, 5.6vw, 112px); font-weight: 400; line-height: .92; letter-spacing: -.06em; }
+.av-library__lede { margin: 0; max-width: 30em; font-size: clamp(16px, 1.2vw, 20px); line-height: 1.45; color: var(--av-muted); }
+.av-library__grid { margin: clamp(40px, 4.4vw, 80px) 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(32px, 3.4vw, 56px) clamp(14px, 2vw, 32px); align-items: start; }
+.av-card { display: grid; gap: 0; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+.av-card__frame { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 2px; background: #141614; }
+.av-card__frame img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.3) brightness(.88);
+  transition: filter .5s var(--av-ease), transform .8s var(--av-ease); }
+.av-card__frame::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px var(--av-rule); pointer-events: none; transition: box-shadow .3s; }
+.av-card:hover .av-card__frame img, .av-card:focus-visible .av-card__frame img, .av-card[aria-current="true"] .av-card__frame img { filter: none; transform: scale(1.025); }
+.av-card[aria-current="true"] .av-card__frame::after { box-shadow: inset 0 0 0 1px var(--av-ink); }
+.avatars-page .av-card:focus-visible { outline-offset: 6px; }
+.av-card__meta { display: grid; gap: 4px; padding-top: 14px; }
+.av-card__index { font: 600 10px/1.6 var(--av-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--av-faint); }
+.av-card__index span { letter-spacing: .1em; }
+.av-card__name { font-size: clamp(24px, 1.9vw, 34px); line-height: 1.05; letter-spacing: -.035em; color: var(--av-ink); }
+.av-card__scenario { font-size: 13px; line-height: 1.45; color: var(--av-muted); }
+.av-card__status { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font: 500 10px/1.5 var(--av-mono); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--av-faint); }
+.av-card__status::before { content: ""; flex: none; width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; }
+.av-card__status[data-state="pilot"] { color: var(--av-signal); }
+.av-card__status[data-state="pilot"]::before { background: currentColor; }
+.av-card[aria-current="true"] .av-card__status { color: var(--av-ink); }
+.av-library__note { margin: clamp(32px, 3.4vw, 56px) 0 0; font: 500 11px/1.6 var(--av-mono); letter-spacing: .05em; color: var(--av-faint); }
+
+/* ── 2 · Technology ledger and applications (paper) ───────────────────────────────────────────────────────────────── */
+.av-ledger { position: relative; background: var(--av-paper); color: var(--av-paper-ink); padding: clamp(72px, 8vw, 140px) 0 clamp(64px, 7vw, 120px); }
+.av-ledger .av-label { color: var(--av-paper-muted); }
+.av-ledger__inner { width: var(--av-field); margin-inline: auto; }
+.av-ledger__head { display: grid; gap: 18px; }
+.av-ledger__heading { margin: 0; font-size: clamp(40px, 5vw, 96px); font-weight: 400; line-height: .98; letter-spacing: -.06em; }
+.av-ledger__lede { margin: 0; max-width: 30em; font-size: 16px; line-height: 1.6; color: var(--av-paper-muted); }
+.av-levels { margin: clamp(40px, 5vw, 80px) 0 0; padding: 0; list-style: none; display: grid; gap: 0; border-top: 1px solid var(--av-paper-ink); }
+.av-level { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 20px; padding: clamp(22px, 2.4vw, 36px) 0; border-bottom: 1px solid var(--av-paper-rule); }
+.av-level__index { font: 600 12px/1.3 var(--av-mono); letter-spacing: .14em; color: var(--av-paper-muted); }
+.av-level__name { margin: 0; font-size: clamp(26px, 2.4vw, 44px); font-weight: 400; line-height: 1.05; letter-spacing: -.04em; }
+.av-level__state { grid-column: 2; justify-self: start; display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 0; padding: 6px 10px; border: 1px solid currentColor;
+  border-radius: 999px; font: 600 10px/1 var(--av-mono); letter-spacing: .16em; text-transform: uppercase; }
+.av-level__state::before { content: ""; width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor; }
+.av-level[data-state="current"] .av-level__state { color: var(--av-olive); }
+.av-level[data-state="current"] .av-level__state::before { background: currentColor; }
+.av-level[data-state="future"] .av-level__state::before { border-style: dashed; }
+.av-level__body { grid-column: 2; margin: 12px 0 0; max-width: 34em; font-size: 15px; line-height: 1.6; color: var(--av-paper-muted); }
+.av-level__points { grid-column: 2; display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--av-paper-ink); }
+.av-level__points li::before { content: "/ "; color: var(--av-paper-muted); }
+.av-level__note { grid-column: 2; margin: 14px 0 0; max-width: 40em; font: 500 11px/1.6 var(--av-mono); letter-spacing: .04em; color: var(--av-paper-muted); }
+.av-level__link { grid-column: 2; justify-self: start; display: inline-flex; gap: 12px; align-items: center; min-height: 44px; margin-top: 8px; color: var(--av-paper-ink);
+  font-size: 14px; text-decoration: none; border-bottom: 1px solid currentColor; }
+/* The bridge (R&D) is a discreet ribbon between the two tracks that carry the page. */
+.av-level[data-state="bridge"] { padding-block: 16px; }
+.av-level[data-state="bridge"] .av-level__name { font-size: clamp(17px, 1.3vw, 22px); letter-spacing: -.01em; }
+.av-level[data-state="bridge"] .av-level__body { margin-top: 6px; font-size: 14px; }
+
+.av-roles { width: var(--av-field); margin: clamp(80px, 9vw, 160px) auto 0; }
+.av-roles__heading { margin: 18px 0 0; font-size: clamp(32px, 3.2vw, 60px); font-weight: 400; line-height: 1.02; letter-spacing: -.05em; }
+.av-roles__list { margin: clamp(28px, 3vw, 48px) 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--av-paper-rule); }
+.av-role { display: grid; grid-template-columns: 3em minmax(0, 1fr); gap: 4px 12px; padding: 18px 0; border-bottom: 1px solid var(--av-paper-rule); }
+.av-role__index { font: 600 11px/1.6 var(--av-mono); letter-spacing: .14em; color: var(--av-paper-muted); }
+.av-role__name { margin: 0; font-size: 19px; line-height: 1.25; letter-spacing: -.01em; }
+.av-role__body { grid-column: 2; margin: 0; font-size: 14px; line-height: 1.55; color: var(--av-paper-muted); }
+.av-roles__note { margin: 16px 0 0; font: 500 11px/1.6 var(--av-mono); letter-spacing: .05em; color: var(--av-paper-muted); }
+
+/* ── 3 · Spatial Digital Humans (the next generation, coming soon) ───────────────────────────────────────────────────── */
+.av-horizon { position: relative; overflow: hidden; isolation: isolate; background: #121816; color: #e7e5da; padding: clamp(80px, 9vw, 160px) 0; }
+.av-horizon .av-label { color: rgba(231, 229, 218, .62); }
+.av-horizon__inner { width: var(--av-field); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(36px, 4vw, 72px); align-items: center; }
+.av-horizon__heading { margin: 22px 0 0; font-size: clamp(52px, 7.4vw, 150px); font-weight: 400; line-height: .88; letter-spacing: -.07em; text-wrap: balance; }
+.av-horizon__line { margin: clamp(22px, 2.2vw, 34px) 0 0; max-width: 24em; font-size: clamp(18px, 1.4vw, 26px); line-height: 1.3; letter-spacing: -.01em; }
+.av-horizon__body { margin: 14px 0 0; max-width: 30em; font-size: 15px; line-height: 1.65; color: rgba(231, 229, 218, .66); }
+.av-flag { display: inline-flex; align-items: center; gap: 12px; margin-top: clamp(24px, 2.4vw, 36px); padding: 12px 18px; border: 1px solid rgba(231, 229, 218, .4);
+  font: 600 11px/1 var(--av-mono); letter-spacing: .2em; text-transform: uppercase; }
+.av-flag::before { content: ""; width: 7px; height: 7px; border: 1px dashed currentColor; border-radius: 50%; }
+.av-horizon__frontier { margin: clamp(28px, 3vw, 44px) 0 0; padding-top: 16px; border-top: 1px solid rgba(231, 229, 218, .16); font-size: 16px; line-height: 1.5; }
+.av-horizon__tech { margin: 6px 0 0; font: 500 11px/1.6 var(--av-mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(231, 229, 218, .56); }
+.av-horizon__figure { margin: 0; justify-self: center; width: min(100%, 820px); }
+.av-horizon__figure svg { display: block; width: 100%; height: auto; color: rgba(222, 230, 212, .86); }
+.av-horizon__figure figcaption { margin-top: 12px; font: 500 11px/1.6 var(--av-mono); letter-spacing: .05em; color: rgba(231, 229, 218, .6); text-align: center; }
+
+/* ── 4 · Closing step (paper), then the site footer ───────────────────────────────────────────────────────────────── */
+.av-closing { background: var(--av-paper); color: var(--av-paper-ink); padding: clamp(72px, 8vw, 140px) 0 clamp(40px, 4vw, 72px); }
+.av-closing .av-label { color: var(--av-paper-muted); }
+.av-closing__inner { width: var(--av-field); margin-inline: auto; display: grid; gap: 22px; }
+.av-closing__heading { margin: 0; max-width: 16em; font-size: clamp(36px, 4.4vw, 84px); font-weight: 400; line-height: 1; letter-spacing: -.055em; text-wrap: balance; }
+.av-closing__body { margin: 0; max-width: 32em; font-size: 16px; line-height: 1.6; color: var(--av-paper-muted); }
+.av-closing .av-button { justify-self: start; background: var(--av-paper-ink); border-color: var(--av-paper-ink); color: var(--av-paper); }
+.av-closing .av-button:hover { background: transparent; color: var(--av-paper-ink); }
+
+/* ── Layout by width ──────────────────────────────────────────────────────────────────────────────────────────────── */
+/* Phones and tablets: the same 20px gutter as the site footer below. The cast trace runs 16px into it, so the eight 44px
+   ports fit without scrolling from 375px up (it scrolls at narrower widths, as a strip). */
+@media (max-width: 767px) {
+  .avatars-page { --av-field: calc(100% - 40px); }
+  .av-trace { margin-inline: -16px; }
+}
+/* Phones: each fact reads as label over value instead of a squeezed two-column row. */
+@media (max-width: 639px) {
+  /* The introduction's overlay stays below the mouth on a small portrait: a compact caption and one row of controls. */
+  .av-presence { bottom: 2%; width: 94%; gap: 6px; }
+  .av-presence__caption { min-height: 0; font-size: 13px; line-height: 1.25; }
+  .av-presence__controls { flex-wrap: nowrap; gap: 6px; }
+  .av-presence__button { min-height: 34px; padding: 0 12px; font-size: 11px; }
+  .av-presence__time { display: none; }
+  .av-card__index { font-size: 9px; letter-spacing: .1em; }
+  .av-card__index span { letter-spacing: .06em; }
+  .av-now__facts { grid-template-columns: minmax(0, 1fr); }
+  .av-now__facts > div { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+}
+/* Tablets: the portrait leaves room for its identity line and the cast trace in the first view. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .av-stage__screen { width: min(100%, 50svh); }
+}
+@media (min-width: 640px) {
+  .av-roles__list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); }
+  .av-port__thumb { width: 48px; height: 48px; }
+  .av-trace { --av-axis: 32px; }
+}
+@media (min-width: 900px) {
+  .av-library__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .av-library__item:nth-child(even) { margin-top: clamp(32px, 4vw, 72px); }
+  .av-ledger__head { grid-template-columns: minmax(0, 1fr) minmax(0, 28em); align-items: end; column-gap: clamp(32px, 4vw, 80px); }
+  .av-ledger__head .av-label { grid-column: 1 / -1; }
+  .av-levels { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(32px, 4vw, 80px); }
+  .av-level[data-state="current"] { grid-column: 1; grid-row: 1; }
+  .av-level[data-state="future"] { grid-column: 2; grid-row: 1; }
+  .av-level[data-state="bridge"] { grid-column: 1 / -1; grid-row: 2; }
+  .av-roles__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .av-role { grid-template-columns: minmax(0, 1fr); padding-right: 12px; }
+  .av-role__body { grid-column: 1; }
+  .av-horizon__inner { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+  .av-closing__inner { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: 48px; }
+  .av-closing__inner .av-label { grid-column: 1 / -1; }
+  .av-closing__body { grid-column: 1; }
+  .av-closing .av-button { grid-column: 2; grid-row: 2 / span 2; align-self: end; }
+}
+
+/* Desktop: two columns. The threshold fills the first view beside the stage; the stage stays while the cast narrative
+   scrolls past it, so any selection always shows in the same place. */
+@media (min-width: 1024px) {
+  .av-chamber__inner { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "threshold stage" "cast stage"; column-gap: clamp(32px, 3.6vw, 76px); }
+  .av-threshold { grid-area: threshold; display: flex; flex-direction: column; justify-content: center; min-height: 100svh;
+    padding: calc(var(--av-header) + clamp(24px, 3vh, 48px)) 0 clamp(24px, 4vh, 48px); }
+  .av-intro, .av-lead { padding-top: 0; }
+  .av-lead { margin-top: clamp(18px, 3vh, 44px); }
+  /* Capped so the longest line ("Humanos" in Spanish) stays inside its column on the widest screens. */
+  .av-title { font-size: clamp(64px, 6.9vw, 160px); }
+  .av-stage-col { padding-top: var(--av-header); }
+  .av-stage { position: sticky; top: var(--av-header); height: calc(100svh - var(--av-header)); grid-template-rows: minmax(0, 1fr) auto; }
+  .av-stage__frame { min-height: 0; }
+  /* As tall as the stage allows; it may bleed into the page's right margin, never past the viewport edge. */
+  .av-stage__screen { width: auto; height: 100%; max-width: calc(100% + (100vw - var(--av-field)) / 2 - 16px); }
+  /* At least one stage tall, centred: whoever lands here (Explore the cast) reads it beside a whole portrait, and the
+     stage only leaves once the narrative has been read. */
+  .av-cast { min-height: calc(100svh - var(--av-header)); display: flex; flex-direction: column; justify-content: center; padding-top: clamp(24px, 4vh, 48px); }
+}
+/* Short desktops: the threshold tightens so its actions stay in the first view. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .av-title { font-size: clamp(56px, min(6.9vw, 11.5vh), 132px); }
+  .av-body { margin-top: 10px; }
+  .av-actions { margin-top: 18px; }
+  .av-disclaimer { margin-top: 16px; }
+  .av-lead { margin-top: 24px; }
+}
+@media (min-width: 2200px) {
+  .av-port__thumb { width: 54px; height: 54px; }
+  .av-trace { --av-axis: 35px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .av-now__live > * { animation: av-fade .45s var(--av-ease) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .av-stage__figure img, .av-stage__video, .av-stage__ambient img, .av-port__thumb, .av-port__thumb img, .av-button, .av-step,
+  .av-card__frame img { transition: none; }
+  .av-card:hover .av-card__frame img, .av-card:focus-visible .av-card__frame img, .av-card[aria-current="true"] .av-card__frame img { transform: none; }
+  .av-stage__figure img { transform: scale(var(--zoom, 1)); }
+}
+@keyframes av-fade { from { opacity: 0; transform: translateY(6px); } }

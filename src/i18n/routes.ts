@@ -3,6 +3,7 @@ import { DEFAULT_LOCALE, getLocaleConfig, isLocaleCode, type LocaleCode } from "
 const PUBLIC_SPANISH_BASE_PATHS = new Set([
   "/",
   "/products",
+  "/avatars",
   "/work",
   "/offer",
   "/about",

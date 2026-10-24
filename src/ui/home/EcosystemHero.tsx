@@ -1,5 +1,6 @@
 import type { PublicLocale } from "../../data/projectRegistry.types";
 import StudioHeroField from "../StudioHeroField";
+import StudioPresenter from "../presenter/StudioPresenter";
 import { useSound } from "../../stage/audio/useSound";
 import { homeCopy } from "./homeCopy";
 import { Arrow } from "./HomePrimitives";
@@ -14,6 +15,7 @@ export default function EcosystemHero({ locale, onOpenProject }: {
     <div className="eco-hero-content eco-wrap">
       <p className="eco-label">{copy.eyebrow}</p>
       <h1 id="opening-title">{copy.hero.map((line) => <span key={line}>{line}</span>)}</h1>
+      <StudioPresenter />
       <div className="eco-hero-bottom">
         <p className="eco-hero-intro">{copy.intro}</p>
         <div className="eco-hero-actions">

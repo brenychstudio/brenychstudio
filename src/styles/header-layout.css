@@ -14,30 +14,29 @@
     width: calc(100% - var(--header-field-left) - var(--header-field-right));
   }
 }
-/* On the wide Home field the seven sections spread with the width: from the standard 10px at 1920 (no step) to 40px at 2560. */
+/* On the wide Home field the sections spread with the width: from the standard 6px at 1920 (no step) to 40px at 2560. */
 @media (min-width: 1920px) {
-  .site-header.site-header--home-field .home-compact-header-links { column-gap: clamp(10px, calc(4.6875vw - 80px), 40px); }
+  .site-header.site-header--home-field .home-compact-header-links { column-gap: clamp(6px, calc(5.3125vw - 96px), 40px); }
 }
 
-/* Seven primary sections (SITE-GAMES-01). Measured fit, layout only:
-   - 1024–1279: every page uses the compact header Home already uses at these widths. The seven sections live in the route
-     terminal behind Menu; the brand, the locale chip and the project CTA stay in place. (Seven inline links need ~440px
-     here and the grid had ~400px, which pushed the CTA past the viewport edge.)
-   - The gap between sections eases from 6px at 1280 to 10px at 1440 and stays 10px above (six sections used 12px, then 24px
-     from 1536). Measured: the two-line brand never meets the nav, and every scene signal that fitted beside the brand with
-     six sections still fits with seven.
-   - The "Live signal" status shows from 1680px; below that it would wrap beside the seventh section. */
-@media (min-width: 1024px) and (max-width: 1279px) {
+/* Eight primary sections (SITE-GAMES-01, Avatars added in AVATARS-01). Measured fit, layout only:
+   - 1024–1399: every page uses the compact header Home already uses at these widths. The sections live in the route
+     terminal behind Menu; the brand, the locale chip and the project CTA stay in place. (With seven sections the inline nav
+     fitted from 1280. The eighth needs ~70px more: measured at 8px steps, the two-line brand then met the first section
+     below 1376px in English and below 1400px in Spanish, -57px / -77px at 1280. Text is never shrunk to make it fit.)
+   - From 1400 the sections sit 6px apart (seven sections used 10px from 1440). The eighth section takes ~35px from the scene
+     signal beside the brand; the tighter gap returns ~14px of it, so the first-view signal of Products, Work, Games, Offer
+     and About still shows at 1920+ in English. Longer labels (e.g. IMMERSIVE SYSTEMS, most Spanish ones) now show only on
+     the wide Home field; like before, a signal is shown whole or not at all.
+   - The "Live signal" status shows from 1680px; below that it would wrap beside the last section. */
+@media (min-width: 1024px) and (max-width: 1399px) {
   .site-header .home-compact-header-grid { grid-template-columns: minmax(0, 1fr) auto; }
   .site-header .home-compact-header-links { display: none; }
   .site-header .home-compact-header-menu-trigger { display: inline-flex; }
   #mobile-header-menu { display: flex; }
 }
-@media (min-width: 1280px) and (max-width: 1439px) {
-  .site-header .home-compact-header-links { column-gap: clamp(6px, calc(2.5vw - 26px), 10px); }
-}
-@media (min-width: 1440px) {
-  .site-header .home-compact-header-links { column-gap: 10px; }
+@media (min-width: 1400px) {
+  .site-header .home-compact-header-links { column-gap: 6px; }
 }
 @media (max-width: 1679px) {
   .site-header .home-compact-header-signal { display: none; }

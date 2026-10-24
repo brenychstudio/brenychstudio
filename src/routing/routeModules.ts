@@ -20,6 +20,7 @@ function memoizeModuleLoader<T>(loader: () => Promise<T>) {
 export const routeModules = {
   studio: memoizeModuleLoader(() => import("../pages/StudioIndex")),
   products: memoizeModuleLoader(() => import("../pages/ProductIndex")),
+  avatars: memoizeModuleLoader(() => import("../pages/AvatarsPage")),
   work: memoizeModuleLoader(() => import("../pages/EvidenceAtlas")),
   case: memoizeModuleLoader(() => import("../pages/CasePageV2")),
   immersive: memoizeModuleLoader(() => import("../pages/ImmersiveV2")),
@@ -51,6 +52,7 @@ type RouteMatcher = {
 const routeMatchers: readonly RouteMatcher[] = [
   { path: "/", key: "studio", spanish: true },
   { path: "/products", key: "products", spanish: true },
+  { path: "/avatars", key: "avatars", spanish: true },
   { path: "/studio-index", key: "studio" },
   { path: "/work", key: "work", spanish: true },
   { path: "/evidence-atlas", key: "work" },

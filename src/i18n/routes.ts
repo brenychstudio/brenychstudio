@@ -1,8 +1,10 @@
+import { getPublishedDossierProducts } from "../data/productCatalog";
 import { DEFAULT_LOCALE, getLocaleConfig, isLocaleCode, type LocaleCode } from "./locales";
 
 const PUBLIC_SPANISH_BASE_PATHS = new Set([
   "/",
   "/products",
+  ...getPublishedDossierProducts().map(product => `/products/${product.slug}`),
   "/work",
   "/offer",
   "/about",

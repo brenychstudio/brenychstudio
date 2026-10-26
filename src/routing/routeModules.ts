@@ -1,3 +1,4 @@
+import { getPublishedDossierProducts } from "../data/productCatalog";
 // The only place page modules are dynamically imported. App.tsx builds its React.lazy() routes
 // from these loaders and SPA transitions preload through them, so both share one module Promise.
 
@@ -20,6 +21,7 @@ function memoizeModuleLoader<T>(loader: () => Promise<T>) {
 export const routeModules = {
   studio: memoizeModuleLoader(() => import("../pages/StudioIndex")),
   products: memoizeModuleLoader(() => import("../pages/ProductIndex")),
+  productDossier: memoizeModuleLoader(() => import("../pages/ProductDossier")),
   work: memoizeModuleLoader(() => import("../pages/EvidenceAtlas")),
   case: memoizeModuleLoader(() => import("../pages/CasePageV2")),
   immersive: memoizeModuleLoader(() => import("../pages/ImmersiveV2")),
@@ -51,6 +53,7 @@ type RouteMatcher = {
 const routeMatchers: readonly RouteMatcher[] = [
   { path: "/", key: "studio", spanish: true },
   { path: "/products", key: "products", spanish: true },
+  ...getPublishedDossierProducts().map(product => ({path:`/products/${product.slug}`,key:"productDossier" as const,spanish:true})),
   { path: "/studio-index", key: "studio" },
   { path: "/work", key: "work", spanish: true },
   { path: "/evidence-atlas", key: "work" },

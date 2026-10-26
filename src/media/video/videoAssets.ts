@@ -3,8 +3,8 @@
 // entry here after the R2 object has been uploaded and verified.
 //
 // R2 objects are immutable: a replacement is a new `-vNNN` key, never an overwrite. Every
-// entry below still delivers its current local file; the `r2` descriptors are the planned
-// keys for a future migration and are not used while `delivery` is "local".
+// legacy entry still delivers its current local file. The four approved product entries
+// deliver immutable R2 originals after release verification.
 
 export const VIDEO_MEDIA_ORIGIN = "https://media.brenychstudio.com" as const;
 
@@ -33,6 +33,70 @@ export type VideoAsset = {
 };
 
 export const videoAssets = {
+  "ai-language-tutor.product.demonstration": {
+  "id": "ai-language-tutor.product.demonstration",
+  "project": "ai-language-tutor",
+  "surface": "product",
+  "delivery": "r2",
+  "localPath": "/product-media/ai-language-tutor/demo.mp4",
+  "r2": {
+    "key": "video/ai-language-tutor/product/demonstration-v002.mp4",
+    "version": 2
+  },
+  "poster": "/product-media/ai-language-tutor/video-poster.webp",
+  "compatibility": {
+    "baseline": "h264",
+    "status": "ready"
+  }
+},
+  "brenych-asset-forge.product.demonstration": {
+  "id": "brenych-asset-forge.product.demonstration",
+  "project": "brenych-asset-forge",
+  "surface": "product",
+  "delivery": "r2",
+  "localPath": "/product-media/brenych-asset-forge/demo.mp4",
+  "r2": {
+    "key": "video/brenych-asset-forge/product/demonstration-v001.mp4",
+    "version": 1
+  },
+  "poster": "/product-media/brenych-asset-forge/video-poster.webp",
+  "compatibility": {
+    "baseline": "h264",
+    "status": "ready"
+  }
+},
+  "distribution-desk.product.demonstration": {
+  "id": "distribution-desk.product.demonstration",
+  "project": "distribution-desk",
+  "surface": "product",
+  "delivery": "r2",
+  "localPath": "/product-media/distribution-desk/demo.mp4",
+  "r2": {
+    "key": "video/distribution-desk/product/demonstration-v001.mp4",
+    "version": 1
+  },
+  "poster": "/product-media/distribution-desk/video-poster.webp",
+  "compatibility": {
+    "baseline": "h264",
+    "status": "ready"
+  }
+},
+  "qualor.product.demonstration": {
+  "id": "qualor.product.demonstration",
+  "project": "qualor",
+  "surface": "product",
+  "delivery": "r2",
+  "localPath": "/product-media/qualor/demo.mp4",
+  "r2": {
+    "key": "video/qualor/product/demonstration-v001.mp4",
+    "version": 1
+  },
+  "poster": "/product-media/qualor/video-poster.webp",
+  "compatibility": {
+    "baseline": "h264",
+    "status": "ready"
+  }
+},
   "whisper.home.hero": {
     id: "whisper.home.hero",
     project: "whisper",

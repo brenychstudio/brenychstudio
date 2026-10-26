@@ -12,10 +12,10 @@ const root = process.cwd();
 const REGISTRY_FILE = path.join("src", "media", "video", "videoAssets.ts");
 const EXPECTED_ORIGIN = "https://media.brenychstudio.com";
 // BSW-VIDEO-01A: every current asset still ships from the Pages build.
-const LOCAL_ONLY_PHASE = true;
+const APPROVED_R2_IDS = new Set(['ai-language-tutor.product.demonstration', 'brenych-asset-forge.product.demonstration', 'distribution-desk.product.demonstration', 'qualor.product.demonstration']);
 
 const R2_KEY_RE = /^video\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+-v\d{3}\.mp4$/;
-const MP4_LITERAL_RE = /["'`](\/(?:cases|immersive)\/[^"'`\s)]+\.mp4)["'`]/gi;
+const MP4_LITERAL_RE = /["'`](\/(?:cases|immersive|product-media)\/[^"'`\s)]+\.mp4)["'`]/gi;
 const MEDIA_HOST_RE = /media\.brenychstudio\.com/g;
 const RESOLVE_CALL_RE = /resolveVideoAsset\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
 
@@ -48,12 +48,13 @@ for (const [key, asset] of assets) {
   seenIds.add(asset.id);
 
   if (asset.delivery !== "local" && asset.delivery !== "r2") fail(`invalid delivery "${asset.delivery}"`);
-  if (LOCAL_ONLY_PHASE && asset.delivery !== "local") fail("delivery must stay local during BSW-VIDEO-01A");
+  if (!APPROVED_R2_IDS.has(key) && asset.delivery !== "local") fail("non-approved assets must retain local delivery");
+  if (APPROVED_R2_IDS.has(key) && asset.delivery !== "r2") fail("approved first-wave videos must use verified R2 originals");
 
   if (!asset.localPath) {
     fail("missing localPath");
   } else {
-    if (!/^\/(cases|immersive)\//.test(asset.localPath)) fail(`localPath must start with /cases/ or /immersive/: ${asset.localPath}`);
+    if (!/^\/(cases|immersive|product-media)\//.test(asset.localPath)) fail(`localPath must start with /cases/, /immersive/ or /product-media/: ${asset.localPath}`);
     if (!asset.localPath.endsWith(".mp4")) fail(`localPath must end with .mp4: ${asset.localPath}`);
     if (asset.delivery === "local" && !fs.existsSync(path.join(root, "public", asset.localPath))) {
       fail(`local file missing: public${asset.localPath}`);

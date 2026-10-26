@@ -12,7 +12,7 @@
     "games:validate": "node --experimental-strip-types scripts/validate-games.mts",
     "games:validate:self-test": "node --experimental-strip-types scripts/validate-games.mts --self-test",
     "dev": "vite",
-    "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && npm run products:validate && npm run products:routes:validate && vite build && node scripts/validate-dist-integrity.mjs dist",
+    "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && npm run products:validate && npm run products:routes:validate && npm run products:release:validate && vite build && node scripts/validate-dist-integrity.mjs dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "media:portfolio": "node scripts/generate-portfolio-media.mjs",
@@ -31,7 +31,8 @@
     "verify:dist": "node scripts/validate-dist-integrity.mjs dist",
     "verify:dist:self-test": "node scripts/validate-dist-integrity.mjs --self-test",
     "perf:routes": "node scripts/validate-route-bundles.mjs",
-    "perf:routes:self-test": "node scripts/validate-route-bundles.mjs --self-test"
+    "perf:routes:self-test": "node scripts/validate-route-bundles.mjs --self-test",
+    "products:release:validate": "node --experimental-strip-types scripts/validate-first-wave.mts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

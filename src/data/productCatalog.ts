@@ -1,3 +1,4 @@
+import { productDossiers } from "./productDossiers";
 import { projects } from "./projects";
 import type { ProjectRecord, PublicLocale } from "./projectRegistry.types";
 
@@ -72,3 +73,6 @@ export function getProductProfilePath(entry: PublicProductCatalogEntry, locale: 
     default: throw new Error(`Unsupported product catalog locale: ${locale}`);
   }
 }
+
+/** Explicit public dossier collection; legacy catalog selectors remain unchanged. */
+export function getPublishedDossierProducts() { return productDossiers.filter(product => product.publicationStatus === "public"); }

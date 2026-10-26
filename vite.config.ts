@@ -116,11 +116,13 @@ function createMetadataTags(metadata: StaticRouteMetadata) {
   const imageAlt = escapeHtml(metadata.imageAlt);
   const robots = metadata.noIndex ? `
     <meta name="robots" content="noindex, nofollow" />` : "";
+  const alternates = (metadata.alternates ?? []).map(alternate => `
+    <link rel="alternate" hreflang="${escapeHtml(alternate.hreflang)}" href="${escapeHtml(absoluteUrl(alternate.path))}" data-seo-managed="true" />`).join("");
 
   return `
     <title>${title}</title>
     <meta name="description" content="${description}" />${robots}
-    <link rel="canonical" href="${canonical}" />
+    <link rel="canonical" href="${canonical}" />${alternates}
     <meta property="og:type" content="${metadata.type}" />
     <meta property="og:site_name" content="Brenych Studio" />
     <meta property="og:title" content="${ogTitle}" />

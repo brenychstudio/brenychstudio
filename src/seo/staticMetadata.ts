@@ -1,3 +1,5 @@
+import { getDossierPath } from "../data/productDossiers";
+import { getPublishedDossierProducts } from "../data/productCatalog";
 import { cases, getCasePath } from "../data/cases";
 import { immersiveItems } from "../data/immersive";
 import { servicePages } from "../data/servicePages";
@@ -20,6 +22,7 @@ export type StaticRouteMetadata = {
   language?: "en" | "es";
   /** Pre-release / controlled routes: emit a robots noindex tag in the static HTML. */
   noIndex?: boolean;
+  alternates?: readonly { hreflang: "en" | "es" | "x-default"; path: string }[];
 };
 
 const defaultImage = "/og-default.png";
@@ -278,7 +281,18 @@ const spanishServiceMetadata: StaticRouteMetadata[] = servicePages.map((item) =>
   };
 });
 
+const productDossierMetadata: StaticRouteMetadata[] = getPublishedDossierProducts().flatMap(product => (["en","es"] as const).map(locale => ({
+  path:getDossierPath(product.slug,locale), title:product.locales[locale].seoTitle, description:product.locales[locale].seoDescription,
+  image:`/product-media/${product.slug}/social.webp`, imageAlt:product.hero.alt[locale], type:"article" as const, language:locale, noIndex:false,
+  alternates:[
+    {hreflang:"en" as const,path:getDossierPath(product.slug,"en")},
+    {hreflang:"es" as const,path:getDossierPath(product.slug,"es")},
+    {hreflang:"x-default" as const,path:getDossierPath(product.slug,"en")},
+  ],
+})));
+
 export const staticRouteMetadata: readonly StaticRouteMetadata[] = [
+  ...productDossierMetadata,
   ...pageMetadata,
   ...serviceMetadata,
   ...livingAtlasMetadata,

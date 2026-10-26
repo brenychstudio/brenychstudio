@@ -67,11 +67,11 @@ check("APP_INDEX_ROUTES", "PASS", () => {
   strictEqual(app.includes("lazy(routeModules.products)"), true);
   strictEqual(modules.includes('import("../pages/ProductIndex")'), true);
 });
-check("NO_PRODUCT_PROFILE_MATCHER", "PASS", () => {
+check("APPROVED_DOSSIER_PROFILE_MATCHERS", "PASS", () => {
   strictEqual(/path\s*=\s*["'][^"']*products\/(?:[:*]|weekfield|print-border-studio)/.test(app), false);
-  // An exact Products matcher is the only product-family matcher allowed in this phase.
+  // Exact index and explicit approved dossier matchers; no wildcard product route.
   const productMatchers = modules.split("\n").filter(line => line.includes("path:") && line.includes("products"));
-  strictEqual(productMatchers.length, 1);
+  strictEqual(productMatchers.length, 2);
   strictEqual(productMatchers[0]?.includes('path: "/products", key: "products", spanish: true'), true);
   for (const slug of ["weekfield", "print-border-studio", "unknown", "weekfield/extra"]) {
     for (const prefix of ["", "/es"]) strictEqual(getRouteModuleKey(`${prefix}/products/${slug}`), null);

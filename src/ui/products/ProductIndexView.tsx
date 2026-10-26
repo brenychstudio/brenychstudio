@@ -8,6 +8,7 @@ import MobileMotionSection from "../mobile-motion/MobileMotionSection";
 import { startSpaPageTransition } from "../pageTransition";
 
 import ProductLivingSurface from "./ProductLivingSurface";
+import ProductCollection from "./ProductCollection";
 import { ProductMediaProvider } from "./ProductManagedVideo";
 import ProductSystemTopology from "./ProductSystemTopology";
 
@@ -84,13 +85,14 @@ export default function ProductIndexView({ model, onSurface, revealProductId, re
         </div>
         <div className="product-system-threshold-bottom">
           <p className="product-system-location product-system-micro">{ui.location}</p>
-          <div className="product-threshold-actions"><a href="#products-index" onClick={onSurface}>{locale === "es" ? "Ver todos los productos" : "View all products"}</a>
+          <div className="product-threshold-actions"><a href="#studio-collection" onClick={onSurface}>{locale === "es" ? "Ver todos los productos" : "View all products"}</a>
           <a className="product-system-entry-direction" href={featured.length ? "#products-featured" : "#products-index"} onClick={onSurface} aria-label={locale === "es" ? (featured.length ? "Explorar productos destacados" : "Explorar registro de productos") : (featured.length ? "Explore featured products" : "Explore product register")}><span aria-hidden="true">↓</span></a></div>
         </div>
       </MobileMotionSection>
 
+      <ProductCollection locale={locale}/>
       <ProductMediaProvider>{featured.length ? <div id="products-featured" tabIndex={-1}>
-        <nav className="product-featured-nav product-system-width" aria-label={ui.featured}>{featured.map(item => <a key={item.project.id} href={`#products-${item.project.id}`} onClick={onSurface}>{item.project.publicName}<span aria-hidden="true">↓</span></a>)}<a href="#products-index" onClick={onSurface}>{locale === "es" ? "Ver todos" : "View all"}<span aria-hidden="true">↗</span></a></nav>
+        <nav className="product-featured-nav product-system-width" aria-label={ui.featured}>{featured.map(item => <a key={item.project.id} href={`#products-${item.project.id}`} onClick={onSurface}>{item.project.publicName}<span aria-hidden="true">↓</span></a>)}<a href="#studio-collection" onClick={onSurface}>{locale === "es" ? "Ver todos" : "View all"}<span aria-hidden="true">↗</span></a></nav>
         {featured.map(item => <ProductLivingSurface key={item.project.id} item={item} locale={locale}
           number={sectionNumber("products-featured")} actions={<>
             {proofAction(item)}

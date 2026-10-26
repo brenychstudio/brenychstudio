@@ -23,6 +23,7 @@ export function useProductSectionNavigation(model: ProductIndexModel) {
   const pending = useRef<Intent | null>(null);
   const travel = useRef<Travel | null>(null);
   const validIds = useMemo(() => new Set([
+    "studio-collection",
     ...model.chapters.map(chapter => chapter.id), ...model.items.map(item => `products-${item.project.id}`),
   ]), [model]);
   const stopFrame = useCallback(() => {
@@ -70,6 +71,9 @@ export function useProductSectionNavigation(model: ProductIndexModel) {
     pending.current = null;
     stopFrame();
     if (!validIds.has(id) || explicit?.cancelled) return;
+    // A category button updates the URL without moving its focused control.
+    // Direct links and history arrivals still land at the collection anchor.
+    if (id === "studio-collection" && navigationType === "PUSH" && location.state?.preserveCollectionScroll) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const arrive = (target: HTMLElement, focus: boolean) => {
       window.scrollTo({ top: destination(target), behavior: "instant" });
@@ -109,7 +113,7 @@ export function useProductSectionNavigation(model: ProductIndexModel) {
       });
     });
     return stopFrame;
-  }, [location.hash, location.key, location.pathname, location.search, navigationType, validIds, stopFrame]);
+  }, [location.hash, location.key, location.pathname, location.search, location.state, navigationType, validIds, stopFrame]);
 
   const navigateToProductSection = useCallback((id: string, options: Options = {}) => {
     if (!validIds.has(id)) return;

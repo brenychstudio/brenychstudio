@@ -22,9 +22,12 @@ import { spanishPageSeoDrafts } from "./data/spanishContent";
 import { getSeoAlternates, withSeoAlternates } from "./seo/alternates";
 import { SoundProvider } from "./stage/audio/SoundProvider";
 import { routeModules } from "./routing/routeModules";
+import { getDossierPath } from "./data/productDossiers";
+import { getPublishedDossierProducts } from "./data/productCatalog";
 
 const StudioIndex = lazy(routeModules.studio);
 const ProductIndex = lazy(routeModules.products);
+const ProductDossier = lazy(routeModules.productDossier);
 const EvidenceAtlas = lazy(routeModules.work);
 const CasePageV2 = lazy(routeModules.case);
 const ImmersiveV2 = lazy(routeModules.immersive);
@@ -324,6 +327,7 @@ export default function App() {
 
           <Suspense fallback={<RoutePendingSurface />}>
             <Routes>
+              {getPublishedDossierProducts().flatMap(product => (["en", "es"] as const).map(locale => <Route key={`${product.id}-${locale}`} path={getDossierPath(product.slug,locale)} element={<ProductDossier productSlug={product.slug} drawerOpen={drawerOpen} onOpenProject={openProject} onCloseProject={closeProject}/>} />))}
               <Route
                 path="/products"
                 element={

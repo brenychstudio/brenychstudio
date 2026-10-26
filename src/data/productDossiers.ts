@@ -1,7 +1,7 @@
 import type { PublicLocale } from "./projectRegistry.types";
 import type { ProductDossier } from "./productDossierModel";
 export type { DossierImage, ProductDossier } from "./productDossierModel";
-// Owner-approved first-wave presentation data only; no second-wave imports.
+// Owner-approved public dossiers only; products on hold are excluded.
 export const productDossiers: readonly ProductDossier[] = [
   {
     "id": "ai-language-tutor",
@@ -1106,8 +1106,759 @@ export const productDossiers: readonly ProductDossier[] = [
         "seoDescription": "Conoce la base interna de ABE para experimentos comerciales, registros de producción y decisiones revisables mediante una demostración sintética claramente identificada."
       }
     }
+  },
+  {
+    "id": "spatial-product-platform",
+    "slug": "spatial-product-platform",
+    "name": "Spatial Product Platform",
+    "shortName": "Spatial Product Platform",
+    "category": "spatial",
+    "stage": "technology-showcase",
+    "publicationStatus": "public",
+    "featured": false,
+    "composition": "spatial",
+    "technology": [
+      "WebGPU",
+      "Browser 3D",
+      "Spatial navigation"
+    ],
+    "relatedIds": [
+      "brenych-asset-forge",
+      "villa-atlas"
+    ],
+    "demoLinks": [],
+    "hero": {
+      "id": "hero",
+      "src": "/product-media/spatial-product-platform/hero-1280.webp",
+      "full": "/product-media/spatial-product-platform/hero-1920.webp",
+      "srcSet": "/product-media/spatial-product-platform/hero-640.webp 640w, /product-media/spatial-product-platform/hero-1280.webp 1280w, /product-media/spatial-product-platform/hero-1920.webp 1920w",
+      "width": 1920,
+      "height": 1080,
+      "alt": {
+        "en": "Perfume bottle in the warm architectural world of Spatial Product Platform",
+        "es": "Frasco de perfume en el entorno arquitectónico cálido de Spatial Product Platform"
+      },
+      "caption": {
+        "en": "Perfume world · captured from the real browser runtime.",
+        "es": "Mundo de perfume · captura del runtime real en el navegador."
+      }
+    },
+    "gallery": [
+      {
+        "id": "glass",
+        "src": "/product-media/spatial-product-platform/glass-1280.webp",
+        "full": "/product-media/spatial-product-platform/glass-1920.webp",
+        "srcSet": "/product-media/spatial-product-platform/glass-640.webp 640w, /product-media/spatial-product-platform/glass-1280.webp 1280w, /product-media/spatial-product-platform/glass-1920.webp 1920w",
+        "width": 1920,
+        "height": 1080,
+        "alt": {
+          "en": "Glass perfume vessel with material detail and architectural light",
+          "es": "Frasco de perfume de vidrio con detalle material e iluminación arquitectónica"
+        },
+        "caption": {
+          "en": "Material inspection · glass, light and a considered viewpoint.",
+          "es": "Inspección del material · vidrio, luz y un punto de vista cuidado."
+        }
+      },
+      {
+        "id": "jewelry",
+        "src": "/product-media/spatial-product-platform/jewelry-1280.webp",
+        "full": "/product-media/spatial-product-platform/jewelry-1920.webp",
+        "srcSet": "/product-media/spatial-product-platform/jewelry-640.webp 640w, /product-media/spatial-product-platform/jewelry-1280.webp 1280w, /product-media/spatial-product-platform/jewelry-1920.webp 1920w",
+        "width": 1920,
+        "height": 1080,
+        "alt": {
+          "en": "Jewelry world with rings on a sculpted display plinth",
+          "es": "Mundo de joyería con anillos sobre una base escultórica"
+        },
+        "caption": {
+          "en": "Jewelry world · a distinct atmosphere within the same showcase.",
+          "es": "Mundo de joyería · una atmósfera distinta dentro de la misma demostración."
+        }
+      },
+      {
+        "id": "ring",
+        "src": "/product-media/spatial-product-platform/ring-1280.webp",
+        "full": "/product-media/spatial-product-platform/ring-1920.webp",
+        "srcSet": "/product-media/spatial-product-platform/ring-640.webp 640w, /product-media/spatial-product-platform/ring-1280.webp 1280w, /product-media/spatial-product-platform/ring-1920.webp 1920w",
+        "width": 1920,
+        "height": 1080,
+        "alt": {
+          "en": "Close view of a ring in the jewelry scene",
+          "es": "Vista cercana de un anillo en la escena de joyería"
+        },
+        "caption": {
+          "en": "Detail at the centre of the experience.",
+          "es": "El detalle en el centro de la experiencia."
+        }
+      },
+      {
+        "id": "transition",
+        "src": "/product-media/spatial-product-platform/transition-1280.webp",
+        "full": "/product-media/spatial-product-platform/transition-1920.webp",
+        "srcSet": "/product-media/spatial-product-platform/transition-640.webp 640w, /product-media/spatial-product-platform/transition-1280.webp 1280w, /product-media/spatial-product-platform/transition-1920.webp 1920w",
+        "width": 1920,
+        "height": 1080,
+        "alt": {
+          "en": "Architectural transition through the perfume environment",
+          "es": "Transición arquitectónica por el entorno de perfume"
+        },
+        "caption": {
+          "en": "Spatial transitions connect the product worlds.",
+          "es": "Las transiciones espaciales conectan los mundos del producto."
+        }
+      }
+    ],
+    "video": {
+      "assetId": "spatial-product-platform.product.demonstration",
+      "poster": "/product-media/spatial-product-platform/video-poster.webp",
+      "duration": "01:00.000"
+    },
+    "credits": [
+      {
+        "name": "rose-vessel",
+        "creator": "Michaela Blanchfield",
+        "url": "https://sketchfab.com/3d-models/perfume-bottle-7fb074117e104c5280e7360bce962267",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      {
+        "name": "ornate-flask",
+        "creator": "jonas_hilschmann",
+        "url": "https://sketchfab.com/3d-models/perfume-bottle-realistic-pbr-asset-1e7490574bbf4a399485196d41fba29b",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      {
+        "name": "trio-ring",
+        "creator": "Bladeblend / Blend3drender",
+        "url": "https://sketchfab.com/3d-models/gold-ring-d94897485aac4f09b7aab26353f97986",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      {
+        "name": "jewel-composition",
+        "creator": "iagoberdie / 3DbyL1ndo",
+        "url": "https://sketchfab.com/3d-models/9747776bbc194f5a921d508cb02d19d8",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "limitations": {
+      "en": [
+        "The reviewed slice covers Perfume and Jewelry; it is not an active public marketplace.",
+        "The presentation video is edited and is not a real-time performance benchmark.",
+        "Third-party model attribution is retained below. This page presents the reviewed Perfume and Jewelry slice."
+      ],
+      "es": [
+        "La parte revisada incluye Perfume y Joyería; no es un marketplace público activo.",
+        "El vídeo es un montaje de presentación, no una prueba de rendimiento en tiempo real.",
+        "La atribución de los modelos se conserva abajo. Esta página presenta la parte revisada de Perfume y Joyería."
+      ]
+    },
+    "locales": {
+      "en": {
+        "category": "Spatial / Product experience",
+        "stage": "Working technology showcase",
+        "headline": "The product becomes\na place to explore.",
+        "summary": "Give a product’s material, scale and detail room to be understood. Spatial Product Platform turns a browser presentation into a directed 3D environment that a visitor can inspect and move through.",
+        "overviewTitle": "More than an image.\nA point of view.",
+        "problem": "A flat product image cannot show every relationship between material, light and form. Premium products benefit from a presentation that lets the viewer choose where to look next.",
+        "solution": "The reviewed Perfume and Jewelry worlds combine browser WebGPU rendering, product inspection and spatial transitions. Each environment has its own atmosphere, built on a shared technical foundation.",
+        "audience": "For brands, creative directors and product teams exploring immersive presentations of physical objects.",
+        "capabilities": [
+          {
+            "title": "A world around the object",
+            "body": "Architecture, lighting and atmosphere establish a coherent setting for the product instead of placing it in an isolated generic viewer."
+          },
+          {
+            "title": "Inspection with intention",
+            "body": "Move between wider compositions and material details. The supplied captures show the actual Perfume and Jewelry runtime."
+          },
+          {
+            "title": "A connected spatial journey",
+            "body": "Directed transitions make the movement between product worlds part of the experience. The current showcase establishes a foundation for future categories."
+          }
+        ],
+        "galleryTitle": "Light, material and a sense of place.",
+        "status": "A working browser technology showcase with a reviewed Perfume and Jewelry slice. Supplied images are runtime captures, and the presentation edit uses those real scenes.",
+        "next": "Additional product categories, reusable commercial packaging and immersive WebXR/VR work remain later stages. No broad device-performance or conversion claim is made.",
+        "demoStatus": "An original presentation recording is available. This page does not launch an embedded 3D runtime or a shopping checkout.",
+        "videoCaption": "Edited presentation of real WebGPU scenes · not an uncut performance benchmark.",
+        "videoDescription": "The presentation moves through the Perfume and Jewelry environments, material details and spatial transitions. It is a paced edit, preserving the supplied soundtrack and original video bytes.",
+        "seoTitle": "Spatial Product Platform — Product experiences in space | Brenych Studio",
+        "seoDescription": "Explore Brenych Studio’s browser WebGPU showcase: Perfume and Jewelry worlds, material inspection and cinematic spatial transitions."
+      },
+      "es": {
+        "category": "Espacial / Experiencia de producto",
+        "stage": "Demostración tecnológica funcional",
+        "headline": "El producto se convierte\nen un lugar que explorar.",
+        "summary": "Da espacio para comprender el material, la escala y los detalles de un producto. Spatial Product Platform transforma la presentación en navegador en un entorno 3D dirigido que el visitante puede recorrer e inspeccionar.",
+        "overviewTitle": "Más que una imagen.\nUn punto de vista.",
+        "problem": "Una imagen plana no muestra todas las relaciones entre material, luz y forma. Una presentación de producto puede permitir que el visitante elija dónde mirar después.",
+        "solution": "Los mundos revisados de Perfume y Joyería combinan renderizado WebGPU en navegador, inspección y transiciones espaciales. Cada entorno tiene su atmósfera sobre una base técnica común.",
+        "audience": "Para marcas, directores creativos y equipos que exploran presentaciones inmersivas de objetos físicos.",
+        "capabilities": [
+          {
+            "title": "Un mundo alrededor del objeto",
+            "body": "Arquitectura, iluminación y atmósfera crean un contexto coherente para el producto, más allá de un visor genérico aislado."
+          },
+          {
+            "title": "Inspección con intención",
+            "body": "Pasa de las composiciones amplias a los detalles del material. Las capturas aportadas muestran el runtime real de Perfume y Joyería."
+          },
+          {
+            "title": "Un recorrido espacial conectado",
+            "body": "Las transiciones dirigidas forman parte de la experiencia. La demostración actual ofrece una base para futuras categorías."
+          }
+        ],
+        "galleryTitle": "Luz, material y sentido del espacio.",
+        "status": "Demostración tecnológica en navegador con una parte revisada de Perfume y Joyería. Las imágenes son capturas del runtime y el montaje utiliza esas escenas reales.",
+        "next": "Más categorías, la preparación comercial reutilizable y el trabajo inmersivo WebXR/VR corresponden a etapas posteriores. No se afirman métricas generales de rendimiento ni de conversión.",
+        "demoStatus": "Hay una grabación original de presentación. Esta página no inicia un runtime 3D integrado ni un proceso de compra.",
+        "videoCaption": "Montaje de presentación de escenas WebGPU reales · no es una prueba continua de rendimiento.",
+        "videoDescription": "La presentación recorre los entornos de Perfume y Joyería, detalles materiales y transiciones espaciales. Es un montaje dirigido que conserva el sonido y los bytes del vídeo original.",
+        "seoTitle": "Spatial Product Platform — Experiencias de producto espaciales | Brenych Studio",
+        "seoDescription": "Descubre la demostración WebGPU de Brenych Studio: mundos de Perfume y Joyería, inspección de materiales y transiciones espaciales cinematográficas."
+      }
+    }
+  },
+  {
+    "id": "knowledge-desk",
+    "slug": "knowledge-desk",
+    "name": "Knowledge Desk",
+    "shortName": "Knowledge Desk",
+    "category": "product",
+    "stage": "working-prototype",
+    "publicationStatus": "public",
+    "featured": false,
+    "composition": "knowledge",
+    "technology": [
+      "Windows desktop",
+      "Local document library",
+      "Source-linked search",
+      "WebGL knowledge map"
+    ],
+    "relatedIds": [
+      "qualor",
+      "distribution-desk"
+    ],
+    "demoLinks": [],
+    "hero": {
+      "id": "hero",
+      "src": "/product-media/knowledge-desk/hero-1280.webp",
+      "full": "/product-media/knowledge-desk/hero-1920.webp",
+      "srcSet": "/product-media/knowledge-desk/hero-640.webp 640w, /product-media/knowledge-desk/hero-1280.webp 1280w, /product-media/knowledge-desk/hero-1920.webp 1920w",
+      "width": 2560,
+      "height": 1440,
+      "alt": {
+        "en": "Knowledge Desk assistant and source-linked results in a synthetic library",
+        "es": "Asistente de Knowledge Desk y resultados con fuentes en una biblioteca sintética"
+      },
+      "caption": {
+        "en": "Windows alpha · real application UI with synthetic library content.",
+        "es": "Alfa de Windows · interfaz real con contenido de biblioteca sintético."
+      }
+    },
+    "gallery": [
+      {
+        "id": "map",
+        "src": "/product-media/knowledge-desk/map-1280.webp",
+        "full": "/product-media/knowledge-desk/map-1920.webp",
+        "srcSet": "/product-media/knowledge-desk/map-640.webp 640w, /product-media/knowledge-desk/map-1280.webp 1280w, /product-media/knowledge-desk/map-1920.webp 1920w",
+        "width": 2560,
+        "height": 1440,
+        "alt": {
+          "en": "Knowledge map linking demonstration projects and technologies",
+          "es": "Mapa de conocimiento que conecta proyectos y tecnologías de demostración"
+        },
+        "caption": {
+          "en": "Explore relationships · map demonstrated on a synthetic library.",
+          "es": "Explora relaciones · mapa demostrado con una biblioteca sintética."
+        }
+      },
+      {
+        "id": "library",
+        "src": "/product-media/knowledge-desk/library-1280.webp",
+        "full": "/product-media/knowledge-desk/library-1920.webp",
+        "srcSet": "/product-media/knowledge-desk/library-640.webp 640w, /product-media/knowledge-desk/library-1280.webp 1280w, /product-media/knowledge-desk/library-1920.webp 1920w",
+        "width": 2560,
+        "height": 1440,
+        "alt": {
+          "en": "Document library with the Knowledge Desk assistant alongside it",
+          "es": "Biblioteca de documentos con el asistente de Knowledge Desk"
+        },
+        "caption": {
+          "en": "A library and its assistant, in one workspace.",
+          "es": "Biblioteca y asistente en un mismo espacio."
+        }
+      },
+      {
+        "id": "source",
+        "src": "/product-media/knowledge-desk/source-1280.webp",
+        "full": "/product-media/knowledge-desk/source-1920.webp",
+        "srcSet": "/product-media/knowledge-desk/source-640.webp 640w, /product-media/knowledge-desk/source-1280.webp 1280w, /product-media/knowledge-desk/source-1920.webp 1920w",
+        "width": 2560,
+        "height": 1440,
+        "alt": {
+          "en": "A source document opened beside a Knowledge Desk result",
+          "es": "Documento de origen abierto junto a un resultado de Knowledge Desk"
+        },
+        "caption": {
+          "en": "Return to the source behind a result.",
+          "es": "Vuelve a la fuente que respalda un resultado."
+        }
+      }
+    ],
+    "video": {
+      "assetId": "knowledge-desk.product.demonstration",
+      "poster": "/product-media/knowledge-desk/video-poster.webp",
+      "duration": "00:56.667"
+    },
+    "limitations": {
+      "en": [
+        "The supplied demonstration uses a synthetic library, local search and simulated voice interaction.",
+        "The knowledge map and limited Memory Bridge pilot do not establish operation on a production library.",
+        "Live provider answers, natural conversational voice and commercial availability remain further milestones."
+      ],
+      "es": [
+        "La demostración utiliza una biblioteca sintética, búsqueda local e interacción de voz simulada.",
+        "El mapa y el piloto limitado de Memory Bridge no demuestran funcionamiento con una biblioteca de producción.",
+        "Las respuestas de proveedores en directo, la voz conversacional natural y la disponibilidad comercial siguen pendientes."
+      ]
+    },
+    "locales": {
+      "en": {
+        "category": "Knowledge systems / Digital products",
+        "stage": "Working Windows alpha",
+        "headline": "Keep the source.\nSee the connections.",
+        "summary": "Bring documents, revisions and project context into a local workspace. Knowledge Desk makes information easier to find, connects it visually and keeps the source within reach.",
+        "overviewTitle": "A library you can\nfind your way through.",
+        "problem": "Project knowledge accumulates in folders, downloads and long conversations. Finding the current document — and the reason behind a decision — becomes a project in itself.",
+        "solution": "Knowledge Desk brings verified document copies, revision tracking and source-linked search into a Windows application. A spatial map and assistant interface make relationships easier to explore without hiding the underlying documents.",
+        "audience": "For researchers, creators and small teams who need to return to complex projects with their context intact.",
+        "capabilities": [
+          {
+            "title": "Keep reliable copies",
+            "body": "Safe intake preserves originals while organizing verified local copies. Duplicate detection, revisions and backup/restore support a library that can be reviewed."
+          },
+          {
+            "title": "Follow a result to its source",
+            "body": "Search and the Ask Knowledge interface keep document references close to the answer. The supplied demonstration uses local retrieval on synthetic material."
+          },
+          {
+            "title": "Explore the relationships",
+            "body": "The knowledge map connects projects, technologies and documents. An animated orb gives the assistant a visible presence within the same workspace."
+          }
+        ],
+        "galleryTitle": "From a question\nto its context.",
+        "status": "Working Windows alpha, documented as 0.4.0-alpha. Local library, search, revisions and backup/restore are implemented. The supplied map and assistant demonstration use synthetic data; a separate Memory Bridge pilot was similarly limited.",
+        "next": "Connect the map to a working library, validate live provider answers and natural voice, then test the workflow with design partners and real document collections.",
+        "demoStatus": "An original recorded application walkthrough is available. Voice interaction in this demonstration is simulated; this page does not start a live assistant.",
+        "videoCaption": "Recorded Windows alpha · synthetic library, local search and simulated voice.",
+        "videoDescription": "The recording moves between the assistant, source-linked results, document library and knowledge map. It demonstrates the interface and local retrieval, not a live generative conversation.",
+        "seoTitle": "Knowledge Desk — Local knowledge workspace | Brenych Studio",
+        "seoDescription": "Explore Knowledge Desk: a Windows alpha for local documents, revisions, source-linked search and visual knowledge relationships."
+      },
+      "es": {
+        "category": "Sistemas de conocimiento / Productos digitales",
+        "stage": "Alfa funcional de Windows",
+        "headline": "Conserva la fuente.\nDescubre las conexiones.",
+        "summary": "Reúne documentos, revisiones y contexto de proyectos en un espacio local. Knowledge Desk facilita la búsqueda, muestra relaciones y mantiene las fuentes al alcance.",
+        "overviewTitle": "Una biblioteca en la que\npuedes orientarte.",
+        "problem": "El conocimiento de un proyecto se acumula en carpetas, descargas y conversaciones largas. Encontrar el documento vigente y el motivo de una decisión acaba siendo un trabajo aparte.",
+        "solution": "Knowledge Desk reúne copias verificadas, seguimiento de revisiones y búsqueda con fuentes en una aplicación de Windows. Un mapa espacial y la interfaz del asistente permiten explorar relaciones sin ocultar los documentos originales.",
+        "audience": "Para investigadores, creadores y equipos pequeños que necesitan retomar proyectos complejos conservando su contexto.",
+        "capabilities": [
+          {
+            "title": "Conservar copias fiables",
+            "body": "La importación conserva los originales y organiza copias locales verificadas. Duplicados, revisiones y copias de seguridad permiten revisar la biblioteca."
+          },
+          {
+            "title": "Llegar hasta la fuente",
+            "body": "La búsqueda y la interfaz Ask Knowledge acercan las referencias a la respuesta. La demostración utiliza recuperación local sobre material sintético."
+          },
+          {
+            "title": "Explorar las relaciones",
+            "body": "El mapa conecta proyectos, tecnologías y documentos. Una esfera animada da presencia visual al asistente dentro del mismo espacio."
+          }
+        ],
+        "galleryTitle": "De una pregunta\na su contexto.",
+        "status": "Alfa funcional de Windows, documentada como 0.4.0-alpha. Biblioteca local, búsqueda, revisiones y restauración están implementadas. La demostración del mapa y del asistente usa datos sintéticos; el piloto separado de Memory Bridge tuvo un alcance igualmente limitado.",
+        "next": "Conectar el mapa a una biblioteca de trabajo, validar respuestas de proveedores y voz natural, y probar el flujo con colaboradores y documentos reales.",
+        "demoStatus": "Hay un recorrido original grabado de la aplicación. La interacción de voz es simulada; esta página no inicia un asistente en directo.",
+        "videoCaption": "Alfa de Windows grabada · biblioteca sintética, búsqueda local y voz simulada.",
+        "videoDescription": "La grabación recorre asistente, resultados con fuentes, biblioteca y mapa de conocimiento. Demuestra la interfaz y la recuperación local, no una conversación generativa en directo.",
+        "seoTitle": "Knowledge Desk — Espacio local de conocimiento | Brenych Studio",
+        "seoDescription": "Conoce Knowledge Desk: alfa de Windows para documentos locales, revisiones, búsqueda con fuentes y relaciones visuales de conocimiento."
+      }
+    }
+  },
+  {
+    "id": "live-intent-graph",
+    "slug": "live-intent-graph",
+    "name": "Live Intent Graph",
+    "shortName": "Live Intent Graph",
+    "category": "core-technology",
+    "stage": "working-prototype",
+    "publicationStatus": "public",
+    "featured": false,
+    "composition": "intent",
+    "technology": [
+      "Intent Core",
+      "Acquisition Engine",
+      "Transactional storage",
+      "Notion integration layer"
+    ],
+    "relatedIds": [
+      "abe"
+    ],
+    "demoLinks": [],
+    "hero": {
+      "id": "hero",
+      "src": "/product-media/live-intent-graph/hero-1280.webp",
+      "full": "/product-media/live-intent-graph/hero-1920.webp",
+      "srcSet": "/product-media/live-intent-graph/hero-640.webp 640w, /product-media/live-intent-graph/hero-1280.webp 1280w, /product-media/live-intent-graph/hero-1920.webp 1672w",
+      "width": 1672,
+      "height": 941,
+      "alt": {
+        "en": "Interface concept: Discover opportunities through expressed needs.",
+        "es": "Concepto de interfaz: Descubre oportunidades a partir de necesidades expresadas."
+      },
+      "caption": {
+        "en": "Interface concept · not a running product capture. Discover opportunities through expressed needs.",
+        "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Descubre oportunidades a partir de necesidades expresadas."
+      },
+      "evidenceLabel": {
+        "en": "Interface concept",
+        "es": "Concepto de interfaz"
+      }
+    },
+    "gallery": [
+      {
+        "id": "map",
+        "src": "/product-media/live-intent-graph/map-1280.webp",
+        "full": "/product-media/live-intent-graph/map-1920.webp",
+        "srcSet": "/product-media/live-intent-graph/map-640.webp 640w, /product-media/live-intent-graph/map-1280.webp 1280w, /product-media/live-intent-graph/map-1920.webp 1672w",
+        "width": 1672,
+        "height": 941,
+        "alt": {
+          "en": "Interface concept: A geographic view of intended signal discovery.",
+          "es": "Concepto de interfaz: Vista geográfica del descubrimiento de señales propuesto."
+        },
+        "caption": {
+          "en": "Interface concept · not a running product capture. A geographic view of intended signal discovery.",
+          "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Vista geográfica del descubrimiento de señales propuesto."
+        },
+        "evidenceLabel": {
+          "en": "Interface concept",
+          "es": "Concepto de interfaz"
+        }
+      },
+      {
+        "id": "intents",
+        "src": "/product-media/live-intent-graph/intents-1280.webp",
+        "full": "/product-media/live-intent-graph/intents-1920.webp",
+        "srcSet": "/product-media/live-intent-graph/intents-640.webp 640w, /product-media/live-intent-graph/intents-1280.webp 1280w, /product-media/live-intent-graph/intents-1920.webp 1672w",
+        "width": 1672,
+        "height": 941,
+        "alt": {
+          "en": "Interface concept: Describe the intent you want to explore.",
+          "es": "Concepto de interfaz: Describe el propósito que quieres explorar."
+        },
+        "caption": {
+          "en": "Interface concept · not a running product capture. Describe the intent you want to explore.",
+          "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Describe el propósito que quieres explorar."
+        },
+        "evidenceLabel": {
+          "en": "Interface concept",
+          "es": "Concepto de interfaz"
+        }
+      },
+      {
+        "id": "pipeline",
+        "src": "/product-media/live-intent-graph/pipeline-1280.webp",
+        "full": "/product-media/live-intent-graph/pipeline-1920.webp",
+        "srcSet": "/product-media/live-intent-graph/pipeline-640.webp 640w, /product-media/live-intent-graph/pipeline-1280.webp 1280w, /product-media/live-intent-graph/pipeline-1920.webp 1672w",
+        "width": 1672,
+        "height": 941,
+        "alt": {
+          "en": "Interface concept: A proposed workspace for reviewing client opportunities.",
+          "es": "Concepto de interfaz: Espacio propuesto para revisar oportunidades de clientes."
+        },
+        "caption": {
+          "en": "Interface concept · not a running product capture. A proposed workspace for reviewing client opportunities.",
+          "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Espacio propuesto para revisar oportunidades de clientes."
+        },
+        "evidenceLabel": {
+          "en": "Interface concept",
+          "es": "Concepto de interfaz"
+        }
+      }
+    ],
+    "limitations": {
+      "en": [
+        "All displayed interfaces are presentation concepts, not screenshots of a deployed Live Intent Graph product.",
+        "Profiles, signal counts and opportunities in these concepts are illustrative, not verified people or current demand.",
+        "Live source certification and demand validation remain pending. The broader Clients / Social / Work / Collaborations experience is a product vision."
+      ],
+      "es": [
+        "Todas las interfaces mostradas son conceptos de presentación, no capturas de un producto Live Intent Graph desplegado.",
+        "Los perfiles, recuentos de señales y oportunidades son ilustrativos, no personas verificadas ni demanda actual confirmada.",
+        "La certificación de fuentes en directo y la validación de demanda siguen pendientes. La experiencia Clients / Social / Work / Collaborations es una visión de producto."
+      ]
+    },
+    "locales": {
+      "en": {
+        "category": "Intent systems / Core technology",
+        "stage": "Tested core reported · interface concepts",
+        "headline": "Start with the need.\nFind the relevant connection.",
+        "summary": "Live Intent Graph explores search around what someone needs, where and when. A documented intent and acquisition core underpins a wider product vision, illustrated here through interface concepts.",
+        "overviewTitle": "A profile tells you who.\nAn intent asks what comes next.",
+        "problem": "A directory can identify a person or business without explaining what they need now. Useful signals are scattered, difficult to compare and often separated from their source and timing.",
+        "solution": "The proposed experience organizes opportunities around explicit intent and supporting context. The current foundation is an Intent Core, acquisition architecture and transactional store; live sources and the complete user experience remain to be validated.",
+        "audience": "For teams researching client needs, professional opportunities and potential collaborations.",
+        "capabilities": [
+          {
+            "title": "Structure an intent",
+            "body": "The documented Intent Core provides the foundation for representing needs. Natural-language discovery and My Intents are illustrated as interface concepts, not a live search offered on this page."
+          },
+          {
+            "title": "Organize incoming signals",
+            "body": "The source reports an acquisition layer and transactional storage. Connecting certified real-world sources is the next validation step; the concept map does not show a verified live feed."
+          },
+          {
+            "title": "Prepare a review workflow",
+            "body": "A Notion integration layer is described in the implemented foundation. The proposed client pipeline illustrates how opportunities could be reviewed once the source and demand checks are complete."
+          }
+        ],
+        "galleryTitle": "A direction for\nintent-led discovery.",
+        "status": "The supplied description reports a tested core architecture, acquisition layer, transactional store and Notion integration. This portfolio audit did not rerun those product tests. All supplied product visuals are concepts; the complete user-facing product remains in development.",
+        "next": "Certify integrations against permitted real sources, validate demand and build the user-facing discovery workflow. No current live search or commercial availability is claimed.",
+        "demoStatus": "Selected presentation concepts are available to enlarge. No original product video was supplied. An unrelated operator analytics reference was excluded.",
+        "videoCaption": "",
+        "videoDescription": "",
+        "seoTitle": "Live Intent Graph — Intent-led discovery | Brenych Studio",
+        "seoDescription": "Explore Live Intent Graph’s documented core and interface direction for discovery around expressed needs, with live-source validation clearly separated from the concept."
+      },
+      "es": {
+        "category": "Sistemas de intención / Tecnología propia",
+        "stage": "Núcleo probado según la fuente · conceptos",
+        "headline": "Parte de la necesidad.\nEncuentra la conexión relevante.",
+        "summary": "Live Intent Graph explora la búsqueda a partir de lo que alguien necesita, dónde y cuándo. Un núcleo documentado de intención y adquisición sustenta una visión más amplia, ilustrada aquí mediante conceptos de interfaz.",
+        "overviewTitle": "El perfil dice quién.\nLa intención plantea qué sigue.",
+        "problem": "Un directorio puede identificar una persona o empresa sin explicar qué necesita ahora. Las señales útiles están dispersas, son difíciles de comparar y a menudo pierden su fuente y contexto temporal.",
+        "solution": "La experiencia propuesta organiza oportunidades alrededor de intenciones explícitas y contexto. La base actual comprende Intent Core, arquitectura de adquisición y almacenamiento transaccional; las fuentes en directo y la experiencia completa siguen pendientes de validación.",
+        "audience": "Para equipos que investigan necesidades de clientes, oportunidades profesionales y posibles colaboraciones.",
+        "capabilities": [
+          {
+            "title": "Estructurar una intención",
+            "body": "Intent Core aporta la base documentada para representar necesidades. La búsqueda en lenguaje natural y My Intents se ilustran como conceptos, no como un buscador activo en esta página."
+          },
+          {
+            "title": "Organizar las señales entrantes",
+            "body": "La fuente documenta una capa de adquisición y almacenamiento transaccional. Conectar fuentes reales certificadas es el siguiente paso; el mapa conceptual no muestra un flujo en directo verificado."
+          },
+          {
+            "title": "Preparar la revisión",
+            "body": "La base implementada incluye una capa de integración con Notion según la documentación. La propuesta de cartera de clientes ilustra cómo revisar oportunidades tras validar fuentes y demanda."
+          }
+        ],
+        "galleryTitle": "Una dirección para\ndescubrir intenciones.",
+        "status": "La descripción aportada informa de una arquitectura central probada, adquisición, almacenamiento transaccional e integración con Notion. Esta revisión de portfolio no repitió las pruebas del producto. Todas las imágenes son conceptos; el producto completo para usuarios continúa en desarrollo.",
+        "next": "Certificar integraciones con fuentes reales permitidas, validar la demanda y construir la experiencia de búsqueda. No se afirma disponibilidad comercial ni búsqueda en directo actual.",
+        "demoStatus": "Los conceptos seleccionados pueden ampliarse. No se aportó un vídeo original del producto. Se excluyó una referencia analítica de otro sistema.",
+        "videoCaption": "",
+        "videoDescription": "",
+        "seoTitle": "Live Intent Graph — Descubrimiento por intención | Brenych Studio",
+        "seoDescription": "Descubre la base documentada y la dirección visual de Live Intent Graph para buscar necesidades expresadas, distinguiendo el concepto de la validación de fuentes reales."
+      }
+    }
+  },
+  {
+    "id": "native-site-control",
+    "slug": "native-site-control",
+    "name": "Native Site Control",
+    "shortName": "Native Site Control",
+    "category": "core-technology",
+    "stage": "working-prototype",
+    "publicationStatus": "public",
+    "featured": false,
+    "composition": "control",
+    "technology": [
+      "Revision core",
+      "Access control",
+      "Git and Cloudflare adapters",
+      "AI proposal boundaries"
+    ],
+    "relatedIds": [
+      "distribution-desk",
+      "abe"
+    ],
+    "demoLinks": [],
+    "hero": {
+      "id": "hero",
+      "src": "/product-media/native-site-control/hero-1280.webp",
+      "full": "/product-media/native-site-control/hero-1920.webp",
+      "srcSet": "/product-media/native-site-control/hero-640.webp 640w, /product-media/native-site-control/hero-1280.webp 1280w, /product-media/native-site-control/hero-1920.webp 1672w",
+      "width": 1672,
+      "height": 941,
+      "alt": {
+        "en": "Interface concept: A control center for an existing website.",
+        "es": "Concepto de interfaz: Un centro de control para un sitio existente."
+      },
+      "caption": {
+        "en": "Interface concept · not a running product capture. A control center for an existing website.",
+        "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Un centro de control para un sitio existente."
+      },
+      "evidenceLabel": {
+        "en": "Interface concept",
+        "es": "Concepto de interfaz"
+      }
+    },
+    "gallery": [
+      {
+        "id": "editing",
+        "src": "/product-media/native-site-control/editing-1280.webp",
+        "full": "/product-media/native-site-control/editing-1920.webp",
+        "srcSet": "/product-media/native-site-control/editing-640.webp 640w, /product-media/native-site-control/editing-1280.webp 1280w, /product-media/native-site-control/editing-1920.webp 1672w",
+        "width": 1672,
+        "height": 941,
+        "alt": {
+          "en": "Interface concept: Prepare a content change in the proposed editor.",
+          "es": "Concepto de interfaz: Prepara un cambio de contenido en el editor propuesto."
+        },
+        "caption": {
+          "en": "Interface concept · not a running product capture. Prepare a content change in the proposed editor.",
+          "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Prepara un cambio de contenido en el editor propuesto."
+        },
+        "evidenceLabel": {
+          "en": "Interface concept",
+          "es": "Concepto de interfaz"
+        }
+      },
+      {
+        "id": "review",
+        "src": "/product-media/native-site-control/review-1280.webp",
+        "full": "/product-media/native-site-control/review-1920.webp",
+        "srcSet": "/product-media/native-site-control/review-640.webp 640w, /product-media/native-site-control/review-1280.webp 1280w, /product-media/native-site-control/review-1920.webp 1672w",
+        "width": 1672,
+        "height": 941,
+        "alt": {
+          "en": "Interface concept: Review a revision before deciding to apply it.",
+          "es": "Concepto de interfaz: Revisa una modificación antes de decidir si aplicarla."
+        },
+        "caption": {
+          "en": "Interface concept · not a running product capture. Review a revision before deciding to apply it.",
+          "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Revisa una modificación antes de decidir si aplicarla."
+        },
+        "evidenceLabel": {
+          "en": "Interface concept",
+          "es": "Concepto de interfaz"
+        }
+      },
+      {
+        "id": "revisions",
+        "src": "/product-media/native-site-control/revisions-1280.webp",
+        "full": "/product-media/native-site-control/revisions-1920.webp",
+        "srcSet": "/product-media/native-site-control/revisions-640.webp 640w, /product-media/native-site-control/revisions-1280.webp 1280w, /product-media/native-site-control/revisions-1920.webp 1672w",
+        "width": 1672,
+        "height": 941,
+        "alt": {
+          "en": "Interface concept: Keep a visible history of changes.",
+          "es": "Concepto de interfaz: Conserva un historial visible de cambios."
+        },
+        "caption": {
+          "en": "Interface concept · not a running product capture. Keep a visible history of changes.",
+          "es": "Concepto de interfaz · no es una captura del producto en funcionamiento. Conserva un historial visible de cambios."
+        },
+        "evidenceLabel": {
+          "en": "Interface concept",
+          "es": "Concepto de interfaz"
+        }
+      }
+    ],
+    "limitations": {
+      "en": [
+        "These are NSC presentation concepts, not captures of the current offline demonstration fixture.",
+        "Deployment, approval and verified-live labels inside the concepts are visual proposals, not production receipts.",
+        "Production connections and broader framework support remain future work. Native Site Control is separate from NATIVE Networking Companion."
+      ],
+      "es": [
+        "Estas imágenes son conceptos de presentación de NSC, no capturas del entorno actual de demostración sin conexión.",
+        "Las etiquetas de despliegue, aprobación y verificación en directo son propuestas visuales, no comprobantes de producción.",
+        "Las conexiones de producción y el soporte de más frameworks siguen pendientes. Native Site Control es un producto distinto de NATIVE Networking Companion."
+      ]
+    },
+    "locales": {
+      "en": {
+        "category": "Website operations / Core technology",
+        "stage": "Implemented core · presentation concepts",
+        "headline": "Keep the website.\nTake control of its changes.",
+        "summary": "Native Site Control explores a control layer for existing websites: content proposals, revisions and human decisions without replacing the site's frontend. Its implemented core and controlled integration are documented; the images show a proposed interface direction.",
+        "overviewTitle": "A content change should\nbe a reviewable decision.",
+        "problem": "Custom websites often need a developer for routine content changes. Moving to another CMS can mean rebuilding, while unrestricted automated edits can make it difficult to understand what will change.",
+        "solution": "NSC separates a proposed edit from the decision to apply it. A revision core, access controls and integration adapters provide the documented foundation for managing an existing website while keeping its architecture.",
+        "audience": "For web studios, agencies and owners of custom sites who want a controlled editing workflow.",
+        "capabilities": [
+          {
+            "title": "Prepare changes as revisions",
+            "body": "The documented core and administration workflow organize edits into revisions. The proposed content editor illustrates that workflow; it is not a capture of the current offline fixture."
+          },
+          {
+            "title": "Keep authority with the owner",
+            "body": "Access control and AI Bridge boundaries separate proposals from consequential actions. Human review remains part of the intended change process."
+          },
+          {
+            "title": "Connect through adapters",
+            "body": "The source reports Git and Cloudflare adapters and a controlled React + Vite integration. Broader framework support and production connections still require validation."
+          }
+        ],
+        "galleryTitle": "From proposed edit\nto an informed decision.",
+        "status": "The source documents an implemented core, administration, revisions, access control and adapters, with a controlled React + Vite site integration. The current demonstration is an offline fixture; supplied imagery is a presentation concept pack, not evidence of production deployment.",
+        "next": "Validate production connections and their verification workflow, then broaden framework support. A universal multi-site service is an ambition, not a completed deployment claim.",
+        "demoStatus": "Selected interface concepts can be enlarged. No original application video was supplied. This page neither connects a website nor applies changes.",
+        "videoCaption": "",
+        "videoDescription": "",
+        "seoTitle": "Native Site Control — Reviewable website changes | Brenych Studio",
+        "seoDescription": "Explore Native Site Control: an implemented foundation for revisions, access control and website adapters, shown through clearly labelled interface concepts."
+      },
+      "es": {
+        "category": "Operaciones web / Tecnología propia",
+        "stage": "Núcleo implementado · conceptos visuales",
+        "headline": "Conserva tu sitio.\nControla cada cambio.",
+        "summary": "Native Site Control explora una capa de control para sitios existentes: propuestas de contenido, revisiones y decisiones humanas sin sustituir el frontend. Su núcleo e integración controlada están documentados; las imágenes muestran una dirección visual propuesta.",
+        "overviewTitle": "Un cambio de contenido\ndebe poder revisarse.",
+        "problem": "Los sitios a medida suelen depender de un desarrollador para cambios cotidianos. Migrar a otra CMS puede exigir reconstruirlos, mientras que las ediciones automáticas sin límites dificultan saber qué va a cambiar.",
+        "solution": "NSC separa la propuesta de edición de la decisión de aplicarla. Un núcleo de revisiones, controles de acceso y adaptadores constituyen la base documentada para gestionar un sitio conservando su arquitectura.",
+        "audience": "Para estudios web, agencias y propietarios de sitios a medida que necesitan un proceso de edición controlado.",
+        "capabilities": [
+          {
+            "title": "Preparar cambios como revisiones",
+            "body": "El núcleo y la administración documentados organizan las ediciones en revisiones. El editor propuesto ilustra ese flujo; no es una captura del entorno actual sin conexión."
+          },
+          {
+            "title": "Conservar la autoridad del propietario",
+            "body": "El control de acceso y los límites de AI Bridge separan propuestas y acciones relevantes. La revisión humana forma parte del proceso previsto."
+          },
+          {
+            "title": "Conectar mediante adaptadores",
+            "body": "La fuente documenta adaptadores Git y Cloudflare y una integración controlada con React + Vite. El soporte de más frameworks y las conexiones de producción aún requieren validación."
+          }
+        ],
+        "galleryTitle": "De la propuesta\na una decisión informada.",
+        "status": "La fuente documenta núcleo, administración, revisiones, control de acceso y adaptadores, con integración controlada en un sitio React + Vite. La demostración actual es un entorno sin conexión; las imágenes son conceptos de presentación, no evidencia de despliegue en producción.",
+        "next": "Validar conexiones de producción y su verificación, y ampliar el soporte de frameworks. Un servicio universal para múltiples sitios es una ambición, no un despliegue completado.",
+        "demoStatus": "Los conceptos seleccionados pueden ampliarse. No se aportó vídeo original de la aplicación. Esta página no conecta sitios ni aplica cambios.",
+        "videoCaption": "",
+        "videoDescription": "",
+        "seoTitle": "Native Site Control — Cambios web revisables | Brenych Studio",
+        "seoDescription": "Conoce Native Site Control: una base implementada de revisiones, acceso y adaptadores web presentada mediante conceptos de interfaz claramente identificados."
+      }
+    }
   }
 ];
+
 export function getProductDossier(slug: string | undefined) { return productDossiers.find(item => item.slug === slug); }
 export function getDossierPath(slug: string, locale: PublicLocale) { return `${locale === "es" ? "/es" : ""}/products/${slug}`; }
 export const dossierUi = {
@@ -1137,7 +1888,10 @@ export const dossierUi = {
     "collectionBody": "Explore the studio by discipline. Each product keeps its own purpose, evidence and stage of development.",
     "view": "Explore product",
     "transcript": "What the recording shows",
-    "sourceLanguage": "Original interface language preserved"
+    "sourceLanguage": "Original interface language preserved",
+    "credits": "Source assets and attribution",
+    "creditContext": "Source assets credited by the supplied review pack. Scene arrangement, lighting and direction by Brenych Studio; screenshots resized proportionally for this page.",
+    "environmentCredits": "Environment references/assets: Poly Haven (CC0). Sound studies generated with ElevenLabs; direction and mix by Brenych Studio."
   },
   "es": {
     "archive": "Todos los productos",
@@ -1165,6 +1919,9 @@ export const dossierUi = {
     "collectionBody": "Explora el estudio por disciplinas. Cada producto conserva su objetivo, evidencias y etapa de desarrollo.",
     "view": "Explorar producto",
     "transcript": "Qué muestra la grabación",
-    "sourceLanguage": "Se conserva el idioma original de la interfaz"
+    "sourceLanguage": "Se conserva el idioma original de la interfaz",
+    "credits": "Fuentes y atribución",
+    "creditContext": "Modelos atribuidos en el paquete de origen. Composición, iluminación y dirección de Brenych Studio; capturas redimensionadas proporcionalmente para esta página.",
+    "environmentCredits": "Referencias y recursos del entorno: Poly Haven (CC0). Estudios sonoros generados con ElevenLabs; dirección y mezcla de Brenych Studio."
   }
 } as const;

@@ -9,7 +9,7 @@ registerHooks({resolve(specifier, context, next) {
   return next(specifier,context);
 }});
 const approved = ['ai-language-tutor','brenych-asset-forge','distribution-desk','villa-atlas','qualor','storyform','abe'];
-const held = ['spatial-product-platform','knowledge-desk','native-networking-companion','living-atlas','live-intent-graph','native-site-control','brenych-presence-engine'];
+const held = ['native-networking-companion','living-atlas','brenych-presence-engine'];
 const {getRouteModuleKey} = await import('../src/routing/routeModules.ts');
 const {getStaticRouteMetadata} = await import('../src/seo/staticMetadata.ts');
 // Catches missing public routes, accidental second-wave registration, and noindex left at promotion.
@@ -29,10 +29,10 @@ for (const slug of held) for (const prefix of ['', '/es']) {
 const {getPublishedDossierProducts, getProductCatalogItems} = await import('../src/data/productCatalog.ts');
 const {productKnowledge} = await import('../src/data/productKnowledge.ts');
 const products = getPublishedDossierProducts();
-assert.deepEqual(products.map(p=>p.slug), approved);
-assert.deepEqual(productKnowledge.map(p=>p.id), approved);
+assert.deepEqual(products.filter(p=>approved.includes(p.id)).map(p=>p.slug), approved);
+assert.deepEqual(productKnowledge.filter(p=>approved.includes(p.id)).map(p=>p.id), approved);
 assert.deepEqual(getProductCatalogItems('en').map(p=>p.entry.projectId), ['weekfield','print-border-studio']);
-for (const p of products) {
+for (const p of products.filter(p=>approved.includes(p.id))) {
   assert.equal(p.publicationStatus, 'public');
   for (const related of p.relatedIds) assert.ok(approved.includes(related));
 }

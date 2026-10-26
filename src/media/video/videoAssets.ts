@@ -33,6 +33,38 @@ export type VideoAsset = {
 };
 
 export const videoAssets = {
+  "spatial-product-platform.product.demonstration": {
+  "id": "spatial-product-platform.product.demonstration",
+  "project": "spatial-product-platform",
+  "surface": "product",
+  "delivery": "r2",
+  "localPath": "/product-media/spatial-product-platform/demo.mp4",
+  "r2": {
+    "key": "video/spatial-product-platform/product/demonstration-v001.mp4",
+    "version": 1
+  },
+  "poster": "/product-media/spatial-product-platform/video-poster.webp",
+  "compatibility": {
+    "baseline": "h264",
+    "status": "ready"
+  }
+},
+  "knowledge-desk.product.demonstration": {
+  "id": "knowledge-desk.product.demonstration",
+  "project": "knowledge-desk",
+  "surface": "product",
+  "delivery": "r2",
+  "localPath": "/product-media/knowledge-desk/demo.mp4",
+  "r2": {
+    "key": "video/knowledge-desk/product/demonstration-v001.mp4",
+    "version": 1
+  },
+  "poster": "/product-media/knowledge-desk/video-poster.webp",
+  "compatibility": {
+    "baseline": "h264",
+    "status": "ready"
+  }
+},
   "ai-language-tutor.product.demonstration": {
   "id": "ai-language-tutor.product.demonstration",
   "project": "ai-language-tutor",

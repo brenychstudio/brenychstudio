@@ -92,6 +92,7 @@ function DossierBody({ product, locale, ...props }: Props & {product:Dossier;loc
             <p className="dossier-evidence-note">{copy.videoCaption}</p>
             <details id="recording-description"><summary>{ui.transcript}</summary><p>{copy.videoDescription}</p></details>
           </div> : <aside className="dossier-demo-availability"><h3>{ui.demoAvailability}</h3><p>{copy.demoStatus}</p></aside>}
+          {product.credits&&<details className="dossier-credits"><summary>{ui.credits}</summary><p>{ui.creditContext}</p><ul>{product.credits.map(c=><li key={c.name}><a href={c.url} target="_blank" rel="noopener noreferrer">{c.name}</a> — {c.creator} · <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer">{c.license}</a></li>)}</ul><p>{ui.environmentCredits}</p></details>}
         </section>
         <section id="status" className="dossier-section dossier-status">
           <div><p className="dossier-kicker">04 / {ui.status}</p><h2>{copy.stage}</h2><div className="dossier-tech"><h3>{ui.foundation}</h3><ul>{product.technology.map(t=><li key={t}>{technologyLabel(t,locale)}</li>)}</ul></div></div>

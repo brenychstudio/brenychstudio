@@ -12,7 +12,7 @@ const root = process.cwd();
 const REGISTRY_FILE = path.join("src", "media", "video", "videoAssets.ts");
 const EXPECTED_ORIGIN = "https://media.brenychstudio.com";
 // BSW-VIDEO-01A: every current asset still ships from the Pages build.
-const APPROVED_R2_IDS = new Set(['ai-language-tutor.product.demonstration', 'brenych-asset-forge.product.demonstration', 'distribution-desk.product.demonstration', 'qualor.product.demonstration']);
+const APPROVED_R2_IDS = new Set(['ai-language-tutor.product.demonstration', 'brenych-asset-forge.product.demonstration', 'distribution-desk.product.demonstration', 'qualor.product.demonstration', 'spatial-product-platform.product.demonstration', 'knowledge-desk.product.demonstration']);
 
 const R2_KEY_RE = /^video\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+-v\d{3}\.mp4$/;
 const MP4_LITERAL_RE = /["'`](\/(?:cases|immersive|product-media)\/[^"'`\s)]+\.mp4)["'`]/gi;
@@ -49,7 +49,7 @@ for (const [key, asset] of assets) {
 
   if (asset.delivery !== "local" && asset.delivery !== "r2") fail(`invalid delivery "${asset.delivery}"`);
   if (!APPROVED_R2_IDS.has(key) && asset.delivery !== "local") fail("non-approved assets must retain local delivery");
-  if (APPROVED_R2_IDS.has(key) && asset.delivery !== "r2") fail("approved first-wave videos must use verified R2 originals");
+  if (APPROVED_R2_IDS.has(key) && asset.delivery !== "r2") fail("approved public product videos must use verified R2 originals");
 
   if (!asset.localPath) {
     fail("missing localPath");

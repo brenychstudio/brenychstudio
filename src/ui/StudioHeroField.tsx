@@ -328,7 +328,7 @@ export default function StudioHeroField({ assets }: Props) {
       </div>
 
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_56%_44%,rgba(255,255,255,0),rgba(242,239,232,0.08)_38%,rgba(242,239,232,0.58)_84%)]" />
-      <div className="pointer-events-none absolute right-[18%] top-[22%] hidden rounded-full border border-neutral-950/10 bg-white/42 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur md:block">
+      <div className="studio-hero-field__label pointer-events-none absolute right-[18%] top-[22%] hidden rounded-full border border-neutral-950/10 bg-white/42 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-neutral-500 backdrop-blur md:block">
         WebGL interface engine
       </div>
       <div className="pointer-events-none absolute bottom-[10%] right-[12%] hidden max-w-[18rem] flex-wrap justify-end gap-1.5 md:flex">

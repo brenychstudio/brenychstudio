@@ -41,6 +41,24 @@ export default function EcosystemProducts({ locale, navigate, projects }: HomeSe
   // Native scroll remains the document truth. Only the two continuous covers
   // follow this strongly damped playhead; no input interception or scene queue.
   const visualProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 26, mass: 0.8, restDelta: 0.001, restSpeed: 0.01 });
+  useEffect(() => {
+    if (!staged) return;
+    const settleProgrammaticScroll = () => {
+      const timeline = timelineRef.current;
+      if (!timeline) return;
+      const travel = timeline.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+      const top = timeline.getBoundingClientRect().top + window.scrollY;
+      const progress = Math.max(0, Math.min(1, (window.scrollY - top) / travel));
+      // The Director already eased the native scroll. Reconcile the real scene
+      // with that position, including the pending spring target, before confirming it.
+      scrollYProgress.set(progress);
+      visualProgress.set(progress);
+      visualProgress.jump(progress);
+    };
+    window.addEventListener("home:products-scroll-settled", settleProgrammaticScroll);
+    return () => window.removeEventListener("home:products-scroll-settled", settleProgrammaticScroll);
+  }, [staged, scrollYProgress, visualProgress]);
   const weekfieldOpacity = useTransform(visualProgress, [0.44, 0.49, 0.53], [1, 0.1, 0]);
   const printBorderOpacity = useTransform(visualProgress, [0.42, 0.5, 0.6], [0, 0.1, 1]);
   // A separately painted field carries the material change while the outgoing

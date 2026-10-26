@@ -97,6 +97,8 @@ let originLiterals = 0;
 let resolveCalls = 0;
 for (const file of listSources("src").sort()) {
   if (file === REGISTRY_FILE) continue;
+  // Exact accepted Digital Humans registries have content-hashed media bindings.
+  const humanRegistry = [path.join("src","data","avatarReleaseMedia.ts"),path.join("src","ui","presenter","presenterReleaseMedia.ts")].includes(file);
   const lines = fs.readFileSync(file, "utf8").split("\n");
   lines.forEach((line, index) => {
     const at = `${file}:${index + 1}`;
@@ -105,6 +107,7 @@ for (const file of listSources("src").sort()) {
       consumerErrors.push(`${at}: direct video path ${match[1]} (use resolveVideoAsset)`);
     }
     for (const _match of line.matchAll(MEDIA_HOST_RE)) {
+      if (humanRegistry && [...line.matchAll(/https:\/\/media\.brenychstudio\.com[^"\s,]+/g)].every(m => /^https:\/\/media\.brenychstudio\.com\/digital-humans\/(cast\/avatar-0[1-8]|director)\/[a-z0-9.-]+\.(mp4|vtt|webp)(\?v=[0-9a-f]{12})?$/.test(m[0]))) return;
       originLiterals += 1;
       consumerErrors.push(`${at}: media.brenychstudio.com outside ${REGISTRY_FILE}`);
     }

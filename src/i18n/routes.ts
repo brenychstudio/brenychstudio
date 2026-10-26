@@ -5,6 +5,7 @@ const PUBLIC_SPANISH_BASE_PATHS = new Set([
   "/",
   "/products",
   ...getPublishedDossierProducts().map(product => `/products/${product.slug}`),
+  "/avatars",
   "/work",
   "/offer",
   "/about",

@@ -68,10 +68,34 @@ export function startHardPageTransition(to: string, onBeforeNavigate?: () => voi
 export function startSpaPageTransition(
   navigate: NavigateFunction,
   to: string,
-  onBeforeNavigate?: () => void
+  onBeforeNavigate?: () => void,
+  signal?: AbortSignal
 ) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || signal?.aborted) return;
   if (!acquireLock()) return;
+
+  let navigated = false;
+  let cancelled = false;
+  let exitTimer = 0;
+  let frame = 0;
+  let transition: { skipTransition(): void } | undefined;
+  const cancel = () => {
+    if (navigated || cancelled) return;
+    cancelled = true;
+    window.clearTimeout(exitTimer);
+    window.cancelAnimationFrame(frame);
+    transition?.skipTransition();
+    signal?.removeEventListener("abort", cancel);
+    releasePageTransitionLock();
+    window.dispatchEvent(new CustomEvent("app:page-transition-cancel"));
+  };
+  const commit = () => {
+    if (cancelled || signal?.aborted) { cancel(); return; }
+    navigated = true;
+    signal?.removeEventListener("abort", cancel);
+    navigate(to);
+  };
+  signal?.addEventListener("abort", cancel, { once: true });
 
   // Fetch the destination route module during the authored exit; navigation never waits for it.
   preloadRouteModule(to);
@@ -87,30 +111,31 @@ export function startSpaPageTransition(
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const viewTransition = document.startViewTransition;
 
-  window.setTimeout(() => {
+  exitTimer = window.setTimeout(() => {
+    if (cancelled || signal?.aborted) { cancel(); return; }
     if (!prefersReducedMotion && typeof viewTransition === "function") {
       try {
-        viewTransition.call(document, () => {
+        transition = viewTransition.call(document, () => {
           flushSync(() => {
-            navigate(to);
+            commit();
           });
         });
         return;
       } catch {
         releasePageTransitionLock();
-        navigate(to);
+        commit();
         return;
       }
     }
 
-    window.requestAnimationFrame(() => {
+    frame = window.requestAnimationFrame(() => {
       try {
         flushSync(() => {
-          navigate(to);
+          commit();
         });
       } catch {
         releasePageTransitionLock();
-        navigate(to);
+        commit();
       }
     });
   }, EXIT_MS);

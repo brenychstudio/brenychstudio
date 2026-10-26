@@ -1,4 +1,4 @@
-export type HeaderMoodId = "living" | "products" | "evidence" | "immersive" | "games" | "practice" | "studio";
+export type HeaderMoodId = "living" | "products" | "avatars" | "evidence" | "immersive" | "games" | "practice" | "studio";
 
 export type HeaderTheme = {
   id: string;
@@ -118,6 +118,12 @@ export const headerThemeTokens: Record<HeaderMoodId, HeaderTheme> = {
     ...darkProof,
     surface: "rgba(9, 10, 9, 0.74)",
   },
+  avatars: {
+    id: "route-avatars",
+    signalLabel: "DIGITAL PRESENCE",
+    ...darkProof,
+    surface: "rgba(9, 10, 9, 0.74)",
+  },
   practice: {
     id: "route-practice",
     signalLabel: "PRACTICE MODEL",
@@ -196,6 +202,10 @@ export const headerSceneThemes: Record<string, HeaderTheme> = {
   "games-stage": { id: "games-stage", signalLabel: "WORLDS IN DEVELOPMENT", ...darkProof, surface: "rgba(9, 10, 9, 0.7)" },
   "games-ledger": { id: "games-ledger", signalLabel: "GAME WORLDS", ...darkProof, surface: "rgba(14, 15, 14, 0.84)" },
   "games-standard": { id: "games-standard", signalLabel: "PROOF STANDARD", ...lightDense, surface: "rgba(246, 242, 231, 0.86)" },
+  "avatars-chamber": { id: "avatars-chamber", signalLabel: "DIGITAL PRESENCE", ...darkProof, surface: "rgba(9, 10, 9, 0.7)" },
+  "avatars-ledger": { id: "avatars-ledger", signalLabel: "PRESENCE SYSTEM", ...lightDense, surface: "rgba(246, 242, 231, 0.86)" },
+  "avatars-horizon": { id: "avatars-horizon", signalLabel: "SPATIAL HORIZON", ...darkProof, surface: "rgba(14, 19, 17, 0.8)" },
+  "avatars-closing": { id: "avatars-closing", signalLabel: "START SIGNAL", ...lightDense, surface: "rgba(246, 242, 231, 0.86)" },
   "footer-closing": {
     id: "footer-closing",
     signalLabel: "CLOSING SIGNAL",
@@ -573,6 +583,9 @@ export function getHeaderMoodForPath(pathname: string) {
   }
   if (pathname === "/games") {
     return headerThemeTokens.games;
+  }
+  if (pathname === "/avatars" || pathname === "/avatars/") {
+    return headerThemeTokens.avatars;
   }
   if (pathname === "/offer" || pathname.startsWith("/offer") || pathname === "/offer-v2") {
     return headerThemeTokens.practice;

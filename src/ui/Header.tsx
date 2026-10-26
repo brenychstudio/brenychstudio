@@ -27,13 +27,14 @@ type Props = {
 };
 
 type NavItem = {
-  id: "home" | "products" | "work" | "immersive" | "games" | "offer" | "about";
-  to: "/" | "/products" | "/work" | "/immersive" | "/games" | "/offer" | "/about";
+  id: "home" | "products" | "avatars" | "work" | "immersive" | "games" | "offer" | "about";
+  to: "/" | "/products" | "/avatars" | "/work" | "/immersive" | "/games" | "/offer" | "/about";
 };
 
 const navItemDescriptions: Record<NavItem["id"], string> = {
   home: "Studio signal / opening system",
   products: "Product system / studio-built tools",
+  avatars: "Digital humans / cinematic presence",
   work: "Evidence atlas / case systems",
   immersive: "Spatial proof / Web XR field",
   games: "Original worlds / games in development",
@@ -44,6 +45,7 @@ const navItemDescriptions: Record<NavItem["id"], string> = {
 const spanishNavItemDescriptions: Record<NavItem["id"], string> = {
   home: "Senal de estudio / sistema inicial",
   products: "Sistema de productos / herramientas del estudio",
+  avatars: "Humanos digitales / presencia cinematografica",
   work: "Atlas de evidencia / sistemas de caso",
   immersive: "Prueba espacial / campo Web XR",
   games: "Mundos originales / juegos en desarrollo",
@@ -51,10 +53,12 @@ const spanishNavItemDescriptions: Record<NavItem["id"], string> = {
   about: "Practica / contexto de estudio",
 };
 
-// Owner order (SITE-GAMES-01-FIX1-R1), shared with the footer: seven real pages, no action items.
+// Owner order (SITE-GAMES-01-FIX1-R1, Avatars after Products in AVATARS-01), shared with the footer: eight real pages,
+// no action items.
 const navItems: NavItem[] = [
   { id: "home", to: "/" },
   { id: "products", to: "/products" },
+  { id: "avatars", to: "/avatars" },
   { id: "games", to: "/games" },
   { id: "immersive", to: "/immersive" },
   { id: "work", to: "/work" },
@@ -158,6 +162,9 @@ function getLocalizedSignalLabel(label: string, locale: LocaleCode) {
     "GAME WORLDS": "MUNDOS DE JUEGO",
     "WORLDS IN DEVELOPMENT": "MUNDOS EN DESARROLLO",
     "PROOF STANDARD": "ESTANDAR DE PRUEBA",
+    "DIGITAL PRESENCE": "PRESENCIA DIGITAL",
+    "PRESENCE SYSTEM": "SISTEMA DE PRESENCIA",
+    "SPATIAL HORIZON": "HORIZONTE ESPACIAL",
   };
 
   return labels[label] ?? label;
@@ -180,7 +187,10 @@ export default function Header({
   const mobileMenuCloseRef = useRef<HTMLButtonElement | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const cleanPathname = useMemo(() => stripLocaleFromPathname(location.pathname), [location.pathname]);
+  const cleanPathname = useMemo(() => {
+    const path = stripLocaleFromPathname(location.pathname);
+    return path.replace(/\/+$/, "") || "/";
+  }, [location.pathname]);
 
   const onHome = cleanPathname === "/";
   const activeSceneId = useActiveHeaderScene(cleanPathname);
@@ -196,6 +206,9 @@ export default function Header({
     if (cleanPathname === "/") return "/";
 
     if (cleanPathname === "/products" || cleanPathname.startsWith("/products/")) return "/products";
+
+    // Cloudflare canonicalises the static route to /avatars/: both spellings are the Avatars page.
+    if (cleanPathname === "/avatars" || cleanPathname.startsWith("/avatars/")) return "/avatars";
 
     if (cleanPathname === "/work" || cleanPathname.startsWith("/work/")) {
       return "/work";
@@ -317,8 +330,11 @@ export default function Header({
 
     if (!nextLocaleConfig.enabled || isUnavailableSpanishRoute || nextLocale === locale) return;
 
-    // Products keeps its query and hash; Games keeps the selected world (its hash is written with replaceState).
-    const keptState = cleanPathname === "/products" ? location.search + location.hash : cleanPathname === "/games" ? window.location.hash : "";
+    // Products keeps its query and hash; Games keeps the selected world and Avatars the selected identity (both hashes are
+    // written with replaceState). Avatars matches with or without the trailing slash.
+    const keptState = cleanPathname === "/products"
+      ? location.search + location.hash
+      : cleanPathname === "/games" || /^\/avatars\/?$/.test(cleanPathname) ? window.location.hash : "";
     navigateWithTransition(getLocalizedPath(location.pathname, nextLocale) + keptState);
   };
 
@@ -340,6 +356,7 @@ export default function Header({
   const localizedSignalLabel = getLocalizedSignalLabel(headerTheme.signalLabel, locale);
   const getNavItemLabel = (item: NavItem) => {
     if (item.id === "products") return locale === "es" ? "Productos" : "Products";
+    if (item.id === "avatars") return locale === "es" ? "Avatares" : "Avatars";
     if (item.id === "games") return locale === "es" ? "Juegos" : "Games";
     return navLabels[item.id];
   };
@@ -484,6 +501,16 @@ export default function Header({
                       <div className="grid grid-cols-[1fr_auto] gap-3 border-y border-white/10 py-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-white/40">
                         <span>{headerUi.current} / {getNavItemLabel(navItems.find((item) => item.to === activePath) ?? navItems[0])}</span>
                         <span>{currentLocaleConfig.label} / {headerUi.signalReady}</span>
+                      </div>
+                      <div className="flex items-center gap-2" role="group" aria-label={locale === "es" ? "Idioma" : "Language"}>
+                        {allLocales.filter((language) => language.enabled).map((language) => {
+                          const unavailable = language.code === "es" && !hasSpanishPublicEquivalent(cleanPathname);
+                          return <button key={language.code} type="button" onClick={() => onLocale(language.code)}
+                            disabled={unavailable} aria-label={language.name} aria-pressed={locale === language.code}
+                            className="min-h-11 rounded-full border border-white/20 px-4 text-[11px] uppercase tracking-[0.14em] text-white transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 disabled:opacity-30">
+                            {language.label}
+                          </button>;
+                        })}
                       </div>
                       <button
                         type="button"

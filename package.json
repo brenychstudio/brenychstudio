@@ -12,7 +12,7 @@
     "games:validate": "node --experimental-strip-types scripts/validate-games.mts",
     "games:validate:self-test": "node --experimental-strip-types scripts/validate-games.mts --self-test",
     "dev": "vite",
-    "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && npm run products:validate && npm run products:routes:validate && npm run products:release:validate && npm run products:second-release:validate && vite build && node scripts/validate-dist-integrity.mjs dist",
+    "build": "tsc -b && npm run core:validate && npm run core:validate:integration && npm run home:validate && npm run products:validate && npm run products:routes:validate && npm run products:release:validate && npm run products:second-release:validate && node scripts/build-public-vite.mjs && node scripts/validate-dist-integrity.mjs dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "media:portfolio": "node scripts/generate-portfolio-media.mjs",

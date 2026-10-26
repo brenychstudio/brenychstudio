@@ -1,0 +1,273 @@
+/* Studio Avatar V1: a pre-recorded presenter that lives in the HOME hero and directs the site from a quiet dock. */
+.studio-presence,
+.studio-dock {
+  --sp-ink: #222921;
+  --sp-muted: #62665e;
+  --sp-faint: rgba(34, 41, 33, .34);
+  --sp-line: rgba(47, 57, 44, .17);
+  --sp-accent: #506044;
+  --sp-paper: #f5f3ec;
+  --sp-cta-hover: #3e4937;
+  --sp-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Flow layout (phones, tablets, narrow or short desktops): a profile byline in the hero column.
+   --------------------------------------------------------------------------------------------------------------- */
+.ecosystem-home .studio-presence { position: relative; z-index: 3; align-self: flex-start; margin-top: auto; }
+.ecosystem-home .studio-presence + .eco-hero-bottom { margin-top: 20px; }
+
+/* Desktops without a free field: closed, the byline sits out of the flow right above the hero's own buttons (intro row
+   + footnote + padding = 177px), so the hero keeps its height and its buttons stay in the first viewport. */
+@media (min-width: 1024px) {
+  .ecosystem-home .studio-presence[data-layout="flow"]:not([data-open]) { position: absolute; right: 0; bottom: 177px; margin: 0; }
+  .ecosystem-home .studio-presence + .eco-hero-bottom { margin-top: auto; }
+}
+
+/* Open in the column: the stage unfolds in place under the headline and the hero grows; nothing is laid over the page. */
+.ecosystem-home .studio-presence[data-layout="flow"][data-open] {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(120px, 34vw, 240px);
+  grid-template-areas: "bar bar" "intro plate" "list list";
+  column-gap: 20px;
+  max-width: 640px;
+  margin: 0 0 28px;
+}
+.ecosystem-home .studio-presence[data-layout="flow"][data-open] .studio-presence__column { display: contents; }
+.studio-presence[data-layout="flow"] .studio-presence__bar { grid-area: bar; }
+.studio-presence[data-layout="flow"] .studio-presence__intro { grid-area: intro; align-self: start; margin-top: 18px; }
+.studio-presence[data-layout="flow"] .studio-presence__plate { grid-area: plate; margin-top: 18px; }
+.studio-presence[data-layout="flow"] .studio-presence__index { grid-area: list; }
+.studio-presence[data-layout="flow"]:not([data-open]) .studio-presence__plate { display: none; }
+@media (min-width: 1024px) {
+  .ecosystem-home .studio-presence[data-layout="flow"][data-open] { max-width: 760px; grid-template-columns: minmax(0, 1fr) 240px; column-gap: 32px; }
+}
+
+/* Until the field is measured on a roomy desktop, nothing is shown (no jump on first paint). */
+.ecosystem-home .studio-presence[data-layout="pending"] { position: absolute; visibility: hidden; }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Field layout (roomy desktops): the presenter owns the hero's free right field, measured live. Closed, a small
+   portrait with its caption at the field's top-right; open, the same plate grows into the stage.
+   --------------------------------------------------------------------------------------------------------------- */
+.ecosystem-home .studio-presence[data-layout="field"] {
+  --plate-h: calc(var(--plate-w) * 1.25);
+  position: absolute;
+  top: var(--field-y);
+  left: var(--field-x);
+  width: var(--field-w);
+  height: var(--field-h);
+  margin: 0;
+  pointer-events: none;
+}
+.studio-presence[data-layout="field"] > * { pointer-events: auto; }
+.studio-presence[data-layout="field"] .studio-presence__plate {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--plate-w);
+  height: var(--plate-h);
+  transition: width .72s var(--sp-ease), height .72s var(--sp-ease), box-shadow .5s ease;
+}
+.studio-presence[data-layout="field"] .studio-presence__seal { display: none; }
+
+/* Closed: a caption under the portrait; the whole portrait opens the stage. */
+.studio-presence[data-layout="field"]:not([data-open]) .studio-presence__column { position: absolute; top: calc(var(--plate-h) + 14px); right: 0; }
+.studio-presence[data-layout="field"]:not([data-open]) .studio-presence__trigger-text { justify-items: end; text-align: right; }
+.studio-presence[data-layout="field"]:not([data-open]) .studio-presence__trigger-title { justify-self: end; background-position: 100% 100%; }
+.studio-presence[data-layout="field"]:not([data-open]) .studio-presence__toggle::after {
+  content: "";
+  position: absolute;
+  top: calc(-14px - var(--plate-h));
+  right: 0;
+  bottom: 0;
+  width: max(100%, var(--plate-w));
+}
+.studio-presence[data-layout="field"]:not([data-open]):has(.studio-presence__toggle:hover) .studio-presence__plate { box-shadow: 0 30px 50px -30px rgba(20, 27, 23, .7); }
+
+/* Open: text column beside the plate. */
+.studio-presence[data-layout="field"][data-open] .studio-presence__column {
+  position: absolute;
+  top: 0;
+  right: calc(var(--plate-w) + 40px);
+  width: var(--text-w);
+}
+.studio-presence[data-layout="field"][data-variant="stacked"] .studio-presence__column { right: calc(var(--plate-w) + 24px); }
+.studio-presence[data-layout="field"][data-open] .studio-presence__bar { flex-wrap: wrap; row-gap: 6px; }
+.studio-presence[data-layout="field"][data-open] .studio-presence__intro { margin-top: 22px; }
+.studio-presence[data-layout="field"][data-open] .studio-presence__index { position: absolute; margin: 0; }
+/* Wide field: the questions close the text column on the plate's bottom line. */
+.studio-presence[data-layout="field"][data-variant="columns"] .studio-presence__index {
+  right: calc(var(--plate-w) + 40px);
+  bottom: calc(var(--field-h) - var(--plate-h));
+  width: var(--text-w);
+}
+/* Narrower field (and while the stage is being fitted): the questions run under the plate across the field. */
+.studio-presence[data-layout="field"][data-open]:not([data-variant="columns"]) .studio-presence__index { top: calc(var(--plate-h) + 24px); right: 0; left: 0; }
+/* While the stage is fitted (one frame): the list is measured unseen; the column only fades, so focus stays on Close. */
+.studio-presence[data-layout="field"][data-open]:not([data-variant]) .studio-presence__index { visibility: hidden; }
+.studio-presence[data-layout="field"][data-open]:not([data-variant]) .studio-presence__column { opacity: 0; }
+.studio-presence[data-layout="field"][data-open] .studio-presence__plate { box-shadow: 0 46px 80px -48px rgba(20, 27, 23, .66); }
+
+/* Lights down: while the stage is open the field recedes and its engine label steps aside. */
+.ecosystem-home .eco-hero-field { transition: opacity .9s cubic-bezier(.22, 1, .36, 1); }
+.ecosystem-home .eco-hero:has(.studio-presence[data-layout="field"][data-open]) .eco-hero-field { opacity: .62; }
+.studio-hero-field__label { transition: opacity .35s ease; }
+.ecosystem-home .eco-hero:has(.studio-presence[data-layout="field"][data-open]) .studio-hero-field__label { opacity: 0; }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Shared parts
+   --------------------------------------------------------------------------------------------------------------- */
+.studio-presence__bar { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 30px; }
+.studio-presence__disclosure,
+.studio-presence__toggle,
+.studio-presence__utility,
+.studio-dock__status { font-size: 10px; line-height: 1.5; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+.studio-presence__disclosure { margin: 0; color: var(--sp-muted); }
+.studio-presence__nowrap { white-space: nowrap; }
+.studio-presence__toggle { display: inline-flex; align-items: center; gap: 14px; min-height: 30px; padding: 0; color: var(--sp-ink); background: none; border: 0; text-align: left; cursor: pointer; }
+.studio-presence__trigger-text { display: grid; gap: 4px; }
+.studio-presence__trigger-title {
+  justify-self: start;
+  padding-bottom: 2px;
+  font-size: 14px;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .5s var(--sp-ease);
+}
+.studio-presence__toggle:hover .studio-presence__trigger-title { background-size: 100% 1px; }
+.studio-presence__trigger-meta { font-size: 9px; letter-spacing: .14em; color: var(--sp-muted); }
+/* A profile-photo avatar with a quiet ring, sized to read as a face at a glance. */
+.studio-presence__seal { width: 52px; height: 52px; flex: none; overflow: hidden; border-radius: 50%; background: #141a17; box-shadow: 0 0 0 2px rgba(247, 246, 241, .92), 0 0 0 3px rgba(34, 41, 33, .28), 0 12px 24px -12px rgba(27, 36, 27, .5); }
+.studio-presence__seal img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.studio-presence__x { font-size: 16px; line-height: 1; letter-spacing: 0; }
+.studio-presence__intro { max-width: 30ch; margin: 0; font-size: 15px; line-height: 1.55; color: var(--sp-muted); }
+.studio-presence__pending { grid-area: intro; align-self: end; margin: 14px 0 0; font-size: 9.5px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; color: var(--sp-muted); }
+
+/* The portrait plate: still underneath, the pre-recorded idle loop and answer clip above it (hard cuts on one rest frame). */
+.studio-presence__plate,
+.studio-dock__plate { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 2px; background: #141a17; }
+.studio-presence__plate img,
+.studio-dock__plate img,
+.studio-presence__video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.studio-presence__video { opacity: 0; }
+.studio-presence__video.is-visible { opacity: 1; }
+.studio-presence__video--speech { transition: opacity .2s linear; }
+.studio-presence__progress { position: absolute; right: 10px; bottom: 10px; left: 10px; z-index: 1; height: 1px; background: rgba(245, 243, 236, .22); opacity: 0; transition: opacity .4s ease; }
+.studio-presence__progress span { display: block; height: 100%; background: rgba(245, 243, 236, .9); transform: scaleX(var(--presenter-progress, 0)); transform-origin: 0 50%; }
+.studio-dock__plate[data-active] .studio-presence__progress { opacity: 1; }
+
+.studio-presence__index { margin: 22px 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--sp-line); }
+.studio-presence__question { display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: baseline; width: 100%; min-height: 44px; padding: 11px 0; color: var(--sp-muted); background: none; border: 0; border-top: 1px solid var(--sp-line); font-size: 14px; line-height: 1.35; text-align: left; cursor: pointer; transition: color .3s var(--sp-ease); }
+.studio-presence__question span:first-child { font-size: 10px; letter-spacing: .12em; color: var(--sp-faint); font-variant-numeric: tabular-nums; transition: color .3s; }
+.studio-presence__question:hover,
+.studio-presence__question:hover span:first-child { color: var(--sp-ink); }
+
+.studio-presence__cta { display: inline-flex; align-items: center; gap: 18px; min-height: 40px; padding: 10px 14px; color: var(--sp-paper); background: var(--sp-ink); border: 1px solid var(--sp-ink); border-radius: 2px; font-size: 12px; line-height: 1.2; text-decoration: none; cursor: pointer; transition: background .3s; }
+.studio-presence__cta:hover { background: var(--sp-cta-hover); }
+.studio-presence__utility { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 0; color: var(--sp-muted); background: none; border: 0; letter-spacing: .14em; cursor: pointer; transition: color .3s; }
+.studio-presence__utility:hover { color: var(--sp-ink); }
+.studio-presence__utility[aria-pressed="false"] { text-decoration: line-through; }
+.studio-presence__glyph-stop { width: 7px; height: 7px; background: currentColor; }
+
+:is(.studio-presence, .studio-dock) :is(button, a):focus-visible { outline: 2px solid var(--sp-ink); outline-offset: 4px; }
+/* Touch: every presenter control is at least 44 CSS px. */
+@media (pointer: coarse) {
+  .studio-presence[data-open] .studio-presence__toggle,
+  .studio-presence__utility,
+  .studio-presence__cta,
+  .studio-dock__close { min-height: 44px; }
+  .studio-dock__close { min-width: 44px; }
+}
+.studio-presence .studio-presence__question:focus-visible { outline-offset: -2px; }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Director dock: the presenter stays with the visitor while the site moves to what the answer is about.
+   Bottom-left on desktop (the sound dock owns bottom-right), a bottom bar on phones.
+   --------------------------------------------------------------------------------------------------------------- */
+.studio-dock {
+  --dock-plate: 84px;
+  position: fixed;
+  z-index: 80;
+  right: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  left: 10px;
+  display: grid;
+  grid-template: "plate bar" auto "plate body" 1fr "actions actions" auto / var(--dock-plate) minmax(0, 1fr);
+  column-gap: 14px;
+  padding: 10px;
+  color: var(--sp-ink);
+  background: rgba(247, 246, 241, .97);
+  border: 1px solid rgba(43, 56, 40, .14);
+  border-radius: 4px;
+  box-shadow: 0 24px 64px rgba(27, 36, 27, .22);
+  backdrop-filter: blur(18px);
+  transition: background-color .5s ease, border-color .5s ease, color .5s ease;
+}
+.studio-dock:focus { outline: none; }
+.studio-dock[data-tone="dark"] {
+  --sp-ink: #f4f2e9;
+  --sp-muted: rgba(244, 242, 233, .64);
+  --sp-faint: rgba(244, 242, 233, .34);
+  --sp-accent: #b7c7a0;
+  --sp-paper: #141a17;
+  --sp-cta-hover: #ffffff;
+  background: rgba(13, 16, 14, .9);
+  border-color: rgba(255, 255, 255, .14);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .45);
+}
+.studio-dock__plate { grid-area: plate; align-self: start; width: var(--dock-plate); }
+.studio-dock__bar { grid-area: bar; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.studio-dock__body { grid-area: body; min-width: 0; }
+.studio-dock__actions { grid-area: actions; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; margin-top: 10px; }
+.studio-dock__close { flex: none; min-width: 40px; min-height: 40px; justify-content: flex-end; gap: 10px; }
+.studio-dock__caption { min-height: 2.9em; margin: 4px 0 0; font-size: 14px; line-height: 1.45; color: var(--sp-ink); text-wrap: pretty; }
+.studio-dock__caption[data-kind="question"] { color: var(--sp-muted); }
+.studio-dock__status { display: flex; gap: 8px; align-items: center; margin: 6px 0 0; font-size: 9.5px; letter-spacing: .13em; color: var(--sp-muted); }
+.studio-dock__status::before { content: ""; width: 6px; height: 6px; flex: none; border: 1px solid currentColor; border-radius: 50%; }
+.studio-dock__status:empty { margin: 0; }
+.studio-dock__status:empty::before { display: none; }
+.studio-dock__status[data-status="loading"]::before { border-color: transparent; background: currentColor; animation: studio-presence-pulse 1.1s ease-in-out infinite alternate; }
+.studio-dock__receipt { display: flex; gap: 8px; align-items: baseline; margin: 6px 0 0; font-size: 9.5px; line-height: 1.5; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; color: var(--sp-muted); }
+.studio-dock__receipt span { width: 10px; flex: none; text-align: center; letter-spacing: 0; }
+.studio-dock__receipt[data-status="done"] { color: var(--sp-ink); }
+.studio-dock__receipt[data-status="done"] span { color: var(--sp-accent); }
+.studio-dock__receipt[data-status="failed"] span { color: #9a5b2c; }
+@media (max-width: 767px) {
+  .studio-dock__close-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .studio-dock .studio-presence__disclosure { font-size: 9px; letter-spacing: .12em; }
+}
+@media (min-width: 768px) {
+  .studio-dock {
+    --dock-plate: clamp(120px, 7.8vw, 200px);
+    right: auto;
+    bottom: 24px;
+    left: clamp(20px, 3.9vw, 80px);
+    width: calc(var(--dock-plate) + 18px + 380px);
+    grid-template: "plate bar" auto "plate body" 1fr "plate actions" auto / var(--dock-plate) minmax(0, 1fr);
+    column-gap: 18px;
+    padding: 12px 16px 12px 12px;
+  }
+  .studio-dock__caption { font-size: 15px; }
+  .studio-dock__actions { align-self: end; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .studio-presence[data-open] :is(.studio-presence__column, .studio-presence__index) { animation: studio-presence-rise .6s var(--sp-ease) .12s both; }
+  .studio-presence[data-layout="flow"][data-open] .studio-presence__plate { animation: studio-presence-reveal .95s var(--sp-ease) both; }
+  .studio-dock { animation: studio-presence-rise .45s var(--sp-ease) both; }
+  .studio-dock__caption > span,
+  .studio-dock__receipt,
+  .studio-dock__status { animation: studio-presence-fade .45s var(--sp-ease) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-presence[data-layout="field"] .studio-presence__plate,
+  .studio-presence__video--speech { transition: none; }
+}
+@keyframes studio-presence-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes studio-presence-reveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+@keyframes studio-presence-fade { from { opacity: 0; } }
+@keyframes studio-presence-pulse { from { opacity: .25; } }

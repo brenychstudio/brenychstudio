@@ -158,6 +158,14 @@ export const spanishPageSeoDrafts: Record<string, SeoDraft> = {
     ogTitle: "Productos — Brenych Studio",
     ogDescription: "Software, herramientas de producción y sistemas creativos desarrollados por Brenych Studio.",
   },
+  "/avatars": {
+    title: "Avatares y humanos digitales con IA | Brenych Studio",
+    description:
+      "Descubre ocho personajes digitales y experiencias de presencia cinematográfica. Los humanos digitales 3D con Unreal Engine y MetaHuman están en desarrollo.",
+    ogTitle: "Avatares y humanos digitales con IA | Brenych Studio",
+    ogDescription:
+      "Ocho conceptos de personajes digitales y una presencia cinematográfica para la web. Humanos digitales 3D en desarrollo.",
+  },
   "/": {
     title: "Brenych Studio — Ingeniería de producto y tecnología creativa",
     description:

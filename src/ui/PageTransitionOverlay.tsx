@@ -61,11 +61,13 @@ export default function PageTransitionOverlay() {
     window.addEventListener("pageshow", onPageShow);
     window.addEventListener("pagehide", resetOverlay);
     window.addEventListener("popstate", resetOverlay);
+    window.addEventListener("app:page-transition-cancel", resetOverlay);
 
     return () => {
       window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("pagehide", resetOverlay);
       window.removeEventListener("popstate", resetOverlay);
+      window.removeEventListener("app:page-transition-cancel", resetOverlay);
     };
   }, []);
 

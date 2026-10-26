@@ -30,10 +30,11 @@ type FooterLink = {
 
 type FooterVariant = "living" | "evidence" | "immersive" | "immersiveCase" | "practice" | "studio" | "case";
 
-/** The seven real sections, in the Header's order: the ports on the navigation axis. */
+/** The eight real sections, in the Header's order: the ports on the navigation axis. */
 const sectionLinks: FooterLink[] = [
   { label: "Home", to: "/" },
   { label: "Products", to: "/products" },
+  { label: "Avatars", to: "/avatars" },
   { label: "Games", to: "/games" },
   { label: "Immersive", to: "/immersive" },
   { label: "Work", to: "/work" },
@@ -81,6 +82,7 @@ const closingHeadline: { en: Record<FooterVariant, string>; es: Record<FooterVar
 const spanishLabels: Record<string, string> = {
   "/": "Inicio",
   "/products": "Productos",
+  "/avatars": "Avatares",
   "/work": "Casos",
   "/immersive": "XR",
   "/games": "Juegos",
@@ -100,7 +102,7 @@ function localizeFooterLinks(links: FooterLink[], locale: LocaleCode) {
 
 const trimSlash = (path: string) => (path.length > 1 ? path.replace(/\/+$/, "") : path);
 
-/** The canonical site footer, a Spatial Signature: identity, one navigation axis of the seven real sections, and a compact
+/** The canonical site footer, a Spatial Signature: identity, one navigation axis of the eight real sections, and a compact
  *  utility line (services, profiles, legal), with an optional closing line per page. One `<footer id="site-footer">`
  *  landmark with the header-scene, Rail and sound-safe hooks. */
 export default function SiteFooterV2({
